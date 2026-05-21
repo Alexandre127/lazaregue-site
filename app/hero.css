@@ -1,0 +1,656 @@
+/* Hero Lazarègue — source: lazaregue-hero-2.html */
+
+.laz-site {
+  --hero-wh: #f0eee8;
+  --hero-mu: #66668a;
+  --hero-bd: rgba(26, 71, 255, 0.15);
+}
+
+.laz-site.cursor-custom {
+  cursor: none;
+}
+
+.laz-cur {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  background: var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s;
+}
+
+.laz-cur2 {
+  position: fixed;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.14s ease;
+  opacity: 0.5;
+}
+
+.laz-glow {
+  position: fixed;
+  top: -200px;
+  left: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(26, 71, 255, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Nav hero */
+.laz-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--hero-bd);
+  background-color: var(--ink);
+  backdrop-filter: blur(14px);
+}
+
+.laz-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.laz-logo-sym {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 22px;
+}
+
+.laz-bar {
+  transform: skewX(-11deg);
+}
+
+.laz-logo-name {
+  font-family: var(--ff-display);
+  font-size: 19px;
+  letter-spacing: 0.1em;
+  color: var(--hero-wh);
+}
+
+.laz-logo-name span {
+  color: var(--blue);
+}
+
+.laz-nav-links {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.laz-nlink {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0 18px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.laz-nlink:hover {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.laz-nlink.active {
+  color: var(--blue2);
+  border-bottom-color: var(--blue2);
+}
+
+/* Hero */
+.laz-hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  padding-top: 54px;
+  position: relative;
+  z-index: 1;
+  background-color: var(--ink);
+  color: var(--hero-wh);
+}
+
+.laz-hero-left {
+  padding: 53px 16px 40px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 54px);
+}
+
+.laz-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.laz-hero-copy > .laz-reveal {
+  margin: 0;
+}
+
+.laz-hero-cta-wrap {
+  margin-top: 0;
+}
+
+.laz-hero-cta-wrap.laz-reveal {
+  margin-top: 0;
+}
+
+.hero-cta-logo {
+  height: 48px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  padding: 0.75rem 1rem;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .laz-hero-left {
+    padding: 53px 32px 40px 32px;
+  }
+
+  .laz-hero-copy {
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .laz-hero-left {
+    padding: 53px 0 40px 48px;
+  }
+
+  .laz-hero-copy {
+    gap: 3rem;
+  }
+}
+
+/* H1 — titre principal (dominant) */
+.laz-hero-h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(62px, 8.5vw, 104px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.0;
+  margin: 0;
+}
+
+.laz-hero-h1-line {
+  display: block;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.laz-hero-h1-dynamic-slot {
+  display: block;
+  position: relative;
+  height: 0.92em;
+  min-width: clamp(10rem, 24vw, 18rem);
+  overflow: hidden;
+}
+
+.laz-hero-h1-dynamic-word {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--blue);
+  text-transform: lowercase;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  opacity: 0;
+  transform: translateY(0.12em);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  white-space: nowrap;
+}
+
+.laz-hero-h1-dynamic-word.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* H2 — positionnement (styles de taille via Tailwind dans le composant) */
+.laz-hero-h2 {
+  font-family: var(--ff-body);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* H3 — signature animée, une seule ligne */
+.laz-hero-h3 {
+  font-family: var(--ff-display);
+  font-size: clamp(0.875rem, 1.35vw, 1.125rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin: 0;
+  white-space: nowrap;
+  max-width: 100%;
+  padding-top: 0.25rem;
+}
+
+.laz-hero-h3-static {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.laz-hero-h3-dynamic-slot {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  height: 1.2em;
+  min-width: clamp(7rem, 13vw, 12.5rem);
+  overflow: hidden;
+  font-size: 1.06em;
+}
+
+.laz-hero-h3-dynamic {
+  font-family: var(--ff-body);
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--blue);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateY(3px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  white-space: nowrap;
+  text-shadow: 0 0 12px rgba(26, 71, 255, 0.25);
+}
+
+.laz-hero-h3-dynamic.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.laz-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.laz-btn-primary {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--blue);
+  color: #fff;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.laz-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.laz-btn-primary:hover {
+  background: var(--blue2);
+}
+
+.laz-btn-primary:hover::after {
+  transform: translateX(100%);
+}
+
+.laz-btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+
+.laz-btn-primary:hover .laz-btn-arrow {
+  transform: translateX(4px);
+}
+
+.laz-hero-right,
+.laz-reveal.laz-hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 16px 32px;
+  position: relative;
+  overflow: visible; 
+}
+
+.laz-globe-wrap-3d {
+  transform: translateY(-28px);
+}
+
+.laz-globe-wrap,
+.laz-globe-wrap-3d {
+  position: relative;
+  width: 460px;
+  height: 460px;
+  overflow: visible;
+}
+
+.laz-globe-three {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.laz-globe-three canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+.laz-globe-three canvas:active {
+  cursor: grabbing;
+}
+
+.laz-city-card {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition:
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.laz-city-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.laz-city-card-inner {
+  background: rgba(8, 14, 32, 0.78);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(80, 140, 255, 0.12);
+  border-radius: 0;
+  padding: 22px 26px;
+  min-width: 260px;
+  max-width: 320px;
+  box-shadow:
+    0 0 40px rgba(30, 80, 180, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(100, 160, 255, 0.06);
+}
+
+.laz-city-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.laz-city-card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4a9eff;
+  box-shadow: 0 0 8px rgba(74, 158, 255, 0.6);
+}
+
+.laz-city-card-name {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.laz-city-card-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(74, 158, 255, 0.2), transparent);
+  margin-bottom: 14px;
+}
+
+.laz-city-card-title {
+  font-family: var(--ff-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(74, 158, 255, 0.7);
+  margin-bottom: 8px;
+}
+
+.laz-city-card-insight {
+  font-family: var(--ff-body);
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.laz-city-card-footer {
+  margin-top: 14px;
+}
+
+.laz-city-card-coord {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.2);
+  font-variant-numeric: tabular-nums;
+}
+
+.laz-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 71, 255, 0.18);
+  pointer-events: none;
+}
+
+.laz-ring-1 {
+  inset: -18px;
+  animation: laz-rspin 22s linear infinite;
+}
+
+.laz-ring-2 {
+  inset: -34px;
+  border-width: 0.5px;
+  border-color: rgba(26, 71, 255, 0.1);
+  animation: laz-rspin 34s linear infinite reverse;
+}
+
+@keyframes laz-rspin {
+  0% {
+    transform: rotate(0deg) rotateX(70deg);
+  }
+  100% {
+    transform: rotate(360deg) rotateX(70deg);
+  }
+}
+
+.laz-badge {
+  position: absolute;
+  z-index: 15;
+  pointer-events: none;
+  background: rgba(8, 12, 40, 0.92);
+  border: 1px solid rgba(26, 71, 255, 0.28);
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+}
+
+.laz-badge-1 {
+  right: 8px;
+  top: 44px;
+}
+
+.laz-badge-2 {
+  left: 8px;
+  bottom: 64px;
+}
+
+.laz-bdot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  animation: laz-bdpulse 2s ease-in-out infinite;
+}
+
+@keyframes laz-bdpulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.laz-blbl {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 4px;
+}
+
+.laz-bval {
+  font-family: var(--ff-display);
+  font-size: 24px;
+  color: var(--blue);
+  line-height: 1;
+}
+
+.laz-success-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #7ec845;
+}
+
+.laz-badge-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.laz-badge-meta span {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.laz-badge-title {
+  font-family: var(--ff-display);
+  font-size: 19px;
+  color: var(--hero-wh);
+  line-height: 1.1;
+  margin-top: 5px;
+}
+
+.laz-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.laz-reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+@media (max-width: 900px) {
+  .laz-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .laz-hero-right {
+    display: none;
+  }
+
+  .laz-hero-left {
+    padding: 53px 16px 40px;
+  }
+
+  .laz-nav {
+    padding: 0 20px;
+  }
+
+  .laz-nlink {
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  .laz-hero-h3 {
+    font-size: clamp(0.6875rem, 2.8vw, 0.9375rem);
+    letter-spacing: 0.03em;
+  }
+
+  .laz-hero-h3-dynamic-slot {
+    min-width: clamp(5.5rem, 28vw, 9rem);
+  }
+}
