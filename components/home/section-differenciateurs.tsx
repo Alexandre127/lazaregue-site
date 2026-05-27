@@ -797,6 +797,450 @@ const CARDS: DifferentiateurCard[] = [
   },
 ];
 
+function PortailDemo() {
+  const [activeTab, setActiveTab] = useState("dossiers");
+  const [notif, setNotif] = useState("");
+  const [showNotif, setShowNotif] = useState(false);
+  const [prog, setProg] = useState(68);
+
+  const sequence = [
+    { tab: "dossiers", notif: "Progression mise à jour — 75%", prog: 75 },
+    { tab: "docs", notif: "Nouveau document ajouté par Me Lazarègue" },
+    { tab: "msgs", notif: "Message non lu de Me Lazarègue" },
+    { tab: "avocat", notif: "Me Lazarègue est disponible" },
+    { tab: "dossiers", notif: "Retour aux dossiers", prog: 68 },
+  ];
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      const s = sequence[i % sequence.length];
+      setActiveTab(s.tab);
+      setNotif(s.notif);
+      setShowNotif(true);
+      if (s.prog) setProg(s.prog);
+      setTimeout(() => setShowNotif(false), 1800);
+      i++;
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      style={{
+        background: "#0a0f1e",
+        border: "0.5px solid rgba(255,255,255,0.08)",
+        borderRadius: "8px",
+        overflow: "hidden",
+        fontSize: "11px",
+      }}
+    >
+      <div
+        style={{
+          padding: "8px 12px",
+          borderBottom: "0.5px solid rgba(255,255,255,0.06)",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <span
+          style={{
+            color: "rgba(255,255,255,0.4)",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+          }}
+        >
+          Portail client
+        </span>
+        <span
+          style={{
+            background: "rgba(26,71,255,0.2)",
+            color: "#6a8fff",
+            padding: "1px 6px",
+            borderRadius: "2px",
+            fontSize: "9px",
+          }}
+        >
+          3 ACTIFS
+        </span>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          borderBottom: "0.5px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        {["dossiers", "docs", "msgs", "avocat"].map((tab) => (
+          <div
+            key={tab}
+            style={{
+              flex: 1,
+              padding: "6px 4px",
+              textAlign: "center",
+              fontSize: "10px",
+              color:
+                activeTab === tab ? "#1A47FF" : "rgba(255,255,255,0.2)",
+              borderBottom:
+                activeTab === tab
+                  ? "2px solid #1A47FF"
+                  : "2px solid transparent",
+              transition: "all 0.3s",
+            }}
+          >
+            {tab === "dossiers"
+              ? "Dossiers"
+              : tab === "docs"
+                ? "Docs"
+                : tab === "msgs"
+                  ? "Messages"
+                  : "Avocat"}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ minHeight: "160px", padding: "10px 12px" }}>
+        {activeTab === "dossiers" && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "6px 8px",
+                background: "rgba(26,71,255,0.06)",
+                borderLeft: "2px solid #1A47FF",
+              }}
+            >
+              <div>
+                <div style={{ color: "rgba(255,255,255,0.7)" }}>
+                  Dossier RGPD — Confidentiel
+                </div>
+                <div
+                  style={{
+                    color: "rgba(255,255,255,0.25)",
+                    fontSize: "10px",
+                  }}
+                >
+                  Mise en conformité
+                </div>
+              </div>
+              <span
+                style={{
+                  background: "rgba(26,71,255,0.15)",
+                  color: "#6a8fff",
+                  padding: "1px 5px",
+                  borderRadius: "2px",
+                  fontSize: "9px",
+                }}
+              >
+                EN COURS
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "6px 8px",
+              }}
+            >
+              <div style={{ color: "rgba(255,255,255,0.6)" }}>
+                Incident cyber — Groupe industriel
+              </div>
+              <span
+                style={{
+                  background: "rgba(226,75,74,0.15)",
+                  color: "#f09595",
+                  padding: "1px 5px",
+                  borderRadius: "2px",
+                  fontSize: "9px",
+                }}
+              >
+                URGENT
+              </span>
+            </div>
+            <div style={{ marginTop: "8px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: "rgba(255,255,255,0.25)",
+                  fontSize: "10px",
+                  marginBottom: "4px",
+                }}
+              >
+                <span>Progression RGPD</span>
+                <span>{prog}%</span>
+              </div>
+              <div
+                style={{
+                  height: "3px",
+                  background: "rgba(255,255,255,0.06)",
+                  borderRadius: "2px",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${prog}%`,
+                    background: "#1A47FF",
+                    borderRadius: "2px",
+                    transition: "width 1s ease",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "docs" && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          >
+            {[
+              "Rapport conformité RGPD v3",
+              "Notification CNIL — brouillon",
+              "Contrat SaaS — version finale",
+            ].map((doc, i) => (
+              <div
+                key={doc}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "4px 0",
+                  borderBottom: "0.5px solid rgba(255,255,255,0.04)",
+                }}
+              >
+                <span style={{ color: "#6a8fff", fontSize: "14px" }}>📄</span>
+                <div>
+                  <div style={{ color: "rgba(255,255,255,0.65)" }}>
+                    {doc}
+                    {i === 0 && (
+                      <span
+                        style={{
+                          marginLeft: "6px",
+                          background: "rgba(26,71,255,0.15)",
+                          color: "#6a8fff",
+                          padding: "1px 4px",
+                          borderRadius: "2px",
+                          fontSize: "9px",
+                        }}
+                      >
+                        NOUVEAU
+                      </span>
+                    )}
+                  </div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,0.25)",
+                      fontSize: "10px",
+                    }}
+                  >
+                    Me Lazarègue ·{" "}
+                    {i === 0 ? "aujourd'hui" : i === 1 ? "hier" : "12 mai"}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "msgs" && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          >
+            {[
+              {
+                from: "Me Lazarègue",
+                msg: "Le rapport de conformité est prêt. Quelques points à valider.",
+                unread: true,
+                time: "10:24",
+              },
+              {
+                from: "Me Hinderer",
+                msg: "Les contrats cloud ont été mis à jour selon vos retours.",
+                unread: false,
+                time: "hier",
+              },
+            ].map((m) => (
+              <div
+                key={m.from}
+                style={{
+                  padding: "6px 0",
+                  borderBottom: "0.5px solid rgba(255,255,255,0.04)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "3px",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: m.unread ? "white" : "rgba(255,255,255,0.5)",
+                      fontWeight: m.unread ? 500 : 400,
+                    }}
+                  >
+                    {m.unread && (
+                      <span
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          background: "#1A47FF",
+                          borderRadius: "50%",
+                          display: "inline-block",
+                          marginRight: "4px",
+                        }}
+                      />
+                    )}
+                    {m.from}
+                  </span>
+                  <span
+                    style={{
+                      color: "rgba(255,255,255,0.2)",
+                      fontSize: "10px",
+                    }}
+                  >
+                    {m.time}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    color: m.unread
+                      ? "rgba(255,255,255,0.5)"
+                      : "rgba(255,255,255,0.25)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {m.msg}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === "avocat" && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          >
+            {[
+              {
+                initials: "AL",
+                name: "Alexandre Lazarègue",
+                role: "Cybercriminalité & crise",
+                status: "Disponible",
+                color: "rgba(26,71,255,0.2)",
+                textColor: "#6a8fff",
+              },
+              {
+                initials: "SH",
+                name: "Sarah Hinderer",
+                role: "Données & IA",
+                status: "Répond sous 2h",
+                color: "rgba(29,158,117,0.2)",
+                textColor: "#5dc9a0",
+              },
+            ].map((a) => (
+              <div
+                key={a.name}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "6px 8px",
+                  background: "rgba(255,255,255,0.02)",
+                  borderRadius: "6px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    background: a.color,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: a.textColor,
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    flexShrink: 0,
+                  }}
+                >
+                  {a.initials}
+                </div>
+                <div>
+                  <div style={{ color: "rgba(255,255,255,0.7)" }}>{a.name}</div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,0.3)",
+                      fontSize: "10px",
+                    }}
+                  >
+                    {a.role}
+                  </div>
+                  <div
+                    style={{
+                      color: "#5dc9a0",
+                      fontSize: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "4px",
+                        height: "4px",
+                        background: "#5dc9a0",
+                        borderRadius: "50%",
+                        display: "inline-block",
+                      }}
+                    />
+                    {a.status}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: "6px 12px",
+          background: "rgba(26,71,255,0.06)",
+          borderTop: "0.5px solid rgba(26,71,255,0.1)",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          opacity: showNotif ? 1 : 0,
+          transition: "opacity 0.4s",
+        }}
+      >
+        <span
+          style={{
+            width: "5px",
+            height: "5px",
+            background: "#1A47FF",
+            borderRadius: "50%",
+            flexShrink: 0,
+          }}
+        />
+        <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "10px" }}>
+          {notif}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function SectionDifferenciateurs() {
   return (
     <section className="w-full bg-[#F8F9FA] px-4 py-10 md:px-8 md:py-16 lg:px-12">
@@ -813,7 +1257,7 @@ export function SectionDifferenciateurs() {
             <article key={card.title} className="flex flex-col">
               {card.visual === "portail" ? (
                 <div className="h-[240px] w-full shrink-0 overflow-hidden rounded-md border border-[rgba(0,0,0,0.08)]">
-                  <ClientPortalMockupVisual />
+                  <PortailDemo />
                 </div>
               ) : (
                 <div

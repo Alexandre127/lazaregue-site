@@ -1,4 +1,5 @@
 import { Header5 } from "@/components/home/header-05";
+import { SectionCabinet } from "@/components/home/section-cabinet";
 import SectionCompetences from "@/components/home/section-competences";
 import { SectionDifferenciateurs } from "@/components/home/section-differenciateurs";
 import { SectionEnjeux } from "@/components/home/section-enjeux";
@@ -10,6 +11,8 @@ export default function Home() {
   return (
     <>
       <Header5 />
+
+      <SectionCabinet />
 
       <SectionEnjeux />
       <SectionDifferenciateurs />

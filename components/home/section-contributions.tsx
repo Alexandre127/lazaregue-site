@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type BadgeVariant = "tribune" | "conference" | "interview";
 
@@ -110,6 +110,20 @@ function ContributionBookCard() {
 
 function ContributionVideoCard() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.5 },
+    );
+    if (videoContainerRef.current)
+      observer.observe(videoContainerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!videoOpen) return;
@@ -129,29 +143,27 @@ function ContributionVideoCard() {
 
   return (
     <>
-      <article className={CARD_SHELL}>
-        <button
-          type="button"
-          onClick={() => setVideoOpen(true)}
-          className="relative flex h-[120px] w-full shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5"
-          style={{
-            background: "linear-gradient(135deg, #0d1525, #0a1020)",
-          }}
-          aria-label="Regarder l'interview sur YouTube"
-        >
-          <span className="pointer-events-none absolute left-3 top-3 font-mono text-[9px] text-white/20">
-            LAZARÈGUE AVOCATS
-          </span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1A47FF]">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden>
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </span>
-          <span className="font-mono text-[11px] text-white/40">
-            Regarder l&apos;interview
-          </span>
-        </button>
-        <div className="flex flex-1 flex-col gap-2 p-4">
+      <article className={`${CARD_SHELL} !flex-row`}>
+        <div className="h-full min-h-0 flex-1 self-stretch">
+          <div
+            ref={videoContainerRef}
+            className="aspect-video h-full w-full"
+          >
+            {isVisible ? (
+              <iframe
+                src="https://www.youtube.com/embed/ccYVu3APMmw?autoplay=1&mute=1&loop=1&playlist=ccYVu3APMmw&controls=1"
+                width="100%"
+                height="100%"
+                className="h-full w-full border-0"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+              />
+            ) : (
+              <div className="h-full w-full bg-[#0a0f2e]" />
+            )}
+          </div>
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
           <p className="font-mono text-[9px] uppercase tracking-wider text-[#1A47FF]">
             ★ À LA UNE
           </p>

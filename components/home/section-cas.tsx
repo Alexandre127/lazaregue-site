@@ -11,6 +11,7 @@ type CasCard = {
   frontBg: string;
   backBg: string;
   dotColor: string;
+  accentColor: string;
   results: string[];
 };
 
@@ -25,6 +26,7 @@ const CASE_CARDS: CasCard[] = [
     frontBg: "#FDE8E8",
     backBg: "#1a2744",
     dotColor: "#6a90cc",
+    accentColor: "#E24B4A",
     results: [
       "Coordination de la réponse à l'incident avec les experts techniques",
       "Obligations de notification auprès de la CNIL respectées dans les délais",
@@ -41,6 +43,7 @@ const CASE_CARDS: CasCard[] = [
     frontBg: "#E8F5F0",
     backBg: "#0e5c44",
     dotColor: "#5dc9a0",
+    accentColor: "#1D9E75",
     results: [
       "Gouvernance juridique des systèmes d'IA documentée",
       "Contrats avec les fournisseurs cloud mis à niveau",
@@ -57,6 +60,7 @@ const CASE_CARDS: CasCard[] = [
     frontBg: "#E8EEFF",
     backBg: "#1845c0",
     dotColor: "#80aaff",
+    accentColor: "#1A47FF",
     results: [
       "Notification pilotée dans le respect des délais",
       "Responsabilité du sous-traitant engagée",
@@ -67,11 +71,13 @@ const CASE_CARDS: CasCard[] = [
 
 function CasFlipCard({
   card,
+  cardIndex,
   flipped,
   onToggle,
   hoverFlipEnabled,
 }: {
   card: CasCard;
+  cardIndex: number;
   flipped: boolean;
   onToggle: () => void;
   hoverFlipEnabled: boolean;
@@ -96,8 +102,11 @@ function CasFlipCard({
     >
       <div className="cas-flip-inner">
         <div
-          className="cas-flip-face cas-flip-front flex flex-col border-[0.5px] border-[rgba(10,15,46,0.12)]"
-          style={{ backgroundColor: card.frontBg }}
+          className={`cas-flip-face cas-flip-front cas-flip-front-breathe cas-flip-front-breathe--${cardIndex} flex flex-col border-x border-b border-[0.5px] border-[rgba(10,15,46,0.12)]`}
+          style={{
+            backgroundColor: card.frontBg,
+            borderTop: `2px solid ${card.accentColor}`,
+          }}
         >
           <p className="mb-3 font-mono text-[11px] tracking-widest text-[#0A0F2E]/25">
             {card.number}
@@ -217,6 +226,54 @@ export function SectionCas() {
             cursor: pointer;
           }
         }
+
+        @keyframes lineBreatheCas1 {
+          0%,
+          100% {
+            border-top-color: rgba(226, 75, 74, 0.3);
+            box-shadow: none;
+          }
+          50% {
+            border-top-color: #e24b4a;
+            box-shadow: 0 -2px 12px rgba(226, 75, 74, 0.6);
+          }
+        }
+
+        @keyframes lineBreatheCas2 {
+          0%,
+          100% {
+            border-top-color: rgba(29, 158, 117, 0.3);
+            box-shadow: none;
+          }
+          50% {
+            border-top-color: #1d9e75;
+            box-shadow: 0 -2px 12px rgba(29, 158, 117, 0.6);
+          }
+        }
+
+        @keyframes lineBreatheCas3 {
+          0%,
+          100% {
+            border-top-color: rgba(26, 71, 255, 0.3);
+            box-shadow: none;
+          }
+          50% {
+            border-top-color: #1a47ff;
+            box-shadow: 0 -2px 12px rgba(26, 71, 255, 0.6);
+          }
+        }
+
+        .cas-flip-front-breathe--0 {
+          animation: lineBreatheCas1 3s ease-in-out infinite;
+        }
+
+        .cas-flip-front-breathe--1 {
+          animation: lineBreatheCas2 3s ease-in-out infinite;
+        }
+
+        .cas-flip-front-breathe--2 {
+          animation: lineBreatheCas3 3s ease-in-out infinite;
+        }
       `}</style>
 
       <div className="px-4 py-10 md:px-8 md:py-16 lg:px-12">
@@ -239,11 +296,31 @@ export function SectionCas() {
             <CasFlipCard
               key={card.number}
               card={card}
+              cardIndex={index}
               flipped={flippedIndex === index}
               onToggle={() => handleToggle(index)}
               hoverFlipEnabled={canHoverFlip}
             />
           ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "32px" }}>
+          <a
+            href="/references"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "13px",
+              color: "rgba(10,15,46,0.5)",
+              borderBottom: "0.5px solid rgba(10,15,46,0.2)",
+              paddingBottom: "2px",
+              textDecoration: "none",
+              letterSpacing: "0.04em",
+            }}
+          >
+            Voir toutes nos études de cas →
+          </a>
         </div>
       </div>
     </section>

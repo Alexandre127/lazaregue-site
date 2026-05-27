@@ -1,11 +1,22 @@
 "use client";
 
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const HIGHLIGHT_TEXT =
   "Les entreprises qui anticipent leur conformité numérique lèvent plus facilement des fonds, accèdent aux marchés publics et négocient en position de force. Ce n'est pas une obligation, c'est un AVANTAGE CONCURRENTIEL.";
 
 const HIGHLIGHT_WORDS = HIGHLIGHT_TEXT.split(/\s+/);
+
+const TITLE_TEXT =
+  "Toute entreprise est aujourd'hui exposée aux risques juridiques du numérique.";
+
+const TITLE_WORDS = TITLE_TEXT.split(/\s+/);
 
 const ACCENT_WORDS = new Set(["AVANTAGE", "CONCURRENTIEL."]);
 
@@ -62,6 +73,22 @@ const STATS = [
   },
 ] as const;
 
+const ATTACK_INCREASE_STAT = {
+  value: 87,
+  delay: 0,
+  step: 1,
+  format: (n: number) => (
+    <>
+      <span className="text-white">+</span>
+      <span className="text-white">{Math.round(n)}</span>
+      <span className="text-[#1A47FF]">%</span>
+    </>
+  ),
+  label: "d'augmentation des attaques sur cinq ans",
+  quote: "",
+  source: "Rapport cybercriminalité 2026",
+} as const;
+
 function easeOutQuad(t: number) {
   return t * (2 - t);
 }
@@ -69,9 +96,9 @@ function easeOutQuad(t: number) {
 function useCountUp(
   active: boolean,
   target: number,
-  delay = 0,
-  step = 1,
-  duration = COUNT_DURATION_MS,
+  delay: number,
+  step: number,
+  duration: number,
 ) {
   const [value, setValue] = useState(0);
 
@@ -112,47 +139,70 @@ function AnimatedStat({
   stat,
 }: {
   active: boolean;
-  stat: (typeof STATS)[number];
+  stat: (typeof STATS)[number] | typeof ATTACK_INCREASE_STAT;
 }) {
-  const value = useCountUp(active, stat.value, stat.delay, stat.step);
+  const value = useCountUp(
+    active,
+    stat.value,
+    stat.delay,
+    stat.step,
+    COUNT_DURATION_MS,
+  );
 
   return (
-    <div className="border-b border-white/[0.07] py-6 last:border-b-0">
+    <div
+      className="py-6 last:border-b-0"
+      style={{ borderBottom: "0.5px solid rgba(255,255,255,0.05)" }}
+    >
       <p className="font-mono text-4xl font-bold tracking-tight text-white md:text-5xl">
         {stat.format(value)}
       </p>
       <p className="mt-2 text-sm leading-relaxed text-white/80">{stat.label}</p>
-      <p className="mt-4 border-l-2 border-[#1A47FF] pl-3 text-[12px] italic leading-relaxed text-white/55">
-        {stat.quote}
-      </p>
-      <p className="mt-3 font-mono text-[11px] text-white/45">{stat.source}</p>
     </div>
   );
 }
 
+const SEPARATOR_STYLE = {
+  border: "none",
+  borderTop: "0.5px solid rgba(255,255,255,0.05)",
+  margin: "24px 0",
+} as const;
+
+const COLUMN_BORDER = "0.5px solid rgba(255,255,255,0.05)";
+
 function HighlightParagraph({
   containerRef,
+  words = HIGHLIGHT_WORDS,
+  accentWords = ACCENT_WORDS,
+  as: Tag = "p",
+  className = "mb-9 max-w-md text-[13px] leading-relaxed",
+  style,
 }: {
   containerRef: React.RefObject<HTMLElement | null>;
+  words?: readonly string[];
+  accentWords?: Set<string>;
+  as?: "p" | "h2";
+  className?: string;
+  style?: React.CSSProperties;
 }) {
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const [litCount, setLitCount] = useState(0);
 
   useEffect(() => {
     const section = containerRef.current;
-    const paragraph = textRef.current;
-    if (!section || !paragraph) return;
+    const textEl = textRef.current;
+    if (!section || !textEl) return;
 
     let rafId = 0;
 
     const update = () => {
-      const rect = paragraph.getBoundingClientRect();
+      const rect = textEl.getBoundingClientRect();
       const vh = window.innerHeight;
-      const start = vh * 0.9;
-      const end = vh * 0.25;
+      const start = vh * 0.92;
+      const end = vh * 0.52;
       const progress = (start - rect.top) / (start - end);
       const clamped = Math.min(1, Math.max(0, progress));
-      setLitCount(Math.floor(clamped * HIGHLIGHT_WORDS.length));
+      setLitCount(Math.floor(clamped * words.length));
     };
 
     const onScroll = () => {
@@ -170,7 +220,7 @@ function HighlightParagraph({
           setLitCount(0);
         }
       },
-      { rootMargin: "-5% 0px -25% 0px", threshold: 0 },
+      { rootMargin: "-5% 0px -15% 0px", threshold: 0.1 },
     );
 
     observer.observe(section);
@@ -179,52 +229,88 @@ function HighlightParagraph({
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafId);
     };
-  }, [containerRef]);
+  }, [containerRef, words.length]);
 
   return (
-    <p ref={textRef} className="mb-9 max-w-md text-[13px] leading-relaxed">
-      {HIGHLIGHT_WORDS.map((word, index) => {
-        const isLit = index < litCount;
-        const isAccent = ACCENT_WORDS.has(word);
+    <div ref={textRef}>
+      <Tag className={className} style={style}>
+        {words.map((word, index) => {
+          const isLit = index < litCount;
+          const isAccent = accentWords.has(word);
 
-        return (
-          <span
-            key={`${word}-${index}`}
-            className="transition-colors duration-300"
-            style={{
-              color: isLit
-                ? isAccent
+          return (
+            <span
+              key={`${word}-${index}`}
+              style={{
+                color: isAccent
                   ? "#1A47FF"
-                  : "#ffffff"
-                : "rgba(255, 255, 255, 0.25)",
-            }}
-          >
-            {word}
-            {index < HIGHLIGHT_WORDS.length - 1 ? " " : ""}
-          </span>
-        );
-      })}
-    </p>
+                  : isLit
+                    ? "#ffffff"
+                    : "rgba(255, 255, 255, 0.25)",
+                fontWeight: isAccent ? 600 : undefined,
+                transition: "color 0.3s ease",
+              }}
+            >
+              {word}
+              {index < words.length - 1 ? " " : ""}
+            </span>
+          );
+        })}
+      </Tag>
+    </div>
   );
 }
 
 export function SectionEnjeux() {
   const enjeuxSectionRef = useRef<HTMLElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [statsActive, setStatsActive] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current || !imgRef.current) return;
+      if (!sectionRef.current || !videoRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const scrolled = -rect.top;
-      imgRef.current.style.transform = `translateY(${scrolled * 0.35}px)`;
+      videoRef.current.style.transform = `translateY(${scrolled * 0.35}px)`;
     };
     const isMobile = window.innerWidth < 768;
     if (isMobile) return;
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (!Number.isFinite(video.duration)) return;
+
+      const remaining = video.duration - video.currentTime;
+      if (remaining < 0.8) {
+        video.style.opacity = String(remaining / 0.8);
+      } else if (video.currentTime < 0.8) {
+        video.style.opacity = String(video.currentTime / 0.8);
+      } else {
+        video.style.opacity = "1";
+      }
+    };
+
+    const startTimeUpdate = () => {
+      video.addEventListener("timeupdate", handleTimeUpdate);
+    };
+
+    if (Number.isFinite(video.duration)) {
+      startTimeUpdate();
+    } else {
+      video.addEventListener("loadedmetadata", startTimeUpdate, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("loadedmetadata", startTimeUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -242,48 +328,178 @@ export function SectionEnjeux() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = enjeuxSectionRef.current;
+    if (!video || !section) return;
+    video.pause();
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top bottom",
+      end: "bottom top",
+      onUpdate: (self) => {
+        if (video.duration && !isNaN(video.duration)) {
+          video.currentTime = video.duration * self.progress;
+        }
+      },
+    });
+    return () => trigger.kill();
+  }, []);
+
   return (
     <section id="section-2" ref={enjeuxSectionRef} className="w-full">
-      <div className="bg-[#0A0A14] pt-0 pb-16 md:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+      <div
+        className="pt-24 pb-32 md:pt-32 md:pb-48"
+        style={{ background: "#060912" }}
+      >
+        <div className="grid min-h-[520px] grid-cols-1 lg:grid-cols-[1fr_auto_1fr]">
+          {/* Colonne gauche — texte + stats */}
           <div
-            ref={sectionRef}
-            className="relative min-h-[460px] w-full overflow-hidden rounded-md lg:ml-0 lg:w-full lg:rounded-r-md"
+            className="flex flex-col justify-center"
+            style={{ padding: "40px 28px" }}
           >
-            <img
-              ref={imgRef}
-              src="/images/alpiniste2.jpg"
-              alt="Alpiniste — sécuriser la trajectoire de croissance"
-              className="absolute inset-0 w-full object-cover"
+            <p
+              className="mb-4 uppercase"
               style={{
-                objectPosition: "center 30%",
-                height: "115%",
-                willChange: "transform",
+                fontSize: "10px",
+                color: "rgba(255,255,255,0.25)",
+                letterSpacing: "0.12em",
+              }}
+            >
+              CONTEXTE · FRANCE 2026
+            </p>
+
+            <HighlightParagraph
+              containerRef={enjeuxSectionRef}
+              as="h2"
+              words={TITLE_WORDS}
+              accentWords={new Set()}
+              className="mb-4 max-w-md leading-snug"
+              style={{
+                fontSize: "clamp(16px, 2vw, 20px)",
+                fontWeight: 600,
               }}
             />
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0A0A14]/60"
-              aria-hidden
-            />
-          </div>
-
-          <div className="flex flex-col justify-center px-8 lg:px-16">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-white/40">
-              Contexte · France 2026
-            </p>
-            <h2 className="mb-6 text-[22px] font-medium leading-snug text-white">
-              Toute entreprise est aujourd&apos;hui
-              <br />
-              exposée aux risques juridiques
-              <br />
-              du numérique.
-            </h2>
 
             <HighlightParagraph containerRef={enjeuxSectionRef} />
+
+            <hr style={SEPARATOR_STYLE} />
 
             {STATS.map((stat) => (
               <AnimatedStat key={stat.source} active={statsActive} stat={stat} />
             ))}
+          </div>
+
+          {/* Colonne centre — vidéo (sectionRef pour parallax) */}
+          <div
+            ref={sectionRef}
+            className="relative min-h-[320px] w-full overflow-hidden lg:min-h-[520px] lg:w-[220px]"
+            style={{
+              borderLeft: COLUMN_BORDER,
+              borderRight: COLUMN_BORDER,
+            }}
+          >
+            <div className="relative h-full min-h-[320px] w-full overflow-hidden lg:min-h-[520px]">
+              <video
+                ref={videoRef}
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full"
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center bottom",
+                  transform: "scale(1.3) translateY(-15%)",
+                  transition: "opacity 0.1s",
+                }}
+                src="/videos/alpiniste.mp4"
+                aria-hidden="true"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-10"
+              style={{
+                background:
+                  "linear-gradient(to right, #060912, transparent)",
+              }}
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-10"
+              style={{
+                background:
+                  "linear-gradient(to left, #060912, transparent)",
+              }}
+              aria-hidden
+            />
+          </div>
+
+          {/* Colonne droite — citations */}
+          <div
+            className="flex flex-col justify-center"
+            style={{ padding: "40px 28px" }}
+          >
+            <blockquote
+              className="pl-4 italic leading-relaxed"
+              style={{
+                borderLeft: "2px solid #1A47FF",
+                fontSize: "13px",
+                color: "rgba(255,255,255,0.65)",
+              }}
+            >
+              « La menace cyber est une réalité du quotidien qui nous impose
+              d&apos;intensifier nos efforts. »
+            </blockquote>
+            <p
+              className="mt-3 pl-4 font-mono"
+              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
+            >
+              ANSSI — Rapport d&apos;activité 2025
+            </p>
+
+            <hr style={SEPARATOR_STYLE} />
+
+            <blockquote
+              className="pl-4 italic leading-relaxed"
+              style={{
+                borderLeft: "1px solid rgba(255,255,255,0.07)",
+                fontSize: "11px",
+                color: "rgba(255,255,255,0.32)",
+              }}
+            >
+              « En 2025, le volume d&apos;attaques confirme une pression cyber
+              durable et structurelle. »
+            </blockquote>
+            <p
+              className="mt-3 pl-4 font-mono"
+              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
+            >
+              Ministère de l&apos;Intérieur — 2026
+            </p>
+
+            <hr style={SEPARATOR_STYLE} />
+
+            <blockquote
+              className="pl-4 italic leading-relaxed"
+              style={{
+                borderLeft: "1px solid rgba(255,255,255,0.07)",
+                fontSize: "11px",
+                color: "rgba(255,255,255,0.32)",
+              }}
+            >
+              « 6 entreprises sur 10 ne savent pas évaluer les conséquences
+              d&apos;une cyberattaque. »
+            </blockquote>
+            <p
+              className="mt-3 pl-4 font-mono"
+              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
+            >
+              Cybermalveillance.gouv.fr — 2025
+            </p>
+
+            <hr style={SEPARATOR_STYLE} />
+
+            <AnimatedStat active={statsActive} stat={ATTACK_INCREASE_STAT} />
           </div>
         </div>
       </div>

@@ -9,8 +9,8 @@ import { KeyboardArrowDown } from "relume-icons";
 type DropdownKey = "domaines" | "cabinet";
 
 const DOMAINES_LINKS = [
-  { label: "Cybersécurité & NIS 2", href: "/competences/cybersecurite" },
-  { label: "RGPD & Données", href: "/competences/rgpd" },
+  { label: "Cybersécurité & NIS 2", href: "/nos-domaines/cybersecurite" },
+  { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/competences/ia" },
   { label: "Contrats tech & Économie numérique", href: "/competences/contrats" },
   { label: "Contentieux informatique", href: "/competences/contentieux" },
@@ -72,8 +72,8 @@ const useRelume = () => {
 function LazLogo() {
   return (
     <a href="#" className="laz-logo">
-      <span className="laz-logo-name">
-        LAZARÈGUE<span> AVOCATS</span>
+      <span style={{ fontWeight: 700, letterSpacing: "0.05em", fontSize: "14px" }}>
+        LAZARÈGUE <span style={{ color: "#1A47FF" }}>AVOCATS</span>
       </span>
     </a>
   );

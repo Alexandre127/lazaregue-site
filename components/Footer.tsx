@@ -312,9 +312,32 @@ export function Footer() {
         </div>
 
         <div className="relative overflow-hidden border-t border-white/[0.07] px-4 py-5 md:px-8 lg:px-12">
+          <style>{`
+            @keyframes textShimmer {
+              0% {
+                background-position: 100% 0;
+              }
+              100% {
+                background-position: -100% 0;
+              }
+            }
+          `}</style>
           <p
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-medium tracking-[0.12em] text-white"
-            style={{ fontSize: "68px", opacity: 0.025 }}
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap"
+            style={{
+              fontSize: "clamp(48px, 8vw, 120px)",
+              fontWeight: 700,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              background:
+                "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.03) 100%)",
+              backgroundSize: "300% 100%",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              animation: "textShimmer 6s ease-in-out infinite",
+              userSelect: "none",
+            }}
             aria-hidden
           >
             LAZARÈGUE AVOCATS

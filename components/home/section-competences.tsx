@@ -193,14 +193,14 @@ const cards: CompetenceCard[] = [
     gridRgb: "26,71,255",
     icon: "shield-lock",
     color: "#4D6FFF",
-    bg: "linear-gradient(135deg,#0d1220,#101830)",
-    title: "Cybersécurité & gestion de crise",
+    bg: "linear-gradient(135deg, #0a0f1e 0%, #0e1530 50%, #0a0f1e 100%)",
+    title: "Cybercrises & incidents numériques",
     phrase:
-      "Gestion des cyberattaques, incidents critiques et violations de données affectant les entreprises.",
+      "Anticiper, gérer et contenir les incidents cyber susceptibles d'interrompre l'activité et d'affecter durablement l'entreprise.",
     tags: [
-      "GESTION DE CYBERATTAQUE",
-      "CONFORMITÉ NIS 2 & DORA",
-      "RESPONSABILITÉ DES DIRIGEANTS",
+      "CYBERSÉCURITÉ & NIS 2",
+      "CYBERCRIMINALITÉ & FRAUDES",
+      "GESTION DE CRISE",
     ],
     tagColor: "rgba(26,71,255,.12)",
     tagText: "#6D8FFF",
@@ -210,14 +210,14 @@ const cards: CompetenceCard[] = [
     gridRgb: "226,75,74",
     icon: "gavel",
     color: "#F09595",
-    bg: "linear-gradient(135deg,#0d1020,#1a0808)",
-    title: "Contentieux technologiques",
+    bg: "linear-gradient(135deg, #1a0808 0%, #1e0c10 50%, #1a0808 100%)",
+    title: "Conflits IT & projets bloqués",
     phrase:
-      "Litiges stratégiques liés aux contrats informatiques, projets IT, infrastructures cloud et responsabilités numériques.",
+      "Résoudre les situations de blocage liées aux projets numériques, aux prestataires technologiques et aux infrastructures critiques.",
     tags: [
-      "ÉCHECS DE PROJETS IT",
-      "LITIGES PRESTATAIRES",
-      "RUPTURES DE CONTRATS",
+      "CONTENTIEUX INFORMATIQUE",
+      "CONTRATS TECH & SAAS",
+      "AUDIT TECHNOLOGIQUE",
     ],
     tagColor: "rgba(226,75,74,.12)",
     tagText: "#F09595",
@@ -227,15 +227,11 @@ const cards: CompetenceCard[] = [
     gridRgb: "29,158,117",
     icon: "robot",
     color: "#5DCAA5",
-    bg: "linear-gradient(135deg,#0d1020,#0d1a14)",
-    title: "IA, données & conformité",
+    bg: "linear-gradient(135deg, #081408 0%, #0c1a10 50%, #081408 100%)",
+    title: "IA, données & risques réglementaires",
     phrase:
-      "Encadrement juridique des systèmes IA, données personnelles et réglementations numériques.",
-    tags: [
-      "GOUVERNANCE IA ACT",
-      "AUDITS RGPD",
-      "VALORISATION DES DONNÉES",
-    ],
+      "Implémenter les usages de l'IA et des données dans une logique de conformité, de sécurité et de maîtrise des risques.",
+    tags: ["IA & AI ACT", "RGPD & DONNÉES", "GOUVERNANCE DES DONNÉES"],
     tagColor: "rgba(29,158,117,.12)",
     tagText: "#5DCAA5",
   },
@@ -244,14 +240,14 @@ const cards: CompetenceCard[] = [
     gridRgb: "212,83,126",
     icon: "message-circle",
     color: "#ED93B1",
-    bg: "linear-gradient(135deg,#0d1020,#1a0d1a)",
-    title: "Plateformes, médias & réputation numérique",
+    bg: "linear-gradient(135deg, #0e0818 0%, #120c1e 50%, #0e0818 100%)",
+    title: "Contenus, plateformes & atteintes à l'image",
     phrase:
-      "Gestion des risques liés aux plateformes, contenus numériques et atteintes réputationnelles sur les réseaux sociaux.",
+      "Protéger les entreprises et leurs dirigeants face aux atteintes réputationnelles, aux plateformes et aux usages abusifs des contenus numériques.",
     tags: [
-      "PARASITISME & DÉNIGREMENT",
-      "RETRAIT DE CONTENUS",
-      "DROIT DE LA CONCURRENCE",
+      "PLATEFORMES & RÉSEAUX SOCIAUX",
+      "GAMING & INDUSTRIE CRÉATIVE",
+      "E-RÉPUTATION & DÉNIGREMENT",
     ],
     tagColor: "rgba(212,83,126,.12)",
     tagText: "#ED93B1",
@@ -303,6 +299,7 @@ function CompetenceCardTile({
         >
           <div
             aria-hidden
+            className="competence-deco-line"
             style={{
               position: "absolute",
               top: "24px",
@@ -310,7 +307,6 @@ function CompetenceCardTile({
               width: "48px",
               height: "2px",
               background: "currentColor",
-              opacity: 0.25,
               borderRadius: "1px",
             }}
           />
@@ -369,6 +365,25 @@ function CompetenceCardTile({
 export default function SectionCompetences() {
   return (
     <section className="relative w-full overflow-hidden bg-[#0A0A14] py-10 md:py-16">
+      <style>{`
+        @keyframes lineBreathe {
+          0%,
+          100% {
+            opacity: 0.25;
+            box-shadow: none;
+          }
+          50% {
+            opacity: 1;
+            box-shadow:
+              0 0 8px currentColor,
+              0 0 16px currentColor;
+          }
+        }
+
+        .competence-deco-line {
+          animation: lineBreathe 3s ease-in-out infinite;
+        }
+      `}</style>
       <div
         className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
         style={{

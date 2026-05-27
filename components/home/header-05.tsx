@@ -12,6 +12,15 @@ export function Header5() {
   const [ctaOpen, setCtaOpen] = useState(false);
   return (
     <section className="laz-hero !pt-6" id="hero">
+      <style>{`
+        #hero .laz-btn-arrow {
+          transition: transform 0.3s ease;
+        }
+
+        #hero .laz-btn-primary:hover .laz-btn-arrow {
+          transform: translateX(3px);
+        }
+      `}</style>
       <div className="laz-hero-left overflow-visible">
         <div className="laz-hero-copy overflow-visible -mt-[70px]">
           <HeroReveal delay={0}>
@@ -31,10 +40,11 @@ export function Header5() {
           <HeroReveal delay={60}>
             <h2 className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px]">
               <span className="font-medium text-white/85">
-                Conseil juridique et défense
-              </span>{" "}
+                Conseil juridique et défense des entreprises
+                <br />
+              </span>
               <span className="text-white/55">
-                des entreprises en droit du numérique et des technologies.
+                en droit du numérique et des technologies.
               </span>
             </h2>
           </HeroReveal>
