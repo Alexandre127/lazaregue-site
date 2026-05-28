@@ -282,9 +282,7 @@ export function SectionCas() {
         </p>
 
         <h2 className="mb-2 text-[22px] font-medium leading-snug text-[#0A0F2E]">
-          Ce que nous faisons,
-          <br />
-          dans la pratique.
+          Le droit du numérique en action
         </h2>
 
         <p className="mb-7 text-[13px] text-[#8888A0]">

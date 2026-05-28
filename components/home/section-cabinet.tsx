@@ -71,24 +71,13 @@ export function SectionCabinet() {
           marginTop: "12px",
         }}
       >
-        Des avocats qui comprennent le numérique.
-      </h2>
-
-      <p
-        style={{
-          fontSize: "14px",
-          color: "rgba(255,255,255,0.45)",
-          maxWidth: "480px",
-          margin: "12px auto 0",
-        }}
-      >
-        Juristes et experts techniques croisent leurs expertises sur les enjeux
+        Avocats et experts techniques croisent leurs compétences sur les enjeux
         du numérique.
-      </p>
+      </h2>
 
       <div
         className="flex justify-center"
-        style={{ marginTop: "32px", gap: "16px" }}
+        style={{ marginTop: "24px", gap: "16px" }}
       >
         <button
           type="button"

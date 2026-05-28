@@ -19,6 +19,7 @@ export default function Home() {
       <div id="section-competences">
         <SectionCompetences />
       </div>
+      <SectionCas />
       <SectionEquipe />
       <SectionContributions />
       <hr
@@ -28,7 +29,6 @@ export default function Home() {
           margin: "0",
         }}
       />
-      <SectionCas />
     </>
   );
 }

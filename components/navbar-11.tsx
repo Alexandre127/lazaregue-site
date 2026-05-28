@@ -11,7 +11,7 @@ type DropdownKey = "domaines" | "cabinet";
 const DOMAINES_LINKS = [
   { label: "Cybersécurité & NIS 2", href: "/nos-domaines/cybersecurite" },
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
-  { label: "Intelligence artificielle & AI Act", href: "/competences/ia" },
+  { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats tech & Économie numérique", href: "/competences/contrats" },
   { label: "Contentieux informatique", href: "/competences/contentieux" },
   { label: "Cybercriminalité & Fraudes", href: "/competences/cybercriminalite" },
