@@ -393,7 +393,7 @@ export default function CybercriminaliteClient() {
 
         <div style={{ width: "42%", position: "relative", overflow: "hidden", flexShrink: 0 }}>
           <video autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}>
-            <source src="/videos/tribunal-exterieur.mp4" type="video/mp4" />
+            <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-exterieur.mp4" type="video/mp4" />
           </video>
           <div
             style={{ position: "absolute", top: 0, left: 0, width: "60%", height: "100%", background: "linear-gradient(to left, transparent, #0a0f2e)" }}
@@ -493,7 +493,7 @@ export default function CybercriminaliteClient() {
       {/* 7. Vidéo intérieure */}
       <div style={{ position: "relative", borderRadius: "var(--border-radius-lg)", overflow: "hidden", margin: 0 }}>
         <video autoPlay muted loop playsInline style={{ width: "100%", height: 300, objectFit: "cover", display: "block", filter: "brightness(.65)" }}>
-          <source src="/videos/tribunal-interieur.mp4" type="video/mp4" />
+          <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-interieur.mp4" type="video/mp4" />
         </video>
         <div
           style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0f2e 0%, transparent 25%, transparent 75%, #0a0f2e 100%)" }}

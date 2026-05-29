@@ -652,7 +652,7 @@ export default function CybersecuriteClient() {
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2" style={INNER}>
           <video width="100%" style={{ borderRadius: "12px" }} controls playsInline>
-            <source src="/videos/nis2-intro.mp4" type="video/mp4" />
+            <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/nis2-intro.mp4" type="video/mp4" />
           </video>
           <div>
             <p

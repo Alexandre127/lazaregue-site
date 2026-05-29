@@ -1436,7 +1436,7 @@ export default function RgpdDonneesPage() {
               controls
               playsInline
             >
-              <source src="/videos/rgpd-intro.mp4" type="video/mp4" />
+              <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
