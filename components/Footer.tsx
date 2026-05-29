@@ -166,7 +166,7 @@ export function Footer() {
     <footer
       id="contact"
       ref={footerRef}
-      className="relative overflow-hidden bg-[#06080f] text-white"
+      className="relative z-20 overflow-hidden bg-[#06080f] pt-12 text-white"
     >
       <canvas
         ref={canvasRef}
@@ -243,6 +243,9 @@ export function Footer() {
               </Link>
               <Link href="/competences/contentieux" className="hover:text-white">
                 Contentieux technologiques
+              </Link>
+              <Link href="/nos-domaines/contrats-informatiques" className="hover:text-white">
+                Contrats IT & responsabilité
               </Link>
               <Link href="/competences/ia" className="hover:text-white">
                 IA, données & conformité

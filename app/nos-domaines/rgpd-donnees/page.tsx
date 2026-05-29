@@ -5,6 +5,25 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 const ACCENT = "#1D9E75";
 const ACCENT_RGB = "29,158,117";
 
+const DARK = {
+  bg: "#0a0f2e",
+  panel: "#11163a",
+  text: "#ffffff",
+  muted: "rgba(255,255,255,0.62)",
+  border: "rgba(255,255,255,0.12)",
+};
+const LIGHT = {
+  bg: "#f8f8f6",
+  panel: "#ffffff",
+  panel2: "#f1f1ee",
+  text: "#1a1a1a",
+  muted: "#4a4a4a",
+  faint: "#6a6a6a",
+  border: "rgba(0,0,0,0.1)",
+};
+const INNER = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
+const SECTION_PAD = "56px 0";
+
 const HERO_STATS = [
   {
     value: 20,
@@ -632,7 +651,7 @@ function LivrablesPreview() {
         <p
           style={{
             fontSize: "10px",
-            color: "rgba(255,255,255,.25)",
+            color: ACCENT,
             letterSpacing: ".12em",
             textTransform: "uppercase",
             marginBottom: "12px",
@@ -644,7 +663,7 @@ function LivrablesPreview() {
           style={{
             fontSize: "16px",
             fontWeight: 600,
-            color: "white",
+            color: LIGHT.text,
             marginBottom: "4px",
             lineHeight: 1.3,
           }}
@@ -653,7 +672,7 @@ function LivrablesPreview() {
           <br />
           Des documents sur mesure.
         </h3>
-        <p style={{ fontSize: "11px", color: "rgba(255,255,255,.3)", marginBottom: "20px" }}>
+        <p style={{ fontSize: "11px", color: LIGHT.muted, marginBottom: "20px" }}>
           Ce que LegalStart ne peut pas faire.
         </p>
         {items.map((item, i) => (
@@ -665,14 +684,14 @@ function LivrablesPreview() {
               alignItems: "flex-start",
               gap: "12px",
               padding: "10px 0",
-              borderBottom: i < 5 ? ".5px solid rgba(255,255,255,.05)" : "none",
+              borderBottom: i < 5 ? `.5px solid ${LIGHT.border}` : "none",
               cursor: "pointer",
             }}
           >
             <span
               style={{
                 fontSize: "11px",
-                color: cur === i ? "#1D9E75" : "rgba(255,255,255,.2)",
+                color: cur === i ? ACCENT : LIGHT.faint,
                 fontFamily: "monospace",
                 width: "20px",
                 flexShrink: 0,
@@ -685,7 +704,7 @@ function LivrablesPreview() {
               <div
                 style={{
                   fontSize: "12px",
-                  color: cur === i ? "white" : "rgba(255,255,255,.4)",
+                  color: cur === i ? LIGHT.text : LIGHT.muted,
                   fontWeight: 500,
                   lineHeight: 1.4,
                 }}
@@ -695,7 +714,7 @@ function LivrablesPreview() {
               <div
                 style={{
                   fontSize: "10px",
-                  color: cur === i ? "rgba(255,255,255,.35)" : "rgba(255,255,255,.18)",
+                  color: cur === i ? LIGHT.muted : LIGHT.faint,
                   lineHeight: 1.4,
                   marginTop: "2px",
                 }}
@@ -720,7 +739,7 @@ function LivrablesPreview() {
         <div
           style={{
             height: "2px",
-            background: "rgba(255,255,255,.05)",
+            background: LIGHT.border,
             marginTop: "14px",
             borderRadius: "1px",
             overflow: "hidden",
@@ -897,43 +916,6 @@ const SEPARATOR = "0.5px solid rgba(255,255,255,0.06)";
 
 type HeroStat = (typeof HERO_STATS)[number];
 
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function useCountUp(active: boolean, target: number, duration = 2000) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if (!active) {
-      if (isMounted) setValue(0);
-      return () => {
-        isMounted = false;
-      };
-    }
-
-    const start = performance.now();
-    let frameId = 0;
-
-    const tick = (now: number) => {
-      if (!isMounted) return;
-      const t = Math.min((now - start) / duration, 1);
-      setValue(Math.round(target * easeOutCubic(t)));
-      if (t < 1) frameId = requestAnimationFrame(tick);
-    };
-
-    frameId = requestAnimationFrame(tick);
-    return () => {
-      isMounted = false;
-      cancelAnimationFrame(frameId);
-    };
-  }, [active, target, duration]);
-
-  return value;
-}
-
 function FadeUp({
   children,
   delay = 0,
@@ -1004,10 +986,10 @@ function ScrollRevealCard({
             : "translateY(0)"
           : "translateY(20px)",
         transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms, border-color 0.3s ease, box-shadow 0.3s ease`,
-        border: `0.5px solid ${hovered ? hoverColor : "rgba(255,255,255,0.08)"}`,
-        boxShadow: hovered ? `0 12px 32px ${hoverColor}22` : "none",
+        border: `1px solid ${hovered ? hoverColor : LIGHT.border}`,
+        boxShadow: hovered ? `0 12px 32px ${hoverColor}22` : "0 1px 2px rgba(0,0,0,0.04)",
         borderRadius: "8px",
-        background: "#0a0f1e",
+        background: LIGHT.panel,
         padding: "24px",
       }}
     >
@@ -1016,11 +998,12 @@ function ScrollRevealCard({
   );
 }
 
-function StatRow({ stat, active }: { stat: HeroStat; active: boolean }) {
+function StatRow({ stat }: { stat: HeroStat }) {
   const [hovered, setHovered] = useState(false);
-  const numericValue =
-    "value" in stat && stat.value !== undefined ? stat.value : 0;
-  const count = useCountUp(active, "value" in stat ? numericValue : 0);
+  const value =
+    "display" in stat && stat.display
+      ? stat.display
+      : `${"value" in stat ? stat.value : 0}${"suffix" in stat ? stat.suffix : ""}`;
 
   return (
     <div
@@ -1045,9 +1028,7 @@ function StatRow({ stat, active }: { stat: HeroStat; active: boolean }) {
           transition: "text-shadow 0.3s ease",
         }}
       >
-        {"display" in stat && stat.display
-          ? stat.display
-          : `${count}${"suffix" in stat ? stat.suffix : ""}`}
+        {value}
       </p>
       <p
         style={{
@@ -1126,7 +1107,7 @@ function FaqAccordion() {
           <div
             key={item.q}
             style={{
-              borderBottom: SEPARATOR,
+              borderBottom: `1px solid ${LIGHT.border}`,
               padding: "20px 0",
             }}
           >
@@ -1149,8 +1130,8 @@ function FaqAccordion() {
               <span
                 style={{
                   fontSize: "14px",
-                  fontWeight: 500,
-                  color: "white",
+                  fontWeight: 600,
+                  color: LIGHT.text,
                   lineHeight: 1.45,
                 }}
               >
@@ -1172,7 +1153,7 @@ function FaqAccordion() {
               <p
                 style={{
                   fontSize: "13px",
-                  color: "rgba(255,255,255,0.45)",
+                  color: LIGHT.muted,
                   lineHeight: 1.75,
                   paddingTop: "12px",
                   margin: 0,
@@ -1206,34 +1187,9 @@ function PulsingDot({ color }: { color: string }) {
 }
 
 export default function RgpdDonneesPage() {
-  const statsRef = useRef<HTMLDivElement>(null);
   const terrainMountedRef = useRef(true);
-  const [statsActive, setStatsActive] = useState(false);
   const [ctaHover, setCtaHover] = useState(false);
   const [openTerrainCard, setOpenTerrainCard] = useState<number | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const el = statsRef.current;
-    if (!el) {
-      return () => {
-        isMounted = false;
-      };
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (isMounted) setStatsActive(entry.isIntersecting);
-      },
-      { threshold: 0.2 },
-    );
-
-    observer.observe(el);
-    return () => {
-      isMounted = false;
-      observer.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -1247,8 +1203,8 @@ export default function RgpdDonneesPage() {
   return (
     <main
       style={{
-        background: "#060912",
-        color: "white",
+        background: LIGHT.bg,
+        color: LIGHT.text,
         fontFamily: "Inter, system-ui, sans-serif",
         minHeight: "100vh",
       }}
@@ -1287,242 +1243,291 @@ export default function RgpdDonneesPage() {
       `}</style>
 
       {/* HERO */}
-      <section
-        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 overflow-hidden lg:grid-cols-[1.2fr_1fr]"
-        style={{ padding: "64px 48px" }}
-      >
+      <section style={{ background: DARK.bg, position: "relative", overflow: "hidden" }}>
         <div
-          className="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full"
-          style={{
-            background: `radial-gradient(circle, rgba(${ACCENT_RGB},0.25) 0%, transparent 70%)`,
-            animation: "glowMove 8s ease-in-out infinite alternate",
-          }}
-          aria-hidden
-        />
+          className="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.2fr_1fr]"
+          style={{ ...INNER, padding: "64px 24px" }}
+        >
+          <div
+            className="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full"
+            style={{
+              background: `radial-gradient(circle, rgba(${ACCENT_RGB},0.25) 0%, transparent 70%)`,
+              animation: "glowMove 8s ease-in-out infinite alternate",
+            }}
+            aria-hidden
+          />
 
-        <div className="relative z-10">
-          <FadeUp delay={0}>
-            <p
-              style={{
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.35)",
-                letterSpacing: "0.08em",
-                marginBottom: "16px",
-              }}
-            >
-              Nos domaines ·{" "}
-              <span style={{ color: ACCENT }}>RGPD & Données</span>
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <h1
-              style={{
-                fontSize: "clamp(32px, 4vw, 48px)",
-                fontWeight: 700,
-                marginBottom: "20px",
-                lineHeight: 1.15,
-              }}
-            >
-              RGPD & Données
-            </h1>
-          </FadeUp>
-          <FadeUp delay={0.2}>
-            <p
-              style={{
-                fontSize: "15px",
-                color: "rgba(255,255,255,0.55)",
-                lineHeight: 1.75,
-                maxWidth: "520px",
-                marginBottom: "20px",
-              }}
-            >
-              Le RGPD n&apos;est pas qu&apos;une contrainte administrative.
-              Bien maîtrisé, il devient un levier de confiance, un critère de
-              sélection dans vos chaînes de valeur, et un atout dans vos
-              opérations de financement.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.3}>
-            <p
-              style={{
-                fontSize: "14px",
-                fontStyle: "italic",
-                color: "rgba(255,255,255,0.5)",
-                borderLeft: `2px solid ${ACCENT}`,
-                paddingLeft: "16px",
-                maxWidth: "480px",
-                marginBottom: "28px",
-                lineHeight: 1.7,
-              }}
-            >
-              Nous aidons les entreprises à garder le contrôle de leurs
-              données, de leurs risques et de leur crédibilité.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.4}>
-            <div className="mb-6 flex flex-wrap gap-3">
-              <a
-                href="/contact"
+          <div className="relative z-10">
+            <FadeUp delay={0}>
+              <p
                 style={{
-                  background: ACCENT,
-                  color: "white",
-                  padding: "14px 28px",
-                  borderRadius: "4px",
-                  fontSize: "12px",
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.35)",
+                  letterSpacing: "0.08em",
+                  marginBottom: "16px",
                 }}
               >
-                Nous contacter →
-              </a>
-              <a
-                href="/#cas"
+                Nos domaines ·{" "}
+                <span style={{ color: ACCENT }}>RGPD & Données</span>
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.1}>
+              <h1
                 style={{
-                  background: "transparent",
-                  color: "rgba(255,255,255,0.5)",
-                  padding: "14px 24px",
-                  borderRadius: "4px",
-                  fontSize: "12px",
-                  textDecoration: "none",
-                  border: "0.5px solid rgba(255,255,255,0.15)",
+                  fontSize: "36px",
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  marginBottom: "12px",
+                  lineHeight: 1.2,
                 }}
               >
-                Voir nos cas clients
-              </a>
-            </div>
-          </FadeUp>
-          <FadeUp delay={0.5}>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "RGPD",
-                "Accountability",
-                "Privacy by Design",
-                "DPO",
-                "Due diligence",
-                "M&A",
-              ].map((tag) => (
-                <span
-                  key={tag}
+                RGPD & Données
+              </h1>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 400,
+                  color: ACCENT,
+                  lineHeight: 1.4,
+                  marginBottom: "20px",
+                  maxWidth: "520px",
+                }}
+              >
+                Une conformité qui se prouve, et qui devient un levier de
+                confiance.
+              </h2>
+            </FadeUp>
+            <FadeUp delay={0.3}>
+              <p
+                style={{
+                  fontSize: "15px",
+                  color: "rgba(255,255,255,0.6)",
+                  lineHeight: 1.7,
+                  maxWidth: "500px",
+                  marginBottom: "28px",
+                }}
+              >
+                Bien maîtrisé, le RGPD devient un critère de sélection dans vos
+                chaînes de valeur et un atout dans vos opérations de financement.
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.4}>
+              <div className="mb-6 flex flex-wrap gap-3">
+                <a
+                  href="/contact"
                   style={{
-                    fontSize: "10px",
-                    color: "rgba(255,255,255,0.35)",
-                    border: "0.5px solid rgba(255,255,255,0.1)",
-                    padding: "4px 10px",
-                    borderRadius: "3px",
+                    background: ACCENT,
+                    color: "white",
+                    padding: "14px 28px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    textDecoration: "none",
+                    textTransform: "uppercase",
                     letterSpacing: "0.06em",
                   }}
                 >
-                  {tag}
-                </span>
+                  Nous contacter →
+                </a>
+                <a
+                  href="/#cas"
+                  style={{
+                    background: "transparent",
+                    color: "rgba(255,255,255,0.5)",
+                    padding: "14px 24px",
+                    borderRadius: "4px",
+                    fontSize: "12px",
+                    textDecoration: "none",
+                    border: "0.5px solid rgba(255,255,255,0.15)",
+                  }}
+                >
+                  Voir nos cas clients
+                </a>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.5}>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "RGPD",
+                  "Accountability",
+                  "Privacy by Design",
+                  "DPO",
+                  "Due diligence",
+                  "M&A",
+                ].map((tag) => (
+                  <span
+                    key={tag}
+                    style={{
+                      fontSize: "10px",
+                      color: "rgba(255,255,255,0.35)",
+                      border: "0.5px solid rgba(255,255,255,0.1)",
+                      padding: "4px 10px",
+                      borderRadius: "3px",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </FadeUp>
+          </div>
+
+          <FadeUp delay={0.2} className="relative z-10">
+            <div
+              style={{
+                background: "#11163a",
+                border: `0.5px solid rgba(${ACCENT_RGB},0.15)`,
+                borderRadius: "8px",
+                overflow: "hidden",
+              }}
+            >
+              {HERO_STATS.map((stat) => (
+                <StatRow key={stat.label} stat={stat} />
               ))}
             </div>
           </FadeUp>
         </div>
-
-        <FadeUp delay={0.2} className="relative z-10">
-          <div
-            ref={statsRef}
-            style={{
-              background: "#0a0f1e",
-              border: `0.5px solid rgba(${ACCENT_RGB},0.15)`,
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            {HERO_STATS.map((stat) => (
-              <StatRow key={stat.label} stat={stat} active={statsActive} />
-            ))}
-          </div>
-        </FadeUp>
       </section>
 
-      <hr style={{ border: "none", borderTop: SEPARATOR, margin: "8px 0" }} />
-
-      {/* SCÉNARIOS */}
-      <section style={{ padding: "64px 48px" }} className="mx-auto max-w-6xl">
-        <h2
-          style={{
-            fontSize: "clamp(20px, 2.5vw, 28px)",
-            fontWeight: 600,
-            maxWidth: "720px",
-            marginBottom: "12px",
-            lineHeight: 1.35,
-          }}
-        >
-          Un fichier non conforme peut être déclaré illicite. Une due diligence
-          peut tout révéler.
-        </h2>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "rgba(255,255,255,0.4)",
-            maxWidth: "640px",
-            marginBottom: "32px",
-            lineHeight: 1.7,
-          }}
-        >
-          Les situations où le RGPD crée un risque concret — que la plupart des
-          dirigeants découvrent trop tard.
-        </p>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {SCENARIOS.map((card, index) => (
-            <ScrollRevealCard
-              key={card.label}
-              delay={index * 130}
-              hoverColor={card.color}
-            >
+      {/* BLOC CITATION + VIDÉO */}
+      <div style={{ background: LIGHT.bg }}>
+        <div style={{ ...INNER, padding: "20px 24px 0" }}>
+          <div
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center"
+            style={{
+              padding: "20px",
+              background: LIGHT.panel2,
+              border: `1px solid ${LIGHT.border}`,
+              borderRadius: "12px",
+            }}
+          >
+            <div>
               <p
                 style={{
-                  fontSize: "10px",
-                  color: card.color,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  marginBottom: "12px",
-                }}
-              >
-                {card.label}
-              </p>
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  color: "white",
-                  marginBottom: "12px",
-                  lineHeight: 1.4,
-                }}
-              >
-                {card.title}
-              </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "rgba(255,255,255,0.4)",
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  fontStyle: "italic",
+                  fontSize: "15px",
+                  color: LIGHT.text,
                   lineHeight: 1.7,
                   margin: 0,
                 }}
               >
-                {card.text}
+                « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
+                système de preuve. Les entreprises qui le maîtrisent vraiment ne
+                subissent pas les contrôles. Elles les anticipent. »
               </p>
-            </ScrollRevealCard>
-          ))}
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: LIGHT.muted,
+                  marginTop: "12px",
+                  marginBottom: 0,
+                }}
+              >
+                — Me Sarah Hinderer · Données personnelles & intelligence
+                artificielle
+              </p>
+            </div>
+            <video
+              width="100%"
+              style={{ borderRadius: "12px" }}
+              controls
+              playsInline
+            >
+              <source src="/videos/rgpd-intro.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      {/* SCÉNARIOS */}
+      <section style={{ background: LIGHT.bg }}>
+        <div style={{ ...INNER, padding: SECTION_PAD }}>
+          <h2
+            style={{
+              fontSize: "clamp(20px, 2.5vw, 28px)",
+              fontWeight: 600,
+              color: LIGHT.text,
+              maxWidth: "720px",
+              marginBottom: "12px",
+              lineHeight: 1.35,
+            }}
+          >
+            Un fichier non conforme peut être déclaré illicite. Une due diligence
+            peut tout révéler.
+          </h2>
+          <p
+            style={{
+              fontSize: "14px",
+              color: LIGHT.muted,
+              maxWidth: "640px",
+              marginBottom: "32px",
+              lineHeight: 1.7,
+            }}
+          >
+            Les situations où le RGPD crée un risque concret — que la plupart des
+            dirigeants découvrent trop tard.
+          </p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {SCENARIOS.map((card, index) => (
+              <ScrollRevealCard
+                key={card.label}
+                delay={index * 130}
+                hoverColor={card.color}
+              >
+                <p
+                  style={{
+                    fontSize: "10px",
+                    color: card.color,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    marginBottom: "12px",
+                  }}
+                >
+                  {card.label}
+                </p>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: LIGHT.text,
+                    marginBottom: "12px",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {card.title}
+                </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: LIGHT.muted,
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}
+                >
+                  {card.text}
+                </p>
+              </ScrollRevealCard>
+            ))}
+          </div>
         </div>
       </section>
 
-      <hr style={{ border: "none", borderTop: SEPARATOR, margin: "8px 0" }} />
-
       {/* TIMELINE */}
       <section
-        className="mx-auto max-w-6xl"
+        className="mx-auto"
         style={{
-          padding: "64px 48px",
-          borderTop: ".5px solid rgba(255,255,255,.06)",
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
         }}
       >
         <div
           style={{
             fontSize: "10px",
-            color: "rgba(255,255,255,.25)",
+            color: ACCENT,
             letterSpacing: ".12em",
             textTransform: "uppercase",
             marginBottom: "10px",
@@ -1534,7 +1539,7 @@ export default function RgpdDonneesPage() {
           style={{
             fontSize: "20px",
             fontWeight: 600,
-            color: "white",
+            color: LIGHT.text,
             marginBottom: "40px",
             lineHeight: 1.25,
           }}
@@ -1558,7 +1563,7 @@ export default function RgpdDonneesPage() {
                 width: "32px",
                 height: "32px",
                 borderRadius: "50%",
-                background: "#0e1628",
+                background: LIGHT.panel,
                 border: "1px solid rgba(29,158,117,.4)",
                 display: "flex",
                 alignItems: "center",
@@ -1585,7 +1590,7 @@ export default function RgpdDonneesPage() {
                 width: "32px",
                 height: "32px",
                 borderRadius: "50%",
-                background: "#0e1628",
+                background: LIGHT.panel,
                 border: "1px solid rgba(29,158,117,.4)",
                 display: "flex",
                 alignItems: "center",
@@ -1612,7 +1617,7 @@ export default function RgpdDonneesPage() {
                 width: "32px",
                 height: "32px",
                 borderRadius: "50%",
-                background: "#0e1628",
+                background: LIGHT.panel,
                 border: "1px solid rgba(29,158,117,.4)",
                 display: "flex",
                 alignItems: "center",
@@ -1639,7 +1644,7 @@ export default function RgpdDonneesPage() {
                 width: "32px",
                 height: "32px",
                 borderRadius: "50%",
-                background: "#0e1628",
+                background: LIGHT.panel,
                 border: "1px solid rgba(29,158,117,.4)",
                 display: "flex",
                 alignItems: "center",
@@ -1672,7 +1677,7 @@ export default function RgpdDonneesPage() {
                 style={{
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "white",
+                  color: LIGHT.text,
                   marginBottom: "6px",
                   lineHeight: 1.35,
                 }}
@@ -1682,7 +1687,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "11px",
-                  color: "rgba(255,255,255,.35)",
+                  color: LIGHT.muted,
                   lineHeight: 1.6,
                   marginBottom: "6px",
                 }}
@@ -1692,7 +1697,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "10px",
-                  color: "rgba(255,255,255,.2)",
+                  color: LIGHT.faint,
                   lineHeight: 1.6,
                 }}
               >
@@ -1705,7 +1710,7 @@ export default function RgpdDonneesPage() {
                 style={{
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "white",
+                  color: LIGHT.text,
                   marginBottom: "6px",
                   lineHeight: 1.35,
                 }}
@@ -1715,7 +1720,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "11px",
-                  color: "rgba(255,255,255,.35)",
+                  color: LIGHT.muted,
                   lineHeight: 1.6,
                   marginBottom: "6px",
                 }}
@@ -1725,7 +1730,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "10px",
-                  color: "rgba(255,255,255,.2)",
+                  color: LIGHT.faint,
                   lineHeight: 1.6,
                 }}
               >
@@ -1737,7 +1742,7 @@ export default function RgpdDonneesPage() {
                 style={{
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "white",
+                  color: LIGHT.text,
                   marginBottom: "6px",
                   lineHeight: 1.35,
                 }}
@@ -1747,7 +1752,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "11px",
-                  color: "rgba(255,255,255,.35)",
+                  color: LIGHT.muted,
                   lineHeight: 1.6,
                   marginBottom: "6px",
                 }}
@@ -1757,7 +1762,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "10px",
-                  color: "rgba(255,255,255,.2)",
+                  color: LIGHT.faint,
                   lineHeight: 1.6,
                 }}
               >
@@ -1770,7 +1775,7 @@ export default function RgpdDonneesPage() {
                 style={{
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "white",
+                  color: LIGHT.text,
                   marginBottom: "6px",
                   lineHeight: 1.35,
                 }}
@@ -1780,7 +1785,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "11px",
-                  color: "rgba(255,255,255,.35)",
+                  color: LIGHT.muted,
                   lineHeight: 1.6,
                   marginBottom: "6px",
                 }}
@@ -1790,7 +1795,7 @@ export default function RgpdDonneesPage() {
               <div
                 style={{
                   fontSize: "10px",
-                  color: "rgba(255,255,255,.2)",
+                  color: LIGHT.faint,
                   lineHeight: 1.6,
                 }}
               >
@@ -1801,117 +1806,33 @@ export default function RgpdDonneesPage() {
           </div>
         </div>
 
-        <div
-          aria-hidden="true"
-          style={{ height: ".5px", background: "rgba(255,255,255,.06)", margin: "40px 0" }}
-        />
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: "48px",
-            alignItems: "center",
-          }}
-        >
-          <div>
-            <blockquote
-              style={{
-                borderLeft: "2px solid #1D9E75",
-                paddingLeft: "20px",
-                fontSize: "15px",
-                fontStyle: "italic",
-                color: "rgba(255,255,255,.7)",
-                lineHeight: 1.75,
-                margin: 0,
-              }}
-            >
-              « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un système
-              de preuve. Les entreprises qui le maîtrisent vraiment ne subissent pas
-              les contrôles. Elles les anticipent. »
-            </blockquote>
-            <div
-              style={{
-                fontSize: "11px",
-                color: "rgba(255,255,255,.3)",
-                marginTop: "12px",
-                paddingLeft: "20px",
-              }}
-            >
-              — Me Sarah Hinderer · Données personnelles & intelligence artificielle
-            </div>
-          </div>
-
-          <div
-            style={{
-              background: "#0a0f1e",
-              border: ".5px solid rgba(29,158,117,.2)",
-              borderRadius: "10px",
-              overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              minWidth: "280px",
-            }}
-          >
-            <img
-              src="/images/sarah-hinderer.png"
-              alt="Me Sarah Hinderer"
-              width={120}
-              height={140}
-              style={{
-                width: "120px",
-                height: "140px",
-                objectFit: "cover",
-                objectPosition: "center top",
-                flexShrink: 0,
-              }}
-            />
-            <div style={{ padding: "16px 18px" }}>
-              <div style={{ fontSize: "14px", fontWeight: 600, color: "white", lineHeight: 1.3 }}>
-                Me Sarah Hinderer
-              </div>
-              <div style={{ fontSize: "11px", color: "rgba(255,255,255,.35)", marginTop: "3px" }}>
-                Données personnelles & IA
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "10px" }}>
-                <span
-                  aria-hidden="true"
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    background: "#5dc9a0",
-                    animation: "pulse 2.5s infinite",
-                    boxShadow: "0 0 0 0 rgba(29, 158, 117, 0.4)",
-                  }}
-                />
-                <span style={{ color: "#5dc9a0", fontSize: "10px" }}>
-                  Disponible aujourd&apos;hui
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section
         style={{
-          padding: "64px 48px",
-          borderTop: ".5px solid rgba(255,255,255,.06)",
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
         }}
-        className="mx-auto max-w-6xl"
+        className="mx-auto"
       >
         <LivrablesPreview />
       </section>
 
-      <hr style={{ border: "none", borderTop: SEPARATOR, margin: "8px 0" }} />
-
       {/* INTERVENTIONS */}
-      <section style={{ padding: "64px 48px" }} className="mx-auto max-w-6xl">
+      <section
+        style={{
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
+        }}
+        className="mx-auto"
+      >
         <h2
           style={{
             fontSize: "18px",
             fontWeight: 600,
+            color: LIGHT.text,
             marginBottom: "32px",
           }}
         >
@@ -1923,8 +1844,8 @@ export default function RgpdDonneesPage() {
               key={item.num}
               style={{
                 padding: "28px 0",
-                borderTop: index === 0 ? SEPARATOR : undefined,
-                borderBottom: SEPARATOR,
+                borderTop: index === 0 ? `1px solid ${LIGHT.border}` : undefined,
+                borderBottom: `1px solid ${LIGHT.border}`,
               }}
             >
               <div className="flex flex-wrap items-start gap-4">
@@ -1943,7 +1864,7 @@ export default function RgpdDonneesPage() {
                     style={{
                       fontSize: "15px",
                       fontWeight: 600,
-                      color: "white",
+                      color: LIGHT.text,
                       marginBottom: "12px",
                     }}
                   >
@@ -1952,7 +1873,7 @@ export default function RgpdDonneesPage() {
                   <p
                     style={{
                       fontSize: "13px",
-                      color: "rgba(255,255,255,0.45)",
+                      color: LIGHT.muted,
                       lineHeight: 1.75,
                       marginBottom: "14px",
                       maxWidth: "720px",
@@ -1964,7 +1885,7 @@ export default function RgpdDonneesPage() {
                     <p
                       style={{
                         fontSize: "10px",
-                        color: "rgba(255,255,255,0.2)",
+                        color: LIGHT.faint,
                         fontFamily: "monospace",
                         marginTop: "4px",
                         marginBottom: "14px",
@@ -1980,8 +1901,8 @@ export default function RgpdDonneesPage() {
                         key={tag}
                         style={{
                           fontSize: "10px",
-                          color: "rgba(255,255,255,0.35)",
-                          background: `rgba(${ACCENT_RGB},0.08)`,
+                          color: "#15603f",
+                          background: `rgba(${ACCENT_RGB},0.1)`,
                           padding: "3px 8px",
                           borderRadius: "3px",
                         }}
@@ -1999,12 +1920,14 @@ export default function RgpdDonneesPage() {
 
       {/* RGPD comme levier */}
       <section
-        className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12"
+        className="mx-auto grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12"
         style={{
-          background: "#0a0f1e",
-          borderTop: SEPARATOR,
-          borderBottom: SEPARATOR,
-          padding: "40px 48px",
+          maxWidth: 900,
+          background: LIGHT.panel2,
+          border: `1px solid ${LIGHT.border}`,
+          borderRadius: "12px",
+          padding: "40px",
+          margin: "32px auto",
         }}
       >
         <div>
@@ -2023,6 +1946,7 @@ export default function RgpdDonneesPage() {
             style={{
               fontSize: "clamp(20px, 2.5vw, 26px)",
               fontWeight: 600,
+              color: LIGHT.text,
               marginBottom: "16px",
               lineHeight: 1.35,
             }}
@@ -2032,7 +1956,7 @@ export default function RgpdDonneesPage() {
           <p
             style={{
               fontSize: "14px",
-              color: "rgba(255,255,255,0.55)",
+              color: LIGHT.muted,
               lineHeight: 1.75,
               margin: 0,
             }}
@@ -2065,7 +1989,7 @@ export default function RgpdDonneesPage() {
               <span
                 style={{
                   fontSize: "13px",
-                  color: "rgba(255,255,255,0.55)",
+                  color: LIGHT.muted,
                   lineHeight: 1.55,
                 }}
               >
@@ -2078,17 +2002,17 @@ export default function RgpdDonneesPage() {
 
       {/* Situations fréquentes */}
       <section
-        className="mx-auto max-w-6xl"
+        className="mx-auto"
         style={{
-          background: "#0a0f1e",
-          padding: "64px 48px",
-          borderTop: ".5px solid rgba(255,255,255,.06)",
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
         }}
       >
         <p
           style={{
             fontSize: "10px",
-            color: "rgba(255,255,255,.25)",
+            color: ACCENT,
             letterSpacing: ".12em",
             textTransform: "uppercase",
             marginBottom: "12px",
@@ -2100,6 +2024,7 @@ export default function RgpdDonneesPage() {
           style={{
             fontSize: "20px",
             fontWeight: 600,
+            color: LIGHT.text,
             marginBottom: "12px",
             lineHeight: 1.35,
           }}
@@ -2109,7 +2034,7 @@ export default function RgpdDonneesPage() {
         <p
           style={{
             fontSize: "14px",
-            color: "rgba(255,255,255,0.4)",
+            color: LIGHT.muted,
             maxWidth: "560px",
             marginBottom: "28px",
             lineHeight: 1.7,
@@ -2166,17 +2091,17 @@ export default function RgpdDonneesPage() {
                   setOpenTerrainCard((prev) => (prev === index ? null : index));
                 }}
                 style={{
-                  background: "#0a0f1e",
-                  border: `.5px solid ${isOpen ? "rgba(29,158,117,.25)" : "rgba(255,255,255,.06)"}`,
+                  background: LIGHT.panel,
+                  border: `1px solid ${isOpen ? "rgba(29,158,117,.35)" : LIGHT.border}`,
                   borderRadius: "8px",
                   cursor: "pointer",
                   transition: "border-color 0.25s ease",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isOpen) e.currentTarget.style.borderColor = "rgba(29,158,117,.3)";
+                  if (!isOpen) e.currentTarget.style.borderColor = "rgba(29,158,117,.4)";
                 }}
                 onMouseLeave={(e) => {
-                  if (!isOpen) e.currentTarget.style.borderColor = "rgba(255,255,255,.06)";
+                  if (!isOpen) e.currentTarget.style.borderColor = LIGHT.border;
                 }}
               >
                 <div style={{ padding: "14px 14px 12px" }}>
@@ -2190,14 +2115,14 @@ export default function RgpdDonneesPage() {
                   >
                     <span
                       style={{
-                        color: "rgba(29,158,117,.5)",
+                        color: ACCENT,
                         fontFamily: "monospace",
                         fontSize: "11px",
                       }}
                     >
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span style={{ color: "rgba(255,255,255,.45)", fontSize: "14px", lineHeight: 1 }}>
+                    <span style={{ color: LIGHT.faint, fontSize: "14px", lineHeight: 1 }}>
                       {isOpen ? "×" : "+"}
                     </span>
                   </div>
@@ -2205,8 +2130,8 @@ export default function RgpdDonneesPage() {
                     style={{
                       marginTop: "8px",
                       fontSize: "13px",
-                      fontWeight: 500,
-                      color: "rgba(255,255,255,.7)",
+                      fontWeight: 600,
+                      color: LIGHT.text,
                       lineHeight: 1.5,
                     }}
                   >
@@ -2216,7 +2141,7 @@ export default function RgpdDonneesPage() {
                     style={{
                       marginTop: "6px",
                       fontSize: "11px",
-                      color: "rgba(255,255,255,.25)",
+                      color: LIGHT.faint,
                       lineHeight: 1.5,
                     }}
                   >
@@ -2229,20 +2154,20 @@ export default function RgpdDonneesPage() {
                     maxHeight: isOpen ? "200px" : "0",
                     overflow: "hidden",
                     transition: "max-height 0.3s ease",
-                    borderTop: isOpen ? ".5px solid rgba(255,255,255,.06)" : "none",
+                    borderTop: isOpen ? `1px solid ${LIGHT.border}` : "none",
                   }}
                 >
                   <div
                     style={{
-                      borderLeft: "2px solid rgba(29,158,117,.3)",
-                      background: "rgba(29,158,117,.04)",
+                      borderLeft: "2px solid rgba(29,158,117,.4)",
+                      background: "rgba(29,158,117,.07)",
                       padding: "10px 12px",
                       margin: "10px 12px 12px",
                     }}
                   >
                     <div
                       style={{
-                        color: "#5dc9a0",
+                        color: "#15603f",
                         fontSize: "9px",
                         textTransform: "uppercase",
                         letterSpacing: ".05em",
@@ -2253,7 +2178,7 @@ export default function RgpdDonneesPage() {
                     </div>
                     <div
                       style={{
-                        color: "rgba(255,255,255,.45)",
+                        color: LIGHT.muted,
                         fontSize: "11px",
                         lineHeight: 1.65,
                       }}
@@ -2270,17 +2195,17 @@ export default function RgpdDonneesPage() {
 
       {/* FAQ */}
       <section
-        className="mx-auto max-w-6xl"
+        className="mx-auto"
         style={{
-          background: "#060912",
-          padding: "64px 48px",
-          borderTop: SEPARATOR,
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
         }}
       >
         <p
           style={{
             fontSize: "10px",
-            color: "rgba(255,255,255,0.35)",
+            color: ACCENT,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
             marginBottom: "12px",
@@ -2292,6 +2217,7 @@ export default function RgpdDonneesPage() {
           style={{
             fontSize: "clamp(20px, 2.5vw, 26px)",
             fontWeight: 600,
+            color: LIGHT.text,
             marginBottom: "24px",
             lineHeight: 1.35,
           }}
@@ -2303,12 +2229,13 @@ export default function RgpdDonneesPage() {
 
       {/* CTA FINAL */}
       <section
-        className="relative mx-auto max-w-6xl overflow-hidden"
+        className="relative mx-auto overflow-hidden"
         style={{
-          padding: "64px 48px",
-          background: "#0a0f1e",
-          margin: "0 40px 48px",
-          borderRadius: "8px",
+          maxWidth: 900,
+          padding: "56px 40px",
+          background: DARK.bg,
+          margin: "32px auto 80px",
+          borderRadius: "12px",
           border: `0.5px solid rgba(${ACCENT_RGB},0.15)`,
         }}
       >
@@ -2320,12 +2247,13 @@ export default function RgpdDonneesPage() {
           }}
           aria-hidden
         />
-        <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
+        <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:items-center">
           <div>
             <h2
               style={{
                 fontSize: "clamp(20px, 2.5vw, 26px)",
                 fontWeight: 600,
+                color: "#ffffff",
                 marginBottom: "12px",
                 lineHeight: 1.35,
               }}
@@ -2357,57 +2285,62 @@ export default function RgpdDonneesPage() {
               groupes en acquisition.
             </p>
           </div>
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-end">
+
+          <div className="flex justify-center">
             <div
               style={{
                 background: "rgba(255,255,255,0.03)",
                 border: "0.5px solid rgba(255,255,255,0.08)",
                 borderRadius: "8px",
-                padding: "16px 20px",
-                minWidth: "240px",
+                padding: "20px",
+                width: "100%",
+                maxWidth: "280px",
+                textAlign: "center",
               }}
             >
-              <div className="mb-3 flex items-center gap-3">
-                <img
-                  src="/images/sarah-hinderer.png"
-                  alt="Me Sarah Hinderer"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    flexShrink: 0,
-                  }}
-                />
-                <div>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      margin: 0,
-                    }}
-                  >
-                    Me Sarah Hinderer
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "11px",
-                      color: "rgba(255,255,255,0.35)",
-                      margin: 0,
-                    }}
-                  >
-                    Données personnelles & intelligence artificielle
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
+              <img
+                src="/images/sarah-hinderer.png"
+                alt="Me Sarah Hinderer"
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
+                  margin: "0 auto 10px",
+                  display: "block",
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  margin: 0,
+                }}
+              >
+                Me Sarah Hinderer
+              </p>
+              <p
+                style={{
+                  fontSize: "11px",
+                  color: "rgba(255,255,255,0.35)",
+                  margin: "2px 0 0",
+                  lineHeight: 1.4,
+                }}
+              >
+                Données personnelles & intelligence artificielle
+              </p>
+              <div className="mt-3 flex items-center justify-center gap-2">
                 <PulsingDot color={ACCENT} />
                 <span style={{ fontSize: "11px", color: "#5dc9a0" }}>
                   Disponible aujourd&apos;hui
                 </span>
               </div>
             </div>
+          </div>
+
+          <div className="flex justify-center md:justify-end">
             <a
               href="/contact"
               onMouseEnter={() => setCtaHover(true)}

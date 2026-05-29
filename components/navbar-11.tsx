@@ -13,8 +13,8 @@ const DOMAINES_LINKS = [
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats tech & Économie numérique", href: "/competences/contrats" },
-  { label: "Contentieux informatique", href: "/competences/contentieux" },
-  { label: "Cybercriminalité & Fraudes", href: "/competences/cybercriminalite" },
+  { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
+  { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
   {
     label: "Plateformes, médias & Réseaux sociaux",
     href: "/competences/plateformes",
