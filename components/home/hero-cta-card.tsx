@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type HeroCTACardProps = {
   open: boolean;
   onClose: () => void;
@@ -14,6 +16,10 @@ export function HeroCTACard({ open, onClose, className = "" }: HeroCTACardProps)
       } ${className}`}
       role="dialog"
       aria-hidden={!open}
+      /* `inert` retire aussi la carte de l'ordre de tabulation quand elle est
+         fermée : sans lui, le bouton et les liens restent focusables alors que
+         la carte est masquée aux lecteurs d'écran. */
+      inert={!open}
     >
       <button
         type="button"
@@ -23,9 +29,15 @@ export function HeroCTACard({ open, onClose, className = "" }: HeroCTACardProps)
       >
         ✕
       </button>
-      <img
+      {/* next/image : sert une version redimensionnée en WebP/AVIF.
+          Le PNG source pèse 7,6 Mo et s'affichait ici en 160 px de haut,
+          sur toutes les pages du site. */}
+      <Image
         src="/images/Professional_photo_of_3_young_french_lawyers.png"
         alt="Équipe Lazarègue Avocats"
+        width={640}
+        height={320}
+        sizes="(max-width: 768px) 100vw, 400px"
         className="h-[160px] w-full object-cover object-top"
       />
       <img
