@@ -24,8 +24,7 @@ const DOMAINES_LINKS = [
 ];
 
 const CABINET_LINKS = [
-  { label: "À propos", href: "/a-propos" },
-  { label: "L'équipe", href: "/equipe" },
+  { label: "Le cabinet", href: "/le-cabinet" },
   { label: "Études de cas", href: "/#cas" },
   { label: "Contributions", href: "/#contributions" },
   { label: "Tarifs", href: "/tarifs" },
