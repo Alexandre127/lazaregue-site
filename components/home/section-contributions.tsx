@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type BadgeVariant = "tribune" | "conference" | "interview";
@@ -75,11 +76,18 @@ function Badge({ variant }: { variant: BadgeVariant }) {
 function ContributionBookCard() {
   return (
     <article className="flex h-full flex-row overflow-hidden rounded-lg border border-[#B0C0DF] bg-[#E8EEF8] shadow-[0_2px_8px_rgba(26,71,255,0.08)] transition-all hover:border-[#1A47FF]/50">
-      <div className="h-full w-[160px] shrink-0 self-stretch">
-        <img
+      {/* `relative` requis par next/image `fill` ; visuellement neutre sur ce
+          bloc à taille fixe (160px de large, hauteur étirée). La conversion
+          apporte le WebP, le chargement différé et réserve la place (pas de
+          saut de mise en page), à rendu identique. */}
+      <div className="relative h-full w-[160px] shrink-0 self-stretch">
+        <Image
           src="/images/livre-lazaregue.jpg"
           alt="Couverture — Le Juge Bashing"
-          className="h-full w-full object-cover object-top"
+          fill
+          sizes="160px"
+          loading="lazy"
+          className="object-cover object-top"
         />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
@@ -110,19 +118,21 @@ function ContributionBookCard() {
 
 function ContributionVideoCard() {
   const [videoOpen, setVideoOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
+  // La vignette est une boucle muette hébergée sur notre domaine : aucun appel
+  // à YouTube au chargement, donc aucun cookie tiers avant consentement. Le
+  // lecteur YouTube (youtube-nocookie) n'est chargé qu'après le clic.
+  //
+  // L'autoplay est porté par l'attribut `autoPlay` (fiable). Cet effet ne sert
+  // qu'à couper la boucle si l'utilisateur a demandé la réduction des animations.
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.5 },
-    );
-    if (videoContainerRef.current)
-      observer.observe(videoContainerRef.current);
-    return () => observer.disconnect();
+    const video = videoRef.current;
+    if (!video) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.autoplay = false;
+      video.pause(); // on laisse le poster figé
+    }
   }, []);
 
   useEffect(() => {
@@ -143,26 +153,31 @@ function ContributionVideoCard() {
 
   return (
     <>
-      <article className={`${CARD_SHELL} !flex-row`}>
-        <div className="h-full min-h-0 flex-1 self-stretch">
-          <div
-            ref={videoContainerRef}
-            className="aspect-video h-full w-full"
+      <article className={`${CARD_SHELL} md:flex-row`}>
+        <button
+          type="button"
+          onClick={() => setVideoOpen(true)}
+          aria-label="Lire la vidéo : Réseaux sociaux et responsabilité des plateformes"
+          className="group relative aspect-video w-full shrink-0 cursor-pointer overflow-hidden bg-[#0a0f2e] md:aspect-auto md:h-full md:w-auto md:flex-1 md:self-stretch"
+        >
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            poster="/images/passage-tv-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
           >
-            {isVisible ? (
-              <iframe
-                src="https://www.youtube.com/embed/ccYVu3APMmw?autoplay=1&mute=1&loop=1&playlist=ccYVu3APMmw&controls=1"
-                width="100%"
-                height="100%"
-                className="h-full w-full border-0"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-              />
-            ) : (
-              <div className="h-full w-full bg-[#0a0f2e]" />
-            )}
-          </div>
-        </div>
+            <source src="/videos/passage-tv-loop.mp4" type="video/mp4" />
+          </video>
+          {/* Voile + bouton lecture façon YouTube */}
+          <span className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-black/25" />
+          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/55 backdrop-blur-sm transition-transform group-hover:scale-110">
+            <span className="ml-0.5 border-y-[8px] border-l-[13px] border-y-transparent border-l-white" />
+          </span>
+        </button>
         <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
           <p className="font-mono text-[9px] uppercase tracking-wider text-[#1A47FF]">
             ★ À LA UNE
@@ -194,11 +209,10 @@ function ContributionVideoCard() {
             ✕
           </button>
           <iframe
-            src="https://www.youtube.com/embed/ccYVu3APMmw?autoplay=1"
+            src="https://www.youtube-nocookie.com/embed/ccYVu3APMmw?autoplay=1"
             title="Réseaux sociaux et responsabilité des plateformes : ce que dit vraiment la loi"
             className="aspect-video w-[80vw] max-w-[900px] border-0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
           />
         </div>
       ) : null}
@@ -228,7 +242,7 @@ function ContributionArticleCard({ card }: { card: ContributionArticle }) {
 
 export function SectionContributions() {
   return (
-    <section className="bg-[#EEF1F8] py-10 md:py-16">
+    <section className="bg-[#EEF1F8] py-16 md:py-24">
       <div className="relative z-20 px-4 md:px-8 lg:px-12">
         <header className="mb-7 max-w-2xl">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#0A0F2E]/50">

@@ -1,7 +1,23 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 
-const clauses = [
+/**
+ * `lien` renvoie vers le domaine du cabinet que la clause met réellement en
+ * jeu. Sauvegardes, SLA et interdépendance sont autant des sujets de sécurité
+ * que de contrat : le lecteur qui ouvre le détail est exactement la personne
+ * à qui la page cybersécurité s'adresse.
+ */
+const clauses: {
+  num: string
+  nom: string
+  hint: string
+  intro: string
+  citation: string | null
+  items: string[]
+  risque: string
+  lien?: { href: string; label: string }
+}[] = [
   {
     num: '01',
     nom: 'La clause de sauvegarde',
@@ -14,6 +30,7 @@ const clauses = [
       'Tester une restauration régulièrement et en produire un rapport',
     ],
     risque: 'Après un ransomware, vous découvrez que les sauvegardes n\'ont jamais été testées. Elles existaient sur le papier. Pas dans la réalité.',
+    lien: { href: '/nos-domaines/cybersecurite', label: 'Sauvegardes et continuité : nos obligations sous NIS 2' },
   },
   {
     num: '02',
@@ -28,6 +45,7 @@ const clauses = [
       'Suppression certifiée des données restantes',
     ],
     risque: 'Vous voulez partir. Vous découvrez que récupérer vos propres données coûte plusieurs milliers d\'euros — et qu\'elles seront supprimées dans 30 jours si vous ne payez pas.',
+    lien: { href: '/nos-domaines/rgpd-donnees', label: 'Restitution et suppression : le volet RGPD de la réversibilité' },
   },
   {
     num: '03',
@@ -52,6 +70,7 @@ const clauses = [
       'Procédures d\'escalade documentées',
     ],
     risque: 'Le prestataire intervient rapidement. Mais le système reste indisponible plusieurs jours. Sans pénalité contractuelle, vous ne pouvez rien réclamer.',
+    lien: { href: '/nos-domaines/cybersecurite', label: 'Disponibilité et gestion d\'incident : voir Cybersécurité & NIS 2' },
   },
   {
     num: '05',
@@ -82,19 +101,29 @@ export default function ClausesRisque() {
 
       {clauses.map((cl, i) => (
         <div key={i} style={{ borderTop: '0.5px solid var(--color-border-tertiary)', ...(i === clauses.length - 1 ? { borderBottom: '0.5px solid var(--color-border-tertiary)' } : {}) }}>
-          <div
+          {/* C'était un <div onClick> : inatteignable au clavier et muet pour
+              les lecteurs d'écran. Un <button> porte nativement le focus, la
+              touche Entrée et l'état plié/déplié. */}
+          <button
+            type="button"
             onClick={() => toggle(i)}
-            style={{ display: 'grid', gridTemplateColumns: '48px 1fr 24px', alignItems: 'start', padding: '20px 0', cursor: 'pointer', gap: 16 }}
+            aria-expanded={open === i}
+            aria-controls={`clause-detail-${i}`}
+            style={{ display: 'grid', gridTemplateColumns: '48px 1fr 24px', alignItems: 'start', padding: '20px 0', cursor: 'pointer', gap: 16, width: '100%', background: 'none', border: 'none', textAlign: 'left' }}
           >
             <span style={{ fontSize: 32, fontWeight: 500, color: open === i ? 'var(--color-text-primary)' : 'var(--color-border-secondary)', lineHeight: 1, paddingTop: 2, transition: 'color .2s' }}>{cl.num}</span>
             <div>
               <p style={{ fontSize: 16, fontWeight: 500, color: 'var(--color-text-primary)', margin: '0 0 3px', lineHeight: 1.3 }}>{cl.nom}</p>
               <p style={{ fontSize: 13, color: 'var(--color-text-tertiary)', margin: 0, fontStyle: 'italic' }}>{cl.hint}</p>
             </div>
-            <span style={{ fontSize: 16, color: 'var(--color-text-tertiary)', marginTop: 4, transform: open === i ? 'rotate(180deg)' : 'none', transition: 'transform .22s', display: 'block' }}>⌄</span>
-          </div>
+            <span aria-hidden style={{ fontSize: 16, color: 'var(--color-text-tertiary)', marginTop: 4, transform: open === i ? 'rotate(180deg)' : 'none', transition: 'transform .22s', display: 'block' }}>⌄</span>
+          </button>
 
-          {open === i && (
+          {/* Le détail reste dans le DOM une fois replié : c'est le contenu de
+              longue traîne le plus qualifié de la page (réversibilité, SLA,
+              interdépendance). Rendu conditionnellement, il serait absent du
+              HTML servi et donc invisible pour les moteurs. */}
+          <div id={`clause-detail-${i}`} hidden={open !== i}>
             <div style={{ paddingBottom: 24, paddingLeft: 64 }}>
               <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.75, margin: '0 0 14px' }}>{cl.intro}</p>
               {cl.citation && (
@@ -116,8 +145,16 @@ export default function ClausesRisque() {
                 <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--color-text-tertiary)', flexShrink: 0 }}>Risque réel</span>
                 <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-text-primary)', margin: 0, lineHeight: 1.5 }}>{cl.risque}</p>
               </div>
+              {cl.lien && (
+                <Link
+                  href={cl.lien.href}
+                  style={{ display: 'inline-block', marginTop: 14, fontSize: 13, color: 'var(--color-blue, #1A47FF)', textDecoration: 'none' }}
+                >
+                  {cl.lien.label} →
+                </Link>
+              )}
             </div>
-          )}
+          </div>
         </div>
       ))}
 

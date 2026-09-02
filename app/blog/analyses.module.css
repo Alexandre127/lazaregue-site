@@ -1,0 +1,641 @@
+/*
+ * Page Analyses — repris de la maquette validée « Lazarègue — Analyses ».
+ * Tokens (--blue, --navy, --ink, --mu, --bd, --ff-*) définis dans globals.css.
+ *
+ * Note : les puces de filtre sont arrondies (999px) conformément à la maquette,
+ * seule entorse assumée à la règle « angles droits » de la charte.
+ */
+
+.page {
+  background: var(--wh);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+}
+.page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+/* ── En-tête éditorial ── */
+
+.header {
+  background: var(--wh);
+  border-bottom: 1px solid var(--ink);
+}
+.headerInner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 36px 0;
+}
+.ourlet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--bd);
+  padding-bottom: 14px;
+}
+.ourletG,
+.ourletD {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.ourletG {
+  color: var(--mu);
+}
+.ourletD {
+  color: var(--blue);
+}
+.titreRangee {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: end;
+  padding: 24px 0 34px;
+}
+.header h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(96px, 17vw, 240px);
+  line-height: 0.82;
+  letter-spacing: 0.005em;
+  margin: 0;
+  color: var(--ink);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 440px;
+  justify-content: flex-end;
+  padding-bottom: 14px;
+}
+.chip {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  background: transparent;
+  color: var(--mu);
+  border: 1px solid var(--bd);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.chip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.chapo {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.6;
+  color: #33333d;
+  max-width: 64ch;
+  margin: 0 0 34px;
+}
+.chapo em {
+  color: var(--blue);
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* ── Barre de tri ── */
+
+.tri {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0 10px;
+  border-top: 1px solid var(--bd);
+}
+.triGroupe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.triLabel {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-right: 6px;
+}
+.compte {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mu);
+  padding: 6px 0;
+}
+
+/* ── Éléments communs aux cartes ── */
+
+.grille {
+  background: var(--wh);
+}
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  white-space: nowrap;
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  background: transparent;
+}
+.tagTexteNouveau {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.tagNoteDeFond {
+  border-color: var(--blue);
+  color: #fff;
+  background: var(--blue);
+}
+.tagChronique {
+  border-color: var(--mu);
+  color: var(--mu);
+}
+.temp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.tempDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: block;
+}
+.tempDotCreux {
+  background: transparent;
+  border: 1px solid var(--blue);
+}
+.tempLabel,
+.dateLabel {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+.dateLabel {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.signature {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+/* Filet bleu qui se déploie au survol */
+.bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--blue);
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.carte:hover .bar,
+.feature:hover .bar,
+.note:hover .bar {
+  transform: scaleX(1);
+}
+
+/* ── Rangée 1 : trois brèves ── */
+
+.rangeeTrois {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--ink);
+}
+.carte {
+  display: block;
+  padding: 0 0 30px;
+  border-right: 1px solid var(--bd);
+  position: relative;
+}
+.carte:last-child {
+  border-right: none;
+}
+.carteImg {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-bottom: 1px solid var(--bd);
+}
+.carteImg img {
+  object-fit: cover;
+}
+.carteMeta {
+  margin: 26px 28px 16px;
+}
+.carte h3 {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 28px 12px;
+}
+.carteExcerpt {
+  font-family: var(--ff-body);
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #55555f;
+  margin: 0 28px;
+}
+.carteSign {
+  margin: 16px 28px 0;
+}
+
+/* ── Rangée 2 : à la une + deux brèves ── */
+
+.rangeeUne {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  border-top: 1px solid var(--ink);
+}
+.feature {
+  display: block;
+  padding: 36px 40px 40px;
+  border-right: 1px solid var(--bd);
+  position: relative;
+  background: var(--navy);
+  color: #fff;
+  background-image: radial-gradient(rgba(26, 71, 255, 0.14) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+.featureTag {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--blue2);
+  color: #fff;
+  padding: 4px 10px;
+}
+.feature .tempLabel,
+.feature .dateLabel {
+  color: rgba(255, 255, 255, 0.65);
+}
+.feature h2 {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: clamp(30px, 3.6vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 22px 0 18px;
+  max-width: 20ch;
+}
+.featureExcerpt {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 26px;
+  max-width: 56ch;
+}
+.featurePied {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.featureLien {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid var(--blue2);
+  padding-bottom: 4px;
+}
+.feature .signature {
+  color: rgba(255, 255, 255, 0.55);
+}
+.feature .bar {
+  height: 3px;
+  background: var(--blue2);
+}
+.colonne {
+  display: flex;
+  flex-direction: column;
+}
+.breve {
+  display: block;
+  padding: 26px 28px;
+  border-bottom: 1px solid var(--bd);
+  position: relative;
+  flex: 1;
+}
+.breve:last-child {
+  border-bottom: none;
+}
+.breve h3 {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 14px 0 10px;
+}
+.breveExcerpt {
+  font-family: var(--ff-body);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #55555f;
+  margin: 0 0 14px;
+}
+
+/* ── Rangée 3 : note de fond + deux brèves ── */
+
+.rangeeNote {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.note {
+  display: block;
+  padding: 34px 36px 40px;
+  border-right: 1px solid var(--bd);
+  position: relative;
+}
+.note h2 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  margin: 20px 0 16px;
+}
+.noteExcerpt {
+  font-family: var(--ff-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #55555f;
+  margin: 0;
+  max-width: 44ch;
+}
+.noteSign {
+  margin-top: 18px;
+}
+.breveBasse {
+  display: block;
+  padding: 34px 28px;
+  border-right: 1px solid var(--bd);
+  position: relative;
+}
+.breveBasse:last-child {
+  border-right: none;
+}
+.breveBasse h3 {
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 14px 0 10px;
+}
+
+/* ── Aucun résultat ── */
+
+.vide {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--bd);
+  padding: 72px 24px;
+  text-align: center;
+}
+.videTitre {
+  font-family: var(--ff-body);
+  font-weight: 400;
+  font-size: 15px;
+  color: #55555f;
+  margin: 0 0 4px;
+}
+.videAide {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--mu);
+  margin: 0;
+}
+
+/* ── Newsletter ── */
+
+.news {
+  background: var(--navy);
+  color: #fff;
+}
+.newsInner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 80px 36px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.news h2 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  margin: 0;
+  max-width: 16ch;
+  color: #fff;
+}
+.newsTexte {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 20px 0 0;
+  max-width: 52ch;
+}
+.newsBox {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+.newsBox input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  padding: 17px 18px;
+}
+.newsBox input::placeholder {
+  color: var(--mu);
+}
+.newsBox button {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 26px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.newsBox button:hover {
+  background: var(--blue3);
+}
+.newsNote {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--mu);
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+.newsOk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 18px 20px;
+}
+.newsOkIcone {
+  width: 24px;
+  height: 24px;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.newsOk span:last-child {
+  font-family: var(--ff-body);
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* ── Apparition au défilement ── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1000px) {
+  .rangeeTrois,
+  .rangeeNote {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rangeeUne {
+    grid-template-columns: 1fr;
+  }
+  .feature {
+    border-right: none;
+    border-bottom: 1px solid var(--bd);
+  }
+  .newsInner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .titreRangee {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .chips {
+    justify-content: flex-start;
+    max-width: none;
+  }
+}
+@media (max-width: 700px) {
+  .headerInner,
+  .inner,
+  .newsInner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .rangeeTrois,
+  .rangeeNote {
+    grid-template-columns: 1fr;
+  }
+  .carte,
+  .breveBasse,
+  .note {
+    border-right: none;
+    border-bottom: 1px solid var(--bd);
+  }
+  .newsBox {
+    flex-wrap: wrap;
+  }
+  .newsBox button {
+    width: 100%;
+    padding: 14px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page * {
+    transition: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

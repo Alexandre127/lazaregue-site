@@ -1,5 +1,6 @@
 import styles from "../le-cabinet.module.css";
-import { AVIS_HREF, AVIS_LABEL, CABINET } from "../data/liens";
+import { AVIS } from "@/lib/avis";
+import { CABINET } from "../data/liens";
 import Reveal from "./Reveal";
 
 const ITEMS = [
@@ -38,11 +39,12 @@ export default function CadreConfiance() {
         <p className={styles.tline}>
           {CABINET.adresse.toLowerCase()} · {CABINET.telephone} · {CABINET.email}
           <br />
-          avis clients consultables sur{" "}
-          {/* PLACEHOLDER : renseigner AVIS_HREF dans data/liens.ts */}
-          {AVIS_HREF ? <a href={AVIS_HREF}>{AVIS_LABEL}</a> : <span>{AVIS_LABEL}</span>} ·
-          conformément aux règles de la profession, nous ne publions ni nom ni photo de
-          client sur ce site.
+          {AVIS.note} sur 5 —{" "}
+          <a href={AVIS.href} target="_blank" rel="noopener">
+            {AVIS.nombre} avis google
+          </a>{" "}
+          · conformément aux règles de la profession, nous ne publions ni nom ni photo
+          de client sur ce site.
         </p>
       </div>
     </section>

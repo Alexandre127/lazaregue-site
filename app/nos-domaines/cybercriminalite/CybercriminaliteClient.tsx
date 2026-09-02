@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { FAQ_ITEMS } from "./faq";
+import EquipeDossier from "@/components/equipe-dossier";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const RED = "#E24B4A";
@@ -48,31 +50,25 @@ const THREAT_BARS = [
   { label: "Violation de données", pct: 6.6, color: "#7F77DD" },
 ];
 
-const TIMELINE = [
+/**
+ * `lien` prolonge l'étape vers le domaine qu'elle engage. Un incident cyber
+ * n'est jamais qu'un dossier pénal : il ouvre en parallèle une obligation
+ * CNIL et, très souvent, un recours contre le prestataire.
+ */
+const TIMELINE: {
+  time: string;
+  title: string;
+  desc: string;
+  tag: string | null;
+  lien?: { href: string; label: string };
+}[] = [
   { time: "H+0", title: "Isoler sans éteindre", desc: "Ne pas éteindre les machines. Les preuves numériques sont en mémoire vive. Un arrêt les efface définitivement. Déconnectez du réseau uniquement.", tag: null },
   { time: "H+1", title: "Associer l'avocat dès les premières décisions", desc: "Payer la rançon ou non, notifier ou attendre, communiquer ou se taire — chaque décision engage la procédure. L'avocat n'intervient pas après la technique. Il intervient avant.", tag: null },
-  { time: "H+4", title: "Qualifier l'incident", desc: "Ransomware, vol de données, intrusion, fraude, salarié malveillant — la qualification pénale conditionne les recours disponibles et l'exposition de l'entreprise.", tag: "Art. 323-1 à 323-3 · 313-1 · 226-17 C.pén." },
+  { time: "H+4", title: "Qualifier l'incident", desc: "Ransomware, vol de données, intrusion, fraude, salarié malveillant — la qualification pénale conditionne les recours disponibles et l'exposition de l'entreprise.", tag: "Art. 323-1 à 323-3 · 313-1 · 226-17 C.pén.", lien: { href: "/nos-domaines/contrats-informatiques", label: "Si le prestataire est en cause : contrats IT & responsabilité" } },
   { time: "H+24", title: "Dépôt de plainte structuré", desc: "Une plainte bien construite ouvre des investigations que la procédure civile ne permet pas — réquisitions, saisies informatiques, expertises judiciaires. Une plainte contre X au commissariat ne donne presque rien.", tag: null },
-  { time: "H+72", title: "Notification CNIL — délai à qualifier", desc: "Le délai court à partir de la prise de connaissance effective — une notion juridique qui se plaide. Nous qualifions ce moment.", tag: "Art. 33 RGPD · 72h" },
+  { time: "H+72", title: "Notification CNIL — délai à qualifier", desc: "Le délai court à partir de la prise de connaissance effective — une notion juridique qui se plaide. Nous qualifions ce moment.", tag: "Art. 33 RGPD · 72h", lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" } },
 ];
 
-const TEAM_MEMBERS = [
-  {
-    name: "Me Alexandre Lazarègue",
-    role: "· Droit pénal du numérique",
-    text: "Intervient en défense et en attaque sur les dossiers de cybercriminalité, ransomware, fraude au président et atteintes aux STAD. Plaide devant les juridictions pénales.",
-  },
-  {
-    name: "Me Amir Ben Majed",
-    role: "· Contentieux IT & pénal",
-    text: "Spécialiste des contentieux informatiques complexes. Intervient sur les dossiers de salarié malveillant, vol de données, atteintes aux systèmes d'information et fraudes numériques en entreprise.",
-  },
-  {
-    name: "Me Sarah Hinderer",
-    role: "Avocate · Données personnelles & pénal",
-    text: "Défend les entreprises mises en cause après incident cyber et construit les dossiers de notification et de défense devant le parquet.",
-  },
-];
 
 const DOSSIERS = [
   {
@@ -141,13 +137,6 @@ const DOSSIERS = [
   },
 ];
 
-const FAQ_ITEMS = [
-  { q: "Un ex-salarié est parti avec notre base clients. On peut faire quelque chose ?", a: "Oui — et c'est pénal. L'accès à des données après la rupture du contrat constitue un accès frauduleux à un STAD (art. 323-1 C.pén.). La copie de données est une extraction frauduleuse (art. 323-3). La plainte pénale peut être accompagnée d'un référé en urgence pour interdire l'utilisation des données." },
-  { q: "Notre banque refuse de rembourser le phishing.", a: "La charge de la preuve lui appartient. Elle doit démontrer votre négligence grave — pas vous prouver votre bonne foi. Cette preuve suppose un email avec des indices manifestes qu'un utilisateur normalement attentif aurait détectés. Si ce n'est pas le cas, le remboursement s'impose." },
-  { q: "On nous accuse d'une intrusion informatique. Une adresse IP nous désigne.", a: "Une adresse IP n'est pas une identité. Elle peut être usurpée, partagée, mal interprétée. Chaque élément constitutif de l'infraction doit être établi par l'accusation. Nous examinons le dossier technique et soulevons les failles de la démonstration." },
-  { q: "On a subi une attaque. La CNIL enquête maintenant sur nous.", a: "Être victime n'exclut pas d'être mis en cause pour insuffisance de sécurité. La défense repose sur trois démonstrations : les mesures prises, la réaction documentée à l'incident, et la responsabilité du prestataire si une vulnérabilité n'a pas été corrigée." },
-  { q: "Faut-il payer la rançon ?", a: "C'est une décision qui engage la procédure pénale, la relation avec l'assureur et la position devant la CNIL. Payer ne garantit pas la restitution des données. Appelez-nous avant de décider." },
-];
 
 /* ── Composants utilitaires ── */
 
@@ -275,6 +264,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-controls={`faq-cyber-reponse-${index}`}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, background: "none", border: "none", padding: "12px 0", textAlign: "left", cursor: "pointer" }}
       >
         <span style={{ display: "flex", gap: 10 }}>
@@ -283,41 +273,27 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         </span>
         <span aria-hidden style={{ color: RED, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
       </button>
-      {open ? (
-        <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 40px", maxWidth: 760 }}>{item.a}</div>
-      ) : null}
+      {/* La réponse reste dans le DOM une fois repliée : rendue
+          conditionnellement, elle serait absente du HTML servi — donc
+          invisible pour les moteurs, alors qu'elle est déclarée en FAQPage.
+          Ce sont ici les requêtes les plus qualifiées de la page
+          (« banque refuse rembourser phishing », « faut-il payer la rançon »). */}
+      <div
+        id={`faq-cyber-reponse-${index}`}
+        hidden={!open}
+        style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 40px", maxWidth: 760 }}
+      >
+        {item.a}
+        {item.lien ? (
+          <Link href={item.lien.href} style={{ display: "inline-block", marginTop: 10, color: RED, textDecoration: "none" }}>
+            {item.lien.label} →
+          </Link>
+        ) : null}
+      </div>
     </div>
   );
 }
 
-function TeamMemberCard({ member }: { member: (typeof TEAM_MEMBERS)[number] }) {
-  return (
-    <article
-      style={{
-        background: "var(--color-background-primary, #ffffff)",
-        border: "0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1))",
-        borderRadius: "var(--border-radius-lg, 12px)",
-        padding: 20,
-        height: "100%",
-      }}
-    >
-      <p style={{ fontSize: 15, fontWeight: 500, color: "var(--color-text-primary, #1a1a1a)", margin: "0 0 4px" }}>{member.name}</p>
-      <p
-        style={{
-          fontSize: 11,
-          fontWeight: 500,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: "var(--color-text-tertiary, #6a6a6a)",
-          margin: "0 0 12px",
-        }}
-      >
-        {member.role}
-      </p>
-      <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--color-text-secondary, #4a4a4a)", margin: 0 }}>{member.text}</p>
-    </article>
-  );
-}
 
 /* ── Page ── */
 
@@ -382,11 +358,19 @@ export default function CybercriminaliteClient() {
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" style={{ background: RED, color: "#fff", padding: "12px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
-              Nous appeler →
+            {/* Le bouton « Nous appeler » renvoyait vers le formulaire de
+                contact. Sur une page où le lecteur est en train de subir un
+                incident, le formulaire est un détour : le numéro est composé
+                directement, et affiché en clair pour ceux qui lisent sur poste
+                fixe. Le formulaire reste en second choix. */}
+            <a href="tel:+33181706200" style={{ background: RED, color: "#fff", padding: "12px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+              Nous appeler — 01 81 70 62 00
+            </a>
+            <Link href="/contact" style={{ background: "transparent", color: DARK.muted, padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}` }}>
+              Décrire l&apos;incident par écrit
             </Link>
             <a href="#timeline" style={{ background: "transparent", color: DARK.muted, padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}` }}>
-              Construire le dossier
+              Les 72 premières heures
             </a>
           </div>
         </div>
@@ -466,6 +450,11 @@ export default function CybercriminaliteClient() {
                       {step.tag}
                     </span>
                   ) : null}
+                  {step.lien ? (
+                    <Link href={step.lien.href} style={{ display: "block", fontSize: 12, color: RED, textDecoration: "none", marginTop: 8 }}>
+                      {step.lien.label} →
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -479,12 +468,16 @@ export default function CybercriminaliteClient() {
       {/* 6. L'équipe */}
       <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <SectionHead label="L'équipe" title="Des pénalistes." />
-          <div className="grid grid-cols-1 lg:grid-cols-3" style={{ gap: GRID_GAP }}>
-            {TEAM_MEMBERS.map((member) => (
-              <TeamMemberCard key={member.name} member={member} />
-            ))}
-          </div>
+          <EquipeDossier
+            titre="Des pénalistes du numérique"
+            chapeau="Une plainte pénale bien construite ouvre des investigations que la voie civile ne permet pas. Encore faut-il qualifier l'infraction et sécuriser les preuves dès les premières heures."
+            couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: RED }}
+            membres={[
+              { slug: "alexandre", role: "Droit pénal du numérique", tags: ["Rançongiciel", "STAD", "Fraude au président"] },
+              { slug: "amir", role: "Contentieux IT & pénal", tags: ["Salarié malveillant", "Vol de données"] },
+              { slug: "sarah", role: "Données personnelles & pénal", tags: ["Art. 33 RGPD", "Défense CNIL"] },
+            ]}
+          />
         </div>
       </section>
 

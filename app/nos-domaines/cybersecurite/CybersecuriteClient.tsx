@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
+import TestNis2 from "./TestNis2";
 
 const DARK = {
   bg: "#0a0f2e",
@@ -28,27 +29,6 @@ const BLUE = "#1A47FF";
 
 const INNER: React.CSSProperties = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
 const SECTION_PAD = "56px 0";
-
-const TEST_QUESTIONS = [
-  {
-    q: "1 — Mon client exerce-t-il dans un secteur critique ?",
-    a: "Énergie, eau, transports, santé, banque, infrastructure numérique, administrations publiques, industrie critique... Si oui, il est probablement une entité essentielle ou importante au sens de NIS 2.",
-    badge: "Si oui → continuer",
-    tone: "ok" as const,
-  },
-  {
-    q: "2 — Mes services lui sont-ils indispensables ?",
-    a: "Hébergement, cloud, infogérance, maintenance, SaaS, développement, télécoms... La directive analyse le niveau de dépendance à vos services, le caractère critique de vos systèmes, et l'absence d'alternative.",
-    badge: "Si oui → vous êtes dans la chaîne d'approvisionnement",
-    tone: "ok" as const,
-  },
-  {
-    q: "3 — Avez-vous une documentation de conformité NIS 2 ?",
-    a: "Politique de sécurité des systèmes d'information, gestion des incidents, plan de continuité d'activité, preuves de formation, audits. Comme pour le RGPD, la conformité NIS 2 se démontre — elle ne se déclare pas.",
-    badge: "Si non → vous êtes exposé",
-    tone: "warn" as const,
-  },
-];
 
 const OBLIGATIONS = [
   {
@@ -286,8 +266,16 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
         L&apos;entreprise doit rapidement qualifier l&apos;incident, préserver les preuves,
         identifier les systèmes affectés, déterminer si une notification est nécessaire et
         documenter les mesures correctives. Selon les cas,{" "}
-        <strong>plusieurs autorités peuvent être impliquées simultanément</strong> : ANSSI, CNIL ou
-        régulateur sectoriel.
+        <strong>plusieurs autorités peuvent être impliquées simultanément</strong> :{" "}
+        <a
+          href="https://cyber.gouv.fr/"
+          target="_blank"
+          rel="noopener"
+          style={{ color: BLUE, textDecoration: "underline" }}
+        >
+          ANSSI
+        </a>
+        , CNIL ou régulateur sectoriel.
       </>
     ),
   },
@@ -295,7 +283,11 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
     q: "Quelle différence entre NIS 2 et le RGPD ?",
     a: (
       <>
-        Le RGPD protège les données personnelles. NIS 2 protège les systèmes d&apos;information et la
+        Le{" "}
+        <Link href="/nos-domaines/rgpd-donnees" style={{ color: BLUE, textDecoration: "underline" }}>
+          RGPD
+        </Link>{" "}
+        protège les données personnelles. NIS 2 protège les systèmes d&apos;information et la
         continuité des activités essentielles.{" "}
         <strong>Une cyberattaque peut déclencher simultanément des obligations au titre des deux régimes.</strong>
       </>
@@ -318,7 +310,7 @@ const TEAM = [
     initials: "AL",
     name: "Me Alexandre Lazarègue",
     role: "Avocat — cybersécurité & droit du numérique",
-    photo: "/images/lazaregue-avocat.png",
+    photo: "/images/alexandre-pro.jpg",
     objectPosition: "center",
     intro:
       "Me Alexandre Lazarègue accompagne les entreprises confrontées aux audits fournisseurs, aux incidents cyber et aux exigences de conformité NIS 2. Il intervient aux côtés de Khalid Sookia, expert en cybersécurité.",
@@ -332,7 +324,7 @@ const TEAM = [
     initials: "KS",
     name: "Khalid Sookia",
     role: "Expert en cybersécurité",
-    photo: "/images/khalid-sookia.png",
+    photo: "/images/khalid-pro.jpg",
     objectPosition: "top",
     intro: "",
     tags: ["Audit SI", "PSSI", "Forensic"],
@@ -499,6 +491,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-controls={`faq-reponse-${index}`}
         style={{
           width: "100%",
           display: "flex",
@@ -531,20 +524,23 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
           +
         </span>
       </button>
-      {open ? (
-        <div
-          style={{
-            fontSize: 13,
-            color: LIGHT.muted,
-            lineHeight: 1.7,
-            margin: 0,
-            padding: "0 0 20px 40px",
-            maxWidth: 760,
-          }}
-        >
-          {item.a}
-        </div>
-      ) : null}
+      {/* La réponse reste dans le DOM même repliée : rendue conditionnellement,
+          elle serait absente du HTML servi et donc invisible pour les moteurs —
+          alors que c'est précisément ce contenu qui porte la longue traîne. */}
+      <div
+        id={`faq-reponse-${index}`}
+        hidden={!open}
+        style={{
+          fontSize: 13,
+          color: LIGHT.muted,
+          lineHeight: 1.7,
+          margin: 0,
+          padding: "0 0 20px 40px",
+          maxWidth: 760,
+        }}
+      >
+        {item.a}
+      </div>
     </div>
   );
 }
@@ -621,14 +617,14 @@ export default function CybersecuriteClient() {
               style={{
                 background: BLUE,
                 color: "#fff",
-                padding: "12px 22px",
+                padding: "15px 28px",
                 borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 500,
+                fontSize: 14,
+                fontWeight: 600,
                 textDecoration: "none",
               }}
             >
-              Faire le point sur ma situation
+              Diagnostiquer mon exposition NIS 2 →
             </Link>
             <a
               href="#obligations"
@@ -666,7 +662,7 @@ export default function CybersecuriteClient() {
                 margin: "0 0 6px",
               }}
             >
-              Comprendre en 1 minute
+              Comprendre en 1 min 14
             </p>
             <p style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, lineHeight: 1.4, margin: "0 0 6px" }}>
               NIS 2 et sous-traitance : ce que vous devez savoir
@@ -674,7 +670,7 @@ export default function CybersecuriteClient() {
             <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 10px" }}>
               NIS 2 est la nouvelle réglementation européenne de cybersécurité. Elle oblige les
               secteurs critiques — et leurs fournisseurs — à prouver qu&apos;ils savent résister à
-              une cyberattaque. En 1 minute, comprendre pourquoi votre entreprise est peut-être
+              une cyberattaque. En une minute quinze, comprendre pourquoi votre entreprise est peut-être
               concernée.
             </p>
             <span style={{ fontSize: 12, color: LIGHT.faint, display: "flex", alignItems: "center", gap: 6 }}>
@@ -711,7 +707,7 @@ export default function CybersecuriteClient() {
                 }}
               >
                 <Image
-                  src="/images/lazaregue-avocat.png"
+                  src="/images/alexandre-pro.jpg"
                   alt="Me Alexandre Lazarègue"
                   fill
                   sizes="36px"
@@ -731,7 +727,7 @@ export default function CybersecuriteClient() {
                 }}
               >
                 <Image
-                  src="/images/khalid-sookia.png"
+                  src="/images/khalid-pro.jpg"
                   alt="Khalid Sookia"
                   fill
                   sizes="36px"
@@ -760,45 +756,7 @@ export default function CybersecuriteClient() {
             title="Le test en 3 questions"
             sub="NIS 2 cible les entités essentielles (énergie, santé, transports, finance, eau, numérique) et les entités importantes — mais aussi tous leurs sous-traitants dont les services sont indispensables à leur fonctionnement."
           />
-          <div className="flex flex-col gap-3">
-            {TEST_QUESTIONS.map((item) => {
-              const ok = item.tone === "ok";
-              return (
-                <div
-                  key={item.q}
-                  style={{
-                    background: LIGHT.panel,
-                    border: `0.5px solid ${LIGHT.border}`,
-                    borderRadius: 12,
-                    padding: "16px 20px",
-                  }}
-                >
-                  <p style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, margin: "0 0 6px" }}>{item.q}</p>
-                  <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 10px" }}>{item.a}</p>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 5,
-                      fontSize: 11,
-                      fontWeight: 500,
-                      color: ok ? "#085041" : "#633806",
-                      background: ok ? "#E1F5EE" : "#FAEEDA",
-                      padding: "3px 10px",
-                      borderRadius: 8,
-                    }}
-                  >
-                    <i
-                      className={`ti ${ok ? "ti-check" : "ti-alert-triangle"}`}
-                      style={{ fontSize: 11 }}
-                      aria-hidden="true"
-                    />
-                    {item.badge}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+          <TestNis2 />
         </div>
       </section>
 
@@ -1312,10 +1270,10 @@ export default function CybersecuriteClient() {
                   textDecoration: "none",
                 }}
               >
-                Nous contacter →
+                Être rappelé par un avocat →
               </Link>
               <Link
-                href="/#cas"
+                href="/nos-domaines/contrats-informatiques"
                 style={{
                   background: "transparent",
                   color: "rgba(255,255,255,0.7)",
@@ -1326,7 +1284,7 @@ export default function CybersecuriteClient() {
                   border: "0.5px solid rgba(255,255,255,0.2)",
                 }}
               >
-                Voir nos interventions
+                Sécuriser mes contrats IT
               </Link>
             </div>
           </div>

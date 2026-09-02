@@ -1,12 +1,7 @@
 "use client";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const HIGHLIGHT_TEXT =
   "Les entreprises qui anticipent leur conformité numérique lèvent plus facilement des fonds, accèdent aux marchés publics et négocient en position de force. Ce n'est pas une obligation, c'est un AVANTAGE CONCURRENTIEL.";
@@ -157,18 +152,31 @@ function AnimatedStat({
       <p className="font-mono text-4xl font-bold tracking-tight text-white md:text-5xl">
         {stat.format(value)}
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-white/80">{stat.label}</p>
+      {/* Libellé aussi lisible que le chiffre : couleur explicite, jamais d'opacity. */}
+      <p className="mt-2 text-sm leading-relaxed" style={{ color: TXT_SECOND }}>
+        {stat.label}
+      </p>
     </div>
   );
 }
 
+/*
+ * Couleurs de texte sur fond navy, explicites (jamais via `opacity`) et
+ * calibrées pour au moins 4,5:1 : le corps et les citations ne descendent
+ * pas sous #C5CBDE. Seul le bleu de marque reste sur les grands chiffres.
+ */
+const TXT = "#FFFFFF";
+const TXT_SECOND = "#C5CBDE";
+const TXT_UNLIT = "#7E8AA6"; // état « éteint » de la révélation au scroll (~5:1)
+const HAIR = "rgba(255,255,255,0.10)";
+
 const SEPARATOR_STYLE = {
   border: "none",
-  borderTop: "0.5px solid rgba(255,255,255,0.05)",
+  borderTop: `0.5px solid ${HAIR}`,
   margin: "24px 0",
 } as const;
 
-const COLUMN_BORDER = "0.5px solid rgba(255,255,255,0.05)";
+const COLUMN_BORDER = `0.5px solid ${HAIR}`;
 
 function HighlightParagraph({
   containerRef,
@@ -245,8 +253,8 @@ function HighlightParagraph({
                 color: isAccent
                   ? "#1A47FF"
                   : isLit
-                    ? "#ffffff"
-                    : "rgba(255, 255, 255, 0.25)",
+                    ? TXT
+                    : TXT_UNLIT,
                 fontWeight: isAccent ? 600 : undefined,
                 transition: "color 0.3s ease",
               }}
@@ -263,56 +271,13 @@ function HighlightParagraph({
 
 export function SectionEnjeux() {
   const enjeuxSectionRef = useRef<HTMLElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [statsActive, setStatsActive] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || !videoRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const scrolled = -rect.top;
-      videoRef.current.style.transform = `translateY(${scrolled * 0.35}px)`;
-    };
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) return;
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleTimeUpdate = () => {
-      if (!Number.isFinite(video.duration)) return;
-
-      const remaining = video.duration - video.currentTime;
-      if (remaining < 0.8) {
-        video.style.opacity = String(remaining / 0.8);
-      } else if (video.currentTime < 0.8) {
-        video.style.opacity = String(video.currentTime / 0.8);
-      } else {
-        video.style.opacity = "1";
-      }
-    };
-
-    const startTimeUpdate = () => {
-      video.addEventListener("timeupdate", handleTimeUpdate);
-    };
-
-    if (Number.isFinite(video.duration)) {
-      startTimeUpdate();
-    } else {
-      video.addEventListener("loadedmetadata", startTimeUpdate, { once: true });
-    }
-
-    return () => {
-      video.removeEventListener("timeupdate", handleTimeUpdate);
-      video.removeEventListener("loadedmetadata", startTimeUpdate);
-    };
-  }, []);
-
+  // La colonne centrale portait une vidéo (grimpeur) pilotée par le scroll,
+  // avec un contournement CSS du filigrane Kling AI. Remplacée par une image
+  // fixe servie en WebP par next/image : plus légère sur mobile, sans
+  // filigrane et sans logique de lecture. Ne reste que l'observateur qui
+  // déclenche l'animation des chiffres.
   useEffect(() => {
     const section = enjeuxSectionRef.current;
     if (!section) return;
@@ -328,43 +293,47 @@ export function SectionEnjeux() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const section = enjeuxSectionRef.current;
-    if (!video || !section) return;
-    video.pause();
-    const trigger = ScrollTrigger.create({
-      trigger: section,
-      start: "top bottom",
-      end: "bottom top",
-      onUpdate: (self) => {
-        if (video.duration && !isNaN(video.duration)) {
-          video.currentTime = video.duration * self.progress;
-        }
-      },
-    });
-    return () => trigger.kill();
-  }, []);
-
   return (
     <section id="section-2" ref={enjeuxSectionRef} className="w-full">
-      <div
-        className="pt-24 pb-32 md:pt-32 md:pb-48"
-        style={{ background: "#060912" }}
-      >
-        <div className="grid min-h-[520px] grid-cols-1 lg:grid-cols-[1fr_auto_1fr]">
-          {/* Colonne gauche — texte + stats */}
-          <div
-            className="flex flex-col justify-center"
-            style={{ padding: "40px 28px" }}
-          >
+      {/*
+       * Grille en zones nommées : une seule source pour les deux dispositions.
+       * - Desktop (≥1024px) : 3 colonnes 1fr / 0.8fr / 1fr, alignées en haut,
+       *   la colonne vidéo devient `sticky` (top 12vh) et accompagne le scroll
+       *   des deux colonnes de texte au lieu de flotter dans du vide.
+       * - Mobile : une colonne, ordre imposé titre → vidéo → chiffres →
+       *   citations, la vidéo en bandeau (hauteur ≤ 45vh), sans sticky.
+       * Plus aucune hauteur minimale imposée : c'est le contenu qui la fixe.
+       */}
+      <style>{`
+        .enjeux-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-areas: "text" "video" "stats" "quotes";
+          align-items: start;
+          column-gap: 24px;
+        }
+        .enjeux-text   { grid-area: text; }
+        .enjeux-video  { grid-area: video; align-self: start; height: 45vh; }
+        .enjeux-stats  { grid-area: stats; }
+        .enjeux-quotes { grid-area: quotes; }
+        @media (min-width: 1024px) {
+          .enjeux-grid {
+            grid-template-columns: 1fr 0.8fr 1fr;
+            grid-template-areas:
+              "text  video quotes"
+              "stats video quotes";
+          }
+          .enjeux-video { position: sticky; top: 12vh; height: 70vh; }
+        }
+      `}</style>
+
+      <div className="py-16 md:py-24" style={{ background: "#060912" }}>
+        <div className="enjeux-grid">
+          {/* Titre + accroche */}
+          <div className="enjeux-text" style={{ padding: "8px 28px 24px" }}>
             <p
-              className="mb-4 uppercase"
-              style={{
-                fontSize: "10px",
-                color: "rgba(255,255,255,0.25)",
-                letterSpacing: "0.12em",
-              }}
+              className="mb-4 font-mono uppercase"
+              style={{ fontSize: "10px", color: TXT_SECOND, letterSpacing: "0.12em" }}
             >
               CONTEXTE · FRANCE 2026
             </p>
@@ -375,85 +344,63 @@ export function SectionEnjeux() {
               words={TITLE_WORDS}
               accentWords={new Set()}
               className="mb-4 max-w-md leading-snug"
-              style={{
-                fontSize: "clamp(16px, 2vw, 20px)",
-                fontWeight: 600,
-              }}
+              style={{ fontSize: "clamp(16px, 2vw, 20px)", fontWeight: 600 }}
             />
 
             <HighlightParagraph containerRef={enjeuxSectionRef} />
+          </div>
 
-            <hr style={SEPARATOR_STYLE} />
+          {/* Image fixe — grimpeur. `sizes` déclare 100vw sous 900px (bandeau
+              pleine largeur) et ~33vw au-delà (la colonne 0.8fr) : next/image
+              sert la variante WebP de ~800px sur mobile, plus large sur
+              desktop. Chargée en différé (hors du premier écran). */}
+          <div
+            className="enjeux-video relative w-full overflow-hidden"
+            style={{ borderLeft: COLUMN_BORDER, borderRight: COLUMN_BORDER }}
+          >
+            {/* Wrapper `absolute inset-0` : parent de position valide pour une
+                image `fill`. Le conteneur `.enjeux-video` étant `position:sticky`
+                sur desktop, Next.js refusait le `fill` directement dessus. */}
+            <div className="absolute inset-0">
+              <Image
+                src="/images/grimpeur-canyon.jpg"
+                alt="Un grimpeur suspendu à une paroi éclairée, au fond d'un canyon dans l'ombre — l'exposition de l'entreprise face au risque numérique."
+                fill
+                sizes="(max-width: 900px) 100vw, 33vw"
+                loading="lazy"
+                className="object-cover"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-10"
+              style={{ background: "linear-gradient(to right, #060912, transparent)" }}
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-10"
+              style={{ background: "linear-gradient(to left, #060912, transparent)" }}
+              aria-hidden
+            />
+          </div>
 
+          {/* Chiffres clés */}
+          <div className="enjeux-stats" style={{ padding: "8px 28px 24px" }}>
+            <hr style={{ ...SEPARATOR_STYLE, marginTop: 0 }} />
             {STATS.map((stat) => (
               <AnimatedStat key={stat.source} active={statsActive} stat={stat} />
             ))}
           </div>
 
-          {/* Colonne centre — vidéo (sectionRef pour parallax) */}
-          <div
-            ref={sectionRef}
-            className="relative min-h-[320px] w-full overflow-hidden lg:min-h-[520px] lg:w-[220px]"
-            style={{
-              borderLeft: COLUMN_BORDER,
-              borderRight: COLUMN_BORDER,
-            }}
-          >
-            <div className="relative h-full min-h-[320px] w-full overflow-hidden lg:min-h-[520px]">
-              <video
-                ref={videoRef}
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 h-full w-full"
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center bottom",
-                  transform: "scale(1.3) translateY(-15%)",
-                  transition: "opacity 0.1s",
-                }}
-                src="/videos/alpiniste.mp4"
-                aria-hidden="true"
-              />
-            </div>
-            <div
-              className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-10"
-              style={{
-                background:
-                  "linear-gradient(to right, #060912, transparent)",
-              }}
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-10"
-              style={{
-                background:
-                  "linear-gradient(to left, #060912, transparent)",
-              }}
-              aria-hidden
-            />
-          </div>
-
-          {/* Colonne droite — citations */}
-          <div
-            className="flex flex-col justify-center"
-            style={{ padding: "40px 28px" }}
-          >
+          {/* Citations */}
+          <div className="enjeux-quotes" style={{ padding: "8px 28px 24px" }}>
             <blockquote
               className="pl-4 italic leading-relaxed"
-              style={{
-                borderLeft: "2px solid #1A47FF",
-                fontSize: "13px",
-                color: "rgba(255,255,255,0.65)",
-              }}
+              style={{ borderLeft: "2px solid #1A47FF", fontSize: "13px", color: TXT_SECOND }}
             >
               « La menace cyber est une réalité du quotidien qui nous impose
               d&apos;intensifier nos efforts. »
             </blockquote>
-            <p
-              className="mt-3 pl-4 font-mono"
-              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
-            >
+            <p className="mt-3 pl-4 font-mono" style={{ fontSize: "11px", color: TXT_SECOND }}>
               ANSSI — Rapport d&apos;activité 2025
             </p>
 
@@ -461,19 +408,12 @@ export function SectionEnjeux() {
 
             <blockquote
               className="pl-4 italic leading-relaxed"
-              style={{
-                borderLeft: "1px solid rgba(255,255,255,0.07)",
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.32)",
-              }}
+              style={{ borderLeft: `1px solid ${HAIR}`, fontSize: "12px", color: TXT_SECOND }}
             >
               « En 2025, le volume d&apos;attaques confirme une pression cyber
               durable et structurelle. »
             </blockquote>
-            <p
-              className="mt-3 pl-4 font-mono"
-              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
-            >
+            <p className="mt-3 pl-4 font-mono" style={{ fontSize: "11px", color: TXT_SECOND }}>
               Ministère de l&apos;Intérieur — 2026
             </p>
 
@@ -481,19 +421,12 @@ export function SectionEnjeux() {
 
             <blockquote
               className="pl-4 italic leading-relaxed"
-              style={{
-                borderLeft: "1px solid rgba(255,255,255,0.07)",
-                fontSize: "11px",
-                color: "rgba(255,255,255,0.32)",
-              }}
+              style={{ borderLeft: `1px solid ${HAIR}`, fontSize: "12px", color: TXT_SECOND }}
             >
               « 6 entreprises sur 10 ne savent pas évaluer les conséquences
               d&apos;une cyberattaque. »
             </blockquote>
-            <p
-              className="mt-3 pl-4 font-mono"
-              style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}
-            >
+            <p className="mt-3 pl-4 font-mono" style={{ fontSize: "11px", color: TXT_SECOND }}>
               Cybermalveillance.gouv.fr — 2025
             </p>
 

@@ -15,7 +15,7 @@ export default function CtaFinal() {
           </h2>
         </div>
         <CtaTransition href={CONTACT_HREF} className={`${styles.btn} ${styles.btnP}`}>
-          Nous exposer votre dossier <span className={styles.ar}>→</span>
+          Prendre rendez-vous <span className={styles.ar}>→</span>
         </CtaTransition>
       </div>
     </section>

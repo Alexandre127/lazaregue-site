@@ -1,13 +1,22 @@
 import styles from "../le-cabinet.module.css";
+import { AVIS } from "@/lib/avis";
 import { CONTACT_HREF } from "../data/liens";
 import { CtaTransition } from "./MethodTransition";
 import Reveal from "./Reveal";
 
+/**
+ * Chaque chiffre doit rester exact dans la durée.
+ *  · « 10+ ans » visait l'expérience du fondateur, pas l'âge du cabinet créé
+ *    en 2016 : la mention devenait ambiguë et fragile. Remplacée par la note
+ *    Google, vérifiable et adossée à une source publique.
+ *  · Le suivi en ligne est précisé : il démarre à l'ouverture du dossier,
+ *    faute de quoi l'engagement serait pris en défaut dès la prise de contact.
+ */
 const STATS = [
   { v: "2016", l: "création du cabinet" },
-  { v: "10+", l: "ans de contentieux numérique" },
+  { v: `${AVIS.note}/5`, l: `note google · ${AVIS.nombre} avis` },
   { v: "24H", l: "accusé de réception" },
-  { v: "TOUS", l: "les dossiers ont un suivi en ligne" },
+  { v: "TOUS", l: "les dossiers suivis en ligne dès leur ouverture" },
 ];
 
 export default function Hero() {
@@ -47,7 +56,7 @@ export default function Hero() {
             </div>
             <div className={styles.hcta}>
               <CtaTransition href={CONTACT_HREF} className={`${styles.btn} ${styles.btnP}`}>
-                Nous exposer votre dossier <span className={styles.ar}>→</span>
+                Parler de votre dossier <span className={styles.ar}>→</span>
               </CtaTransition>
               <a href="#equipe" className={`${styles.btn} ${styles.btnGo}`}>
                 L&apos;équipe <span className={styles.ar}>→</span>

@@ -1,14 +1,37 @@
 "use client";
 
+import Image from "next/image";
+
 export function SectionCabinet() {
   return (
     <section
-      className="py-12 px-[5%] text-center"
+      className="py-16 md:py-24 px-[5%] text-center"
       style={{ backgroundColor: "#060912" }}
     >
+      {/*
+        La photo d'équipe était servie brute en pleine résolution pour un
+        affichage de 340 px de haut. `next/image` la redimensionne et la
+        convertit en WebP ; `sizes="100vw"` parce qu'elle occupe toute la
+        largeur du conteneur.
+
+        Elle est plus haute que large dans un bandeau très large : en `cover`,
+        plus l'écran s'élargit, plus le rognage vertical est sévère — au point
+        de couper les visages. La hauteur suit donc la largeur (35vw), la
+        largeur est plafonnée, et le cadrage à 48 % centre la bande sur les
+        deux personnes, dont les visages sont vers 48 % de la hauteur.
+      */}
       <div
         className="relative overflow-hidden"
-        style={{ marginTop: "32px", overflow: "hidden" }}
+        style={{
+          marginTop: "32px",
+          /* Sans plafond de largeur, le bandeau continue de s'élargir sur
+             les très grands écrans alors que sa hauteur est bornée : le
+             rognage se resserre et finit par recouper les visages. */
+          maxWidth: "1400px",
+          marginInline: "auto",
+          height: "clamp(340px, 35vw, 560px)",
+          borderRadius: "10px",
+        }}
       >
         <style>{`
           @keyframes kenBurns {
@@ -19,16 +42,21 @@ export function SectionCabinet() {
               transform: scale(1.06);
             }
           }
+          @media (prefers-reduced-motion: reduce) {
+            .kenBurns {
+              animation: none !important;
+            }
+          }
         `}</style>
-        <img
-          src="/images/equipe-cabinet.jpg"
-          alt="Équipe Lazarègue Avocats"
+        <Image
+          className="kenBurns"
+          src="/images/equipe.jpg"
+          alt="Les avocats et experts techniques du cabinet Lazarègue Avocats, à Paris 17e"
+          fill
+          sizes="100vw"
           style={{
-            width: "100%",
-            height: "340px",
             objectFit: "cover",
-            objectPosition: "center 35%",
-            borderRadius: "10px",
+            objectPosition: "center 48%",
             animation: "kenBurns 12s ease-in-out infinite alternate",
           }}
         />
@@ -98,8 +126,8 @@ export function SectionCabinet() {
           type="button"
           style={{
             backgroundColor: "transparent",
-            color: "rgba(255,255,255,0.45)",
-            border: "0.5px solid rgba(255,255,255,0.15)",
+            color: "#C5CBDE",
+            border: "0.5px solid rgba(255,255,255,0.25)",
             padding: "14px 24px",
             borderRadius: "4px",
             fontSize: "12px",

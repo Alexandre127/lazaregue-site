@@ -265,8 +265,8 @@
 .crow {
   display: grid;
   grid-template-columns: 64px 1fr;
-  gap: 16px;
-  padding: 24px;
+  gap: 20px;
+  padding: 28px 26px;
   border-right: 1px solid var(--bd);
   border-bottom: 1px solid var(--bd);
   position: relative;
@@ -294,14 +294,16 @@
 }
 .cn {
   font-family: var(--ff-display);
-  font-size: 38px;
+  font-size: 44px;
   line-height: 0.9;
   color: var(--blue);
 }
 .ct h3 {
-  font-size: 16px;
+  font-size: 16.5px;
   line-height: 1.35;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bd);
 }
 .ct p {
   margin: 0;
@@ -1437,4 +1439,25 @@
     transition: none !important;
     scroll-behavior: auto;
   }
+}
+
+/* ── Relance après la charte client ── */
+
+.charteSuite {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.charteSuite p {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--mu);
+  margin: 0;
+  max-width: 52ch;
 }

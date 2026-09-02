@@ -3,16 +3,15 @@
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { AnimatePresence, motion } from "motion/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardArrowDown } from "relume-icons";
 
-type DropdownKey = "domaines" | "cabinet";
+type DropdownKey = "domaines";
 
 const DOMAINES_LINKS = [
   { label: "Cybersécurité & NIS 2", href: "/nos-domaines/cybersecurite" },
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
-  { label: "Contrats tech & Économie numérique", href: "/competences/contrats" },
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
   { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
   {
@@ -20,14 +19,8 @@ const DOMAINES_LINKS = [
     href: "/competences/plateformes",
   },
   { label: "M&A Tech & Due diligence", href: "/competences/ma-tech" },
-  { label: "Gaming, Esport & Industrie créative", href: "/competences/gaming" },
-];
-
-const CABINET_LINKS = [
-  { label: "Le cabinet", href: "/le-cabinet" },
-  { label: "Études de cas", href: "/#cas" },
-  { label: "Contributions", href: "/#contributions" },
-  { label: "Tarifs", href: "/tarifs" },
+  // « Gaming, Esport & Industrie créative » pointait vers /competences/gaming,
+  // qui n'existe pas. À remettre le jour où la page sera écrite.
 ];
 
 const dropdownVariants = {
@@ -45,7 +38,7 @@ const dropdownVariants = {
 
 const useRelume = () => {
   const [openDropdown, setOpenDropdown] = useState<DropdownKey | null>(null);
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 1023px)");
   const toggleMobileDropdown = (key: DropdownKey) => () => {
     setOpenDropdown((prev) => (prev === key ? null : key));
   };
@@ -158,13 +151,24 @@ export function Navbar11() {
   const useActive = useRelume();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Étape 5 — Verrouillage du défilement du corps tant que le menu plein écran
+  // est ouvert : sans cela, la page défile derrière le panneau.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const precedent = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = precedent;
+    };
+  }, [menuOpen]);
+
   return (
     <>
       <header className="laz-nav flex w-full items-center justify-between">
         <LazLogo />
 
         <nav
-          className="laz-nav-links !ml-0 hidden justify-start md:flex"
+          className="laz-nav-links !ml-0 hidden justify-start lg:flex"
           aria-label="Principal"
         >
           <NavDropdown
@@ -172,17 +176,13 @@ export function Navbar11() {
             dropdownKey="domaines"
             links={DOMAINES_LINKS}
             useActive={useActive}
-            panelClassName="absolute left-0 top-full z-[101] hidden min-w-[320px] overflow-hidden border border-[var(--hero-bd)] bg-[rgba(10,15,46,0.98)] backdrop-blur-[14px] md:block"
+            panelClassName="absolute left-0 top-full z-[101] hidden min-w-[320px] overflow-hidden border border-[var(--hero-bd)] bg-[rgba(10,15,46,0.98)] backdrop-blur-[14px] lg:block"
           />
-          <NavDropdown
-            label="Le cabinet"
-            dropdownKey="cabinet"
-            links={CABINET_LINKS}
-            useActive={useActive}
-            panelClassName="absolute left-0 top-full z-[101] hidden min-w-[220px] overflow-hidden border border-[var(--hero-bd)] bg-[rgba(10,15,46,0.98)] backdrop-blur-[14px] md:block"
-          />
+          <a href="/le-cabinet" className="laz-nlink">
+            Le cabinet
+          </a>
           <a href="/blog" className="laz-nlink">
-            Blog
+            Analyses
           </a>
           <a href="/ressources" className="laz-nlink">
             Ressources
@@ -194,7 +194,7 @@ export function Navbar11() {
 
         <button
           type="button"
-          className="text-[24px] text-white md:hidden"
+          className="text-[24px] text-white lg:hidden"
           onClick={() => setMenuOpen(true)}
           aria-label="Ouvrir le menu"
         >
@@ -203,7 +203,7 @@ export function Navbar11() {
       </header>
 
       {menuOpen ? (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#06080f] md:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[#06080f] lg:hidden">
           <button
             type="button"
             className="absolute right-4 top-4 text-[24px] text-white"
@@ -220,23 +220,22 @@ export function Navbar11() {
                 dropdownKey="domaines"
                 links={DOMAINES_LINKS}
                 useActive={useActive}
-                panelClassName="overflow-hidden md:hidden"
+                panelClassName="overflow-hidden lg:hidden"
                 triggerClassName="flex items-center gap-1 text-[20px] text-white"
               />
-              <NavDropdown
-                label="Le cabinet"
-                dropdownKey="cabinet"
-                links={CABINET_LINKS}
-                useActive={useActive}
-                panelClassName="overflow-hidden md:hidden"
-                triggerClassName="flex items-center gap-1 text-[20px] text-white"
-              />
+              <a
+                href="/le-cabinet"
+                className="text-[20px] text-white"
+                onClick={() => setMenuOpen(false)}
+              >
+                Le cabinet
+              </a>
               <a
                 href="/blog"
                 className="text-[20px] text-white"
                 onClick={() => setMenuOpen(false)}
               >
-                Blog
+                Analyses
               </a>
               <a
                 href="/ressources"

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 
 type CompetenceCard = {
   id: number;
@@ -13,6 +14,11 @@ type CompetenceCard = {
   tags: string[];
   tagColor: string;
   tagText: string;
+  /** Page de domaine correspondante. */
+  href: string;
+  /** Libellé de lien explicite, affiché en clair (pas de « En savoir plus »).
+   *  C'est aussi ce qui donne son sens au lien pour les moteurs. */
+  linkLabel: string;
 };
 
 function CardGridCanvas({ gridRgb }: { gridRgb: string }) {
@@ -204,6 +210,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(26,71,255,.12)",
     tagText: "#6D8FFF",
+    href: "/nos-domaines/cybersecurite",
+    linkLabel: "Cybersécurité et NIS 2",
   },
   {
     id: 2,
@@ -221,6 +229,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(226,75,74,.12)",
     tagText: "#F09595",
+    href: "/nos-domaines/contrats-informatiques",
+    linkLabel: "Contrats IT et responsabilité",
   },
   {
     id: 3,
@@ -234,6 +244,8 @@ const cards: CompetenceCard[] = [
     tags: ["IA & AI ACT", "RGPD & DONNÉES", "GOUVERNANCE DES DONNÉES"],
     tagColor: "rgba(29,158,117,.12)",
     tagText: "#5DCAA5",
+    href: "/nos-domaines/ia-act",
+    linkLabel: "Intelligence artificielle et AI Act",
   },
   {
     id: 4,
@@ -251,6 +263,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(212,83,126,.12)",
     tagText: "#ED93B1",
+    href: "/competences/plateformes",
+    linkLabel: "Plateformes et réseaux sociaux",
   },
 ];
 
@@ -279,8 +293,14 @@ function CompetenceCardTile({
       "perspective(900px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)";
   };
 
+  // Pas d'aria-label : le nom accessible du lien dérive du contenu visible
+  // (titre + libellé explicite), donc il contient forcément le texte affiché
+  // — conforme au critère WCAG 2.5.3 sans divergence.
   return (
-    <div className="group block w-full">
+    <Link
+      href={card.href}
+      className="group block w-full rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A14]"
+    >
       <div
         ref={tiltRef}
         className="w-full transition-transform duration-200 ease-out"
@@ -349,22 +369,25 @@ function CompetenceCardTile({
               ))}
             </div>
 
+            {/* Libellé explicite, visible en permanence (un survol n'existe
+                pas au tap sur mobile). L'accentuation au survol/focus reste
+                un simple renfort, pas la condition d'apparition. */}
             <p
-              className="font-mono text-[11px] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              className="font-mono text-[11px] opacity-80 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
               style={{ color: card.color }}
             >
-              En savoir plus →
+              {card.linkLabel} →
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function SectionCompetences() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-10 md:py-16">
+    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-16 md:py-24">
       <style>{`
         @keyframes lineBreathe {
           0%,

@@ -23,7 +23,7 @@ export const EXPERTS: Expert[] = [
     nom: "Nadia Abchiche-Mimouni",
     monogramme: "NA",
     role: "docteure en ia · éthique algorithmique",
-    photo: "/images/nadia-abchiche.png",
+    photo: "/images/nadia-abchiche.jpg",
     texte:
       "Évalue l'architecture technique des systèmes d'intelligence artificielle, leurs biais et leurs impacts. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
     faits: [
@@ -40,7 +40,7 @@ export const EXPERTS: Expert[] = [
     nom: "Khalid Sookia",
     monogramme: "KS",
     role: "expert en cybersécurité",
-    photo: "/images/khalid-sookia.png",
+    photo: "/images/khalid-pro.jpg",
     texte:
       "Intervient sur l'audit des systèmes d'information, les politiques de sécurité et l'investigation numérique. Sur un incident, il établit l'état réel du système et sécurise les traces — ce qui déterminera ce qui peut être démontré.",
     faits: [

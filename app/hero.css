@@ -46,6 +46,18 @@
   z-index: 0;
 }
 
+/* Étape 1 — Curseur personnalisé : inutile au doigt, et positionné hors écran
+   il peut créer du défilement. Désactivé sur les appareils tactiles. */
+@media (pointer: coarse) {
+  .laz-cur,
+  .laz-cur2 {
+    display: none !important;
+  }
+  .laz-site.cursor-custom {
+    cursor: auto;
+  }
+}
+
 /* Nav hero */
 .laz-nav {
   position: fixed;
@@ -95,6 +107,17 @@
   display: flex;
   align-items: center;
   margin-left: auto;
+}
+
+/* Étape 5 — Cette règle `display:flex` écrasait le `hidden` de Tailwind (même
+   spécificité, hero.css l'emporte par l'ordre de cascade) : le menu horizontal
+   restait affiché sous mobile, en plus du burger. On masque explicitement la
+   navigation desktop sous lg (1024px), où le burger prend le relais.
+   Desktop (≥1024px) inchangé. */
+@media (max-width: 1023.98px) {
+  .laz-nav-links {
+    display: none;
+  }
 }
 
 .laz-nlink {
@@ -626,14 +649,43 @@
 @media (max-width: 900px) {
   .laz-hero {
     grid-template-columns: 1fr;
+    /* Plus de hauteur 100vh forcée : sans le globe, elle ne servait qu'à
+       créer un vide sous le CTA. La section prend sa hauteur de contenu. */
+    min-height: auto;
   }
 
-  .laz-hero-right {
+  /* Masquage de la colonne du globe sur mobile — intention d'origine du
+     design. La règle de base `.laz-reveal.laz-hero-right { display:flex }`
+     (spécificité 0,2,0) l'emportait sur un simple `.laz-hero-right` (0,1,0) :
+     on reprend la même spécificité pour que le `display:none` s'applique.
+     C'est ce conteneur fixe de 520px qui provoquait la majorité des débordements. */
+  .laz-hero-right,
+  .laz-reveal.laz-hero-right {
     display: none;
   }
 
+  /* Étape 2 — Halo décoratif de 700px en position fixe : hors du conteneur, il
+     débordait à droite sur mobile. Masqué sous 900px (purement esthétique). */
+  .laz-glow {
+    display: none;
+  }
+
+  /* Fix vides verticaux : sur desktop la colonne gauche est centrée dans une
+     hauteur de 100vh, ce qui laissait ~350px de noir au-dessus du H1 et un
+     grand vide sous le CTA une fois le globe masqué. Sur mobile on aligne le
+     contenu en haut, sur sa hauteur naturelle, avec un padding qui dégage la
+     barre fixe de 54px. Desktop (≥900px) inchangé. */
   .laz-hero-left {
-    padding: 53px 16px 40px;
+    padding: 88px 16px 56px;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  /* Le `-mt-[70px]` (Tailwind) remontait la copie pour l'aligner sur le globe
+     sur desktop. Sans globe sur mobile, il la faisait passer sous la barre :
+     neutralisé ici. */
+  .laz-hero-copy {
+    margin-top: 0;
   }
 
   .laz-nav {
