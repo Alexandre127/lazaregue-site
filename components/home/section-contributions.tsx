@@ -249,9 +249,11 @@ export function SectionContributions() {
             Contributions &amp; Prises de position
           </p>
           <h2 className="text-2xl font-medium leading-snug text-[#0A0F2E]">
-            Le droit du numérique se construit
-            <br />
-            aussi dans l&apos;espace public.
+            Parce que le droit du numérique se construit aussi dans
+            l&apos;espace public,{" "}
+            <span className="text-[#1A47FF]">
+              nous contribuons aux débats.
+            </span>
           </h2>
         </header>
 
