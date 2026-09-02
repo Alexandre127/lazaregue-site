@@ -221,7 +221,7 @@ const cards: CompetenceCard[] = [
     bg: "linear-gradient(135deg, #1a0808 0%, #1e0c10 50%, #1a0808 100%)",
     title: "Conflits IT & projets bloqués",
     phrase:
-      "Résoudre les situations de blocage liées aux projets numériques, aux prestataires technologiques et aux infrastructures critiques.",
+      "Résoudre les situations de blocage liées aux contrats numériques, aux prestataires informatiques et aux infrastructures critiques.",
     tags: [
       "CONTENTIEUX INFORMATIQUE",
       "CONTRATS TECH & SAAS",
@@ -240,7 +240,7 @@ const cards: CompetenceCard[] = [
     bg: "linear-gradient(135deg, #081408 0%, #0c1a10 50%, #081408 100%)",
     title: "IA, données & risques réglementaires",
     phrase:
-      "Implémenter les usages de l'IA et des données dans une logique de conformité, de sécurité et de maîtrise des risques.",
+      "Implémenter en entreprise les usages de l'IA et des données dans une logique de conformité, de sécurité et de maîtrise des risques.",
     tags: ["IA & AI ACT", "RGPD & DONNÉES", "GOUVERNANCE DES DONNÉES"],
     tagColor: "rgba(29,158,117,.12)",
     tagText: "#5DCAA5",
@@ -255,7 +255,7 @@ const cards: CompetenceCard[] = [
     bg: "linear-gradient(135deg, #0e0818 0%, #120c1e 50%, #0e0818 100%)",
     title: "Contenus, plateformes & atteintes à l'image",
     phrase:
-      "Protéger les entreprises et leurs dirigeants face aux atteintes réputationnelles, aux plateformes et aux usages abusifs des contenus numériques.",
+      "Protéger l'image et la réputation face aux atteintes en ligne, aux plateformes et aux usages abusifs des contenus numériques.",
     tags: [
       "PLATEFORMES & RÉSEAUX SOCIAUX",
       "GAMING & INDUSTRIE CRÉATIVE",
@@ -425,7 +425,7 @@ export default function SectionCompetences() {
             className="text-xs uppercase tracking-[0.2em] text-white/40"
             style={{ fontFamily: "'DM Mono', monospace" }}
           >
-            Nos compétences · Droit du numérique
+            Nos compétences
           </p>
         </div>
 

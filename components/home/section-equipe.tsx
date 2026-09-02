@@ -196,10 +196,8 @@ export function SectionEquipe() {
             <br />
             Des experts techniques qui comprennent le droit.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-[#C5CBDE]">
-            Trois avocats à la Cour d&apos;appel de Paris, deux experts
-            indépendants mobilisés selon les besoins du dossier.
-          </p>
+          {/* Paragraphe « Trois avocats… deux experts… » retiré : les cartes
+              qui suivent portent déjà ces informations. */}
         </header>
 
         <div className="equipe-cards">
