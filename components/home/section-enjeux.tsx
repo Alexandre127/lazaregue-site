@@ -313,7 +313,7 @@ export function SectionEnjeux() {
           column-gap: 24px;
         }
         .enjeux-text   { grid-area: text; }
-        .enjeux-video  { grid-area: video; align-self: start; height: 45vh; }
+        .enjeux-video  { grid-area: video; align-self: start; height: 200px; }
         .enjeux-stats  { grid-area: stats; }
         .enjeux-quotes { grid-area: quotes; }
         @media (min-width: 1024px) {

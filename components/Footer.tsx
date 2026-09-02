@@ -166,7 +166,7 @@ export function Footer() {
     <footer
       id="contact"
       ref={footerRef}
-      className="relative z-20 overflow-hidden bg-[#06080f] pt-12 text-white"
+      className="relative z-20 overflow-hidden bg-[#06080f] text-white md:pt-12"
     >
       <canvas
         ref={canvasRef}
@@ -175,7 +175,7 @@ export function Footer() {
       />
 
       <div className="relative z-10">
-        <div className="border-b border-white/[0.07] bg-[#06080f] px-4 py-14 md:px-8 md:py-20 lg:px-12">
+        <div className="border-b border-white/[0.07] bg-[#06080f] px-4 py-10 md:px-8 md:py-20 lg:px-12">
           <div className="container mx-auto flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="max-w-xl">
               <p className="mb-4 font-mono text-[10px] tracking-widest text-white/35">

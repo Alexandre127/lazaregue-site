@@ -27,7 +27,12 @@ export function Header5() {
             <h1
               className="laz-hero-h1 max-w-full"
               style={{
-                fontSize: "clamp(46px, 6.5vw, 78px)",
+                // Borne basse abaissée pour les petits écrans : à 360-390 px,
+                // les mots longs (« CYBERCRIMINALITÉ », « CONTRATS
+                // INFORMATIQUES ») tenaient hors de l'écran. Seuls les écrans
+                // < ~490 px sont touchés ; au-delà, c'est 6.5vw qui pilote,
+                // donc desktop et tablette restent identiques.
+                fontSize: "clamp(32px, 6.5vw, 78px)",
                 lineHeight: "1.0",
               }}
             >

@@ -5,7 +5,7 @@ import Image from "next/image";
 export function SectionCabinet() {
   return (
     <section
-      className="py-16 md:py-24 px-[5%] text-center"
+      className="pt-8 pb-14 md:py-24 px-[5%] text-center"
       style={{ backgroundColor: "#060912" }}
     >
       {/*
@@ -21,9 +21,8 @@ export function SectionCabinet() {
         deux personnes, dont les visages sont vers 48 % de la hauteur.
       */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden mt-2 md:mt-8"
         style={{
-          marginTop: "32px",
           /* Sans plafond de largeur, le bandeau continue de s'élargir sur
              les très grands écrans alors que sa hauteur est bornée : le
              rognage se resserre et finit par recouper les visages. */
@@ -60,8 +59,12 @@ export function SectionCabinet() {
             animation: "kenBurns 12s ease-in-out infinite alternate",
           }}
         />
+        {/* Légende — superposée en bas de l'image sur desktop (inchangé). Sur
+            mobile, ce cartouche bleu sur fond sombre était peu lisible et se
+            faisait couper par le bord de l'image : on le masque et on le
+            reporte sous l'image (voir <p> ci-dessous). */}
         <span
-          className="absolute"
+          className="absolute hidden md:block"
           style={{
             bottom: "12px",
             left: "16px",
@@ -77,6 +80,19 @@ export function SectionCabinet() {
           Lazarègue Avocats · 18 rue de Tilsitt · 75017 Paris
         </span>
       </div>
+
+      {/* Légende mobile : hors de l'image, lisible (gris clair, pas de rognage). */}
+      <p
+        className="md:hidden"
+        style={{
+          marginTop: "10px",
+          fontSize: "11px",
+          color: "#8892A6",
+          letterSpacing: "0.04em",
+        }}
+      >
+        Lazarègue Avocats · 18 rue de Tilsitt · 75017 Paris
+      </p>
 
       <p
         style={{

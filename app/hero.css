@@ -705,4 +705,30 @@
   .laz-hero-h3-dynamic-slot {
     min-width: clamp(5.5rem, 28vw, 9rem);
   }
+
+  /* H1 — le mot qui défile était en `white-space: nowrap` dans un emplacement
+     d'une seule ligne : « CONTRATS INFORMATIQUES » et « INTELLIGENCE
+     ARTIFICIELLE » sortaient de l'écran. La borne basse du clamp abaissée à
+     32px (dans le composant) suffit à tout faire tenir sur une ligne dès 320px
+     avec la police condensée. On autorise malgré tout le retour à la ligne
+     (filet de sécurité) et on borne la largeur du mot (`right: 0`) pour qu'il
+     revienne dans la colonne au lieu de déborder. Desktop (≥900px) inchangé. */
+  .laz-hero-h1-dynamic-slot {
+    height: auto;
+    min-height: 1.05em;
+    min-width: 0;
+    overflow: visible;
+  }
+  .laz-hero-h1-dynamic-word {
+    white-space: normal;
+    right: 0;
+  }
+
+  /* Le liseré bleu sous la barre fixe (border-bottom) se lisait comme une
+     bande claire en haut de page sur mobile, sur un hero de même teinte que la
+     barre. On l'efface ici ; la barre reste définie par son fond. Desktop
+     (≥900px) inchangé. */
+  .laz-nav {
+    border-bottom-color: transparent;
+  }
 }

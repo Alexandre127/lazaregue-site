@@ -309,7 +309,7 @@ function CompetenceCardTile({
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="relative flex h-[320px] w-full flex-col justify-start overflow-hidden rounded-lg p-8"
+          className="relative flex min-h-[320px] w-full flex-col justify-start overflow-hidden rounded-lg p-8 md:h-[320px]"
           style={{
             background: card.bg,
             border: "1px solid rgba(255,255,255,0.08)",
@@ -348,7 +348,7 @@ function CompetenceCardTile({
               {card.phrase}
             </p>
 
-            <div className="mb-4 flex flex-nowrap gap-2">
+            <div className="mb-4 flex flex-wrap gap-2 md:flex-nowrap">
               {card.tags.map((tag) => (
                 <span
                   key={tag}
