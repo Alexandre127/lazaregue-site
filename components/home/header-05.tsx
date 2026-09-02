@@ -89,7 +89,8 @@ export function Header5() {
   }, []);
 
   return (
-    <section className="laz-hero !pt-6" id="hero">
+    <>
+      <section className="laz-hero !pt-6" id="hero">
       <style>{`
         #hero .laz-btn-arrow {
           transition: transform 0.3s ease;
@@ -162,11 +163,17 @@ export function Header5() {
             <div className="laz-hero-skills-scroll">
               <span className="laz-hero-skill">Cybersécurité</span>
               <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">NIS 2</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
               <span className="laz-hero-skill">RGPD</span>
               <span className="laz-hero-skill-dot" aria-hidden />
               <span className="laz-hero-skill">AI Act</span>
               <span className="laz-hero-skill-dot" aria-hidden />
               <span className="laz-hero-skill">Contrats IT</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">Plateformes</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">Cybercriminalité</span>
             </div>
           </div>
         </div>
@@ -198,8 +205,14 @@ export function Header5() {
           </div>
         </div>
       </HeroReveal>
+      </section>
 
+      {/* Barre d'appel rendue HORS de <section id="hero"> : cette section a
+          `position:relative; z-index:1`, ce qui piégeait la barre fixe dans son
+          contexte d'empilement (les sections suivantes, z-index ≥10, passaient
+          par-dessus). En sibling de la section, la barre vit dans le contexte
+          racine et son z-index domine tout le contenu de la page. */}
       <HeroMobileCallBar />
-    </section>
+    </>
   );
 }

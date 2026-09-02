@@ -676,16 +676,20 @@
      contenu en haut, sur sa hauteur naturelle, avec un padding qui dégage la
      barre fixe de 54px. Desktop (≥900px) inchangé. */
   .laz-hero-left {
-    padding: 88px 16px 56px;
+    /* Padding bas resserré (56→28) : réduit le vide entre le bandeau de
+       compétences et la section suivante. */
+    padding: 88px 16px 28px;
     min-height: auto;
     justify-content: flex-start;
   }
 
   /* Le `-mt-[70px]` (Tailwind) remontait la copie pour l'aligner sur le globe
      sur desktop. Sans globe sur mobile, il la faisait passer sous la barre :
-     neutralisé ici. */
+     neutralisé ici. Gap resserré (2rem→1.25rem) pour que badge + titre +
+     sous-titre + bouton + bandeau tiennent sur le premier écran à 390px. */
   .laz-hero-copy {
     margin-top: 0;
+    gap: 1.25rem;
   }
 
   .laz-nav {
@@ -780,7 +784,7 @@
     display: flex;
     align-items: center;
     width: fit-content;
-    margin: 0 0 18px;
+    margin: 0;
     padding: 6px 12px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;
@@ -800,7 +804,7 @@
     display: block;
     position: relative;
     max-width: 100%;
-    margin-top: 26px;
+    margin-top: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
