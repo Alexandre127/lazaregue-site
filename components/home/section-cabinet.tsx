@@ -49,13 +49,19 @@ export function SectionCabinet() {
         `}</style>
         <Image
           className="kenBurns"
-          src="/images/equipe.jpg"
-          alt="Les avocats et experts techniques du cabinet Lazarègue Avocats, à Paris 17e"
+          src="/images/equipe-cabinet-2026.jpg"
+          alt="L'équipe du cabinet Lazarègue Avocats — deux avocats et une avocate en costume sombre, debout dans un bureau parisien devant les fenêtres."
           fill
           sizes="100vw"
           style={{
             objectFit: "cover",
-            objectPosition: "center 48%",
+            // Trois visages : têtes à ~18%, yeux ~30%, mentons ~43% de la
+            // hauteur. Point focal à 30% → au rognage large du desktop, la bande
+            // visible va de ~12% à ~71% : têtes dégagées (headroom ~6%), mentons
+            // largement inclus. Sur mobile le cadre est quasi carré : toute la
+            // hauteur est visible, seul un rognage latéral centré s'applique et
+            // les trois visages (29/51/74%) restent dans la zone visible.
+            objectPosition: "center 30%",
             animation: "kenBurns 12s ease-in-out infinite alternate",
           }}
         />
