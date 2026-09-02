@@ -784,9 +784,8 @@ const CARDS: DifferentiateurCard[] = [
   },
   {
     imageSrc: "/images/card-terrain.jpg",
-    imageAlt: "Une pratique opérationnelle du numérique",
-    title: "Une pratique opérationnelle du numérique",
-    text: "Depuis 2016, nous accompagnons les PME, ETI et groupes dans leurs problématiques liées au droit des nouvelles technologies.",
+    imageAlt: "Une pratique du numérique depuis 2016",
+    title: "Une pratique du numérique depuis 2016",
   },
   {
     imageAlt: "Un portail client transparent — interface de suivi des dossiers",
