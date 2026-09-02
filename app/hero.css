@@ -732,3 +732,196 @@
     border-bottom-color: transparent;
   }
 }
+
+
+/* =========================================================================
+   Hero mobile (<900px) — halo de fond, badge, bandeau de compétences et
+   barre d'appel collante. Tous ces éléments sont, par défaut, masqués :
+   ils ne sont activés que dans la media query mobile ci-dessous, donc le
+   desktop (≥901px) reste strictement inchangé.
+   ========================================================================= */
+.laz-hero-badge,
+.laz-hero-skills,
+.laz-hero-callbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* Le contenu doit passer au-dessus du halo (::before en z-index 0). */
+  .laz-hero-left {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 1 — Halo radial diffus, bleu électrique très atténué dans l'angle
+     supérieur droit, virant au noir profond ailleurs. Dérive lente (~20s),
+     à peine perceptible. CSS pur ; on anime la position d'un fond
+     surdimensionné, ce qui reste borné à l'élément (aucun débordement). */
+  .laz-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      closest-side at 82% 10%,
+      rgba(26, 71, 255, 0.2),
+      rgba(26, 71, 255, 0.06) 42%,
+      rgba(10, 10, 20, 0) 70%
+    );
+    background-repeat: no-repeat;
+    background-size: 175% 175%;
+    background-position: 0% 0%;
+    animation: lazHeroHaloDrift 20s ease-in-out infinite alternate;
+  }
+
+  /* 2 — Badge discret au-dessus du titre. */
+  .laz-hero-badge {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: 0 0 18px;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    white-space: nowrap;
+  }
+
+  /* 5 — Bandeau de compétences : bande fixe, filets fins haut/bas,
+     débordement horizontal scrollable au doigt, fondu à droite. */
+  .laz-hero-skills {
+    display: block;
+    position: relative;
+    max-width: 100%;
+    margin-top: 26px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .laz-hero-skills-scroll {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 46px 11px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .laz-hero-skills-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .laz-hero-skill {
+    flex: 0 0 auto;
+    font-family: var(--ff-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.74);
+    white-space: nowrap;
+  }
+  .laz-hero-skill-dot {
+    flex: 0 0 auto;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  /* Fondu sur le bord droit — signale que le bandeau continue. */
+  .laz-hero-skills::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    right: 0;
+    width: 52px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(10, 10, 20, 0), var(--ink));
+  }
+
+  /* 6 — Barre d'appel collante (l'apparition au défilement est pilotée en JS
+     via la classe .is-visible). */
+  .laz-hero-callbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(6, 8, 15, 0.92);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    opacity: 0;
+    transition:
+      transform 0.28s ease,
+      opacity 0.28s ease;
+  }
+  .laz-hero-callbar.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .laz-hero-callbar-btn {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    border-radius: 8px;
+    font-family: var(--ff-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .laz-hero-callbar-btn--call {
+    background: var(--blue);
+    color: #fff;
+  }
+  .laz-hero-callbar-btn--write {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+}
+
+@keyframes lazHeroHaloDrift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 14% 10%;
+  }
+}
+
+/* Mouvement figé si l'utilisateur réduit les animations. */
+@media (prefers-reduced-motion: reduce) {
+  .laz-hero::before {
+    animation: none;
+  }
+  .laz-hero-callbar {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Le bandeau de compétences est en `nowrap` + overflow-x:auto. Sans cela,
+     son min-content (largeur du texte) force, via min-width:auto des items
+     flex/grid, la largeur de toute la colonne du hero → débordement de page.
+     On autorise la chaîne à rétrécir pour que le scroll interne prenne le
+     relais. Desktop (≥901px) inchangé. */
+  .laz-hero-left,
+  .laz-hero-copy,
+  .laz-hero-skills {
+    min-width: 0;
+  }
+}

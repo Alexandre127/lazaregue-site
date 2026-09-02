@@ -6,10 +6,88 @@ import { HeroCTACard } from "@/components/home/hero-cta-card";
 import { HeroH1DynamicLine } from "@/components/home/hero-h1-dynamic-line";
 import { HeroGlobeThree } from "@/components/home/hero-globe-three";
 import { HeroReveal } from "@/components/home/hero-reveal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const MOBILE_QUERY = "(max-width: 900px)";
+
+/**
+ * Barre d'appel collante — mobile uniquement (<900px). Sur le modèle de la
+ * barre fixe de /competences/ma-tech, mais elle n'apparaît qu'au défilement
+ * (pas au chargement) et s'efface dès que le pied de page entre dans le
+ * viewport. Aucune écoute sur desktop.
+ */
+function HeroMobileCallBar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // Desktop : on n'attache rien (la barre est de toute façon masquée en CSS).
+    if (!window.matchMedia(MOBILE_QUERY).matches) return;
+
+    const footer = document.querySelector("footer");
+
+    // Visibilité mesurée à chaque défilement, sans IntersectionObserver : la
+    // barre apparaît une fois passé le premier écran et disparaît dès que le
+    // haut du pied de page entre dans le viewport. Une lecture de rect par
+    // événement suffit (React ignore un setState de valeur inchangée).
+    const compute = () => {
+      const scrolledEnough = window.scrollY > 320;
+      const footerVisible = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight
+        : false;
+      setVisible(scrolledEnough && !footerVisible);
+    };
+
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute, { passive: true });
+    compute();
+
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
+
+  return (
+    <div
+      className={`laz-hero-callbar${visible ? " is-visible" : ""}`}
+      aria-hidden={!visible}
+    >
+      <a
+        href="tel:+3382889119"
+        className="laz-hero-callbar-btn laz-hero-callbar-btn--call"
+      >
+        Appeler
+      </a>
+      <a
+        href="/contact"
+        className="laz-hero-callbar-btn laz-hero-callbar-btn--write"
+      >
+        Écrire
+      </a>
+    </div>
+  );
+}
 
 export function Header5() {
   const [ctaOpen, setCtaOpen] = useState(false);
+  // Le canvas Three.js du globe ne doit être MONTÉ qu'au-dessus de 900px — pas
+  // seulement masqué en CSS : c'est son montage (WebGL) qui coûte la batterie
+  // et le temps de chargement sur mobile. On part de `false` (aucun montage au
+  // rendu serveur ni au premier rendu client) et on ne le monte que si la
+  // largeur est confirmée ≥900px. Le globe étant déjà purement client (init en
+  // useEffect), le rendu desktop reste inchangé.
+  const [mountGlobe, setMountGlobe] = useState(false);
+
+  useEffect(() => {
+    // ≥901px : au-dessus du seuil mobile (le globe reste masqué à 900px, comme
+    // la colonne .laz-hero-right).
+    const mq = window.matchMedia("(min-width: 901px)");
+    const sync = () => setMountGlobe(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   return (
     <section className="laz-hero !pt-6" id="hero">
       <style>{`
@@ -23,6 +101,9 @@ export function Header5() {
       `}</style>
       <div className="laz-hero-left overflow-visible">
         <div className="laz-hero-copy overflow-visible -mt-[70px]">
+          {/* Badge — mobile uniquement (masqué ≥900px en CSS). */}
+          <span className="laz-hero-badge">Droit du numérique · Paris</span>
+
           <HeroReveal delay={0}>
             <h1
               className="laz-hero-h1 max-w-full"
@@ -73,6 +154,21 @@ export function Header5() {
               />
             </div>
           </HeroReveal>
+
+          {/* Bandeau de compétences — mobile uniquement (masqué ≥900px). Bande
+              fixe (pas de défilement auto : le titre a déjà un mot rotatif),
+              débordement horizontal scrollable au doigt, fondu à droite. */}
+          <div className="laz-hero-skills">
+            <div className="laz-hero-skills-scroll">
+              <span className="laz-hero-skill">Cybersécurité</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">RGPD</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">AI Act</span>
+              <span className="laz-hero-skill-dot" aria-hidden />
+              <span className="laz-hero-skill">Contrats IT</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -98,10 +194,12 @@ export function Header5() {
             className="laz-globe-wrap laz-globe-wrap-3d relative"
             style={{ width: "520px", height: "520px", marginTop: "40px" }}
           >
-            <HeroGlobeThree />
+            {mountGlobe ? <HeroGlobeThree /> : null}
           </div>
         </div>
       </HeroReveal>
+
+      <HeroMobileCallBar />
     </section>
   );
 }
