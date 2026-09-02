@@ -757,25 +757,31 @@
     z-index: 1;
   }
 
-  /* 1 — Halo radial diffus, bleu électrique très atténué dans l'angle
-     supérieur droit, virant au noir profond ailleurs. Dérive lente (~20s),
-     à peine perceptible. CSS pur ; on anime la position d'un fond
-     surdimensionné, ce qui reste borné à l'élément (aucun débordement). */
+  /* 1 — Halo radial : cercle diffus centré dans l'angle supérieur droit,
+     débordant hors du cadre, sur fond noir profond. On perçoit une profondeur
+     dans le coin, pas un cercle net. Le fond du hero passe à #05070F sous 900px,
+     et overflow:hidden borne le cercle (qui déborde à right:-110) → aucun
+     débordement horizontal. */
+  .laz-hero {
+    background-color: #05070f;
+    overflow: hidden;
+  }
   .laz-hero::before {
     content: "";
     position: absolute;
-    inset: 0;
+    top: -90px;
+    right: -110px;
+    width: 340px;
+    height: 340px;
     z-index: 0;
     pointer-events: none;
-    background-image: radial-gradient(
-      closest-side at 82% 10%,
-      rgba(26, 71, 255, 0.2),
-      rgba(26, 71, 255, 0.06) 42%,
-      rgba(10, 10, 20, 0) 70%
+    background: radial-gradient(
+      circle,
+      rgba(26, 71, 255, 0.34) 0%,
+      rgba(16, 32, 96, 0.16) 42%,
+      transparent 72%
     );
-    background-repeat: no-repeat;
-    background-size: 175% 175%;
-    background-position: 0% 0%;
+    will-change: transform;
     animation: lazHeroHaloDrift 20s ease-in-out infinite alternate;
   }
 
@@ -900,10 +906,10 @@
 
 @keyframes lazHeroHaloDrift {
   from {
-    background-position: 0% 0%;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   to {
-    background-position: 14% 10%;
+    transform: translate3d(-14px, 10px, 0) scale(1.05);
   }
 }
 
