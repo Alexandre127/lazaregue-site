@@ -188,8 +188,8 @@ export function SectionEquipe() {
 
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
         <header className="mb-8 text-center">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#9FA8C0] md:mb-4">
-            L&apos;équipe · Lazarègue Avocats
+          <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#C5CBDE] md:mb-4">
+            L&apos;équipe
           </p>
           <h2 className="text-2xl font-medium text-white md:text-3xl">
             Des avocats qui comprennent le code.

@@ -277,7 +277,7 @@ export function SectionCas() {
       `}</style>
 
       <div className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
-        <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#8888A0]">
+        <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#0A0F2E]/65">
           Études de cas
         </p>
 

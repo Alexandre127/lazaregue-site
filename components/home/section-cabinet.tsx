@@ -101,13 +101,15 @@ export function SectionCabinet() {
       </p>
 
       <p
+        className="home-kicker"
         style={{
           marginTop: "32px",
           fontSize: "12px",
-          color: "#1A47FF",
+          color: "#C5CBDE",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           fontWeight: 500,
+          fontFamily: "'DM Mono', monospace",
         }}
       >
         LE CABINET

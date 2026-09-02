@@ -422,7 +422,7 @@ export default function SectionCompetences() {
             retiré. Le kicker seul introduit les cartes, sans vide laissé. */}
         <div className="mb-6 text-center md:mb-8">
           <p
-            className="text-xs uppercase tracking-[0.2em] text-white/40"
+            className="home-kicker text-xs uppercase tracking-[0.2em] text-[#C5CBDE]"
             style={{ fontFamily: "'DM Mono', monospace" }}
           >
             Nos compétences

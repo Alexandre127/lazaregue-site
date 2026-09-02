@@ -347,3 +347,26 @@
   transform: translateX(-160%);
   z-index: 2;
 }
+
+/* Kicker de section (home) — marqueur bleu électrique avant le libellé, sur le
+   modèle des puces du bandeau de compétences du hero. Le ::before est un carré
+   plein inline : il n'affecte ni la taille, ni la graisse, ni l'interlettrage
+   du texte (portés par chaque élément) et se centre avec les kickers centrés.
+   Le remontage de contraste de la couleur du texte est fait par élément, selon
+   le fond (gris clair #C5CBDE sur fond sombre, ink/65 sur fond clair). */
+/* Uniformise la police sur DM Mono : plusieurs kickers utilisaient la classe
+   Tailwind `font-mono`, qui retombe sur la pile mono système et non sur DM Mono.
+   Seule la famille est fixée — corps et interlettrage restent portés par chaque
+   élément. */
+.home-kicker {
+  font-family: var(--ff-mono);
+}
+.home-kicker::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: #1a47ff;
+}

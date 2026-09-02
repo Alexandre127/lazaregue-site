@@ -149,7 +149,7 @@ export function SectionEnjeux() {
           {/* Colonne éditoriale — collante au scroll sur desktop. */}
           <div className="lg:sticky lg:top-[12vh] lg:self-start">
             <p
-              className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
+              className="home-kicker mb-4 font-mono text-[10px] uppercase tracking-[0.14em]"
               style={{ color: TXT_SECOND }}
             >
               CONTEXTE · FRANCE
