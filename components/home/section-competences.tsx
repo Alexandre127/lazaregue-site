@@ -418,18 +418,15 @@ export default function SectionCompetences() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
-        <div className="mb-4 text-center md:mb-5">
+        {/* Le titre « Ce que nous faisons, concrètement » redisait le kicker :
+            retiré. Le kicker seul introduit les cartes, sans vide laissé. */}
+        <div className="mb-6 text-center md:mb-8">
           <p
-            className="mb-4 text-xs uppercase tracking-[0.2em] text-white/40"
+            className="text-xs uppercase tracking-[0.2em] text-white/40"
             style={{ fontFamily: "'DM Mono', monospace" }}
           >
             Nos compétences · Droit du numérique
           </p>
-          <h2 className="text-3xl font-medium leading-tight text-white md:text-4xl lg:text-5xl">
-            Ce que nous faisons,
-            <br />
-            <span className="text-white/50">concrètement</span>
-          </h2>
         </div>
 
         <div
