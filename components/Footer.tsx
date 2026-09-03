@@ -179,7 +179,7 @@ export function Footer() {
           <div className="container mx-auto flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="max-w-xl">
               <p className="mb-4 font-mono text-[10px] tracking-widest text-white/35">
-                Prêt à sécuriser votre activité ?
+                QUELLE QUE SOIT LA SITUATION
               </p>
               <h2 className="text-2xl font-medium leading-snug text-white md:text-3xl">
                 Votre problème numérique a une{" "}
