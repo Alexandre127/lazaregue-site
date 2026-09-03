@@ -166,7 +166,7 @@ export function Footer() {
     <footer
       id="contact"
       ref={footerRef}
-      className="relative z-20 overflow-hidden bg-[#06080f] pt-12 text-white"
+      className="relative z-20 overflow-hidden bg-[#06080f] text-white md:pt-12"
     >
       <canvas
         ref={canvasRef}
@@ -175,11 +175,11 @@ export function Footer() {
       />
 
       <div className="relative z-10">
-        <div className="border-b border-white/[0.07] bg-[#06080f] px-4 py-14 md:px-8 md:py-20 lg:px-12">
+        <div className="border-b border-white/[0.07] bg-[#06080f] px-4 py-10 md:px-8 md:py-20 lg:px-12">
           <div className="container mx-auto flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="max-w-xl">
               <p className="mb-4 font-mono text-[10px] tracking-widest text-white/35">
-                Prêt à sécuriser votre activité ?
+                QUELLE QUE SOIT LA SITUATION
               </p>
               <h2 className="text-2xl font-medium leading-snug text-white md:text-3xl">
                 Votre problème numérique a une{" "}
@@ -237,77 +237,73 @@ export function Footer() {
               </ul>
             </div>
 
+            {/* Le pied de page listait dix domaines dont huit renvoyaient vers
+                des URL inexistantes (/competences/ia, /rgpd, /gaming…). Un lien
+                mort dans le pied de page est présent sur toutes les pages du
+                site : c'est le gabarit d'erreur 404 le plus coûteux qui soit.
+                Cette liste ne contient plus que des pages réellement publiées. */}
             <FooterColumn title="Nos domaines">
-              <Link href="/competences/cybersecurite" className="hover:text-white">
-                Cybersécurité & gestion de crise
+              <Link href="/nos-domaines/cybersecurite" className="hover:text-white">
+                Cybersécurité & NIS 2
               </Link>
-              <Link href="/competences/contentieux" className="hover:text-white">
-                Contentieux technologiques
+              <Link href="/nos-domaines/rgpd-donnees" className="hover:text-white">
+                RGPD & protection des données
+              </Link>
+              <Link href="/nos-domaines/ia-act" className="hover:text-white">
+                Intelligence artificielle & AI Act
               </Link>
               <Link href="/nos-domaines/contrats-informatiques" className="hover:text-white">
                 Contrats IT & responsabilité
               </Link>
-              <Link href="/competences/ia" className="hover:text-white">
-                IA, données & conformité
-              </Link>
-              <Link href="/competences/plateformes" className="hover:text-white">
-                Plateformes & réputation numérique
-              </Link>
-              <Link href="/competences/rgpd" className="hover:text-white">
-                RGPD & protection des données
-              </Link>
-              <Link href="/competences/cybercriminalite" className="hover:text-white">
+              <Link href="/nos-domaines/cybercriminalite" className="hover:text-white">
                 Cybercriminalité & fraudes
               </Link>
-              <Link href="/competences/contrats" className="hover:text-white">
-                Contrats tech & économie numérique
+              <Link href="/competences/plateformes" className="hover:text-white">
+                Plateformes, médias & réseaux sociaux
               </Link>
-              <Link href="/competences/gaming" className="hover:text-white">
-                Gaming, esport & industries créatives
-              </Link>
-              <Link href="/competences/forensic" className="hover:text-white">
-                Investigations numériques & forensic
+              <Link href="/competences/ma-tech" className="hover:text-white">
+                M&A Tech & due diligence
               </Link>
             </FooterColumn>
 
             <FooterColumn title="Le cabinet">
-              <Link href="/a-propos" className="hover:text-white">
+              <Link href="/le-cabinet" className="hover:text-white">
                 Notre approche
               </Link>
-              <Link href="/equipe" className="hover:text-white">
+              <Link href="/le-cabinet#equipe" className="hover:text-white">
                 L&apos;équipe
               </Link>
-              <Link href="/#cas" className="hover:text-white">
-                Cas clients
-              </Link>
               <Link href="/blog" className="hover:text-white">
-                Blog juridique
+                Analyses
               </Link>
               <Link href="/ressources" className="hover:text-white">
                 Ressources
               </Link>
-              <Link href="/blog" className="hover:text-white">
-                Actualités
+              <Link href="/contact" className="hover:text-white">
+                Contact
               </Link>
             </FooterColumn>
 
             <FooterColumn title="Informations">
-              <Link href="#contact" className="hover:text-white">
-                Contact
+              <Link href="/contact" className="hover:text-white">
+                Nous écrire
               </Link>
-              <Link href="#contact" className="hover:text-white">
+              <Link href="/contact" className="hover:text-white">
                 Prendre rendez-vous
               </Link>
-              <Link href="#" className="hover:text-white">
+              {/* Mentions légales et politique de confidentialité : pages
+                  créées (art. 6 III LCEN + RGPD), liées dans le bandeau bas du
+                  pied de page. */}
+              <Link href="/mentions-legales" className="hover:text-white">
                 Mentions légales
               </Link>
-              <Link href="#" className="hover:text-white">
-                Confidentialité
+              <Link
+                href="/politique-de-confidentialite"
+                className="hover:text-white"
+              >
+                Politique de confidentialité
               </Link>
-              <Link href="#" className="hover:text-white">
-                CGU
-              </Link>
-              <Link href="/tarifs" className="hover:text-white">
+              <Link href="/le-cabinet#honoraires" className="hover:text-white">
                 Honoraires
               </Link>
             </FooterColumn>
@@ -349,11 +345,14 @@ export function Footer() {
           <div className="container relative z-10 mx-auto flex flex-col items-center justify-between gap-4 text-[12px] text-white/40 md:flex-row">
             <p>© 2026 Lazarègue Avocats — Tous droits réservés</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="#" className="hover:text-white">
+              <Link href="/mentions-legales" className="hover:text-white">
                 Mentions légales
               </Link>
               <span className="text-white/20">·</span>
-              <Link href="#" className="hover:text-white">
+              <Link
+                href="/politique-de-confidentialite"
+                className="hover:text-white"
+              >
                 Confidentialité
               </Link>
             </div>

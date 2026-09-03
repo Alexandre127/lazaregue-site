@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
 import styles from "./ressources.module.css";
-import { DOSSIERS, aLireEnsuite, laRessourceAlire } from "./data/ressources";
-import { OUTILS } from "./data/outils";
-import ArchiveTeaser from "./_components/ArchiveTeaser";
-import DossierDoor from "./_components/DossierDoor";
-import FeaturedResource from "./_components/FeaturedResource";
-import PrepBand from "./_components/PrepBand";
-import ResourceCard from "./_components/ResourceCard";
-import SectionHeader from "./_components/SectionHeader";
-import ToolCard from "./_components/ToolCard";
+import { DOMAINES, FEATURED, PILLARS } from "./data/articles";
+import Catalogue from "./_components/Catalogue";
+import Reveal from "./_components/Reveal";
 
 const TITLE =
-  "Pour comprendre — guides, définitions et outils du droit du numérique | Lazarègue Avocats";
+  "Ressources — ce qu'il faut savoir avant de décider | Lazarègue Avocats";
 const DESCRIPTION =
-  "Guides, définitions et outils du droit du numérique : données personnelles et RGPD, propriété intellectuelle, marques, cybersécurité et intelligence artificielle.";
+  "Repères clairs sur la propriété intellectuelle, les marques, la concurrence et les données personnelles, écrits par le cabinet Lazarègue Avocats. Consultation libre.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -27,88 +21,92 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+};
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Ressources — Lazarègue Avocats",
+  description: DESCRIPTION,
+  inLanguage: "fr-FR",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "Lazarègue Avocats",
+    url: "https://www.lazaregue-avocats.fr",
+  },
+  about: [...DOMAINES],
+  publisher: {
+    "@type": "LegalService",
+    name: "Lazarègue Avocats",
+    areaServed: "FR",
+    founder: {
+      "@type": "Person",
+      name: "Alexandre Lazarègue",
+      jobTitle: "Avocat au barreau de Paris",
+    },
   },
 };
 
 export default function Page() {
-  const featured = laRessourceAlire();
-  const suivantes = aLireEnsuite();
-
   return (
     <main className={styles.page}>
-      <header className={styles.masthead}>
-        <div className={styles.mastheadInner}>
-          <h1>
-            POUR <span>COMPRENDRE.</span>
-          </h1>
-          <p>
-            Les guides, définitions et outils que nous utilisons quotidiennement au
-            cabinet pour maîtriser durablement le droit du numérique.
-          </p>
-        </div>
-      </header>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
 
-      <div className={styles.wrap}>
-        {/* 1 · La ressource à lire */}
-        {featured ? (
-          <section className={styles.today}>
-            <SectionHeader
-              folio="La ressource à lire"
-              role="Le texte qui sert le plus souvent."
-            />
-            <FeaturedResource ressource={featured} />
-          </section>
-        ) : null}
+      {/* Hero + catalogue : la recherche du hero pilote la grille, d'où
+          le regroupement dans un seul composant client. « À la une » se glisse
+          entre les deux, comme dans la maquette. */}
+      <Catalogue>
+        <section className={styles.featureSection}>
+          <div className={styles.featureInner}>
+            <Reveal className={styles.kicker} inClassName={styles.in}>
+              <span>À la une</span>
+            </Reveal>
 
-        {/* 2 · À lire ensuite */}
-        <section className={styles.next}>
-          <SectionHeader
-            folio="À lire ensuite"
-            role="Un guide par dossier, pour commencer."
-          />
-          <div className={styles.nextGrid}>
-            {suivantes.map((r) => (
-              <ResourceCard key={r.title} ressource={r} />
-            ))}
+            <Reveal
+              as="a"
+              className={`${styles.feature} ${styles.reveal}`}
+              inClassName={styles.in}
+            >
+              <div className={styles.featureBody}>
+                <div className={styles.featureTags}>
+                  <span className={styles.tagOutline}>{FEATURED.domain}</span>
+                  <span className={styles.tagPlain}>{FEATURED.read} de lecture</span>
+                </div>
+                <h2>{FEATURED.title}</h2>
+                <p className={styles.featureExcerpt}>{FEATURED.excerpt}</p>
+                <span className={styles.featureLink}>Lire l&apos;article →</span>
+              </div>
+              <div className={styles.featureAside}>
+                <div className={styles.featureBig} aria-hidden>
+                  {FEATURED.big}
+                </div>
+              </div>
+              <div className={styles.underline} aria-hidden />
+            </Reveal>
           </div>
         </section>
+      </Catalogue>
 
-        {/* 3 · Les dossiers */}
-        <section className={styles.dossiers}>
-          <SectionHeader
-            folio="Les dossiers de la bibliothèque"
-            role="Cinq dossiers ouverts, vingt ressources — chacune relue et maintenue à jour."
-          />
-          {DOSSIERS.map((d) => (
-            <DossierDoor key={d.id} dossier={d} />
-          ))}
-          <PrepBand />
-        </section>
-      </div>
-
-      {/* 4 · Outils */}
-      <section className={styles.tools}>
-        <div className={styles.toolsInner}>
-          <SectionHeader
-            folio="Outils pour décider"
-            role="Les diagnostics et check-lists du cabinet."
-          />
-          <div className={styles.toolsGrid}>
-            {OUTILS.map((o) => (
-              <ToolCard key={o.slug} outil={o} />
+      {/* Maillage thématique — un lien par domaine */}
+      <section className={styles.pillarsSection}>
+        <div className={styles.pillarsInner}>
+          <div className={styles.pillarsK}>Explorer par thème</div>
+          <div className={styles.pillars}>
+            {PILLARS.map((p) => (
+              <a key={p.label} href={p.href} className={styles.pillar}>
+                <span>{p.label}</span>
+                <span className={styles.pillarArrow} aria-hidden>
+                  →
+                </span>
+              </a>
             ))}
           </div>
         </div>
       </section>
-
-      {/* 5 · Teaser */}
-      <div className={styles.wrap}>
-        <ArchiveTeaser />
-      </div>
     </main>
   );
 }

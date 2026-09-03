@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { FAQ_ITEMS } from "./faq";
+import EquipeDossier from "@/components/equipe-dossier";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 /* ── Design system (aligné sur les autres pages compétences + charte graphique) ── */
@@ -203,13 +205,20 @@ const TIMELINE = [
   { year: "2019", a: "Glawischnig / Facebook", b: "injonctions ciblées" },
 ];
 
+/**
+ * `lecon` est ce qu'un dirigeant non juriste doit retenir : elle reste
+ * toujours visible. Le considérant complet (`p`) est replié par défaut —
+ * six blocs de motivation d'affilée décourageaient la lecture — mais reste
+ * dans le DOM, parce que c'est lui qui porte le vocabulaire juridique
+ * précis sur lequel la page fait autorité.
+ */
 const JURIS = [
-  { ref: "CJUE C-324/09 · 12 juil. 2011 · L'Oréal / eBay", h: "Marque & place de marché", p: "Le titulaire peut s'opposer aux offres ou publicités visant des consommateurs de l'Union pour des produits d'États tiers non écoulés dans l'EEE avec son consentement. Le mot-clé identique à la marque dans un référencement est un « usage » opposable si la publicité ne laisse pas voir l'origine des produits." },
-  { ref: "Cass. 1re civ. 09-13.202 · 17 fév. 2011", h: "Hébergeur ou éditeur", p: "Structurer et classer sans rôle actif de connaissance ou de contrôle relève du seul régime des hébergeurs, fût-on créateur de son site. La sélection ou la direction éditoriale fait basculer dans le droit commun des éditeurs." },
-  { ref: "Cass. 1re civ. 09-67.896 · 17 fév. 2011 · Dailymotion", h: "Intermédiaire technique", p: "Réencodage, formatage et outils de classification n'induisent pas de sélection éditoriale. La commercialisation d'espaces publicitaires ne crée pas de capacité d'action sur les contenus. Statut d'hébergeur retenu." },
-  { ref: "CJUE C-131/12 · 13 mai 2014 · Google Spain", h: "Droit au déréférencement", p: "La personne peut demander la suppression de liens inadéquats, non ou plus pertinents ou excessifs — sans démontrer de préjudice, et même si la page source reste licite. La vie privée prime en principe, sauf rôle prépondérant dans la vie publique." },
-  { ref: "CJUE C-18/18 · 3 oct. 2019 · Glawischnig-Piesczek / Facebook", h: "Injonctions contre les réseaux sociaux", p: "Un hébergeur, même exonéré, peut se voir enjoindre de retirer un contenu illicite, ses copies à l'identique et ses équivalents ciblés — sans appréciation autonome généralisée, avec des effets pouvant être mondiaux." },
-  { ref: "Cass. 1re civ. 09-15.857 · 17 fév. 2011", h: "La notification fait la responsabilité", p: "Aucun manquement à l'obligation de retrait prompt ne peut être reproché sans vérifier que la notification comportait toutes les mentions de la loi du 21 juin 2004 — description et localisation des faits comprises." },
+  { ref: "CJUE C-324/09 · 12 juil. 2011 · L'Oréal / eBay", h: "Marque & place de marché", lecon: "Votre marque contrefaite sur une place de marché : vous pouvez agir, y compris sur le simple achat du mot-clé.", p: "Le titulaire peut s'opposer aux offres ou publicités visant des consommateurs de l'Union pour des produits d'États tiers non écoulés dans l'EEE avec son consentement. Le mot-clé identique à la marque dans un référencement est un « usage » opposable si la publicité ne laisse pas voir l'origine des produits." },
+  { ref: "Cass. 1re civ. 09-13.202 · 17 fév. 2011", h: "Hébergeur ou éditeur", lecon: "Toute la responsabilité de la plateforme se joue sur cette qualification — c'est la première chose que nous établissons.", p: "Structurer et classer sans rôle actif de connaissance ou de contrôle relève du seul régime des hébergeurs, fût-on créateur de son site. La sélection ou la direction éditoriale fait basculer dans le droit commun des éditeurs." },
+  { ref: "Cass. 1re civ. 09-67.896 · 17 fév. 2011 · Dailymotion", h: "Intermédiaire technique", lecon: "Vendre de la publicité ne fait pas d'une plateforme un éditeur : ne comptez pas sur cet argument seul.", p: "Réencodage, formatage et outils de classification n'induisent pas de sélection éditoriale. La commercialisation d'espaces publicitaires ne crée pas de capacité d'action sur les contenus. Statut d'hébergeur retenu." },
+  { ref: "CJUE C-131/12 · 13 mai 2014 · Google Spain", h: "Droit au déréférencement", lecon: "Vous n'avez pas à prouver un préjudice pour faire déréférencer un lien — même si la page d'origine reste licite.", p: "La personne peut demander la suppression de liens inadéquats, non ou plus pertinents ou excessifs — sans démontrer de préjudice, et même si la page source reste licite. La vie privée prime en principe, sauf rôle prépondérant dans la vie publique." },
+  { ref: "CJUE C-18/18 · 3 oct. 2019 · Glawischnig-Piesczek / Facebook", h: "Injonctions contre les réseaux sociaux", lecon: "Un contenu retiré puis republié à l'identique ou en substance peut être visé par la même injonction — parfois mondialement.", p: "Un hébergeur, même exonéré, peut se voir enjoindre de retirer un contenu illicite, ses copies à l'identique et ses équivalents ciblés — sans appréciation autonome généralisée, avec des effets pouvant être mondiaux." },
+  { ref: "Cass. 1re civ. 09-15.857 · 17 fév. 2011", h: "La notification fait la responsabilité", lecon: "C'est l'arrêt qui explique pourquoi votre signalement a échoué : sans les mentions légales exactes, la plateforme ne doit rien.", p: "Aucun manquement à l'obligation de retrait prompt ne peut être reproché sans vérifier que la notification comportait toutes les mentions de la loi du 21 juin 2004 — description et localisation des faits comprises." },
 ];
 
 const METHOD = [
@@ -227,14 +236,6 @@ const REASONS = [
   { n: 4, h: "De la mise en demeure au jugement", p: "Une chaîne complète : premier courrier, notification juridique, procédure d'urgence, décision — et son exécution face à la plateforme." },
 ];
 
-const FAQ_ITEMS = [
-  { q: "Une plateforme refuse de retirer un contenu. Que puis-je faire ?", a: "On vérifie d'abord la régularité de votre notification : elle doit décrire et localiser précisément les faits litigieux et comporter les mentions de la loi du 21 juin 2004. Une notification régulière conditionne l'obligation de retrait prompt de l'hébergeur — et, à défaut, on engage le recours adapté, jusqu'au référé." },
-  { q: "Ma plateforme est-elle hébergeur ou éditeur ?", a: "Structurer et classer des contenus sans rôle actif de connaissance ou de contrôle relève du régime des hébergeurs, même créateur du site. Exercer une sélection ou une direction éditoriale fait basculer vers le droit commun des éditeurs, avec une exposition bien plus élevée." },
-  { q: "Peut-on faire retirer un contenu identique republié ailleurs ?", a: "Oui. Un hébergeur peut se voir enjoindre de retirer un contenu déjà déclaré illicite, quel qu'en soit l'auteur, ainsi que les contenus équivalents véhiculant en substance le même message — à condition que l'injonction reste ciblée et n'impose pas une appréciation autonome généralisée." },
-  { q: "Puis-je faire déréférencer des informations si la page source reste licite ?", a: "Oui. Le traitement du moteur se distingue de celui de l'éditeur : un moteur peut être tenu de supprimer des liens même si la publication sur la page source demeure licite et en ligne, dès lors que l'inclusion apparaît inadéquate, non ou plus pertinente, ou excessive." },
-  { q: "Le droit à l'oubli exige-t-il de prouver un préjudice ?", a: "Non. Le déréférencement ne suppose pas la démonstration d'un préjudice. En principe, la vie privée et la protection des données priment sur l'intérêt économique de l'exploitant et sur l'intérêt du public — sauf rôle de la personne dans la vie publique." },
-  { q: "Une injonction peut-elle produire un effet mondial ?", a: "Oui. La directive sur le commerce électronique ne s'oppose pas à des mesures d'injonction produisant des effets à l'échelle mondiale, sous réserve du respect des règles de droit international pertinentes." },
-];
 
 /* ── Composants utilitaires ── */
 
@@ -281,6 +282,39 @@ function Divider() {
   return <div style={{ borderTop: `0.5px solid ${LIGHT.border}`, maxWidth: 900, margin: "16px auto" }} />;
 }
 
+/**
+ * Six motivations d'arrêt à la suite formaient un mur de texte que seul un
+ * juriste lit. La leçon reste visible, le considérant se déplie — et surtout
+ * reste servi dans le HTML même replié : c'est lui qui porte le vocabulaire
+ * sur lequel la page se positionne.
+ */
+function ArretCard({ arret, index }: { arret: (typeof JURIS)[number]; index: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderLeft: `3px solid ${BLUE}`, borderRadius: 12, padding: "18px 20px" }}>
+      <div style={{ fontFamily: "var(--ff-mono)", fontSize: 11.5, color: BLUE, fontWeight: 500 }}>{arret.ref}</div>
+      <h3 style={{ fontSize: 16, fontWeight: 500, margin: "8px 0 6px", color: LIGHT.text }}>{arret.h}</h3>
+      <p style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.5 }}>{arret.lecon}</p>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={`arret-detail-${index}`}
+        style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: BLUE, fontSize: 12.5, fontFamily: "var(--ff-mono)" }}
+      >
+        {open ? "− Masquer la décision" : "+ Ce qu'a jugé la cour"}
+      </button>
+      <p
+        id={`arret-detail-${index}`}
+        hidden={!open}
+        style={{ margin: "10px 0 0", fontSize: 13.5, color: LIGHT.muted, lineHeight: 1.55 }}
+      >
+        {arret.p}
+      </p>
+    </div>
+  );
+}
+
 function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: number }) {
   const [open, setOpen] = useState(false);
   return (
@@ -289,6 +323,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-controls={`faq-plateformes-reponse-${index}`}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, background: "none", border: "none", padding: "12px 0", textAlign: "left", cursor: "pointer" }}
       >
         <span style={{ display: "flex", gap: 10 }}>
@@ -297,9 +332,21 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         </span>
         <span aria-hidden style={{ color: BLUE, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
       </button>
-      {open ? (
-        <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 34px", maxWidth: 760 }}>{item.a}</div>
-      ) : null}
+      {/* La réponse reste dans le DOM une fois repliée : rendue
+          conditionnellement, elle serait absente du HTML servi — donc
+          invisible pour les moteurs, alors qu'elle est déclarée en FAQPage. */}
+      <div
+        id={`faq-plateformes-reponse-${index}`}
+        hidden={!open}
+        style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 34px", maxWidth: 760 }}
+      >
+        {item.a}
+        {item.lien ? (
+          <Link href={item.lien.href} style={{ display: "inline-block", marginTop: 10, color: BLUE, textDecoration: "none" }}>
+            {item.lien.label} →
+          </Link>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -451,7 +498,10 @@ export default function PlateformesClient() {
         <div style={INNER}>
           <SectionHead
             label="Ce que nous traitons"
-            title="Votre problème, et la façon dont nous l'abordons"
+            /* Le titre portait l'intention du cabinet ; il porte désormais
+               celle du visiteur — les verbes qu'il tape lui-même dans un
+               moteur, et le terme « e-réputation » qui manquait à la page. */
+            title="Faire retirer, déréférencer, défendre votre e-réputation"
             sub="La réponse dépend rarement du seul contenu — elle dépend du statut de la plateforme, de la notification et du droit applicable."
           />
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
@@ -636,12 +686,8 @@ export default function PlateformesClient() {
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
-            {JURIS.map((j) => (
-              <div key={j.ref} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderLeft: `3px solid ${BLUE}`, borderRadius: 12, padding: "18px 20px" }}>
-                <div style={{ fontFamily: "var(--ff-mono)", fontSize: 11.5, color: BLUE, fontWeight: 500 }}>{j.ref}</div>
-                <h3 style={{ fontSize: 16, fontWeight: 500, margin: "8px 0", color: LIGHT.text }}>{j.h}</h3>
-                <p style={{ margin: 0, fontSize: 13.5, color: LIGHT.muted, lineHeight: 1.55 }}>{j.p}</p>
-              </div>
+            {JURIS.map((j, i) => (
+              <ArretCard key={j.ref} arret={j} index={i} />
             ))}
           </div>
         </div>
@@ -692,6 +738,23 @@ export default function PlateformesClient() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <Divider />
+
+      {/* 14 bis. L'équipe sur ce type de dossier */}
+      <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <EquipeDossier
+            titre="Qui traite votre dossier"
+            chapeau="Retrait de contenu, déréférencement et identification d'auteur relèvent autant du droit des plateformes que de celui des données personnelles. Les deux sont traités ensemble."
+            couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
+            membres={[
+              { slug: "alexandre", role: "Droit des plateformes & contentieux", tags: ["Référé de retrait", "Art. 145 CPC", "LCEN & DSA"] },
+              { slug: "sarah", role: "Données personnelles & e-réputation", tags: ["Déréférencement", "Droit à l'oubli", "Art. 17 RGPD"] },
+            ]}
+          />
         </div>
       </section>
 

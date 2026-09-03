@@ -1,5 +1,7 @@
 import styles from "../le-cabinet.module.css";
 import { ENGAGEMENTS } from "../data/engagements";
+import { CONTACT_HREF } from "../data/liens";
+import { CtaTransition } from "./MethodTransition";
 import Reveal from "./Reveal";
 
 export default function CharteClient() {
@@ -30,6 +32,18 @@ export default function CharteClient() {
             </Reveal>
           ))}
         </div>
+
+        {/* Le visiteur vient de lire les engagements : on lui propose l'étape
+            qui suit logiquement — vérifier que le cabinet est le bon. */}
+        <Reveal className={`${styles.charteSuite} ${styles.reveal}`} inClassName={styles.in}>
+          <p>
+            Le deuxième engagement vaut aussi pour un premier échange : si votre dossier
+            sort de nos domaines, nous vous le disons vite.
+          </p>
+          <CtaTransition href={CONTACT_HREF} className={`${styles.btn} ${styles.btnG}`}>
+            Vérifier si nous pouvons vous accompagner <span className={styles.ar}>→</span>
+          </CtaTransition>
+        </Reveal>
       </div>
     </section>
   );

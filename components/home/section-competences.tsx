@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 
 type CompetenceCard = {
   id: number;
@@ -13,6 +14,11 @@ type CompetenceCard = {
   tags: string[];
   tagColor: string;
   tagText: string;
+  /** Page de domaine correspondante. */
+  href: string;
+  /** Libellé de lien explicite, affiché en clair (pas de « En savoir plus »).
+   *  C'est aussi ce qui donne son sens au lien pour les moteurs. */
+  linkLabel: string;
 };
 
 function CardGridCanvas({ gridRgb }: { gridRgb: string }) {
@@ -204,6 +210,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(26,71,255,.12)",
     tagText: "#6D8FFF",
+    href: "/nos-domaines/cybersecurite",
+    linkLabel: "Cybersécurité et NIS 2",
   },
   {
     id: 2,
@@ -211,9 +219,9 @@ const cards: CompetenceCard[] = [
     icon: "gavel",
     color: "#F09595",
     bg: "linear-gradient(135deg, #1a0808 0%, #1e0c10 50%, #1a0808 100%)",
-    title: "Conflits IT & projets bloqués",
+    title: "Conflits IT et projets informatiques bloqués",
     phrase:
-      "Résoudre les situations de blocage liées aux projets numériques, aux prestataires technologiques et aux infrastructures critiques.",
+      "Résoudre les situations de blocage liées aux contrats numériques, aux prestataires informatiques et aux infrastructures critiques.",
     tags: [
       "CONTENTIEUX INFORMATIQUE",
       "CONTRATS TECH & SAAS",
@@ -221,6 +229,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(226,75,74,.12)",
     tagText: "#F09595",
+    href: "/nos-domaines/contrats-informatiques",
+    linkLabel: "Droit informatique et responsabilité des prestataires",
   },
   {
     id: 3,
@@ -230,10 +240,12 @@ const cards: CompetenceCard[] = [
     bg: "linear-gradient(135deg, #081408 0%, #0c1a10 50%, #081408 100%)",
     title: "IA, données & risques réglementaires",
     phrase:
-      "Implémenter les usages de l'IA et des données dans une logique de conformité, de sécurité et de maîtrise des risques.",
+      "Implémenter en entreprise les usages de l'IA et des données dans une logique de conformité, de sécurité et de maîtrise des risques.",
     tags: ["IA & AI ACT", "RGPD & DONNÉES", "GOUVERNANCE DES DONNÉES"],
     tagColor: "rgba(29,158,117,.12)",
     tagText: "#5DCAA5",
+    href: "/nos-domaines/ia-act",
+    linkLabel: "Intelligence artificielle et AI Act",
   },
   {
     id: 4,
@@ -243,7 +255,7 @@ const cards: CompetenceCard[] = [
     bg: "linear-gradient(135deg, #0e0818 0%, #120c1e 50%, #0e0818 100%)",
     title: "Contenus, plateformes & atteintes à l'image",
     phrase:
-      "Protéger les entreprises et leurs dirigeants face aux atteintes réputationnelles, aux plateformes et aux usages abusifs des contenus numériques.",
+      "Protéger l'image et la réputation face aux atteintes en ligne, aux plateformes et aux usages abusifs des contenus numériques.",
     tags: [
       "PLATEFORMES & RÉSEAUX SOCIAUX",
       "GAMING & INDUSTRIE CRÉATIVE",
@@ -251,6 +263,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(212,83,126,.12)",
     tagText: "#ED93B1",
+    href: "/competences/plateformes",
+    linkLabel: "Plateformes et réseaux sociaux",
   },
 ];
 
@@ -279,8 +293,14 @@ function CompetenceCardTile({
       "perspective(900px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)";
   };
 
+  // Pas d'aria-label : le nom accessible du lien dérive du contenu visible
+  // (titre + libellé explicite), donc il contient forcément le texte affiché
+  // — conforme au critère WCAG 2.5.3 sans divergence.
   return (
-    <div className="group block w-full">
+    <Link
+      href={card.href}
+      className="group block w-full rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A14]"
+    >
       <div
         ref={tiltRef}
         className="w-full transition-transform duration-200 ease-out"
@@ -289,7 +309,7 @@ function CompetenceCardTile({
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="relative flex h-[320px] w-full flex-col justify-start overflow-hidden rounded-lg p-8"
+          className="relative flex min-h-[320px] w-full flex-col justify-start overflow-hidden rounded-lg p-8 md:h-[320px]"
           style={{
             background: card.bg,
             border: "1px solid rgba(255,255,255,0.08)",
@@ -328,7 +348,7 @@ function CompetenceCardTile({
               {card.phrase}
             </p>
 
-            <div className="mb-4 flex flex-nowrap gap-2">
+            <div className="mb-4 flex flex-wrap gap-2 md:flex-nowrap">
               {card.tags.map((tag) => (
                 <span
                   key={tag}
@@ -349,22 +369,25 @@ function CompetenceCardTile({
               ))}
             </div>
 
+            {/* Libellé explicite, visible en permanence (un survol n'existe
+                pas au tap sur mobile). L'accentuation au survol/focus reste
+                un simple renfort, pas la condition d'apparition. */}
             <p
-              className="font-mono text-[11px] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              className="font-mono text-[11px] opacity-80 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
               style={{ color: card.color }}
             >
-              En savoir plus →
+              {card.linkLabel} →
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function SectionCompetences() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-10 md:py-16">
+    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-16 md:py-24">
       <style>{`
         @keyframes lineBreathe {
           0%,
@@ -395,18 +418,15 @@ export default function SectionCompetences() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
-        <div className="mb-4 text-center md:mb-5">
+        {/* Le titre « Ce que nous faisons, concrètement » redisait le kicker :
+            retiré. Le kicker seul introduit les cartes, sans vide laissé. */}
+        <div className="mb-6 text-center md:mb-8">
           <p
-            className="mb-4 text-xs uppercase tracking-[0.2em] text-white/40"
+            className="home-kicker text-xs uppercase tracking-[0.2em] text-[#C5CBDE]"
             style={{ fontFamily: "'DM Mono', monospace" }}
           >
-            Nos compétences · Droit du numérique
+            Nos compétences
           </p>
-          <h2 className="text-3xl font-medium leading-tight text-white md:text-4xl lg:text-5xl">
-            Ce que nous faisons,
-            <br />
-            <span className="text-white/50">concrètement</span>
-          </h2>
         </div>
 
         <div

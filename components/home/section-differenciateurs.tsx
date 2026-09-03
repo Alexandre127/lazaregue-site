@@ -6,7 +6,8 @@ type DifferentiateurCard = {
   imageSrc?: string;
   imageAlt: string;
   title: string;
-  text: string;
+  /** Sous-titre facultatif : trois cartes se suffisent de leur titre. */
+  text?: string;
   visual?: "portail";
 };
 
@@ -775,24 +776,20 @@ const CARDS: DifferentiateurCard[] = [
     imageSrc: "/images/card-territoire.jpg",
     imageAlt: "Un seul territoire — droit du numérique",
     title: "Un cabinet dédié au numérique",
-    text: "Nous intervenons exclusivement en droit du numérique.",
   },
   {
     imageSrc: "/images/card-equipe.jpg",
     imageAlt: "Une équipe juridique et technique",
     title: "Une équipe juridique et technique",
-    text: "Nous traitons chaque dossier avec une compréhension concrète des systèmes d'information.",
   },
   {
     imageSrc: "/images/card-terrain.jpg",
-    imageAlt: "Une pratique opérationnelle du numérique",
-    title: "Une pratique opérationnelle du numérique",
-    text: "Depuis 2016, nous accompagnons les PME, ETI et groupes dans leurs problématiques liées au droit des nouvelles technologies.",
+    imageAlt: "Une pratique du numérique depuis 2016",
+    title: "Une pratique du numérique depuis 2016",
   },
   {
     imageAlt: "Un portail client transparent — interface de suivi des dossiers",
     title: "Un portail client avec un suivi continu des dossiers",
-    text: "Nos clients savent en permanence où en est leur affaire.",
     visual: "portail",
   },
 ];
@@ -1057,10 +1054,10 @@ function PortailDemo() {
 
 export function SectionDifferenciateurs() {
   return (
-    <section className="w-full bg-[#F8F9FA] px-4 py-10 md:px-8 md:py-16 lg:px-12">
+    <section className="w-full bg-[#F8F9FA] px-4 py-16 md:px-8 md:py-24 lg:px-12">
       <div className="container mx-auto">
         <header className="mx-auto mb-8 max-w-3xl text-center md:mb-10 lg:mb-16">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#8888A0] md:mb-4">
+          <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0A0F2E]/65 md:mb-4">
             Pourquoi nous
           </p>
           <DifferentiateurSpotlightTitle />
@@ -1084,17 +1081,25 @@ export function SectionDifferenciateurs() {
                   <img
                     src={card.imageSrc}
                     alt={card.imageAlt}
+                    loading="lazy"
+                    decoding="async"
                     className="relative z-[1] h-full w-full object-cover"
                   />
                 </div>
               )}
-              <div className="p-8">
-                <h3 className="mb-3 font-medium text-[#0A0F2E] md:mb-4">
+              <div className={`px-8 pt-8 ${card.text ? "pb-8" : "pb-6"}`}>
+                <h3
+                  className={`font-medium text-[#0A0F2E] ${
+                    card.text ? "mb-3 md:mb-4" : ""
+                  }`}
+                >
                   {card.title}
                 </h3>
-                <p className="max-w-[280px] text-[13px] leading-[1.8] text-[#0A0F2E]/55">
-                  {card.text}
-                </p>
+                {card.text ? (
+                  <p className="max-w-[280px] text-[13px] leading-[1.8] text-[#0A0F2E]/55">
+                    {card.text}
+                  </p>
+                ) : null}
               </div>
             </article>
           ))}

@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { FAQ_ITEMS } from "./faq";
+import EquipeDossier from "@/components/equipe-dossier";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import ClausesRisque from './ClausesRisque'
 
@@ -185,61 +187,7 @@ const ETAPES = [
   },
 ];
 
-const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
-  {
-    q: "Mon prestataire IT est-il responsable en cas de perte de données ?",
-    a: "Cela dépend entièrement de ce que dit le contrat — et de ce que le prestataire a effectivement mis en œuvre. Sans clause de sauvegarde ni obligation de résultat documentée, la responsabilité est difficile à engager. Avec une clause claire et des preuves de défaillance, les tribunaux condamnent régulièrement les prestataires.",
-  },
-  {
-    q: "Puis-je résilier mon contrat IT avant terme ?",
-    a: "Un contrat à durée déterminée ne peut être résilié sans manquement grave et non réparable du cocontractant. La simple insatisfaction ou un changement de prestataire ne suffit pas — vous risquez de devoir payer l'intégralité des sommes restantes dues.",
-  },
-  {
-    q: "Que doit contenir un cahier des charges IT ?",
-    a: "Objectifs fonctionnels, périmètre technique, critères de recette, délais, responsabilités de chaque partie, exigences de sécurité et de sauvegarde. Sans cahier des charges signé, le prestataire peut invoquer des besoins mal exprimés — et le client peut voir sa responsabilité engagée pour défaut de collaboration.",
-  },
-  {
-    q: "Comment récupérer mes données en fin de contrat cloud ?",
-    a: "Uniquement si une clause de réversibilité existe et est correctement rédigée : format des données, délai de restitution, plafond des frais de sortie, astreinte en cas de retard. Sans cette clause, le prestataire peut légalement conserver ou supprimer vos données après résiliation.",
-  },
-  {
-    q: "Je suis prestataire IT — comment limiter ma responsabilité ?",
-    a: "Par des clauses limitatives proportionnées à votre prestation, une définition claire du périmètre, des exclusions de force majeure encadrées, et surtout une documentation de vos mises en garde écrites. Une clause limitative trop basse peut être écartée si elle ne couvre pas le préjudice réel.",
-  },
-];
 
-const TEAM = [
-  {
-    initials: "AL",
-    avatarBg: "#EEEDFE",
-    avatarColor: "#3C3489",
-    tagBg: "#EEEDFE",
-    tagColor: "#3C3489",
-    name: "Me Alexandre Lazarègue",
-    role: "Avocat — droit du numérique & cybersécurité",
-    tags: ["Contrats IT", "Cybersécurité", "Contentieux"],
-  },
-  {
-    initials: "AB",
-    avatarBg: "#E6F1FB",
-    avatarColor: "#0C447C",
-    tagBg: "#E6F1FB",
-    tagColor: "#0C447C",
-    name: "Me Amir Ben Majed",
-    role: "Avocat — contrats informatiques & contentieux IT",
-    tags: ["Contrats IT", "Responsabilité", "Preuve"],
-  },
-  {
-    initials: "SH",
-    avatarBg: "#E1F5EE",
-    avatarColor: "#085041",
-    tagBg: "#E1F5EE",
-    tagColor: "#085041",
-    name: "Me Sarah Hinderer",
-    role: "Avocate — données personnelles & IA",
-    tags: ["RGPD Art. 32", "Cloud", "Conformité"],
-  },
-];
 
 function K({ children }: { children: ReactNode }) {
   return <span style={{ fontWeight: 500, color: LIGHT.text }}>{children}</span>;
@@ -544,6 +492,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-controls={`faq-contrats-reponse-${index}`}
         style={{
           width: "100%",
           display: "flex",
@@ -577,11 +526,16 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
           +
         </span>
       </button>
-      {open ? (
-        <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: 0, padding: "0 0 16px 40px", maxWidth: 760 }}>
-          {item.a}
-        </div>
-      ) : null}
+      {/* La réponse reste dans le DOM une fois repliée : rendue
+          conditionnellement, elle serait absente du HTML servi — donc
+          invisible pour les moteurs, alors qu'elle est déclarée en FAQPage. */}
+      <div
+        id={`faq-contrats-reponse-${index}`}
+        hidden={!open}
+        style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: 0, padding: "0 0 16px 40px", maxWidth: 760 }}
+      >
+        {item.a}
+      </div>
     </div>
   );
 }
@@ -764,6 +718,25 @@ export default function ContratsInformatiquesClient() {
                   Si vous avez coché une seule case, votre exposition est réelle — et souvent invisible
                   jusqu&apos;au premier litige.
                 </p>
+                {/* Le test produisait un constat sans issue. Le visiteur qui
+                    vient de reconnaître son exposition est au moment précis où
+                    il est le plus disposé à écrire : l'action doit être là. */}
+                <Link
+                  href="/contact"
+                  style={{
+                    display: "inline-block",
+                    marginTop: 12,
+                    background: BLUE,
+                    color: "#ffffff",
+                    textDecoration: "none",
+                    padding: "10px 16px",
+                    borderRadius: 6,
+                    fontSize: 13,
+                    fontWeight: 500,
+                  }}
+                >
+                  Faire analyser mon exposition →
+                </Link>
               </div>
             ) : null}
           </div>
@@ -1018,77 +991,16 @@ export default function ContratsInformatiquesClient() {
       {/* 8. ÉQUIPE */}
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <div style={{ background: LIGHT.panel2, borderRadius: 12, padding: 20 }}>
-            <Eyebrow>L&apos;équipe</Eyebrow>
-            <h2 style={{ ...TYPE.h2, margin: "0 0 6px" }}>
-              Contrats informatiques, contentieux et cybersécurité
-            </h2>
-            <p style={{ ...TYPE.secondary, margin: "0 0 16px" }}>
-              Trois expertises complémentaires — droit du numérique, données personnelles et contentieux
-              IT — pour couvrir l&apos;intégralité des enjeux contractuels de votre système
-              d&apos;information.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP }}>
-              {TEAM.map((m) => (
-                <article
-                  key={m.name}
-                  style={{
-                    background: LIGHT.panel,
-                    border: `0.5px solid ${LIGHT.border}`,
-                    borderRadius: 12,
-                    padding: CARD_PAD,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                    height: "100%",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 10,
-                      background: m.avatarBg,
-                      color: m.avatarColor,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--ff-mono)",
-                      fontSize: 14,
-                      fontWeight: 600,
-                      flexShrink: 0,
-                    }}
-                    aria-hidden
-                  >
-                    {m.initials}
-                  </div>
-                  <div>
-                    <p style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: "0 0 4px", lineHeight: 1.35 }}>
-                      {m.name}
-                    </p>
-                    <p style={{ fontSize: 12, color: LIGHT.muted, margin: "0 0 10px", lineHeight: 1.5 }}>{m.role}</p>
-                    <div className="flex flex-wrap" style={{ gap: 6 }}>
-                      {m.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 500,
-                            padding: "3px 9px",
-                            borderRadius: 8,
-                            background: m.tagBg,
-                            color: m.tagColor,
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
+          <EquipeDossier
+            titre="Contrats informatiques, contentieux et cybersécurité"
+            chapeau="Trois expertises complémentaires — droit du numérique, données personnelles et contentieux IT — pour couvrir l'intégralité des enjeux contractuels de votre système d'information."
+            couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
+            membres={[
+              { slug: "alexandre", role: "Droit du numérique & cybersécurité", tags: ["Contrats IT", "Cybersécurité", "Contentieux"] },
+              { slug: "amir", role: "Contrats informatiques & contentieux IT", tags: ["Contrats IT", "Responsabilité", "Preuve"] },
+              { slug: "sarah", role: "Données personnelles & IA", tags: ["RGPD Art. 32", "Cloud", "Conformité"] },
+            ]}
+          />
         </div>
       </section>
 

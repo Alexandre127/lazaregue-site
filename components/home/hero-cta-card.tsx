@@ -33,16 +33,18 @@ export function HeroCTACard({ open, onClose, className = "" }: HeroCTACardProps)
           Le PNG source pèse 7,6 Mo et s'affichait ici en 160 px de haut,
           sur toutes les pages du site. */}
       <Image
-        src="/images/Professional_photo_of_3_young_french_lawyers.png"
+        src="/images/equipe.jpg"
         alt="Équipe Lazarègue Avocats"
         width={640}
         height={320}
         sizes="(max-width: 768px) 100vw, 400px"
-        className="h-[160px] w-full object-cover object-top"
+        className="h-[160px] w-full object-cover object-[center_48%]"
       />
       <img
         src="/images/logo.png"
         alt="Lazarègue Avocats"
+        loading="lazy"
+        decoding="async"
         className="hero-cta-logo"
       />
       <div className="space-y-1.5 px-4 pb-4 text-sm text-[#0A0F2E]">

@@ -39,4 +39,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Vidéos : par défaut hors dépôt, car les rushes bruts pèsent plusieurs
+# dizaines de Mo. Attention au piège : une vidéo présente sur le poste mais
+# ignorée ici s'affiche en local et renvoie une 404 en production, puisque
+# Vercel construit depuis le dépôt et non depuis la machine.
+# Toute vidéo réellement utilisée par une page doit donc être exemptée
+# ci-dessous — ou hébergée sur Vercel Blob et référencée par son URL.
 public/videos/*.mp4
+
+# Exemptions : vidéos assez légères pour se déployer avec le site.
+!public/videos/contact-paris.mp4
+!public/videos/reportage-reseaux-sociaux.mp4
+# Vignette animée « passage TV » de la home (~500 Ko) — servie depuis notre
+# domaine pour éviter tout cookie tiers YouTube au chargement.
+!public/videos/passage-tv-loop.mp4
+
+# Outillage local Claude Code (config poste, hors dépôt).
+.claude/

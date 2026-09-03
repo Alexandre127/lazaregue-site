@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
+import EquipeDossier from "@/components/equipe-dossier";
 
 const DARK = {
   bg: "#0a0f2e",
@@ -133,7 +134,7 @@ const interventionTabs = [
         icon: "ti-list-check",
         type: "Registre IA",
         h3: "Inventaire des systèmes IA",
-        extraitLabel: "Extrait — TechRH Solutions (ESN, 45 sal.)",
+        extraitLabel: "Exemple pédagogique — ESN d'une cinquantaine de salariés",
         extrait: (
           <>
             Système n°3 — Outil de tri de CV <B>Workable AI</B>. Qualification :{" "}
@@ -147,7 +148,7 @@ const interventionTabs = [
         icon: "ti-alert-triangle",
         type: "Matrice des risques",
         h3: "Risques prioritaires identifiés",
-        extraitLabel: "Extrait — Fintech Crédit Sud (fictif)",
+        extraitLabel: "Exemple pédagogique — fintech de crédit",
         extrait: (
           <>
             <B>Risque n°1 — Critique</B>. Algorithme de scoring crédit déployé sans évaluation de
@@ -167,7 +168,7 @@ const interventionTabs = [
         icon: "ti-file-text",
         type: "Documentation technique Art. 11",
         h3: "Notice technique du système IA",
-        extraitLabel: "Extrait — MedAssist Pro (SaaS médical fictif)",
+        extraitLabel: "Exemple pédagogique — SaaS médical",
         extrait: (
           <>
             <B>§3.2 — Supervision humaine</B>. Le système ne produit pas de diagnostic. Il génère
@@ -181,7 +182,7 @@ const interventionTabs = [
         icon: "ti-eye",
         type: "Notice utilisateur Art. 13",
         h3: "Transparence envers les utilisateurs",
-        extraitLabel: "Extrait — ChatBot Assur (assureur fictif)",
+        extraitLabel: "Exemple pédagogique — chatbot d'assureur",
         extrait: (
           <>
             Vous interagissez avec un système d&apos;<B>intelligence artificielle</B>. Les réponses
@@ -201,7 +202,7 @@ const interventionTabs = [
         icon: "ti-settings",
         type: "Charte IA interne",
         h3: "Politique d'usage de l'IA",
-        extraitLabel: "Extrait — Groupe Lavalette (ETI industrie fictive)",
+        extraitLabel: "Exemple pédagogique — ETI industrielle",
         extrait: (
           <>
             <B>Art. 5 — Données interdites</B>. Il est interdit d&apos;injecter dans tout outil IA :
@@ -215,7 +216,7 @@ const interventionTabs = [
         icon: "ti-users",
         type: "Comité IA",
         h3: "Gouvernance et circuit de décision",
-        extraitLabel: "Extrait — Cabinet Novalis (fictif)",
+        extraitLabel: "Exemple pédagogique — cabinet de conseil",
         extrait: (
           <>
             Tout déploiement d&apos;un nouveau système IA est soumis à validation du{" "}
@@ -236,7 +237,7 @@ const interventionTabs = [
         icon: "ti-file-check",
         type: "Clause fournisseur IA",
         h3: "Encadrement des API et SaaS IA",
-        extraitLabel: "Extrait — contrat API OpenAI (clause fictive)",
+        extraitLabel: "Exemple pédagogique — clause type pour un contrat d'API",
         extrait: (
           <>
             <B>Art. 9.3</B> — Le fournisseur garantit que le modèle utilisé n&apos;est pas classé à
@@ -250,7 +251,7 @@ const interventionTabs = [
         icon: "ti-scale",
         type: "Clause CGV éditeur SaaS",
         h3: "Responsabilité et limites de l'automatisation",
-        extraitLabel: "Extrait — CGV LogiCompta IA (SaaS fictif)",
+        extraitLabel: "Exemple pédagogique — CGV d'un éditeur SaaS",
         extrait: (
           <>
             Les résultats produits par le système constituent des propositions soumises à validation
@@ -270,7 +271,7 @@ const interventionTabs = [
         icon: "ti-alert-circle",
         type: "Procédure incident IA",
         h3: "Gestion d'un incident algorithmique",
-        extraitLabel: "Extrait — AlgoRH Pro (RH fictif)",
+        extraitLabel: "Exemple pédagogique — outil RH de présélection",
         extrait: (
           <>
             Incident détecté : biais systématique dans le scoring de candidats. <B>H+0</B> :
@@ -285,7 +286,7 @@ const interventionTabs = [
         icon: "ti-shield",
         type: "Stratégie de défense",
         h3: "Réponse à un contrôle autorité",
-        extraitLabel: "Extrait — dossier contrôle CNIL (fictif)",
+        extraitLabel: "Exemple pédagogique — dossier de contrôle CNIL",
         extrait: (
           <>
             Face à la demande de justification du système de scoring client : production du registre
@@ -503,7 +504,9 @@ export default function IaActClient() {
             Ce que la loi impose — selon ce que vous faites
           </h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
-            L&apos;AI Act (Règlement UE 2024/1689) est le premier cadre légal
+            L&apos;AI Act — règlement (UE) 2024/1689, désigné en français par le
+            sigle <B>RIA</B> pour «&nbsp;règlement sur l&apos;intelligence
+            artificielle&nbsp;» — est le premier cadre légal
             mondial sur l&apos;intelligence artificielle. Il s&apos;applique à toute
             entreprise qui développe ou utilise un système d&apos;IA dans l&apos;Union
             européenne — même un outil acheté à un tiers. Il classe les systèmes
@@ -728,22 +731,47 @@ export default function IaActClient() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: GRID_GAP, marginBottom: 16 }}>
+            {/* `href` ouvre la page du domaine correspondant : le visiteur qui
+                arrive par l'IA découvre le reste du cabinet, et les pages
+                sœurs récupèrent un lien contextuel plutôt qu'un lien de menu. */}
             {[
-              ["ti-users", "Droit du travail", "Information-consultation CSE, loyauté des évaluations algorithmiques, transparence des objectifs automatisés"],
-              ["ti-shield-lock", "RGPD & données", "Licéité, analyse d'impact, minimisation, droits des personnes — cumulatifs avec l'AI Act"],
-              ["ti-file-invoice", "Responsabilité produit", "Défaut de documentation ou de supervision humaine = indice de défaut en contentieux"],
-              ["ti-world", "Fournisseurs & cloud", "APIs tierces, SaaS IA, contrats cloud : chaque prestataire sans encadrement est un risque non couvert"],
-              ["ti-eye", "Transparence", "Contenus générés, chatbots, deepfakes : obligation d'information envers les utilisateurs — en vigueur"],
-              ["ti-scale", "Devoir de conseil", "Les prestataires intégrant l'IA restent tenus d'informer sur les limites, risques et maturité des outils"],
-              ["ti-building-bank", "Régulation sectorielle", "Finance, immobilier, santé, plateformes : des obligations spécifiques s'ajoutent au cadre général"],
-              ["ti-certificate", "Conformité CNIL", "Référentiels, analyses d'impact, codes de conduite : la doctrine CNIL s'applique aux systèmes IA"],
-            ].map(([icon, title, text]) => (
-              <div key={title} style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 6, padding: CARD_PAD }}>
-                <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#1A47FF", display: "block", marginBottom: 8 }} aria-hidden="true" />
-                <div style={{ fontSize: 12, fontWeight: 600, color: LIGHT.text, marginBottom: 5 }}>{title}</div>
-                <div style={{ fontSize: 11, color: LIGHT.muted, lineHeight: 1.5 }}>{text}</div>
-              </div>
-            ))}
+              { icon: "ti-users", title: "Droit du travail", text: "Information-consultation CSE, loyauté des évaluations algorithmiques, transparence des objectifs automatisés" },
+              { icon: "ti-shield-lock", title: "RGPD & données", text: "Licéité, analyse d'impact, minimisation, droits des personnes — cumulatifs avec l'AI Act", href: "/nos-domaines/rgpd-donnees" },
+              { icon: "ti-file-invoice", title: "Responsabilité produit", text: "Défaut de documentation ou de supervision humaine = indice de défaut en contentieux" },
+              { icon: "ti-world", title: "Fournisseurs & cloud", text: "APIs tierces, SaaS IA, contrats cloud : chaque prestataire sans encadrement est un risque non couvert", href: "/nos-domaines/contrats-informatiques" },
+              { icon: "ti-eye", title: "Transparence", text: "Contenus générés, chatbots, deepfakes : obligation d'information envers les utilisateurs — en vigueur" },
+              { icon: "ti-scale", title: "Devoir de conseil", text: "Les prestataires intégrant l'IA restent tenus d'informer sur les limites, risques et maturité des outils" },
+              { icon: "ti-building-bank", title: "Régulation sectorielle", text: "Finance, immobilier, santé, plateformes : des obligations spécifiques s'ajoutent au cadre général" },
+              { icon: "ti-certificate", title: "Sécurité des systèmes", text: "Journalisation, robustesse, notification d'incident : les exigences NIS 2 et AI Act se recoupent", href: "/nos-domaines/cybersecurite" },
+            ].map(({ icon, title, text, href }) => {
+              const contenu = (
+                <>
+                  <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#1A47FF", display: "block", marginBottom: 8 }} aria-hidden="true" />
+                  <div style={{ fontSize: 12, fontWeight: 600, color: LIGHT.text, marginBottom: 5 }}>{title}</div>
+                  <div style={{ fontSize: 11, color: LIGHT.muted, lineHeight: 1.5 }}>{text}</div>
+                  {href ? (
+                    <div style={{ fontSize: 11, color: BLUE, marginTop: 7 }}>Voir le domaine →</div>
+                  ) : null}
+                </>
+              );
+              const style: CSSProperties = {
+                background: LIGHT.panel,
+                border: `1px solid ${href ? LIGHT.borderBlue : LIGHT.border}`,
+                borderRadius: 6,
+                padding: CARD_PAD,
+                display: "block",
+                textDecoration: "none",
+              };
+              return href ? (
+                <Link key={title} href={href} style={style}>
+                  {contenu}
+                </Link>
+              ) : (
+                <div key={title} style={style}>
+                  {contenu}
+                </div>
+              );
+            })}
           </div>
           <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #1A47FF", borderRadius: "0 4px 4px 0", padding: CARD_PAD, display: "flex", gap: GRID_GAP, alignItems: "center" }}>
             <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6 }}>
@@ -940,59 +968,18 @@ export default function IaActClient() {
             l&apos;algorithme.
           </p>
 
-          <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 8, padding: CARD_PAD }}>
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
-              <div style={{ border: `1px solid ${LIGHT.border}`, borderRadius: 8, padding: 0, display: "flex", flexDirection: "column" }}>
-                <img
-                  src="/images/alexandre-lazaregue.png"
-                  alt="Alexandre Lazarègue"
-                  style={{
-                    width: "100%",
-                    height: 180,
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    borderRadius: 4,
-                  }}
-                />
-                <div style={{ padding: 16 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600 }}>Alexandre Lazarègue</div>
-                  <div style={{ fontSize: 12, color: LIGHT.muted }}>Avocat</div>
-                  <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6 }}>Droit du numérique · Cybersécurité · RGPD · AI Act · Contentieux</div>
-                </div>
-              </div>
-              <div style={{ border: `1px solid ${LIGHT.border}`, borderRadius: 8, padding: 0, display: "flex", flexDirection: "column" }}>
-                <img
-                  src="/images/nadia-abchiche.png"
-                  alt="Nadia Abchiche-Mimouni"
-                  style={{
-                    width: "100%",
-                    height: 180,
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    borderRadius: 4,
-                  }}
-                />
-                <div style={{ padding: 16 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600 }}>Nadia Abchiche-Mimouni</div>
-                  <div style={{ fontSize: 12, color: LIGHT.muted }}>AI Ethic Officer</div>
-                  <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6 }}>Docteure en IA · CNRS · Éthique algorithmique · Systèmes IA</div>
-                </div>
-              </div>
-            </div>
+          <EquipeDossier
+            eyebrow="Gouvernance IA"
+            titre="Du contrat à l'algorithme"
+            chapeau="Qualifier un système d'IA en droit suppose d'abord d'établir ce qu'il fait réellement. C'est pourquoi l'avocat et l'experte technique travaillent sur le même dossier."
+            couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
+            membres={[
+              { slug: "alexandre", role: "Qualification juridique & documentation de conformité", tags: ["AI Act", "RGPD", "Contentieux"] },
+              { slug: "nadia", role: "Architecture des systèmes, biais et impacts", tags: ["Docteure en IA", "Éthique algorithmique", "Audit technique"] },
+            ]}
+          />
 
-            <div
-              style={{
-                fontSize: 13,
-                color: "rgba(10,10,20,0.55)",
-                lineHeight: 1.7,
-                padding: "12px 0",
-                borderTop: "1px solid rgba(10,10,20,0.07)",
-                marginTop: 12,
-              }}
-            >
-              Alexandre Lazarègue qualifie juridiquement vos systèmes IA et construit la documentation qui tient devant les autorités. Nadia Abchiche-Mimouni évalue l&apos;architecture technique des systèmes, leurs biais et leurs impacts éthiques. Deux compétences complémentaires au service d&apos;une gouvernance IA qui couvre l&apos;intégralité du spectre — du contrat à l&apos;algorithme.
-            </div>
-
+          <div style={{ marginTop: 16 }}>
             <div style={{ background: "#F8F8FB", borderRadius: 8, padding: CARD_PAD, display: "flex", flexWrap: "wrap", gap: GRID_GAP, alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ margin: 0, color: LIGHT.muted }}>
                 Rendre l&apos;IA gouvernable dans votre entreprise — avant que l&apos;absence de règles ne devienne un risque.
@@ -1215,6 +1202,8 @@ export default function IaActClient() {
                 >
                   <button
                     type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-ia-reponse-${item.id}`}
                     onClick={() =>
                       setOpenQuestions((prev) =>
                         prev.includes(item.id) ? prev.filter((id) => id !== item.id) : [...prev, item.id]
@@ -1256,11 +1245,17 @@ export default function IaActClient() {
                     </span>
                   </button>
 
-                  {isOpen ? (
-                    <div style={{ ...TYPE.small, color: LIGHT.muted, lineHeight: 1.7, padding: "0 0 14px 0", maxWidth: 760 }}>
-                      {item.a}
-                    </div>
-                  ) : null}
+                  {/* La réponse reste dans le DOM une fois repliée : rendue
+                      conditionnellement, elle serait absente du HTML servi —
+                      donc invisible pour les moteurs, alors même qu'elle est
+                      déclarée dans le balisage FAQPage. */}
+                  <div
+                    id={`faq-ia-reponse-${item.id}`}
+                    hidden={!isOpen}
+                    style={{ ...TYPE.small, color: LIGHT.muted, lineHeight: 1.7, padding: "0 0 14px 0", maxWidth: 760 }}
+                  >
+                    {item.a}
+                  </div>
                 </div>
               );
             })}

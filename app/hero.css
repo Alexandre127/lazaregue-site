@@ -46,6 +46,18 @@
   z-index: 0;
 }
 
+/* Étape 1 — Curseur personnalisé : inutile au doigt, et positionné hors écran
+   il peut créer du défilement. Désactivé sur les appareils tactiles. */
+@media (pointer: coarse) {
+  .laz-cur,
+  .laz-cur2 {
+    display: none !important;
+  }
+  .laz-site.cursor-custom {
+    cursor: auto;
+  }
+}
+
 /* Nav hero */
 .laz-nav {
   position: fixed;
@@ -95,6 +107,17 @@
   display: flex;
   align-items: center;
   margin-left: auto;
+}
+
+/* Étape 5 — Cette règle `display:flex` écrasait le `hidden` de Tailwind (même
+   spécificité, hero.css l'emporte par l'ordre de cascade) : le menu horizontal
+   restait affiché sous mobile, en plus du burger. On masque explicitement la
+   navigation desktop sous lg (1024px), où le burger prend le relais.
+   Desktop (≥1024px) inchangé. */
+@media (max-width: 1023.98px) {
+  .laz-nav-links {
+    display: none;
+  }
 }
 
 .laz-nlink {
@@ -176,7 +199,7 @@
   }
 
   .laz-hero-copy {
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
 }
 
@@ -186,7 +209,7 @@
   }
 
   .laz-hero-copy {
-    gap: 3rem;
+    gap: 1.5rem;
   }
 }
 
@@ -204,38 +227,6 @@
   display: block;
   text-transform: uppercase;
   color: #fff;
-}
-
-.laz-hero-h1-dynamic-slot {
-  display: block;
-  position: relative;
-  height: 0.92em;
-  min-width: clamp(10rem, 24vw, 18rem);
-  overflow: hidden;
-}
-
-.laz-hero-h1-dynamic-word {
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--blue);
-  text-transform: lowercase;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  opacity: 0;
-  transform: translateY(0.12em);
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
-  white-space: nowrap;
-}
-
-.laz-hero-h1-dynamic-word.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* H2 — positionnement (styles de taille via Tailwind dans le composant) */
@@ -626,14 +617,47 @@
 @media (max-width: 900px) {
   .laz-hero {
     grid-template-columns: 1fr;
+    /* Plus de hauteur 100vh forcée : sans le globe, elle ne servait qu'à
+       créer un vide sous le CTA. La section prend sa hauteur de contenu. */
+    min-height: auto;
   }
 
-  .laz-hero-right {
+  /* Masquage de la colonne du globe sur mobile — intention d'origine du
+     design. La règle de base `.laz-reveal.laz-hero-right { display:flex }`
+     (spécificité 0,2,0) l'emportait sur un simple `.laz-hero-right` (0,1,0) :
+     on reprend la même spécificité pour que le `display:none` s'applique.
+     C'est ce conteneur fixe de 520px qui provoquait la majorité des débordements. */
+  .laz-hero-right,
+  .laz-reveal.laz-hero-right {
     display: none;
   }
 
+  /* Étape 2 — Halo décoratif de 700px en position fixe : hors du conteneur, il
+     débordait à droite sur mobile. Masqué sous 900px (purement esthétique). */
+  .laz-glow {
+    display: none;
+  }
+
+  /* Fix vides verticaux : sur desktop la colonne gauche est centrée dans une
+     hauteur de 100vh, ce qui laissait ~350px de noir au-dessus du H1 et un
+     grand vide sous le CTA une fois le globe masqué. Sur mobile on aligne le
+     contenu en haut, sur sa hauteur naturelle, avec un padding qui dégage la
+     barre fixe de 54px. Desktop (≥900px) inchangé. */
   .laz-hero-left {
-    padding: 53px 16px 40px;
+    /* Padding bas resserré (56→28) : réduit le vide entre le bandeau de
+       compétences et la section suivante. */
+    padding: 88px 16px 28px;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  /* Le `-mt-[70px]` (Tailwind) remontait la copie pour l'aligner sur le globe
+     sur desktop. Sans globe sur mobile, il la faisait passer sous la barre :
+     neutralisé ici. Gap resserré (2rem→1.25rem) pour que badge + titre +
+     sous-titre + bouton + bandeau tiennent sur le premier écran à 390px. */
+  .laz-hero-copy {
+    margin-top: 0;
+    gap: 1.25rem;
   }
 
   .laz-nav {
@@ -652,5 +676,232 @@
 
   .laz-hero-h3-dynamic-slot {
     min-width: clamp(5.5rem, 28vw, 9rem);
+  }
+
+  /* Le liseré bleu sous la barre fixe (border-bottom) se lisait comme une
+     bande claire en haut de page sur mobile, sur un hero de même teinte que la
+     barre. On l'efface ici ; la barre reste définie par son fond. Desktop
+     (≥900px) inchangé. */
+  .laz-nav {
+    border-bottom-color: transparent;
+  }
+}
+
+
+/* =========================================================================
+   Hero mobile (<900px) — halo de fond, badge, bandeau de compétences et
+   barre d'appel collante. Tous ces éléments sont, par défaut, masqués :
+   ils ne sont activés que dans la media query mobile ci-dessous, donc le
+   desktop (≥901px) reste strictement inchangé.
+   ========================================================================= */
+.laz-hero-skills,
+.laz-hero-callbar {
+  display: none;
+}
+
+/* Badge — visible partout, au-dessus du H1. Échelle desktop (discrète face au
+   titre) ci-dessous ; la media query mobile (<900px) l'ajuste à l'échelle
+   mobile (police et padding un cran plus petits). */
+.laz-hero-badge {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  /* Le contenu doit passer au-dessus du halo (::before en z-index 0). */
+  .laz-hero-left {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 1 — Halo radial : cercle diffus centré dans l'angle supérieur droit,
+     débordant hors du cadre, sur fond noir profond. On perçoit une profondeur
+     dans le coin, pas un cercle net. Le fond du hero passe à #05070F sous 900px,
+     et overflow:hidden borne le cercle (qui déborde à right:-110) → aucun
+     débordement horizontal. */
+  .laz-hero {
+    background-color: #05070f;
+    overflow: hidden;
+  }
+  .laz-hero::before {
+    content: "";
+    position: absolute;
+    top: -90px;
+    right: -110px;
+    width: 340px;
+    height: 340px;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      rgba(26, 71, 255, 0.34) 0%,
+      rgba(16, 32, 96, 0.16) 42%,
+      transparent 72%
+    );
+    will-change: transform;
+    animation: lazHeroHaloDrift 20s ease-in-out infinite alternate;
+  }
+
+  /* 2 — Badge discret au-dessus du titre. */
+  .laz-hero-badge {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    white-space: nowrap;
+  }
+
+  /* 5 — Bandeau de compétences : bande fixe, filets fins haut/bas,
+     débordement horizontal scrollable au doigt, fondu à droite. */
+  .laz-hero-skills {
+    display: block;
+    position: relative;
+    max-width: 100%;
+    margin-top: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .laz-hero-skills-scroll {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 46px 11px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .laz-hero-skills-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .laz-hero-skill {
+    flex: 0 0 auto;
+    font-family: var(--ff-mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.74);
+    white-space: nowrap;
+  }
+  .laz-hero-skill-dot {
+    flex: 0 0 auto;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  /* Fondu sur le bord droit — signale que le bandeau continue. */
+  .laz-hero-skills::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    right: 0;
+    width: 52px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(10, 10, 20, 0), var(--ink));
+  }
+
+  /* 6 — Barre d'appel collante (l'apparition au défilement est pilotée en JS
+     via la classe .is-visible). */
+  .laz-hero-callbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(6, 8, 15, 0.92);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    opacity: 0;
+    transition:
+      transform 0.28s ease,
+      opacity 0.28s ease;
+  }
+  .laz-hero-callbar.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .laz-hero-callbar-btn {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    border-radius: 8px;
+    font-family: var(--ff-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .laz-hero-callbar-btn--call {
+    background: var(--blue);
+    color: #fff;
+  }
+  .laz-hero-callbar-btn--write {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+}
+
+@keyframes lazHeroHaloDrift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-14px, 10px, 0) scale(1.05);
+  }
+}
+
+/* Mouvement figé si l'utilisateur réduit les animations. */
+@media (prefers-reduced-motion: reduce) {
+  .laz-hero::before {
+    animation: none;
+  }
+  .laz-hero-callbar {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Le bandeau de compétences est en `nowrap` + overflow-x:auto. Sans cela,
+     son min-content (largeur du texte) force, via min-width:auto des items
+     flex/grid, la largeur de toute la colonne du hero → débordement de page.
+     On autorise la chaîne à rétrécir pour que le scroll interne prenne le
+     relais. Desktop (≥901px) inchangé. */
+  .laz-hero-left,
+  .laz-hero-copy,
+  .laz-hero-skills {
+    min-width: 0;
   }
 }
