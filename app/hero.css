@@ -199,7 +199,7 @@
   }
 
   .laz-hero-copy {
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
 }
 
@@ -209,7 +209,7 @@
   }
 
   .laz-hero-copy {
-    gap: 3rem;
+    gap: 1.5rem;
   }
 }
 
@@ -227,38 +227,6 @@
   display: block;
   text-transform: uppercase;
   color: #fff;
-}
-
-.laz-hero-h1-dynamic-slot {
-  display: block;
-  position: relative;
-  height: 0.92em;
-  min-width: clamp(10rem, 24vw, 18rem);
-  overflow: hidden;
-}
-
-.laz-hero-h1-dynamic-word {
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--blue);
-  text-transform: lowercase;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  opacity: 0;
-  transform: translateY(0.12em);
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
-  white-space: nowrap;
-}
-
-.laz-hero-h1-dynamic-word.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* H2 — positionnement (styles de taille via Tailwind dans le composant) */
@@ -710,24 +678,6 @@
     min-width: clamp(5.5rem, 28vw, 9rem);
   }
 
-  /* H1 — le mot qui défile était en `white-space: nowrap` dans un emplacement
-     d'une seule ligne : « CONTRATS INFORMATIQUES » et « INTELLIGENCE
-     ARTIFICIELLE » sortaient de l'écran. La borne basse du clamp abaissée à
-     32px (dans le composant) suffit à tout faire tenir sur une ligne dès 320px
-     avec la police condensée. On autorise malgré tout le retour à la ligne
-     (filet de sécurité) et on borne la largeur du mot (`right: 0`) pour qu'il
-     revienne dans la colonne au lieu de déborder. Desktop (≥900px) inchangé. */
-  .laz-hero-h1-dynamic-slot {
-    height: auto;
-    min-height: 1.05em;
-    min-width: 0;
-    overflow: visible;
-  }
-  .laz-hero-h1-dynamic-word {
-    white-space: normal;
-    right: 0;
-  }
-
   /* Le liseré bleu sous la barre fixe (border-bottom) se lisait comme une
      bande claire en haut de page sur mobile, sur un hero de même teinte que la
      barre. On l'efface ici ; la barre reste définie par son fond. Desktop
@@ -744,10 +694,30 @@
    ils ne sont activés que dans la media query mobile ci-dessous, donc le
    desktop (≥901px) reste strictement inchangé.
    ========================================================================= */
-.laz-hero-badge,
 .laz-hero-skills,
 .laz-hero-callbar {
   display: none;
+}
+
+/* Badge — visible partout, au-dessus du H1. Échelle desktop (discrète face au
+   titre) ci-dessous ; la media query mobile (<900px) l'ajuste à l'échelle
+   mobile (police et padding un cran plus petits). */
+.laz-hero-badge {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {

@@ -3,7 +3,6 @@
 // @ts-nocheck
 
 import { HeroCTACard } from "@/components/home/hero-cta-card";
-import { HeroH1DynamicLine } from "@/components/home/hero-h1-dynamic-line";
 import { HeroGlobeThree } from "@/components/home/hero-globe-three";
 import { HeroReveal } from "@/components/home/hero-reveal";
 import { useEffect, useState } from "react";
@@ -103,7 +102,7 @@ export function Header5() {
       <div className="laz-hero-left overflow-visible">
         <div className="laz-hero-copy overflow-visible -mt-[70px]">
           {/* Badge — mobile uniquement (masqué ≥900px en CSS). */}
-          <span className="laz-hero-badge">Droit du numérique · Paris</span>
+          <span className="laz-hero-badge">Paris · Depuis 2016</span>
 
           <HeroReveal delay={0}>
             <h1
@@ -120,18 +119,26 @@ export function Header5() {
             >
               <span className="laz-hero-h1-line">VOTRE CABINET</span>
               <span className="laz-hero-h1-line">D&apos;AVOCATS EN</span>
-              <HeroH1DynamicLine />
+              {/* Titre fixe et stable. La ligne rotative des sept domaines
+                  (keyword stuffing dans le H1) a été retirée : la troisième
+                  ligne porte désormais l'expression cible « droit du numérique ». */}
+              <span
+                className="laz-hero-h1-line"
+                style={{ color: "var(--blue)" }}
+              >
+                DROIT DU NUMÉRIQUE
+              </span>
             </h1>
           </HeroReveal>
 
           <HeroReveal delay={60}>
-            <h2 className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px]">
+            <h2 className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px] md:leading-snug">
               <span className="font-medium text-white/85">
                 Conseil juridique et défense des entreprises
                 <br />
               </span>
               <span className="text-white/55">
-                en droit du numérique et des technologies.
+                face aux risques numériques.
               </span>
             </h2>
           </HeroReveal>
