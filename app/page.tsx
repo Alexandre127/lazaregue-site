@@ -14,10 +14,9 @@ import { SectionCas } from "@/components/home/section-cas";
  * titre générique du site. C'est pourtant elle qui reçoit les recherches de
  * marque (« lazarègue avocats ») — les premières à ressortir pour un site neuf.
  */
-const TITLE =
-  "Lazarègue Avocats — avocat en droit du numérique à Paris | RGPD, cybersécurité, IA";
+const TITLE = "Avocat droit du numérique à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Cabinet d'avocats dédié au droit du numérique à Paris 17e. RGPD, NIS 2, intelligence artificielle, contrats IT, cybercriminalité et plateformes. Pour les PME et ETI.";
+  "Lazarègue Avocats accompagne les entreprises en droit du numérique : cybersécurité, intelligence artificielle, RGPD, contrats informatiques et plateformes. Cabinet à Paris.";
 
 export const metadata: Metadata = {
   title: TITLE,

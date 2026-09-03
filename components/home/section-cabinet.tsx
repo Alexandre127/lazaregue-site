@@ -127,6 +127,26 @@ export function SectionCabinet() {
         du numérique.
       </h2>
 
+      {/* Paragraphe institutionnel — texte HTML courant, lisible par les
+          moteurs (ni image, ni composant animé, ni accordéon). */}
+      <p
+        style={{
+          maxWidth: "680px",
+          marginTop: "20px",
+          marginInline: "auto",
+          fontSize: "15px",
+          lineHeight: 1.75,
+          color: "#C5CBDE",
+        }}
+      >
+        Lazarègue Avocats est un cabinet d&apos;avocats en droit du numérique et
+        en nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons
+        et défendons les entreprises en droit de l&apos;informatique. Notre
+        pratique couvre les cyberattaques, les contrats informatiques,
+        l&apos;intelligence artificielle, la protection des données et les
+        litiges liés aux plateformes numériques.
+      </p>
+
       <div
         className="flex justify-center"
         style={{ marginTop: "24px", gap: "16px" }}

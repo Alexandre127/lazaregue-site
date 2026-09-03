@@ -219,7 +219,7 @@ const cards: CompetenceCard[] = [
     icon: "gavel",
     color: "#F09595",
     bg: "linear-gradient(135deg, #1a0808 0%, #1e0c10 50%, #1a0808 100%)",
-    title: "Conflits IT & projets bloqués",
+    title: "Conflits IT et projets informatiques bloqués",
     phrase:
       "Résoudre les situations de blocage liées aux contrats numériques, aux prestataires informatiques et aux infrastructures critiques.",
     tags: [
@@ -230,7 +230,7 @@ const cards: CompetenceCard[] = [
     tagColor: "rgba(226,75,74,.12)",
     tagText: "#F09595",
     href: "/nos-domaines/contrats-informatiques",
-    linkLabel: "Contrats IT et responsabilité",
+    linkLabel: "Droit informatique et responsabilité des prestataires",
   },
   {
     id: 3,
