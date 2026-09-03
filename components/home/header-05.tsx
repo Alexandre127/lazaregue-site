@@ -133,9 +133,12 @@ export function Header5() {
 
           <HeroReveal delay={60}>
             <h2 className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px] md:leading-snug">
+              {/* Coupure typographique après « défense » : équilibre les deux
+                  lignes plutôt que d'isoler « face aux risques numériques ». */}
               <span className="font-medium text-white/85">
-                Conseil juridique et défense des entreprises
+                Conseil juridique et défense
                 <br />
+                des entreprises{" "}
               </span>
               <span className="text-white/55">
                 face aux risques numériques.
