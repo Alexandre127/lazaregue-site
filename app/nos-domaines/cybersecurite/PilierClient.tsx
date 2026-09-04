@@ -427,19 +427,23 @@ export default function PilierClient() {
         .cyb-h1 { font-size: clamp(30px, 6vw, 60px); line-height: 1.08; }
         @media (prefers-reduced-motion: reduce) { .cyb-plus { transition: none; } }
 
-        /* ---- Bloc B : héro avec photographie ---- */
-        .cyb-hero-grid { display: grid; }
-        .cyb-hero-photo { position: relative; width: 100%; height: 150px; }
-        .cyb-hero-img { object-position: center bottom; }
-        /* Raccord du noir de la photo au fond navy du bloc texte, sans rupture. */
-        .cyb-hero-fade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,15,46,0) 55%, ${DARK.bg} 100%); }
-        .cyb-hero-text { padding: 30px 24px 44px; }
+        /* ---- Héro avec photographie ----
+           Mobile : la photo est le FOND de la section (derrière le texte) + un
+           voile sombre ; le texte blanc passe (image verticale, ~60 % de noir).
+           Desktop : deux colonnes 55/45, photo à droite en cover, remontée à
+           center 30 % pour amener l'étage éclairé au tiers supérieur. */
+        .cyb-hero-grid { position: relative; display: block; }
+        .cyb-hero-photo { position: absolute; inset: 0; z-index: 0; }
+        .cyb-hero-img { object-position: center 30%; }
+        .cyb-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: rgba(9,13,38,0.62); }
+        .cyb-hero-fade { display: none; }
+        .cyb-hero-text { position: relative; z-index: 1; padding: 40px 24px 48px; min-height: 360px; }
         @media (min-width: 1024px) {
-          .cyb-hero-grid { grid-template-columns: 55fr 45fr; align-items: stretch; }
-          .cyb-hero-photo { order: 2; height: auto; min-height: 440px; }
-          .cyb-hero-img { object-position: center; }
-          .cyb-hero-fade { background: linear-gradient(to left, rgba(10,15,46,0) 62%, ${DARK.bg} 100%); }
-          .cyb-hero-text { order: 1; padding: 56px 40px 56px 24px; display: flex; flex-direction: column; justify-content: center; }
+          .cyb-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
+          .cyb-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 440px; z-index: auto; }
+          .cyb-hero-overlay { display: none; }
+          .cyb-hero-fade { display: block; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 62%, ${DARK.bg} 100%); }
+          .cyb-hero-text { order: 1; padding: 56px 40px 56px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
         }
 
         /* ---- Schéma des quatre expositions ----
@@ -539,6 +543,7 @@ export default function PilierClient() {
               style={{ objectFit: "cover" }}
             />
             <span className="cyb-hero-fade" aria-hidden />
+            <span className="cyb-hero-overlay" aria-hidden />
           </div>
 
           <div className="cyb-hero-text">
@@ -566,8 +571,8 @@ export default function PilierClient() {
             <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 560 }}>
               Une attaque, une fuite de données, un prestataire défaillant ou un client qui exige des garanties : le
               risque numérique cesse d'être une affaire technique dès l'instant où il engage une responsabilité. Le
-              cabinet intervient sur l'ensemble de cette chaîne, à Paris, avec un expert technique à ses côtés. Le
-              cabinet organise le risque avant qu'il ne survienne, et défend l'entreprise lorsqu'il survient.
+              cabinet organise ce risque avant qu'il ne survienne et défend l'entreprise lorsqu'il survient, à Paris,
+              avec un expert technique à ses côtés.
             </p>
             <div className="flex flex-col sm:flex-row" style={{ gap: 12 }}>
               <Link href="/contact" style={BTN_PRIMARY}>
@@ -636,7 +641,7 @@ export default function PilierClient() {
               const cardStyle: React.CSSProperties = {
                 display: "block",
                 background: LIGHT.panel,
-                border: p.alerte ? `1.5px solid ${RED}` : `0.5px solid ${LIGHT.border}`,
+                border: p.alerte ? `1.5px solid ${RED}` : `1px solid rgba(0,0,0,0.14)`,
                 borderRadius: 12,
                 padding: 22,
                 height: "100%",
@@ -653,6 +658,13 @@ export default function PilierClient() {
               );
             })}
           </div>
+          {/* Conversion directe : la section n'en offrait aucune. */}
+          <p style={{ margin: "22px 0 0", fontSize: 14, color: LIGHT.muted, textAlign: "center" }}>
+            ou{" "}
+            <Link href="/contact" style={{ color: BLUE, fontWeight: 600, textDecoration: "none" }}>
+              parlez-en directement à un avocat <span aria-hidden>→</span>
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -670,7 +682,7 @@ export default function PilierClient() {
               terrain pénal.
             </p>
             <Link href="/nos-domaines/cybercriminalite" style={{ fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: "none" }}>
-              Les 72 premières heures <span aria-hidden>→</span>
+              Ce qui se décide au pénal <span aria-hidden>→</span>
             </Link>
           </div>
         </div>
