@@ -9,10 +9,9 @@ import { FAQ_ITEMS } from "./faq";
  * position (poursuivre / défendre) est reprise telle quelle : elle
  * qualifie autant le mis en cause que la victime.
  */
-const TITLE =
-  "Avocat cybercriminalité & fraude numérique — poursuivre ou défendre | Lazarègue Avocats, Paris";
+const TITLE = "Avocat cybercriminalité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Rançongiciel, phishing non remboursé, fraude au virement, ex-salarié parti avec les données, enquête CNIL après attaque : nous construisons le dossier pénal. PME et ETI. 01 81 70 62 00.";
+  "Intrusion, rançongiciel, extorsion, salarié malveillant, exfiltration de données : le cabinet intervient au pénal, pour poursuivre comme pour défendre.";
 
 export const metadata: Metadata = {
   title: TITLE,

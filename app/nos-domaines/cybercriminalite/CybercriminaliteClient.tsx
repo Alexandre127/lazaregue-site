@@ -34,49 +34,63 @@ const TYPE = {
   h3: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 } as const,
 };
 
-const METRICS = [
-  { tone: "red" as const, badge: "+20%", value: "504 000", label: "demandes d'assistance en France en 2025", ref: "cybermalveillance.gouv.fr" },
-  { tone: "red" as const, badge: "+196%", value: "13 000", label: "assistances fraude au virement en 2025", ref: "Menace n°3 entreprises" },
-  { tone: "red" as const, badge: "+159%", value: "15 000", label: "assistances faux conseiller bancaire", ref: "Malgré la sensibilisation" },
-  { tone: "amber" as const, badge: "+52%", value: "1/3", label: "des assistances entreprises = piratage de compte. Menace n°1 professionnels.", ref: "Souvent par un salarié ou ex-salarié" },
-  { tone: "amber" as const, badge: "+517%", value: "7 000", label: "assistances usurpation de numéro de téléphone — explosion en 2025", ref: "10e menace particuliers" },
+/* §6 — les dossiers sont anonymisés mais caractérisants ; leur publication
+   soulève une question de secret professionnel que seul le cabinet peut
+   trancher. Section rendue uniquement si ce drapeau passe à true. */
+const DOSSIERS_ENABLED = false;
+
+/* §4 — deux indicateurs conservés sur cinq (graphique et paragraphe retirés). */
+const METRICS: { repere: string; chiffre: string; libelle: string }[] = [
+  {
+    repere: "Menace n° 1",
+    chiffre: "1 / 3",
+    libelle: "des assistances entreprises : piratage de compte, souvent par un salarié ou un ancien salarié",
+  },
+  {
+    repere: "+196 %",
+    chiffre: "13 000",
+    libelle: "assistances pour fraude au virement en un an",
+  },
 ];
 
-const THREAT_BARS = [
-  { label: "Piratage de compte", pct: 21, color: "#E24B4A" },
-  { label: "Hameçonnage", pct: 16, color: "#EF9F27" },
-  { label: "Fraude au virement", pct: 13.5, color: "#378ADD" },
-  { label: "Ransomware", pct: 8, color: "#BA7517" },
-  { label: "Violation de données", pct: 6.6, color: "#7F77DD" },
-];
-
-/**
- * `lien` prolonge l'étape vers le domaine qu'elle engage. Un incident cyber
- * n'est jamais qu'un dossier pénal : il ouvre en parallèle une obligation
- * CNIL et, très souvent, un recours contre le prestataire.
- */
-const TIMELINE: {
-  time: string;
-  title: string;
-  desc: string;
-  tag: string | null;
+/* §5 — trois temps (remplace la chronologie H+0 → H+72). */
+const TROIS_TEMPS: {
+  n: number;
+  titre: string;
+  corps: string;
+  mono?: string;
   lien?: { href: string; label: string };
 }[] = [
-  { time: "H+0", title: "Isoler sans éteindre", desc: "Ne pas éteindre les machines. Les preuves numériques sont en mémoire vive. Un arrêt les efface définitivement. Déconnectez du réseau uniquement.", tag: null },
-  { time: "H+1", title: "Associer l'avocat dès les premières décisions", desc: "Payer la rançon ou non, notifier ou attendre, communiquer ou se taire — chaque décision engage la procédure. L'avocat n'intervient pas après la technique. Il intervient avant.", tag: null },
-  { time: "H+4", title: "Qualifier l'incident", desc: "Ransomware, vol de données, intrusion, fraude, salarié malveillant — la qualification pénale conditionne les recours disponibles et l'exposition de l'entreprise.", tag: "Art. 323-1 à 323-3 · 313-1 · 226-17 C.pén.", lien: { href: "/nos-domaines/contrats-informatiques", label: "Si le prestataire est en cause : contrats IT & responsabilité" } },
-  { time: "H+24", title: "Dépôt de plainte structuré", desc: "Une plainte bien construite ouvre des investigations que la procédure civile ne permet pas — réquisitions, saisies informatiques, expertises judiciaires. Une plainte contre X au commissariat ne donne presque rien.", tag: null },
-  { time: "H+72", title: "Notification CNIL — délai à qualifier", desc: "Le délai court à partir de la prise de connaissance effective — une notion juridique qui se plaide. Nous qualifions ce moment.", tag: "Art. 33 RGPD · 72h", lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" } },
+  {
+    n: 1,
+    titre: "Préserver la preuve",
+    corps:
+      "Isoler sans éteindre : les traces vivent en mémoire vive et un arrêt les efface. Journaux d'intervention, accès distants, courriels de rançon, horodatages — tout est une pièce, et sa valeur probatoire dépend de la façon dont elle a été recueillie.",
+    mono: "SAUF CONSIGNE CONTRAIRE DE L'ÉQUIPE TECHNIQUE",
+  },
+  {
+    n: 2,
+    titre: "Qualifier pénalement",
+    corps:
+      "Intrusion, maintien frauduleux, entrave au fonctionnement, extorsion, escroquerie, atteinte aux données : la qualification commande le service d'enquête saisi, les actes possibles et ce qui peut être réclamé. Elle se discute, elle ne se subit pas.",
+    mono: "ART. 323-1 À 323-3 · 312-1 · 313-1 · 226-17 C. PÉN.",
+    lien: { href: "/nos-domaines/contrats-informatiques", label: "Si le prestataire est en cause : contrats IT & responsabilité" },
+  },
+  {
+    n: 3,
+    titre: "Construire la procédure",
+    corps:
+      "Une plainte documentée ouvre des investigations que la voie civile ne permet pas : réquisitions, saisies informatiques, expertise judiciaire. Une plainte contre X au commissariat ne donne presque rien. Puis constitution de partie civile — ou défense, si c'est vous qui êtes mis en cause.",
+    lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
+  },
 ];
-
 
 const DOSSIERS = [
   {
     badge: "Outil automobile · International · STAD",
     badgeBg: "#FCEBEB",
     badgeColor: "#A32D2D",
-    title:
-      "Un logiciel de reprogrammation automobile.\nPlusieurs pays. Des années d'instruction.\nUne question au cœur du dossier.",
+    title: "Un logiciel de reprogrammation automobile.\nPlusieurs pays. Des années d'instruction.\nUne question au cœur du dossier.",
     quote: "Ce logiciel est-il une arme informatique\nau sens du droit pénal ?",
     items: [
       "Analyse technique complète du logiciel et des protocoles des constructeurs",
@@ -84,8 +98,7 @@ const DOSSIERS = [
       "Débat sur la qualification même d'atteinte à un STAD — existe-t-elle ?",
       "Confrontation entre droit pénal français et droit de l'Union européenne",
     ],
-    verdict:
-      "Quand la définition légale d'un système\ninformatique devient l'enjeu principal\ndu procès pénal.",
+    verdict: "Quand la définition légale d'un système\ninformatique devient l'enjeu principal\ndu procès pénal.",
   },
   {
     badge: "Cyberextorsion · Éditeur logiciel industriel",
@@ -99,32 +112,27 @@ const DOSSIERS = [
       "Menaces coordonnées pour obtenir de l'argent — extorsion numérique",
       "Corrélation établie entre les événements techniques et les actes de menace",
     ],
-    verdict:
-      "Informatique industrielle, investigation\nnumérique et droit pénal dans le même dossier.\nParce que connaître un système\nne donne pas le droit d'y revenir.",
+    verdict: "Informatique industrielle, investigation\nnumérique et droit pénal dans le même dossier.\nParce que connaître un système\nne donne pas le droit d'y revenir.",
   },
   {
     badge: "Intrusion massive · Données personnelles",
     badgeBg: "#EEEDFE",
     badgeColor: "#3C3489",
-    title:
-      "Des milliers de comptes compromis\nen quelques heures.\nDes outils automatisés. Des enquêteurs saisis.",
-    quote:
-      "La question n'est pas seulement\nce qui s'est passé.\nLa question est : que permettait\nréellement le système ?",
+    title: "Des milliers de comptes compromis\nen quelques heures.\nDes outils automatisés. Des enquêteurs saisis.",
+    quote: "La question n'est pas seulement\nce qui s'est passé.\nLa question est : que permettait\nréellement le système ?",
     items: [
       "Conditions réelles d'accès — y avait-il vraiment une intrusion ?",
       "Niveau de sécurité déployé par l'entreprise — suffisant ou non ?",
       "Étendue exacte des données réellement accessibles",
       "Limites techniques des infractions retenues par le parquet",
     ],
-    verdict:
-      "En cybercriminalité, comprendre\nl'architecture du système\nchange souvent le dossier.",
+    verdict: "En cybercriminalité, comprendre\nl'architecture du système\nchange souvent le dossier.",
   },
   {
     badge: "Criminalité organisée · Crypto · International",
     badgeBg: "#E6F1FB",
     badgeColor: "#185FA5",
-    title:
-      "Des serveurs hébergés à l'étranger.\nDes paiements en cryptomonnaies.\nDes identités dissimulées.\nUne organisation structurée — ou pas ?",
+    title: "Des serveurs hébergés à l'étranger.\nDes paiements en cryptomonnaies.\nDes identités dissimulées.\nUne organisation structurée — ou pas ?",
     quote: "Logs, adresses IP, transactions crypto —\ndes pièces de procédure comme les autres.",
     items: [
       "Reconstitution du fonctionnement réel de l'infrastructure numérique",
@@ -132,17 +140,14 @@ const DOSSIERS = [
       "Identification du rôle exact de chaque intervenant",
       "Qualification ou non de criminalité organisée",
     ],
-    verdict:
-      "Parce qu'une adresse IP à l'étranger\nn'est pas une frontière juridique.",
+    verdict: "Parce qu'une adresse IP à l'étranger\nn'est pas une frontière juridique.",
   },
 ];
-
 
 /* ── Composants utilitaires ── */
 
 function ScrollProgressBar() {
   const [progress, setProgress] = useState(0);
-
   useEffect(() => {
     const onScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -153,7 +158,6 @@ function ScrollProgressBar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 2, zIndex: 9999, pointerEvents: "none" }} aria-hidden>
       <div style={{ height: "100%", width: `${progress}%`, background: RED, transition: "width 0.1s linear" }} />
@@ -161,66 +165,73 @@ function ScrollProgressBar() {
   );
 }
 
-function ThreatBars() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
+/* Vidéo du tribunal — poster réel, lecture pilotée par JS :
+   - muette, en boucle, playsinline, poster, dimensions explicites ;
+   - `preload="none"` : rien n'est téléchargé tant que la vidéo n'est pas jouée ;
+   - pause hors viewport et quand l'onglet est masqué ;
+   - `prefers-reduced-motion` : on ne lance jamais la lecture (le poster reste). */
+function PalaisVideo({
+  src,
+  poster,
+  alt,
+  style,
+  containerStyle,
+  containerClassName,
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+  style?: CSSProperties;
+  containerStyle?: CSSProperties;
+  containerClassName?: string;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; // poster figé
+    let inView = false;
+    const sync = () => {
+      if (inView && !document.hidden) void v.play().catch(() => {});
+      else v.pause();
+    };
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+        sync();
       },
-      { threshold: 0.2 },
+      { threshold: 0.1 },
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+    io.observe(v);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
   }, []);
-
   return (
-    <div ref={ref} style={{ marginTop: 16 }}>
-      <h3 style={{ ...TYPE.h3, color: LIGHT.text, margin: "0 0 10px" }}>Principales menaces entreprises 2025</h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: GRID_GAP }}>
-        {THREAT_BARS.map((bar) => (
-          <div key={bar.label}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6, fontSize: 13, color: LIGHT.text }}>
-              <span>{bar.label}</span>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 12, color: LIGHT.muted }}>{bar.pct}%</span>
-            </div>
-            <div style={{ height: 8, background: LIGHT.panel2, borderRadius: 4, overflow: "hidden" }}>
-              <div
-                style={{
-                  height: "100%",
-                  width: visible ? `${bar.pct}%` : "0%",
-                  background: bar.color,
-                  borderRadius: 4,
-                  transition: "width 0.8s ease",
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className={containerClassName} style={{ position: "relative", overflow: "hidden", ...containerStyle }}>
+      <video
+        ref={ref}
+        muted
+        loop
+        playsInline
+        preload="none"
+        poster={poster}
+        width={1920}
+        height={1080}
+        aria-label={alt}
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", ...style }}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
     </div>
   );
 }
 
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <p
-      style={{
-        fontFamily: "var(--ff-mono)",
-        fontSize: 10,
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        color: RED,
-        marginBottom: 4,
-      }}
-    >
+    <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: RED, marginBottom: 4 }}>
       {children}
     </p>
   );
@@ -243,16 +254,51 @@ function Divider() {
 }
 
 function MetricCard({ metric }: { metric: (typeof METRICS)[number] }) {
-  const isRed = metric.tone === "red";
   return (
-    <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: CARD_PAD }}>
-      <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: isRed ? "#FCEBEB" : "#FAEEDA", color: isRed ? "#A32D2D" : "#633806", marginBottom: 10 }}>
-        {metric.badge}
+    <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
+      <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 8px", borderRadius: 6, background: "#FCEBEB", color: "#A32D2D", marginBottom: 10 }}>
+        {metric.repere}
       </span>
-      <p style={{ fontSize: 28, fontWeight: 600, color: isRed ? "#A32D2D" : "#633806", margin: "0 0 6px", lineHeight: 1.1 }}>{metric.value}</p>
-      <p style={{ fontSize: 13, color: LIGHT.text, lineHeight: 1.5, margin: "0 0 8px" }}>{metric.label}</p>
-      <p style={{ fontSize: 11, color: LIGHT.faint, margin: 0, fontStyle: "italic" }}>{metric.ref}</p>
+      <p style={{ fontSize: 32, fontWeight: 600, color: "#A32D2D", margin: "0 0 6px", lineHeight: 1.1 }}>{metric.chiffre}</p>
+      <p style={{ fontSize: 13, color: LIGHT.text, lineHeight: 1.5, margin: 0 }}>{metric.libelle}</p>
     </div>
+  );
+}
+
+function DossierCard({ dossier, index }: { dossier: (typeof DOSSIERS)[number]; index: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <article style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: CARD_PAD }}>
+      <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "3px 9px", borderRadius: 6, background: dossier.badgeBg, color: dossier.badgeColor, marginBottom: 10 }}>
+        {dossier.badge}
+      </span>
+      <blockquote style={{ margin: "0 0 8px", padding: "6px 10px", borderLeft: `2px solid ${LIGHT.faint}`, fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, whiteSpace: "pre-line" }}>
+        {dossier.quote}
+      </blockquote>
+      <p style={{ fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 8px", whiteSpace: "pre-line" }}>{dossier.verdict}</p>
+      {/* §6 — le détail passe derrière un dépliant « Le dossier ». */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={`dossier-detail-${index}`}
+        style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: "4px 0", cursor: "pointer", color: RED, fontSize: 13, fontWeight: 500 }}
+      >
+        Le dossier
+        <span aria-hidden style={{ fontSize: 18, lineHeight: 1, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
+      </button>
+      <div id={`dossier-detail-${index}`} hidden={!open} style={{ borderTop: `0.5px solid ${LIGHT.border}`, marginTop: 8, paddingTop: 10 }}>
+        <p style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.45, margin: "0 0 10px", whiteSpace: "pre-line" }}>{dossier.title}</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {dossier.items.map((item) => (
+            <div key={item} style={{ display: "flex", gap: 8, fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>
+              <span style={{ color: RED, flexShrink: 0 }}>→</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -265,7 +311,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={`faq-cyber-reponse-${index}`}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, background: "none", border: "none", padding: "12px 0", textAlign: "left", cursor: "pointer" }}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, background: "none", border: "none", padding: "14px 0", textAlign: "left", cursor: "pointer", minHeight: 48 }}
       >
         <span style={{ display: "flex", gap: 10 }}>
           <span style={{ fontFamily: "var(--ff-mono)", fontSize: 12, color: RED, flexShrink: 0, paddingTop: 2 }}>{String(index + 1).padStart(2, "0")}</span>
@@ -273,16 +319,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         </span>
         <span aria-hidden style={{ color: RED, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
       </button>
-      {/* La réponse reste dans le DOM une fois repliée : rendue
-          conditionnellement, elle serait absente du HTML servi — donc
-          invisible pour les moteurs, alors qu'elle est déclarée en FAQPage.
-          Ce sont ici les requêtes les plus qualifiées de la page
-          (« banque refuse rembourser phishing », « faut-il payer la rançon »). */}
-      <div
-        id={`faq-cyber-reponse-${index}`}
-        hidden={!open}
-        style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 40px", maxWidth: 760 }}
-      >
+      <div id={`faq-cyber-reponse-${index}`} hidden={!open} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 40px", maxWidth: 760 }}>
         {item.a}
         {item.lien ? (
           <Link href={item.lien.href} style={{ display: "inline-block", marginTop: 10, color: RED, textDecoration: "none" }}>
@@ -294,178 +331,176 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
   );
 }
 
-
 /* ── Page ── */
 
 export default function CybercriminaliteClient() {
   return (
     <main style={{ background: LIGHT.bg, color: LIGHT.text, fontFamily: "var(--ff-body)" }}>
+      <style>{`
+        .cyber-hero { display: flex; align-items: stretch; overflow: hidden; min-height: 380px; }
+        .cyber-hero-text { flex: 1; padding: 80px 48px 32px 64px; }
+        .cyber-hero-media { width: 42%; position: relative; overflow: hidden; flex-shrink: 0; }
+        .cyber-hero-h1 { font-size: clamp(30px, 5vw, 60px); line-height: 1.08; }
+        .cyber-hero-accroche { font-size: clamp(20px, 3.4vw, 40px); }
+        .cyber-hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+        .cyber-hero-btns a { min-height: 48px; }
+        .cyber-band { height: 220px; }
+        @media (min-width: 1024px) { .cyber-band { height: 320px; } }
+        @media (max-width: 767px) {
+          .cyber-hero { flex-direction: column-reverse; min-height: 0; }
+          .cyber-hero-text { padding: 28px 24px 32px; }
+          .cyber-hero-media { width: 100%; height: 180px; }
+          .cyber-hero-btns a { flex: 1 1 100%; text-align: center; }
+        }
+      `}</style>
       <ScrollProgressBar />
 
-      {/* 1. Hero */}
-      <div
-        style={{
-          background: DARK.bg,
-          display: "flex",
-          alignItems: "stretch",
-          overflow: "hidden",
-          minHeight: 380,
-          width: "100%",
-        }}
-      >
-        <div style={{ flex: 1, padding: "80px 48px 32px 64px", color: DARK.text }}>
-          <div
-            style={{
-              display: "inline-block",
-              fontSize: 11,
-              fontWeight: 500,
-              letterSpacing: ".12em",
-              textTransform: "uppercase",
-              background: "rgba(226,75,74,.2)",
-              color: "#F09595",
-              padding: "4px 14px",
-              borderRadius: 20,
-              marginBottom: 16,
-            }}
-          >
-            Cybercriminalité · Droit pénal · Victimes & Mis en cause
+      {/* 1. Héro (§2) — vidéo du tribunal conservée */}
+      <div className="cyber-hero" style={{ background: DARK.bg, width: "100%" }}>
+        <div className="cyber-hero-text" style={{ color: DARK.text }}>
+          <div style={{ display: "inline-block", fontSize: 11, fontWeight: 500, letterSpacing: ".12em", textTransform: "uppercase", background: "rgba(226,75,74,.2)", color: "#F09595", padding: "4px 14px", borderRadius: 20, marginBottom: 16 }}>
+            Cybercriminalité · Droit pénal · Victimes &amp; Mis en cause
           </div>
-          <h1
-            style={{
-              fontSize: 26,
-              fontWeight: 500,
-              textTransform: "none",
-              lineHeight: 1.25,
-              color: "#ffffff",
-              marginBottom: 16,
-              whiteSpace: "pre-line",
-            }}
-          >
-            {"Une cyberattaque devient rapidement\nune affaire pénale."}
+          <h1 className="cyber-hero-h1" style={{ fontWeight: 500, color: "#ffffff", margin: "0 0 10px" }}>
+            Avocat en cybercriminalité à Paris
           </h1>
-          <div style={{ marginBottom: 16, maxWidth: 640 }}>
-            {[
-              "La banque refuse de rembourser.",
-              "La CNIL enquête sur la victime.",
-              "Le fournisseur nie toute responsabilité.",
-              "Le dirigeant découvre qu'il est lui-même mis en cause.",
-              "Nous construisons le dossier —",
-              "pour poursuivre ou pour défendre.",
-            ].map((line) => (
-              <p key={line} style={{ fontSize: 14, color: DARK.muted, lineHeight: 1.7, margin: "0 0 4px" }}>
-                {line}
-              </p>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {/* Le bouton « Nous appeler » renvoyait vers le formulaire de
-                contact. Sur une page où le lecteur est en train de subir un
-                incident, le formulaire est un détour : le numéro est composé
-                directement, et affiché en clair pour ceux qui lisent sur poste
-                fixe. Le formulaire reste en second choix. */}
-            <a href="tel:+33181706200" style={{ background: RED, color: "#fff", padding: "12px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+          {/* Accroche : même typographie d'affichage, ~70 % du H1, en <p> (pas <h2>). */}
+          <p className="cyber-hero-accroche" style={{ fontWeight: 500, color: "#ffffff", lineHeight: 1.2, margin: "0 0 18px", opacity: 0.92 }}>
+            Une cyberattaque devient rapidement une affaire pénale.
+          </p>
+          {/* §2.2 — liste réécrite, registre entreprise (sortie de l'escroquerie bancaire). */}
+          <p style={{ fontSize: 14, color: DARK.muted, lineHeight: 1.7, margin: "0 0 20px", maxWidth: 620 }}>
+            Le fournisseur nie toute responsabilité. Un ancien salarié est parti avec la base clients. La CNIL enquête
+            sur la victime. Le dirigeant découvre qu'il est lui-même mis en cause. Nous construisons le dossier — pour
+            poursuivre ou pour défendre.
+          </p>
+          <div className="cyber-hero-btns">
+            <a href="tel:+33181706200" style={{ background: RED, color: "#fff", padding: "13px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
               Nous appeler — 01 81 70 62 00
             </a>
-            <Link href="/contact" style={{ background: "transparent", color: DARK.muted, padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}` }}>
+            <Link href="/contact" style={{ background: "transparent", color: DARK.muted, padding: "13px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}`, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
               Décrire l&apos;incident par écrit
             </Link>
-            <a href="#timeline" style={{ background: "transparent", color: DARK.muted, padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}` }}>
-              Les 72 premières heures
+            <a href="#methode" style={{ background: "transparent", color: DARK.muted, padding: "13px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: `0.5px solid ${DARK.border}`, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+              Notre méthode
             </a>
           </div>
         </div>
 
-        <div style={{ width: "42%", position: "relative", overflow: "hidden", flexShrink: 0 }}>
-          <video autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}>
-            <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-exterieur.mp4" type="video/mp4" />
-          </video>
-          <div
-            style={{ position: "absolute", top: 0, left: 0, width: "60%", height: "100%", background: "linear-gradient(to left, transparent, #0a0f2e)" }}
-            aria-hidden
+        <div className="cyber-hero-media">
+          <PalaisVideo
+            src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-exterieur.mp4"
+            poster="/images/poster-tribunal-exterieur.jpg"
+            alt="Le tribunal de Paris, façade et ciel."
+            containerStyle={{ width: "100%", height: "100%" }}
           />
+          <div style={{ position: "absolute", top: 0, left: 0, width: "60%", height: "100%", background: "linear-gradient(to left, transparent, #0a0f2e)" }} aria-hidden />
         </div>
       </div>
 
-      {/* 2. Chiffres 2025 */}
-      <section style={{ background: LIGHT.panel, padding: "32px 0 0", marginBottom: 0 }}>
+      {/* 2. Chiffres (§4) — deux indicateurs */}
+      <section style={{ background: LIGHT.panel, padding: "32px 0 0" }}>
         <div style={INNER}>
           <SectionHead label="La menace en 2025" title={"Les chiffres officiels — et ce qu'ils\nsignifient pour votre entreprise"} />
-          <p style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 14px" }}>
-            Source : cybermalveillance.gouv.fr — Rapport d&apos;activité 2025
+          <div className="grid grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 10 }}>
+            {METRICS.map((m) => (
+              <MetricCard key={m.repere} metric={m} />
+            ))}
+          </div>
+          {/* TODO (cabinet) : chiffres à recouper dans le rapport d'activité
+              cybermalveillance.gouv.fr ; la mention « à recouper » sera retirée
+              après vérification. */}
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: LIGHT.faint, margin: "0 0 4px" }}>
+            Cybermalveillance.gouv.fr · à recouper
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, marginBottom: GRID_GAP }}>
-            {METRICS.slice(0, 3).map((m) => (
-              <MetricCard key={m.value + m.badge} metric={m} />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: GRID_GAP }}>
-            {METRICS.slice(3).map((m) => (
-              <MetricCard key={m.value + m.badge} metric={m} />
-            ))}
-          </div>
-          <ThreatBars />
-          <div
-            style={{
-              marginTop: 12,
-              marginBottom: 0,
-              padding: "12px 16px",
-              background: "#FCEBEB",
-              border: "1px solid #F09595",
-              borderRadius: 12,
-              fontSize: 13,
-              color: LIGHT.text,
-              lineHeight: 1.6,
-            }}
-          >
-            6 entreprises sur 10 ne savent pas évaluer les conséquences d&apos;une cyberattaque. 80% estiment ne pas être suffisamment préparées. La question n&apos;est plus de savoir si une attaque surviendra — mais de savoir ce qui se passera le jour où elle arrive.
-          </div>
         </div>
       </section>
 
       <Divider />
 
-      {/* 4. Si vous êtes victime */}
-      <section id="timeline" style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
+      {/* 3. Trois temps (§5) — méthode */}
+      <section id="methode" style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
           <SectionHead
-            label="Si vous êtes victime"
-            title={"Ce qu'il faut faire — dans l'ordre"}
-            sub={"La plupart des entreprises font\nles mauvaises décisions dans les premières heures.\nPas par négligence — par manque d'information."}
+            label="Notre méthode"
+            title="Préserver, qualifier, construire"
+            sub={"Un dossier pénal ne se joue pas en heures mais en mois. Ce qui se décide le premier jour détermine ce qui sera établi à l'audience."}
           />
-          <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "4px 20px" }}>
-            {TIMELINE.map((step, idx) => (
-              <div key={step.time} style={{ display: "flex", gap: 10, padding: "12px 0" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: RED, flexShrink: 0, marginTop: 4 }} />
-                  {idx < TIMELINE.length - 1 ? (
-                    <div style={{ width: 1, flex: 1, background: LIGHT.border, minHeight: 16 }} aria-hidden />
-                  ) : null}
-                </div>
+          <ol style={{ listStyle: "none", margin: 0, padding: 0, background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12 }}>
+            {TROIS_TEMPS.map((t, idx) => (
+              <li key={t.n} style={{ display: "flex", gap: 14, padding: "16px 20px", borderTop: idx === 0 ? "none" : `0.5px solid ${LIGHT.border}` }}>
+                <span aria-hidden style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: RED, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--ff-mono)", fontSize: 13, fontWeight: 600 }}>
+                  {t.n}
+                </span>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontFamily: "var(--ff-mono)", fontSize: 12, color: RED, margin: "0 0 4px", fontWeight: 600 }}>{step.time}</p>
-                  <p style={{ fontSize: 15, fontWeight: 500, color: LIGHT.text, margin: "0 0 6px" }}>{step.title}</p>
-                  <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.65, margin: 0 }}>{step.desc}</p>
-                  {step.tag ? (
-                    <span style={{ display: "inline-block", fontSize: 11, color: LIGHT.faint, background: LIGHT.panel2, padding: "3px 9px", borderRadius: 6, marginTop: 8, fontFamily: "var(--ff-mono)" }}>
-                      {step.tag}
-                    </span>
+                  <p style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: "0 0 6px" }}>{t.titre}</p>
+                  <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.65, margin: 0, maxWidth: "68ch" }}>{t.corps}</p>
+                  {t.mono ? (
+                    <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint, background: LIGHT.panel2, padding: "3px 9px", borderRadius: 6, marginTop: 8 }}>{t.mono}</span>
                   ) : null}
-                  {step.lien ? (
-                    <Link href={step.lien.href} style={{ display: "block", fontSize: 12, color: RED, textDecoration: "none", marginTop: 8 }}>
-                      {step.lien.label} →
+                  {t.lien ? (
+                    <Link href={t.lien.href} style={{ display: "block", fontSize: 12, color: RED, textDecoration: "none", marginTop: 8 }}>
+                      {t.lien.label} →
                     </Link>
                   ) : null}
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
+      {/* 4. Bande vidéo (§3) — entre la méthode et les dossiers */}
+      <div style={{ position: "relative" }}>
+        <PalaisVideo
+          src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-interieur.mp4"
+          poster="/images/poster-tribunal-interieur.jpg"
+          alt="La salle des pas perdus du tribunal de Paris."
+          containerClassName="cyber-band"
+          containerStyle={{ width: "100%" }}
+          style={{ filter: "brightness(.6)" }}
+        />
+        {/* Voile renforcé sous le texte : les zones vitrées du hall sont très
+            claires, le voile garantit le contraste du texte blanc (§3). */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,15,46,0.55) 0%, rgba(10,15,46,0.35) 35%, rgba(10,15,46,0.35) 65%, rgba(10,15,46,0.55) 100%)" }} aria-hidden />
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 24 }}>
+          <p style={{ fontSize: "clamp(16px, 2.4vw, 20px)", fontWeight: 500, color: "#fff", lineHeight: 1.5, margin: 0, maxWidth: 520, textShadow: "0 1px 12px rgba(0,0,0,0.5)" }}>
+            Une cyberattaque est un incident informatique.
+            <br />
+            Jusqu&apos;au moment où elle devient une affaire judiciaire.
+          </p>
+        </div>
+      </div>
+
+      {/* 5. Dossiers (§6) — sous drapeau DOSSIERS_ENABLED (false par défaut) */}
+      {DOSSIERS_ENABLED ? (
+        <>
+          <Divider />
+          <section id="dossiers" style={{ background: LIGHT.panel, padding: "32px 0" }}>
+            <div style={INNER}>
+              <SectionHead label="Dossiers" title={"Quand l'informatique devient\nune affaire pénale"} />
+              <p style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 14px" }}>Dossiers anonymisés.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
+                {DOSSIERS.map((d, i) => (
+                  <DossierCard key={d.badge} dossier={d} index={i} />
+                ))}
+              </div>
+            </div>
+            <div style={{ maxWidth: 900, margin: "16px auto 0", padding: "0 48px", boxSizing: "border-box" }}>
+              <div style={{ width: "100%", boxSizing: "border-box", background: "#0a0f2e", borderRadius: 12, padding: "32px 48px", marginTop: 16 }}>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, margin: 0 }}>
+                  Nous intervenons dans les dossiers où l&apos;enquête pénale rencontre la technique : journaux, serveurs,
+                  adresses IP, infrastructures cloud, protocoles industriels, cryptomonnaies, expertises judiciaires.
+                </p>
+              </div>
+            </div>
+          </section>
+        </>
+      ) : null}
+
       <Divider />
 
-      {/* 5. L'arsenal pénal */}
-      {/* 6. L'équipe */}
+      {/* 6. Équipe */}
       <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
           <EquipeDossier
@@ -483,82 +518,7 @@ export default function CybercriminaliteClient() {
 
       <Divider />
 
-      {/* 7. Vidéo intérieure */}
-      <div style={{ position: "relative", borderRadius: "var(--border-radius-lg)", overflow: "hidden", margin: 0 }}>
-        <video autoPlay muted loop playsInline style={{ width: "100%", height: 300, objectFit: "cover", display: "block", filter: "brightness(.65)" }}>
-          <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-interieur.mp4" type="video/mp4" />
-        </video>
-        <div
-          style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0f2e 0%, transparent 25%, transparent 75%, #0a0f2e 100%)" }}
-          aria-hidden
-        />
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 24 }}>
-          <p style={{ fontSize: 20, fontWeight: 500, color: "#fff", lineHeight: 1.5, margin: 0, maxWidth: 480 }}>
-            Une cyberattaque est un incident informatique.
-            <br />
-            <span style={{ color: "#ffffff" }}>Jusqu&apos;au moment où elle devient une affaire judiciaire.</span>
-          </p>
-        </div>
-      </div>
-
-      <Divider />
-
-      {/* 7. Dossiers */}
-      <section id="dossiers" style={{ background: LIGHT.panel, padding: "32px 0" }}>
-        <div style={INNER}>
-          <SectionHead label="Dossiers" title={"Quand l'informatique devient\nune affaire pénale"} />
-          <p style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 14px" }}>Dossiers anonymisés.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
-            {DOSSIERS.map((d) => (
-              <article key={d.badge} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: CARD_PAD }}>
-                <span style={{ display: "inline-block", fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "3px 9px", borderRadius: 6, background: d.badgeBg, color: d.badgeColor, marginBottom: 10 }}>
-                  {d.badge}
-                </span>
-                <p style={{ fontSize: 15, fontWeight: 500, color: LIGHT.text, lineHeight: 1.45, margin: "0 0 8px", whiteSpace: "pre-line" }}>{d.title}</p>
-                <blockquote style={{ margin: "0 0 10px", padding: "6px 10px", borderLeft: `2px solid ${LIGHT.faint}`, fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, whiteSpace: "pre-line" }}>
-                  {d.quote}
-                </blockquote>
-                <div style={{ borderTop: `0.5px solid ${LIGHT.border}`, paddingTop: 10, marginBottom: 10 }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {d.items.map((item) => (
-                      <div key={item} style={{ display: "flex", gap: 8, fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>
-                        <span style={{ color: RED, flexShrink: 0 }}>→</span>
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <p style={{ fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{d.verdict}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-        <div style={{ maxWidth: 900, margin: "16px auto 0", padding: "0 48px", boxSizing: "border-box" }}>
-          <div
-            style={{
-              width: "100%",
-              boxSizing: "border-box",
-              background: "#0a0f2e",
-              border: "0.5px solid rgba(0,0,0,0.1)",
-              borderRadius: "12px",
-              padding: "32px 48px",
-              marginTop: 16,
-              marginBottom: 0,
-            }}
-          >
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, margin: "0 0 12px", whiteSpace: "pre-line" }}>
-              {`Nous intervenons dans les dossiers\noù l'enquête pénale rencontre la technique.\nLogs, serveurs, adresses IP,\ninfrastructures cloud, protocoles industriels,\ncryptomonnaies, données personnelles,\nexpertises judiciaires.`}
-            </p>
-            <p style={{ fontSize: 15, fontWeight: 500, color: "#ffffff", lineHeight: 1.5, margin: 0, whiteSpace: "pre-line" }}>
-              {`Là où la compréhension du système\ndevient aussi importante\nque la compréhension du dossier.`}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* 8. FAQ */}
+      {/* 7. FAQ (§7) */}
       <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
           <SectionHead label="Questions directes" title="Ce que les dirigeants nous posent" />
@@ -572,6 +532,23 @@ export default function CybercriminaliteClient() {
 
       <Divider />
 
+      {/* 8. Renvois croisés (§8) — avant l'appel à l'action */}
+      <section style={{ background: LIGHT.panel, padding: "8px 0 24px" }}>
+        <div style={INNER}>
+          <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 8px" }}>
+            Vous cherchez à prévenir plutôt qu&apos;à poursuivre ?{" "}
+            <Link href="/nos-domaines/cybersecurite" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
+              Avocat en cybersécurité →
+            </Link>
+          </p>
+          <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
+            Vous êtes une personne physique victime d&apos;une escroquerie ou d&apos;un virement frauduleux ?{" "}
+            <span style={{ color: LIGHT.faint }}>Recours contre les banques</span>{" "}
+            <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: LIGHT.faint }}>page à venir</span>
+          </p>
+        </div>
+      </section>
+
       {/* 9. CTA final */}
       <section style={{ background: LIGHT.panel, padding: "0 0 32px", width: "100%" }}>
         <div style={INNER}>
@@ -583,12 +560,14 @@ export default function CybercriminaliteClient() {
               {"Qualification pénale · Dépôt de plainte ·\nDéfense devant le parquet et la CNIL\nPour les PME et ETI."}
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/contact" style={{ background: RED, color: "#fff", padding: "12px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+              <a href="tel:+33181706200" style={{ background: RED, color: "#fff", padding: "12px 22px", borderRadius: 8, fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
                 Nous appeler →
-              </Link>
-              <a href="#dossiers" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: "0.5px solid rgba(255,255,255,0.2)" }}>
-                Voir nos dossiers
               </a>
+              {DOSSIERS_ENABLED ? (
+                <a href="#dossiers" style={{ background: "transparent", color: "rgba(255,255,255,0.7)", padding: "12px 22px", borderRadius: 8, fontSize: 13, textDecoration: "none", border: "0.5px solid rgba(255,255,255,0.2)" }}>
+                  Voir nos dossiers
+                </a>
+              ) : null}
             </div>
           </div>
         </div>
