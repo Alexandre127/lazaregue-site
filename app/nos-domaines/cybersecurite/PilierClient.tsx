@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
@@ -387,6 +388,21 @@ export default function PilierClient() {
         .cyb-h1 { font-size: clamp(30px, 6vw, 60px); line-height: 1.08; }
         @media (prefers-reduced-motion: reduce) { .cyb-plus { transition: none; } }
 
+        /* ---- Bloc B : héro avec photographie ---- */
+        .cyb-hero-grid { display: grid; }
+        .cyb-hero-photo { position: relative; width: 100%; height: 150px; }
+        .cyb-hero-img { object-position: center bottom; }
+        /* Raccord du noir de la photo au fond navy du bloc texte, sans rupture. */
+        .cyb-hero-fade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,15,46,0) 55%, ${DARK.bg} 100%); }
+        .cyb-hero-text { padding: 30px 24px 44px; }
+        @media (min-width: 1024px) {
+          .cyb-hero-grid { grid-template-columns: 55fr 45fr; align-items: stretch; }
+          .cyb-hero-photo { order: 2; height: auto; min-height: 440px; }
+          .cyb-hero-img { object-position: center; }
+          .cyb-hero-fade { background: linear-gradient(to left, rgba(10,15,46,0) 62%, ${DARK.bg} 100%); }
+          .cyb-hero-text { order: 1; padding: 56px 40px 56px 24px; display: flex; flex-direction: column; justify-content: center; }
+        }
+
         /* ---- Bloc C : schéma des quatre expositions ---- */
         .expo-schema { position: relative; margin-top: 12px; }
         .expo-node {
@@ -468,14 +484,27 @@ export default function PilierClient() {
         </span>
       </a>
 
-      {/* ===== 2. HÉRO =====
-          Bloc B : l'aplat de marque « 72 h » a été retiré (les 72 heures quittent
-          la page, cf. bloc D). Une photographie doit occuper la colonne droite
-          (55/45 en desktop, bande de 140–160 px en haut sur mobile). En attente du
-          fichier image : héro en une colonne pour l'instant. */}
-      <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD }}>
-        <div style={{ ...INNER }}>
-          <div style={{ maxWidth: 680 }}>
+      {/* ===== 2. HÉRO (Bloc B) =====
+          Deux colonnes 55/45 en desktop (texte à gauche, photo à droite en cover
+          sur toute la hauteur) ; bande de 150 px en haut sur mobile, recadrée sur
+          le bas de l'image (object-position: center bottom) pour que la zone
+          éclairée ne passe pas derrière le titre. L'aplat « 72 h » a disparu. */}
+      <section style={{ background: DARK.bg, color: DARK.text, overflow: "hidden" }}>
+        <div className="cyb-hero-grid" style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div className="cyb-hero-photo">
+            <Image
+              src="/images/cyber-hero-facade.jpg"
+              alt="Façade d'un immeuble de bureaux la nuit, un seul étage éclairé"
+              fill
+              priority
+              sizes="(max-width: 1023px) 100vw, 45vw"
+              className="cyb-hero-img"
+              style={{ objectFit: "cover" }}
+            />
+            <span className="cyb-hero-fade" aria-hidden />
+          </div>
+
+          <div className="cyb-hero-text">
             <span
               style={{
                 display: "inline-block",
@@ -489,6 +518,7 @@ export default function PilierClient() {
                 borderRadius: 8,
                 padding: "4px 12px",
                 marginBottom: 18,
+                alignSelf: "flex-start",
               }}
             >
               Cybersécurité · Paris
@@ -496,7 +526,7 @@ export default function PilierClient() {
             <h1 className="cyb-h1" style={{ fontWeight: 600, color: "#ffffff", margin: "0 0 18px", overflowWrap: "break-word" }}>
               Avocat en cybersécurité
             </h1>
-            <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 620 }}>
+            <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 560 }}>
               Une attaque, une fuite de données, un prestataire défaillant ou un client qui exige des garanties : le
               risque numérique cesse d'être une affaire technique dès l'instant où il engage une responsabilité. Le
               cabinet intervient sur l'ensemble de cette chaîne, à Paris, avec un expert technique à ses côtés.
