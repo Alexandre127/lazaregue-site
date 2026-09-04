@@ -171,14 +171,16 @@ function ScrollProgressBar() {
    - pause hors viewport et quand l'onglet est masqué ;
    - `prefers-reduced-motion` : on ne lance jamais la lecture (le poster reste). */
 function PalaisVideo({
-  src,
+  webm,
+  mp4,
   poster,
   alt,
   style,
   containerStyle,
   containerClassName,
 }: {
-  src: string;
+  webm: string;
+  mp4: string;
   poster: string;
   alt: string;
   style?: CSSProperties;
@@ -223,7 +225,8 @@ function PalaisVideo({
         aria-label={alt}
         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", ...style }}
       >
-        <source src={src} type="video/mp4" />
+        <source src={webm} type="video/webm" />
+        <source src={mp4} type="video/mp4" />
       </video>
     </div>
   );
@@ -389,7 +392,8 @@ export default function CybercriminaliteClient() {
 
         <div className="cyber-hero-media">
           <PalaisVideo
-            src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-exterieur.mp4"
+            webm="/videos/tribunal-exterieur.webm"
+            mp4="/videos/tribunal-exterieur.mp4"
             poster="/images/poster-tribunal-exterieur.jpg"
             alt="Le tribunal de Paris, façade et ciel."
             containerStyle={{ width: "100%", height: "100%" }}
@@ -456,7 +460,8 @@ export default function CybercriminaliteClient() {
           images sont propres au cabinet — à vérifier avant mise en ligne. */}
       <div style={{ position: "relative" }}>
         <PalaisVideo
-          src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-interieur.mp4"
+          webm="/videos/tribunal-interieur.webm"
+          mp4="/videos/tribunal-interieur.mp4"
           poster="/images/poster-tribunal-interieur.jpg"
           alt="La salle des pas perdus du tribunal de Paris."
           containerClassName="cyber-band"
