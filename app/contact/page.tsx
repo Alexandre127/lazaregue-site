@@ -57,7 +57,7 @@ const JSON_LD = {
   },
   openingHours: "Mo-Fr 09:00-19:00",
   priceRange: "€€",
-  areaServed: { "@type": "City", name: "Paris" },
+  areaServed: { "@type": "Country", name: "France" },
 };
 
 const CANAUX = [

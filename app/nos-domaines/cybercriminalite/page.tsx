@@ -57,7 +57,7 @@ const JSON_LD = {
         "Plainte pénale et défense après incident cyber : rançongiciel, hameçonnage, fraude au virement, extraction frauduleuse de données par un ex-salarié, atteinte à un système de traitement automatisé de données, mise en cause après violation de données.",
       url: "https://lazaregue-avocats.fr/nos-domaines/cybercriminalite",
       telephone: "+33181706200",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Plainte pénale cybercriminalité, ransomware, phishing, fraude au virement, vol de données par un salarié, défense pénale informatique, notification CNIL après incident",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

@@ -33,7 +33,7 @@ const JSON_LD = {
         "Cabinet d'avocats en cybersécurité à Paris : réponse à cyberattaque, violation de données, conformité NIS 2, responsabilité du prestataire informatique. Analyse juridique et audit technique menés ensemble.",
       url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite",
       telephone: "+33181706200",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       address: {
         "@type": "PostalAddress",
         streetAddress: "18 rue de Tilsitt",

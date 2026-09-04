@@ -37,7 +37,7 @@ const JSON_LD = {
       description:
         "Audit de conformité RGPD, registre des traitements, contrats de sous-traitance article 28, due diligence M&A et encadrement des usages d'IA générative.",
       url: "https://lazaregue-avocats.fr/nos-domaines/rgpd-donnees",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Audit RGPD, due diligence RGPD M&A, contrat sous-traitant article 28, AIPD, gouvernance des données, RGPD et IA générative",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

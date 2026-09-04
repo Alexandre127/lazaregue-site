@@ -37,7 +37,7 @@ const JSON_LD = {
       description:
         "Qualification des systèmes d'IA au sens du règlement (UE) 2024/1689, documentation technique, supervision humaine, encadrement contractuel des fournisseurs et articulation avec le RGPD et le droit du travail.",
       url: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Conformité AI Act, qualification haut risque, documentation technique IA, gouvernance IA, contrats fournisseurs IA, IA et droit du travail",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

@@ -46,7 +46,7 @@ const JSON_LD = {
       description:
         "Due diligence juridique des actifs numériques et technologiques lors d'une acquisition, d'une cession ou d'une prise de participation.",
       url: "https://lazaregue-avocats.fr/competences/ma-tech",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Due diligence technologique, audit juridique logiciel, acquisition entreprise tech, garanties SPA",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

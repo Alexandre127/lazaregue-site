@@ -37,7 +37,7 @@ const JSON_LD = {
       description:
         "Accompagnement des PME et ETI sous-traitantes d'acteurs critiques : audit de conformité NIS 2, PSSI, clauses contractuelles de cybersécurité, gestion de crise.",
       url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite/nis2",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Mise en conformité NIS 2, audit cybersécurité, clause NIS 2 contrat, PSSI, gestion de crise cyber",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

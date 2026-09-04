@@ -56,7 +56,7 @@ const JSON_LD = {
       description:
         "Audit et rédaction de contrats IT, SaaS, cloud et infogérance : clause de sauvegarde, réversibilité, SLA, limitation de responsabilité, interdépendance des contrats. Défense en contentieux informatique.",
       url: "https://lazaregue-avocats.fr/nos-domaines/contrats-informatiques",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Contrat informatique, contentieux IT, perte de données, réversibilité cloud, SLA, clause limitative de responsabilité, résiliation de contrat IT",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },

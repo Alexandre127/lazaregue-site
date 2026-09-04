@@ -37,7 +37,7 @@ const JSON_LD = {
       description:
         "Retrait de contenu illicite, déréférencement de résultats Google, droit à l'oubli, identification d'auteur anonyme, récupération de compte suspendu, défense de marque sur les places de marché et défense des opérateurs de plateforme.",
       url: "https://lazaregue-avocats.fr/competences/plateformes",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Retrait de contenu illicite, déréférencement Google, droit à l'oubli, e-réputation, notification LCEN et DSA, article 145 CPC, défense d'hébergeur, contrefaçon de marque sur marketplace",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
