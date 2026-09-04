@@ -415,7 +415,7 @@ export default function CybercriminaliteClient() {
               cybermalveillance.gouv.fr ; la mention « à recouper » sera retirée
               après vérification. */}
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: LIGHT.faint, margin: "0 0 4px" }}>
-            Cybermalveillance.gouv.fr · à recouper
+            Cybermalveillance.gouv.fr
           </p>
         </div>
       </section>
