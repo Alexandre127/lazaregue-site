@@ -49,7 +49,7 @@ export function HeroCTACard({ open, onClose, className = "" }: HeroCTACardProps)
       />
       <div className="space-y-1.5 px-4 pb-4 text-sm text-[#0A0F2E]">
         <a
-          href="tel:0181706200"
+          href="tel:+33181706200"
           className="block font-mono text-[12px] text-[#0A0F2E]/70 hover:text-[#1A47FF]"
         >
           01 81 70 62 00
