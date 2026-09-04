@@ -26,7 +26,7 @@ export const FAQ_ITEMS: {
   },
   {
     q: "Un ex-salarié est parti avec notre base clients.",
-    a: "Oui — et c'est pénal. L'accès à des données après la rupture du contrat constitue un accès frauduleux à un STAD (art. 323-1 C.pén.). La copie de données est une extraction frauduleuse (art. 323-3). La plainte pénale peut être accompagnée d'un référé en urgence pour interdire l'utilisation des données.",
+    a: "Cela peut relever du droit pénal. L'accès ou le maintien sans droit dans un système, ainsi que l'extraction frauduleuse de données, peuvent notamment relever des articles 323-1 et suivants du code pénal. La qualification dépend des conditions concrètes d'accès, des habilitations résiduelles et de l'usage fait des données. Une plainte peut être accompagnée d'un référé pour faire cesser l'utilisation.",
     lien: { href: "/nos-domaines/rgpd-donnees", label: "Le volet RGPD : fichier clients détourné et obligations envers les personnes" },
   },
   {
@@ -40,7 +40,7 @@ export const FAQ_ITEMS: {
   },
   {
     q: "Les serveurs sont à l'étranger, peut-on agir ?",
-    a: "Une infrastructure hébergée hors de France ne fait pas obstacle à la poursuite. Ce qui compte est la localisation du dommage et les canaux d'entraide disponibles. Serveurs distants, adresses IP et flux en cryptomonnaies sont des pièces de procédure comme les autres.",
+    a: "Une infrastructure hébergée hors de France ne fait pas obstacle par principe à la poursuite. La compétence dépend du rattachement territorial et de l'entraide obtenue. Ce qui compte est la localisation du dommage et les canaux d'entraide disponibles. Serveurs distants, adresses IP et flux en cryptomonnaies sont des pièces de procédure comme les autres.",
   },
   {
     // TODO (cabinet) : la subordination de l'indemnisation d'une rançon au dépôt

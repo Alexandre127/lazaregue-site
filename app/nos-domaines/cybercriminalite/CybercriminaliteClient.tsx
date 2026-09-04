@@ -83,6 +83,36 @@ const TROIS_TEMPS: {
   },
 ];
 
+/* §1 — typologies, liste courte et visuelle (pas de paragraphes). */
+const TYPOLOGIES = [
+  "Cyberattaque et rançongiciel",
+  "Intrusion et atteinte à un STAD",
+  "Piratage informatique",
+  "Fraude au président et fraude au virement",
+  "Vol ou exfiltration de données",
+  "Salarié ou ancien salarié malveillant",
+  "Cyberextorsion",
+  "Infractions impliquant cryptomonnaies et infrastructures étrangères",
+  "Défense des personnes mises en cause",
+];
+
+/* §2 — deux postures. */
+const VMC = {
+  victime: [
+    "Plainte",
+    "Constitution de partie civile",
+    "Préservation de la preuve",
+    "Investigations",
+    "Réparation",
+  ],
+  misEnCause: [
+    "Analyse des éléments techniques",
+    "Contestation de la qualification",
+    "Expertise",
+    "Défense devant le parquet et les juridictions pénales",
+  ],
+};
+
 const DOSSIERS = [
   {
     badge: "Outil automobile · International · STAD",
@@ -238,10 +268,10 @@ function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
-function SectionHead({ label, title, sub }: { label: string; title: string; sub?: string }) {
+function SectionHead({ label, title, sub }: { label?: string; title: string; sub?: string }) {
   return (
     <>
-      <Eyebrow>{label}</Eyebrow>
+      {label ? <Eyebrow>{label}</Eyebrow> : null}
       <h2 style={{ ...TYPE.h2, color: LIGHT.text, margin: sub ? "0 0 6px" : "0 0 14px", whiteSpace: "pre-line" }}>{title}</h2>
       {sub ? (
         <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 14px", maxWidth: 720, whiteSpace: "pre-line" }}>{sub}</p>
@@ -356,6 +386,14 @@ export default function CybercriminaliteClient() {
           .dossier-detail { display: block !important; }
           .dossier-toggle { display: none !important; }
         }
+        /* §1 — typologies : liste marquée, 1 colonne mobile / 2 colonnes desktop. */
+        .typo-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0; }
+        @media (min-width: 768px) { .typo-grid { grid-template-columns: 1fr 1fr; column-gap: 28px; } }
+        .typo-item { display: flex; gap: 10px; font-size: 14px; color: #1a1a1a; line-height: 1.4; padding: 9px 0; border-top: 0.5px solid rgba(0,0,0,0.08); }
+        .typo-mark { color: #E24B4A; flex-shrink: 0; }
+        /* §2 — victime / mis en cause : deux colonnes, empilées en mobile. */
+        .vmc-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media (min-width: 768px) { .vmc-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 767px) {
           .cyber-hero { flex-direction: column-reverse; min-height: 0; }
           .cyber-hero-text { padding: 28px 24px 32px; }
@@ -409,6 +447,23 @@ export default function CybercriminaliteClient() {
         </div>
       </div>
 
+      {/* 1bis. Typologies (§1) — après le héro, avant les chiffres */}
+      <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <SectionHead label="Typologies" title="Dans quels cas faire appel à un avocat en cybercriminalité ?" />
+          <ul className="typo-grid">
+            {TYPOLOGIES.map((t) => (
+              <li key={t} className="typo-item">
+                <span className="typo-mark" aria-hidden>→</span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <Divider />
+
       {/* 2. Chiffres (§4) — deux indicateurs */}
       <section style={{ background: LIGHT.panel, padding: "32px 0 0" }}>
         <div style={INNER}>
@@ -433,8 +488,7 @@ export default function CybercriminaliteClient() {
       <section id="methode" style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
           <SectionHead
-            label="Notre méthode"
-            title="Préserver, qualifier, construire"
+            title="Notre méthode : préserver, qualifier, construire"
             sub={"Un dossier pénal ne se joue pas en heures mais en mois. Ce qui se décide le premier jour détermine ce qui sera établi à l'audience."}
           />
           <ol style={{ listStyle: "none", margin: 0, padding: 0, background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12 }}>
@@ -458,6 +512,36 @@ export default function CybercriminaliteClient() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* 3bis. Victime / mis en cause (§2) — après la méthode */}
+      <section style={{ background: LIGHT.panel, padding: "8px 0 32px" }}>
+        <div style={INNER}>
+          <div className="vmc-grid">
+            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: "0 0 10px" }}>Victime</h3>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+                {VMC.victime.map((i) => (
+                  <li key={i} style={{ display: "flex", gap: 8, fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>
+                    <span aria-hidden style={{ color: RED, flexShrink: 0 }}>→</span>
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: "0 0 10px" }}>Mis en cause</h3>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+                {VMC.misEnCause.map((i) => (
+                  <li key={i} style={{ display: "flex", gap: 8, fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>
+                    <span aria-hidden style={{ color: RED, flexShrink: 0 }}>→</span>
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -536,7 +620,7 @@ export default function CybercriminaliteClient() {
       {/* 7. FAQ (§7) */}
       <section style={{ background: LIGHT.panel, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <SectionHead label="Questions directes" title="Ce que les dirigeants nous posent" />
+          <SectionHead label="Questions directes" title="Questions fréquentes sur la cybercriminalité" />
           <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "4px 20px" }}>
             {FAQ_ITEMS.map((item, index) => (
               <FaqItem key={item.q} item={item} index={index} />
