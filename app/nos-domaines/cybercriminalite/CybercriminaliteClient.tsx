@@ -451,6 +451,9 @@ export default function CybercriminaliteClient() {
       </section>
 
       {/* 4. Bande vidéo (§3) — entre la méthode et les dossiers */}
+      {/* TODO (cabinet, §13) : droit à l'image des personnes visibles dans la
+          vidéo du hall, et autorisation de tournage en enceinte judiciaire si ces
+          images sont propres au cabinet — à vérifier avant mise en ligne. */}
       <div style={{ position: "relative" }}>
         <PalaisVideo
           src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/tribunal-interieur.mp4"
@@ -533,6 +536,9 @@ export default function CybercriminaliteClient() {
       <Divider />
 
       {/* 8. Renvois croisés (§8) — avant l'appel à l'action */}
+      {/* TODO (cabinet, §13) : articulation avec le futur pôle escroquerie —
+          le renvoi « Recours contre les banques » pointera vers cette page dès
+          sa création (drapeau/URL à définir par le cabinet). */}
       <section style={{ background: LIGHT.panel, padding: "8px 0 24px" }}>
         <div style={INNER}>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 8px" }}>
