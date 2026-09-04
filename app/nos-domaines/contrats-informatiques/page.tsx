@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import ContratsInformatiquesClient from "./ContratsInformatiquesClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -61,12 +60,6 @@ const JSON_LD = {
       serviceType:
         "Contrat informatique, contentieux IT, perte de données, réversibilité cloud, SLA, clause limitative de responsabilité, résiliation de contrat IT",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     ...AVOCATS.map((a) => ({
       "@type": "Person",

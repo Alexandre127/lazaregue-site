@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import PlateformesClient from "./PlateformesClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -42,12 +41,6 @@ const JSON_LD = {
       serviceType:
         "Retrait de contenu illicite, déréférencement Google, droit à l'oubli, e-réputation, notification LCEN et DSA, article 145 CPC, défense d'hébergeur, contrefaçon de marque sur marketplace",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       "@type": "FAQPage",

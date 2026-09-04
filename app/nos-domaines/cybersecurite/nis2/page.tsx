@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import CybersecuriteClient from "./CybersecuriteClient";
 import { FAQ_TEXTE } from "./faq-texte";
 
@@ -42,12 +41,6 @@ const JSON_LD = {
       serviceType:
         "Mise en conformité NIS 2, audit cybersécurité, clause NIS 2 contrat, PSSI, gestion de crise cyber",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       "@type": "FAQPage",

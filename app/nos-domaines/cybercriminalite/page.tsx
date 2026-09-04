@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import CybercriminaliteClient from "./CybercriminaliteClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -62,12 +61,6 @@ const JSON_LD = {
       serviceType:
         "Plainte pénale cybercriminalité, ransomware, phishing, fraude au virement, vol de données par un salarié, défense pénale informatique, notification CNIL après incident",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     ...AVOCATS.map((a) => ({
       "@type": "Person",

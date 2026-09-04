@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import PilierClient from "./PilierClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -45,12 +44,6 @@ const JSON_LD = {
       serviceType:
         "Réponse à incident cyber, violation de données personnelles, conformité NIS 2, responsabilité du prestataire informatique",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       "@type": "FAQPage",

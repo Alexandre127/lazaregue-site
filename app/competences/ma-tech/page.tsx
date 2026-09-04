@@ -50,12 +50,6 @@ const JSON_LD = {
       serviceType:
         "Due diligence technologique, audit juridique logiciel, acquisition entreprise tech, garanties SPA",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       "@type": "HowTo",

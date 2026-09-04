@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import RgpdClient from "./RgpdClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -42,12 +41,6 @@ const JSON_LD = {
       serviceType:
         "Audit RGPD, due diligence RGPD M&A, contrat sous-traitant article 28, AIPD, gouvernance des données, RGPD et IA générative",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       /* Renforce l'E-E-A-T : la personne qui porte l'expertise est identifiée. */

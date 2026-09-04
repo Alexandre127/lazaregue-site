@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import { Header5 } from "@/components/home/header-05";
 import { SectionCabinet } from "@/components/home/section-cabinet";
 import SectionCompetences from "@/components/home/section-competences";
@@ -73,12 +72,6 @@ const JSON_LD = {
       priceRange: "€€",
       areaServed: { "@type": "Country", name: "France" },
       foundingDate: "2016",
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     ...EQUIPE.map((m) => ({
       "@type": "Person",
