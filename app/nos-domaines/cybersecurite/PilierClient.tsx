@@ -43,17 +43,21 @@ type Porte = {
   alerte?: boolean;
 };
 
-// Statut des destinations (cf. brief §1) : seule la page NIS 2 existe. Les trois
-// autres sont pilotées par `disponible: false` → carte non cliquable, sans flèche
-// ni couleur de lien, plutôt qu'un lien mort. À rebasculer à true à leur création.
+// Statut des destinations (bloc H de l'amendement) :
+//  — « attaque en cours » est active et pointe vers la page cybercriminalité,
+//    désormais en ligne ;
+//  — NIS 2 est active ;
+//  — les deux autres restent à venir → carte non cliquable + mention « PAGE À
+//    VENIR » (bloc H), plutôt qu'un lien mort. À rebasculer à `disponible: true`
+//    et à repointer sur leur URL propre le jour de leur création.
 const PORTES: Porte[] = [
   {
     titre: "Une attaque est en cours",
     corps:
       "Rançongiciel, intrusion, exfiltration. Ce qu'il faut faire — et ne pas faire — dans les premières heures.",
     lien: "Cyberattaque et cybercriminalité",
-    href: "/nos-domaines/cybersecurite/cyberattaque",
-    disponible: false,
+    href: "/nos-domaines/cybercriminalite",
+    disponible: true,
     alerte: true,
   },
   {
@@ -82,58 +86,68 @@ const PORTES: Porte[] = [
   },
 ];
 
-const EXPOSITIONS: { titre: string; corps: string }[] = [
+// Bloc C : quatre expositions. `precision` et `horloge` alimentent le schéma ;
+// `corps` (texte d'origine inchangé) alimente le dépliant « le détail ».
+const EXPOSITIONS: {
+  branche: string;
+  precision: string;
+  horloge: string;
+  corps: string;
+  coin: "tl" | "tr" | "bl" | "br";
+}[] = [
   {
-    titre: "Réglementaire",
+    branche: "Réglementaire",
+    precision: "RGPD · CNIL · obligations sectorielles",
+    horloge: "72 h",
+    coin: "tl",
     corps:
       "Une violation de données personnelles doit être notifiée à la CNIL dans les meilleurs délais et au plus tard sous soixante-douze heures lorsqu'elle présente un risque pour les droits et libertés des personnes ; les personnes concernées doivent être informées lorsque le risque est élevé (RGPD, art. 33 et 34). Une fois la transposition de NIS 2 achevée, un incident affectant une entité assujettie relèvera d'un circuit distinct, avec ses propres seuils et ses propres délais. Deux notifications, deux destinataires, deux rédactions.",
   },
   {
-    titre: "Gouvernance",
+    branche: "Gouvernance",
+    precision: "Organe de direction",
+    horloge: "Première décision",
+    coin: "tr",
     corps:
       "NIS 2 place la maîtrise du risque au niveau de l'organe de direction, appelé à approuver les mesures et à superviser leur mise en œuvre. Sans attendre l'entrée en vigueur du texte, les donneurs d'ordre exigent déjà cette implication formelle de la direction. L'incident cesse d'être un sujet délégable au service informatique.",
   },
   {
-    titre: "Contractuelle",
+    branche: "Contractuelle",
+    precision: "Donneur d'ordre, prestataire",
+    horloge: "Déjà écrit",
+    coin: "bl",
     corps:
       "Qui répond de quoi entre l'entreprise, son prestataire informatique et son donneur d'ordre se joue dans des clauses écrites avant l'incident. Après, il est trop tard pour négocier un plafond de responsabilité ou une définition du périmètre de sécurité.",
   },
   {
-    titre: "Pénale et probatoire",
+    branche: "Pénale et probatoire",
+    precision: "Parquet, preuves",
+    horloge: "Premières heures",
+    coin: "br",
     corps:
       "Dépôt de plainte, conservation des traces, arbitrage sur ce qui est communiqué et à qui. Les décisions prises dans les premières heures conditionnent ce qui pourra être établi ensuite.",
   },
 ];
 
-const FRISE: { jalon: string; titre: string; corps: string }[] = [
+// Bloc E : manquements retenus par la CNIL (délibération SAN-2020-003), sortis
+// du paragraphe et posés en pièce.
+const CNIL_MANQUEMENTS = [
+  "Robustesse insuffisante des mots de passe",
+  "Aucun blocage après tentatives répétées d'authentification",
+  "Enregistrements de conversations conservés au-delà du nécessaire",
+  "Durées de conservation non proportionnées",
+];
+
+// Bloc F1 : chronologie de la transposition, en cartouche. La dernière ligne
+// (saisine CJUE) porte un accent visuel distinct.
+const NIS2_TIMELINE: { date: string; evenement: string; accent?: boolean }[] = [
+  { date: "Oct. 2024", evenement: "Échéance européenne de transposition" },
+  { date: "Mars 2025", evenement: "Adoption au Sénat" },
+  { date: "Sept. 2025", evenement: "Commission spéciale à l'Assemblée nationale" },
   {
-    jalon: "H+0",
-    titre: "Isoler sans éteindre",
-    corps:
-      "Couper le réseau, laisser les machines sous tension. Éteindre efface la mémoire vive, et avec elle une partie de ce qui permettra d'établir le déroulement de l'attaque. C'est le réflexe recommandé par la doctrine de réponse à incident, sauf consigne contraire de l'équipe technique mobilisée.",
-  },
-  {
-    jalon: "H+2",
-    titre: "Cellule de crise",
-    corps:
-      "Direction, expert technique, avocat. Un seul canal de décision, un seul porte-parole. Les échanges opérationnels et les échanges couverts par le secret professionnel sont séparés dès ce moment.",
-  },
-  {
-    jalon: "H+4",
-    titre: "Qualification juridique",
-    corps:
-      "Des données personnelles sont-elles touchées ? Un service essentiel est-il interrompu ? Le contrat avec le donneur d'ordre impose-t-il une information immédiate ? C'est cette qualification qui détermine quelles obligations se déclenchent, et lesquelles ne se déclenchent pas.",
-  },
-  {
-    jalon: "H+24",
-    titre: "Premiers signalements",
-    corps:
-      "Information du donneur d'ordre, dépôt de plainte, déclaration à l'assureur. Ce qui est écrit ici sera relu plus tard, par la CNIL, par l'assureur ou par un juge.",
-  },
-  {
-    jalon: "H+72",
-    titre: "Notification à la CNIL",
-    corps: "Et arbitrage sur l'information des personnes concernées.",
+    date: "Juil. 2026",
+    evenement: "La Commission européenne saisit la CJUE pour défaut de transposition",
+    accent: true,
   },
 ];
 
@@ -185,6 +199,108 @@ const BTN_PRIMARY: React.CSSProperties = {
   justifyContent: "center",
 };
 
+/* Bloc C — schéma « un incident, quatre expositions » + dépliant du détail.
+   Un seul jeu de cartes, repositionné par CSS : croix en desktop, vertical en
+   mobile (pas de duplication de texte). Accessible via role/aria-label ; le SVG
+   des connecteurs est purement décoratif (aria-hidden). */
+function ExpositionsSection() {
+  const [detail, setDetail] = useState(false);
+  return (
+    <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
+      <div style={INNER}>
+        <SectionHead
+          label="Ce qui est en jeu"
+          title="Un incident, quatre expositions simultanées"
+          sub="Elles se déclenchent en même temps, relèvent d'autorités différentes et obéissent à des calendriers qui ne coïncident pas. C'est cette simultanéité, plus que chaque régime pris isolément, qui met les directions en difficulté."
+        />
+
+        <div
+          className="expo-schema"
+          role="group"
+          aria-label="Schéma : un incident, au jour zéro, déclenche simultanément quatre expositions — réglementaire (RGPD, CNIL, sous 72 heures), gouvernance (organe de direction, première décision), contractuelle (donneur d'ordre et prestataire, déjà écrite avant l'incident), pénale et probatoire (parquet, preuves, dès les premières heures)."
+        >
+          <svg className="expo-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden focusable="false">
+            {[
+              [20, 22],
+              [80, 22],
+              [20, 78],
+              [80, 78],
+            ].map(([x, y]) => (
+              <line
+                key={`${x}-${y}`}
+                x1="50"
+                y1="50"
+                x2={x}
+                y2={y}
+                stroke={LIGHT.border}
+                strokeWidth={1}
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+          </svg>
+
+          <div className="expo-node" aria-hidden>
+            <span className="expo-node-kicker">Jour zéro</span>
+            <span className="expo-node-titre">Un incident</span>
+          </div>
+
+          <div className="expo-cards">
+            {EXPOSITIONS.map((e) => (
+              <div key={e.branche} className={`expo-card expo-card--${e.coin}`}>
+                <span className="expo-horloge">{e.horloge}</span>
+                <h3 className="expo-branche">{e.branche}</h3>
+                <p className="expo-precision">{e.precision}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p style={{ fontSize: 12, color: LIGHT.faint, fontStyle: "italic", margin: "8px 0 0", textAlign: "center" }}>
+          délais propres à chaque régime.
+        </p>
+
+        {/* Dépliant : les quatre paragraphes d'origine, un panneau par branche. */}
+        <div style={{ marginTop: 28, borderTop: `0.5px solid ${LIGHT.border}` }}>
+          <button
+            type="button"
+            onClick={() => setDetail((v) => !v)}
+            aria-expanded={detail}
+            aria-controls="expo-detail"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 16,
+              background: "none",
+              border: "none",
+              padding: "16px 0",
+              textAlign: "left",
+              cursor: "pointer",
+              minHeight: 48,
+            }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text }}>Le détail de chaque exposition</span>
+            <span aria-hidden className="cyb-plus" style={{ color: BLUE, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: detail ? "rotate(45deg)" : "none" }}>
+              +
+            </span>
+          </button>
+          <div id="expo-detail" hidden={!detail} style={{ paddingBottom: 8 }}>
+            {EXPOSITIONS.map((e) => (
+              <div key={e.branche} style={{ padding: "4px 0 18px" }}>
+                <p style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: BLUE, margin: "0 0 6px" }}>
+                  {e.branche}
+                </p>
+                <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.65, margin: 0, maxWidth: PROSE_MAX }}>{e.corps}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: number }) {
   const [open, setOpen] = useState(false);
   return (
@@ -217,13 +333,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         <span
           aria-hidden
           className="cyb-plus"
-          style={{
-            color: BLUE,
-            fontSize: 20,
-            lineHeight: 1,
-            flexShrink: 0,
-            transform: open ? "rotate(45deg)" : "none",
-          }}
+          style={{ color: BLUE, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: open ? "rotate(45deg)" : "none" }}
         >
           +
         </span>
@@ -237,6 +347,14 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 20px 40px", maxWidth: 760 }}
       >
         {item.a}
+        {item.lien ? (
+          <Link
+            href={item.lien.href}
+            style={{ display: "inline-block", marginTop: 10, fontSize: 13, fontWeight: 600, color: BLUE, textDecoration: "none" }}
+          >
+            {item.lien.label} <span aria-hidden>→</span>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
@@ -267,14 +385,64 @@ export default function PilierClient() {
           .cyb-banner-text { flex-direction: row; align-items: baseline; gap: 10px; }
         }
         .cyb-h1 { font-size: clamp(30px, 6vw, 60px); line-height: 1.08; }
-        @media (prefers-reduced-motion: reduce) {
-          .cyb-plus { transition: none; }
+        @media (prefers-reduced-motion: reduce) { .cyb-plus { transition: none; } }
+
+        /* ---- Bloc C : schéma des quatre expositions ---- */
+        .expo-schema { position: relative; margin-top: 12px; }
+        .expo-node {
+          display: flex; flex-direction: column; align-items: center; gap: 2px;
+          width: max-content; max-width: 220px; margin: 0 auto 16px;
+          background: ${DARK.bg}; color: #fff; border: 1px solid ${BLUE};
+          border-radius: 10px; padding: 12px 18px; text-align: center;
         }
+        .expo-node-kicker { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7fa8ff; }
+        .expo-node-titre { font-size: 15px; font-weight: 600; }
+        .expo-cards { position: relative; display: flex; flex-direction: column; gap: 12px; padding-left: 26px; }
+        .expo-cards::before { content: ""; position: absolute; left: 6px; top: 10px; bottom: 10px; width: 2px; background: ${LIGHT.border}; }
+        .expo-card { position: relative; background: #fff; border: 0.5px solid ${LIGHT.border}; border-radius: 10px; padding: 14px 16px; }
+        .expo-card::before { content: ""; position: absolute; left: -25px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: ${BLUE}; }
+        .expo-horloge { display: inline-block; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${BLUE}; background: rgba(26,71,255,0.08); border-radius: 6px; padding: 2px 8px; margin-bottom: 8px; }
+        .expo-branche { font-size: 15px; font-weight: 600; color: ${LIGHT.text}; margin: 0 0 4px; }
+        .expo-precision { font-size: 12.5px; color: ${LIGHT.muted}; line-height: 1.5; margin: 0; }
+        .expo-connectors { display: none; }
+        @media (min-width: 1024px) {
+          .expo-schema { height: 480px; margin-top: 28px; }
+          .expo-node { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; z-index: 2; }
+          /* static : les cartes se positionnent sur .expo-schema (480px), pas sur
+             .expo-cards qui, en absolu-relatif, s'effondrerait à hauteur nulle. */
+          .expo-cards { display: block; padding-left: 0; position: static; }
+          .expo-cards::before { display: none; }
+          .expo-card { position: absolute; width: 250px; z-index: 2; }
+          .expo-card::before { display: none; }
+          .expo-card--tl { top: 0; left: 0; }
+          .expo-card--tr { top: 0; right: 0; }
+          .expo-card--bl { bottom: 0; left: 0; }
+          .expo-card--br { bottom: 0; right: 0; }
+          .expo-connectors { display: block; position: absolute; inset: 0; z-index: 1; }
+        }
+
+        /* ---- Bloc E : pièce CNIL ---- */
+        .cnil-piece { max-width: 68ch; background: ${LIGHT.panel2}; border: 0.5px solid rgba(0,0,0,0.14); border-radius: 10px; padding: 16px 18px; margin: 8px 0 18px; }
+        .cnil-piece-head { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: ${LIGHT.muted}; margin: 0 0 8px; }
+        .cnil-piece-list { margin: 0; padding: 0; list-style: none; }
+        .cnil-piece-list li { position: relative; font-size: 14px; color: ${LIGHT.text}; line-height: 1.5; padding: 7px 0 7px 18px; border-top: 0.5px solid rgba(0,0,0,0.08); }
+        .cnil-piece-list li:first-child { border-top: none; }
+        .cnil-piece-list li::before { content: "—"; position: absolute; left: 0; color: ${BLUE}; }
+
+        /* ---- Bloc F1 : cartouche chronologie NIS 2 ---- */
+        .nis2-cartouche { max-width: 68ch; background: ${DARK.bg}; color: #fff; border-radius: 12px; padding: 20px 22px; margin: 8px 0 16px; }
+        .nis2-cartouche-head { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7fa8ff; margin: 0 0 12px; }
+        .nis2-row { display: grid; grid-template-columns: 96px 1fr; gap: 14px; padding: 9px 0; border-top: 0.5px solid rgba(255,255,255,0.12); }
+        .nis2-row:first-of-type { border-top: none; }
+        .nis2-row dt { font-family: var(--ff-mono); font-size: 12px; color: rgba(255,255,255,0.85); margin: 0; }
+        .nis2-row dd { font-size: 13.5px; color: rgba(255,255,255,0.8); line-height: 1.5; margin: 0; }
+        .nis2-row--accent dt, .nis2-row--accent dd { color: #ff9d9d; font-weight: 500; }
+        .nis2-cartouche-foot { margin: 12px 0 0; padding-top: 12px; border-top: 0.5px solid rgba(255,255,255,0.2); font-size: 13px; font-weight: 500; color: #fff; }
       `}</style>
 
       {/* ===== 1. BANDEAU INCIDENT (en flux, jamais position:fixed) =====
-          « Rappel prioritaire » remplace volontairement un délai chiffré
-          (brief §9) : ne pas réintroduire de durée ici. */}
+          « Rappel prioritaire » remplace volontairement un délai chiffré :
+          ne pas réintroduire de durée ici. */}
       <a
         href="tel:+33181706200"
         className="cyb-banner"
@@ -300,10 +468,14 @@ export default function PilierClient() {
         </span>
       </a>
 
-      {/* ===== 2. HÉRO ===== */}
+      {/* ===== 2. HÉRO =====
+          Bloc B : l'aplat de marque « 72 h » a été retiré (les 72 heures quittent
+          la page, cf. bloc D). Une photographie doit occuper la colonne droite
+          (55/45 en desktop, bande de 140–160 px en haut sur mobile). En attente du
+          fichier image : héro en une colonne pour l'instant. */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD }}>
-        <div className="grid grid-cols-1 lg:grid-cols-[60fr_40fr]" style={{ ...INNER, gap: 40, alignItems: "center" }}>
-          <div>
+        <div style={{ ...INNER }}>
+          <div style={{ maxWidth: 680 }}>
             <span
               style={{
                 display: "inline-block",
@@ -353,28 +525,6 @@ export default function PilierClient() {
               </a>
             </div>
           </div>
-
-          {/* Aplat de marque (desktop) — décor, aucun texte structurant. */}
-          <div
-            className="hidden lg:flex"
-            aria-hidden
-            style={{
-              aspectRatio: "4 / 3",
-              borderRadius: 16,
-              border: `0.5px solid ${DARK.border}`,
-              background: "radial-gradient(120% 120% at 15% 10%, rgba(26,71,255,0.35) 0%, rgba(10,15,46,0) 60%), #0c1236",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              padding: 24,
-            }}
-          >
-            <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "#7fa8ff" }}>
-              Droit · Technique
-            </span>
-            <span style={{ fontFamily: "var(--ff-mono)", fontSize: 44, fontWeight: 500, color: "#ffffff", lineHeight: 1.1, marginTop: 6 }}>
-              72<span style={{ color: "#7fa8ff" }}>h</span>
-            </span>
-          </div>
         </div>
       </section>
 
@@ -393,16 +543,26 @@ export default function PilierClient() {
                     {p.titre}
                   </h3>
                   <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 14px" }}>{p.corps}</p>
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: p.disponible ? BLUE : LIGHT.faint,
-                    }}
-                  >
+                  <span style={{ fontSize: 13, fontWeight: 600, color: p.disponible ? BLUE : LIGHT.faint }}>
                     {p.lien}
                     {p.disponible ? <span aria-hidden> →</span> : null}
                   </span>
+                  {/* Bloc H : mention explicite pour les pages non encore construites. */}
+                  {!p.disponible ? (
+                    <span
+                      style={{
+                        display: "block",
+                        marginTop: 12,
+                        fontFamily: "var(--ff-mono)",
+                        fontSize: 10,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: LIGHT.faint,
+                      }}
+                    >
+                      Page à venir
+                    </span>
+                  ) : null}
                 </>
               );
               const cardStyle: React.CSSProperties = {
@@ -419,8 +579,6 @@ export default function PilierClient() {
                   {inner}
                 </Link>
               ) : (
-                // Non cliquable tant que la page n'existe pas : ni lien, ni flèche,
-                // ni couleur de lien (brief §1).
                 <div key={p.titre} style={cardStyle}>
                   {inner}
                 </div>
@@ -430,77 +588,27 @@ export default function PilierClient() {
         </div>
       </section>
 
-      {/* ===== 4. UN INCIDENT, QUATRE EXPOSITIONS SIMULTANÉES ===== */}
-      <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
+      {/* ===== 4. UN INCIDENT, QUATRE EXPOSITIONS — schéma + dépliant (bloc C) ===== */}
+      <ExpositionsSection />
+
+      {/* ===== 5. LES 72 HEURES QUITTENT LA PAGE (bloc D) =====
+          La chronologie H+0 → H+72 est désormais la propriété de la page
+          cybercriminalité (en ligne) : renvoi en deux lignes. */}
+      <section style={{ background: LIGHT.bg, padding: "0 0 56px" }}>
         <div style={INNER}>
-          <SectionHead
-            label="Ce qui est en jeu"
-            title="Un incident, quatre expositions simultanées"
-            sub="Elles se déclenchent en même temps, relèvent d'autorités différentes et obéissent à des calendriers qui ne coïncident pas. C'est cette simultanéité, plus que chaque régime pris isolément, qui met les directions en difficulté."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 0 }}>
-            {EXPOSITIONS.map((e) => (
-              // Blocs séparés par des filets, pas de cartes ombrées (brief §4).
-              <div key={e.titre} style={{ borderTop: `0.5px solid ${LIGHT.border}`, padding: "20px 0", marginRight: 0 }} className="cyb-expo">
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: "0 0 8px" }}>{e.titre}</h3>
-                <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.65, margin: 0, maxWidth: PROSE_MAX }}>{e.corps}</p>
-              </div>
-            ))}
+          <div style={{ borderLeft: `2px solid ${BLUE}`, paddingLeft: 20, maxWidth: PROSE_MAX }}>
+            <p style={{ fontSize: 16, color: LIGHT.text, lineHeight: 1.6, margin: "0 0 10px" }}>
+              Ce qui se décide dans les premières heures conditionne ce qui pourra être établi ensuite — et relève du
+              terrain pénal.
+            </p>
+            <Link href="/nos-domaines/cybercriminalite" style={{ fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: "none" }}>
+              Les 72 premières heures <span aria-hidden>→</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ===== 5. LES 72 PREMIÈRES HEURES — frise <ol> (disposition verticale) =====
-          Disposition verticale retenue à tous les points de rupture : les corps
-          H+0 et H+4 sont trop longs pour une frise horizontale à cinq colonnes
-          sans réduire la taille du texte, ce que le brief interdit (§5, repli
-          autorisé sur la verticale). */}
-      <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead label="En cas d'attaque" title="Les 72 premières heures" />
-          <p style={{ fontSize: 15, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.7, margin: "-16px 0 28px" }}>
-            La séquence appliquée, et l'erreur la plus fréquente à chaque étape.
-          </p>
-          <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {FRISE.map((f, i) => {
-              const last = i === FRISE.length - 1;
-              return (
-                <li key={f.jalon} style={{ display: "flex", gap: 16 }}>
-                  <div style={{ width: 56, flexShrink: 0, textAlign: "right" }}>
-                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 13, fontWeight: 600, color: BLUE }}>{f.jalon}</span>
-                  </div>
-                  <div
-                    style={{
-                      position: "relative",
-                      flex: 1,
-                      borderLeft: last ? "2px solid transparent" : `2px solid ${LIGHT.border}`,
-                      paddingLeft: 22,
-                      paddingBottom: last ? 0 : 28,
-                    }}
-                  >
-                    <span
-                      aria-hidden
-                      style={{
-                        position: "absolute",
-                        left: -6,
-                        top: 4,
-                        width: 10,
-                        height: 10,
-                        borderRadius: "50%",
-                        background: BLUE,
-                      }}
-                    />
-                    <h3 style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: "0 0 6px", lineHeight: 1.3 }}>{f.titre}</h3>
-                    <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.65, margin: 0, maxWidth: PROSE_MAX }}>{f.corps}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </section>
-
-      {/* ===== 6. CE QUE « MESURES APPROPRIÉES » VEUT DIRE CONCRÈTEMENT ===== */}
+      {/* ===== 6. CE QUE « MESURES APPROPRIÉES » VEUT DIRE CONCRÈTEMENT (bloc E) ===== */}
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>L&apos;obligation de sécurité</Eyebrow>
@@ -512,13 +620,19 @@ export default function PilierClient() {
               L&apos;article 32 du RGPD impose des mesures techniques et organisationnelles appropriées au risque. La
               formule paraît souple ; la pratique de la CNIL l&apos;est nettement moins.
             </p>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
+            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 4px" }}>
               Dans sa délibération du 28 juillet 2020 (n° SAN-2020-003), la CNIL a caractérisé un manquement à cette
-              obligation sur des points d&apos;une grande banalité opérationnelle : robustesse insuffisante des mots de
-              passe, absence de dispositif de blocage après des tentatives répétées d&apos;authentification,
-              enregistrements de conversations conservés au-delà du nécessaire, durées de conservation non
-              proportionnées.
+              obligation sur des points d&apos;une grande banalité opérationnelle.
             </p>
+            {/* Bloc E : l'énumération sort du paragraphe et devient une pièce. */}
+            <div className="cnil-piece">
+              <p className="cnil-piece-head">CNIL · SAN-2020-003 · Manquements retenus</p>
+              <ul className="cnil-piece-list">
+                {CNIL_MANQUEMENTS.map((m) => (
+                  <li key={m}>{m}</li>
+                ))}
+              </ul>
+            </div>
             <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
               L&apos;enseignement est direct. L&apos;obligation de sécurité ne se démontre pas par une politique
               générale, mais par des paramètres vérifiables : longueur et complexité exigées, comptage des échecs
@@ -533,7 +647,7 @@ export default function PilierClient() {
         </div>
       </section>
 
-      {/* ===== 7. UNE CONTRAINTE DÉJÀ LÀ, UN TEXTE QUI NE L'EST PAS ENCORE =====
+      {/* ===== 7. UNE CONTRAINTE DÉJÀ LÀ, UN TEXTE QUI NE L'EST PAS ENCORE (bloc F) =====
           TODO (cabinet) : l'état de la transposition de NIS 2 est arrêté à l'été
           2026. Si la loi (résilience des infrastructures critiques / transposition
           NIS 2, REC, DORA) a été promulguée depuis, cette section doit être
@@ -544,41 +658,50 @@ export default function PilierClient() {
           <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 18px", maxWidth: PROSE_MAX }}>
             Une contrainte déjà là, un texte qui ne l&apos;est pas encore
           </h2>
-          <div style={{ maxWidth: PROSE_MAX }}>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
-              La directive (UE) 2022/2555, dite NIS 2, devait être transposée par les États membres au plus tard le 17
-              octobre 2024. La France a choisi un véhicule législatif large — le projet de loi relatif à la résilience
-              des infrastructures critiques et au renforcement de la cybersécurité, qui transpose simultanément NIS 2,
-              la directive REC et le volet directive de DORA. Adopté par le Sénat le 12 mars 2025, examiné en commission
-              spéciale à l&apos;Assemblée nationale le 10 septembre 2025, ce texte n&apos;était pas promulgué à
-              l&apos;été 2026. Le 8 juillet 2026, la Commission européenne a saisi la Cour de justice pour défaut de
-              notification des mesures de transposition, en demandant des sanctions financières.
+
+          {/* F1 : cartouche de chronologie (absorbe le paragraphe législatif). */}
+          <div className="nis2-cartouche">
+            <p className="nis2-cartouche-head">Où en est la transposition</p>
+            <dl style={{ margin: 0 }}>
+              {NIS2_TIMELINE.map((t) => (
+                <div key={t.date} className={`nis2-row${t.accent ? " nis2-row--accent" : ""}`}>
+                  <dt>{t.date}</dt>
+                  <dd>{t.evenement}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="nis2-cartouche-foot">
+              Les obligations ne sont pas encore juridiquement exigibles en France.
             </p>
+          </div>
+
+          {/* F2 : le lien remonte immédiatement sous le cartouche. */}
+          <Link
+            href="/nos-domaines/cybersecurite/nis2"
+            style={{ display: "inline-block", fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: "none", margin: "0 0 20px" }}
+          >
+            Le détail des obligations pour les PME et sous-traitants <span aria-hidden>→</span> NIS 2 et sous-traitance
+          </Link>
+
+          {/* F3 : texte condensé — deux paragraphes (phrases conservées telles quelles). */}
+          <div style={{ maxWidth: PROSE_MAX }}>
             <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
               Il faut en tirer une conséquence que peu de publications énoncent clairement : les obligations NIS 2 ne
               sont pas encore juridiquement exigibles en France, et les seuils, listes d&apos;entités et procédures de
               déclaration dépendront de décrets à paraître après la loi.
             </p>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
-              Cela ne réduit pas la contrainte, cela en déplace la source. La pression qui s&apos;exerce aujourd&apos;hui
-              sur les entreprises n&apos;est pas réglementaire, elle est contractuelle : les grands donneurs d&apos;ordre,
-              eux, ont anticipé, et répercutent leurs exigences de sécurité sur leurs fournisseurs par questionnaires,
-              audits et clauses. Un sous-traitant peut ainsi perdre un marché pour non-conformité à un texte qui
-              n&apos;est pas encore applicable.
+            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>
+              Cela ne réduit pas la contrainte, cela en déplace la source. La pression qui s&apos;exerce
+              aujourd&apos;hui sur les entreprises n&apos;est pas réglementaire, elle est contractuelle : les grands
+              donneurs d&apos;ordre, eux, ont anticipé, et répercutent leurs exigences de sécurité sur leurs
+              fournisseurs par questionnaires, audits et clauses. Un sous-traitant peut ainsi perdre un marché pour
+              non-conformité à un texte qui n&apos;est pas encore applicable. Deux enjeux se préparent dès maintenant.
+              D&apos;abord répondre à ces exigences contractuelles sans souscrire des engagements que l&apos;entreprise
+              ne pourra pas tenir, ni s&apos;obliger au-delà de ce que la loi imposera. Ensuite anticiper
+              l&apos;articulation avec le RGPD : un même incident peut relever des deux régimes, avec deux autorités,
+              deux calendriers et deux logiques de sanction. Selon l&apos;ANSSI, le périmètre attendu se situe entre dix
+              mille et quinze mille entités, contre environ cinq cents sous NIS 1.
             </p>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
-              Deux enjeux se préparent dès maintenant. D&apos;abord répondre à ces exigences contractuelles sans
-              souscrire des engagements que l&apos;entreprise ne pourra pas tenir, ni s&apos;obliger au-delà de ce que la
-              loi imposera. Ensuite anticiper l&apos;articulation avec le RGPD : un même incident peut relever des deux
-              régimes, avec deux autorités, deux calendriers et deux logiques de sanction.
-            </p>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 20px" }}>
-              Selon l&apos;ANSSI, le périmètre attendu se situe entre dix mille et quinze mille entités, contre environ
-              cinq cents sous NIS 1.
-            </p>
-            <Link href="/nos-domaines/cybersecurite/nis2" style={{ fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: "none" }}>
-              Le détail des obligations pour les PME et sous-traitants <span aria-hidden>→</span> NIS 2 et sous-traitance
-            </Link>
           </div>
         </div>
       </section>
@@ -603,14 +726,7 @@ export default function PilierClient() {
             </p>
             <Link
               href="/nos-domaines/cybersecurite/nis2#obligations"
-              style={{
-                display: "block",
-                background: LIGHT.panel2,
-                border: `0.5px solid ${LIGHT.border}`,
-                borderRadius: 12,
-                padding: 18,
-                textDecoration: "none",
-              }}
+              style={{ display: "block", background: LIGHT.panel2, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: 18, textDecoration: "none" }}
             >
               <span style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6 }}>
                 <strong style={{ color: LIGHT.text, fontWeight: 600 }}>Les documents que nous produisons</strong> — PSSI,
@@ -623,7 +739,7 @@ export default function PilierClient() {
           </div>
 
           {/* Portraits : composant de carte de l'équipe réutilisé. Deux côte à
-              côte, jamais trois par ligne (brief §4). */}
+              côte, jamais trois par ligne. */}
           <div className="grid grid-cols-2" style={{ gap: 12 }}>
             <MembreCarte
               membre={{ slug: "alexandre", role: "Analyse juridique de l'incident", tags: ["Réponse à incident", "RGPD", "NIS 2"] }}
@@ -635,7 +751,7 @@ export default function PilierClient() {
         </div>
       </section>
 
-      {/* ===== 9. QUESTIONS FRÉQUENTES ===== */}
+      {/* ===== 9. QUESTIONS FRÉQUENTES (bloc G) ===== */}
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={{ ...INNER, maxWidth: 820 }}>
           <SectionHead label="FAQ" title="Questions fréquentes" />
@@ -650,14 +766,7 @@ export default function PilierClient() {
       {/* ===== 10. APPEL À L'ACTION ===== */}
       <section style={{ background: LIGHT.bg, padding: "8px 0 64px" }}>
         <div style={INNER}>
-          <div
-            style={{
-              background: DARK.bg,
-              borderRadius: 16,
-              padding: "40px 32px",
-              textAlign: "center",
-            }}
-          >
+          <div style={{ background: DARK.bg, borderRadius: 16, padding: "40px 32px", textAlign: "center" }}>
             <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#7fa8ff", margin: "0 0 10px" }}>
               Quelle que soit la situation
             </p>
