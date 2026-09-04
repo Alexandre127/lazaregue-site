@@ -244,7 +244,7 @@ export function Footer() {
                 Cette liste ne contient plus que des pages réellement publiées. */}
             <FooterColumn title="Nos domaines">
               <Link href="/nos-domaines/cybersecurite" className="hover:text-white">
-                Cybersécurité & NIS 2
+                Cybersécurité
               </Link>
               <Link href="/nos-domaines/rgpd-donnees" className="hover:text-white">
                 RGPD & protection des données

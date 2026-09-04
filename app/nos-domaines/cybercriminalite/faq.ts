@@ -37,6 +37,6 @@ export const FAQ_ITEMS: {
   {
     q: "Faut-il payer la rançon ?",
     a: "C'est une décision qui engage la procédure pénale, la relation avec l'assureur et la position devant la CNIL. Payer ne garantit pas la restitution des données. Appelez-nous avant de décider.",
-    lien: { href: "/nos-domaines/cybersecurite", label: "Prévenir et documenter en amont : Cybersécurité & NIS 2" },
+    lien: { href: "/nos-domaines/cybersecurite/nis2", label: "Prévenir et documenter en amont : Cybersécurité & NIS 2" },
   },
 ];

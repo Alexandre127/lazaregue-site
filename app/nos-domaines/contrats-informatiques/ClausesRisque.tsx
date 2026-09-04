@@ -30,7 +30,7 @@ const clauses: {
       'Tester une restauration régulièrement et en produire un rapport',
     ],
     risque: 'Après un ransomware, vous découvrez que les sauvegardes n\'ont jamais été testées. Elles existaient sur le papier. Pas dans la réalité.',
-    lien: { href: '/nos-domaines/cybersecurite', label: 'Sauvegardes et continuité : nos obligations sous NIS 2' },
+    lien: { href: '/nos-domaines/cybersecurite/nis2', label: 'Sauvegardes et continuité : nos obligations sous NIS 2' },
   },
   {
     num: '02',
@@ -70,7 +70,7 @@ const clauses: {
       'Procédures d\'escalade documentées',
     ],
     risque: 'Le prestataire intervient rapidement. Mais le système reste indisponible plusieurs jours. Sans pénalité contractuelle, vous ne pouvez rien réclamer.',
-    lien: { href: '/nos-domaines/cybersecurite', label: 'Disponibilité et gestion d\'incident : voir Cybersécurité & NIS 2' },
+    lien: { href: '/nos-domaines/cybersecurite/nis2', label: 'Disponibilité et gestion d\'incident : voir Cybersécurité & NIS 2' },
   },
   {
     num: '05',

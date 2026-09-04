@@ -742,7 +742,7 @@ export default function IaActClient() {
               { icon: "ti-eye", title: "Transparence", text: "Contenus générés, chatbots, deepfakes : obligation d'information envers les utilisateurs — en vigueur" },
               { icon: "ti-scale", title: "Devoir de conseil", text: "Les prestataires intégrant l'IA restent tenus d'informer sur les limites, risques et maturité des outils" },
               { icon: "ti-building-bank", title: "Régulation sectorielle", text: "Finance, immobilier, santé, plateformes : des obligations spécifiques s'ajoutent au cadre général" },
-              { icon: "ti-certificate", title: "Sécurité des systèmes", text: "Journalisation, robustesse, notification d'incident : les exigences NIS 2 et AI Act se recoupent", href: "/nos-domaines/cybersecurite" },
+              { icon: "ti-certificate", title: "Sécurité des systèmes", text: "Journalisation, robustesse, notification d'incident : les exigences NIS 2 et AI Act se recoupent", href: "/nos-domaines/cybersecurite/nis2" },
             ].map(({ icon, title, text, href }) => {
               const contenu = (
                 <>

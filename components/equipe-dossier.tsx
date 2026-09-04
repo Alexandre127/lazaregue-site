@@ -47,6 +47,89 @@ const DEFAUT = {
   accent: "#1A47FF",
 };
 
+/**
+ * Carte d'un membre — extraite pour être réutilisable hors de la grille par
+ * défaut d'`EquipeDossier` (ex. mise en page « texte à gauche, portraits à
+ * droite » de la page pilier cybersécurité). Le rendu est identique à celui
+ * qu'`EquipeDossier` produisait en interne.
+ */
+export function MembreCarte({
+  membre,
+  couleurs,
+}: {
+  membre: MembreDossier;
+  couleurs?: Props["couleurs"];
+}) {
+  const c = { ...DEFAUT, ...couleurs };
+  const p = MEMBRES[membre.slug];
+  if (!p) return null;
+  return (
+    <article
+      style={{
+        background: c.carte,
+        border: `0.5px solid ${c.bordure}`,
+        borderRadius: 12,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      {/* Rapport 4/5 : les portraits ne sont jamais rognés
+          verticalement, quelle que soit la largeur de la colonne. */}
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
+        <Image
+          src={p.photo}
+          alt={`${p.nom} — ${membre.role}`}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          style={{ objectFit: "cover", objectPosition: p.position ?? "center" }}
+        />
+      </div>
+
+      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+        <span
+          style={{
+            alignSelf: "flex-start",
+            fontFamily: "var(--ff-mono)",
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: p.avocat ? c.secondaire : c.texte,
+            border: `1px solid ${p.avocat ? c.bordure : c.accent}`,
+            padding: "3px 8px",
+          }}
+        >
+          {p.statut}
+        </span>
+        <p style={{ fontSize: 15, fontWeight: 600, color: c.texte, margin: 0, lineHeight: 1.35 }}>
+          {p.nom}
+        </p>
+        <p style={{ fontSize: 12, color: c.secondaire, margin: 0, lineHeight: 1.5 }}>
+          {membre.role}
+        </p>
+        <div className="flex flex-wrap" style={{ gap: 6, marginTop: 2 }}>
+          {membre.tags.map((tag) => (
+            <span
+              key={tag}
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                padding: "3px 9px",
+                borderRadius: 8,
+                background: "rgba(26,71,255,0.07)",
+                color: c.accent,
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function EquipeDossier({
   eyebrow = "L'équipe",
   titre,
@@ -87,76 +170,9 @@ export default function EquipeDossier({
         }
         style={{ gap: 12 }}
       >
-        {membres.map((m) => {
-          const p = MEMBRES[m.slug];
-          if (!p) return null;
-          return (
-            <article
-              key={p.slug}
-              style={{
-                background: c.carte,
-                border: `0.5px solid ${c.bordure}`,
-                borderRadius: 12,
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
-              {/* Rapport 4/5 : les portraits ne sont jamais rognés
-                  verticalement, quelle que soit la largeur de la colonne. */}
-              <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
-                <Image
-                  src={p.photo}
-                  alt={`${p.nom} — ${m.role}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: "cover", objectPosition: p.position ?? "center" }}
-                />
-              </div>
-
-              <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8 }}>
-                <span
-                  style={{
-                    alignSelf: "flex-start",
-                    fontFamily: "var(--ff-mono)",
-                    fontSize: 9,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: p.avocat ? c.secondaire : c.texte,
-                    border: `1px solid ${p.avocat ? c.bordure : c.accent}`,
-                    padding: "3px 8px",
-                  }}
-                >
-                  {p.statut}
-                </span>
-                <p style={{ fontSize: 15, fontWeight: 600, color: c.texte, margin: 0, lineHeight: 1.35 }}>
-                  {p.nom}
-                </p>
-                <p style={{ fontSize: 12, color: c.secondaire, margin: 0, lineHeight: 1.5 }}>
-                  {m.role}
-                </p>
-                <div className="flex flex-wrap" style={{ gap: 6, marginTop: 2 }}>
-                  {m.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 500,
-                        padding: "3px 9px",
-                        borderRadius: 8,
-                        background: "rgba(26,71,255,0.07)",
-                        color: c.accent,
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          );
-        })}
+        {membres.map((m) => (
+          <MembreCarte key={m.slug} membre={m} couleurs={couleurs} />
+        ))}
       </div>
     </div>
   );

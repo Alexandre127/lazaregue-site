@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 /**
  * Plan du site.
@@ -11,8 +12,6 @@ import type { MetadataRoute } from "next";
  * Google l'utilise peu, mais elle documente l'intention.
  */
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lazaregue-avocats.fr";
-
 /** Pages statiques, de la plus structurante à la plus périphérique. */
 const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
   { path: "/", priority: 1, frequence: "monthly" },
@@ -20,6 +19,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // Pages de compétence — le cœur de l'offre
   { path: "/nos-domaines/rgpd-donnees", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/cybersecurite/nis2", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/ia-act", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/contrats-informatiques", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybercriminalite", priority: 0.9, frequence: "monthly" },
@@ -44,7 +44,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return PAGES.map((p) => ({
-    url: `${SITE}${p.path}`,
+    url: `${SITE_URL}${p.path}`,
     lastModified: now,
     changeFrequency: p.frequence,
     priority: p.priority,

@@ -17,11 +17,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/nos-domaines/cybersecurite" },
+  alternates: { canonical: "/nos-domaines/cybersecurite/nis2" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "/nos-domaines/cybersecurite",
+    url: "/nos-domaines/cybersecurite/nis2",
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",
     type: "website",
@@ -37,7 +37,7 @@ const JSON_LD = {
       name: "Avocat NIS 2 — Lazarègue Avocats",
       description:
         "Accompagnement des PME et ETI sous-traitantes d'acteurs critiques : audit de conformité NIS 2, PSSI, clauses contractuelles de cybersécurité, gestion de crise.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite",
+      url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite/nis2",
       areaServed: "FR",
       serviceType:
         "Mise en conformité NIS 2, audit cybersécurité, clause NIS 2 contrat, PSSI, gestion de crise cyber",

@@ -2190,7 +2190,7 @@ export default function RgpdClient() {
           ; une violation de données peut déclencher simultanément une notification
           CNIL et une obligation au titre de{" "}
           <a
-            href="/nos-domaines/cybersecurite"
+            href="/nos-domaines/cybersecurite/nis2"
             style={{ color: ACCENT, textDecoration: "underline" }}
           >
             la directive NIS 2

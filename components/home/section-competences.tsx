@@ -211,7 +211,7 @@ const cards: CompetenceCard[] = [
     tagColor: "rgba(26,71,255,.12)",
     tagText: "#6D8FFF",
     href: "/nos-domaines/cybersecurite",
-    linkLabel: "Cybersécurité et NIS 2",
+    linkLabel: "Cybersécurité",
   },
   {
     id: 2,

@@ -9,7 +9,8 @@ import { KeyboardArrowDown } from "relume-icons";
 type DropdownKey = "domaines";
 
 const DOMAINES_LINKS = [
-  { label: "Cybersécurité & NIS 2", href: "/nos-domaines/cybersecurite" },
+  { label: "Cybersécurité", href: "/nos-domaines/cybersecurite" },
+  { label: "NIS 2 et sous-traitance", href: "/nos-domaines/cybersecurite/nis2" },
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
@@ -23,8 +24,10 @@ const DOMAINES_LINKS = [
   // qui n'existe pas. À remettre le jour où la page sera écrite.
 ];
 
-// Menu mobile — cinq premiers domaines seulement, puis « Tous nos domaines ».
-const DOMAINES_TOP5 = DOMAINES_LINKS.slice(0, 5);
+// Menu mobile — six premiers domaines, puis « Tous nos domaines ». (Six et non
+// cinq depuis la scission « Cybersécurité » / « NIS 2 et sous-traitance » : on
+// conserve ainsi tous les domaines déjà visibles sur mobile, plus la page fille.)
+const DOMAINES_TOP5 = DOMAINES_LINKS.slice(0, 6);
 
 const MOBILE_ENTRIES: {
   n: string;
