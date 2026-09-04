@@ -212,7 +212,7 @@ export function Footer() {
                 LAZARÈGUE <span className="text-[#1A47FF]">AVOCATS</span>
               </p>
               <p className="mb-6 text-[13px] text-white/45">
-                Cabinet en droit du numérique. Paris.
+                Cabinet en droit du numérique. Paris, toute la France.
               </p>
               <ul className="space-y-3 text-[13px] text-white/55">
                 <li className="flex items-center gap-2.5">

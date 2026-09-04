@@ -96,7 +96,7 @@ export default function Page() {
         <div className={styles.heroVeil} aria-hidden />
         <div className={styles.heroInner}>
           <div className={styles.heroK}>
-            Contact · Paris 17<sup>e</sup>
+            Contact · Paris 17<sup>e</sup> · Toute la France
           </div>
           <h1>
             QUAND TOUT S&apos;ACCÉLÈRE,
