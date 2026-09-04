@@ -54,6 +54,10 @@ public/videos/*.mp4
 # Vignette animée « passage TV » de la home (~500 Ko) — servie depuis notre
 # domaine pour éviter tout cookie tiers YouTube au chargement.
 !public/videos/passage-tv-loop.mp4
+# Vidéos du tribunal (page cybercriminalité), ré-encodées < 3 Mo, repli MP4 des
+# sources WebM. Servies depuis le dépôt (auparavant sur Vercel Blob).
+!public/videos/tribunal-exterieur.mp4
+!public/videos/tribunal-interieur.mp4
 
 # Outillage local Claude Code (config poste, hors dépôt).
 .claude/
