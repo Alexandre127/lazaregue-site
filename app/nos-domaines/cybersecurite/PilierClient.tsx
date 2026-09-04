@@ -571,7 +571,7 @@ export default function PilierClient() {
             <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 560 }}>
               Une attaque, une fuite de données, un prestataire défaillant ou un client qui exige des garanties : le
               risque numérique cesse d'être une affaire technique dès l'instant où il engage une responsabilité. Le
-              cabinet organise ce risque avant qu'il ne survienne et défend l'entreprise lorsqu'il survient, partout en
+              cabinet met ce risque en règles avant l'incident et défend l'entreprise lorsqu'il survient, partout en
               France, avec un expert technique à ses côtés.
             </p>
             <div className="flex flex-col sm:flex-row" style={{ gap: 12 }}>
