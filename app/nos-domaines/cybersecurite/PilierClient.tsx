@@ -130,6 +130,23 @@ const EXPOSITIONS: {
   },
 ];
 
+// Coordonnées du schéma SVG desktop (viewBox 900×480). Le nœud central occupe
+// (360,200)–(540,280) ; chaque encadré (250×110) est placé à un coin. Les
+// connecteurs partent du BORD du nœud et s'arrêtent au BORD de l'encadré visé —
+// calculés pour ne croiser aucune forme.
+const SVG_BOX: Record<"tl" | "tr" | "bl" | "br", { x: number; y: number }> = {
+  tl: { x: 20, y: 20 },
+  tr: { x: 630, y: 20 },
+  bl: { x: 20, y: 350 },
+  br: { x: 630, y: 350 },
+};
+const SVG_CONNECTEURS: [number, number, number, number][] = [
+  [376, 200, 247, 130], // nœud → réglementaire (haut-gauche)
+  [524, 200, 653, 130], // nœud → gouvernance (haut-droite)
+  [376, 280, 247, 350], // nœud → contractuelle (bas-gauche)
+  [524, 280, 653, 350], // nœud → pénale et probatoire (bas-droite)
+];
+
 // Bloc E : manquements retenus par la CNIL (délibération SAN-2020-003), sortis
 // du paragraphe et posés en pièce.
 const CNIL_MANQUEMENTS = [
@@ -215,50 +232,72 @@ function ExpositionsSection() {
           sub="Elles se déclenchent en même temps, relèvent d'autorités différentes et obéissent à des calendriers qui ne coïncident pas. C'est cette simultanéité, plus que chaque régime pris isolément, qui met les directions en difficulté."
         />
 
-        <div
-          className="expo-schema"
-          role="group"
-          aria-label="Schéma : un incident, au jour zéro, déclenche simultanément quatre expositions — réglementaire (RGPD, CNIL, sous 72 heures), gouvernance (organe de direction, première décision), contractuelle (donneur d'ordre et prestataire, déjà écrite avant l'incident), pénale et probatoire (parquet, preuves, dès les premières heures)."
-        >
-          <svg className="expo-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden focusable="false">
-            {[
-              [20, 22],
-              [80, 22],
-              [20, 78],
-              [80, 78],
-            ].map(([x, y]) => (
-              <line
-                key={`${x}-${y}`}
-                x1="50"
-                y1="50"
-                x2={x}
-                y2={y}
-                stroke={LIGHT.border}
-                strokeWidth={1}
-                vectorEffect="non-scaling-stroke"
-              />
+        {/* Desktop : un SEUL <svg>. Connecteurs <line> tracés d'abord (derrière),
+            nœud et encadrés en foreignObject par-dessus : les traits rejoignent le
+            bord des formes sans passer dessous. */}
+        <div className="expo-svg-wrap">
+          <svg
+            className="expo-svg"
+            viewBox="0 0 900 480"
+            role="img"
+            aria-labelledby="expo-svg-titre expo-svg-desc"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <title id="expo-svg-titre">Un incident déclenche quatre expositions simultanées</title>
+            <desc id="expo-svg-desc">
+              Au jour zéro, un incident se ramifie en quatre expositions simultanées : réglementaire (RGPD, CNIL, dans
+              les 72 heures), gouvernance (organe de direction, dès la première décision), contractuelle (donneur
+              d&apos;ordre et prestataire, déjà écrite avant l&apos;incident), pénale et probatoire (parquet et preuves,
+              dès les premières heures).
+            </desc>
+            {SVG_CONNECTEURS.map(([x1, y1, x2, y2], i) => (
+              <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={LIGHT.muted} strokeWidth={1} vectorEffect="non-scaling-stroke" />
             ))}
+            <foreignObject x={360} y={200} width={180} height={80}>
+              <div className="expo-svg-node">
+                <span className="expo-svg-node-titre">Un incident</span>
+                <span className="expo-svg-node-sub">jour zéro</span>
+              </div>
+            </foreignObject>
+            {EXPOSITIONS.map((e) => {
+              const p = SVG_BOX[e.coin];
+              return (
+                <foreignObject key={e.branche} x={p.x} y={p.y} width={250} height={110}>
+                  <div className="expo-svg-box">
+                    <span className="expo-svg-titre">{e.branche}</span>
+                    <span className="expo-svg-precision">{e.precision}</span>
+                    <span className="expo-svg-horloge">{e.horloge}</span>
+                  </div>
+                </foreignObject>
+              );
+            })}
+            <text x={450} y={472} textAnchor="middle" className="expo-svg-legend">
+              délais propres à chaque régime
+            </text>
           </svg>
+        </div>
 
+        {/* Mobile : vertical. Le filet et les pastilles jouent le rôle des traits. */}
+        <div
+          className="expo-vert"
+          role="group"
+          aria-label="Un incident, au jour zéro, déclenche quatre expositions simultanées : réglementaire dans les 72 heures, gouvernance dès la première décision, contractuelle déjà écrite avant l'incident, pénale et probatoire dès les premières heures."
+        >
           <div className="expo-node" aria-hidden>
             <span className="expo-node-kicker">Jour zéro</span>
             <span className="expo-node-titre">Un incident</span>
           </div>
-
           <div className="expo-cards">
             {EXPOSITIONS.map((e) => (
-              <div key={e.branche} className={`expo-card expo-card--${e.coin}`}>
-                <span className="expo-horloge">{e.horloge}</span>
-                <h3 className="expo-branche">{e.branche}</h3>
-                <p className="expo-precision">{e.precision}</p>
+              <div key={e.branche} className="expo-card">
+                <h3 className="expo-vert-titre">{e.branche}</h3>
+                <p className="expo-vert-precision">{e.precision}</p>
+                <span className="expo-vert-horloge">{e.horloge}</span>
               </div>
             ))}
           </div>
+          <p className="expo-legende expo-legende--mobile">délais propres à chaque régime.</p>
         </div>
-
-        <p style={{ fontSize: 12, color: LIGHT.faint, fontStyle: "italic", margin: "8px 0 0", textAlign: "center" }}>
-          délais propres à chaque régime.
-        </p>
 
         {/* Dépliant : les quatre paragraphes d'origine, un panneau par branche. */}
         <div style={{ marginTop: 28, borderTop: `0.5px solid ${LIGHT.border}` }}>
@@ -403,38 +442,36 @@ export default function PilierClient() {
           .cyb-hero-text { order: 1; padding: 56px 40px 56px 24px; display: flex; flex-direction: column; justify-content: center; }
         }
 
-        /* ---- Bloc C : schéma des quatre expositions ---- */
-        .expo-schema { position: relative; margin-top: 12px; }
-        .expo-node {
-          display: flex; flex-direction: column; align-items: center; gap: 2px;
-          width: max-content; max-width: 220px; margin: 0 auto 16px;
-          background: ${DARK.bg}; color: #fff; border: 1px solid ${BLUE};
-          border-radius: 10px; padding: 12px 18px; text-align: center;
-        }
+        /* ---- Schéma des quatre expositions ----
+           Desktop : un SEUL <svg> (nœud + encadrés en foreignObject + connecteurs
+           <line>) — les traits rejoignent les bords réels des formes. Mobile : la
+           disposition verticale HTML (filet + pastilles tiennent lieu de traits). */
+        .expo-svg-wrap { display: none; margin-top: 24px; }
+        .expo-svg { width: 100%; height: auto; display: block; }
+        .expo-svg-node { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: ${DARK.bg}; border: 1px solid ${BLUE}; border-radius: 10px; color: #fff; text-align: center; }
+        .expo-svg-node-titre { font-size: 15px; font-weight: 600; }
+        .expo-svg-node-sub { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7fa8ff; }
+        .expo-svg-box { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 5px; background: #fff; border: 0.5px solid rgba(0,0,0,0.14); border-radius: 10px; padding: 14px 16px; }
+        .expo-svg-titre { font-size: 14px; font-weight: 600; color: ${LIGHT.text}; line-height: 1.25; }
+        .expo-svg-precision { font-size: 12px; color: ${LIGHT.muted}; line-height: 1.4; }
+        .expo-svg-horloge { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: ${BLUE}; margin-top: auto; }
+        .expo-svg-legend { fill: ${LIGHT.faint}; font-size: 12px; font-style: italic; }
+
+        .expo-vert { margin-top: 12px; }
+        .expo-node { display: flex; flex-direction: column; align-items: center; gap: 2px; width: max-content; max-width: 220px; margin: 0 auto 16px; background: ${DARK.bg}; color: #fff; border: 1px solid ${BLUE}; border-radius: 10px; padding: 12px 18px; text-align: center; }
         .expo-node-kicker { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7fa8ff; }
         .expo-node-titre { font-size: 15px; font-weight: 600; }
         .expo-cards { position: relative; display: flex; flex-direction: column; gap: 12px; padding-left: 26px; }
-        .expo-cards::before { content: ""; position: absolute; left: 6px; top: 10px; bottom: 10px; width: 2px; background: ${LIGHT.border}; }
+        .expo-cards::before { content: ""; position: absolute; left: 6px; top: 10px; bottom: 10px; width: 2px; background: ${BLUE}; opacity: 0.4; }
         .expo-card { position: relative; background: #fff; border: 0.5px solid ${LIGHT.border}; border-radius: 10px; padding: 14px 16px; }
-        .expo-card::before { content: ""; position: absolute; left: -25px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: ${BLUE}; }
-        .expo-horloge { display: inline-block; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${BLUE}; background: rgba(26,71,255,0.08); border-radius: 6px; padding: 2px 8px; margin-bottom: 8px; }
-        .expo-branche { font-size: 15px; font-weight: 600; color: ${LIGHT.text}; margin: 0 0 4px; }
-        .expo-precision { font-size: 12.5px; color: ${LIGHT.muted}; line-height: 1.5; margin: 0; }
-        .expo-connectors { display: none; }
+        .expo-card::before { content: ""; position: absolute; left: -25px; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: ${BLUE}; border: 2px solid ${LIGHT.bg}; }
+        .expo-vert-titre { font-size: 15px; font-weight: 600; color: ${LIGHT.text}; margin: 0 0 4px; }
+        .expo-vert-precision { font-size: 12.5px; color: ${LIGHT.muted}; line-height: 1.5; margin: 0 0 8px; }
+        .expo-vert-horloge { display: inline-block; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${BLUE}; background: rgba(26,71,255,0.08); border-radius: 6px; padding: 2px 8px; }
+        .expo-legende { font-size: 12px; color: ${LIGHT.faint}; font-style: italic; margin: 10px 0 0; }
         @media (min-width: 1024px) {
-          .expo-schema { height: 480px; margin-top: 28px; }
-          .expo-node { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; z-index: 2; }
-          /* static : les cartes se positionnent sur .expo-schema (480px), pas sur
-             .expo-cards qui, en absolu-relatif, s'effondrerait à hauteur nulle. */
-          .expo-cards { display: block; padding-left: 0; position: static; }
-          .expo-cards::before { display: none; }
-          .expo-card { position: absolute; width: 250px; z-index: 2; }
-          .expo-card::before { display: none; }
-          .expo-card--tl { top: 0; left: 0; }
-          .expo-card--tr { top: 0; right: 0; }
-          .expo-card--bl { bottom: 0; left: 0; }
-          .expo-card--br { bottom: 0; right: 0; }
-          .expo-connectors { display: block; position: absolute; inset: 0; z-index: 1; }
+          .expo-svg-wrap { display: block; }
+          .expo-vert, .expo-legende--mobile { display: none; }
         }
 
         /* ---- Bloc E : pièce CNIL ---- */
@@ -529,7 +566,8 @@ export default function PilierClient() {
             <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.75, margin: "0 0 28px", maxWidth: 560 }}>
               Une attaque, une fuite de données, un prestataire défaillant ou un client qui exige des garanties : le
               risque numérique cesse d'être une affaire technique dès l'instant où il engage une responsabilité. Le
-              cabinet intervient sur l'ensemble de cette chaîne, à Paris, avec un expert technique à ses côtés.
+              cabinet intervient sur l'ensemble de cette chaîne, à Paris, avec un expert technique à ses côtés. Le
+              cabinet organise le risque avant qu'il ne survienne, et défend l'entreprise lorsqu'il survient.
             </p>
             <div className="flex flex-col sm:flex-row" style={{ gap: 12 }}>
               <Link href="/contact" style={BTN_PRIMARY}>
