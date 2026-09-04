@@ -42,7 +42,8 @@ const METRICS: { repere: string; chiffre: string; libelle: string }[] = [
   {
     repere: "Menace n° 1",
     chiffre: "1 / 3",
-    libelle: "des assistances entreprises : piratage de compte, souvent par un salarié ou un ancien salarié",
+    libelle:
+      "des demandes d'assistance déposées par des entreprises auprès de cybermalveillance.gouv.fr concerne un piratage de compte — souvent le fait d'un salarié ou d'un ancien salarié.",
   },
   {
     repere: "+196 %",
@@ -286,12 +287,12 @@ function Divider() {
 
 function MetricCard({ metric }: { metric: (typeof METRICS)[number] }) {
   return (
-    <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
+    <div className="metric-card" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
       <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 8px", borderRadius: 6, background: "#FCEBEB", color: "#A32D2D", marginBottom: 10 }}>
         {metric.repere}
       </span>
       <p style={{ fontSize: 32, fontWeight: 600, color: "#A32D2D", margin: "0 0 6px", lineHeight: 1.1 }}>{metric.chiffre}</p>
-      <p style={{ fontSize: 13, color: LIGHT.text, lineHeight: 1.5, margin: 0 }}>{metric.libelle}</p>
+      <p className="metric-label" style={{ fontSize: 13, color: LIGHT.text, lineHeight: 1.5, margin: 0 }}>{metric.libelle}</p>
     </div>
   );
 }
@@ -394,6 +395,13 @@ export default function CybercriminaliteClient() {
         /* §2 — victime / mis en cause : deux colonnes, empilées en mobile. */
         .vmc-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media (min-width: 768px) { .vmc-grid { grid-template-columns: 1fr 1fr; } }
+        /* Chiffres restent en deux colonnes en mobile ; le libellé long de la
+           carte 1 descend d'un cran et la carte se resserre pour gagner en largeur
+           de texte (plutôt que tronquer). */
+        @media (max-width: 767px) {
+          .metric-card { padding: 13px 12px !important; }
+          .metric-label { font-size: 12px !important; line-height: 1.45 !important; }
+        }
         @media (max-width: 767px) {
           .cyber-hero { flex-direction: column-reverse; min-height: 0; }
           .cyber-hero-text { padding: 28px 24px 32px; }
