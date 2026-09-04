@@ -34,10 +34,8 @@ const TYPE = {
   h3: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 } as const,
 };
 
-/* §6 — les dossiers sont anonymisés mais caractérisants ; leur publication
-   soulève une question de secret professionnel que seul le cabinet peut
-   trancher. Section rendue uniquement si ce drapeau passe à true. */
-const DOSSIERS_ENABLED = false;
+/* Dossiers publiés — décision du cabinet. */
+const DOSSIERS_ENABLED = true;
 
 /* §4 — deux indicateurs conservés sur cinq (graphique et paragraphe retirés). */
 const METRICS: { repere: string; chiffre: string; libelle: string }[] = [
@@ -279,18 +277,20 @@ function DossierCard({ dossier, index }: { dossier: (typeof DOSSIERS)[number]; i
         {dossier.quote}
       </blockquote>
       <p style={{ fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 8px", whiteSpace: "pre-line" }}>{dossier.verdict}</p>
-      {/* §6 — le détail passe derrière un dépliant « Le dossier ». */}
+      {/* §6 — détail derrière un dépliant « Le dossier » en mobile ; déplié
+          d'office en desktop (bouton masqué, détail toujours visible). */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={`dossier-detail-${index}`}
+        className="dossier-toggle"
         style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: "4px 0", cursor: "pointer", color: RED, fontSize: 13, fontWeight: 500 }}
       >
         Le dossier
         <span aria-hidden style={{ fontSize: 18, lineHeight: 1, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
       </button>
-      <div id={`dossier-detail-${index}`} hidden={!open} style={{ borderTop: `0.5px solid ${LIGHT.border}`, marginTop: 8, paddingTop: 10 }}>
+      <div id={`dossier-detail-${index}`} className={`dossier-detail${open ? " open" : ""}`} style={{ borderTop: `0.5px solid ${LIGHT.border}`, marginTop: 8, paddingTop: 10 }}>
         <p style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.45, margin: "0 0 10px", whiteSpace: "pre-line" }}>{dossier.title}</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {dossier.items.map((item) => (
@@ -349,6 +349,13 @@ export default function CybercriminaliteClient() {
         .cyber-hero-btns a { min-height: 48px; }
         .cyber-band { height: 220px; }
         @media (min-width: 1024px) { .cyber-band { height: 320px; } }
+        /* Dossiers : repliés en mobile (bouton « Le dossier »), dépliés en desktop. */
+        .dossier-detail { display: none; }
+        .dossier-detail.open { display: block; }
+        @media (min-width: 1024px) {
+          .dossier-detail { display: block !important; }
+          .dossier-toggle { display: none !important; }
+        }
         @media (max-width: 767px) {
           .cyber-hero { flex-direction: column-reverse; min-height: 0; }
           .cyber-hero-text { padding: 28px 24px 32px; }
