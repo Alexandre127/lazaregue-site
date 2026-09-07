@@ -2,7 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
-import EquipeDossier from "@/components/equipe-dossier";
+import Image from "next/image";
 
 const DARK = {
   bg: "#0a0f2e",
@@ -689,52 +689,119 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 7. AI ETHIC OFFICER */}
+      {/* 8. NOTRE APPROCHE — le binôme (parité stricte : même format, même
+          encadré de fonction, même nombre de points, hauteur identique via
+          align-items:stretch + height 100%). Alexandre en premier. Un seul h2.
+          TODO (cabinet) : valider avec Nadia Abchiche-Mimouni l'intitulé exact
+          de sa fonction (donnée partagée lib/equipe.ts non modifiée). */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>L&apos;équipe</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            Gouvernance IA — une approche juridique et scientifique
-          </h2>
+          <Eyebrow>Notre approche</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Du contrat à l&apos;algorithme</h2>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, marginBottom: 16, maxWidth: 760 }}>
-            Alexandre Lazarègue qualifie juridiquement vos systèmes IA et construit
-            la documentation qui tient devant les autorités. Nadia Abchiche-Mimouni
-            évalue l&apos;architecture technique des systèmes, leurs biais et leurs
-            impacts éthiques. Deux compétences complémentaires — du contrat à
-            l&apos;algorithme.
+            Qualifier juridiquement un système suppose d&apos;abord d&apos;établir
+            ce qu&apos;il fait réellement — et cela ne se lit pas dans une fiche
+            produit. L&apos;analyse juridique et l&apos;examen technique sont menés
+            ensemble, et les conclusions construites en commun.
           </p>
 
-          <EquipeDossier
-            eyebrow="Gouvernance IA"
-            titre="Du contrat à l'algorithme"
-            chapeau="Qualifier un système d'IA en droit suppose d'abord d'établir ce qu'il fait réellement. C'est pourquoi l'avocat et l'intervenante technique travaillent sur le même dossier."
-            couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
-            membres={[
-              { slug: "alexandre", role: "Qualification juridique & documentation de conformité", tags: ["AI Act", "RGPD", "Contentieux"] },
-              { slug: "nadia", role: "Architecture des systèmes, biais et impacts", tags: ["Docteure en IA", "Éthique algorithmique", "Audit technique"] },
-            ]}
-          />
-
-          <div style={{ marginTop: 16 }}>
-            <div style={{ background: "#F8F8FB", borderRadius: 8, padding: CARD_PAD, display: "flex", flexWrap: "wrap", gap: GRID_GAP, alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ margin: 0, color: LIGHT.muted }}>
-                Rendre l&apos;IA gouvernable dans votre entreprise — avant que l&apos;absence de règles ne devienne un risque.
-              </p>
-              <Link
-                href="/contact"
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
+            {[
+              {
+                photo: "/images/alexandre-pro.jpg",
+                fonction: "Avocat à la Cour d'appel de Paris",
+                nom: "Me Alexandre Lazarègue",
+                role: "Qualification juridique, documentation et contentieux",
+                examine: "Ce qu'il examine",
+                points: [
+                  "Rôle de l'entreprise : fournisseur, déployeur, importateur",
+                  "Régime applicable et date de mise sur le marché",
+                  "Documentation opposable et traçabilité des décisions",
+                  "Défense en cas de contrôle ou de contentieux",
+                ],
+              },
+              {
+                photo: "/images/nadia-pro.jpg",
+                fonction: "Docteure en intelligence artificielle · intervenante indépendante",
+                nom: "Nadia Abchiche-Mimouni",
+                role: "Architecture des systèmes, données et supervision",
+                examine: "Ce qu'elle examine",
+                points: [
+                  "Architecture du système et nature réelle du traitement",
+                  "Jeux de données d'entraînement, de validation et de test",
+                  "Mécanismes de supervision et points de reprise humaine",
+                  "Mesure des biais et de leurs effets sur les personnes",
+                ],
+              },
+            ].map((m) => (
+              <article
+                key={m.nom}
                 style={{
-                  background: BLUE,
-                  color: DARK.text,
-                  padding: "10px 14px",
-                  borderRadius: 4,
-                  textDecoration: "none",
-                  fontSize: 12,
+                  background: LIGHT.panel,
+                  border: `0.5px solid ${LIGHT.border}`,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
                 }}
               >
-                Nous contacter →
-              </Link>
-            </div>
+                <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
+                  <Image
+                    src={m.photo}
+                    alt={m.nom}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 50vw"
+                    style={{ objectFit: "cover", objectPosition: "center top" }}
+                  />
+                </div>
+                <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
+                  <span
+                    style={{
+                      alignSelf: "flex-start",
+                      fontFamily: "var(--ff-mono)",
+                      fontSize: 9,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: LIGHT.muted,
+                      border: `1px solid ${LIGHT.border}`,
+                      padding: "3px 8px",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {m.fonction}
+                  </span>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.35 }}>{m.nom}</p>
+                  <p style={{ fontSize: 12, color: LIGHT.muted, margin: 0, lineHeight: 1.5 }}>{m.role}</p>
+                  <p
+                    style={{
+                      fontFamily: "var(--ff-mono)",
+                      fontSize: 10,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      color: LIGHT.faint,
+                      margin: "4px 0 0",
+                    }}
+                  >
+                    {m.examine}
+                  </p>
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 5 }}>
+                    {m.points.map((pt) => (
+                      <li key={pt} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
+                        <span aria-hidden="true" style={{ color: BLUE, flexShrink: 0 }}>—</span>
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
           </div>
+
+          <p style={{ ...TYPE.secondary, margin: "14px 0 0", maxWidth: 760 }}>
+            Le cabinet ne délivre ni certification ni évaluation de conformité au
+            sens du règlement, laquelle relève d&apos;organismes notifiés.
+          </p>
         </div>
       </section>
 
