@@ -85,7 +85,7 @@ const steps = [
   {
     n: "03",
     title: "Documenter — construire la preuve en amont",
-    text: "Gouvernance des données, supervision humaine, évaluation de conformité. Les durées de conservation dépendent du système et du rôle tenu.",
+    text: "Gouvernance des données, supervision humaine, traçabilité des décisions. Les durées de conservation dépendent du système et du rôle tenu.",
   },
   {
     n: "04",
@@ -150,10 +150,11 @@ const interventionTabs = [
         extraitLabel: "Exemple pédagogique — fintech de crédit",
         extrait: (
           <>
-            <B>Risque n°1 — Critique</B>. Algorithme de scoring crédit déployé sans évaluation de
-            conformité <B>Art. 9</B>. Données utilisées : revenus, comportement bancaire, âge.
-            Absence de <B>droit de contestation</B> documenté. Action requise avant toute nouvelle
-            décision automatisée.
+            <B>Risque n°1 — À qualifier</B>. Un outil de scoring est déployé, mais ni le{" "}
+            <B>rôle tenu</B> — déployeur ou fournisseur — ni la <B>date de mise en service</B> ne
+            sont documentés. Un changement de paramétrage est intervenu sans être qualifié : il peut
+            faire tomber le régime allégé. La <B>transparence</B> envers les personnes concernées
+            reste due dès aujourd&apos;hui.
           </>
         ),
       },
@@ -320,99 +321,139 @@ export default function IaActClient() {
         } as CSSProperties
       }
     >
-      {/* 1. HERO */}
-      <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
-        <div style={INNER}>
-          <p
-            style={{
-              fontFamily: "var(--ff-mono)",
-              fontSize: 11,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: DARK.muted,
-              marginBottom: 14,
-            }}
-          >
-            Avocat en droit de l&apos;intelligence artificielle · Paris
-          </p>
-          <h1 style={{ ...TYPE.h1, marginBottom: 12, color: DARK.text }}>
-            Mise en conformité AI Act et gouvernance de l&apos;IA
-          </h1>
-          <p
-            style={{
-              fontSize: 19,
-              fontWeight: 400,
-              lineHeight: 1.4,
-              color: "rgba(255,255,255,0.9)",
-              maxWidth: 620,
-              marginBottom: 14,
-            }}
-          >
-            Une IA mal documentée devient un risque de responsabilité.
-          </p>
-          <p style={{ ...TYPE.body, maxWidth: 640, color: DARK.muted, marginBottom: 16 }}>
-            Le cabinet accompagne les PME et ETI qui utilisent, intègrent ou
-            développent des systèmes d&apos;intelligence artificielle. Un logiciel
-            de conformité produit une catégorie ; nous produisons une
-            qualification, une documentation et, le jour du contrôle, une défense.
-          </p>
-
-          <div className="mb-4 flex flex-wrap gap-2">
-            {heroTags.map((t) => (
-              <span
-                key={t}
-                style={{
-                  border: `1px solid ${DARK.borderBlue}`,
-                  color: DARK.text,
-                  opacity: 0.72,
-                  fontSize: 10,
-                  padding: "4px 8px",
-                  borderRadius: 3,
-                }}
-              >
-                {t}
-              </span>
-            ))}
+      {/* 1. HERO — deux colonnes avec photographie (même traitement que
+          cybersécurité). Mobile : photo en fond + voile ; desktop : texte 55 %
+          à gauche, image 45 % à droite en cover. */}
+      <section style={{ background: DARK.bg, color: DARK.text, overflow: "hidden" }}>
+        <style>{`
+          .iaact-hero-grid { position: relative; display: block; }
+          .iaact-hero-photo { position: absolute; inset: 0; z-index: 0; }
+          .iaact-hero-img { object-position: center top; }
+          .iaact-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,20,0.86) 0%, rgba(8,10,20,0.78) 55%, rgba(8,10,20,0.66) 100%); }
+          .iaact-hero-fade { display: none; }
+          .iaact-hero-text { position: relative; z-index: 1; padding: 40px 24px 44px; min-height: 360px; }
+          @media (min-width: 1024px) {
+            .iaact-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
+            .iaact-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 460px; z-index: auto; }
+            .iaact-hero-overlay { display: none; }
+            .iaact-hero-fade { display: block; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 58%, ${DARK.bg} 100%); }
+            .iaact-hero-text { order: 1; padding: 56px 40px 56px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+          }
+        `}</style>
+        <div className="iaact-hero-grid" style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div className="iaact-hero-photo">
+            <Image
+              src="/images/ia-act-hero.jpg"
+              alt="Immeuble haussmannien à Paris au crépuscule, quelques fenêtres éclairées"
+              fill
+              priority
+              sizes="(max-width: 1023px) 100vw, 45vw"
+              className="iaact-hero-img"
+              style={{ objectFit: "cover" }}
+            />
+            <span className="iaact-hero-fade" aria-hidden />
+            <span className="iaact-hero-overlay" aria-hidden />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href="/contact"
+          <div className="iaact-hero-text">
+            <span
               style={{
-                background: BLUE,
-                color: DARK.text,
-                padding: "0 18px",
-                minHeight: 48,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 4,
-                textDecoration: "none",
-                fontSize: 12,
-                letterSpacing: ".04em",
+                display: "inline-block",
+                fontFamily: "var(--ff-mono)",
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#5fd3a8",
+                background: "rgba(var(--famille-rgb),0.22)",
+                borderRadius: 8,
+                padding: "4px 12px",
+                marginBottom: 16,
+                alignSelf: "flex-start",
               }}
             >
-              Faire qualifier un système →
-            </Link>
-            <Link
-              href="#ce-que-les-juges"
+              IA &amp; AI Act · Paris
+            </span>
+            <h1 style={{ ...TYPE.h1, marginBottom: 12, color: DARK.text }}>
+              Mise en conformité AI Act et gouvernance de l&apos;IA
+            </h1>
+            <p
               style={{
-                background: "transparent",
-                color: DARK.text,
-                border: `1px solid ${DARK.borderBlue}`,
-                padding: "0 18px",
-                minHeight: 48,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 4,
-                textDecoration: "none",
-                fontSize: 12,
-                letterSpacing: ".04em",
+                fontSize: 19,
+                fontWeight: 400,
+                lineHeight: 1.4,
+                color: "rgba(255,255,255,0.9)",
+                maxWidth: 520,
+                marginBottom: 14,
               }}
             >
-              Ce que les juges exigent déjà
-            </Link>
+              Une IA mal documentée devient un risque de responsabilité.
+            </p>
+            <p style={{ ...TYPE.body, maxWidth: 520, color: DARK.muted, marginBottom: 16 }}>
+              Le cabinet accompagne les PME et ETI qui utilisent, intègrent ou
+              développent des systèmes d&apos;intelligence artificielle. Un
+              logiciel de conformité produit une catégorie ; nous produisons une
+              qualification, une documentation et, le jour du contrôle, une
+              défense.
+            </p>
+
+            <div className="mb-4 flex flex-wrap gap-2">
+              {heroTags.map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    border: `1px solid ${DARK.borderBlue}`,
+                    color: DARK.text,
+                    opacity: 0.72,
+                    fontSize: 10,
+                    padding: "4px 8px",
+                    borderRadius: 3,
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/contact"
+                style={{
+                  background: BLUE,
+                  color: DARK.text,
+                  padding: "0 18px",
+                  minHeight: 48,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 4,
+                  textDecoration: "none",
+                  fontSize: 12,
+                  letterSpacing: ".04em",
+                }}
+              >
+                Faire qualifier un système →
+              </Link>
+              <Link
+                href="#ce-que-les-juges"
+                style={{
+                  background: "rgba(8,10,20,0.35)",
+                  color: DARK.text,
+                  border: `1px solid ${DARK.borderBlue}`,
+                  padding: "0 18px",
+                  minHeight: 48,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 4,
+                  textDecoration: "none",
+                  fontSize: 12,
+                  letterSpacing: ".04em",
+                }}
+              >
+                Ce que les juges exigent déjà
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -1141,7 +1182,7 @@ export default function IaActClient() {
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={{ ...INNER, textAlign: "center" }}>
           <h2 style={{ ...TYPE.h2, marginBottom: 6, color: DARK.text }}>
-            Structurez votre gouvernance IA avant que le problème arrive.
+            Faire qualifier vos systèmes avant que la question ne se pose.
           </h2>
           <p style={{ ...TYPE.body, color: DARK.muted, marginBottom: 16 }}>
             Un premier échange pour cartographier vos usages et évaluer votre exposition — sans engagement.
@@ -1159,7 +1200,7 @@ export default function IaActClient() {
               letterSpacing: ".04em",
             }}
           >
-            Structurer ma gouvernance IA →
+            Faire qualifier un système →
           </Link>
         </div>
       </section>
