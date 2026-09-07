@@ -65,9 +65,11 @@ const PORTES: Porte[] = [
     titre: "Des données ont fuité",
     corps:
       "Qualification de la violation, notification à la CNIL, information des personnes concernées, exposition au contentieux.",
+    // A8 (brief RGPD) : la section « Contrôle CNIL et violation » de la page RGPD
+    // rend inutile la page fille annoncée ; la porte pointe désormais là, active.
     lien: "Violation de données personnelles",
-    href: "/nos-domaines/cybersecurite/violation-de-donnees",
-    disponible: false,
+    href: "/nos-domaines/rgpd-donnees#controle-cnil",
+    disponible: true,
   },
   {
     titre: "Un client exige des garanties",

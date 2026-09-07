@@ -8,10 +8,9 @@ import { FAQ_ITEMS } from "./faq";
  * transactionnelle (« avocat RGPD », « audit », « due diligence ») plutôt que
  * le terme « RGPD » seul, verrouillé par la CNIL et les grands cabinets.
  */
-const TITLE =
-  "Avocat RGPD : audit, due diligence M&A et conformité des données personnelles | Lazarègue Avocats";
+const TITLE = "Avocat RGPD et données personnelles à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Contrôle CNIL, levée de fonds, sous-traitance article 28, IA générative : le RGPD comme système de preuve. Audit, registre, contrats et gouvernance pour PME et ETI.";
+  "Audit, mise en conformité, gouvernance, contrats, contrôles CNIL et due diligence : le cabinet construit une conformité documentée pour les PME et ETI.";
 
 export const metadata: Metadata = {
   title: TITLE,
