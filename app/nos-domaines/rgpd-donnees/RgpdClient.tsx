@@ -2263,7 +2263,7 @@ export default function RgpdClient() {
                 fontSize: "16px",
                 color: LIGHT.text,
                 lineHeight: 1.7,
-                margin: "0 0 20px",
+                margin: 0,
               }}
             >
               « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
@@ -2271,17 +2271,10 @@ export default function RgpdClient() {
               contrôle avec une conformité déjà documentée, plutôt que de devoir
               la reconstituer dans l&apos;urgence. »
             </p>
-            <video
-              width="100%"
-              style={{ borderRadius: "12px", display: "block" }}
-              controls
-              playsInline
-            >
-              <source
-                src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4"
-                type="video/mp4"
-              />
-            </video>
+            {/* TODO (cabinet) : réintégrer ici la vidéo d'introduction de
+                Me Sarah Hinderer une fois qu'elle sera prête. Elle prenait place
+                sous la citation (source Vercel Blob : rgpd-intro.mp4), en
+                width 100%, borderRadius 12px, controls + playsInline. */}
           </div>
         </div>
       </section>
