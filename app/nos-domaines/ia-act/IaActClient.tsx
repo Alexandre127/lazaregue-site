@@ -392,10 +392,10 @@ export default function IaActClient() {
                 letterSpacing: ".04em",
               }}
             >
-              Structurer ma gouvernance IA →
+              Faire qualifier un système →
             </Link>
             <Link
-              href="/references"
+              href="#ce-que-les-juges"
               style={{
                 background: "transparent",
                 color: DARK.text,
@@ -411,7 +411,7 @@ export default function IaActClient() {
                 letterSpacing: ".04em",
               }}
             >
-              Cas clients
+              Ce que les juges exigent déjà
             </Link>
           </div>
         </div>
@@ -430,71 +430,56 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 3. LA DÉMONSTRATION — le même outil, deux régimes (dispositif
-          différenciant, à créer). Tableau sémantique ; en mobile chaque ligne
-          s'empile (intitulé, A, B) sans défilement horizontal. */}
+      {/* 3. LA DÉMONSTRATION — récit en trois temps. Le tableau A/B ne rendait
+          pas la chronologie et introduisait du vocabulaire réglementaire ;
+          remplacé par trois blocs de même largeur, le 3e marquant la bascule.
+          Aucun numéro d'article ni terme d'annexe ici : ils restent dans le
+          calendrier, qui est leur place. */}
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <style>{`
-            .demo-table { width: 100%; border-collapse: collapse; border: 0.5px solid ${LIGHT.border}; border-radius: 10px; overflow: hidden; }
-            .demo-table thead th { text-align: left; background: ${LIGHT.panel2}; padding: 10px 12px; vertical-align: top; border-bottom: 0.5px solid ${LIGHT.border}; }
-            .demo-table thead th span { display: block; font-weight: 400; font-size: 11px; color: ${LIGHT.faint}; margin-top: 2px; }
-            .demo-table thead th:first-child { width: 30%; }
-            .demo-table tbody th { text-align: left; font-weight: 600; font-size: 12px; color: ${LIGHT.text}; background: ${LIGHT.panel2}; padding: 9px 12px; vertical-align: top; }
-            .demo-table td { padding: 9px 12px; font-size: 12px; color: ${LIGHT.text}; line-height: 1.45; vertical-align: top; border-top: 0.5px solid rgba(0,0,0,0.06); }
-            .demo-eyebrow-a { font-family: var(--ff-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: ${LIGHT.muted}; }
-            .demo-a { background: #F3F9F7; color: #0F5545; }
-            .demo-b { background: #FDF4F4; color: #8A2020; }
-            @media (max-width: 767px) {
-              .demo-table, .demo-table tbody, .demo-table tr, .demo-table td, .demo-table th { display: block; width: 100%; }
-              .demo-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-              .demo-table tr { border-top: 0.5px solid ${LIGHT.border}; }
-              .demo-table tr:first-child { border-top: none; }
-              .demo-table tbody th { font-size: 13px; }
-              .demo-table td { border-top: none; padding-top: 2px; }
-              .demo-table td::before { content: attr(data-label); display: block; font-family: var(--ff-mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; color: ${LIGHT.muted}; margin-bottom: 1px; }
-            }
-          `}</style>
           <Eyebrow>La démonstration</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Le même outil, deux régimes différents</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Deux entreprises déploient le même logiciel de tri de candidatures.
-            Rien ne les distingue, sinon la date.
+            Rien n&apos;a changé dans la loi. Tout a changé dans le régime applicable.
           </p>
 
-          <table className="demo-table">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Entreprise A<span>Déployé en 2025</span></th>
-                <th scope="col">Entreprise B<span>Déploiement en 2028</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { k: "Qualification", a: "Annexe III — haut risque", b: "Annexe III — haut risque", accent: false },
-                { k: "Régime applicable", a: "Régime transitoire — art. 111", b: "Régime complet", accent: true },
-                { k: "Modification importante", a: "Bascule au régime complet", b: "Sans objet", accent: false },
-                { k: "Documentation technique", a: "Sauf modification importante", b: "Exigée", accent: false },
-                { k: "Évaluation de conformité", a: "Non, en l'état", b: "Oui, avant mise en service", accent: false },
-                { k: "Consultation du CSE", a: "À examiner — droit du travail", b: "À examiner — droit du travail", accent: false },
-                { k: "Transparence et maîtrise de l'IA", a: "Applicables aujourd'hui", b: "Applicables aujourd'hui", accent: false },
-              ].map((r) => (
-                <tr key={r.k}>
-                  <th scope="row">{r.k}</th>
-                  <td data-label="Entreprise A" className={r.accent ? "demo-a" : undefined}>{r.a}</td>
-                  <td data-label="Entreprise B" className={r.accent ? "demo-b" : undefined}>{r.b}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
+            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>2025</span>
+              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
+                Une entreprise déploie un outil de tri de candidatures.
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                Elle bénéficie aujourd&apos;hui d&apos;un régime allégé : la
+                documentation complète et l&apos;évaluation de conformité ne lui
+                sont pas encore exigées.
+              </p>
+            </div>
+            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>2027</span>
+              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
+                La même entreprise modifie le paramétrage de l&apos;outil.
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                Le régime allégé tombe. Documentation, supervision, évaluation :
+                tout devient exigible.
+              </p>
+            </div>
+            {/* Temps 3 — la bascule, visuellement distinct des deux premiers. */}
+            <div style={{ background: "#FBF7E8", border: "1px solid #E7D4A6", borderLeft: "3px solid #8A5A00", borderRadius: 10, padding: CARD_PAD }}>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: "#8A5A00" }}>La question</span>
+              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.5 }}>
+                Ce qui a changé n&apos;est pas la loi. C&apos;est une décision
+                interne que personne n&apos;a qualifiée.
+              </p>
+            </div>
+          </div>
 
           <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 12 }}>
             <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.6 }}>
-              La date change le régime, mais elle ne dispense pas de ce qui
-              s&apos;applique déjà — transparence et maîtrise de l&apos;IA. Et le
-              bénéfice du régime transitoire se perd à la première modification
-              importante du système.
+              Le bénéfice du délai dépend de choix quotidiens qu&apos;une
+              entreprise fait sans savoir qu&apos;ils comptent. Aucun
+              questionnaire automatisé ne les détecte.
             </p>
           </div>
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
@@ -853,7 +838,7 @@ export default function IaActClient() {
       {/* 9. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
           affiche juridiction, date et enseignement essentiel ; l'analyse est
           repliée derrière un <details> natif (aucun JS). */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+      <section id="ce-que-les-juges" style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD, scrollMarginTop: 80 }}>
         <div style={INNER}>
           <style>{`
             .juris-summary { cursor: pointer; color: ${BLUE}; font-size: 12px; font-weight: 500; list-style: none; padding: 4px 0; }
