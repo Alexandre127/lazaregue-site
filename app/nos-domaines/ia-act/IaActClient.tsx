@@ -957,72 +957,85 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 6. JURISPRUDENCE */}
+      {/* 10. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
+          affiche juridiction, date et enseignement essentiel ; l'analyse est
+          repliée derrière un <details> natif (aucun JS). */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #E14B4B", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>JANV. 2026</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#E14B4B", border: "1px solid rgba(225,75,75,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ NANTERRE</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA RH : déploiement suspendu faute de consultation du CSE</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Nanterre, 29 janv. 2026, n° 25/02856</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                Une entreprise déploie deux outils de gestion des compétences intégrant de l&apos;IA pour alimenter les entretiens annuels, le suivi des carrières et l&apos;affectation des salariés sur les missions. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE. Le déploiement est suspendu jusqu&apos;à l&apos;achèvement de cette procédure.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                Une IA RH qui influence l&apos;évaluation, les compétences ou les parcours professionnels n&apos;est pas un simple outil informatique. Elle peut déclencher des obligations d&apos;information-consultation du CSE avant sa mise en œuvre.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #F2A43A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>FÉV. 2026</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#F2A43A", border: "1px solid rgba(242,164,58,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ PARIS</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Copilot 365 : pas encore un « projet important »</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Paris, 10 févr. 2026, n° 25/57412</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L&apos;outil est facultatif, temporaire et son impact reste limité à ce stade.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                L&apos;introduction d&apos;une IA ne suffit pas, à elle seule, à caractériser un projet important. Les juges regardent ses effets réels sur l&apos;organisation du travail, les missions confiées aux salariés et leur environnement professionnel.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #1A47FF", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#1A47FF", border: "1px solid rgba(26,71,255,0.35)", borderRadius: 999, padding: "2px 8px" }}>COUR DE CASSATION</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Vidéoprotection : le RGPD s&apos;applique pleinement</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. Cass. soc., 21 mai 2025, n° 22-19.925</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                La Cour de cassation rappelle que l&apos;exploitation d&apos;images permettant d&apos;identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut être utilisé comme preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                Toute IA qui analyse, surveille ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #29A06A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#29A06A", border: "1px solid rgba(41,160,106,0.35)", borderRadius: 999, padding: "2px 8px" }}>CA LYON</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA comptable validée : l&apos;humain conserve la décision</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. CA Lyon, 13 mai 2025, n° 23/04589</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                La cour valide un logiciel de comptabilité fondé sur l&apos;IA. La solution automatise une grande partie du traitement comptable, mais l&apos;utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L&apos;assistance humaine se limite à des conseils ponctuels sans se substituer au client.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                L&apos;automatisation est admise lorsque les responsabilités restent clairement identifiées. Plus une IA prend des décisions à la place de l&apos;utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.
-              </p>
-            </article>
-          </div>
-          <p style={{ fontSize: 14, fontWeight: 500, textTransform: "uppercase", color: LIGHT.text, lineHeight: 1.4, margin: "0 0 6px" }}>
-            Les juges appliquent déjà une logique de gouvernance IA.
+          <style>{`
+            .juris-summary { cursor: pointer; color: ${BLUE}; font-size: 12px; font-weight: 500; list-style: none; padding: 4px 0; }
+            .juris-summary::-webkit-details-marker { display: none; }
+            .juris-summary::marker { content: ""; }
+            details[open] .juris-summary .juris-more { display: none; }
+            .juris-less { display: none; }
+            details[open] .juris-summary .juris-less { display: inline; }
+          `}</style>
+          <Eyebrow>Jurisprudence</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que les juges exigent déjà</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
+            Documentation, transparence, supervision humaine : ces exigences
+            apparaissent dans les contentieux du travail et des données, bien
+            avant les premières sanctions de l&apos;AI Act.
           </p>
-          <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
-            Documentation. Transparence. Supervision humaine. Traçabilité des décisions. Bien avant les premières sanctions de l&apos;AI Act, ces exigences apparaissent déjà dans les contentieux relatifs au travail, aux données personnelles et aux outils numériques.
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
+            {[
+              {
+                couleur: "#E14B4B",
+                date: "JANV. 2026",
+                juridiction: "TJ NANTERRE",
+                titre: "IA RH : déploiement suspendu faute de consultation du CSE",
+                ref: "Réf. TJ Nanterre, 29 janv. 2026, n° 25/02856",
+                analyse: "Une entreprise déploie deux outils de gestion des compétences intégrant de l'IA pour alimenter les entretiens annuels, le suivi des carrières et l'affectation des salariés sur les missions. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE. Le déploiement est suspendu jusqu'à l'achèvement de cette procédure.",
+                enseignement: "Une IA RH qui influence l'évaluation, les compétences ou les parcours professionnels n'est pas un simple outil informatique. Elle peut déclencher des obligations d'information-consultation du CSE avant sa mise en œuvre.",
+              },
+              {
+                couleur: "#F2A43A",
+                date: "FÉV. 2026",
+                juridiction: "TJ PARIS",
+                titre: "Copilot 365 : pas encore un « projet important »",
+                ref: "Réf. TJ Paris, 10 févr. 2026, n° 25/57412",
+                analyse: "Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L'outil est facultatif, temporaire et son impact reste limité à ce stade.",
+                enseignement: "L'introduction d'une IA ne suffit pas, à elle seule, à caractériser un projet important. Les juges regardent ses effets réels sur l'organisation du travail, les missions confiées aux salariés et leur environnement professionnel.",
+              },
+              {
+                couleur: "#1A47FF",
+                date: "MAI 2025",
+                juridiction: "COUR DE CASSATION",
+                titre: "Vidéoprotection : le RGPD s'applique pleinement",
+                ref: "Réf. Cass. soc., 21 mai 2025, n° 22-19.925",
+                analyse: "La Cour de cassation rappelle que l'exploitation d'images permettant d'identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut être utilisé comme preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits.",
+                enseignement: "Toute IA qui analyse, surveille ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.",
+              },
+              {
+                couleur: "#29A06A",
+                date: "MAI 2025",
+                juridiction: "CA LYON",
+                titre: "IA comptable validée : l'humain conserve la décision",
+                ref: "Réf. CA Lyon, 13 mai 2025, n° 23/04589",
+                analyse: "La cour valide un logiciel de comptabilité fondé sur l'IA. La solution automatise une grande partie du traitement comptable, mais l'utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L'assistance humaine se limite à des conseils ponctuels sans se substituer au client.",
+                enseignement: "L'automatisation est admise lorsque les responsabilités restent clairement identifiées. Plus une IA prend des décisions à la place de l'utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.",
+              },
+            ].map((d) => (
+              <article key={d.titre} style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: `3px solid ${d.couleur}`, borderRadius: 8, padding: CARD_PAD }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>{d.date}</span>
+                  <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: d.couleur, border: `1px solid ${d.couleur}55`, borderRadius: 999, padding: "2px 8px" }}>{d.juridiction}</span>
+                </div>
+                <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>{d.titre}</h3>
+                <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 4px" }}>{d.ref}</p>
+                <details>
+                  <summary className="juris-summary">
+                    <span className="juris-more">Lire l&apos;analyse →</span>
+                    <span className="juris-less">Replier l&apos;analyse ↑</span>
+                  </summary>
+                  <p style={{ fontSize: 12, color: "rgba(10,10,20,0.6)", lineHeight: 1.6, margin: "8px 0 8px" }}>{d.analyse}</p>
+                  <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>{d.enseignement}</p>
+                </details>
+              </article>
+            ))}
+          </div>
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: 0, letterSpacing: ".04em" }}>
+            RÉFÉRENCES À VÉRIFIER AVANT PUBLICATION
           </p>
         </div>
       </section>
