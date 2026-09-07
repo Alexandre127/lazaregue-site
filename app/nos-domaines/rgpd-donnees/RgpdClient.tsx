@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { MembreCarte } from "@/components/equipe-dossier";
 import { FAQ_ITEMS } from "./faq";
 
 /**
@@ -692,15 +691,9 @@ function LivrablesPreview() {
   ];
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "40px",
-        alignItems: "center",
-      }}
-    >
-      <div>
+    <div className="livr-grid">
+      <div className="livr-menu">
+        <div className="livr-menu-items">
         {items.map((item, i) => (
           <h3 key={i} style={{ margin: 0 }}>
             <button
@@ -774,7 +767,9 @@ function LivrablesPreview() {
             </button>
           </h3>
         ))}
+        </div>
         <div
+          className="livr-menu-progress"
           style={{
             height: "2px",
             background: LIGHT.border,
@@ -795,6 +790,7 @@ function LivrablesPreview() {
         </div>
         <style>{`@keyframes progressAnim { from { width: 0% } to { width: 100% } }`}</style>
         <p
+          className="livr-menu-mention"
           style={{
             marginTop: "12px",
             fontFamily: "monospace",
@@ -807,7 +803,7 @@ function LivrablesPreview() {
         </p>
       </div>
 
-      <div style={{ position: "relative", height: "320px" }}>
+      <div className="livr-doc" style={{ position: "relative", height: "320px" }}>
         {order.map((docIdx, i) => (
           <div
             key={i}
@@ -1156,7 +1152,7 @@ export default function RgpdClient() {
         .rgpd-hero-grid { position: relative; display: block; }
         .rgpd-hero-photo { position: absolute; inset: 0; z-index: 0; }
         .rgpd-hero-img { object-position: center 45%; }
-        .rgpd-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: rgba(9,13,38,0.66); }
+        .rgpd-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
         .rgpd-hero-fade { display: none; }
         .rgpd-hero-text { position: relative; z-index: 1; padding: 48px 24px 56px; min-height: 380px; }
         @media (min-width: 1024px) {
@@ -1165,6 +1161,28 @@ export default function RgpdClient() {
           .rgpd-hero-overlay { display: none; }
           .rgpd-hero-fade { display: block; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 60%, ${DARK.bg} 100%); }
           .rgpd-hero-text { order: 1; padding: 64px 40px 64px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+        }
+
+        /* ---- Méthode : 4 colonnes en desktop, empilées en mobile ; la frise
+             numérotée horizontale n'a plus de sens sur des étapes empilées ---- */
+        .methode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        @media (max-width: 767px) {
+          .methode-frise { display: none !important; }
+          .methode-grid { grid-template-columns: 1fr; gap: 28px; }
+          .methode-grid > div { padding-right: 0 !important; }
+        }
+
+        /* ---- Carrousel de spécimens : deux colonnes en desktop ; sous 768 px,
+             le menu passe en bandeau horizontal défilant au-dessus du document,
+             lui-même en pleine largeur ---- */
+        .livr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        @media (max-width: 767px) {
+          .livr-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: stretch; }
+          .livr-menu { min-width: 0; }
+          .livr-menu-items { display: flex; flex-direction: row; gap: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+          .livr-menu-items > h3 { flex: 0 0 82%; scroll-snap-align: start; }
+          .livr-menu-items > h3 > button { border: 0.5px solid rgba(0,0,0,0.12) !important; border-radius: 8px; padding: 10px 12px !important; height: 100%; }
+          .livr-menu-progress { display: none; }
         }
       `}</style>
 
@@ -1323,7 +1341,7 @@ export default function RgpdClient() {
 
       {/* DANS QUELLES SITUATIONS (section 3) */}
       <section style={{ background: DARK.bg, borderTop: `1px solid ${DARK.border}` }}>
-        <div style={{ ...INNER, padding: SECTION_PAD }}>
+        <div style={{ ...INNER, padding: "56px 24px" }}>
           <p
             style={{
               fontSize: "10px",
@@ -1369,7 +1387,7 @@ export default function RgpdClient() {
 
       {/* MISE EN CONFORMITÉ RGPD (section 4) */}
       <section style={{ background: LIGHT.bg }}>
-        <div style={{ ...INNER, padding: SECTION_PAD }}>
+        <div style={{ ...INNER, padding: "56px 24px" }}>
           <p
             style={{
               fontSize: "10px",
@@ -1459,6 +1477,7 @@ export default function RgpdClient() {
 
         <div style={{ width: "100%" }}>
           <div
+            className="methode-frise"
             style={{
               display: "flex",
               alignItems: "center",
@@ -1573,13 +1592,7 @@ export default function RgpdClient() {
             </div>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "0",
-            }}
-          >
+          <div className="methode-grid">
             {[
               {
                 titre: "Cartographier",
@@ -2174,7 +2187,7 @@ export default function RgpdClient() {
           Notre conviction
         </p>
         <div
-          className="grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr] md:items-start"
+          className="grid grid-cols-1 gap-6 md:grid-cols-[240px_1fr] md:items-start"
           style={{
             padding: "24px",
             background: LIGHT.panel2,
@@ -2182,23 +2195,66 @@ export default function RgpdClient() {
             borderRadius: "12px",
           }}
         >
-          {/* Portrait au format du binôme (carré/grande taille + encadré de
-              fonction) — l'attribution est portée par la carte, pas répétée
-              sous la citation. */}
-          <MembreCarte
-            membre={{
-              slug: "sarah",
-              role: "Données personnelles & intelligence artificielle",
-              tags: [],
-            }}
-            couleurs={{
-              carte: LIGHT.panel,
-              panneau: LIGHT.panel2,
-              bordure: LIGHT.border,
-              texte: LIGHT.text,
-              secondaire: LIGHT.muted,
-            }}
-          />
+          {/* Ordre : portrait, puis nom et fonction. La citation suit dans la
+              colonne de droite. Portrait grand format, encadré de fonction. */}
+          <figure style={{ margin: 0 }}>
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: "4 / 5",
+                borderRadius: "12px",
+                overflow: "hidden",
+                border: `0.5px solid ${LIGHT.border}`,
+              }}
+            >
+              <Image
+                src="/images/sarah-pro.jpg"
+                alt="Me Sarah Hinderer"
+                fill
+                sizes="(max-width: 767px) 100vw, 240px"
+                style={{ objectFit: "cover", objectPosition: "center top" }}
+              />
+            </div>
+            <figcaption>
+              <p
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: LIGHT.text,
+                  margin: "12px 0 0",
+                  lineHeight: 1.35,
+                }}
+              >
+                Me Sarah Hinderer
+              </p>
+              <span
+                style={{
+                  display: "inline-block",
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  letterSpacing: ".1em",
+                  textTransform: "uppercase",
+                  color: LIGHT.muted,
+                  border: `1px solid ${LIGHT.border}`,
+                  padding: "3px 8px",
+                  marginTop: "8px",
+                }}
+              >
+                Avocate à la Cour d&apos;appel de Paris
+              </span>
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: LIGHT.faint,
+                  margin: "8px 0 0",
+                  lineHeight: 1.5,
+                }}
+              >
+                Données personnelles &amp; intelligence artificielle
+              </p>
+            </figcaption>
+          </figure>
           <div>
             <p
               style={{
@@ -2284,7 +2340,7 @@ export default function RgpdClient() {
           }}
           aria-hidden
         />
-        <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:items-center">
+        <div className="relative z-10 grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
           <div>
             <h2
               style={{
@@ -2320,56 +2376,6 @@ export default function RgpdClient() {
               leurs enjeux RGPD — startups en lancement, ETI en levée de fonds,
               groupes en acquisition.
             </p>
-          </div>
-
-          <div className="flex justify-center">
-            <div
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "0.5px solid rgba(255,255,255,0.08)",
-                borderRadius: "8px",
-                padding: "20px",
-                width: "100%",
-                maxWidth: "280px",
-                textAlign: "center",
-              }}
-            >
-              {/* Balise <img> brute auparavant : le fichier de 1200 px était
-                  servi tel quel pour une vignette de 64 px. */}
-              <Image
-                src="/images/sarah-pro.jpg"
-                alt="Me Sarah Hinderer"
-                width={64}
-                height={64}
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center top",
-                  margin: "0 auto 10px",
-                  display: "block",
-                }}
-              />
-              <p
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: "#ffffff",
-                  margin: 0,
-                }}
-              >
-                Me Sarah Hinderer
-              </p>
-              <p
-                style={{
-                  fontSize: "11px",
-                  color: "rgba(255,255,255,0.35)",
-                  margin: "2px 0 0",
-                  lineHeight: 1.4,
-                }}
-              >
-                Données personnelles & intelligence artificielle
-              </p>
-            </div>
           </div>
 
           <div className="flex justify-center md:justify-end">
