@@ -474,9 +474,11 @@ export default function IaActClient() {
               {[
                 { k: "Qualification", a: "Annexe III — haut risque", b: "Annexe III — haut risque", accent: false },
                 { k: "Régime applicable", a: "Régime transitoire — art. 111", b: "Régime complet", accent: true },
+                { k: "Modification importante", a: "Bascule au régime complet", b: "Sans objet", accent: false },
                 { k: "Documentation technique", a: "Sauf modification importante", b: "Exigée", accent: false },
                 { k: "Évaluation de conformité", a: "Non, en l'état", b: "Oui, avant mise en service", accent: false },
                 { k: "Consultation du CSE", a: "À examiner — droit du travail", b: "À examiner — droit du travail", accent: false },
+                { k: "Transparence et maîtrise de l'IA", a: "Applicables aujourd'hui", b: "Applicables aujourd'hui", accent: false },
               ].map((r) => (
                 <tr key={r.k}>
                   <th scope="row">{r.k}</th>
@@ -489,9 +491,10 @@ export default function IaActClient() {
 
           <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 12 }}>
             <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.6 }}>
-              Aucun questionnaire automatisé ne fait cette différence : elle ne
-              dépend ni du cas d&apos;usage, ni du secteur, mais d&apos;une date et
-              d&apos;un régime transitoire.
+              La date change le régime, mais elle ne dispense pas de ce qui
+              s&apos;applique déjà — transparence et maîtrise de l&apos;IA. Et le
+              bénéfice du régime transitoire se perd à la première modification
+              importante du système.
             </p>
           </div>
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
@@ -590,23 +593,21 @@ export default function IaActClient() {
           </p>
           <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
             {[
-              "IA générative utilisée par vos salariés",
-              "Outils RH ou de recrutement automatisés",
-              "Scoring, profilage ou aide à la décision",
-              "IA intégrée à un produit ou un service",
-              "Fournisseur ou API d'IA externe",
-            ].map((usage, i) => (
+              { usage: "IA générative utilisée par vos salariés", suite: "transparence et maîtrise de l'IA, applicables aujourd'hui" },
+              { usage: "Outils RH ou de recrutement automatisés", suite: "relève de l'annexe III, la qualification la plus lourde" },
+              { usage: "Scoring, profilage ou aide à la décision", suite: "souvent annexe III, et croisement avec le RGPD" },
+              { usage: "IA intégrée à un produit ou un service", suite: "annexe I si le produit relève d'une réglementation à marquage" },
+              { usage: "Fournisseur ou API d'IA externe", suite: "la répartition des rôles se joue au contrat" },
+            ].map((u, i) => (
               <div
-                key={usage}
+                key={u.usage}
                 style={{
                   padding: "12px 14px",
-                  fontSize: 14,
-                  color: LIGHT.text,
-                  lineHeight: 1.45,
                   borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none",
                 }}
               >
-                {usage}
+                <div style={{ fontSize: 14, color: LIGHT.text, lineHeight: 1.4 }}>{u.usage}</div>
+                <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, marginTop: 2 }}>{u.suite}</div>
               </div>
             ))}
           </div>
@@ -718,123 +719,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 8. NOTRE APPROCHE — le binôme (parité stricte : même format, même
-          encadré de fonction, même nombre de points, hauteur identique via
-          align-items:stretch + height 100%). Alexandre en premier. Un seul h2.
-          TODO (cabinet) : valider avec Nadia Abchiche-Mimouni l'intitulé exact
-          de sa fonction (donnée partagée lib/equipe.ts non modifiée). */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>Notre approche</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Du contrat à l&apos;algorithme</h2>
-          <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, marginBottom: 16, maxWidth: 760 }}>
-            Qualifier juridiquement un système suppose d&apos;abord d&apos;établir
-            ce qu&apos;il fait réellement — et cela ne se lit pas dans une fiche
-            produit. L&apos;analyse juridique et l&apos;examen technique sont menés
-            ensemble, et les conclusions construites en commun.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
-            {[
-              {
-                photo: "/images/alexandre-pro.jpg",
-                fonction: "Avocat à la Cour d'appel de Paris",
-                nom: "Me Alexandre Lazarègue",
-                role: "Qualification juridique, documentation et contentieux",
-                examine: "Ce qu'il examine",
-                points: [
-                  "Rôle de l'entreprise : fournisseur, déployeur, importateur",
-                  "Régime applicable et date de mise sur le marché",
-                  "Documentation opposable et traçabilité des décisions",
-                  "Défense en cas de contrôle ou de contentieux",
-                ],
-              },
-              {
-                photo: "/images/nadia-pro.jpg",
-                fonction: "Docteure en intelligence artificielle · intervenante indépendante",
-                nom: "Nadia Abchiche-Mimouni",
-                role: "Architecture des systèmes, données et supervision",
-                examine: "Ce qu'elle examine",
-                points: [
-                  "Architecture du système et nature réelle du traitement",
-                  "Jeux de données d'entraînement, de validation et de test",
-                  "Mécanismes de supervision et points de reprise humaine",
-                  "Mesure des biais et de leurs effets sur les personnes",
-                ],
-              },
-            ].map((m) => (
-              <article
-                key={m.nom}
-                style={{
-                  background: LIGHT.panel,
-                  border: `0.5px solid ${LIGHT.border}`,
-                  borderRadius: 12,
-                  overflow: "hidden",
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                }}
-              >
-                <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
-                  <Image
-                    src={m.photo}
-                    alt={m.nom}
-                    fill
-                    sizes="(max-width: 767px) 100vw, 50vw"
-                    style={{ objectFit: "cover", objectPosition: "center top" }}
-                  />
-                </div>
-                <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
-                  <span
-                    style={{
-                      alignSelf: "flex-start",
-                      fontFamily: "var(--ff-mono)",
-                      fontSize: 9,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: LIGHT.muted,
-                      border: `1px solid ${LIGHT.border}`,
-                      padding: "3px 8px",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {m.fonction}
-                  </span>
-                  <p style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.35 }}>{m.nom}</p>
-                  <p style={{ fontSize: 12, color: LIGHT.muted, margin: 0, lineHeight: 1.5 }}>{m.role}</p>
-                  <p
-                    style={{
-                      fontFamily: "var(--ff-mono)",
-                      fontSize: 10,
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
-                      color: LIGHT.faint,
-                      margin: "4px 0 0",
-                    }}
-                  >
-                    {m.examine}
-                  </p>
-                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 5 }}>
-                    {m.points.map((pt) => (
-                      <li key={pt} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
-                        <span aria-hidden="true" style={{ color: ACCENT, flexShrink: 0 }}>—</span>
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <p style={{ ...TYPE.secondary, margin: "14px 0 0", maxWidth: 760 }}>
-            Le cabinet ne délivre ni certification ni évaluation de conformité au
-            sens du règlement, laquelle relève d&apos;organismes notifiés.
-          </p>
-        </div>
-      </section>
-
-      {/* 9. CE QUE VOUS RECEVEZ — spécimens */}
+      {/* 8. CE QUE VOUS RECEVEZ — spécimens */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
@@ -965,7 +850,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 10. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
+      {/* 9. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
           affiche juridiction, date et enseignement essentiel ; l'analyse est
           repliée derrière un <details> natif (aucun JS). */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
@@ -1044,6 +929,122 @@ export default function IaActClient() {
           </div>
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: 0, letterSpacing: ".04em" }}>
             RÉFÉRENCES À VÉRIFIER AVANT PUBLICATION
+          </p>
+        </div>
+      </section>
+
+      {/* 10. NOTRE APPROCHE — le binôme (parité stricte : même format, même
+          encadré de fonction, même nombre de points, hauteur identique via
+          align-items:stretch + height 100%). Alexandre en premier. Un seul h2.
+          TODO (cabinet) : valider avec Nadia Abchiche-Mimouni l'intitulé exact
+          de sa fonction (donnée partagée lib/equipe.ts non modifiée). */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <Eyebrow>Notre approche</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Du contrat à l&apos;algorithme</h2>
+          <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, marginBottom: 16, maxWidth: 760 }}>
+            Qualifier juridiquement un système suppose d&apos;abord d&apos;établir
+            ce qu&apos;il fait réellement — et cela ne se lit pas dans une fiche
+            produit. L&apos;analyse juridique et l&apos;examen technique sont menés
+            ensemble, et les conclusions construites en commun.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
+            {[
+              {
+                photo: "/images/alexandre-pro.jpg",
+                fonction: "Avocat à la Cour d'appel de Paris",
+                nom: "Me Alexandre Lazarègue",
+                role: "Qualification juridique, documentation et contentieux",
+                examine: "Ce qu'il examine",
+                points: [
+                  "Rôle de l'entreprise : fournisseur, déployeur, importateur",
+                  "Régime applicable et date de mise sur le marché",
+                  "Documentation opposable et traçabilité des décisions",
+                  "Défense en cas de contrôle ou de contentieux",
+                ],
+              },
+              {
+                photo: "/images/nadia-pro.jpg",
+                fonction: "Docteure en intelligence artificielle · intervenante indépendante",
+                nom: "Nadia Abchiche-Mimouni",
+                role: "Architecture des systèmes, données et supervision",
+                examine: "Ce qu'elle examine",
+                points: [
+                  "Architecture du système et nature réelle du traitement",
+                  "Jeux de données d'entraînement, de validation et de test",
+                  "Mécanismes de supervision et points de reprise humaine",
+                  "Mesure des biais et de leurs effets sur les personnes",
+                ],
+              },
+            ].map((m) => (
+              <article
+                key={m.nom}
+                style={{
+                  background: LIGHT.panel,
+                  border: `0.5px solid ${LIGHT.border}`,
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                }}
+              >
+                <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 5" }}>
+                  <Image
+                    src={m.photo}
+                    alt={m.nom}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 50vw"
+                    style={{ objectFit: "cover", objectPosition: "center top" }}
+                  />
+                </div>
+                <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
+                  <span
+                    style={{
+                      alignSelf: "flex-start",
+                      fontFamily: "var(--ff-mono)",
+                      fontSize: 9,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: LIGHT.muted,
+                      border: `1px solid ${LIGHT.border}`,
+                      padding: "3px 8px",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {m.fonction}
+                  </span>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.35 }}>{m.nom}</p>
+                  <p style={{ fontSize: 12, color: LIGHT.muted, margin: 0, lineHeight: 1.5 }}>{m.role}</p>
+                  <p
+                    style={{
+                      fontFamily: "var(--ff-mono)",
+                      fontSize: 10,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      color: LIGHT.faint,
+                      margin: "4px 0 0",
+                    }}
+                  >
+                    {m.examine}
+                  </p>
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 5 }}>
+                    {m.points.map((pt) => (
+                      <li key={pt} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
+                        <span aria-hidden="true" style={{ color: ACCENT, flexShrink: 0 }}>—</span>
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p style={{ ...TYPE.secondary, margin: "14px 0 0", maxWidth: 760 }}>
+            Le cabinet ne délivre ni certification ni évaluation de conformité au
+            sens du règlement, laquelle relève d&apos;organismes notifiés.
           </p>
         </div>
       </section>
