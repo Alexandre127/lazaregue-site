@@ -123,16 +123,36 @@ const interventionTabs = [
     cards: [
       {
         icon: "ti-list-check",
-        type: "Registre IA",
+        type: "Registre des systèmes d'IA",
         h3: "Inventaire des systèmes IA",
-        extraitLabel: "Exemple pédagogique — ESN d'une cinquantaine de salariés",
+        extraitLabel: "Exemple pédagogique — entreprise de services, une cinquantaine de salariés",
         extrait: (
-          <>
-            Système n°3 — Outil de tri de CV <B>Workable AI</B>. Qualification :{" "}
-            <B>haut risque</B>, <B>annexe III §4</B>. Données traitées : CV, lettres de motivation,
-            profils LinkedIn. Supervision humaine : <B>décision finale RH obligatoire</B>, documentée
-            dans Workable. <B>Évaluation de conformité</B> : à réaliser avant <B>août 2026</B>.
-          </>
+          <div style={{ fontStyle: "normal" }}>
+            {[
+              ["Système n° 3", "Tri de candidatures"],
+              ["Rôle tenu", "Déployeur"],
+              ["Mise en service", "Antérieure à déc. 2027"],
+              ["Régime applicable", "Transitoire — art. 111"],
+            ].map(([k, v], i) => (
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "5px 0", borderBottom: i < 3 ? "0.5px solid #EDEDEA" : "none" }}>
+                <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint }}>{k}</span>
+                <span style={{ fontSize: 12, color: LIGHT.text, textAlign: "right" }}>{v}</span>
+              </div>
+            ))}
+            <div style={{ background: LIGHT.panel2, borderLeft: `2px solid ${BLUE}`, padding: "10px 11px", marginTop: 11 }}>
+              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: BLUE, margin: "0 0 5px", letterSpacing: ".05em", textTransform: "uppercase" }}>
+                Analyse technique — N. Abchiche-Mimouni
+              </p>
+              <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: 0, lineHeight: 1.6 }}>
+                Le score renvoyé n&apos;est pas un simple classement : il pondère des variables corrélées à l&apos;ancienneté du diplôme. La reprise humaine existe mais n&apos;est pas tracée. Une modification du paramétrage constituerait vraisemblablement une modification importante au sens du règlement.
+              </p>
+            </div>
+            <div style={{ background: "#F7F7F5", padding: "9px 11px", marginTop: 9, borderRadius: 4 }}>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: 0, lineHeight: 1.55 }}>
+                <strong style={{ color: LIGHT.text, fontWeight: 600 }}>Ce que ce champ change.</strong> La date de mise en service commande le régime applicable autant que la qualification — et une modification importante le fait basculer.
+              </p>
+            </div>
+          </div>
         ),
       },
       {
@@ -922,14 +942,17 @@ export default function IaActClient() {
                     >
                       {card.extraitLabel}
                     </p>
-                    <p style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>
+                    <div style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>
                       {card.extrait}
-                    </p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
+            SPÉCIMENS · AUCUNE DONNÉE RÉELLE
+          </p>
         </div>
       </section>
 
