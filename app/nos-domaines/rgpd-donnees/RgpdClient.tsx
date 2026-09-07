@@ -69,7 +69,7 @@ const SCENARIOS = [
     color: "#BA7517",
     label: "Scénario 3 — Sous-traitant défaillant",
     title: "Violation chez un prestataire : vous êtes responsable",
-    text: "Sans clause article 28 RGPD dans vos contrats IT ou cloud, vous restez exposé en cas de violation chez votre prestataire. L'absence de contrat conforme vous prive de tout recours.",
+    text: "Sans clause article 28 RGPD dans vos contrats IT ou cloud, vous restez exposé en cas de violation chez votre prestataire.",
   },
 ] as const;
 
@@ -85,7 +85,7 @@ const TIMELINE = [
     color: "#1A47FF",
     phase: "Gouvernance & accountability",
     summary: "Démontrer la conformité, pas seulement la respecter",
-    items: "DPO, politiques, comités, prêt contrôle CNIL en 48h",
+    items: "DPO, politiques, comités",
   },
   {
     color: "#BA7517",
@@ -117,7 +117,7 @@ function LivrablesPreview() {
     {
       num: "01",
       name: "Registre des traitements",
-      sub: "Base légale documentée — absent de 80% des registres",
+      sub: "Base légale documentée",
     },
     {
       num: "02",
@@ -515,7 +515,6 @@ function LivrablesPreview() {
         {[
           ["3", "Non-conformités critiques", "#c0392b"],
           ["5", "À régulariser", "#e6a817"],
-          ["2,4M€", "Risque chiffré max.", "#1a7a50"],
         ].map(([n, l, c]) => (
           <div
             key={l}
@@ -550,7 +549,7 @@ function LivrablesPreview() {
       >
         <strong style={{ color: "#c0392b" }}>Non-conformité critique :</strong>{" "}
         Base de 180 000 prospects sans consentement valide. Risque de
-        qualification en actif illicite. Impact valorisation : −350k€ à −800k€.
+        qualification en actif illicite.
       </div>
       <div
         style={{
@@ -564,8 +563,8 @@ function LivrablesPreview() {
         }}
       >
         <strong style={{ color: "#1a7a50" }}>Recommandation :</strong>{" "}
-        Régularisation en 3 semaines + garantie d'actif et de passif RGPD à
-        hauteur de 1,2M€ — clause rédigée et négociée.
+        Régularisation en 3 semaines + garantie d'actif et de passif RGPD —
+        clause rédigée et négociée.
       </div>
     </div>,
 
@@ -598,7 +597,7 @@ function LivrablesPreview() {
         "Registre des traitements centralisé et mis à jour",
         "Suivi des sous-traitants et contrats Art. 28",
         "Gestion des incidents et violations documentée",
-        "Documentation prête en cas de contrôle CNIL sous 48h",
+        "Documentation prête en cas de contrôle CNIL",
       ].map((line) => (
         <div
           key={line}
@@ -675,9 +674,6 @@ function LivrablesPreview() {
           <br />
           Des documents sur mesure.
         </h3>
-        <p style={{ fontSize: "11px", color: LIGHT.muted, marginBottom: "20px" }}>
-          Ce que LegalStart ne peut pas faire.
-        </p>
         {items.map((item, i) => (
           <div
             key={i}
@@ -850,13 +846,13 @@ const INTERVENTIONS = [
   {
     num: "04",
     title: "Contrats sous-traitants & flux de données",
-    body: "Sans clause Art. 28 conforme, vous restez responsable en cas de violation chez un prestataire — sans recours possible. Les transferts hors UE (Cloud Act, hébergeurs américains) nécessitent des garanties spécifiques (CCT, BCR) sous peine de suspension.",
+    body: "Sans clause Art. 28 conforme, vous restez responsable en cas de violation chez un prestataire. Les transferts hors UE (Cloud Act, hébergeurs américains) nécessitent des garanties spécifiques (CCT, BCR) sous peine de suspension.",
     tags: ["Art.28 RGPD", "Cloud & SaaS", "Transferts UE", "CCT"],
   },
   {
     num: "05",
     title: "Due diligence RGPD — M&A & levées de fonds",
-    body: "Dans toute levée de fonds ou M&A, un fichier non conforme peut être qualifié d'actif illicite — impact direct sur la valorisation. Nous avons accompagné des cibles dans la régularisation pré-closing en moins de 3 semaines.",
+    body: "Dans toute levée de fonds ou M&A, un fichier non conforme peut être qualifié d'actif illicite — impact direct sur la valorisation.",
     tags: ["Due diligence", "M&A", "Levée de fonds", "Garanties A&P"],
   },
 ] as const;
@@ -1711,7 +1707,7 @@ export default function RgpdClient() {
                   lineHeight: 1.6,
                 }}
               >
-                DPO, politiques, comités. Prêt pour un contrôle CNIL en 48h.
+                DPO, politiques, comités.
               </div>
             </div>
             <div style={{ paddingRight: "24px" }}>
@@ -1895,88 +1891,6 @@ export default function RgpdClient() {
         </div>
       </section>
 
-      {/* RGPD comme levier */}
-      <section
-        className="mx-auto grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12"
-        style={{
-          maxWidth: 900,
-          background: LIGHT.panel2,
-          border: `1px solid ${LIGHT.border}`,
-          borderRadius: "12px",
-          padding: "40px",
-          margin: "32px auto",
-        }}
-      >
-        <div>
-          <p
-            style={{
-              fontSize: "10px",
-              color: ACCENT,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              marginBottom: "12px",
-            }}
-          >
-            RGPD comme levier
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(20px, 2.5vw, 26px)",
-              fontWeight: 600,
-              color: LIGHT.text,
-              marginBottom: "16px",
-              lineHeight: 1.35,
-            }}
-          >
-            Un RGPD maîtrisé devient un avantage concurrentiel durable.
-          </h2>
-          <p
-            style={{
-              fontSize: "14px",
-              color: LIGHT.muted,
-              lineHeight: 1.75,
-              margin: 0,
-            }}
-          >
-            Les entreprises qui anticipent leur conformité RGPD accèdent plus
-            facilement aux marchés publics, lèvent des fonds dans de meilleures
-            conditions et négocient en position de force avec leurs clients grands
-            comptes. Ce n&apos;est pas une obligation — c&apos;est un signal de
-            solidité et de gouvernance.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4">
-          {[
-            "Critère de sélection dans les appels d'offres publics et privés",
-            "Argument de crédibilité face aux investisseurs et partenaires internationaux",
-            "Protection en cas de litige ou de contrôle — la conformité documentée réduit les sanctions",
-          ].map((item) => (
-            <div key={item} className="flex gap-3" style={{ alignItems: "flex-start" }}>
-              <span
-                style={{
-                  color: ACCENT,
-                  fontSize: "14px",
-                  lineHeight: 1.5,
-                  flexShrink: 0,
-                }}
-                aria-hidden
-              >
-                ✓
-              </span>
-              <span
-                style={{
-                  fontSize: "13px",
-                  color: LIGHT.muted,
-                  lineHeight: 1.55,
-                }}
-              >
-                {item}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Situations fréquentes */}
       <section
         className="mx-auto"
@@ -2024,9 +1938,9 @@ export default function RgpdClient() {
           {[
             {
               title: "Outils SaaS américains utilisés sans encadrement",
-              sub: "Notion, Slack, HubSpot, ChatGPT — sans DPA ni base légale",
+              sub: "Des outils SaaS empilés — sans DPA ni base légale",
               expand:
-                "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation — sans recours possible contre le prestataire.",
+                "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation.",
             },
             {
               title: "Registre des traitements inexistant ou obsolète",
@@ -2035,7 +1949,7 @@ export default function RgpdClient() {
                 "La CNIL peut sanctionner même sans violation effective. Sans registre à jour, impossible de démontrer la conformité lors d'un contrôle ou d'une due diligence investisseur.",
             },
             {
-              title: "DRH qui utilise ChatGPT avec des données RH",
+              title: "DRH qui utilise une IA générative avec des données RH",
               sub: "CV, évaluations, données salariés — sans encadrement IA",
               expand:
                 "Double exposition : RGPD et AI Act (système IA à risque élevé). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
