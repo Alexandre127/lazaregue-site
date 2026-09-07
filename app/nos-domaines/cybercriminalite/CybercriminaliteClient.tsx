@@ -64,7 +64,7 @@ const TROIS_TEMPS: {
     n: 1,
     titre: "Préserver la preuve",
     corps:
-      "Isoler sans éteindre : les traces vivent en mémoire vive et un arrêt les efface. Journaux d'intervention, accès distants, courriels de rançon, horodatages — tout est une pièce, et sa valeur probatoire dépend de la façon dont elle a été recueillie.",
+      "Isoler sans éteindre : certaines traces ne subsistent qu'en mémoire vive et disparaissent à l'arrêt de la machine. Journaux d'intervention, accès distants, courriels de rançon, horodatages — tout est une pièce, et sa valeur probatoire dépend de la façon dont elle a été recueillie.",
     mono: "SAUF CONSIGNE CONTRAIRE DE L'ÉQUIPE TECHNIQUE",
   },
   {
@@ -72,16 +72,30 @@ const TROIS_TEMPS: {
     titre: "Qualifier pénalement",
     corps:
       "Intrusion, maintien frauduleux, entrave au fonctionnement, extorsion, escroquerie, atteinte aux données : la qualification commande le service d'enquête saisi, les actes possibles et ce qui peut être réclamé. Elle se discute, elle ne se subit pas.",
-    mono: "ART. 323-1 À 323-3 · 312-1 · 313-1 · 226-17 C. PÉN.",
+    // La ligne de visas monospace est remplacée par le tableau des qualifications
+    // (rendu dans le temps 2, cf. <Qualifications />).
     lien: { href: "/nos-domaines/contrats-informatiques", label: "Si le prestataire est en cause : contrats IT & responsabilité" },
   },
   {
     n: 3,
     titre: "Construire la procédure",
     corps:
-      "Une plainte documentée ouvre des investigations que la voie civile ne permet pas : réquisitions, saisies informatiques, expertise judiciaire. Une plainte contre X au commissariat ne donne presque rien. Puis constitution de partie civile — ou défense, si c'est vous qui êtes mis en cause.",
+      "Une plainte documentée ouvre des investigations que la voie civile ne permet pas : réquisitions, saisies informatiques, expertise judiciaire. Une plainte contre X au commissariat ne donne le plus souvent presque rien. Puis constitution de partie civile — ou défense, si c'est vous qui êtes mis en cause.",
     lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
   },
+];
+
+/* Bloc B — tableau des qualifications, dans le temps 2 de la méthode.
+   Relie le fait (langage courant) à la qualification (langage juridique) et au
+   visa. Remplace la ligne de visas monospace. */
+const QUALIFICATIONS: { fait: string; qualif: string; texte: string }[] = [
+  { fait: "Quelqu'un est entré dans le système", qualif: "Accès ou maintien frauduleux dans un système de traitement automatisé de données", texte: "Art. 323-1 C. pén." },
+  { fait: "Le service a été bloqué, les fichiers chiffrés", qualif: "Entrave au fonctionnement d'un système", texte: "Art. 323-2 C. pén." },
+  { fait: "Des données ont été copiées, modifiées ou supprimées", qualif: "Atteinte aux données d'un système", texte: "Art. 323-3 C. pén." },
+  { fait: "Un outil d'attaque a été fourni ou diffusé", qualif: "Mise à disposition de moyens", texte: "Art. 323-3-1 C. pén." },
+  { fait: "Une rançon a été réclamée sous la menace", qualif: "Extorsion", texte: "Art. 312-1 C. pén." },
+  { fait: "Un virement a été obtenu par tromperie", qualif: "Escroquerie", texte: "Art. 313-1 C. pén." },
+  { fait: "Les données personnelles n'étaient pas sécurisées", qualif: "Atteinte au traitement de données à caractère personnel", texte: "Art. 226-17 C. pén." },
 ];
 
 /* §1 — typologies, liste courte et visuelle (pas de paragraphes). */
@@ -120,7 +134,7 @@ const DOSSIERS = [
     badgeBg: "#FCEBEB",
     badgeColor: "#A32D2D",
     title: "Un logiciel de reprogrammation automobile.\nPlusieurs pays. Des années d'instruction.\nUne question au cœur du dossier.",
-    quote: "Ce logiciel est-il une arme informatique\nau sens du droit pénal ?",
+    quote: "Un logiciel peut-il constituer un moyen\nde commettre une atteinte à un système ?",
     items: [
       "Analyse technique complète du logiciel et des protocoles des constructeurs",
       "Des dizaines de milliers de pages de procédure. Des expertises judiciaires.",
@@ -297,19 +311,60 @@ function MetricCard({ metric }: { metric: (typeof METRICS)[number] }) {
   );
 }
 
+function Qualifications() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ marginTop: 12 }}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="qualif-panel"
+        style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: "4px 0", cursor: "pointer", color: RED, fontSize: 13, fontWeight: 500 }}
+      >
+        Voir les qualifications possibles
+        <span aria-hidden style={{ fontSize: 18, lineHeight: 1, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
+      </button>
+      <div id="qualif-panel" hidden={!open} style={{ marginTop: 10 }}>
+        <table className="qualif-table">
+          <thead>
+            <tr>
+              <th scope="col">Ce qui s&apos;est passé</th>
+              <th scope="col">Qualification possible</th>
+              <th scope="col">Texte</th>
+            </tr>
+          </thead>
+          <tbody>
+            {QUALIFICATIONS.map((q) => (
+              <tr key={q.texte}>
+                <td className="qualif-fait">{q.fait}</td>
+                <td>{q.qualif}</td>
+                <td className="qualif-texte">{q.texte}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p style={{ fontSize: 12, color: LIGHT.faint, fontStyle: "italic", lineHeight: 1.5, margin: "10px 0 0" }}>
+          Une qualification dépend des faits établis. Ce tableau indique des rapprochements courants, non des conclusions.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function DossierCard({ dossier, index }: { dossier: (typeof DOSSIERS)[number]; index: number }) {
   const [open, setOpen] = useState(false);
   return (
     <article style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: CARD_PAD }}>
-      <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "3px 9px", borderRadius: 6, background: dossier.badgeBg, color: dossier.badgeColor, marginBottom: 10 }}>
+      {/* Ordre (bloc D) : intitulé, accroche, contexte, points, clôture. */}
+      <h3 style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", padding: "3px 9px", borderRadius: 6, background: dossier.badgeBg, color: dossier.badgeColor, margin: "0 0 10px" }}>
         {dossier.badge}
-      </span>
+      </h3>
       <blockquote style={{ margin: "0 0 8px", padding: "6px 10px", borderLeft: `2px solid ${LIGHT.faint}`, fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, whiteSpace: "pre-line" }}>
         {dossier.quote}
       </blockquote>
-      <p style={{ fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 8px", whiteSpace: "pre-line" }}>{dossier.verdict}</p>
-      {/* §6 — détail derrière un dépliant « Le dossier » en mobile ; déplié
-          d'office en desktop (bouton masqué, détail toujours visible). */}
+      {/* Contexte + points : derrière un dépliant « Le dossier » en mobile,
+          dépliés d'office en desktop (bouton masqué, détail toujours visible). */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -332,6 +387,8 @@ function DossierCard({ dossier, index }: { dossier: (typeof DOSSIERS)[number]; i
           ))}
         </div>
       </div>
+      {/* Formule de clôture — en dernier. */}
+      <p style={{ fontSize: 13, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: "10px 0 0", whiteSpace: "pre-line" }}>{dossier.verdict}</p>
     </article>
   );
 }
@@ -340,6 +397,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
   const [open, setOpen] = useState(false);
   return (
     <div style={{ borderBottom: `0.5px solid ${LIGHT.border}` }}>
+      <h3 style={{ margin: 0, fontWeight: 400 }}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -353,6 +411,7 @@ function FaqItem({ item, index }: { item: (typeof FAQ_ITEMS)[number]; index: num
         </span>
         <span aria-hidden style={{ color: RED, fontSize: 20, lineHeight: 1, flexShrink: 0, transform: open ? "rotate(45deg)" : "none", transition: "transform 180ms ease" }}>+</span>
       </button>
+      </h3>
       <div id={`faq-cyber-reponse-${index}`} hidden={!open} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0, padding: "0 0 12px 40px", maxWidth: 760 }}>
         {item.a}
         {item.lien ? (
@@ -401,6 +460,21 @@ export default function CybercriminaliteClient() {
         @media (max-width: 767px) {
           .metric-card { padding: 13px 12px !important; }
           .metric-label { font-size: 12px !important; line-height: 1.45 !important; }
+        }
+        /* Bloc B — tableau des qualifications. Desktop : 3 colonnes. Mobile :
+           chaque ligne empile fait / qualification / visa (pas de défilement
+           horizontal) ; les en-têtes restent dans l'arbre d'accessibilité. */
+        .qualif-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .qualif-table th { text-align: left; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #6a6a6a; font-weight: 600; padding: 0 12px 8px 0; border-bottom: 1px solid rgba(0,0,0,0.14); vertical-align: bottom; }
+        .qualif-table td { padding: 10px 12px 10px 0; border-bottom: 0.5px solid rgba(0,0,0,0.08); color: #1a1a1a; line-height: 1.45; vertical-align: top; }
+        .qualif-table td.qualif-fait { font-weight: 500; }
+        .qualif-table td.qualif-texte { font-family: var(--ff-mono); font-size: 12px; color: #4a4a4a; white-space: nowrap; }
+        @media (max-width: 767px) {
+          .qualif-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+          .qualif-table tr { display: block; border-bottom: 0.5px solid rgba(0,0,0,0.1); padding: 10px 0; }
+          .qualif-table td { display: block; border: none; padding: 2px 0; }
+          .qualif-table td.qualif-fait { font-weight: 600; }
+          .qualif-table td.qualif-texte { font-size: 11px; margin-top: 2px; }
         }
         @media (max-width: 767px) {
           .cyber-hero { flex-direction: column-reverse; min-height: 0; }
@@ -508,6 +582,7 @@ export default function CybercriminaliteClient() {
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: "0 0 6px" }}>{t.titre}</p>
                   <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.65, margin: 0, maxWidth: "68ch" }}>{t.corps}</p>
+                  {t.n === 2 ? <Qualifications /> : null}
                   {t.mono ? (
                     <span style={{ display: "inline-block", fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint, background: LIGHT.panel2, padding: "3px 9px", borderRadius: 6, marginTop: 8 }}>{t.mono}</span>
                   ) : null}
@@ -524,8 +599,9 @@ export default function CybercriminaliteClient() {
       </section>
 
       {/* 3bis. Victime / mis en cause (§2) — après la méthode */}
-      <section style={{ background: LIGHT.panel, padding: "8px 0 32px" }}>
+      <section style={{ background: LIGHT.panel, padding: "16px 0 32px" }}>
         <div style={INNER}>
+          <SectionHead title="Victime ou mis en cause : notre intervention" />
           <div className="vmc-grid">
             <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 12, padding: "16px 18px" }}>
               <h3 style={{ fontSize: 15, fontWeight: 600, color: LIGHT.text, margin: "0 0 10px" }}>Victime</h3>
