@@ -61,16 +61,6 @@ function Eyebrow({ children }: { children: ReactNode }) {
 
 const heroTags = ["AI Act", "RGPD", "Responsabilité", "Preuve", "Gouvernance"];
 
-const TEST_ITEMS = [
-  "Vous utilisez ChatGPT, Copilot ou un outil d'IA générative dans votre activité",
-  "Vous utilisez un CRM, un outil RH ou marketing avec des fonctions automatisées ou prédictives",
-  "Vous triez ou évaluez des candidatures avec un outil numérique",
-  "Vous utilisez une API OpenAI, Anthropic, Mistral ou équivalent",
-  "Vous développez un produit ou service intégrant de l'IA",
-  "Vous utilisez l'IA pour évaluer, noter ou scorer des personnes",
-  "Vous exploitez un chatbot ou un agent conversationnel",
-] as const;
-
 const scenarios = [
   {
     color: "#E24B4A",
@@ -305,14 +295,7 @@ const interventionTabs = [
 export default function IaActClient() {
   const [activeTab, setActiveTab] = useState("audit");
   const [openQuestions, setOpenQuestions] = useState(["q1"]);
-  const [checkedTests, setCheckedTests] = useState<number[]>([]);
   const activePanel = interventionTabs.find((t) => t.id === activeTab) ?? interventionTabs[0];
-
-  const toggleTest = (index: number) => {
-    setCheckedTests((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  };
 
   return (
     <main style={{ background: LIGHT.bg, color: LIGHT.text, fontFamily: "var(--ff-body)" }}>
@@ -488,226 +471,13 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 2. FAITES LE TEST */}
+      {/* 4. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <div
-            style={{
-              background: LIGHT.panel,
-              border: `0.5px solid ${LIGHT.border}`,
-              borderRadius: 8,
-              padding: CARD_PAD,
-            }}
-          >
-            <Eyebrow>Suis-je concerné ?</Eyebrow>
-            <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-              Faites le test
-            </h2>
-            <p style={{ ...TYPE.secondary, marginBottom: 16 }}>
-              Votre entreprise est probablement concernée si vous cochez au moins
-              une case.
-            </p>
-
-            <div className="flex flex-col gap-1">
-              {TEST_ITEMS.map((item, index) => {
-                const checked = checkedTests.includes(index);
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    aria-pressed={checked}
-                    onClick={() => toggleTest(index)}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 12,
-                      width: "100%",
-                      border: "none",
-                      background: checked ? "rgba(26,71,255,0.07)" : "transparent",
-                      borderRadius: 8,
-                      padding: "10px 12px",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "background 220ms ease",
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: 4,
-                        border: `1.5px solid ${checked ? BLUE : BLUE}`,
-                        background: checked ? BLUE : "transparent",
-                        flexShrink: 0,
-                        marginTop: 2,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "background 220ms ease, transform 180ms ease",
-                        transform: checked ? "scale(1.08)" : "scale(1)",
-                      }}
-                    >
-                      {checked ? (
-                        <i className="ti ti-check" style={{ fontSize: 11, color: "#fff", lineHeight: 1 }} />
-                      ) : null}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: 14,
-                        color: checked ? LIGHT.text : LIGHT.muted,
-                        lineHeight: 1.6,
-                        fontWeight: checked ? 500 : 400,
-                        transition: "color 220ms ease",
-                      }}
-                    >
-                      {item}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div
-              style={{
-                marginTop: 16,
-                padding: checkedTests.length > 0 ? "14px 16px" : 0,
-                borderRadius: 8,
-                background: checkedTests.length > 0 ? "#FCEBEB" : "transparent",
-                border: checkedTests.length > 0 ? "1px solid #F09595" : "none",
-                transition: "background 250ms ease, border-color 250ms ease, padding 250ms ease",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: 500,
-                  color: checkedTests.length > 0 ? "#A32D2D" : LIGHT.text,
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontSize: checkedTests.length > 0 ? 14 : 16,
-                  transition: "color 250ms ease",
-                }}
-              >
-                {checkedTests.length > 0
-                  ? `${checkedTests.length} usage${checkedTests.length > 1 ? "s" : ""} coché${checkedTests.length > 1 ? "s" : ""} — il faut identifier votre rôle et les documents à conserver.`
-                  : "Un seul de ces usages suffit à justifier d'identifier votre rôle et les documents à conserver. Entrer dans le champ du règlement n'emporte pas les obligations les plus lourdes."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. L'AI ACT EN CLAIR */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>L&apos;AI Act en clair</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            Ce que la loi impose — selon ce que vous faites
-          </h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
-            L&apos;AI Act — règlement (UE) 2024/1689, désigné en français par le
-            sigle <B>RIA</B> pour «&nbsp;règlement sur l&apos;intelligence
-            artificielle&nbsp;» — est le premier cadre légal
-            mondial sur l&apos;intelligence artificielle. Il s&apos;applique à toute
-            entreprise qui développe ou utilise un système d&apos;IA dans l&apos;Union
-            européenne — même un outil acheté à un tiers. Il classe les systèmes
-            selon leur niveau de risque et impose des obligations différentes à
-            chaque niveau.
-          </p>
-
-          {/* GRILLE 3 COLONNES */}
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP }}>
-            {[
-              {
-                border: "#F09595",
-                badge: "IA interdite",
-                badgeBg: "#FCEBEB",
-                badgeColor: "#A32D2D",
-                title: "Pratiques interdites",
-                desc: "Certains usages sont interdits par l'article 5 ; d'autres ne le sont que sous conditions.",
-                ex: [
-                  "Manipulation cognitive sous le seuil de conscience",
-                  "Notation sociale des personnes",
-                  "Identification biométrique à distance en temps réel dans les espaces accessibles au public, à des fins répressives — exceptions encadrées",
-                ],
-              },
-              {
-                border: "#EF9F27",
-                badge: "Haut risque",
-                badgeBg: "#FAEEDA",
-                badgeColor: "#633806",
-                title: "Obligations lourdes",
-                desc: "Documentation, supervision humaine, évaluation de conformité. Les durées de conservation dépendent du système et du rôle tenu.",
-                ex: [
-                  "Tri de CV et recrutement automatisé",
-                  "Scoring de crédit ou d'assurance",
-                  "IA dans dispositifs médicaux ou infrastructures",
-                ],
-              },
-              {
-                border: LIGHT.border,
-                badge: "Risque limité",
-                badgeBg: "#E6F1FB",
-                badgeColor: "#185FA5",
-                title: "Obligations de transparence",
-                desc: "Informer que l'utilisateur interagit avec une IA. Signaler les contenus générés.",
-                ex: [
-                  "Chatbots et agents conversationnels",
-                  "IA générative — texte, image, code",
-                  "Systèmes de recommandation",
-                ],
-              },
-            ].map((c) => (
-              <article
-                key={c.badge}
-                style={{
-                  background: LIGHT.panel,
-                  border: `1px solid ${c.border}`,
-                  borderRadius: 8,
-                  padding: 16,
-                }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    fontSize: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: ".06em",
-                    background: c.badgeBg,
-                    color: c.badgeColor,
-                    borderRadius: 999,
-                    padding: "3px 10px",
-                    marginBottom: 8,
-                  }}
-                >
-                  {c.badge}
-                </span>
-                <h3 style={{ ...TYPE.h3, margin: "0 0 6px" }}>{c.title}</h3>
-                <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 12px" }}>
-                  {c.desc}
-                </p>
-                <div className="flex flex-col gap-2">
-                  {c.ex.map((e) => (
-                    <div key={e} style={{ display: "flex", gap: 8, fontSize: 12, color: LIGHT.muted, lineHeight: 1.5 }}>
-                      <span style={{ color: BLUE, flexShrink: 0 }}>→</span>
-                      <span>{e}</span>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {/* SÉPARATEUR */}
-          <div aria-hidden="true" style={{ height: "0.5px", background: LIGHT.border, margin: "32px 0" }} />
-
-          {/* CALENDRIER — 6 moments (Bloc A). L'ancien calendrier est supprimé
-              intégralement : il annonçait comme future une échéance passée et
-              comme applicables des obligations reportées par le Digital Omnibus. */}
           <Eyebrow>Où en est le droit</Eyebrow>
-          <h3 style={{ ...TYPE.h3, fontWeight: 600, margin: "0 0 6px" }}>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
             Le calendrier, au 1<sup>er</sup> septembre 2026
-          </h3>
+          </h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
             Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du
             8 juillet 2026, en vigueur depuis le 27 juillet.
@@ -779,208 +549,91 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 4. SCÉNARIOS */}
+      {/* 5. SUIS-JE CONCERNÉ — cinq usages */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>Ce que vos équipes font peut-être déjà</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            Cinq situations à risque — concrètes
-          </h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16 }}>
-            L&apos;IA est déjà dans votre entreprise. La question est : savez-vous ce qu&apos;elle vous expose ?
+          <Eyebrow>Suis-je concerné ?</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq usages qui appellent une qualification</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
+            Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
+            et les documents à conserver. Entrer dans le champ du règlement
+            n&apos;emporte pas les obligations les plus lourdes.
           </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP }}>
-            {scenarios.map((s) => (
-              <article key={s.title} style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: `3px solid ${s.color}`, borderRadius: 8, padding: 16 }}>
-                <span style={{ fontSize: 10, color: s.color, textTransform: "uppercase", letterSpacing: ".06em" }}>{s.tag}</span>
-                <h3 style={{ margin: "6px 0 6px", ...TYPE.h3 }}>{s.title}</h3>
-                <p style={{ ...TYPE.body, color: LIGHT.muted, lineHeight: 1.7 }}>{s.text}</p>
-              </article>
+          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
+            {[
+              "IA générative utilisée par vos salariés",
+              "Outils RH ou de recrutement automatisés",
+              "Scoring, profilage ou aide à la décision",
+              "IA intégrée à un produit ou un service",
+              "Fournisseur ou API d'IA externe",
+            ].map((usage, i) => (
+              <div
+                key={usage}
+                style={{
+                  padding: "12px 14px",
+                  fontSize: 14,
+                  color: LIGHT.text,
+                  lineHeight: 1.45,
+                  borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none",
+                }}
+              >
+                {usage}
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. ANGLE PREUVE — 8 domaines */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+      {/* 6. NOS INTERVENTIONS — trois niveaux */}
+      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>Un sujet transversal</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            L&apos;IA est un sujet de direction générale — la preuve par les juges
-          </h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16 }}>
-            Elle engage simultanément huit domaines du droit — souvent sans que l&apos;entreprise l&apos;ait anticipé.
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: GRID_GAP, marginBottom: 16 }}>
-            {/* `href` ouvre la page du domaine correspondant : le visiteur qui
-                arrive par l'IA découvre le reste du cabinet, et les pages
-                sœurs récupèrent un lien contextuel plutôt qu'un lien de menu. */}
+          <Eyebrow>Nos interventions</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 14 }}>Trois niveaux d&apos;intervention</h2>
+          <div className="flex flex-col" style={{ gap: GRID_GAP }}>
             {[
-              { icon: "ti-users", title: "Droit du travail", text: "Information-consultation CSE, loyauté des évaluations algorithmiques, transparence des objectifs automatisés" },
-              { icon: "ti-shield-lock", title: "RGPD & données", text: "Licéité, analyse d'impact, minimisation, droits des personnes — cumulatifs avec l'AI Act", href: "/nos-domaines/rgpd-donnees" },
-              { icon: "ti-file-invoice", title: "Responsabilité produit", text: "Défaut de documentation ou de supervision humaine = indice de défaut en contentieux" },
-              { icon: "ti-world", title: "Fournisseurs & cloud", text: "APIs tierces, SaaS IA, contrats cloud : chaque prestataire sans encadrement est un risque non couvert", href: "/nos-domaines/contrats-informatiques" },
-              { icon: "ti-eye", title: "Transparence", text: "Contenus générés, chatbots, deepfakes : obligation d'information envers les utilisateurs — en vigueur" },
-              { icon: "ti-scale", title: "Devoir de conseil", text: "Les prestataires intégrant l'IA restent tenus d'informer sur les limites, risques et maturité des outils" },
-              { icon: "ti-building-bank", title: "Régulation sectorielle", text: "Finance, immobilier, santé, plateformes : des obligations spécifiques s'ajoutent au cadre général" },
-              { icon: "ti-certificate", title: "Sécurité des systèmes", text: "Journalisation, robustesse, notification d'incident : les exigences NIS 2 et AI Act se recoupent", href: "/nos-domaines/cybersecurite/nis2" },
-            ].map(({ icon, title, text, href }) => {
-              const contenu = (
-                <>
-                  <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#1A47FF", display: "block", marginBottom: 8 }} aria-hidden="true" />
-                  <div style={{ fontSize: 12, fontWeight: 600, color: LIGHT.text, marginBottom: 5 }}>{title}</div>
-                  <div style={{ fontSize: 11, color: LIGHT.muted, lineHeight: 1.5 }}>{text}</div>
-                  {href ? (
-                    <div style={{ fontSize: 11, color: BLUE, marginTop: 7 }}>Voir le domaine →</div>
-                  ) : null}
-                </>
-              );
-              const style: CSSProperties = {
-                background: LIGHT.panel,
-                border: `1px solid ${href ? LIGHT.borderBlue : LIGHT.border}`,
-                borderRadius: 6,
-                padding: CARD_PAD,
-                display: "block",
-                textDecoration: "none",
-              };
-              return href ? (
-                <Link key={title} href={href} style={style}>
-                  {contenu}
-                </Link>
-              ) : (
-                <div key={title} style={style}>
-                  {contenu}
-                </div>
-              );
-            })}
+              {
+                num: "01",
+                titre: "Diagnostic et audit AI Act",
+                phrase: "« Nous utilisons plusieurs IA sans savoir où nous en sommes. »",
+                corps: "Inventaire des systèmes officiels et des usages informels, qualification juridique, rôle de l'entreprise, feuille de route.",
+                accent: true,
+              },
+              {
+                num: "02",
+                titre: "Gouvernance IA : registre, charte et procédures",
+                phrase: "« Nous devons poser des règles dans l'entreprise. »",
+                corps: "Registre des systèmes d'IA, charte IA, outils autorisés et données interdites, validation humaine, gestion des incidents, formation.",
+                accent: false,
+              },
+              {
+                num: "03",
+                titre: "Conformité d'un système sensible ou à haut risque",
+                phrase: "« Notre produit ou notre usage peut relever de l'annexe III. »",
+                corps: "Analyse complète, documentation, supervision humaine, contrats fournisseurs, préparation au contrôle.",
+                accent: false,
+              },
+            ].map((n) => (
+              <article
+                key={n.num}
+                style={{
+                  background: LIGHT.panel,
+                  border: `0.5px solid ${n.accent ? LIGHT.borderBlue : LIGHT.border}`,
+                  borderRadius: 10,
+                  padding: CARD_PAD,
+                }}
+              >
+                <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".07em", color: LIGHT.muted }}>{n.num}</span>
+                <h3 style={{ ...TYPE.h3, margin: "6px 0 0" }}>{n.titre}</h3>
+                <p style={{ fontSize: 13, color: LIGHT.text, fontStyle: "italic", margin: "8px 0 0", lineHeight: 1.5 }}>{n.phrase}</p>
+                <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>{n.corps}</p>
+              </article>
+            ))}
           </div>
-          <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #1A47FF", borderRadius: "0 4px 4px 0", padding: CARD_PAD, display: "flex", gap: GRID_GAP, alignItems: "center" }}>
-            <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6 }}>
-              <strong style={{ color: LIGHT.text, fontWeight: 500 }}>Notre approche : </strong>
-              nous ne traitons pas l&apos;IA comme un sujet réglementaire isolé. Nous l&apos;articulons avec l&apos;ensemble des obligations de l&apos;entreprise — pour construire une gouvernance qui tient sur tous les fronts.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PREUVE SOCIALE */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <div
-            style={{
-              background: LIGHT.panel2,
-              border: `1px solid ${LIGHT.border}`,
-              borderRadius: 8,
-              padding: CARD_PAD,
-            }}
-          >
-            <p style={{ fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, marginBottom: 12 }}>
-              Nous accompagnons des entreprises qui utilisent l&apos;IA dans leurs outils RH, leurs
-              produits SaaS, leurs processus commerciaux et leurs systèmes de décision — souvent sans
-              l&apos;avoir formalisé.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {["Éditeurs SaaS", "PME & ETI", "Directions RH", "Équipes produit", "Directions juridiques"].map((p) => (
-                <span
-                  key={p}
-                  style={{
-                    fontSize: 10,
-                    borderRadius: 999,
-                    border: `1px solid ${LIGHT.border}`,
-                    padding: "4px 10px",
-                    color: LIGHT.muted,
-                  }}
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. JURISPRUDENCE */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #E14B4B", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>JANV. 2026</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#E14B4B", border: "1px solid rgba(225,75,75,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ NANTERRE</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA RH : déploiement suspendu faute de consultation du CSE</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Nanterre, 29 janv. 2026, n° 25/02856</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                Une entreprise déploie deux outils de gestion des compétences intégrant de l&apos;IA pour alimenter les entretiens annuels, le suivi des carrières et l&apos;affectation des salariés sur les missions. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE. Le déploiement est suspendu jusqu&apos;à l&apos;achèvement de cette procédure.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                Une IA RH qui influence l&apos;évaluation, les compétences ou les parcours professionnels n&apos;est pas un simple outil informatique. Elle peut déclencher des obligations d&apos;information-consultation du CSE avant sa mise en œuvre.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #F2A43A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>FÉV. 2026</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#F2A43A", border: "1px solid rgba(242,164,58,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ PARIS</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Copilot 365 : pas encore un « projet important »</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Paris, 10 févr. 2026, n° 25/57412</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L&apos;outil est facultatif, temporaire et son impact reste limité à ce stade.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                L&apos;introduction d&apos;une IA ne suffit pas, à elle seule, à caractériser un projet important. Les juges regardent ses effets réels sur l&apos;organisation du travail, les missions confiées aux salariés et leur environnement professionnel.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #1A47FF", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#1A47FF", border: "1px solid rgba(26,71,255,0.35)", borderRadius: 999, padding: "2px 8px" }}>COUR DE CASSATION</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Vidéoprotection : le RGPD s&apos;applique pleinement</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. Cass. soc., 21 mai 2025, n° 22-19.925</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                La Cour de cassation rappelle que l&apos;exploitation d&apos;images permettant d&apos;identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut être utilisé comme preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                Toute IA qui analyse, surveille ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.
-              </p>
-            </article>
-            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #29A06A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
-                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#29A06A", border: "1px solid rgba(41,160,106,0.35)", borderRadius: 999, padding: "2px 8px" }}>CA LYON</span>
-              </div>
-              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA comptable validée : l&apos;humain conserve la décision</h3>
-              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. CA Lyon, 13 mai 2025, n° 23/04589</p>
-              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
-                La cour valide un logiciel de comptabilité fondé sur l&apos;IA. La solution automatise une grande partie du traitement comptable, mais l&apos;utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L&apos;assistance humaine se limite à des conseils ponctuels sans se substituer au client.
-              </p>
-              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
-                L&apos;automatisation est admise lorsque les responsabilités restent clairement identifiées. Plus une IA prend des décisions à la place de l&apos;utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.
-              </p>
-            </article>
-          </div>
-          <p style={{ fontSize: 14, fontWeight: 500, textTransform: "uppercase", color: LIGHT.text, lineHeight: 1.4, margin: "0 0 6px" }}>
-            Les juges appliquent déjà une logique de gouvernance IA.
-          </p>
-          <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
-            Documentation. Transparence. Supervision humaine. Traçabilité des décisions. Bien avant les premières sanctions de l&apos;AI Act, ces exigences apparaissent déjà dans les contentieux relatifs au travail, aux données personnelles et aux outils numériques.
-          </p>
-        </div>
-      </section>
-
-      {/* 7. NOTRE ANGLE */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <div style={{ background: LIGHT.panel2, border: `1px solid ${LIGHT.border}`, borderRadius: 8, padding: 16 }}>
-            <Eyebrow>Notre angle</Eyebrow>
-            <blockquote style={{ borderLeft: "2px solid #1A47FF", paddingLeft: 12, margin: "0 0 10px", color: LIGHT.text, fontSize: 14, fontStyle: "italic", lineHeight: 1.65 }}>
-              En cas de contrôle, l&apos;entreprise doit pouvoir démontrer comment son système a été conçu, supervisé et documenté.
-            </blockquote>
-            <p style={{ ...TYPE.body, color: LIGHT.muted, margin: 0 }}>
-              Un manquement à la documentation ou à la supervision humaine devient un indice de défaut — utilisable contre vous dans tout contentieux. Nous construisons la preuve en amont pour qu&apos;elle tienne en aval.
+          <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 14 }}>
+            <p style={{ fontSize: 13, color: DARK.muted, margin: 0, lineHeight: 1.6 }}>
+              Dix-sept mois de délai ne sont pas un répit : c&apos;est le temps de
+              faire l&apos;inventaire et la qualification qu&apos;aucune entreprise
+              n&apos;a encore faits.
             </p>
           </div>
         </div>
@@ -1213,6 +866,76 @@ export default function IaActClient() {
         </div>
       </section>
 
+      {/* 6. JURISPRUDENCE */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
+            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #E14B4B", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>JANV. 2026</span>
+                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#E14B4B", border: "1px solid rgba(225,75,75,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ NANTERRE</span>
+              </div>
+              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA RH : déploiement suspendu faute de consultation du CSE</h3>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Nanterre, 29 janv. 2026, n° 25/02856</p>
+              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
+                Une entreprise déploie deux outils de gestion des compétences intégrant de l&apos;IA pour alimenter les entretiens annuels, le suivi des carrières et l&apos;affectation des salariés sur les missions. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE. Le déploiement est suspendu jusqu&apos;à l&apos;achèvement de cette procédure.
+              </p>
+              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
+                Une IA RH qui influence l&apos;évaluation, les compétences ou les parcours professionnels n&apos;est pas un simple outil informatique. Elle peut déclencher des obligations d&apos;information-consultation du CSE avant sa mise en œuvre.
+              </p>
+            </article>
+            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #F2A43A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>FÉV. 2026</span>
+                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#F2A43A", border: "1px solid rgba(242,164,58,0.35)", borderRadius: 999, padding: "2px 8px" }}>TJ PARIS</span>
+              </div>
+              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Copilot 365 : pas encore un « projet important »</h3>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. TJ Paris, 10 févr. 2026, n° 25/57412</p>
+              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
+                Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L&apos;outil est facultatif, temporaire et son impact reste limité à ce stade.
+              </p>
+              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
+                L&apos;introduction d&apos;une IA ne suffit pas, à elle seule, à caractériser un projet important. Les juges regardent ses effets réels sur l&apos;organisation du travail, les missions confiées aux salariés et leur environnement professionnel.
+              </p>
+            </article>
+            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #1A47FF", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
+                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#1A47FF", border: "1px solid rgba(26,71,255,0.35)", borderRadius: 999, padding: "2px 8px" }}>COUR DE CASSATION</span>
+              </div>
+              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>Vidéoprotection : le RGPD s&apos;applique pleinement</h3>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. Cass. soc., 21 mai 2025, n° 22-19.925</p>
+              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
+                La Cour de cassation rappelle que l&apos;exploitation d&apos;images permettant d&apos;identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut être utilisé comme preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits.
+              </p>
+              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
+                Toute IA qui analyse, surveille ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.
+              </p>
+            </article>
+            <article style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: "3px solid #29A06A", borderRadius: 8, padding: CARD_PAD, minHeight: "auto" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>MAI 2025</span>
+                <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: "#29A06A", border: "1px solid rgba(41,160,106,0.35)", borderRadius: 999, padding: "2px 8px" }}>CA LYON</span>
+              </div>
+              <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>IA comptable validée : l&apos;humain conserve la décision</h3>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 8px" }}>Réf. CA Lyon, 13 mai 2025, n° 23/04589</p>
+              <p style={{ fontSize: 12, color: "rgba(10,10,20,0.55)", lineHeight: 1.6, margin: "0 0 8px" }}>
+                La cour valide un logiciel de comptabilité fondé sur l&apos;IA. La solution automatise une grande partie du traitement comptable, mais l&apos;utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L&apos;assistance humaine se limite à des conseils ponctuels sans se substituer au client.
+              </p>
+              <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>
+                L&apos;automatisation est admise lorsque les responsabilités restent clairement identifiées. Plus une IA prend des décisions à la place de l&apos;utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.
+              </p>
+            </article>
+          </div>
+          <p style={{ fontSize: 14, fontWeight: 500, textTransform: "uppercase", color: LIGHT.text, lineHeight: 1.4, margin: "0 0 6px" }}>
+            Les juges appliquent déjà une logique de gouvernance IA.
+          </p>
+          <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
+            Documentation. Transparence. Supervision humaine. Traçabilité des décisions. Bien avant les premières sanctions de l&apos;AI Act, ces exigences apparaissent déjà dans les contentieux relatifs au travail, aux données personnelles et aux outils numériques.
+          </p>
+        </div>
+      </section>
+
       {/* 8B. QUESTIONS FRÉQUENTES */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
@@ -1346,6 +1069,29 @@ export default function IaActClient() {
         </div>
       </section>
 
+
+      {/* 12. MAILLAGE — RGPD, contrats IT, NIS 2. Version simple posée dès le
+          lot 2 pour ne pas perdre les liens internes ; à peaufiner au lot 4. */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <p style={{ fontSize: 14, color: LIGHT.muted, margin: 0, lineHeight: 1.7 }}>
+            L&apos;IA croise vos autres obligations : les données personnelles
+            relèvent du{" "}
+            <Link href="/nos-domaines/rgpd-donnees" style={{ color: BLUE, textDecoration: "underline" }}>
+              RGPD
+            </Link>
+            , les prestataires et API de vos{" "}
+            <Link href="/nos-domaines/contrats-informatiques" style={{ color: BLUE, textDecoration: "underline" }}>
+              contrats IT
+            </Link>
+            , et la journalisation rejoint les exigences de{" "}
+            <Link href="/nos-domaines/cybersecurite/nis2" style={{ color: BLUE, textDecoration: "underline" }}>
+              NIS 2
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
 
       {/* 10. CTA */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
