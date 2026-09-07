@@ -25,7 +25,15 @@ const LIGHT = {
   borderBlue: "rgba(26,71,255,0.22)",
 };
 
-const BLUE = "#1A47FF";
+/**
+ * Système chromatique (charte). Famille « Données et conformité » (même accent
+ * que la page RGPD). BLUE reste la couleur d'ACTION (boutons, liens, focus,
+ * contrôles interactifs) ; ACCENT est l'accent ÉDITORIAL de la famille (vert)
+ * réservé aux sur-titres, labels de repérage et fonds légers. Valeurs réelles
+ * posées en variables CSS sur le <main>.
+ */
+const BLUE = "var(--brand)";
+const ACCENT = "var(--famille-accent)";
 
 const INNER: CSSProperties = { maxWidth: 900, margin: "0 auto", padding: "0 48px" };
 const SECTION_PAD = "40px 0";
@@ -51,7 +59,7 @@ function Eyebrow({ children }: { children: ReactNode }) {
         fontSize: 10,
         letterSpacing: "0.18em",
         textTransform: "uppercase",
-        color: BLUE,
+        color: ACCENT,
         marginBottom: 4,
       }}
     >
@@ -140,8 +148,8 @@ const interventionTabs = [
                 <span style={{ fontSize: 12, color: LIGHT.text, textAlign: "right" }}>{v}</span>
               </div>
             ))}
-            <div style={{ background: LIGHT.panel2, borderLeft: `2px solid ${BLUE}`, padding: "10px 11px", marginTop: 11 }}>
-              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: BLUE, margin: "0 0 5px", letterSpacing: ".05em", textTransform: "uppercase" }}>
+            <div style={{ background: LIGHT.panel2, borderLeft: `2px solid ${ACCENT}`, padding: "10px 11px", marginTop: 11 }}>
+              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: ACCENT, margin: "0 0 5px", letterSpacing: ".05em", textTransform: "uppercase" }}>
                 Analyse technique — N. Abchiche-Mimouni
               </p>
               <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: 0, lineHeight: 1.6 }}>
@@ -319,7 +327,20 @@ export default function IaActClient() {
   const activePanel = interventionTabs.find((t) => t.id === activeTab) ?? interventionTabs[0];
 
   return (
-    <main style={{ background: LIGHT.bg, color: LIGHT.text, fontFamily: "var(--ff-body)" }}>
+    <main
+      data-domaine="donnees"
+      style={
+        {
+          "--brand": "#1A47FF",
+          "--brand-rgb": "26,71,255",
+          "--famille-accent": "#1D9E75",
+          "--famille-rgb": "29,158,117",
+          background: LIGHT.bg,
+          color: LIGHT.text,
+          fontFamily: "var(--ff-body)",
+        } as CSSProperties
+      }
+    >
       {/* 1. HERO */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={INNER}>
@@ -685,8 +706,8 @@ export default function IaActClient() {
                       width: 30,
                       height: 30,
                       borderRadius: "50%",
-                      border: "1px solid rgba(26,71,255,0.35)",
-                      color: BLUE,
+                      border: "1px solid rgba(var(--famille-rgb),0.35)",
+                      color: ACCENT,
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -697,7 +718,7 @@ export default function IaActClient() {
                     {s.n}
                   </span>
                   {s.pill ? (
-                    <span style={{ fontSize: 10, color: BLUE, border: `1px solid ${BLUE}55`, borderRadius: 999, padding: "2px 8px" }}>
+                    <span style={{ fontSize: 10, color: ACCENT, border: "1px solid rgba(var(--famille-rgb),0.35)", borderRadius: 999, padding: "2px 8px" }}>
                       {s.pill}
                     </span>
                   ) : null}
@@ -809,7 +830,7 @@ export default function IaActClient() {
                   <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 5 }}>
                     {m.points.map((pt) => (
                       <li key={pt} style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
-                        <span aria-hidden="true" style={{ color: BLUE, flexShrink: 0 }}>—</span>
+                        <span aria-hidden="true" style={{ color: ACCENT, flexShrink: 0 }}>—</span>
                         <span>{pt}</span>
                       </li>
                     ))}
