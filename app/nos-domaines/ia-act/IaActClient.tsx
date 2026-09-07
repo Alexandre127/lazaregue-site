@@ -3,6 +3,7 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { FAQ_TEXTE } from "./faq-texte";
 
 const DARK = {
   bg: "#0a0f2e",
@@ -314,7 +315,7 @@ const interventionTabs = [
 
 export default function IaActClient() {
   const [activeTab, setActiveTab] = useState("audit");
-  const [openQuestions, setOpenQuestions] = useState(["q1"]);
+  const [openQuestions, setOpenQuestions] = useState<number[]>([0]);
   const activePanel = interventionTabs.find((t) => t.id === activeTab) ?? interventionTabs[0];
 
   return (
@@ -1035,118 +1036,64 @@ export default function IaActClient() {
           </h2>
 
           <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
-            {[
-              {
-                id: "q1",
-                q: "Mon entreprise est-elle vraiment concernée ?",
-                badge: "En vigueur depuis 2024",
-                a: "Oui — dès que vous utilisez un système d'IA dans l'UE, même acheté à un tiers. L'AI Act s'applique aux fournisseurs ET aux déployeurs. Un outil RH de tri de CV, un algorithme de scoring client, un chatbot, une API tierce : vous êtes déployeur au sens du règlement et vous avez des obligations directes.",
-              },
-              {
-                id: "q2",
-                q: "On utilise juste ChatGPT et Copilot — on est vraiment exposé ?",
-                a: "Oui. Utiliser un outil IA tiers ne vous exonère pas de vos responsabilités. Le TJ Paris (fév. 2026, n° 25/57412) a jugé que même une expérimentation Copilot 365 limitée à des volontaires sur 4 mois pouvait déclencher des obligations sociales. Sans politique interne, chaque usage engage l'entreprise — sur les données personnelles des salariés, sur la loyauté des décisions automatisées, sur la traçabilité.",
-              },
-              {
-                id: "q3",
-                q: "Quelles sont les obligations concrètes pour un système à haut risque ?",
-                badge: "Art. 6 & Annexes I-III RIA",
-                a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). La documentation technique doit être conservée par le fournisseur du système (art. 18) ; les durées de conservation dépendent du système et du rôle tenu.",
-              },
-              {
-                id: "q4",
-                q: "L'IA engage-t-elle aussi le droit du travail ?",
-                a: "Oui — et c'est souvent la surprise. Le TJ Nanterre (29 jan. 2026, n° 25/02856) a suspendu le déploiement de logiciels IA RH faute de consultation du CSEC au préalable. La Cour de cassation (21 mai 2025, 22-19.925) impose une double conformité pour tout système IA traitant des données de salariés : RGPD ET droit du travail cumulativement. Aucune information personnelle ne peut être collectée sans que le salarié en ait été préalablement informé (art. L.1222-4 C. trav.).",
-              },
-              {
-                id: "q5",
-                q: "Nos fournisseurs IA sont responsables — pas nous ?",
-                a: "Non. Utiliser une API tierce ou un SaaS IA sans encadrement contractuel ne vous exonère pas. Vous restez déployeur au sens du règlement et responsable du déploiement. La CA Lyon (13 mai 2025, n° 23/04589) a rappelé que la responsabilité de l'utilisateur final doit être clairement documentée dans les CGV. Sans contrat encadrant votre fournisseur IA, le risque est entièrement porté par vous.",
-              },
-              {
-                id: "q6",
-                q: "Que se passe-t-il en cas de contrôle ?",
-                a: "Les autorités nationales peuvent auditer à tout moment. En cas de contrôle, l'entreprise doit pouvoir démontrer comment son système a été conçu, supervisé et documenté. Un manquement à la documentation ou à la supervision humaine devient un indice de défaut — utilisable dans tout contentieux en responsabilité. Les incidents graves doivent être notifiés dans les 72 h (croisement AI Act / RGPD art. 33).",
-              },
-              {
-                id: "q7",
-                q: "À partir de quand mes obligations s'appliquent-elles ?",
-                badge: "3 étapes clés",
-                a: (
-                  <div className="flex flex-col gap-2">
-                    <div style={{ borderLeft: "2px solid #1a7a50", padding: "8px 12px", background: "rgba(15,85,69,0.08)", fontSize: 12 }}>
-                      → Fév. 2025 : pratiques interdites et maîtrise de l&apos;IA — en vigueur (art. 5)
-                    </div>
-                    <div style={{ borderLeft: "2px solid #1a7a50", padding: "8px 12px", background: "rgba(15,85,69,0.08)", fontSize: 12 }}>
-                      → Août 2026 : transparence, gouvernance et sanctions — en vigueur
-                    </div>
-                    <div style={{ borderLeft: "2px solid #8A5A00", padding: "8px 12px", background: "rgba(138,90,0,0.08)", fontSize: 12 }}>
-                      → Déc. 2027 et août 2028 : haut risque (annexes III et I) — reporté par le Digital Omnibus
-                    </div>
-                  </div>
-                ),
-              },
-            ].map((item, idx, arr) => {
-              const isOpen = openQuestions.includes(item.id);
+            {/* Source unique : FAQ_TEXTE alimente cet accordéon ET le FAQPage
+                (page.tsx). Les deux affichent exactement le même texte. */}
+            {FAQ_TEXTE.map((item, idx, arr) => {
+              const isOpen = openQuestions.includes(idx);
               return (
                 <div
-                  key={item.id}
+                  key={item.q}
                   style={{
                     borderBottom: idx < arr.length - 1 ? `1px solid ${LIGHT.border}` : "none",
                     padding: "0 16px",
                   }}
                 >
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={`faq-ia-reponse-${item.id}`}
-                    onClick={() =>
-                      setOpenQuestions((prev) =>
-                        prev.includes(item.id) ? prev.filter((id) => id !== item.id) : [...prev, item.id]
-                      )
-                    }
-                    style={{
-                      width: "100%",
-                      border: "none",
-                      background: "transparent",
-                      padding: "10px 0",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: 12,
-                      textAlign: "left",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <div>
-                      <div style={{ fontSize: 15, fontWeight: 500, color: LIGHT.text, marginBottom: item.badge ? 6 : 0 }}>{item.q}</div>
-                      {item.badge ? (
-                        <span style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: ".06em", color: BLUE, border: "1px solid rgba(26,71,255,0.25)", borderRadius: 999, padding: "2px 8px" }}>
-                          {item.badge}
-                        </span>
-                      ) : null}
-                    </div>
-                    <span
-                      aria-hidden="true"
+                  <h3 style={{ margin: 0 }}>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-ia-reponse-${idx}`}
+                      onClick={() =>
+                        setOpenQuestions((prev) =>
+                          prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+                        )
+                      }
                       style={{
-                        fontSize: 18,
-                        color: BLUE,
-                        lineHeight: 1,
-                        transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                        transition: "transform 180ms ease",
-                        flexShrink: 0,
+                        width: "100%",
+                        border: "none",
+                        background: "transparent",
+                        padding: "12px 0",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: 12,
+                        textAlign: "left",
+                        cursor: "pointer",
+                        font: "inherit",
                       }}
                     >
-                      +
-                    </span>
-                  </button>
+                      <span style={{ fontSize: 15, fontWeight: 500, color: LIGHT.text }}>{item.q}</span>
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          fontSize: 18,
+                          color: BLUE,
+                          lineHeight: 1,
+                          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                          transition: "transform 180ms ease",
+                          flexShrink: 0,
+                        }}
+                      >
+                        +
+                      </span>
+                    </button>
+                  </h3>
 
-                  {/* La réponse reste dans le DOM une fois repliée : rendue
-                      conditionnellement, elle serait absente du HTML servi —
-                      donc invisible pour les moteurs, alors même qu'elle est
-                      déclarée dans le balisage FAQPage. */}
+                  {/* La réponse reste dans le DOM une fois repliée (hidden), pour
+                      rester présente dans le HTML servi et cohérente avec le
+                      balisage FAQPage. */}
                   <div
-                    id={`faq-ia-reponse-${item.id}`}
+                    id={`faq-ia-reponse-${idx}`}
                     hidden={!isOpen}
                     style={{ ...TYPE.small, color: LIGHT.muted, lineHeight: 1.7, padding: "0 0 14px 0", maxWidth: 760 }}
                   >

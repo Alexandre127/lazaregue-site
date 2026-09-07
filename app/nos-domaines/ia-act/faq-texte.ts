@@ -1,42 +1,43 @@
 /**
- * Version texte des questions fréquentes de la page IA & AI Act.
+ * Source UNIQUE des questions fréquentes de la page IA & AI Act.
  *
- * Elle existe uniquement pour alimenter le balisage FAQPage : les réponses
- * affichées vivent dans le composant client (certaines sont du JSX, donc
- * non sérialisables), et un composant `"use client"` ne peut pas exporter
- * de données vers un composant serveur — Next y substitue une référence.
+ * Ce fichier alimente à la fois l'accordéon visible (IaActClient) et le
+ * balisage FAQPage (page.tsx). Les réponses sont donc de simples chaînes,
+ * sérialisables : accordéon et FAQPage lisent exactement le même texte, ce
+ * qui évite toute divergence entre le contenu affiché et le balisage — une
+ * FAQ balisée non conforme au visible est un motif de sanction manuelle
+ * chez Google.
  *
- * Toute modification d'une réponse à l'écran doit être répercutée ici :
- * une FAQ balisée qui ne correspond pas au contenu visible est un motif
- * de sanction manuelle chez Google.
+ * TODO (cabinet) : les décisions de justice citées dans la page (jurisprudence)
+ * restent à vérifier une par une sur Doctrine avant publication.
  */
 export const FAQ_TEXTE: { q: string; a: string }[] = [
   {
-    q: "Mon entreprise est-elle vraiment concernée ?",
-    a: "Oui — dès que vous utilisez un système d'IA dans l'UE, même acheté à un tiers. L'AI Act s'applique aux fournisseurs ET aux déployeurs. Un outil RH de tri de CV, un algorithme de scoring client, un chatbot, une API tierce : vous êtes déployeur au sens du règlement et vous avez des obligations directes.",
+    q: "Le report de 2026 me dispense-t-il d'agir ?",
+    a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites sont sanctionnables depuis février 2025, et les obligations de transparence, de gouvernance et le régime de sanctions s'appliquent depuis août 2026. Les dix-sept mois de délai sont surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
   },
   {
-    q: "On utilise juste ChatGPT et Copilot — on est vraiment exposé ?",
-    a: "Oui. Utiliser un outil IA tiers ne vous exonère pas de vos responsabilités. Le TJ Paris (fév. 2026, n° 25/57412) a jugé que même une expérimentation Copilot 365 limitée à des volontaires sur 4 mois pouvait déclencher des obligations sociales. Sans politique interne, chaque usage engage l'entreprise — sur les données personnelles des salariés, sur la loyauté des décisions automatisées, sur la traçabilité.",
+    q: "Un logiciel de conformité suffit-il ?",
+    a: "Non. Un logiciel de conformité produit une catégorie ; il n'établit ni le rôle de votre entreprise, ni la nature réelle du système, ni la date de mise sur le marché qui commande le régime applicable. La qualification suppose une analyse juridique et un examen technique, et la défense, le jour d'un contrôle, repose sur une documentation construite — pas sur une case cochée.",
   },
   {
-    q: "Quelles sont les obligations concrètes pour un système à haut risque ?",
-    a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). La documentation technique doit être conservée par le fournisseur du système (art. 18) ; les durées de conservation dépendent du système et du rôle tenu.",
+    q: "Comment construire un registre des systèmes d'IA ?",
+    a: "En recensant les systèmes officiels et les usages informels, puis, pour chacun : la qualification (interdit, haut risque, transparence), le rôle tenu (fournisseur ou déployeur), la date de mise en service et le régime qui en découle, les données traitées et les mécanismes de supervision humaine. La date de mise en service compte autant que la qualification : elle détermine si le régime transitoire s'applique.",
   },
   {
-    q: "L'IA engage-t-elle aussi le droit du travail ?",
-    a: "Oui — et c'est souvent la surprise. Le TJ Nanterre (29 jan. 2026, n° 25/02856) a suspendu le déploiement de logiciels IA RH faute de consultation du CSEC au préalable. La Cour de cassation (21 mai 2025, 22-19.925) impose une double conformité pour tout système IA traitant des données de salariés : RGPD ET droit du travail cumulativement. Aucune information personnelle ne peut être collectée sans que le salarié en ait été préalablement informé (art. L.1222-4 C. trav.).",
+    q: "Une charte IA est-elle obligatoire en entreprise ?",
+    a: "Le règlement n'impose pas de charte en tant que telle, mais c'est l'outil qui rend l'usage de l'IA gouvernable : outils autorisés, données interdites d'injection, validation humaine, gestion des incidents, formation. Elle s'articule avec le droit du travail — une charte qui encadre les outils des salariés relève de l'information, voire de la consultation, du CSE.",
   },
   {
-    q: "Nos fournisseurs IA sont responsables — pas nous ?",
-    a: "Non. Utiliser une API tierce ou un SaaS IA sans encadrement contractuel ne vous exonère pas. Vous restez déployeur au sens du règlement et responsable du déploiement. La CA Lyon (13 mai 2025, n° 23/04589) a rappelé que la responsabilité de l'utilisateur final doit être clairement documentée dans les CGV. Sans contrat encadrant votre fournisseur IA, le risque est entièrement porté par vous.",
+    q: "Quelle différence entre fournisseur et déployeur ?",
+    a: "Le fournisseur développe le système ou le met sur le marché ; le déployeur l'utilise sous sa propre autorité. Les obligations diffèrent selon le rôle. Utiliser une API ou un SaaS tiers fait de vous un déployeur — cela ne vous exonère pas : vous restez responsable du déploiement, et l'encadrement contractuel du fournisseur détermine la répartition du risque.",
   },
   {
-    q: "Que se passe-t-il en cas de contrôle ?",
-    a: "Les autorités nationales peuvent auditer à tout moment. En cas de contrôle, l'entreprise doit pouvoir démontrer comment son système a été conçu, supervisé et documenté. Un manquement à la documentation ou à la supervision humaine devient un indice de défaut — utilisable dans tout contentieux en responsabilité. Les incidents graves doivent être notifiés dans les 72 h (croisement AI Act / RGPD art. 33).",
+    q: "Comment articuler AI Act, RGPD et droit du travail ?",
+    a: "Les trois régimes se cumulent. Dès qu'un système traite des données personnelles, le RGPD s'applique pleinement (licéité, information, droits des personnes). S'il concerne des salariés, le droit du travail ajoute ses exigences — information et consultation du CSE, loyauté des évaluations, article L.1222-4 du code du travail. L'AI Act se superpose à ces deux corps de règles ; il ne les remplace pas.",
   },
   {
-    q: "À partir de quand mes obligations s'appliquent-elles ?",
-    a: "Le règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du 8 juillet 2026, s'applique par étapes. Février 2025 : pratiques interdites et maîtrise de l'IA, en vigueur (art. 5). Août 2026 : transparence, gouvernance et sanctions, en vigueur. Les obligations relatives aux systèmes à haut risque ont été reportées : annexe III au 2 décembre 2027, annexe I au 2 août 2028.",
+    q: "Combien coûte un diagnostic AI Act ?",
+    a: "Le coût dépend de plusieurs variables : le nombre de systèmes officiels et d'usages informels, leur qualification, le rôle tenu par l'entreprise, l'état de la documentation existante et le volume à créer ou à reprendre. Un diagnostic commence par l'inventaire et la qualification — c'est de là que découlent le périmètre et la charge de la mise en conformité.",
   },
 ];
