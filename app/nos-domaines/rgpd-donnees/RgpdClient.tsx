@@ -603,65 +603,77 @@ function LivrablesPreview() {
     >
       <div>
         {items.map((item, i) => (
-          <div
-            key={i}
-            onClick={() => setCur(i)}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "12px",
-              padding: "10px 0",
-              borderBottom: i < 5 ? `.5px solid ${LIGHT.border}` : "none",
-              cursor: "pointer",
-            }}
-          >
-            <span
+          <h3 key={i} style={{ margin: 0 }}>
+            <button
+              type="button"
+              onClick={() => setCur(i)}
+              id={`livrable-tab-${i}`}
+              aria-controls={`livrable-doc-${i}`}
+              aria-current={cur === i ? "true" : undefined}
               style={{
-                fontSize: "11px",
-                color: cur === i ? ACCENT : LIGHT.faint,
-                fontFamily: "monospace",
-                width: "20px",
-                flexShrink: 0,
-                paddingTop: "1px",
+                width: "100%",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "12px",
+                padding: "10px 0",
+                border: "none",
+                borderBottom: i < 5 ? `.5px solid ${LIGHT.border}` : "none",
+                background: "none",
+                textAlign: "left",
+                font: "inherit",
+                cursor: "pointer",
               }}
             >
-              {item.num}
-            </span>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  fontSize: "12px",
-                  color: cur === i ? LIGHT.text : LIGHT.muted,
-                  fontWeight: 500,
-                  lineHeight: 1.4,
-                }}
-              >
-                {item.name}
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  color: cur === i ? LIGHT.muted : LIGHT.faint,
-                  lineHeight: 1.4,
-                  marginTop: "2px",
-                }}
-              >
-                {item.sub}
-              </div>
-            </div>
-            {cur === i ? (
               <span
                 style={{
-                  width: "4px",
-                  height: "4px",
-                  borderRadius: "50%",
-                  background: "#1D9E75",
+                  fontSize: "11px",
+                  color: cur === i ? ACCENT : LIGHT.faint,
+                  fontFamily: "monospace",
+                  width: "20px",
                   flexShrink: 0,
-                  marginTop: "5px",
+                  paddingTop: "1px",
                 }}
-              />
-            ) : null}
-          </div>
+              >
+                {item.num}
+              </span>
+              <span style={{ flex: 1 }}>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "12px",
+                    color: cur === i ? LIGHT.text : LIGHT.muted,
+                    fontWeight: 500,
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {item.name}
+                </span>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "10px",
+                    color: cur === i ? LIGHT.muted : LIGHT.faint,
+                    lineHeight: 1.4,
+                    marginTop: "2px",
+                  }}
+                >
+                  {item.sub}
+                </span>
+              </span>
+              {cur === i ? (
+                <span
+                  style={{
+                    width: "4px",
+                    height: "4px",
+                    borderRadius: "50%",
+                    background: "#1D9E75",
+                    flexShrink: 0,
+                    marginTop: "5px",
+                  }}
+                />
+              ) : null}
+            </button>
+          </h3>
         ))}
         <div
           style={{
@@ -689,6 +701,10 @@ function LivrablesPreview() {
         {docs.map((doc, i) => (
           <div
             key={i}
+            id={`livrable-doc-${i}`}
+            role="group"
+            aria-labelledby={`livrable-tab-${i}`}
+            aria-hidden={cur === i ? undefined : "true"}
             style={{
               position: "absolute",
               inset: 0,
@@ -754,27 +770,27 @@ function LivrablesPreview() {
 const SITUATIONS = [
   {
     num: "01",
-    text: "Registre des traitements jamais mis à jour ou inexistant",
+    text: "Un contrôle CNIL s'annonce — préparer la documentation et la ligne de défense",
   },
   {
     num: "02",
-    text: "Outils SaaS et cloud utilisés sans cartographie ni contrat article 28",
+    text: "Des données ont fuité — qualifier l'incident et arbitrer la notification",
   },
   {
     num: "03",
-    text: "Base légale absente ou incorrecte pour les traitements marketing ou RH",
+    text: "Un nouveau produit se lance — intégrer la conformité dès la conception",
   },
   {
     num: "04",
-    text: "Transferts de données hors UE non identifiés (outils américains, sous-traitants offshore)",
+    text: "Des outils SaaS sont utilisés sans encadrement — cartographier et contractualiser",
   },
   {
     num: "05",
-    text: "Politique de conservation des données inexistante — données conservées indéfiniment",
+    text: "Un salarié exerce ses droits — répondre dans les délais sans exposer l'entreprise",
   },
   {
     num: "06",
-    text: "Droits des salariés insuffisamment encadrés — absence de procédure de réponse documentée",
+    text: "Une levée de fonds ou une acquisition se prépare — sécuriser la due diligence RGPD",
   },
 ] as const;
 
@@ -1097,20 +1113,6 @@ export default function RgpdClient() {
               >
                 Avocat RGPD et données personnelles à Paris
               </h1>
-            </FadeUp>
-            <FadeUp delay={0.2}>
-              <p
-                style={{
-                  fontSize: "20px",
-                  fontWeight: 400,
-                  color: ACCENT,
-                  lineHeight: 1.4,
-                  marginBottom: "20px",
-                  maxWidth: "520px",
-                }}
-              >
-                Une conformité qui se prouve.
-              </p>
             </FadeUp>
             <FadeUp delay={0.3}>
               <p
