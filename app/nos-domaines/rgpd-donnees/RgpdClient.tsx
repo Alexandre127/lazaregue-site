@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { MembreCarte } from "@/components/equipe-dossier";
 import { FAQ_ITEMS } from "./faq";
 
 /**
@@ -2126,7 +2127,7 @@ export default function RgpdClient() {
           Notre conviction
         </h2>
         <div
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center"
+          className="grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr] md:items-start"
           style={{
             padding: "24px",
             background: LIGHT.panel2,
@@ -2134,6 +2135,23 @@ export default function RgpdClient() {
             borderRadius: "12px",
           }}
         >
+          {/* Portrait au format du binôme (carré/grande taille + encadré de
+              fonction) — l'attribution est portée par la carte, pas répétée
+              sous la citation. */}
+          <MembreCarte
+            membre={{
+              slug: "sarah",
+              role: "Données personnelles & intelligence artificielle",
+              tags: [],
+            }}
+            couleurs={{
+              carte: LIGHT.panel,
+              panneau: LIGHT.panel2,
+              bordure: LIGHT.border,
+              texte: LIGHT.text,
+              secondaire: LIGHT.muted,
+            }}
+          />
           <div>
             <p
               style={{
@@ -2142,7 +2160,7 @@ export default function RgpdClient() {
                 fontSize: "16px",
                 color: LIGHT.text,
                 lineHeight: 1.7,
-                margin: 0,
+                margin: "0 0 20px",
               }}
             >
               « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
@@ -2150,44 +2168,18 @@ export default function RgpdClient() {
               contrôle avec une conformité déjà documentée, plutôt que de devoir
               la reconstituer dans l&apos;urgence. »
             </p>
-            <div className="mt-4 flex items-center gap-3">
-              <Image
-                src="/images/sarah-pro.jpg"
-                alt="Me Sarah Hinderer"
-                width={44}
-                height={44}
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center top",
-                  flexShrink: 0,
-                }}
+            <video
+              width="100%"
+              style={{ borderRadius: "12px", display: "block" }}
+              controls
+              playsInline
+            >
+              <source
+                src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4"
+                type="video/mp4"
               />
-              <p
-                style={{
-                  fontSize: "13px",
-                  color: LIGHT.muted,
-                  margin: 0,
-                  lineHeight: 1.5,
-                }}
-              >
-                — Me Sarah Hinderer
-                <br />
-                Données personnelles &amp; intelligence artificielle
-              </p>
-            </div>
+            </video>
           </div>
-          <video
-            width="100%"
-            style={{ borderRadius: "12px" }}
-            controls
-            playsInline
-          >
-            <source
-              src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4"
-              type="video/mp4"
-            />
-          </video>
         </div>
       </section>
 
