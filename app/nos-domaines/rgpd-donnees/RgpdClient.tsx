@@ -58,33 +58,33 @@ function LivrablesPreview() {
   const items = [
     {
       num: "01",
-      name: "Registre des traitements",
-      sub: "Base légale documentée",
+      name: "DPA sous-traitant — art. 28",
+      sub: "Les clauses que les éditeurs refusent — et comment elles se rédigent",
     },
     {
       num: "02",
-      name: "Procédure violations CNIL",
-      sub: "Grille d'évaluation du risque — critères concrets",
+      name: "Politique de confidentialité",
+      sub: "Droit du travail, cookies et régime sectoriel articulés",
     },
     {
       num: "03",
-      name: "DPA sous-traitant Art. 28",
-      sub: "Clauses que les SaaS refusent — et comment négocier",
+      name: "Registre des traitements",
+      sub: "La base légale documentée, traitement par traitement",
     },
     {
       num: "04",
-      name: "Politique de confidentialité",
-      sub: "Articulation droit du travail + cookies + secteur",
+      name: "Grille d'évaluation du risque",
+      sub: "Notifier ou non : les critères de la décision",
     },
     {
       num: "05",
-      name: "Rapport due diligence M&A",
-      sub: "Valorisation chiffrée du risque résiduel",
+      name: "Rapport de due diligence",
+      sub: "Ce qu'un acquéreur regarde dans une base clients",
     },
     {
       num: "06",
-      name: "Vigie — accès au portail de conformité continue",
-      sub: "Vos documents à jour, supervisés par nos avocats",
+      name: "Vigie — conformité continue",
+      sub: "Vos documents tenus à jour, pas un audit oublié",
     },
   ];
 
@@ -277,14 +277,14 @@ function LivrablesPreview() {
       </div>
     </div>,
 
-    // DOC 2 — DPA négocié
+    // DOC 2 — DPA sous-traitant (2 colonnes : version de départ / rédaction proposée)
     <div
       key="2"
       style={{
         padding: "12px 14px",
         fontSize: "9px",
         color: "#333",
-        lineHeight: 1.65,
+        lineHeight: 1.55,
       }}
     >
       <div
@@ -299,58 +299,112 @@ function LivrablesPreview() {
       >
         DPA — Rédaction proposée par le cabinet — spécimen
       </div>
-      <div style={{ fontSize: "8px", color: "#888", marginBottom: "10px" }}>
+      <div style={{ fontSize: "8px", color: "#888", marginBottom: "8px" }}>
         Prestataire SaaS · Spécimen — aucune donnée réelle
       </div>
+      {[
+        {
+          art: "Art. 7 — Localisation des données",
+          depart: "Hébergement « mondial », transferts non encadrés.",
+          propose:
+            "Hébergement dans l'UE. Tout transfert hors UE soumis à accord préalable écrit.",
+        },
+        {
+          art: "Art. 9 — Droit d'audit",
+          depart: "Aucun droit d'audit prévu.",
+          propose:
+            "Audit annuel, préavis 30 jours ; rapport SOC 2 Type II en substitution.",
+        },
+        {
+          art: "Art. 3 — Notification d'incident",
+          depart: "Le prestataire informe le client dans les meilleurs délais.",
+          propose:
+            "Notification sous 24 heures, contenu minimal défini, conservation des journaux pendant six mois.",
+        },
+      ].map((row) => (
+        <div
+          key={row.art}
+          style={{
+            marginBottom: "6px",
+            paddingBottom: "6px",
+            borderBottom: "1px solid #f0f0f0",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 700,
+              color: "#111",
+              fontSize: "8.5px",
+              marginBottom: "3px",
+            }}
+          >
+            {row.art}
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "6px",
+            }}
+          >
+            <div
+              style={{
+                background: "#f4f4f4",
+                borderLeft: "2px solid #bbb",
+                padding: "4px 6px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "6.5px",
+                  textTransform: "uppercase",
+                  letterSpacing: ".04em",
+                  color: "#888",
+                  marginBottom: "2px",
+                }}
+              >
+                Version de départ
+              </div>
+              <div style={{ fontSize: "8px", color: "#666" }}>{row.depart}</div>
+            </div>
+            <div
+              style={{
+                background: "#f0f4ff",
+                borderLeft: "2px solid #1A47FF",
+                padding: "4px 6px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "6.5px",
+                  textTransform: "uppercase",
+                  letterSpacing: ".04em",
+                  color: "#1A47FF",
+                  marginBottom: "2px",
+                }}
+              >
+                Rédaction proposée
+              </div>
+              <div style={{ fontSize: "8px", color: "#333" }}>{row.propose}</div>
+            </div>
+          </div>
+        </div>
+      ))}
       <div
         style={{
-          marginBottom: "8px",
-          paddingBottom: "8px",
-          borderBottom: "1px solid #f0f0f0",
+          background: "#fffbf0",
+          borderLeft: "2px solid #e6a817",
+          padding: "6px 8px",
+          marginTop: "2px",
+          fontSize: "8px",
+          color: "#555",
+          lineHeight: 1.55,
         }}
       >
-        <div style={{ fontWeight: 700, color: "#111", fontSize: "8.5px" }}>
-          Art. 7 — Localisation des données
-        </div>
-        <div style={{ fontSize: "8px", color: "#444", marginTop: "3px" }}>
-          Hébergement exclusivement dans l'UE. Tout transfert hors UE soumis à
-          accord préalable écrit.
-        </div>
-        <div
-          style={{
-            background: "#f0f4ff",
-            borderLeft: "2px solid #1A47FF",
-            padding: "4px 7px",
-            fontSize: "8px",
-            color: "#333",
-            marginTop: "4px",
-          }}
-        >
-          💬 Version standard prévoyait une localisation "mondiale". Clause
-          modifiée après négociation.
-        </div>
-      </div>
-      <div>
-        <div style={{ fontWeight: 700, color: "#111", fontSize: "8.5px" }}>
-          Art. 9 — Droit d'audit
-        </div>
-        <div style={{ fontSize: "8px", color: "#444", marginTop: "3px" }}>
-          Droit d'audit annuel avec préavis 30 jours. Rapport SOC 2 Type II en
-          substitution.
-        </div>
-        <div
-          style={{
-            background: "#f0f4ff",
-            borderLeft: "2px solid #1A47FF",
-            padding: "4px 7px",
-            fontSize: "8px",
-            color: "#333",
-            marginTop: "4px",
-          }}
-        >
-          💬 Refus initial contourné : certification SOC 2 acceptée + droit
-          d'audit exceptionnel en cas d'incident.
-        </div>
+        <strong style={{ color: "#b8860b" }}>Pourquoi cela compte.</strong>{" "}
+        « Dans les meilleurs délais » ne permet pas de tenir les soixante-douze
+        heures de l'article 33 : le responsable de traitement dépend alors du
+        calendrier de son prestataire.
       </div>
     </div>,
 
@@ -592,6 +646,19 @@ function LivrablesPreview() {
     </div>,
   ];
 
+  // Ordre d'affichage (A6) : le DPA passe en premier. Les blocs `docs` restent
+  // définis dans leur ordre historique ; `order` mappe l'index affiché (celui
+  // du menu et de `cur`) vers le bloc et son bandeau.
+  const order = [2, 3, 0, 1, 4, 5];
+  const docBadges = [
+    "Registre Art.30",
+    "Procédure Art.33",
+    "DPA Art.28",
+    "Politique RGPD",
+    "Due Diligence M&A",
+    "Vigie by Lazarègue Avocats",
+  ];
+
   return (
     <div
       style={{
@@ -695,10 +762,21 @@ function LivrablesPreview() {
           />
         </div>
         <style>{`@keyframes progressAnim { from { width: 0% } to { width: 100% } }`}</style>
+        <p
+          style={{
+            marginTop: "12px",
+            fontFamily: "monospace",
+            fontSize: "9px",
+            letterSpacing: ".08em",
+            color: LIGHT.faint,
+          }}
+        >
+          SPÉCIMENS · AUCUNE DONNÉE RÉELLE
+        </p>
       </div>
 
       <div style={{ position: "relative", height: "320px" }}>
-        {docs.map((doc, i) => (
+        {order.map((docIdx, i) => (
           <div
             key={i}
             id={`livrable-doc-${i}`}
@@ -747,19 +825,10 @@ function LivrablesPreview() {
                   borderRadius: "2px",
                 }}
               >
-                {
-                  [
-                    "Registre Art.30",
-                    "Procédure Art.33",
-                    "DPA Art.28",
-                    "Politique RGPD",
-                    "Due Diligence M&A",
-                    "Vigie by Lazarègue Avocats",
-                  ][i]
-                }
+                {docBadges[docIdx]}
               </span>
             </div>
-            {doc}
+            {docs[docIdx]}
           </div>
         ))}
       </div>
@@ -918,7 +987,9 @@ function SituationItem({ num, text }: { num: string; text: string }) {
 }
 
 function FaqAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  // A9 — la question « prix » (première) est dépliée par défaut : Google
+  // l'affiche dans le SERP « avocat RGPD ».
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <div>
@@ -1585,6 +1656,163 @@ export default function RgpdClient() {
           Des spécimens documentés, pas des modèles
         </h2>
         <LivrablesPreview />
+      </section>
+
+      {/* DPO EXTERNE (section 7) */}
+      <section
+        style={{
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
+        }}
+        className="mx-auto"
+      >
+        <p
+          style={{
+            fontSize: "10px",
+            color: ACCENT,
+            letterSpacing: ".12em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}
+        >
+          DPO externe
+        </p>
+        <h2
+          style={{
+            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontWeight: 600,
+            color: LIGHT.text,
+            maxWidth: "720px",
+            marginBottom: "16px",
+            lineHeight: 1.35,
+          }}
+        >
+          DPO externe et accompagnement du DPO interne
+        </h2>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            marginBottom: "20px",
+            lineHeight: 1.75,
+          }}
+        >
+          Le règlement impose la désignation d&apos;un délégué à la protection
+          des données dans certains cas (art. 37). Selon votre organisation, le
+          cabinet exerce la fonction ou appuie le délégué en place — tenue du
+          registre, analyses d&apos;impact, sensibilisation des équipes,
+          relations avec la CNIL.
+        </p>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            fontSize: "13px",
+            color: LIGHT.faint,
+            cursor: "default",
+          }}
+        >
+          Découvrir notre offre DPO externe →
+          <span
+            style={{
+              fontSize: "9px",
+              letterSpacing: ".08em",
+              textTransform: "uppercase",
+              color: LIGHT.faint,
+              border: `1px solid ${LIGHT.border}`,
+              borderRadius: "3px",
+              padding: "2px 6px",
+            }}
+          >
+            Page à venir
+          </span>
+        </span>
+      </section>
+
+      {/* CONTRÔLE CNIL & VIOLATION (section 8) */}
+      <section
+        id="controle-cnil"
+        style={{
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
+          scrollMarginTop: "80px",
+        }}
+        className="mx-auto"
+      >
+        <p
+          style={{
+            fontSize: "10px",
+            color: ACCENT,
+            letterSpacing: ".12em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}
+        >
+          Contrôle CNIL &amp; violation
+        </p>
+        <h2
+          style={{
+            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontWeight: 600,
+            color: LIGHT.text,
+            maxWidth: "760px",
+            marginBottom: "16px",
+            lineHeight: 1.35,
+          }}
+        >
+          Contrôle CNIL, violation de données et responsabilité des
+          sous-traitants
+        </h2>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            marginBottom: "16px",
+            lineHeight: 1.75,
+          }}
+        >
+          Une violation doit être notifiée à la CNIL dans les meilleurs délais
+          et au plus tard sous soixante-douze heures lorsqu&apos;elle présente
+          un risque pour les droits et libertés des personnes, et les personnes
+          concernées informées lorsque ce risque est élevé (art. 33 et 34). Le
+          délai court à compter de la prise de connaissance effective — une
+          notion qui se discute.
+        </p>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            marginBottom: "20px",
+            lineHeight: 1.75,
+          }}
+        >
+          Lorsque l&apos;incident survient chez un prestataire, la répartition
+          des responsabilités dépend des clauses de sous-traitance. Des clauses
+          inadaptées fragilisent la maîtrise contractuelle du risque et
+          compliquent la détermination des responsabilités après coup.
+        </p>
+        <p
+          style={{
+            fontSize: "13px",
+            color: LIGHT.muted,
+            margin: 0,
+            lineHeight: 1.7,
+          }}
+        >
+          L&apos;incident relève aussi du terrain pénal ?{" "}
+          <a
+            href="/nos-domaines/cybercriminalite"
+            style={{ color: ACCENT, textDecoration: "underline" }}
+          >
+            Avocat en cybercriminalité
+          </a>
+        </p>
       </section>
 
       {/* DUE DILIGENCE & M&A (section 9) */}

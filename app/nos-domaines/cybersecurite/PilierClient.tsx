@@ -65,13 +65,12 @@ const PORTES: Porte[] = [
     titre: "Des données ont fuité",
     corps:
       "Qualification de la violation, notification à la CNIL, information des personnes concernées, exposition au contentieux.",
-    // A8 : à réactiver vers /nos-domaines/rgpd-donnees#controle-cnil EN MÊME TEMPS
-    // que la section « Contrôle CNIL / violation » de la page RGPD (lot 3). Tant
-    // qu'elle n'existe pas, la porte reste désactivée pour ne pas envoyer le
-    // visiteur sur une page qui ne traite pas son sujet.
+    // A8 : pointe vers la section « Contrôle CNIL, violation de données et
+    // responsabilité des sous-traitants » de la page RGPD (ancre #controle-cnil),
+    // créée au lot 3. La page fille annoncée auparavant n'est plus nécessaire.
     lien: "Violation de données personnelles",
-    href: "/nos-domaines/cybersecurite/violation-de-donnees",
-    disponible: false,
+    href: "/nos-domaines/rgpd-donnees#controle-cnil",
+    disponible: true,
   },
   {
     titre: "Un client exige des garanties",
