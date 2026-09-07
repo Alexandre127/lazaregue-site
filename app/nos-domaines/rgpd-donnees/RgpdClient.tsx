@@ -1858,9 +1858,10 @@ export default function RgpdClient() {
           }}
         >
           Dans toute opération de fusion-acquisition ou levée de fonds, le
-          niveau de conformité RGPD est audité. Un fichier clients sans base
-          légale peut être qualifié d&apos;actif illicite et peser sur la
-          valorisation de la cible.
+          niveau de conformité RGPD est audité. Un fichier clients constitué ou
+          exploité sans base légale peut voir sa licéité contestée, ce qui
+          affecte sa possibilité d&apos;exploitation, sa cessibilité et, par
+          conséquent, sa valorisation dans l&apos;opération.
         </p>
         <p
           style={{
@@ -2145,8 +2146,9 @@ export default function RgpdClient() {
               }}
             >
               « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
-              système de preuve. Les entreprises qui le maîtrisent vraiment ne
-              subissent pas les contrôles. Elles les anticipent. »
+              système de preuve. Les entreprises qui le maîtrisent arrivent au
+              contrôle avec une conformité déjà documentée, plutôt que de devoir
+              la reconstituer dans l&apos;urgence. »
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Image
@@ -2232,13 +2234,13 @@ export default function RgpdClient() {
           background: DARK.bg,
           margin: "32px auto 80px",
           borderRadius: "12px",
-          border: `0.5px solid rgba(${ACCENT_RGB},0.15)`,
+          border: `0.5px solid rgba(${BRAND_RGB},0.15)`,
         }}
       >
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background: `radial-gradient(circle at 30% 50%, rgba(${ACCENT_RGB},0.15) 0%, transparent 60%)`,
+            background: `radial-gradient(circle at 30% 50%, rgba(${BRAND_RGB},0.15) 0%, transparent 60%)`,
             animation: "glowMove 6s ease-in-out infinite alternate",
           }}
           aria-hidden
