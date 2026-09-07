@@ -195,7 +195,7 @@ function SectionHead({ label, title, sub }: { label: string; title: string; sub?
   return (
     <>
       <Eyebrow>{label}</Eyebrow>
-      <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 10px" }}>
+      <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: LIGHT.text, margin: "0 0 10px" }}>
         {title}
       </h2>
       {sub ? (
@@ -427,7 +427,7 @@ export default function PilierClient() {
           .cyb-banner { min-height: 44px !important; }
           .cyb-banner-text { flex-direction: row; align-items: baseline; gap: 10px; }
         }
-        .cyb-h1 { font-size: clamp(30px, 6vw, 60px); line-height: 1.08; }
+        .cyb-h1 { font-size: clamp(32px, 5.5vw, 60px); line-height: 1.08; }
         @media (prefers-reduced-motion: reduce) { .cyb-plus { transition: none; } }
 
         /* ---- Héro avec photographie ----
@@ -695,7 +695,7 @@ export default function PilierClient() {
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>L&apos;obligation de sécurité</Eyebrow>
-          <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 18px", maxWidth: PROSE_MAX }}>
+          <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: LIGHT.text, margin: "0 0 18px", maxWidth: PROSE_MAX }}>
             Ce que « mesures appropriées » veut dire concrètement
           </h2>
           <div style={{ maxWidth: PROSE_MAX }}>
@@ -738,7 +738,7 @@ export default function PilierClient() {
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>NIS 2</Eyebrow>
-          <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 18px", maxWidth: PROSE_MAX }}>
+          <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: LIGHT.text, margin: "0 0 18px", maxWidth: PROSE_MAX }}>
             Une contrainte déjà là, un texte qui ne l&apos;est pas encore
           </h2>
 
@@ -794,7 +794,7 @@ export default function PilierClient() {
         <div className="grid grid-cols-1 lg:grid-cols-2" style={{ ...INNER, gap: 40, alignItems: "start" }}>
           <div>
             <Eyebrow>Notre approche</Eyebrow>
-            <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 18px" }}>
+            <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: LIGHT.text, margin: "0 0 18px" }}>
               Un avocat et un expert technique, ensemble
             </h2>
             <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px", maxWidth: PROSE_MAX }}>
@@ -853,7 +853,7 @@ export default function PilierClient() {
             <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#7fa8ff", margin: "0 0 10px" }}>
               Quelle que soit la situation
             </p>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 600, color: "#ffffff", margin: "0 0 10px" }}>
+            <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: "#ffffff", margin: "0 0 10px" }}>
               Parlons de votre situation
             </h2>
             <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.7, margin: "0 auto 26px", maxWidth: 520 }}>

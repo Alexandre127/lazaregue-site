@@ -42,6 +42,23 @@ const LIGHT = {
 const INNER = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
 const SECTION_PAD = "56px 0";
 
+/**
+ * Masqué visuellement mais présent dans le DOM (et l'arbre d'accessibilité).
+ * Sert aux sections dont le titre visible est un sur-titre graphique : on garde
+ * le sur-titre tel quel et on ajoute un vrai h2 pour la hiérarchie.
+ */
+const SR_ONLY: CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
+
 const HERO_STATS = [
   {
     value: 20,
@@ -1165,11 +1182,11 @@ export default function RgpdClient() {
             <FadeUp delay={0.1}>
               <h1
                 style={{
-                  fontSize: "36px",
+                  fontSize: "clamp(32px, 5.5vw, 60px)",
                   fontWeight: 600,
                   color: "#ffffff",
                   marginBottom: "12px",
-                  lineHeight: 1.2,
+                  lineHeight: 1.08,
                 }}
               >
                 Avocat RGPD et données personnelles à Paris
@@ -1256,7 +1273,9 @@ export default function RgpdClient() {
       {/* REPÈRES CHIFFRÉS (section 2) — grille 2×2, mobile et desktop */}
       <section style={{ background: DARK.bg }}>
         <div style={{ ...INNER, padding: "0 24px 64px" }}>
-          <h2
+          <h2 style={SR_ONLY}>Repères chiffrés</h2>
+          <p
+            aria-hidden="true"
             style={{
               fontSize: "10px",
               fontWeight: 400,
@@ -1267,7 +1286,7 @@ export default function RgpdClient() {
             }}
           >
             Repères chiffrés
-          </h2>
+          </p>
           <div className="grid grid-cols-2 gap-3">
             {HERO_STATS.map((stat) => (
               <StatRow key={stat.label} stat={stat} />
@@ -1292,12 +1311,12 @@ export default function RgpdClient() {
           </p>
           <h2
             style={{
-              fontSize: "clamp(20px, 2.5vw, 28px)",
+              fontSize: "clamp(22px, 2.8vw, 30px)",
               fontWeight: 600,
               color: "#ffffff",
               maxWidth: "720px",
               marginBottom: "12px",
-              lineHeight: 1.35,
+              lineHeight: 1.25,
             }}
           >
             Dans quelles situations faire appel à un avocat RGPD&nbsp;?
@@ -1338,12 +1357,12 @@ export default function RgpdClient() {
           </p>
           <h2
             style={{
-              fontSize: "clamp(20px, 2.5vw, 28px)",
+              fontSize: "clamp(22px, 2.8vw, 30px)",
               fontWeight: 600,
               color: LIGHT.text,
               maxWidth: "720px",
               marginBottom: "20px",
-              lineHeight: 1.35,
+              lineHeight: 1.25,
             }}
           >
             Une conformité qui se prouve
@@ -1400,7 +1419,7 @@ export default function RgpdClient() {
         </div>
         <h2
           style={{
-            fontSize: "20px",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             marginBottom: "40px",
@@ -1572,7 +1591,7 @@ export default function RgpdClient() {
                     fontWeight: 600,
                     color: LIGHT.text,
                     marginBottom: "6px",
-                    lineHeight: 1.35,
+                    lineHeight: 1.25,
                   }}
                 >
                   {etape.titre}
@@ -1636,11 +1655,11 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             marginBottom: "32px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           Des spécimens documentés, pas des modèles
@@ -1670,12 +1689,12 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             maxWidth: "720px",
             marginBottom: "16px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           DPO externe et accompagnement du DPO interne
@@ -1746,12 +1765,12 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             maxWidth: "760px",
             marginBottom: "16px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           Contrôle CNIL, violation de données et responsabilité des
@@ -1827,12 +1846,12 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             maxWidth: "720px",
             marginBottom: "12px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           Due diligence RGPD et opérations M&amp;A
@@ -1901,11 +1920,11 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "20px",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             marginBottom: "12px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           Ce que nous voyons chaque semaine
@@ -2114,7 +2133,9 @@ export default function RgpdClient() {
           borderTop: `1px solid ${LIGHT.border}`,
         }}
       >
-        <h2
+        <h2 style={SR_ONLY}>Notre conviction</h2>
+        <p
+          aria-hidden="true"
           style={{
             fontSize: "10px",
             fontWeight: 400,
@@ -2125,7 +2146,7 @@ export default function RgpdClient() {
           }}
         >
           Notre conviction
-        </h2>
+        </p>
         <div
           className="grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr] md:items-start"
           style={{
@@ -2205,11 +2226,11 @@ export default function RgpdClient() {
         </p>
         <h2
           style={{
-            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontSize: "clamp(22px, 2.8vw, 30px)",
             fontWeight: 600,
             color: LIGHT.text,
             marginBottom: "24px",
-            lineHeight: 1.35,
+            lineHeight: 1.25,
           }}
         >
           Ce que nous demandent les dirigeants
@@ -2241,11 +2262,11 @@ export default function RgpdClient() {
           <div>
             <h2
               style={{
-                fontSize: "clamp(20px, 2.5vw, 26px)",
+                fontSize: "clamp(22px, 2.8vw, 30px)",
                 fontWeight: 600,
                 color: "#ffffff",
                 marginBottom: "12px",
-                lineHeight: 1.35,
+                lineHeight: 1.25,
               }}
             >
               Vous préparez une opération, anticipez un contrôle ou structurez

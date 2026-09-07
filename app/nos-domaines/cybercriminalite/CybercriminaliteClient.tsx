@@ -30,7 +30,7 @@ const CARD_PAD = "14px 16px";
 const GRID_GAP = 10;
 
 const TYPE = {
-  h2: { fontSize: 24, fontWeight: 500, lineHeight: 1.3 } as const,
+  h2: { fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25 } as const,
   h3: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 } as const,
 };
 
@@ -433,7 +433,7 @@ export default function CybercriminaliteClient() {
         .cyber-hero { display: flex; align-items: stretch; overflow: hidden; min-height: 380px; }
         .cyber-hero-text { flex: 1; padding: 80px 48px 32px 64px; }
         .cyber-hero-media { width: 42%; position: relative; overflow: hidden; flex-shrink: 0; }
-        .cyber-hero-h1 { font-size: clamp(30px, 5vw, 60px); line-height: 1.08; }
+        .cyber-hero-h1 { font-size: clamp(32px, 5.5vw, 60px); line-height: 1.08; }
         .cyber-hero-accroche { font-size: clamp(20px, 3.4vw, 40px); }
         .cyber-hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
         .cyber-hero-btns a { min-height: 48px; }
@@ -491,7 +491,7 @@ export default function CybercriminaliteClient() {
           <div style={{ display: "inline-block", fontSize: 11, fontWeight: 500, letterSpacing: ".12em", textTransform: "uppercase", background: "rgba(226,75,74,.2)", color: "#F09595", padding: "4px 14px", borderRadius: 20, marginBottom: 16 }}>
             Cybercriminalité · Droit pénal · Victimes &amp; Mis en cause
           </div>
-          <h1 className="cyber-hero-h1" style={{ fontWeight: 500, color: "#ffffff", margin: "0 0 10px" }}>
+          <h1 className="cyber-hero-h1" style={{ fontWeight: 600, color: "#ffffff", margin: "0 0 10px" }}>
             Avocat en cybercriminalité à Paris
           </h1>
           {/* Accroche : même typographie d'affichage, ~70 % du H1, en <p> (pas <h2>). */}
