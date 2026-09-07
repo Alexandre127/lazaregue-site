@@ -1075,22 +1075,6 @@ function FaqAccordion() {
   );
 }
 
-function PulsingDot({ color }: { color: string }) {
-  return (
-    <span
-      style={{
-        width: "10px",
-        height: "10px",
-        borderRadius: "50%",
-        background: color,
-        flexShrink: 0,
-        animation: "pulse 2.5s ease-in-out infinite",
-        boxShadow: `0 0 0 0 ${color}66`,
-      }}
-    />
-  );
-}
-
 export default function RgpdClient() {
   const terrainMountedRef = useRef(true);
   const [ctaHover, setCtaHover] = useState(false);
@@ -1136,14 +1120,6 @@ export default function RgpdClient() {
           to {
             opacity: 1;
             transform: translateY(0);
-          }
-        }
-        @keyframes pulse {
-          0%, 100% {
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.25);
-          }
-          50% {
-            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
           }
         }
         @keyframes fadeIn {
@@ -2289,8 +2265,7 @@ export default function RgpdClient() {
                 margin: 0,
               }}
             >
-              Audit RGPD, due diligence M&A, mise en conformité — nous répondons
-              sous 48h.
+              Audit RGPD, due diligence M&A, mise en conformité.
             </p>
             <p
               style={{
@@ -2353,14 +2328,6 @@ export default function RgpdClient() {
               >
                 Données personnelles & intelligence artificielle
               </p>
-              <div className="mt-3 flex items-center justify-center gap-2">
-                {/* Statut de service, pas une action : point neutre + texte
-                    secondaire gris (le bleu suggérerait un lien). */}
-                <PulsingDot color="rgba(255,255,255,0.45)" />
-                <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
-                  Réponse sous 48 h
-                </span>
-              </div>
             </div>
           </div>
 
