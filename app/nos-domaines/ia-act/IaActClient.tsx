@@ -405,6 +405,89 @@ export default function IaActClient() {
         </div>
       </section>
 
+      {/* 2. EN UN MOT — bandeau de cadrage */}
+      <section style={{ background: DARK.panel, color: DARK.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <Eyebrow>En un mot</Eyebrow>
+          <p style={{ fontSize: 16, lineHeight: 1.6, color: "#fff", margin: 0, maxWidth: 720 }}>
+            Le régime a été réécrit à près de trente pour cent en juillet 2026.
+            Certaines dates ont reculé, d&apos;autres non, et deux interdictions
+            sont apparues. Ce qui vous concerne dépend désormais autant de la date
+            de mise sur le marché de votre système que de sa nature.
+          </p>
+        </div>
+      </section>
+
+      {/* 3. LA DÉMONSTRATION — le même outil, deux régimes (dispositif
+          différenciant, à créer). Tableau sémantique ; en mobile chaque ligne
+          s'empile (intitulé, A, B) sans défilement horizontal. */}
+      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <style>{`
+            .demo-table { width: 100%; border-collapse: collapse; border: 0.5px solid ${LIGHT.border}; border-radius: 10px; overflow: hidden; }
+            .demo-table thead th { text-align: left; background: ${LIGHT.panel2}; padding: 10px 12px; vertical-align: top; border-bottom: 0.5px solid ${LIGHT.border}; }
+            .demo-table thead th span { display: block; font-weight: 400; font-size: 11px; color: ${LIGHT.faint}; margin-top: 2px; }
+            .demo-table thead th:first-child { width: 30%; }
+            .demo-table tbody th { text-align: left; font-weight: 600; font-size: 12px; color: ${LIGHT.text}; background: ${LIGHT.panel2}; padding: 9px 12px; vertical-align: top; }
+            .demo-table td { padding: 9px 12px; font-size: 12px; color: ${LIGHT.text}; line-height: 1.45; vertical-align: top; border-top: 0.5px solid rgba(0,0,0,0.06); }
+            .demo-eyebrow-a { font-family: var(--ff-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: ${LIGHT.muted}; }
+            .demo-a { background: #F3F9F7; color: #0F5545; }
+            .demo-b { background: #FDF4F4; color: #8A2020; }
+            @media (max-width: 767px) {
+              .demo-table, .demo-table tbody, .demo-table tr, .demo-table td, .demo-table th { display: block; width: 100%; }
+              .demo-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+              .demo-table tr { border-top: 0.5px solid ${LIGHT.border}; }
+              .demo-table tr:first-child { border-top: none; }
+              .demo-table tbody th { font-size: 13px; }
+              .demo-table td { border-top: none; padding-top: 2px; }
+              .demo-table td::before { content: attr(data-label); display: block; font-family: var(--ff-mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; color: ${LIGHT.muted}; margin-bottom: 1px; }
+            }
+          `}</style>
+          <Eyebrow>La démonstration</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Le même outil, deux régimes différents</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
+            Deux entreprises déploient le même logiciel de tri de candidatures.
+            Rien ne les distingue, sinon la date.
+          </p>
+
+          <table className="demo-table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Entreprise A<span>Déployé en 2025</span></th>
+                <th scope="col">Entreprise B<span>Déploiement en 2028</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { k: "Qualification", a: "Annexe III — haut risque", b: "Annexe III — haut risque", accent: false },
+                { k: "Régime applicable", a: "Régime transitoire — art. 111", b: "Régime complet", accent: true },
+                { k: "Documentation technique", a: "Sauf modification importante", b: "Exigée", accent: false },
+                { k: "Évaluation de conformité", a: "Non, en l'état", b: "Oui, avant mise en service", accent: false },
+                { k: "Consultation du CSE", a: "À examiner — droit du travail", b: "À examiner — droit du travail", accent: false },
+              ].map((r) => (
+                <tr key={r.k}>
+                  <th scope="row">{r.k}</th>
+                  <td data-label="Entreprise A" className={r.accent ? "demo-a" : undefined}>{r.a}</td>
+                  <td data-label="Entreprise B" className={r.accent ? "demo-b" : undefined}>{r.b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 12 }}>
+            <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.6 }}>
+              Aucun questionnaire automatisé ne fait cette différence : elle ne
+              dépend ni du cas d&apos;usage, ni du secteur, mais d&apos;une date et
+              d&apos;un régime transitoire.
+            </p>
+          </div>
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
+            SPÉCIMEN · AUCUNE DONNÉE RÉELLE
+          </p>
+        </div>
+      </section>
+
       {/* 2. FAITES LE TEST */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
