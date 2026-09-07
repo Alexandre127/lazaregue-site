@@ -398,7 +398,7 @@ export default function IaActClient() {
               IA &amp; AI Act · Paris
             </span>
             <h1 style={{ ...TYPE.h1, marginBottom: 12, color: DARK.text }}>
-              Mise en conformité AI Act et gouvernance de l&apos;IA
+              Mise en conformité AI Act et gouvernance IA
             </h1>
             <p
               style={{
@@ -666,7 +666,7 @@ export default function IaActClient() {
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Nos interventions</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 14 }}>Trois niveaux d&apos;intervention</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 14 }}>Trois niveaux d&apos;accompagnement AI Act</h2>
           <div className="flex flex-col" style={{ gap: GRID_GAP }}>
             {[
               {
