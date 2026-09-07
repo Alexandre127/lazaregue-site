@@ -52,64 +52,6 @@ const HERO_STATS = [
   },
 ] as const;
 
-const SCENARIOS = [
-  {
-    color: "#1D9E75",
-    label: "Scénario 1 — Contrôle CNIL",
-    title: "Absence de registre, sanction sans violation effective",
-    text: "La CNIL sanctionne le niveau de préparation, pas seulement les incidents. Sans registre à jour, sans base légale documentée pour chaque traitement, l'exposition est réelle — même si aucune donnée n'a été compromise.",
-  },
-  {
-    color: "#1A47FF",
-    label: "Scénario 2 — M&A & levée de fonds",
-    title: "Due diligence RGPD : un fichier illicite peut bloquer une opération",
-    text: "Dans toute opération de fusion-acquisition ou levée de fonds, le niveau de conformité RGPD est audité. Un fichier clients sans base légale peut être déclaré illicite — avec impact direct sur la valorisation.",
-  },
-  {
-    color: "#BA7517",
-    label: "Scénario 3 — Sous-traitant défaillant",
-    title: "Violation chez un prestataire : vous êtes responsable",
-    text: "Sans clause article 28 RGPD dans vos contrats IT ou cloud, vous restez exposé en cas de violation chez votre prestataire.",
-  },
-] as const;
-
-const TIMELINE = [
-  {
-    color: "#1D9E75",
-    phase: "Cartographie & registre",
-    summary: "Savoir ce que vous traitez — et pourquoi",
-    items:
-      "Cartographie des traitements, registre Art. 30 avec base légale, identification AIPD",
-  },
-  {
-    color: "#1A47FF",
-    phase: "Gouvernance & accountability",
-    summary: "Démontrer la conformité, pas seulement la respecter",
-    items: "DPO, politiques, comités",
-  },
-  {
-    color: "#BA7517",
-    phase: "Contrats & sous-traitants",
-    summary: "Maîtriser votre exposition contractuelle",
-    items:
-      "Audit contrats IT/cloud/CRM, clauses Art. 28, transferts hors UE",
-  },
-  {
-    color: "#9333EA",
-    phase: "M&A & due diligence",
-    summary: "Le RGPD comme levier de valorisation",
-    items: "Due diligence complète, garanties actif/passif",
-  },
-] as const;
-
-const DELIVERABLES = [
-  "Registre des traitements avec base légale",
-  "Procédures violations & notification CNIL",
-  "Contrats sous-traitants Art. 28 conformes",
-  "Politique confidentialité, mentions, chartes",
-  "Rapport due diligence RGPD pour M&A",
-] as const;
-
 function LivrablesPreview() {
   const [cur, setCur] = useState(0);
 
@@ -355,10 +297,10 @@ function LivrablesPreview() {
           letterSpacing: ".06em",
         }}
       >
-        DPA — Clauses obtenues après négociation
+        DPA — Rédaction proposée par le cabinet — spécimen
       </div>
       <div style={{ fontSize: "8px", color: "#888", marginBottom: "10px" }}>
-        Prestataire SaaS · Version consolidée · Mai 2026
+        Prestataire SaaS · Spécimen — aucune donnée réelle
       </div>
       <div
         style={{
@@ -368,7 +310,7 @@ function LivrablesPreview() {
         }}
       >
         <div style={{ fontWeight: 700, color: "#111", fontSize: "8.5px" }}>
-          Art. 7 — Localisation des données (obtenu)
+          Art. 7 — Localisation des données
         </div>
         <div style={{ fontSize: "8px", color: "#444", marginTop: "3px" }}>
           Hébergement exclusivement dans l'UE. Tout transfert hors UE soumis à
@@ -390,7 +332,7 @@ function LivrablesPreview() {
       </div>
       <div>
         <div style={{ fontWeight: 700, color: "#111", fontSize: "8.5px" }}>
-          Art. 9 — Droit d'audit (obtenu)
+          Art. 9 — Droit d'audit
         </div>
         <div style={{ fontSize: "8px", color: "#444", marginTop: "3px" }}>
           Droit d'audit annuel avec préavis 30 jours. Rapport SOC 2 Type II en
@@ -509,27 +451,37 @@ function LivrablesPreview() {
         Valorisation du risque résiduel
       </div>
       <div style={{ fontSize: "8px", color: "#888", marginBottom: "8px" }}>
-        SaaS RH · 45 000 utilisateurs · Acquisition · Mai 2026
+        SaaS RH · Acquisition · Spécimen — aucune donnée réelle
       </div>
-      <div style={{ display: "flex", gap: "6px", margin: "8px 0" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          margin: "8px 0",
+          background: "#f8f8f8",
+          border: "1px solid #e5e5e5",
+          borderRadius: "3px",
+          padding: "7px 9px",
+        }}
+      >
         {[
-          ["3", "Non-conformités critiques", "#c0392b"],
-          ["5", "À régulariser", "#e6a817"],
-        ].map(([n, l, c]) => (
-          <div
-            key={l}
-            style={{
-              flex: 1,
-              background: "#f8f8f8",
-              border: "1px solid #e5e5e5",
-              borderRadius: "3px",
-              padding: "5px",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "13px", fontWeight: 700, color: c }}>{n}</div>
+          ["Critiques", "Non-conformités à traiter avant l'opération", "#c0392b"],
+          ["À régulariser", "Points de conformité résiduels", "#e6a817"],
+        ].map(([t, l, c]) => (
+          <div key={t} style={{ flex: 1 }}>
             <div
-              style={{ fontSize: "7px", color: "#888", marginTop: "1px", lineHeight: 1.3 }}
+              style={{
+                fontSize: "8.5px",
+                fontWeight: 700,
+                color: c,
+                textTransform: "uppercase",
+                letterSpacing: ".04em",
+              }}
+            >
+              {t}
+            </div>
+            <div
+              style={{ fontSize: "7.5px", color: "#888", marginTop: "2px", lineHeight: 1.3 }}
             >
               {l}
             </div>
@@ -548,7 +500,7 @@ function LivrablesPreview() {
         }}
       >
         <strong style={{ color: "#c0392b" }}>Non-conformité critique :</strong>{" "}
-        Base de 180 000 prospects sans consentement valide. Risque de
+        Base de prospection constituée sans consentement valide. Risque de
         qualification en actif illicite.
       </div>
       <div
@@ -563,7 +515,7 @@ function LivrablesPreview() {
         }}
       >
         <strong style={{ color: "#1a7a50" }}>Recommandation :</strong>{" "}
-        Régularisation en 3 semaines + garantie d'actif et de passif RGPD —
+        Régularisation avant closing + garantie d'actif et de passif RGPD —
         clause rédigée et négociée.
       </div>
     </div>,
@@ -650,30 +602,6 @@ function LivrablesPreview() {
       }}
     >
       <div>
-        <p
-          style={{
-            fontSize: "10px",
-            color: ACCENT,
-            letterSpacing: ".12em",
-            textTransform: "uppercase",
-            marginBottom: "12px",
-          }}
-        >
-          Ce que nous livrons
-        </p>
-        <h3
-          style={{
-            fontSize: "16px",
-            fontWeight: 600,
-            color: LIGHT.text,
-            marginBottom: "4px",
-            lineHeight: 1.3,
-          }}
-        >
-          Pas des modèles.
-          <br />
-          Des documents sur mesure.
-        </h3>
         {items.map((item, i) => (
           <div
             key={i}
@@ -823,40 +751,6 @@ function LivrablesPreview() {
   );
 }
 
-const INTERVENTIONS = [
-  {
-    num: "01",
-    title: "Audit RGPD & cartographie des traitements",
-    body: "Diagnostic complet : registre Art. 30, bases légales, contrats sous-traitants, sécurité, droits des personnes. La CNIL a sanctionné l'absence de documentation même sans violation effective. Plan d'action priorisé par niveau de risque.",
-    footnote: "SAN-2019-005 · SAN-2020-018 · SAN-2021-020",
-    tags: ["Registre Art.30", "Bases légales", "AIPD", "Gap analysis"],
-  },
-  {
-    num: "02",
-    title: "Gouvernance & accountability",
-    body: "L'accountability signifie pouvoir prouver la conformité à tout moment — pas seulement la respecter. Un contrôle CNIL peut survenir sans préavis. Nous structurons la gouvernance, les procédures de droits des personnes et la documentation qui vous protège.",
-    tags: ["DPO", "Politiques internes", "Accountability", "Droits personnes"],
-  },
-  {
-    num: "03",
-    title: "Privacy by Design & projets",
-    body: "Tout produit ou outil développé sans analyse RGPD préalable peut être déclaré non conforme. L'article 32 impose des mesures de sécurité proportionnées — chiffrement, sauvegardes testées, contrôle des accès. La CNIL sanctionne l'absence de mesures même sans violation.",
-    tags: ["Art.25 RGPD", "Privacy by Design", "Minimisation", "Cycle de vie"],
-  },
-  {
-    num: "04",
-    title: "Contrats sous-traitants & flux de données",
-    body: "Sans clause Art. 28 conforme, vous restez responsable en cas de violation chez un prestataire. Les transferts hors UE (Cloud Act, hébergeurs américains) nécessitent des garanties spécifiques (CCT, BCR) sous peine de suspension.",
-    tags: ["Art.28 RGPD", "Cloud & SaaS", "Transferts UE", "CCT"],
-  },
-  {
-    num: "05",
-    title: "Due diligence RGPD — M&A & levées de fonds",
-    body: "Dans toute levée de fonds ou M&A, un fichier non conforme peut être qualifié d'actif illicite — impact direct sur la valorisation.",
-    tags: ["Due diligence", "M&A", "Levée de fonds", "Garanties A&P"],
-  },
-] as const;
-
 const SITUATIONS = [
   {
     num: "01",
@@ -885,8 +779,6 @@ const SITUATIONS = [
 ] as const;
 
 
-const SEPARATOR = "0.5px solid rgba(255,255,255,0.06)";
-
 type HeroStat = (typeof HERO_STATS)[number];
 
 function FadeUp({
@@ -910,67 +802,6 @@ function FadeUp({
   );
 }
 
-function ScrollRevealCard({
-  children,
-  delay = 0,
-  hoverColor,
-}: {
-  children: ReactNode;
-  delay?: number;
-  hoverColor: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    const el = ref.current;
-    if (!el) {
-      return () => {
-        isMounted = false;
-      };
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && isMounted) setVisible(true);
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observer.observe(el);
-    return () => {
-      isMounted = false;
-      observer.disconnect();
-    };
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-4px)"
-            : "translateY(0)"
-          : "translateY(20px)",
-        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms, border-color 0.3s ease, box-shadow 0.3s ease`,
-        border: `1px solid ${hovered ? hoverColor : LIGHT.border}`,
-        boxShadow: hovered ? `0 12px 32px ${hoverColor}22` : "0 1px 2px rgba(0,0,0,0.04)",
-        borderRadius: "8px",
-        background: LIGHT.panel,
-        padding: "24px",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
 function StatRow({ stat }: { stat: HeroStat }) {
   const [hovered, setHovered] = useState(false);
   const value =
@@ -983,10 +814,11 @@ function StatRow({ stat }: { stat: HeroStat }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: "16px 20px",
-        borderBottom: SEPARATOR,
-        background: hovered ? `rgba(${ACCENT_RGB},0.04)` : "transparent",
-        transition: "background 0.3s ease",
+        padding: "18px 20px",
+        borderRadius: "8px",
+        border: `0.5px solid ${hovered ? `rgba(${ACCENT_RGB},0.35)` : "rgba(255,255,255,0.12)"}`,
+        background: hovered ? `rgba(${ACCENT_RGB},0.04)` : "#11163a",
+        transition: "background 0.3s ease, border-color 0.3s ease",
       }}
     >
       <p
@@ -1084,46 +916,55 @@ function FaqAccordion() {
               padding: "20px 0",
             }}
           >
-            <button
-              type="button"
-              onClick={() => setOpenIndex(isOpen ? null : index)}
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "16px",
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-                textAlign: "left",
-              }}
-            >
-              <span
+            <h3 style={{ margin: 0 }}>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(isOpen ? null : index)}
+                aria-expanded={isOpen}
+                aria-controls={`faq-panel-${index}`}
+                id={`faq-question-${index}`}
                 style={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  color: LIGHT.text,
-                  lineHeight: 1.45,
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "16px",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  textAlign: "left",
+                  font: "inherit",
                 }}
               >
-                {item.q}
-              </span>
-              <span
-                style={{
-                  color: ACCENT,
-                  fontSize: "18px",
-                  lineHeight: 1,
-                  flexShrink: 0,
-                }}
-                aria-hidden
-              >
-                {isOpen ? "−" : "+"}
-              </span>
-            </button>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: LIGHT.text,
+                    lineHeight: 1.45,
+                  }}
+                >
+                  {item.q}
+                </span>
+                <span
+                  style={{
+                    color: ACCENT,
+                    fontSize: "18px",
+                    lineHeight: 1,
+                    flexShrink: 0,
+                  }}
+                  aria-hidden
+                >
+                  {isOpen ? "−" : "+"}
+                </span>
+              </button>
+            </h3>
             {isOpen ? (
               <p
+                id={`faq-panel-${index}`}
+                role="region"
+                aria-labelledby={`faq-question-${index}`}
                 style={{
                   fontSize: "13px",
                   color: LIGHT.muted,
@@ -1218,7 +1059,7 @@ export default function RgpdClient() {
       {/* HERO */}
       <section style={{ background: DARK.bg, position: "relative", overflow: "hidden" }}>
         <div
-          className="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.2fr_1fr]"
+          className="relative"
           style={{ ...INNER, padding: "64px 24px" }}
         >
           <div
@@ -1254,11 +1095,11 @@ export default function RgpdClient() {
                   lineHeight: 1.2,
                 }}
               >
-                Avocat RGPD : audit, due diligence et conformité des données
+                Avocat RGPD et données personnelles à Paris
               </h1>
             </FadeUp>
             <FadeUp delay={0.2}>
-              <h2
+              <p
                 style={{
                   fontSize: "20px",
                   fontWeight: 400,
@@ -1268,9 +1109,8 @@ export default function RgpdClient() {
                   maxWidth: "520px",
                 }}
               >
-                Une conformité qui se prouve, et qui devient un levier de
-                confiance.
-              </h2>
+                Une conformité qui se prouve.
+              </p>
             </FadeUp>
             <FadeUp delay={0.3}>
               <p
@@ -1282,8 +1122,9 @@ export default function RgpdClient() {
                   marginBottom: "28px",
                 }}
               >
-                Bien maîtrisé, le RGPD devient un critère de sélection dans vos
-                chaînes de valeur et un atout dans vos opérations de financement.
+                Le cabinet intervient à Paris et partout en France, aux côtés des
+                PME et ETI : de l&apos;audit à la due diligence, une conformité
+                construite pour être démontrée.
               </p>
             </FadeUp>
             <FadeUp delay={0.4}>
@@ -1346,145 +1187,131 @@ export default function RgpdClient() {
               </div>
             </FadeUp>
           </div>
-
-          <FadeUp delay={0.2} className="relative z-10">
-            <div
-              style={{
-                background: "#11163a",
-                border: `0.5px solid rgba(${ACCENT_RGB},0.15)`,
-                borderRadius: "8px",
-                overflow: "hidden",
-              }}
-            >
-              {HERO_STATS.map((stat) => (
-                <StatRow key={stat.label} stat={stat} />
-              ))}
-            </div>
-          </FadeUp>
         </div>
       </section>
 
-      {/* BLOC CITATION + VIDÉO */}
-      <div style={{ background: LIGHT.bg }}>
-        <div style={{ ...INNER, padding: "20px 24px 0" }}>
-          <div
-            className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center"
+      {/* REPÈRES CHIFFRÉS (section 2) — grille 2×2, mobile et desktop */}
+      <section style={{ background: DARK.bg }}>
+        <div style={{ ...INNER, padding: "0 24px 64px" }}>
+          <h2
             style={{
-              padding: "20px",
-              background: LIGHT.panel2,
-              border: `1px solid ${LIGHT.border}`,
-              borderRadius: "12px",
+              fontSize: "10px",
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.35)",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              marginBottom: "16px",
             }}
           >
-            <div>
-              <p
-                style={{
-                  fontFamily: "Georgia, 'Times New Roman', serif",
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  color: LIGHT.text,
-                  lineHeight: 1.7,
-                  margin: 0,
-                }}
-              >
-                « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
-                système de preuve. Les entreprises qui le maîtrisent vraiment ne
-                subissent pas les contrôles. Elles les anticipent. »
-              </p>
-              <p
-                style={{
-                  fontSize: "13px",
-                  color: LIGHT.muted,
-                  marginTop: "12px",
-                  marginBottom: 0,
-                }}
-              >
-                — Me Sarah Hinderer · Données personnelles & intelligence
-                artificielle
-              </p>
-            </div>
-            <video
-              width="100%"
-              style={{ borderRadius: "12px" }}
-              controls
-              playsInline
-            >
-              <source src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4" type="video/mp4" />
-            </video>
+            Repères chiffrés
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            {HERO_STATS.map((stat) => (
+              <StatRow key={stat.label} stat={stat} />
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* SCÉNARIOS */}
+      {/* DANS QUELLES SITUATIONS (section 3) */}
+      <section style={{ background: DARK.bg, borderTop: `1px solid ${DARK.border}` }}>
+        <div style={{ ...INNER, padding: SECTION_PAD }}>
+          <p
+            style={{
+              fontSize: "10px",
+              color: ACCENT,
+              letterSpacing: ".12em",
+              textTransform: "uppercase",
+              marginBottom: "12px",
+            }}
+          >
+            Quand nous consulter
+          </p>
+          <h2
+            style={{
+              fontSize: "clamp(20px, 2.5vw, 28px)",
+              fontWeight: 600,
+              color: "#ffffff",
+              maxWidth: "720px",
+              marginBottom: "12px",
+              lineHeight: 1.35,
+            }}
+          >
+            Dans quelles situations faire appel à un avocat RGPD&nbsp;?
+          </h2>
+          <p
+            style={{
+              fontSize: "14px",
+              color: "rgba(255,255,255,0.55)",
+              maxWidth: "640px",
+              marginBottom: "32px",
+              lineHeight: 1.7,
+            }}
+          >
+            Les signaux qui justifient de sécuriser vos traitements — souvent
+            avant qu&apos;un contrôle ou une opération ne les révèle.
+          </p>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {SITUATIONS.map((s) => (
+              <SituationItem key={s.num} num={s.num} text={s.text} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MISE EN CONFORMITÉ RGPD (section 4) */}
       <section style={{ background: LIGHT.bg }}>
         <div style={{ ...INNER, padding: SECTION_PAD }}>
+          <p
+            style={{
+              fontSize: "10px",
+              color: ACCENT,
+              letterSpacing: ".12em",
+              textTransform: "uppercase",
+              marginBottom: "12px",
+            }}
+          >
+            Mise en conformité RGPD
+          </p>
           <h2
             style={{
               fontSize: "clamp(20px, 2.5vw, 28px)",
               fontWeight: 600,
               color: LIGHT.text,
               maxWidth: "720px",
-              marginBottom: "12px",
+              marginBottom: "20px",
               lineHeight: 1.35,
             }}
           >
-            Un fichier non conforme peut être déclaré illicite. Une due diligence
-            peut tout révéler.
+            Une conformité qui se prouve
           </h2>
           <p
             style={{
-              fontSize: "14px",
+              fontSize: "15px",
               color: LIGHT.muted,
-              maxWidth: "640px",
-              marginBottom: "32px",
-              lineHeight: 1.7,
+              maxWidth: "680px",
+              marginBottom: "16px",
+              lineHeight: 1.75,
             }}
           >
-            Les situations où le RGPD crée un risque concret — que la plupart des
-            dirigeants découvrent trop tard.
+            Le règlement n&apos;impose pas seulement de respecter ses principes :
+            il impose d&apos;être en mesure de le démontrer (art. 5.2 et 24 du
+            RGPD). Un contrôle ne se joue donc pas sur ce que l&apos;entreprise
+            fait, mais sur ce qu&apos;elle peut établir.
           </p>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {SCENARIOS.map((card, index) => (
-              <ScrollRevealCard
-                key={card.label}
-                delay={index * 130}
-                hoverColor={card.color}
-              >
-                <p
-                  style={{
-                    fontSize: "10px",
-                    color: card.color,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {card.label}
-                </p>
-                <p
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    color: LIGHT.text,
-                    marginBottom: "12px",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {card.title}
-                </p>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    color: LIGHT.muted,
-                    lineHeight: 1.7,
-                    margin: 0,
-                  }}
-                >
-                  {card.text}
-                </p>
-              </ScrollRevealCard>
-            ))}
-          </div>
+          <p
+            style={{
+              fontSize: "15px",
+              color: LIGHT.muted,
+              maxWidth: "680px",
+              margin: 0,
+              lineHeight: 1.75,
+            }}
+          >
+            C&apos;est ce déplacement qui commande notre méthode : constituer, à
+            chaque étape, la preuve documentaire des choix effectués et de leur
+            mise en œuvre.
+          </p>
         </div>
       </section>
 
@@ -1517,9 +1344,9 @@ export default function RgpdClient() {
             lineHeight: 1.25,
           }}
         >
-          4 étapes pour une conformité
+          Cartographier, organiser,
           <br />
-          qui se prouve
+          encadrer, documenter
         </h2>
 
         <div style={{ width: "100%" }}>
@@ -1645,137 +1472,81 @@ export default function RgpdClient() {
               gap: "0",
             }}
           >
-            <div style={{ paddingRight: "24px" }}>
-              <div
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: LIGHT.text,
-                  marginBottom: "6px",
-                  lineHeight: 1.35,
-                }}
-              >
-                Cartographie & registre
+            {[
+              {
+                titre: "Cartographier",
+                resume: "Savoir ce que vous traitez — et pourquoi",
+                detail:
+                  "Cartographie des traitements, registre Art. 30 avec base légale documentée, identification des AIPD nécessaires.",
+                livrable: "Registre des traitements",
+              },
+              {
+                titre: "Organiser",
+                resume: "Répartir les rôles et les responsabilités",
+                detail:
+                  "DPO interne ou externe, politiques internes, procédures de réponse aux droits des personnes, comités de suivi.",
+                livrable: "Politiques et procédures internes",
+              },
+              {
+                titre: "Encadrer",
+                resume: "Maîtriser votre exposition contractuelle et technique",
+                detail:
+                  "Contrats sous-traitants Art. 28, clauses négociées, transferts hors UE (CCT, BCR), mesures de sécurité Art. 32.",
+                livrable: "Contrats sous-traitants Art. 28",
+              },
+              {
+                titre: "Documenter",
+                resume: "Être prêt à démontrer, à tout moment",
+                detail:
+                  "Procédures de violation et de notification CNIL, traçabilité des décisions, documentation tenue à jour en vue d'un contrôle.",
+                livrable: "Dossier de conformité",
+              },
+            ].map((etape, i) => (
+              <div key={etape.titre} style={{ paddingRight: i < 3 ? "24px" : 0 }}>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: LIGHT.text,
+                    marginBottom: "6px",
+                    lineHeight: 1.35,
+                  }}
+                >
+                  {etape.titre}
+                </div>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    color: LIGHT.muted,
+                    lineHeight: 1.6,
+                    marginBottom: "6px",
+                  }}
+                >
+                  {etape.resume}
+                </div>
+                <div
+                  style={{
+                    fontSize: "10px",
+                    color: LIGHT.faint,
+                    lineHeight: 1.6,
+                    marginBottom: "10px",
+                  }}
+                >
+                  {etape.detail}
+                </div>
+                <div
+                  style={{
+                    fontSize: "9px",
+                    color: "#15603f",
+                    textTransform: "uppercase",
+                    letterSpacing: ".05em",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Livrable · {etape.livrable}
+                </div>
               </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: LIGHT.muted,
-                  lineHeight: 1.6,
-                  marginBottom: "6px",
-                }}
-              >
-                Savoir ce que vous traitez — et pourquoi
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  color: LIGHT.faint,
-                  lineHeight: 1.6,
-                }}
-              >
-                Registre Art. 30 avec base légale documentée. Identification des
-                AIPD nécessaires.
-              </div>
-            </div>
-            <div style={{ paddingRight: "24px" }}>
-              <div
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: LIGHT.text,
-                  marginBottom: "6px",
-                  lineHeight: 1.35,
-                }}
-              >
-                Gouvernance & accountability
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: LIGHT.muted,
-                  lineHeight: 1.6,
-                  marginBottom: "6px",
-                }}
-              >
-                Démontrer la conformité, pas seulement la respecter
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  color: LIGHT.faint,
-                  lineHeight: 1.6,
-                }}
-              >
-                DPO, politiques, comités.
-              </div>
-            </div>
-            <div style={{ paddingRight: "24px" }}>
-              <div
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: LIGHT.text,
-                  marginBottom: "6px",
-                  lineHeight: 1.35,
-                }}
-              >
-                Contrats & sous-traitants
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: LIGHT.muted,
-                  lineHeight: 1.6,
-                  marginBottom: "6px",
-                }}
-              >
-                Maîtriser votre exposition contractuelle
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  color: LIGHT.faint,
-                  lineHeight: 1.6,
-                }}
-              >
-                DPA Art. 28 sur mesure, clauses négociées, transferts hors UE
-                (CCT, BCR).
-              </div>
-            </div>
-            <div>
-              <div
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: LIGHT.text,
-                  marginBottom: "6px",
-                  lineHeight: 1.35,
-                }}
-              >
-                M&A & due diligence
-              </div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  color: LIGHT.muted,
-                  lineHeight: 1.6,
-                  marginBottom: "6px",
-                }}
-              >
-                Le RGPD comme levier de valorisation
-              </div>
-              <div
-                style={{
-                  fontSize: "10px",
-                  color: LIGHT.faint,
-                  lineHeight: 1.6,
-                }}
-              >
-                Due diligence complète, risque chiffré, garanties d&apos;actif et
-                de passif rédigées.
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -1789,10 +1560,32 @@ export default function RgpdClient() {
         }}
         className="mx-auto"
       >
+        <p
+          style={{
+            fontSize: "10px",
+            color: ACCENT,
+            letterSpacing: ".12em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}
+        >
+          Ce que nous livrons
+        </p>
+        <h2
+          style={{
+            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontWeight: 600,
+            color: LIGHT.text,
+            marginBottom: "32px",
+            lineHeight: 1.35,
+          }}
+        >
+          Des spécimens documentés, pas des modèles
+        </h2>
         <LivrablesPreview />
       </section>
 
-      {/* INTERVENTIONS */}
+      {/* DUE DILIGENCE & M&A (section 9) */}
       <section
         style={{
           maxWidth: 900,
@@ -1801,94 +1594,56 @@ export default function RgpdClient() {
         }}
         className="mx-auto"
       >
-        <h2
+        <p
           style={{
-            fontSize: "18px",
-            fontWeight: 600,
-            color: LIGHT.text,
-            marginBottom: "32px",
+            fontSize: "10px",
+            color: ACCENT,
+            letterSpacing: ".12em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
           }}
         >
-          Nos 5 interventions
+          Due diligence &amp; M&amp;A
+        </p>
+        <h2
+          style={{
+            fontSize: "clamp(20px, 2.5vw, 26px)",
+            fontWeight: 600,
+            color: LIGHT.text,
+            maxWidth: "720px",
+            marginBottom: "16px",
+            lineHeight: 1.35,
+          }}
+        >
+          Un fichier non conforme peut être déclaré illicite
         </h2>
-        <div className="flex flex-col gap-0">
-          {INTERVENTIONS.map((item, index) => (
-            <div
-              key={item.num}
-              style={{
-                padding: "28px 0",
-                borderTop: index === 0 ? `1px solid ${LIGHT.border}` : undefined,
-                borderBottom: `1px solid ${LIGHT.border}`,
-              }}
-            >
-              <div className="flex flex-wrap items-start gap-4">
-                <span
-                  className="font-mono"
-                  style={{
-                    fontSize: "14px",
-                    color: ACCENT,
-                    minWidth: "32px",
-                  }}
-                >
-                  {item.num}
-                </span>
-                <div className="flex-1">
-                  <p
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: 600,
-                      color: LIGHT.text,
-                      marginBottom: "12px",
-                    }}
-                  >
-                    {item.title}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: LIGHT.muted,
-                      lineHeight: 1.75,
-                      marginBottom: "14px",
-                      maxWidth: "720px",
-                    }}
-                  >
-                    {item.body}
-                  </p>
-                  {"footnote" in item && item.footnote ? (
-                    <p
-                      style={{
-                        fontSize: "10px",
-                        color: LIGHT.faint,
-                        fontFamily: "monospace",
-                        marginTop: "4px",
-                        marginBottom: "14px",
-                        maxWidth: "720px",
-                      }}
-                    >
-                      {item.footnote}
-                    </p>
-                  ) : null}
-                  <div className="flex flex-wrap gap-2">
-                    {item.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        style={{
-                          fontSize: "10px",
-                          color: "#15603f",
-                          background: `rgba(${ACCENT_RGB},0.1)`,
-                          padding: "3px 8px",
-                          borderRadius: "3px",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            marginBottom: "16px",
+            lineHeight: 1.75,
+          }}
+        >
+          Dans toute opération de fusion-acquisition ou levée de fonds, le
+          niveau de conformité RGPD est audité. Un fichier clients sans base
+          légale peut être qualifié d&apos;actif illicite et peser sur la
+          valorisation de la cible.
+        </p>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            margin: 0,
+            lineHeight: 1.75,
+          }}
+        >
+          Nous intervenons en due diligence, côté acquéreur comme côté cible :
+          identification des non-conformités, régularisation avant closing,
+          garanties d&apos;actif et de passif RGPD rédigées et négociées.
+        </p>
       </section>
 
       {/* Situations fréquentes */}
@@ -1938,7 +1693,7 @@ export default function RgpdClient() {
           {[
             {
               title: "Outils SaaS américains utilisés sans encadrement",
-              sub: "Des outils SaaS empilés — sans DPA ni base légale",
+              sub: "Des outils SaaS empilés — sans encadrement contractuel suffisant ni documentation des traitements et des transferts",
               expand:
                 "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation.",
             },
@@ -2115,6 +1870,92 @@ export default function RgpdClient() {
           </a>
           .
         </p>
+      </section>
+
+      {/* NOTRE CONVICTION (section 11) — citation + portrait + vidéo */}
+      <section
+        className="mx-auto"
+        style={{
+          maxWidth: 900,
+          padding: "56px 24px",
+          borderTop: `1px solid ${LIGHT.border}`,
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "10px",
+            fontWeight: 400,
+            color: ACCENT,
+            letterSpacing: ".12em",
+            textTransform: "uppercase",
+            marginBottom: "20px",
+          }}
+        >
+          Notre conviction
+        </h2>
+        <div
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center"
+          style={{
+            padding: "24px",
+            background: LIGHT.panel2,
+            border: `1px solid ${LIGHT.border}`,
+            borderRadius: "12px",
+          }}
+        >
+          <div>
+            <p
+              style={{
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                fontStyle: "italic",
+                fontSize: "16px",
+                color: LIGHT.text,
+                lineHeight: 1.7,
+                margin: 0,
+              }}
+            >
+              « Le RGPD n&apos;est pas seulement une contrainte — c&apos;est un
+              système de preuve. Les entreprises qui le maîtrisent vraiment ne
+              subissent pas les contrôles. Elles les anticipent. »
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <Image
+                src="/images/sarah-pro.jpg"
+                alt="Me Sarah Hinderer"
+                width={44}
+                height={44}
+                style={{
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
+                  flexShrink: 0,
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: LIGHT.muted,
+                  margin: 0,
+                  lineHeight: 1.5,
+                }}
+              >
+                — Me Sarah Hinderer
+                <br />
+                Données personnelles &amp; intelligence artificielle
+              </p>
+            </div>
+          </div>
+          <video
+            width="100%"
+            style={{ borderRadius: "12px" }}
+            controls
+            playsInline
+          >
+            <source
+              src="https://dwhsfozwid3mrmrl.public.blob.vercel-storage.com/rgpd-intro.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
       </section>
 
       {/* FAQ */}
