@@ -2,11 +2,25 @@
 
 import Image from "next/image";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { FAQ_ITEMS } from "./faq";
 
-const ACCENT = "#1D9E75";
-const ACCENT_RGB = "29,158,117";
+/**
+ * Système chromatique (Bloc B).
+ * — `BRAND` : bleu Lazarègue, couleur de la marque et de l'ACTION. Identique
+ *   sur toutes les pages : boutons primaires, liens, focus, indicateurs de
+ *   sélection/progression cliquables.
+ * — `ACCENT` : accent ÉDITORIAL de la famille (ici « Données/conformité » =
+ *   vert). Sur-titres, labels de repérage, fonds et halos décoratifs. Jamais
+ *   sur un élément d'action.
+ * Les valeurs réelles sont posées en variables CSS sur le <main> (voir plus
+ * bas), ce qui permettra plus tard de changer de famille par attribut sans
+ * toucher aux composants. Aucune couleur ne porte seule une information (B4).
+ */
+const BRAND = "var(--brand)";
+const BRAND_RGB = "var(--brand-rgb)";
+const ACCENT = "var(--famille-accent)";
+const ACCENT_RGB = "var(--famille-rgb)";
 
 const DARK = {
   bg: "#0a0f2e",
@@ -694,7 +708,7 @@ function LivrablesPreview() {
               <span
                 style={{
                   fontSize: "11px",
-                  color: cur === i ? ACCENT : LIGHT.faint,
+                  color: cur === i ? BRAND : LIGHT.faint,
                   fontFamily: "monospace",
                   width: "20px",
                   flexShrink: 0,
@@ -733,7 +747,7 @@ function LivrablesPreview() {
                     width: "4px",
                     height: "4px",
                     borderRadius: "50%",
-                    background: "#1D9E75",
+                    background: BRAND,
                     flexShrink: 0,
                     marginTop: "5px",
                   }}
@@ -755,7 +769,7 @@ function LivrablesPreview() {
             key={cur}
             style={{
               height: "100%",
-              background: "#1D9E75",
+              background: BRAND,
               borderRadius: "1px",
               animation: "progressAnim 5s linear forwards",
             }}
@@ -888,7 +902,8 @@ function FadeUp({
 }
 
 function StatRow({ stat }: { stat: HeroStat }) {
-  const [hovered, setHovered] = useState(false);
+  // Repère chiffré : élément non cliquable — aucun effet de survol (un survol
+  // suggérerait une action qui n'existe pas).
   const value =
     "display" in stat && stat.display
       ? stat.display
@@ -896,14 +911,11 @@ function StatRow({ stat }: { stat: HeroStat }) {
 
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
         padding: "18px 20px",
         borderRadius: "8px",
-        border: `0.5px solid ${hovered ? `rgba(${ACCENT_RGB},0.35)` : "rgba(255,255,255,0.12)"}`,
-        background: hovered ? `rgba(${ACCENT_RGB},0.04)` : "#11163a",
-        transition: "background 0.3s ease, border-color 0.3s ease",
+        border: "0.5px solid rgba(255,255,255,0.12)",
+        background: "#11163a",
       }}
     >
       <p
@@ -912,10 +924,6 @@ function StatRow({ stat }: { stat: HeroStat }) {
           fontWeight: 700,
           color: "white",
           margin: 0,
-          textShadow: hovered
-            ? `0 0 12px rgba(${ACCENT_RGB},0.5)`
-            : "none",
-          transition: "text-shadow 0.3s ease",
         }}
       >
         {value}
@@ -946,21 +954,17 @@ function StatRow({ stat }: { stat: HeroStat }) {
 }
 
 function SituationItem({ num, text }: { num: string; text: string }) {
-  const [hovered, setHovered] = useState(false);
-
+  // Situation informative : élément non cliquable — pas d'effet de survol.
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
-        background: hovered ? `rgba(${ACCENT_RGB},0.03)` : "#060912",
-        border: `0.5px solid ${hovered ? `rgba(${ACCENT_RGB},0.2)` : "rgba(255,255,255,0.06)"}`,
+        background: "#060912",
+        border: "0.5px solid rgba(255,255,255,0.06)",
         borderRadius: "6px",
         padding: "14px 16px",
         display: "flex",
         gap: "12px",
         alignItems: "flex-start",
-        transition: "background 0.3s ease, border-color 0.3s ease",
       }}
     >
       <span
@@ -1036,7 +1040,7 @@ function FaqAccordion() {
                 </span>
                 <span
                   style={{
-                    color: ACCENT,
+                    color: BRAND,
                     fontSize: "18px",
                     lineHeight: 1,
                     flexShrink: 0,
@@ -1103,12 +1107,21 @@ export default function RgpdClient() {
 
   return (
     <main
-      style={{
-        background: LIGHT.bg,
-        color: LIGHT.text,
-        fontFamily: "Inter, system-ui, sans-serif",
-        minHeight: "100vh",
-      }}
+      data-domaine="donnees"
+      style={
+        {
+          // Marque / action — commun à tout le site.
+          "--brand": "#1A47FF",
+          "--brand-rgb": "26,71,255",
+          // Famille « Données/conformité » — accent éditorial (vert).
+          "--famille-accent": "#1D9E75",
+          "--famille-rgb": "29,158,117",
+          background: LIGHT.bg,
+          color: LIGHT.text,
+          fontFamily: "Inter, system-ui, sans-serif",
+          minHeight: "100vh",
+        } as CSSProperties
+      }
     >
       <style>{`
         @keyframes glowMove {
@@ -1127,10 +1140,10 @@ export default function RgpdClient() {
         }
         @keyframes pulse {
           0%, 100% {
-            box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.4);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.25);
           }
           50% {
-            box-shadow: 0 0 0 8px rgba(29, 158, 117, 0);
+            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
           }
         }
         @keyframes fadeIn {
@@ -1205,7 +1218,7 @@ export default function RgpdClient() {
                 <a
                   href="/contact"
                   style={{
-                    background: ACCENT,
+                    background: BRAND,
                     color: "white",
                     padding: "14px 28px",
                     borderRadius: "4px",
@@ -1437,7 +1450,7 @@ export default function RgpdClient() {
                 height: "32px",
                 borderRadius: "50%",
                 background: LIGHT.panel,
-                border: "1px solid rgba(29,158,117,.4)",
+                border: "1px solid rgba(var(--famille-rgb),.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1448,7 +1461,7 @@ export default function RgpdClient() {
                 style={{
                   fontSize: "10px",
                   fontWeight: 600,
-                  color: "#1D9E75",
+                  color: "var(--famille-accent)",
                   fontFamily: "monospace",
                 }}
               >
@@ -1456,7 +1469,7 @@ export default function RgpdClient() {
               </span>
             </div>
             <div
-              style={{ flex: 1, height: "1px", background: "rgba(29,158,117,0.4)" }}
+              style={{ flex: 1, height: "1px", background: "rgba(var(--famille-rgb),0.4)" }}
             />
             <div
               style={{
@@ -1464,7 +1477,7 @@ export default function RgpdClient() {
                 height: "32px",
                 borderRadius: "50%",
                 background: LIGHT.panel,
-                border: "1px solid rgba(29,158,117,.4)",
+                border: "1px solid rgba(var(--famille-rgb),.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1475,7 +1488,7 @@ export default function RgpdClient() {
                 style={{
                   fontSize: "10px",
                   fontWeight: 600,
-                  color: "#1D9E75",
+                  color: "var(--famille-accent)",
                   fontFamily: "monospace",
                 }}
               >
@@ -1483,7 +1496,7 @@ export default function RgpdClient() {
               </span>
             </div>
             <div
-              style={{ flex: 1, height: "1px", background: "rgba(29,158,117,0.4)" }}
+              style={{ flex: 1, height: "1px", background: "rgba(var(--famille-rgb),0.4)" }}
             />
             <div
               style={{
@@ -1491,7 +1504,7 @@ export default function RgpdClient() {
                 height: "32px",
                 borderRadius: "50%",
                 background: LIGHT.panel,
-                border: "1px solid rgba(29,158,117,.4)",
+                border: "1px solid rgba(var(--famille-rgb),.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1502,7 +1515,7 @@ export default function RgpdClient() {
                 style={{
                   fontSize: "10px",
                   fontWeight: 600,
-                  color: "#1D9E75",
+                  color: "var(--famille-accent)",
                   fontFamily: "monospace",
                 }}
               >
@@ -1510,7 +1523,7 @@ export default function RgpdClient() {
               </span>
             </div>
             <div
-              style={{ flex: 1, height: "1px", background: "rgba(29,158,117,0.4)" }}
+              style={{ flex: 1, height: "1px", background: "rgba(var(--famille-rgb),0.4)" }}
             />
             <div
               style={{
@@ -1518,7 +1531,7 @@ export default function RgpdClient() {
                 height: "32px",
                 borderRadius: "50%",
                 background: LIGHT.panel,
-                border: "1px solid rgba(29,158,117,.4)",
+                border: "1px solid rgba(var(--famille-rgb),.4)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1529,7 +1542,7 @@ export default function RgpdClient() {
                 style={{
                   fontSize: "10px",
                   fontWeight: 600,
-                  color: "#1D9E75",
+                  color: "var(--famille-accent)",
                   fontFamily: "monospace",
                 }}
               >
@@ -1808,7 +1821,7 @@ export default function RgpdClient() {
           L&apos;incident relève aussi du terrain pénal ?{" "}
           <a
             href="/nos-domaines/cybercriminalite"
-            style={{ color: ACCENT, textDecoration: "underline" }}
+            style={{ color: BRAND, textDecoration: "underline" }}
           >
             Avocat en cybercriminalité
           </a>
@@ -1980,13 +1993,13 @@ export default function RgpdClient() {
                 }}
                 style={{
                   background: LIGHT.panel,
-                  border: `1px solid ${isOpen ? "rgba(29,158,117,.35)" : LIGHT.border}`,
+                  border: `1px solid ${isOpen ? "rgba(var(--brand-rgb),.35)" : LIGHT.border}`,
                   borderRadius: "8px",
                   cursor: "pointer",
                   transition: "border-color 0.25s ease",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isOpen) e.currentTarget.style.borderColor = "rgba(29,158,117,.4)";
+                  if (!isOpen) e.currentTarget.style.borderColor = "rgba(var(--brand-rgb),.4)";
                 }}
                 onMouseLeave={(e) => {
                   if (!isOpen) e.currentTarget.style.borderColor = LIGHT.border;
@@ -2047,8 +2060,8 @@ export default function RgpdClient() {
                 >
                   <div
                     style={{
-                      borderLeft: "2px solid rgba(29,158,117,.4)",
-                      background: "rgba(29,158,117,.07)",
+                      borderLeft: "2px solid rgba(var(--famille-rgb),.4)",
+                      background: "rgba(var(--famille-rgb),.07)",
                       padding: "10px 12px",
                       margin: "10px 12px 12px",
                     }}
@@ -2094,7 +2107,7 @@ export default function RgpdClient() {
           Act relèvent aussi de vos{" "}
           <a
             href="/nos-domaines/contrats-informatiques"
-            style={{ color: ACCENT, textDecoration: "underline" }}
+            style={{ color: BRAND, textDecoration: "underline" }}
           >
             contrats IT
           </a>{" "}
@@ -2102,12 +2115,12 @@ export default function RgpdClient() {
           CNIL et une obligation au titre de{" "}
           <a
             href="/nos-domaines/cybersecurite/nis2"
-            style={{ color: ACCENT, textDecoration: "underline" }}
+            style={{ color: BRAND, textDecoration: "underline" }}
           >
             la directive NIS 2
           </a>{" "}
           ; et l&apos;usage d&apos;IA générative croise le{" "}
-          <a href="/nos-domaines/ia-act" style={{ color: ACCENT, textDecoration: "underline" }}>
+          <a href="/nos-domaines/ia-act" style={{ color: BRAND, textDecoration: "underline" }}>
             règlement européen sur l&apos;intelligence artificielle
           </a>
           .
@@ -2341,8 +2354,10 @@ export default function RgpdClient() {
                 Données personnelles & intelligence artificielle
               </p>
               <div className="mt-3 flex items-center justify-center gap-2">
-                <PulsingDot color={ACCENT} />
-                <span style={{ fontSize: "11px", color: "#5dc9a0" }}>
+                {/* Statut de service, pas une action : point neutre + texte
+                    secondaire gris (le bleu suggérerait un lien). */}
+                <PulsingDot color="rgba(255,255,255,0.45)" />
+                <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
                   Réponse sous 48 h
                 </span>
               </div>
@@ -2355,7 +2370,7 @@ export default function RgpdClient() {
               onMouseEnter={() => setCtaHover(true)}
               onMouseLeave={() => setCtaHover(false)}
               style={{
-                background: ACCENT,
+                background: BRAND,
                 color: "white",
                 padding: "14px 28px",
                 borderRadius: "4px",
@@ -2365,7 +2380,7 @@ export default function RgpdClient() {
                 letterSpacing: "0.06em",
                 whiteSpace: "nowrap",
                 boxShadow: ctaHover
-                  ? `0 0 20px rgba(${ACCENT_RGB},0.5)`
+                  ? `0 0 20px rgba(${BRAND_RGB},0.5)`
                   : "none",
                 transition: "box-shadow 0.3s ease",
               }}
