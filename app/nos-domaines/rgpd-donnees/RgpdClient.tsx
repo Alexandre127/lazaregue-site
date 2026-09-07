@@ -1833,7 +1833,7 @@ export default function RgpdClient() {
             marginBottom: "12px",
           }}
         >
-          Due diligence &amp; M&amp;A
+          Opérations
         </p>
         <h2
           style={{
@@ -1841,12 +1841,24 @@ export default function RgpdClient() {
             fontWeight: 600,
             color: LIGHT.text,
             maxWidth: "720px",
-            marginBottom: "16px",
+            marginBottom: "12px",
             lineHeight: 1.35,
           }}
         >
-          Un fichier non conforme peut être déclaré illicite
+          Due diligence RGPD et opérations M&amp;A
         </h2>
+        <p
+          style={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: LIGHT.text,
+            maxWidth: "720px",
+            marginBottom: "16px",
+            lineHeight: 1.5,
+          }}
+        >
+          Un fichier non conforme peut être déclaré illicite.
+        </p>
         <p
           style={{
             fontSize: "14px",
