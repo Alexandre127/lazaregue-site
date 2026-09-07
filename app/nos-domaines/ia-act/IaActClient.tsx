@@ -570,6 +570,10 @@ export default function IaActClient() {
               { date: "Août 2026", statut: "EN VIGUEUR", ton: "vigueur", titre: "Transparence · gouvernance · sanctions", corps: "Application générale du règlement hors haut risque. Pouvoirs de contrôle et de sanction actifs." },
               { date: "Déc. 2026", statut: "PROCHAINE", ton: "alerte", titre: "Contenus synthétiques · deux interdictions nouvelles", corps: "Marquage des contenus générés et divulgation des hypertrucages pour les systèmes mis sur le marché avant août 2026. Interdiction des contenus intimes non consentis et des contenus pédocriminels générés par IA." },
               { date: "Déc. 2027", statut: "REPORTÉ · +17 MOIS", ton: "reporte", titre: "Haut risque — annexe III", corps: "Recrutement, gestion des travailleurs, éducation, scoring de crédit, tarification de l'assurance, accès aux services essentiels." },
+              // TODO (à traiter AVANT publication) : vérifier dans le texte
+              // CONSOLIDÉ du règlement (UE) 2026/1744 la formulation exacte
+              // « ceux relevant du règlement Machines sortent du champ de
+              // l'AI Act » — reformuler si le texte consolidé ne la porte pas.
               { date: "Août 2028", statut: "REPORTÉ · +12 MOIS", ton: "reporte", titre: "Haut risque — annexe I", corps: "Systèmes intégrés à des produits réglementés. Ceux relevant du règlement Machines sortent du champ de l'AI Act." },
             ].map((m, idx) => {
               const badge =
@@ -616,6 +620,10 @@ export default function IaActClient() {
             <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, margin: 0, lineHeight: 1.6 }}>
               Le calendrier ne suffit pas à déterminer vos obligations.
             </p>
+            {/* TODO (à traiter AVANT publication) : identifier la RÉFÉRENCE
+                EXACTE (article / considérant du règlement 2026/1744) des
+                allègements pour petites entreprises et entreprises à faible
+                capitalisation — préciser ou reformuler selon le texte trouvé. */}
             <p style={{ fontSize: 13, color: DARK.muted, margin: "7px 0 0", lineHeight: 1.6 }}>
               Il faut qualifier le système, établir le rôle de l&apos;entreprise,
               et vérifier sa date de mise sur le marché. Les allègements prévus
@@ -1008,7 +1016,7 @@ export default function IaActClient() {
                 points: [
                   "Rôle de l'entreprise : fournisseur, déployeur, importateur",
                   "Régime applicable et date de mise sur le marché",
-                  "Documentation opposable et traçabilité des décisions",
+                  "Documentation de conformité et traçabilité des décisions",
                   "Défense en cas de contrôle ou de contentieux",
                 ],
               },
