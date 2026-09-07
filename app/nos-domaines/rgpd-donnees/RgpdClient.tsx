@@ -1148,36 +1148,62 @@ export default function RgpdClient() {
             opacity: 1;
           }
         }
+
+        /* ---- Héro avec photographie (même traitement que cybersécurité) ----
+           Mobile : la photo est le FOND de la section, derrière le texte, avec
+           un voile sombre pour que le texte blanc passe. Desktop : deux colonnes
+           55/45, photo à droite en cover, fondue à gauche dans le fond sombre. */
+        .rgpd-hero-grid { position: relative; display: block; }
+        .rgpd-hero-photo { position: absolute; inset: 0; z-index: 0; }
+        .rgpd-hero-img { object-position: center 45%; }
+        .rgpd-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: rgba(9,13,38,0.66); }
+        .rgpd-hero-fade { display: none; }
+        .rgpd-hero-text { position: relative; z-index: 1; padding: 48px 24px 56px; min-height: 380px; }
+        @media (min-width: 1024px) {
+          .rgpd-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
+          .rgpd-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 460px; z-index: auto; }
+          .rgpd-hero-overlay { display: none; }
+          .rgpd-hero-fade { display: block; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 60%, ${DARK.bg} 100%); }
+          .rgpd-hero-text { order: 1; padding: 64px 40px 64px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+        }
       `}</style>
 
       {/* HERO */}
       <section style={{ background: DARK.bg, position: "relative", overflow: "hidden" }}>
-        <div
-          className="relative"
-          style={{ ...INNER, padding: "64px 24px" }}
-        >
-          <div
-            className="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full"
-            style={{
-              background: `radial-gradient(circle, rgba(${ACCENT_RGB},0.25) 0%, transparent 70%)`,
-              animation: "glowMove 8s ease-in-out infinite alternate",
-            }}
-            aria-hidden
-          />
+        <div className="rgpd-hero-grid" style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div className="rgpd-hero-photo">
+            <Image
+              src="/images/rgpd-hero.jpg"
+              alt="Meuble à tiroirs éclairé dans une salle sombre — archives classées"
+              fill
+              priority
+              sizes="(max-width: 1023px) 100vw, 45vw"
+              className="rgpd-hero-img"
+              style={{ objectFit: "cover" }}
+            />
+            <span className="rgpd-hero-fade" aria-hidden />
+            <span className="rgpd-hero-overlay" aria-hidden />
+          </div>
 
-          <div className="relative z-10">
+          <div className="rgpd-hero-text">
             <FadeUp delay={0}>
-              <p
+              <span
                 style={{
+                  display: "inline-block",
+                  fontFamily: "monospace",
                   fontSize: "11px",
-                  color: "rgba(255,255,255,0.35)",
-                  letterSpacing: "0.08em",
-                  marginBottom: "16px",
+                  fontWeight: 500,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#5fd3a8",
+                  background: `rgba(${ACCENT_RGB},0.22)`,
+                  borderRadius: "8px",
+                  padding: "4px 12px",
+                  marginBottom: "18px",
                 }}
               >
-                Nos domaines ·{" "}
-                <span style={{ color: ACCENT }}>RGPD & Données</span>
-              </p>
+                RGPD &amp; Données · Paris
+              </span>
             </FadeUp>
             <FadeUp delay={0.1}>
               <h1
