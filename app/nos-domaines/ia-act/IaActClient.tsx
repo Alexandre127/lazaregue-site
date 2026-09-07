@@ -149,13 +149,32 @@ const interventionTabs = [
         h3: "Risques prioritaires identifiés",
         extraitLabel: "Exemple pédagogique — fintech de crédit",
         extrait: (
-          <>
-            <B>Risque n°1 — À qualifier</B>. Un outil de scoring est déployé, mais ni le{" "}
-            <B>rôle tenu</B> — déployeur ou fournisseur — ni la <B>date de mise en service</B> ne
-            sont documentés. Un changement de paramétrage est intervenu sans être qualifié : il peut
-            faire tomber le régime allégé. La <B>transparence</B> envers les personnes concernées
-            reste due dès aujourd&apos;hui.
-          </>
+          <div style={{ fontStyle: "normal" }}>
+            {[
+              ["Rôle tenu non documenté", "Exigible aujourd'hui"],
+              ["Information des personnes concernées", "Exigible aujourd'hui"],
+              ["Paramétrage modifié sans qualification", "À qualifier sans délai"],
+              ["Classement haut risque — annexe III", "À préparer · déc. 2027"],
+            ].map(([k, v], i) => (
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "5px 0", borderBottom: i < 3 ? "0.5px solid #EDEDEA" : "none" }}>
+                <span style={{ fontSize: 12, color: LIGHT.text }}>{k}</span>
+                <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint, textAlign: "right", flexShrink: 0 }}>{v}</span>
+              </div>
+            ))}
+            <div style={{ background: LIGHT.panel2, borderLeft: `2px solid ${ACCENT}`, padding: "10px 11px", marginTop: 11 }}>
+              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: ACCENT, margin: "0 0 5px", letterSpacing: ".05em", textTransform: "uppercase" }}>
+                Analyse — priorisation
+              </p>
+              <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: 0, lineHeight: 1.6 }}>
+                Deux risques sont déjà exigibles : documenter le rôle tenu et informer les personnes concernées. Le classement haut risque n&apos;est opposable qu&apos;en décembre 2027 — il se prépare, il ne se traite pas dans l&apos;urgence.
+              </p>
+            </div>
+            <div style={{ background: "#F7F7F5", padding: "9px 11px", marginTop: 9, borderRadius: 4 }}>
+              <p style={{ fontSize: 11, color: LIGHT.muted, margin: 0, lineHeight: 1.55 }}>
+                <strong style={{ color: LIGHT.text, fontWeight: 600 }}>Ce que la matrice hiérarchise.</strong> Ce qui est dû aujourd&apos;hui, ce qui est reporté, et le paramétrage non qualifié qui peut faire tomber le régime allégé.
+              </p>
+            </div>
+          </div>
         ),
       },
     ],
@@ -318,6 +337,10 @@ export default function IaActClient() {
           background: LIGHT.bg,
           color: LIGHT.text,
           fontFamily: "var(--ff-body)",
+          // La barre de navigation du site est fixe (`.laz-nav`, 54px, opaque,
+          // z-index 100). Sans décalage, la pastille du héro passe dessous. On
+          // compense la hauteur du bandeau, comme la page cybersécurité.
+          paddingTop: 54,
         } as CSSProperties
       }
     >
@@ -391,10 +414,9 @@ export default function IaActClient() {
             </p>
             <p style={{ ...TYPE.body, maxWidth: 520, color: DARK.muted, marginBottom: 16 }}>
               Le cabinet accompagne les PME et ETI qui utilisent, intègrent ou
-              développent des systèmes d&apos;intelligence artificielle. Un
-              logiciel de conformité produit une catégorie ; nous produisons une
-              qualification, une documentation et, le jour du contrôle, une
-              défense.
+              développent des systèmes d&apos;intelligence artificielle. Nous
+              produisons une qualification, une documentation et, le jour du
+              contrôle, une défense.
             </p>
 
             <div className="mb-4 flex flex-wrap gap-2">
@@ -519,8 +541,8 @@ export default function IaActClient() {
           <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 12 }}>
             <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.6 }}>
               Le bénéfice du délai dépend de choix quotidiens qu&apos;une
-              entreprise fait sans savoir qu&apos;ils comptent. Aucun
-              questionnaire automatisé ne les détecte.
+              entreprise fait sans savoir qu&apos;ils comptent. Ces choix ne se
+              détectent pas dans un inventaire : ils se qualifient.
             </p>
           </div>
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>

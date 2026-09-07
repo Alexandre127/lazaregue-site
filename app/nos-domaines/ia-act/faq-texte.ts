@@ -17,8 +17,8 @@ export const FAQ_TEXTE: { q: string; a: string }[] = [
     a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites sont sanctionnables depuis février 2025, et les obligations de transparence, de gouvernance et le régime de sanctions s'appliquent depuis août 2026. Les dix-sept mois de délai sont surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
   },
   {
-    q: "Un logiciel de conformité suffit-il ?",
-    a: "Non. Un logiciel de conformité produit une catégorie ; il n'établit ni le rôle de votre entreprise, ni la nature réelle du système, ni la date de mise sur le marché qui commande le régime applicable. La qualification suppose une analyse juridique et un examen technique, et la défense, le jour d'un contrôle, repose sur une documentation construite — pas sur une case cochée.",
+    q: "Comment qualifier un système d'IA ?",
+    a: "La qualification établit trois choses : le rôle tenu par votre entreprise — fournisseur ou déployeur —, la nature réelle du système au regard du règlement (interdit, haut risque, transparence) et la date de mise sur le marché, qui commande le régime applicable. Elle suppose une analyse juridique et un examen technique du système. C'est de cette qualification que découle la documentation à construire, celle sur laquelle repose la défense le jour d'un contrôle.",
   },
   {
     q: "Comment construire un registre des systèmes d'IA ?",
