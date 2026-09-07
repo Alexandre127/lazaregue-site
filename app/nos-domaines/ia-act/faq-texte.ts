@@ -21,7 +21,7 @@ export const FAQ_TEXTE: { q: string; a: string }[] = [
   },
   {
     q: "Quelles sont les obligations concrètes pour un système à haut risque ?",
-    a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). Conservation obligatoire : 10 ans (art. 18).",
+    a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). La documentation technique doit être conservée par le fournisseur du système (art. 18) ; les durées de conservation dépendent du système et du rôle tenu.",
   },
   {
     q: "L'IA engage-t-elle aussi le droit du travail ?",
@@ -37,6 +37,6 @@ export const FAQ_TEXTE: { q: string; a: string }[] = [
   },
   {
     q: "À partir de quand mes obligations s'appliquent-elles ?",
-    a: "En trois étapes. Février 2025 : les pratiques interdites sont en vigueur (art. 5 RIA). Août 2025 : les obligations de transparence s'appliquent à l'IA générative, aux chatbots et aux deepfakes. Août 2027 : pleine conformité des systèmes à haut risque, pour les fournisseurs comme pour les déployeurs (art. 6).",
+    a: "Le règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du 8 juillet 2026, s'applique par étapes. Février 2025 : pratiques interdites et maîtrise de l'IA, en vigueur (art. 5). Août 2026 : transparence, gouvernance et sanctions, en vigueur. Les obligations relatives aux systèmes à haut risque ont été reportées : annexe III au 2 décembre 2027, annexe I au 2 août 2028.",
   },
 ];

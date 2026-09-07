@@ -4,14 +4,12 @@ import { FAQ_TEXTE } from "./faq-texte";
 
 /**
  * « AI Act » seul est un terme éditorial, capté par la presse et les
- * institutions. Le titre vise donc l'intention de service (« avocat »,
- * « mise en conformité ») et couvre au passage l'appellation française
- * « RIA », de plus en plus utilisée dans les textes et les appels d'offres.
+ * institutions. Le titre vise l'intention de service (« avocat »,
+ * « conformité », « gouvernance IA »).
  */
-const TITLE =
-  "Avocat AI Act (RIA) : mise en conformité et gouvernance de l'intelligence artificielle | Lazarègue Avocats";
+const TITLE = "Avocat AI Act : conformité et gouvernance IA | Lazarègue Avocats";
 const DESCRIPTION =
-  "Qualification de vos systèmes d'IA, documentation technique, supervision humaine, contrats fournisseurs et consultation du CSE. Le règlement européen sur l'IA appliqué aux PME et ETI.";
+  "Audit AI Act, cartographie des systèmes, charte IA, contrats et gouvernance. Le cabinet accompagne les PME et ETI dans leur mise en conformité.";
 
 export const metadata: Metadata = {
   title: TITLE,

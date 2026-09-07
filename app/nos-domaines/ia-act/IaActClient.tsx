@@ -32,8 +32,9 @@ const CARD_PAD = 16;
 const GRID_GAP = 12;
 
 const TYPE = {
-  h1: { fontSize: 36, fontWeight: 600, lineHeight: 1.2 } as const,
-  h2: { fontSize: 24, fontWeight: 500, lineHeight: 1.2 } as const,
+  // Règle typographique validée (identique aux 3 autres pages de domaine).
+  h1: { fontSize: "clamp(32px, 5.5vw, 60px)", fontWeight: 600, lineHeight: 1.08 } as const,
+  h2: { fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25 } as const,
   h3: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 } as const,
   body: { fontSize: 16, fontWeight: 400, lineHeight: 1.7 } as const,
   secondary: { fontSize: 14, fontWeight: 400, lineHeight: 1.7, color: LIGHT.muted } as const,
@@ -87,7 +88,7 @@ const scenarios = [
     color: "#1A47FF",
     tag: "Commercial",
     title: "Scoring client automatisé",
-    text: "Un algorithme qui évalue la solvabilité ou la fidélité client croise AI Act et RGPD. Sans documentation ni droit de contestation, le déploiement est illégal.",
+    text: "Un algorithme qui évalue la solvabilité ou la fidélité client croise AI Act et RGPD. Sans documentation ni droit de contestation, le déploiement expose l'entreprise à un contentieux et à une remise en cause.",
   },
 ];
 
@@ -106,7 +107,7 @@ const steps = [
   {
     n: "03",
     title: "Documenter — construire la preuve en amont",
-    text: "Gouvernance des données, supervision humaine, évaluation de conformité. Dix ans de conservation obligatoire.",
+    text: "Gouvernance des données, supervision humaine, évaluation de conformité. Les durées de conservation dépendent du système et du rôle tenu.",
   },
   {
     n: "04",
@@ -318,21 +319,38 @@ export default function IaActClient() {
       {/* 1. HERO */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={INNER}>
-          <p style={{ fontSize: 12, color: DARK.muted, marginBottom: 10 }}>
-            Nos domaines · <span style={{ color: BLUE }}>IA & AI Act</span>
+          <p
+            style={{
+              fontFamily: "var(--ff-mono)",
+              fontSize: 11,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: DARK.muted,
+              marginBottom: 14,
+            }}
+          >
+            Avocat en droit de l&apos;intelligence artificielle · Paris
           </p>
-          <h1 style={{ ...TYPE.h1, marginBottom: 8, color: DARK.text }}>
-            UNE IA MAL DOCUMENTÉE DEVIENT UN RISQUE DE RESPONSABILITÉ.
+          <h1 style={{ ...TYPE.h1, marginBottom: 12, color: DARK.text }}>
+            Mise en conformité AI Act et gouvernance de l&apos;IA
           </h1>
-          <h2 style={{ fontSize: 20, fontWeight: 400, color: "#4d7aff", lineHeight: 1.4, maxWidth: 760, marginBottom: 12 }}>
-            Vous utilisez l&apos;IA dans vos outils — ou vous en construisez. Dans
-            les deux cas, l&apos;AI Act vous concerne.
-          </h2>
-          <p style={{ ...TYPE.body, maxWidth: 760, color: DARK.muted, marginBottom: 16 }}>
-            ChatGPT, Copilot, outils RH, API tierces, scoring client, IA intégrée à
-            un produit SaaS — l&apos;AI Act est en vigueur. Les premières obligations
-            s&apos;appliquent déjà. Savez-vous ce que vous devrez démontrer à un juge,
-            à la CNIL ou à votre client si quelque chose tourne mal ?
+          <p
+            style={{
+              fontSize: 19,
+              fontWeight: 400,
+              lineHeight: 1.4,
+              color: "rgba(255,255,255,0.9)",
+              maxWidth: 620,
+              marginBottom: 14,
+            }}
+          >
+            Une IA mal documentée devient un risque de responsabilité.
+          </p>
+          <p style={{ ...TYPE.body, maxWidth: 640, color: DARK.muted, marginBottom: 16 }}>
+            Le cabinet accompagne les PME et ETI qui utilisent, intègrent ou
+            développent des systèmes d&apos;intelligence artificielle. Un logiciel
+            de conformité produit une catégorie ; nous produisons une
+            qualification, une documentation et, le jour du contrôle, une défense.
           </p>
 
           <div className="mb-4 flex flex-wrap gap-2">
@@ -488,8 +506,8 @@ export default function IaActClient() {
                 }}
               >
                 {checkedTests.length > 0
-                  ? `${checkedTests.length} case${checkedTests.length > 1 ? "s" : ""} cochée${checkedTests.length > 1 ? "s" : ""} — vous êtes concerné par l'AI Act.`
-                  : "Si vous avez coché une seule case, vous êtes déjà concerné par l'AI Act."}
+                  ? `${checkedTests.length} usage${checkedTests.length > 1 ? "s" : ""} coché${checkedTests.length > 1 ? "s" : ""} — il faut identifier votre rôle et les documents à conserver.`
+                  : "Un seul de ces usages suffit à justifier d'identifier votre rôle et les documents à conserver. Entrer dans le champ du règlement n'emporte pas les obligations les plus lourdes."}
               </p>
             </div>
           </div>
@@ -522,12 +540,12 @@ export default function IaActClient() {
                 badge: "IA interdite",
                 badgeBg: "#FCEBEB",
                 badgeColor: "#A32D2D",
-                title: "Interdiction absolue",
-                desc: "Certains usages sont illégaux sans aucune dérogation possible.",
+                title: "Pratiques interdites",
+                desc: "Certains usages sont interdits par l'article 5 ; d'autres ne le sont que sous conditions.",
                 ex: [
                   "Manipulation cognitive sous le seuil de conscience",
                   "Notation sociale des personnes",
-                  "Reconnaissance faciale en temps réel dans l'espace public",
+                  "Identification biométrique à distance en temps réel dans les espaces accessibles au public, à des fins répressives — exceptions encadrées",
                 ],
               },
               {
@@ -536,7 +554,7 @@ export default function IaActClient() {
                 badgeBg: "#FAEEDA",
                 badgeColor: "#633806",
                 title: "Obligations lourdes",
-                desc: "Documentation, supervision humaine, évaluation de conformité. 10 ans de conservation.",
+                desc: "Documentation, supervision humaine, évaluation de conformité. Les durées de conservation dépendent du système et du rôle tenu.",
                 ex: [
                   "Tri de CV et recrutement automatisé",
                   "Scoring de crédit ou d'assurance",
@@ -600,99 +618,81 @@ export default function IaActClient() {
           {/* SÉPARATEUR */}
           <div aria-hidden="true" style={{ height: "0.5px", background: LIGHT.border, margin: "32px 0" }} />
 
-          {/* TIMELINE */}
-          <Eyebrow>Calendrier</Eyebrow>
-          <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.4, marginBottom: 16 }}>
-            Une application progressive — certaines obligations sont déjà en vigueur
+          {/* CALENDRIER — 6 moments (Bloc A). L'ancien calendrier est supprimé
+              intégralement : il annonçait comme future une échéance passée et
+              comme applicables des obligations reportées par le Digital Omnibus. */}
+          <Eyebrow>Où en est le droit</Eyebrow>
+          <h3 style={{ ...TYPE.h3, fontWeight: 600, margin: "0 0 6px" }}>
+            Le calendrier, au 1<sup>er</sup> septembre 2026
+          </h3>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
+            Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du
+            8 juillet 2026, en vigueur depuis le 27 juillet.
           </p>
 
-          <div className="flex flex-col">
+          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
             {[
-              {
-                date: "Fév. 2025",
-                dateColor: "#A32D2D",
-                point: "#E24B4A",
-                badge: "En vigueur",
-                badgeBg: "#FCEBEB",
-                badgeColor: "#A32D2D",
-                title: "IA interdites",
-                desc: "Manipulation cognitive, notation sociale, reconnaissance faciale en temps réel dans l'espace public.",
-              },
-              {
-                date: "Août 2025",
-                dateColor: "#633806",
-                point: "#BA7517",
-                badge: "En vigueur",
-                badgeBg: "#FAEEDA",
-                badgeColor: "#633806",
-                title: "Modèles d'IA à usage général",
-                desc: "ChatGPT, Copilot, Mistral et équivalents — documentation technique, transparence, conformité droits d'auteur.",
-              },
-              {
-                date: "Août 2026",
-                dateColor: "#185FA5",
-                point: "#378ADD",
-                badge: "À venir",
-                badgeBg: "#E6F1FB",
-                badgeColor: "#185FA5",
-                title: "IA à haut risque",
-                desc: "Recrutement automatisé, scoring de crédit, dispositifs médicaux, infrastructures critiques — obligations lourdes de documentation et supervision humaine.",
-              },
-              {
-                date: "2027",
-                dateColor: "#085041",
-                point: "#1D9E75",
-                badge: "À venir",
-                badgeBg: "#E1F5EE",
-                badgeColor: "#085041",
-                title: "Application complète",
-                desc: "Tous les systèmes IA soumis au règlement. Articulation avec le Data Act et le DMA.",
-              },
-            ].map((s, idx, arr) => (
-              <div
-                key={s.title}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "90px 24px 1fr",
-                  gap: 12,
-                }}
-              >
-                <div style={{ fontSize: 12, fontWeight: 600, color: s.dateColor, textAlign: "right", paddingTop: 1 }}>
-                  {s.date}
+              { date: "Fév. 2025", statut: "EN VIGUEUR", ton: "vigueur", titre: "Pratiques interdites · maîtrise de l'IA", corps: "L'obligation de maîtrise de l'IA a été réécrite en juillet 2026 : elle passe d'une garantie à un soutien au développement de cette littératie. Sanctionnable depuis l'été 2026." },
+              { date: "Août 2025", statut: "EN VIGUEUR", ton: "vigueur", titre: "Modèles d'IA à usage général", corps: "Ces obligations pèsent sur les fournisseurs des modèles, non sur l'entreprise qui les utilise." },
+              { date: "Août 2026", statut: "EN VIGUEUR", ton: "vigueur", titre: "Transparence · gouvernance · sanctions", corps: "Application générale du règlement hors haut risque. Pouvoirs de contrôle et de sanction actifs." },
+              { date: "Déc. 2026", statut: "PROCHAINE", ton: "alerte", titre: "Contenus synthétiques · deux interdictions nouvelles", corps: "Marquage des contenus générés et divulgation des hypertrucages pour les systèmes mis sur le marché avant août 2026. Interdiction des contenus intimes non consentis et des contenus pédocriminels générés par IA." },
+              { date: "Déc. 2027", statut: "REPORTÉ · +17 MOIS", ton: "reporte", titre: "Haut risque — annexe III", corps: "Recrutement, gestion des travailleurs, éducation, scoring de crédit, tarification de l'assurance, accès aux services essentiels." },
+              { date: "Août 2028", statut: "REPORTÉ · +12 MOIS", ton: "reporte", titre: "Haut risque — annexe I", corps: "Systèmes intégrés à des produits réglementés. Ceux relevant du règlement Machines sortent du champ de l'AI Act." },
+            ].map((m, idx) => {
+              const badge =
+                m.ton === "vigueur"
+                  ? { color: "#0F5545", bg: "#E4F2ED" }
+                  : m.ton === "alerte"
+                    ? { color: "#8A5A00", bg: "#F5E6C8" }
+                    : { color: "#5F5E5A", bg: "#EAEAE7" };
+              return (
+                <div
+                  key={m.date}
+                  style={{
+                    padding: "13px 14px",
+                    borderTop: idx > 0 ? `0.5px solid ${LIGHT.border}` : "none",
+                    background: m.ton === "alerte" ? "#FBF7E8" : LIGHT.panel,
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted }}>{m.date}</span>
+                    <span
+                      style={{
+                        fontFamily: "var(--ff-mono)",
+                        fontSize: 9,
+                        letterSpacing: ".04em",
+                        color: badge.color,
+                        background: badge.bg,
+                        padding: "2px 7px",
+                        borderRadius: 3,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {m.statut}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" }}>{m.titre}</p>
+                  <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 }}>{m.corps}</p>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <span
-                    aria-hidden="true"
-                    style={{ width: 12, height: 12, borderRadius: "50%", background: s.point, flexShrink: 0, marginTop: 3 }}
-                  />
-                  {idx < arr.length - 1 ? (
-                    <span aria-hidden="true" style={{ flex: 1, width: 2, background: LIGHT.border, marginTop: 4 }} />
-                  ) : null}
-                </div>
-                <div style={{ paddingBottom: idx < arr.length - 1 ? 16 : 0 }}>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      fontSize: 10,
-                      textTransform: "uppercase",
-                      letterSpacing: ".06em",
-                      background: s.badgeBg,
-                      color: s.badgeColor,
-                      borderRadius: 999,
-                      padding: "2px 8px",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {s.badge}
-                  </span>
-                  <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>{s.title}</h3>
-                  <p style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>
-                    {s.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          {/* Bandeau à la suite du calendrier */}
+          <div style={{ background: DARK.bg, borderRadius: 10, padding: 16, marginTop: 12 }}>
+            <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, margin: 0, lineHeight: 1.6 }}>
+              Le calendrier ne suffit pas à déterminer vos obligations.
+            </p>
+            <p style={{ fontSize: 13, color: DARK.muted, margin: "7px 0 0", lineHeight: 1.6 }}>
+              Il faut qualifier le système, établir le rôle de l&apos;entreprise,
+              et vérifier sa date de mise sur le marché. Les allègements prévus
+              pour les petites entreprises et les entreprises à faible
+              capitalisation entrent aussi en compte.
+            </p>
+          </div>
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "12px 0 0", letterSpacing: ".04em" }}>
+            À JOUR AU 1ᵉʳ SEPTEMBRE 2026 · RÉVISION TRIMESTRIELLE
+          </p>
         </div>
       </section>
 
@@ -971,7 +971,7 @@ export default function IaActClient() {
           <EquipeDossier
             eyebrow="Gouvernance IA"
             titre="Du contrat à l'algorithme"
-            chapeau="Qualifier un système d'IA en droit suppose d'abord d'établir ce qu'il fait réellement. C'est pourquoi l'avocat et l'experte technique travaillent sur le même dossier."
+            chapeau="Qualifier un système d'IA en droit suppose d'abord d'établir ce qu'il fait réellement. C'est pourquoi l'avocat et l'intervenante technique travaillent sur le même dossier."
             couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
             membres={[
               { slug: "alexandre", role: "Qualification juridique & documentation de conformité", tags: ["AI Act", "RGPD", "Contentieux"] },
@@ -1155,7 +1155,7 @@ export default function IaActClient() {
                 id: "q3",
                 q: "Quelles sont les obligations concrètes pour un système à haut risque ?",
                 badge: "Art. 6 & Annexes I-III RIA",
-                a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). Conservation obligatoire : 10 ans (art. 18).",
+                a: "Pour tout système IA à haut risque — outil RH de sélection, scoring client, composant dans un dispositif médical — vous devez mettre en place : une gestion continue des risques (art. 9), une gouvernance des données d'entraînement (art. 10), une documentation technique complète (art. 11), une journalisation automatique (art. 12), une supervision humaine effective (art. 14), une évaluation de conformité avant mise sur le marché (art. 43), et un enregistrement dans la base européenne (art. 49). La documentation technique doit être conservée par le fournisseur du système (art. 18) ; les durées de conservation dépendent du système et du rôle tenu.",
               },
               {
                 id: "q4",
@@ -1178,14 +1178,14 @@ export default function IaActClient() {
                 badge: "3 étapes clés",
                 a: (
                   <div className="flex flex-col gap-2">
-                    <div style={{ borderLeft: "2px solid #E24B4A", padding: "8px 12px", background: "rgba(226,75,74,0.08)", fontSize: 12 }}>
-                      → Fév. 2025 : Pratiques interdites — en vigueur (art. 5 RIA)
+                    <div style={{ borderLeft: "2px solid #1a7a50", padding: "8px 12px", background: "rgba(15,85,69,0.08)", fontSize: 12 }}>
+                      → Fév. 2025 : pratiques interdites et maîtrise de l&apos;IA — en vigueur (art. 5)
                     </div>
-                    <div style={{ borderLeft: "2px solid #F2A43A", padding: "8px 12px", background: "rgba(242,164,58,0.08)", fontSize: 12 }}>
-                      → Août 2025 : IA générative, chatbots, deepfakes — obligations de transparence en vigueur
+                    <div style={{ borderLeft: "2px solid #1a7a50", padding: "8px 12px", background: "rgba(15,85,69,0.08)", fontSize: 12 }}>
+                      → Août 2026 : transparence, gouvernance et sanctions — en vigueur
                     </div>
-                    <div style={{ borderLeft: "2px solid #1A47FF", padding: "8px 12px", background: "rgba(26,71,255,0.08)", fontSize: 12 }}>
-                      → Août 2027 : Systèmes à haut risque — pleine conformité fournisseurs et déployeurs (art. 6)
+                    <div style={{ borderLeft: "2px solid #8A5A00", padding: "8px 12px", background: "rgba(138,90,0,0.08)", fontSize: 12 }}>
+                      → Déc. 2027 et août 2028 : haut risque (annexes III et I) — reporté par le Digital Omnibus
                     </div>
                   </div>
                 ),
