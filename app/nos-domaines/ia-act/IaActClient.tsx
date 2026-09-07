@@ -70,27 +70,6 @@ function Eyebrow({ children }: { children: ReactNode }) {
 
 const heroTags = ["AI Act", "RGPD", "Responsabilité", "Preuve", "Gouvernance"];
 
-const scenarios = [
-  {
-    color: "#E24B4A",
-    tag: "RH",
-    title: "Tri de CV automatisé",
-    text: "Un outil qui filtre les candidatures relève de l'annexe III. Sans supervision humaine documentée, votre responsabilité est directement engagée — et le candidat peut contester.",
-  },
-  {
-    color: "#BA7517",
-    tag: "Produit",
-    title: "IA intégrée à un dispositif physique",
-    text: "Composant de sécurité dans une machine ou un dispositif médical soumis à marquage CE : les obligations haut risque s'appliquent. La plupart des équipes produit l'ignorent.",
-  },
-  {
-    color: "#1A47FF",
-    tag: "Commercial",
-    title: "Scoring client automatisé",
-    text: "Un algorithme qui évalue la solvabilité ou la fidélité client croise AI Act et RGPD. Sans documentation ni droit de contestation, le déploiement expose l'entreprise à un contentieux et à une remise en cause.",
-  },
-];
-
 const steps = [
   {
     n: "01",
@@ -396,13 +375,17 @@ export default function IaActClient() {
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/contact"
               style={{
                 background: BLUE,
                 color: DARK.text,
-                padding: "12px 18px",
+                padding: "0 18px",
+                minHeight: 48,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 borderRadius: 4,
                 textDecoration: "none",
                 fontSize: 12,
@@ -417,7 +400,11 @@ export default function IaActClient() {
                 background: "transparent",
                 color: DARK.text,
                 border: `1px solid ${DARK.borderBlue}`,
-                padding: "12px 18px",
+                padding: "0 18px",
+                minHeight: 48,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 borderRadius: 4,
                 textDecoration: "none",
                 fontSize: 12,
@@ -681,7 +668,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 8. ÉTAPES */}
+      {/* 7. NOTRE MÉTHODE — cinq étapes */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre méthode</Eyebrow>
@@ -847,7 +834,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 8. INTERVENTION INTERACTIVE */}
+      {/* 9. CE QUE VOUS RECEVEZ — spécimens */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
@@ -1061,7 +1048,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 8B. QUESTIONS FRÉQUENTES */}
+      {/* 11. QUESTIONS FRÉQUENTES */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Questions fréquentes</Eyebrow>
@@ -1164,7 +1151,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 10. CTA */}
+      {/* 13. CTA */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={{ ...INNER, textAlign: "center" }}>
           <h2 style={{ ...TYPE.h2, marginBottom: 6, color: DARK.text }}>
