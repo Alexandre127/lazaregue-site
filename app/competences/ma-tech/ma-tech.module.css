@@ -147,14 +147,7 @@ a.ctaPrimary:hover { background: var(--blue3); border-color: var(--blue3); }
 .compare td:first-child { padding-right: 22px; border-right: 1px solid var(--bd); color: var(--ink); }
 .compare td:last-child { color: #5a5a72; padding-left: 22px; }
 .scopeNote { margin-top: 22px; font-size: 15.5px; color: #3a3a52; max-width: 70ch; }
-@media (max-width: 600px) {
-  .compare, .compare thead, .compare tbody, .compare tr { display: block; }
-  .compare thead { display: none; }
-  .compare td { width: auto; border-right: none !important; padding: 8px 0 !important; }
-  .compare tr { border-bottom: 1px solid var(--bd); padding: 8px 0; }
-  .compare td:last-child { color: #5a5a72; }
-  .compare td:last-child::before { content: "audit technique — "; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--mu); }
-}
+/* L'empilement mobile de .compare est regroupé avec celui de .mx, plus bas. */
 
 /* ── Pour qui ── */
 .pourQuiTitre { font-family: var(--ff-body); font-weight: 500; font-size: clamp(22px, 2.8vw, 30px); letter-spacing: -0.02em; margin: 12px 0 16px; max-width: 20ch; }
@@ -228,10 +221,10 @@ a.ctaPrimary:hover { background: var(--blue3); border-color: var(--blue3); }
 
 /* Sévérités (matrice + bascule) */
 .sev { font-family: var(--ff-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: lowercase; padding: 3px 9px; border: 1px solid currentColor; display: inline-block; white-space: nowrap; }
-.sevHi, .sevB { color: #C42B1C; }
+.sevB { color: #C42B1C; }
 .sevH { color: var(--blue3); }
-.sevMd, .sevM { color: #6a6a88; }
-.sevLo, .sevL { color: var(--mu); }
+.sevM { color: #6a6a88; }
+.sevL { color: var(--mu); }
 
 /* ── Livrables ── */
 .deliver { background: var(--navy); color: #fff; padding: clamp(28px, 4vw, 40px); margin: 30px 0; max-width: 860px; }
@@ -241,24 +234,38 @@ a.ctaPrimary:hover { background: var(--blue3); border-color: var(--blue3); }
 .deliver li::before { content: counter(d, decimal-leading-zero); font-family: var(--ff-mono); font-size: 12px; color: #7E8FE8; padding-top: 3px; }
 @media (max-width: 760px) { .deliver ol { grid-template-columns: 1fr; } }
 
-/* ── Matrice des risques ── */
+/* ── Matrice des risques (table.mx) ── */
 .matrix { margin: 30px 0; max-width: 860px; }
 .matrixHead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: baseline; margin-bottom: 10px; }
 .matrixHead h3 { font-family: var(--ff-body); font-weight: 500; font-size: 18px; letter-spacing: -0.01em; margin: 0; }
-.specRow { display: grid; grid-template-columns: 30px 1fr 96px 1fr; padding: 14px 0; border-bottom: 1px solid var(--bd); align-items: start; }
-.specHdr { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--mu); padding: 9px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-.specN { font-family: var(--ff-mono); font-size: 12px; color: var(--mu); }
-.specF { font-size: 14px; line-height: 1.5; padding-right: 14px; color: var(--ink); }
-.specT { font-size: 14px; line-height: 1.5; color: #3a3a52; padding-right: 0; }
+.mx { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.mx th { text-align: left; font-family: var(--ff-mono); font-weight: 400; font-size: 10px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--mu); padding: 9px 12px 9px 0; border-bottom: 1px solid var(--ink); vertical-align: bottom; }
+.mx td { padding: 15px 12px 15px 0; border-bottom: 1px solid var(--bd); vertical-align: top; color: #3a3a52; line-height: 1.5; }
+.mx td.c { font-family: var(--ff-mono); font-size: 12px; color: var(--mu); width: 34px; padding-right: 0; }
+.mx td.f { width: 32%; color: var(--ink); }
 .k { font-family: var(--ff-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--mu); display: block; margin-bottom: 8px; }
 .kBlue { color: var(--blue); }
 .kPeri { color: #4D6FFF; }
+
+/* Empilement mobile des DEUX tableaux (comparatif .compare + matrice .mx) sous
+   700 px : passage en display:block ; en-têtes retirés du flux visuel mais lus
+   par les lecteurs d'écran (sr-only, jamais display:none) ; libellé de la
+   dernière cellule injecté depuis attr(data-lbl). */
 @media (max-width: 700px) {
-  .specRow { grid-template-columns: 1fr; gap: 6px; }
-  .specHdr, .specN { display: none; }
-  .specF { padding: 0; }
-  .specRow > span[data-col]::before {
-    content: attr(data-col); display: block; font-family: var(--ff-mono); font-size: 9px;
+  .compare, .compare thead, .compare tbody, .compare tr, .compare th, .compare td,
+  .mx, .mx thead, .mx tbody, .mx tr, .mx th, .mx td { display: block; width: auto; }
+  .compare thead, .mx thead {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .compare td, .mx td { border: none; padding: 4px 0; }
+  /* Les largeurs de colonne (.f 32 %, .c 34px) sont posées par des sélecteurs
+     de classe : les neutraliser explicitement ici, sinon elles priment sur le
+     width:auto ci-dessus et le constat s'empile en colonne étroite. */
+  .compare td:first-child, .mx td.c, .mx td.f { border-right: none; padding-right: 0; width: auto; }
+  .compare tr, .mx tr { border-bottom: 1px solid var(--bd); padding: 12px 0; }
+  .compare td[data-lbl]::before, .mx td[data-lbl]::before {
+    content: attr(data-lbl); display: block; font-family: var(--ff-mono); font-size: 9px;
     letter-spacing: 0.18em; text-transform: uppercase; color: var(--mu); margin-bottom: 3px;
   }
 }
