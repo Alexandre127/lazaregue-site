@@ -3,15 +3,14 @@ import ContratsInformatiquesClient from "./ContratsInformatiquesClient";
 import { FAQ_ITEMS } from "./faq";
 
 /**
- * « Contrats informatiques » seul est une requête très disputée par les grands
- * cabinets parisiens. Le titre y ajoute donc ce que les visiteurs tapent
- * réellement quand le problème est déjà là — contentieux, perte de données,
- * résiliation — et la double cible client / prestataire.
+ * Paris figure dans le title, le h1 et la pastille du héro ; le corps de page
+ * précise que le cabinet intervient sur l'ensemble du territoire. Le titre vise
+ * la double cible client / prestataire et l'ensemble des contrats IT.
  */
 const TITLE =
-  "Avocat contrats informatiques & contentieux IT — PME, ETI et prestataires | Lazarègue Avocats";
+  "Avocat contrats informatiques et projets IT à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Perte de données, projet qui dérape, réversibilité cloud, résiliation contestée : nous sécurisons vos contrats IT et défendons vos intérêts en contentieux. Sauvegarde, SLA, clause limitative.";
+  "Avocat en contrats informatiques à Paris : négociation, audit et contentieux des projets logiciels, SaaS, cloud, maintenance et infogérance. PME, ETI, prestataires.";
 
 export const metadata: Metadata = {
   title: TITLE,

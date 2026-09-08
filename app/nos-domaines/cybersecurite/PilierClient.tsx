@@ -84,9 +84,13 @@ const PORTES: Porte[] = [
     titre: "Un prestataire informatique a fauté",
     corps:
       "Sauvegardes absentes, maintenance défaillante, obligation de sécurité non tenue, projet bloqué.",
-    lien: "Responsabilité du prestataire informatique",
-    href: "/nos-domaines/cybersecurite/responsabilite-prestataire-informatique",
-    disponible: false,
+    // La page dédiée « Responsabilité du prestataire informatique » n'existe pas
+    // encore : en attendant, la porte pointe vers le contentieux de la page
+    // Contrats informatiques, qui traite ces situations. À rebasculer vers la
+    // page dédiée le jour où elle est publiée (cf. brief §5).
+    lien: "Contentieux des contrats informatiques",
+    href: "/nos-domaines/contrats-informatiques#contentieux",
+    disponible: true,
   },
 ];
 

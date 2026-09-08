@@ -1009,7 +1009,7 @@ export default function IaActClient() {
             {[
               {
                 photo: "/images/alexandre-pro.jpg",
-                fonction: "Avocat à la Cour d'appel de Paris",
+                fonction: "Avocat au barreau de Paris",
                 nom: "Me Alexandre Lazarègue",
                 role: "Qualification juridique, documentation et contentieux",
                 examine: "Ce qu'il examine",
