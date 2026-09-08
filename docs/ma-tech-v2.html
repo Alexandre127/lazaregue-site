@@ -186,6 +186,22 @@ ul.lines li{display:grid;grid-template-columns:92px minmax(0,1fr) 104px;gap:18px
 .doc-foot{margin:22px 0 0;font-size:14.5px;color:#4a4a63;max-width:74ch}
 @media(max-width:700px){ul.lines li{grid-template-columns:1fr;gap:7px}.ln-ref{padding-top:0}}
 
+/* --- empilement mobile des deux tableaux (comparatif + matrice) sous 700 px ---
+   display:block ; en-têtes retirés du flux visuel mais lus par les lecteurs
+   d'écran (sr-only, jamais display:none) ; libellé de la dernière cellule
+   injecté depuis attr(data-lbl). Les largeurs de colonne (.f 32 %, .c 34px)
+   sont neutralisées explicitement, sinon elles priment (spécificité de classe)
+   sur le width:auto et le constat s'empile en colonne étroite. */
+@media(max-width:700px){
+  .compare,.compare thead,.compare tbody,.compare tr,.compare th,.compare td,
+  table.mx,table.mx thead,table.mx tbody,table.mx tr,table.mx th,table.mx td{display:block;width:auto}
+  .compare thead,table.mx thead{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+  .compare td,table.mx td{border:none;padding:4px 0}
+  .compare tr td:first-child,table.mx td.c,table.mx td.f{border-right:none;padding-right:0;width:auto}
+  .compare tr,table.mx tr{border-bottom:1px solid var(--border);padding:12px 0}
+  .compare td[data-lbl]::before,table.mx td[data-lbl]::before{content:attr(data-lbl);display:block;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+}
+
 /* --- emplacements photo --- */
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(28px,5vw,60px);align-items:end}
 @media(max-width:940px){.hero-grid{grid-template-columns:1fr}.hero-media{display:none}}
@@ -384,12 +400,12 @@ footer .addr{color:#9a9ab4;font-size:15px;line-height:1.7}
           <tr><th scope="col">due diligence juridique tech — notre intervention</th><th scope="col">due diligence technique — l’expert désigné</th></tr>
         </thead>
         <tbody>
-          <tr><td>Propriété du code et chaîne des droits</td><td>Qualité du code</td></tr>
-          <tr><td>Licences open source et composants tiers</td><td>Dette technique</td></tr>
-          <tr><td>Contrats clients et fournisseurs</td><td>Architecture</td></tr>
-          <tr><td>Données personnelles et RGPD</td><td>Scalabilité</td></tr>
-          <tr><td>Garanties du SPA et conditions suspensives</td><td>Performance</td></tr>
-          <tr><td>Risques réglementaires et responsabilité</td><td>Sécurité technique et tests d’intrusion</td></tr>
+          <tr><td>Propriété du code et chaîne des droits</td><td data-lbl="audit technique">Qualité du code</td></tr>
+          <tr><td>Licences open source et composants tiers</td><td data-lbl="audit technique">Dette technique</td></tr>
+          <tr><td>Contrats clients et fournisseurs</td><td data-lbl="audit technique">Architecture</td></tr>
+          <tr><td>Données personnelles et RGPD</td><td data-lbl="audit technique">Scalabilité</td></tr>
+          <tr><td>Garanties du SPA et conditions suspensives</td><td data-lbl="audit technique">Performance</td></tr>
+          <tr><td>Risques réglementaires et responsabilité</td><td data-lbl="audit technique">Sécurité technique et tests d’intrusion</td></tr>
         </tbody>
       </table>
 
@@ -541,31 +557,31 @@ footer .addr{color:#9a9ab4;font-size:15px;line-height:1.7}
               <td class="c">01</td>
               <td class="f">Module de reporting reposant sur une bibliothèque sous licence à réciprocité forte, incompatible avec la distribution propriétaire envisagée</td>
               <td><span class="sev b">bloquant</span></td>
-              <td>Réécriture du module ou licence commerciale, en condition suspensive</td>
+              <td data-lbl="traitement retenu">Réécriture du module ou licence commerciale, en condition suspensive</td>
             </tr>
             <tr>
               <td class="c">02</td>
               <td class="f">Trois prestataires ayant contribué au cœur du produit entre 2019 et 2021 sans stipulation de cession de droits</td>
               <td><span class="sev h">élevé</span></td>
-              <td>Régularisation avant closing ; à défaut, retenue de prix et garantie spécifique</td>
+              <td data-lbl="traitement retenu">Régularisation avant closing ; à défaut, retenue de prix et garantie spécifique</td>
             </tr>
             <tr>
               <td class="c">03</td>
               <td class="f">Clause de changement de contrôle à consentement préalable dans quatre contrats clients représentant 31 % des revenus récurrents</td>
               <td><span class="sev h">élevé</span></td>
-              <td>Obtention des consentements en condition suspensive ; ajustement de prix à défaut</td>
+              <td data-lbl="traitement retenu">Obtention des consentements en condition suspensive ; ajustement de prix à défaut</td>
             </tr>
             <tr>
               <td class="c">04</td>
               <td class="f">Origine et base légale d’une partie des données d’entraînement du modèle non documentées</td>
               <td><span class="sev m">moyen</span></td>
-              <td>Déclaration et garantie autonome, plafond et durée dédiés</td>
+              <td data-lbl="traitement retenu">Déclaration et garantie autonome, plafond et durée dédiés</td>
             </tr>
             <tr>
               <td class="c">05</td>
               <td class="f">Absence de contrat de sous-traitance avec l’hébergeur secondaire</td>
               <td><span class="sev l">faible</span></td>
-              <td>Régularisation post-closing, plan de remédiation à J+90</td>
+              <td data-lbl="traitement retenu">Régularisation post-closing, plan de remédiation à J+90</td>
             </tr>
           </tbody>
         </table>
