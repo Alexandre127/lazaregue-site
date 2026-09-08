@@ -213,9 +213,17 @@ ul.lines li{display:grid;grid-template-columns:92px minmax(0,1fr) 104px;gap:18px
 }
 
 /* --- emplacements photo --- */
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(28px,5vw,60px);align-items:end}
+/* Héro : grille deux colonnes (texte / image) au-dessus de 940 px, une seule en
+   dessous où l'image est masquée ET non chargée (source <picture media>). */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(28px,5vw,56px);align-items:center}
 @media(max-width:940px){.hero-grid{grid-template-columns:1fr}.hero-media{display:none}}
-.hero-media{margin:0}
+.hero-media{margin:0;position:relative}
+.hero-img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:14px}
+/* Raccord au fond navy en CSS (jamais dans le fichier image) : dégradé du bord
+   gauche vers le centre (~35 %) + léger fondu du bord bas. */
+.hero-media:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:14px;
+  background:linear-gradient(to right,var(--navy) 0%,rgba(10,15,46,0) 35%),
+             linear-gradient(to bottom,rgba(10,15,46,0) 82%,var(--navy) 100%)}
 .hero-media figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#8290C8;margin-top:10px}
 .ph{
   aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;text-align:center;
@@ -353,15 +361,8 @@ footer .addr{color:#9a9ab4;font-size:15px;line-height:1.7}
 <!-- ============ HÉRO — H1 modifié ============ -->
 <div class="hero">
   <div class="wrap">
-    <!-- Colonne image droite à RÉTABLIR quand la photographie existera (portrait
-         4:5, 1200×1500). Gabarit : envelopper .hero-copy + <figure class="hero-media">
-         dans <div class="hero-grid"> (2 colonnes au-dessus de 940 px, une seule en
-         dessous, .hero-media masquée). En l'absence de photo : une seule colonne,
-         pas de colonne droite vide.
-         <figure class="hero-media">
-           <div class="ph ph--dark">photo héros<br>1200 × 1500 px<br>format portrait 4:5</div>
-           <figcaption>documentaire, sans visage, désaturée</figcaption>
-         </figure> -->
+    <div class="hero-grid">
+    <div class="hero-copy">
     <span class="hero-pastille">Due diligence technologique · M&amp;A Tech · Paris</span>
     <h1>Avocat M&amp;A Tech :<span class="tail">due diligence juridique des actifs technologiques</span></h1>
     <p class="hero-sub">Audit des logiciels, données, contrats IT, systèmes d’IA et risques cyber lors d’une acquisition, d’une cession ou d’une prise de participation.</p>
@@ -370,6 +371,20 @@ footer .addr{color:#9a9ab4;font-size:15px;line-height:1.7}
     <div class="cta-row">
       <a class="cta" href="#contact"><em>buy-side</em><b>Faire auditer une cible</b></a>
       <a class="cta ghost" href="#contact"><em>sell-side</em><b>Préparer une cession tech</b></a>
+    </div>
+    </div>
+
+    <!-- Image recadrée 4:5 (bureau réduit), servie en statique WebP + repli JPEG
+         (1200/800). Les <source> sont conditionnées par media:(min-width:940px)
+         pour ne RIEN télécharger sous le seuil, où l'image est masquée (un
+         display:none ne suffirait pas). Raccord au navy par CSS (.hero-media:after). -->
+    <figure class="hero-media">
+      <picture>
+        <source type="image/webp" media="(min-width:940px)" srcset="../public/images/ma-tech/ma-tech-800.webp 800w, ../public/images/ma-tech/ma-tech-1200.webp 1200w" sizes="(min-width:1244px) 460px, 40vw">
+        <source type="image/jpeg" media="(min-width:940px)" srcset="../public/images/ma-tech/ma-tech-800.jpg 800w, ../public/images/ma-tech/ma-tech-1200.jpg 1200w" sizes="(min-width:1244px) 460px, 40vw">
+        <img class="hero-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="1200" height="1500" alt="Liasse de documents contractuels reliée, avec onglets de repérage" fetchpriority="high" decoding="async">
+      </picture>
+    </figure>
     </div>
 
     <div class="assert">
