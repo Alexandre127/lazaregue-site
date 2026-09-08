@@ -730,7 +730,7 @@ export default function CybercriminaliteClient() {
           </p>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
             Vous êtes une personne physique victime d&apos;une escroquerie ou d&apos;un virement frauduleux ?{" "}
-            <Link href="/avocat-escroquerie-fraude" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
+            <Link href="/nos-domaines/avocat-escroquerie-fraude" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
               Recours contre les banques →
             </Link>
           </p>

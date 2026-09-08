@@ -10,7 +10,7 @@ import Triangle from "./_components/Triangle";
 const TITLE = "Avocat escroquerie à Paris | Fraudes et recours bancaires";
 const DESCRIPTION =
   "Victime d'une escroquerie ou d'une fraude bancaire ? Lazarègue Avocats engage les recours contre les banques et les intermédiaires financiers.";
-const PATH = "/avocat-escroquerie-fraude";
+const PATH = "/nos-domaines/avocat-escroquerie-fraude";
 const ABS = "https://lazaregue-avocats.fr" + PATH;
 
 export const metadata: Metadata = {
@@ -338,8 +338,9 @@ export default function Page() {
             <h2>Personnes mises en cause</h2>
             <div className={styles.aside}>
               <h3>La défense pénale est traitée séparément</h3>
-              {/* /defense-penale n'existe pas encore : texte rendu sans lien. */}
-              <p>Audition libre, garde à vue, compte ayant servi de passage, complicité, recel, blanchiment, saisies pénales et confiscation : la défense d'une personne poursuivie pour escroquerie relève d'une autre page et d'un autre traitement. Elle n'est pas conduite depuis le point de vue exposé ici.</p>
+              {/* La page /defense-penale n'existe pas encore : plutôt qu'un lien
+                  mort, on renvoie vers le contact. */}
+              <p>Audition libre, garde à vue, compte ayant servi de passage, complicité, recel, blanchiment, saisies pénales et confiscation : la défense d'une personne poursuivie pour escroquerie relève d'une autre page et d'un autre traitement. Elle n'est pas conduite depuis le point de vue exposé ici. <Link href="/contact">Décrire la situation</Link>.</p>
             </div>
           </div>
         </section>
@@ -353,7 +354,7 @@ export default function Page() {
             <div className={styles.team}>
               <div>
                 <figure>
-                  <Image src="/images/alexandre-pro.jpg" alt="Alexandre Lazarègue, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                  <Image src="/images/alexandre-pro.jpg" alt="Alexandre Lazarègue, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
                 </figure>
                 <div className={styles.teamBody}>
                   <p className={styles.role}>avocat au barreau de paris<br />fondateur</p>
@@ -363,7 +364,7 @@ export default function Page() {
               </div>
               <div>
                 <figure>
-                  <Image src="/images/amir-pro.jpg" alt="Amir Ben Majed, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                  <Image src="/images/amir-pro.jpg" alt="Amir Ben Majed, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
                 </figure>
                 <div className={styles.teamBody}>
                   <p className={styles.role}>avocat au barreau de paris</p>
@@ -373,7 +374,7 @@ export default function Page() {
               </div>
               <div>
                 <figure>
-                  <Image src="/images/sarah-pro.jpg" alt="Sarah Hinderer, avocate au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                  <Image src="/images/sarah-pro.jpg" alt="Sarah Hinderer, avocate au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 30%" }} />
                 </figure>
                 <div className={styles.teamBody}>
                   <p className={styles.role}>avocate au barreau de paris</p>

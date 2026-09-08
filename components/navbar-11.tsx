@@ -15,7 +15,7 @@ const DOMAINES_LINKS = [
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
   { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
-  { label: "Escroquerie et fraude", href: "/avocat-escroquerie-fraude" },
+  { label: "Escroquerie et fraude", href: "/nos-domaines/avocat-escroquerie-fraude" },
   {
     label: "Diffamation et retrait de contenus",
     href: "/nos-domaines/diffamation-retrait-de-contenus",
