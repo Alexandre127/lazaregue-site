@@ -258,6 +258,9 @@ export function Footer() {
               <Link href="/nos-domaines/cybercriminalite" className="hover:text-white">
                 Cybercriminalité & fraudes
               </Link>
+              <Link href="/avocat-escroquerie-fraude" className="hover:text-white">
+                Escroquerie et fraude
+              </Link>
               <Link href="/nos-domaines/diffamation-retrait-de-contenus" className="hover:text-white">
                 Diffamation et retrait de contenus
               </Link>

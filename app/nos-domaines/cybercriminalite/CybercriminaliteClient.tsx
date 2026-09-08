@@ -717,9 +717,9 @@ export default function CybercriminaliteClient() {
       <Divider />
 
       {/* 8. Renvois croisés (§8) — avant l'appel à l'action */}
-      {/* TODO (cabinet, §13) : articulation avec le futur pôle escroquerie —
-          le renvoi « Recours contre les banques » pointera vers cette page dès
-          sa création (drapeau/URL à définir par le cabinet). */}
+      {/* Renvoi miroir vers la page « Avocat escroquerie et fraude » pour les
+          fraudes reposant sur une tromperie (art. 313-1), en miroir du renvoi
+          présent dans la section « frontière » de cette page-là. */}
       <section style={{ background: LIGHT.panel, padding: "8px 0 24px" }}>
         <div style={INNER}>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 8px" }}>
@@ -730,8 +730,9 @@ export default function CybercriminaliteClient() {
           </p>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
             Vous êtes une personne physique victime d&apos;une escroquerie ou d&apos;un virement frauduleux ?{" "}
-            <span style={{ color: LIGHT.faint }}>Recours contre les banques</span>{" "}
-            <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: LIGHT.faint }}>page à venir</span>
+            <Link href="/avocat-escroquerie-fraude" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
+              Recours contre les banques →
+            </Link>
           </p>
         </div>
       </section>
