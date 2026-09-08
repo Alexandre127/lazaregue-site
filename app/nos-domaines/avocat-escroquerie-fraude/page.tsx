@@ -140,6 +140,20 @@ export default function Page() {
           </div>
         </section>
 
+        {/* ===== Bandeau éditorial pleine largeur (respiration avant #qui-paie).
+             Hors .wrap : pleine largeur de la fenêtre. next/image en fill, la
+             hauteur fixe du conteneur réserve la place (aucun décalage). ===== */}
+        <div className={styles.banner}>
+          <Image
+            src="/images/escroquerie-passerelle.jpg"
+            alt="Une passante regarde la circulation nocturne depuis une passerelle, face aux tours d'un quartier d'affaires."
+            fill
+            sizes="100vw"
+            priority={false}
+            className={styles.bannerImg}
+          />
+        </div>
+
         {/* ===== Contre qui le recours peut être engagé ===== */}
         <section className={styles.navy} id="qui-paie">
           <div className={styles.wrap}>
