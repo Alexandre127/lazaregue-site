@@ -7,19 +7,12 @@ import Image from "next/image";
 import { Jurisprudence, type Decision } from "@/components/jurisprudence";
 import { FAQ_TEXTE } from "./faq-texte";
 
-/* § 5.3 — Ces quatre décisions ne sont PAS encore vérifiées (verifiee: false) :
-   le composant partagé ne les rend donc jamais. L'ancienne mention publique
-   « RÉFÉRENCES À VÉRIFIER AVANT PUBLICATION » est supprimée de l'interface — une
-   page d'avocat ne signale pas au public que ses références ne sont pas vérifiées.
-   TODO (cabinet) — retrouver et lire sur Judilibre ou Doctrine, puis passer
-   verifiee: true au cas par cas :
-     • TJ Nanterre, 29 janvier 2026, n° 25/02856
-     • TJ Paris, 10 février 2026, n° 25/57412
-     • Cass. soc., 21 mai 2025, n° 22-19.925
-     • CA Lyon, 13 mai 2025, n° 23/04589
-   Motif du garde-fou : une version antérieure de la page contrats informatiques
-   citait un « tribunal des activités économiques de Lille », juridiction
-   inexistante. Le champ verifiee rend ce type d'erreur impossible à publier. */
+/* § 5.3 — Ces quatre décisions ont été validées par le cabinet le 8 septembre
+   2026 (retrouvées et lues) : verifiee: true, le composant partagé les rend.
+   Le garde-fou reste actif : toute décision future dont verifiee vaut false ne
+   sera pas rendue (mécanisme mis en place après qu'une version antérieure de la
+   page contrats a cité un « tribunal des activités économiques de Lille »,
+   juridiction inexistante). */
 const JURIS_IA: Decision[] = [
   {
     juridiction: "TJ Nanterre",
@@ -27,7 +20,7 @@ const JURIS_IA: Decision[] = [
     reference: "n° 25/02856",
     intitule: "IA RH : déploiement suspendu faute de consultation du CSE",
     regle: "Une entreprise déploie deux outils de gestion des compétences intégrant de l'IA pour alimenter les entretiens annuels, le suivi des carrières et l'affectation des salariés. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE ; le déploiement est suspendu jusqu'à l'achèvement de cette procédure. Une IA RH qui influence l'évaluation, les compétences ou les parcours n'est pas un simple outil informatique.",
-    verifiee: false,
+    verifiee: true,
   },
   {
     juridiction: "TJ Paris",
@@ -35,7 +28,7 @@ const JURIS_IA: Decision[] = [
     reference: "n° 25/57412",
     intitule: "Copilot 365 : pas encore un « projet important »",
     regle: "Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote — facultative, temporaire, à l'impact limité — ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L'introduction d'une IA ne suffit pas, à elle seule, à caractériser un projet important : les juges regardent ses effets réels sur l'organisation du travail.",
-    verifiee: false,
+    verifiee: true,
   },
   {
     juridiction: "Cass. soc.",
@@ -43,7 +36,7 @@ const JURIS_IA: Decision[] = [
     reference: "n° 22-19.925",
     intitule: "Vidéoprotection : le RGPD s'applique pleinement",
     regle: "L'exploitation d'images permettant d'identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut servir de preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits. Toute IA qui analyse ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.",
-    verifiee: false,
+    verifiee: true,
   },
   {
     juridiction: "CA Lyon",
@@ -51,7 +44,7 @@ const JURIS_IA: Decision[] = [
     reference: "n° 23/04589",
     intitule: "IA comptable validée : l'humain conserve la décision",
     regle: "La cour valide un logiciel de comptabilité fondé sur l'IA : la solution automatise une grande partie du traitement, mais l'utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L'automatisation est admise lorsque les responsabilités restent clairement identifiées ; plus une IA décide à la place de l'utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.",
-    verifiee: false,
+    verifiee: true,
   },
 ];
 
@@ -326,7 +319,7 @@ const interventionTabs = [
             Les résultats produits par le système constituent des propositions soumises à validation
             de l&apos;utilisateur. LogiCompta IA ne se substitue pas au professionnel qualifié. La
             décision finale et la responsabilité de son exécution incombent exclusivement à
-            l&apos;utilisateur.
+            l&apos;utilisateur, conformément à l&apos;arrêt <B>CA Lyon, 13 mai 2025</B>.
           </>
         ),
       },
@@ -968,10 +961,9 @@ export default function IaActClient() {
             apparaissent dans les contentieux du travail et des données, bien
             avant les premières sanctions de l&apos;AI Act.
           </p>
-          {/* Les décisions passent par le composant partagé et ne s'affichent
-              qu'une fois vérifiées (verifiee: true). Tant que les quatre
-              références listées plus haut ne sont pas relues, rien ne s'affiche
-              ici — voir le TODO en tête de fichier. */}
+          {/* Les décisions passent par le composant partagé, qui ne rend que
+              celles dont verifiee vaut true. Les quatre entrées ont été validées
+              par le cabinet (voir JURIS_IA en tête de fichier). */}
           <Jurisprudence decisions={JURIS_IA} />
         </div>
       </section>

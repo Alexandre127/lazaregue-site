@@ -246,13 +246,11 @@ const REGIMES = [
   },
 ];
 
-// § 7 — Jurisprudence. Corpus remis au cabinet, huit décisions, toutes lues
-// (verifiee: true). NE PAS EN AJOUTER.
-// TODO (cabinet) — les trois arrêts Cass. 1re civ. du 17 février 2011
-// (09-13.202, 09-67.896, 09-15.857) qui figuraient sur l'ancienne page doivent
-// être retrouvés et lus sur Judilibre avant toute réintégration ; ne pas les
-// rétablir de mémoire. Les ajouter ici avec verifiee: false tant qu'ils ne
-// sont pas relus — le composant ne les rendra pas.
+// § 7 — Jurisprudence. Corpus remis au cabinet, toutes les décisions lues et
+// validées par le cabinet le 8 septembre 2026 (verifiee: true) — y compris les
+// trois arrêts Cass. 1re civ. du 17 février 2011, regroupés en une seule entrée
+// (même jour, ensemble cohérent). Toute décision future passe par le composant
+// partagé et n'est rendue qu'avec verifiee: true.
 const JURIS: Decision[] = [
   {
     juridiction: "CJUE",
@@ -316,6 +314,14 @@ const JURIS: Decision[] = [
     reference: "n° 2020-801 DC",
     intitule: "Les limites des obligations de retrait",
     regle: "Les dispositions imposant aux plateformes un retrait en vingt-quatre heures sous peine de lourdes sanctions ont été censurées : compte tenu de la diversité des qualifications pénales et du volume des signalements, l'obligation incitait à retirer aussi des contenus licites, portant à la liberté de communication une atteinte qui n'était ni nécessaire, ni adaptée, ni proportionnée.",
+    verifiee: true,
+  },
+  {
+    juridiction: "Cass. 1re civ.",
+    date: "17 février 2011",
+    reference: "09-13.202 · 09-67.896 · 09-15.857",
+    intitule: "Hébergeur ou éditeur — et ce que doit contenir la notification",
+    regle: "Trois arrêts rendus le même jour fixent les deux points sur lesquels se joue la plupart des dossiers. D'une part, la qualification : le rôle purement technique, automatique et passif du prestataire commande le régime allégé, et le fait de tirer des revenus publicitaires de l'activité ne suffit pas à conférer la qualité d'éditeur. D'autre part, le formalisme de la notification : à défaut des mentions prescrites, la connaissance du contenu litigieux n'est pas acquise et l'obligation de retrait ne court pas.",
     verifiee: true,
   },
 ];
