@@ -253,12 +253,12 @@ const cards: CompetenceCard[] = [
     icon: "message-circle",
     color: "#ED93B1",
     bg: "linear-gradient(135deg, #0e0818 0%, #120c1e 50%, #0e0818 100%)",
-    title: "Contenus, plateformes & atteintes à l'image",
+    title: "Diffamation et retrait de contenus",
     phrase:
       "Protéger l'image et la réputation face aux atteintes en ligne, aux plateformes et aux usages abusifs des contenus numériques.",
     tags: [
-      "PLATEFORMES & RÉSEAUX SOCIAUX",
-      "GAMING & INDUSTRIE CRÉATIVE",
+      "RETRAIT DE CONTENU",
+      "DÉRÉFÉRENCEMENT",
       "E-RÉPUTATION & DÉNIGREMENT",
     ],
     tagColor: "rgba(212,83,126,.12)",

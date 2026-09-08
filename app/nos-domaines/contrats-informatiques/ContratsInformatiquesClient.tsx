@@ -1047,7 +1047,7 @@ export default function ContratsInformatiquesClient() {
         <div style={INNER}>
           <SectionHead
             label="Méthode"
-            titre="Une méthode, de l'audit du contrat au contentieux"
+            titre="De l'audit du contrat au contentieux"
             sub="En conseil comme en contentieux, une démarche structurée et documentée."
           />
           <div>

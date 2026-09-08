@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
+import { Jurisprudence, type Decision } from "@/components/jurisprudence";
 import { fr } from "@/lib/typo";
 import { FAQ_ITEMS } from "./faq";
 
@@ -245,51 +246,77 @@ const REGIMES = [
   },
 ];
 
-// § 7 — Jurisprudence. Corpus remis au cabinet, huit décisions. NE PAS EN
-// AJOUTER. TODO (cabinet) — les trois arrêts Cass. 1re civ. du 17 février 2011
+// § 7 — Jurisprudence. Corpus remis au cabinet, huit décisions, toutes lues
+// (verifiee: true). NE PAS EN AJOUTER.
+// TODO (cabinet) — les trois arrêts Cass. 1re civ. du 17 février 2011
 // (09-13.202, 09-67.896, 09-15.857) qui figuraient sur l'ancienne page doivent
 // être retrouvés et lus sur Judilibre avant toute réintégration ; ne pas les
-// rétablir de mémoire.
-const JURIS = [
+// rétablir de mémoire. Les ajouter ici avec verifiee: false tant qu'ils ne
+// sont pas relus — le composant ne les rendra pas.
+const JURIS: Decision[] = [
   {
-    num: "CJUE · 13 mai 2014 · C-131/12",
-    q: "Google Spain — le droit au déréférencement",
-    a: "L'indexation et la mise à disposition de résultats constituent un traitement de données personnelles dont l'exploitant du moteur est responsable. Il peut être tenu d'effacer des liens lorsque les données sont devenues inadéquates ou non pertinentes au regard des finalités du traitement, même si l'information demeure licitement publiée sur le site d'origine.",
+    juridiction: "CJUE",
+    date: "13 mai 2014",
+    reference: "C-131/12",
+    intitule: "Google Spain — le droit au déréférencement",
+    regle: "L'indexation et la mise à disposition de résultats constituent un traitement de données personnelles dont l'exploitant du moteur est responsable. Il peut être tenu d'effacer des liens lorsque les données sont devenues inadéquates ou non pertinentes au regard des finalités du traitement, même si l'information demeure licitement publiée sur le site d'origine.",
+    verifiee: true,
   },
   {
-    num: "CJUE · 3 octobre 2019 · C-18/18",
-    q: "Glawischnig-Piesczek — contenus identiques et équivalents",
-    a: "Un hébergeur peut se voir enjoindre de retirer ou de bloquer des contenus identiques ou équivalents à un contenu déclaré illicite, sous réserve d'un périmètre d'injonction précisément défini et sans obligation générale de surveillance. Cet équilibre commande la rédaction des demandes de retrait et des mesures de blocage.",
+    juridiction: "CJUE",
+    date: "3 octobre 2019",
+    reference: "C-18/18",
+    intitule: "Glawischnig-Piesczek — contenus identiques et équivalents",
+    regle: "Un hébergeur peut se voir enjoindre de retirer ou de bloquer des contenus identiques ou équivalents à un contenu déclaré illicite, sous réserve d'un périmètre d'injonction précisément défini et sans obligation générale de surveillance. Cet équilibre commande la rédaction des demandes de retrait et des mesures de blocage.",
+    verifiee: true,
   },
   {
-    num: "CEDH · 16 juin 2015 · 64569/09",
-    q: "Delfi — l'intermédiaire actif et le retrait sans délai",
-    a: "Un grand portail d'actualités qui intègre et structure sa zone de commentaires, en tire un intérêt économique et exerce un contrôle substantiel sur les contributions ne peut se prévaloir pleinement du régime des prestataires purement techniques, et peut répondre de l'absence de retrait sans délai de propos manifestement haineux.",
+    juridiction: "CEDH",
+    date: "16 juin 2015",
+    reference: "64569/09",
+    intitule: "Delfi — l'intermédiaire actif et le retrait sans délai",
+    regle: "Un grand portail d'actualités qui intègre et structure sa zone de commentaires, en tire un intérêt économique et exerce un contrôle substantiel sur les contributions ne peut se prévaloir pleinement du régime des prestataires purement techniques, et peut répondre de l'absence de retrait sans délai de propos manifestement haineux.",
+    verifiee: true,
   },
   {
-    num: "CEDH · 15 mai 2023 · 45581/15",
-    q: "Sanchez — la responsabilité du titulaire d'un compte exposé",
-    a: "Le titulaire d'un mur public utilisé à des fins électorales peut répondre de commentaires de tiers qu'il n'a pas supprimés dans un délai raisonnable, un contrôle a posteriori minimal étant attendu pour filtrer les propos clairement illicites, même en l'absence de notification de la victime. Nature du compte, contexte et gravité des propos sont les critères.",
+    juridiction: "CEDH",
+    date: "15 mai 2023",
+    reference: "45581/15",
+    intitule: "Sanchez — la responsabilité du titulaire d'un compte exposé",
+    regle: "Le titulaire d'un mur public utilisé à des fins électorales peut répondre de commentaires de tiers qu'il n'a pas supprimés dans un délai raisonnable, un contrôle a posteriori minimal étant attendu pour filtrer les propos clairement illicites, même en l'absence de notification de la victime. Nature du compte, contexte et gravité des propos sont les critères.",
+    verifiee: true,
   },
   {
-    num: "CEDH · 7 janvier 2025 · 1847/21",
-    q: "Alexandru Pătraşcu — la base légale de la mise en cause",
-    a: "En l'absence de normes internes définissant avec une netteté suffisante l'étendue et les modalités de la responsabilité du titulaire d'une page pour les propos de tiers, sa condamnation n'est pas prévue par la loi. La décision offre un moyen de défense aux titulaires de comptes mis en cause pour des contenus qu'ils n'ont pas publiés.",
+    juridiction: "CEDH",
+    date: "7 janvier 2025",
+    reference: "1847/21",
+    intitule: "Alexandru Pătraşcu — la base légale de la mise en cause",
+    regle: "En l'absence de normes internes définissant avec une netteté suffisante l'étendue et les modalités de la responsabilité du titulaire d'une page pour les propos de tiers, sa condamnation n'est pas prévue par la loi. La décision offre un moyen de défense aux titulaires de comptes mis en cause pour des contenus qu'ils n'ont pas publiés.",
+    verifiee: true,
   },
   {
-    num: "CA Paris · 22 mars 2019 · n° 18/17204",
-    q: "Avis en ligne — la libre critique n'est pas un trouble illicite",
-    a: "Les avis d'internautes relèvent de la libre critique lorsqu'ils ne sont ni diffamatoires ni injurieux, et ne constituent pas un trouble manifestement illicite justifiant leur retrait en référé. Cette ligne commande la sélection des avis réellement actionnables et écarte les demandes vouées à l'échec.",
+    juridiction: "CA Paris",
+    date: "22 mars 2019",
+    reference: "n° 18/17204",
+    intitule: "Avis en ligne — la libre critique n'est pas un trouble illicite",
+    regle: "Les avis d'internautes relèvent de la libre critique lorsqu'ils ne sont ni diffamatoires ni injurieux, et ne constituent pas un trouble manifestement illicite justifiant leur retrait en référé. Cette ligne commande la sélection des avis réellement actionnables et écarte les demandes vouées à l'échec.",
+    verifiee: true,
   },
   {
-    num: "TJ Nice · 7 janvier 2025 · n° 23/01721",
-    q: "Identification d'un auteur — ce qui peut être obtenu",
-    a: "La plateforme s'est vu ordonner la transmission des données d'identification civile de titulaires de comptes à l'origine de propos injurieux, la mesure étant jugée nécessaire et proportionnée. Le jugement précise que les données techniques de connexion obéissent à un régime distinct, réservé à d'autres finalités. Une demande d'identification doit donc être calibrée sur ce périmètre pour prospérer.",
+    juridiction: "TJ Nice",
+    date: "7 janvier 2025",
+    reference: "n° 23/01721",
+    intitule: "Identification d'un auteur — ce qui peut être obtenu",
+    regle: "La plateforme s'est vu ordonner la transmission des données d'identification civile de titulaires de comptes à l'origine de propos injurieux, la mesure étant jugée nécessaire et proportionnée. Le jugement précise que les données techniques de connexion obéissent à un régime distinct, réservé à d'autres finalités. Une demande d'identification doit donc être calibrée sur ce périmètre pour prospérer.",
+    verifiee: true,
   },
   {
-    num: "Cons. const. · 18 juin 2020 · n° 2020-801 DC",
-    q: "Les limites des obligations de retrait",
-    a: "Les dispositions imposant aux plateformes un retrait en vingt-quatre heures sous peine de lourdes sanctions ont été censurées : compte tenu de la diversité des qualifications pénales et du volume des signalements, l'obligation incitait à retirer aussi des contenus licites, portant à la liberté de communication une atteinte qui n'était ni nécessaire, ni adaptée, ni proportionnée.",
+    juridiction: "Cons. const.",
+    date: "18 juin 2020",
+    reference: "n° 2020-801 DC",
+    intitule: "Les limites des obligations de retrait",
+    regle: "Les dispositions imposant aux plateformes un retrait en vingt-quatre heures sous peine de lourdes sanctions ont été censurées : compte tenu de la diversité des qualifications pénales et du volume des signalements, l'obligation incitait à retirer aussi des contenus licites, portant à la liberté de communication une atteinte qui n'était ni nécessaire, ni adaptée, ni proportionnée.",
+    verifiee: true,
   },
 ];
 
@@ -602,7 +629,11 @@ export default function DiffamationClient() {
         .df-doc--ko .df-dbody { color: #9AA0C8; }
         .df-dnote { display: block; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.14); font-size: 13.5px; line-height: 1.5; color: #8E94C0; }
         .df-doc--ok .df-dnote { color: #B8BCD8; }
-        .df-hot { all: unset; cursor: pointer; color: #fff; border-bottom: 1px dashed ${PERI}; padding-bottom: 1px; }
+        /* all: unset remet display à sa valeur initiale (inline-block sur un
+           bouton dans certains moteurs) : on force inline pour que les
+           fragments coulent comme du texte, avec césure naturelle et virgule
+           collée. */
+        .df-hot { all: unset; display: inline; cursor: pointer; color: #fff; border-bottom: 1px dashed ${PERI}; padding-bottom: 1px; }
         .df-hot:hover { border-bottom-style: solid; }
         .df-hot[aria-pressed="true"] { background: ${BLUE}; color: #fff; border-bottom-color: ${BLUE}; box-shadow: 0 0 0 3px ${BLUE}; }
         .df-hot:focus-visible { outline: 2px solid ${PERI}; outline-offset: 3px; }
@@ -819,24 +850,7 @@ export default function DiffamationClient() {
       <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
         <div style={INNER}>
           <SectionHead label="La démonstration" titre="Une pratique bâtie sur les arrêts qui structurent la matière" />
-          <div className="df-acc" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
-            {JURIS.map((j) => (
-              <details key={j.num}>
-                <summary>
-                  <span className="df-num">{j.num}</span>
-                  <span className="df-q">{fr(j.q)}</span>
-                  <span className="df-plus" aria-hidden />
-                </summary>
-                <div className="df-body">
-                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(j.a)}</p>
-                </div>
-              </details>
-            ))}
-          </div>
-          <p style={{ margin: "22px 0 0", fontSize: 14, color: LIGHT.faint, lineHeight: 1.6, maxWidth: "72ch" }}>
-            Ces décisions sont citées pour la règle qu&apos;elles énoncent. Chaque affaire dépend de
-            ses circonstances propres et aucun résultat ne peut être garanti.
-          </p>
+          <Jurisprudence decisions={JURIS} />
         </div>
       </section>
 

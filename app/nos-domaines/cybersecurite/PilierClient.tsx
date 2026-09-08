@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { fr } from "@/lib/typo";
+import { Jurisprudence, type Decision } from "@/components/jurisprudence";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
@@ -163,13 +164,19 @@ const SVG_CONNECTEURS: [number, number, number, number][] = [
   [524, 280, 653, 350], // nœud → pénale et probatoire (bas-droite)
 ];
 
-// Bloc E : manquements retenus par la CNIL (délibération SAN-2020-003), sortis
-// du paragraphe et posés en pièce.
-const CNIL_MANQUEMENTS = [
-  "Robustesse insuffisante des mots de passe",
-  "Aucun blocage après tentatives répétées d'authentification",
-  "Enregistrements de conversations conservés au-delà du nécessaire",
-  "Durées de conservation non proportionnées",
+// Bloc E : la délibération CNIL SAN-2020-003, présentée au format
+// jurisprudentiel partagé, en entrée unique (verifiee: true — décision réelle
+// et connue). Voir components/jurisprudence.tsx.
+const CNIL_DELIB: Decision[] = [
+  {
+    juridiction: "CNIL",
+    date: "28 juillet 2020",
+    reference: "n° SAN-2020-003",
+    intitule: "Sécurité : des paramètres vérifiables, pas une politique générale",
+    regle:
+      "La CNIL a caractérisé un manquement à l'obligation de sécurité de l'article 32 du RGPD sur des points d'une grande banalité opérationnelle : robustesse insuffisante des mots de passe ; absence de blocage après des tentatives répétées d'authentification ; enregistrements de conversations conservés au-delà du nécessaire ; durées de conservation non proportionnées.",
+    verifiee: true,
+  },
 ];
 
 // Bloc F1 : chronologie de la transposition, en cartouche. La dernière ligne
@@ -494,14 +501,6 @@ export default function PilierClient() {
           .expo-vert, .expo-legende--mobile { display: none; }
         }
 
-        /* ---- Bloc E : pièce CNIL ---- */
-        .cnil-piece { max-width: 68ch; background: ${LIGHT.panel2}; border: 0.5px solid rgba(0,0,0,0.14); border-radius: 10px; padding: 16px 18px; margin: 8px 0 18px; }
-        .cnil-piece-head { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: ${LIGHT.muted}; margin: 0 0 8px; }
-        .cnil-piece-list { margin: 0; padding: 0; list-style: none; }
-        .cnil-piece-list li { position: relative; font-size: 14px; color: ${LIGHT.text}; line-height: 1.5; padding: 7px 0 7px 18px; border-top: 0.5px solid rgba(0,0,0,0.08); }
-        .cnil-piece-list li:first-child { border-top: none; }
-        .cnil-piece-list li::before { content: "—"; position: absolute; left: 0; color: ${BLUE}; }
-
         /* ---- Bloc F1 : cartouche chronologie NIS 2 ---- */
         .nis2-cartouche { max-width: 68ch; background: ${DARK.bg}; color: #fff; border-radius: 12px; padding: 20px 22px; margin: 8px 0 16px; }
         .nis2-cartouche-head { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7fa8ff; margin: 0 0 12px; }
@@ -716,28 +715,21 @@ export default function PilierClient() {
               L&apos;article 32 du RGPD impose des mesures techniques et organisationnelles appropriées au risque. La
               formule paraît souple ; la pratique de la CNIL l&apos;est nettement moins.
             </p>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 4px" }}>
-              Dans sa délibération du 28 juillet 2020 (n° SAN-2020-003), la CNIL a caractérisé un manquement à cette
-              obligation sur des points d&apos;une grande banalité opérationnelle.
+            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 20px" }}>
+              La CNIL l&apos;a montré dans une délibération d&apos;une grande banalité opérationnelle.
             </p>
-            {/* Bloc E : l'énumération sort du paragraphe et devient une pièce. */}
-            <div className="cnil-piece">
-              <p className="cnil-piece-head">CNIL · SAN-2020-003 · Manquements retenus</p>
-              <ul className="cnil-piece-list">
-                {CNIL_MANQUEMENTS.map((m) => (
-                  <li key={m}>{m}</li>
-                ))}
-              </ul>
-            </div>
-            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 16px" }}>
+            {/* La délibération est présentée au format jurisprudentiel partagé,
+                en entrée unique, plutôt qu'en encadré isolé. */}
+            <Jurisprudence
+              decisions={CNIL_DELIB}
+              note="Cette délibération est citée pour la règle qu'elle énonce ; chaque situation dépend de ses circonstances propres."
+            />
+            <p style={{ fontSize: 16, color: LIGHT.muted, lineHeight: 1.6, margin: "24px 0 0" }}>
               L&apos;enseignement est direct. L&apos;obligation de sécurité ne se démontre pas par une politique
               générale, mais par des paramètres vérifiables : longueur et complexité exigées, comptage des échecs
               d&apos;authentification, journalisation, durées de conservation effectivement appliquées. C&apos;est ce
               niveau de détail qui est examiné en contrôle, et c&apos;est celui auquel les documents produits par le
               cabinet sont rédigés.
-            </p>
-            <p style={{ fontSize: 12, color: LIGHT.faint, lineHeight: 1.5, margin: "10px 0 0", fontStyle: "italic" }}>
-              CNIL, délibération du 28 juillet 2020, n° SAN-2020-003.
             </p>
           </div>
         </div>

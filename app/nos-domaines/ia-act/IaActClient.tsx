@@ -4,7 +4,56 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import { fr } from "@/lib/typo";
 import Link from "next/link";
 import Image from "next/image";
+import { Jurisprudence, type Decision } from "@/components/jurisprudence";
 import { FAQ_TEXTE } from "./faq-texte";
+
+/* § 5.3 — Ces quatre décisions ne sont PAS encore vérifiées (verifiee: false) :
+   le composant partagé ne les rend donc jamais. L'ancienne mention publique
+   « RÉFÉRENCES À VÉRIFIER AVANT PUBLICATION » est supprimée de l'interface — une
+   page d'avocat ne signale pas au public que ses références ne sont pas vérifiées.
+   TODO (cabinet) — retrouver et lire sur Judilibre ou Doctrine, puis passer
+   verifiee: true au cas par cas :
+     • TJ Nanterre, 29 janvier 2026, n° 25/02856
+     • TJ Paris, 10 février 2026, n° 25/57412
+     • Cass. soc., 21 mai 2025, n° 22-19.925
+     • CA Lyon, 13 mai 2025, n° 23/04589
+   Motif du garde-fou : une version antérieure de la page contrats informatiques
+   citait un « tribunal des activités économiques de Lille », juridiction
+   inexistante. Le champ verifiee rend ce type d'erreur impossible à publier. */
+const JURIS_IA: Decision[] = [
+  {
+    juridiction: "TJ Nanterre",
+    date: "29 janvier 2026",
+    reference: "n° 25/02856",
+    intitule: "IA RH : déploiement suspendu faute de consultation du CSE",
+    regle: "Une entreprise déploie deux outils de gestion des compétences intégrant de l'IA pour alimenter les entretiens annuels, le suivi des carrières et l'affectation des salariés. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE ; le déploiement est suspendu jusqu'à l'achèvement de cette procédure. Une IA RH qui influence l'évaluation, les compétences ou les parcours n'est pas un simple outil informatique.",
+    verifiee: false,
+  },
+  {
+    juridiction: "TJ Paris",
+    date: "10 février 2026",
+    reference: "n° 25/57412",
+    intitule: "Copilot 365 : pas encore un « projet important »",
+    regle: "Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote — facultative, temporaire, à l'impact limité — ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L'introduction d'une IA ne suffit pas, à elle seule, à caractériser un projet important : les juges regardent ses effets réels sur l'organisation du travail.",
+    verifiee: false,
+  },
+  {
+    juridiction: "Cass. soc.",
+    date: "21 mai 2025",
+    reference: "n° 22-19.925",
+    intitule: "Vidéoprotection : le RGPD s'applique pleinement",
+    regle: "L'exploitation d'images permettant d'identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut servir de preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits. Toute IA qui analyse ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.",
+    verifiee: false,
+  },
+  {
+    juridiction: "CA Lyon",
+    date: "13 mai 2025",
+    reference: "n° 23/04589",
+    intitule: "IA comptable validée : l'humain conserve la décision",
+    regle: "La cour valide un logiciel de comptabilité fondé sur l'IA : la solution automatise une grande partie du traitement, mais l'utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L'automatisation est admise lorsque les responsabilités restent clairement identifiées ; plus une IA décide à la place de l'utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.",
+    verifiee: false,
+  },
+];
 
 const DARK = {
   bg: "#0a0f2e",
@@ -277,7 +326,7 @@ const interventionTabs = [
             Les résultats produits par le système constituent des propositions soumises à validation
             de l&apos;utilisateur. LogiCompta IA ne se substitue pas au professionnel qualifié. La
             décision finale et la responsabilité de son exécution incombent exclusivement à
-            l&apos;utilisateur, conformément à l&apos;arrêt <B>CA Lyon, 13 mai 2025</B>.
+            l&apos;utilisateur.
           </>
         ),
       },
@@ -912,14 +961,6 @@ export default function IaActClient() {
           repliée derrière un <details> natif (aucun JS). */}
       <section id="ce-que-les-juges" style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD, scrollMarginTop: 80 }}>
         <div style={INNER}>
-          <style>{`
-            .juris-summary { cursor: pointer; color: ${BLUE}; font-size: 12px; font-weight: 500; list-style: none; padding: 4px 0; }
-            .juris-summary::-webkit-details-marker { display: none; }
-            .juris-summary::marker { content: ""; }
-            details[open] .juris-summary .juris-more { display: none; }
-            .juris-less { display: none; }
-            details[open] .juris-summary .juris-less { display: inline; }
-          `}</style>
           <Eyebrow>Jurisprudence</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que les juges exigent déjà</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
@@ -927,66 +968,11 @@ export default function IaActClient() {
             apparaissent dans les contentieux du travail et des données, bien
             avant les premières sanctions de l&apos;AI Act.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, marginBottom: 16 }}>
-            {[
-              {
-                couleur: "#E14B4B",
-                date: "JANV. 2026",
-                juridiction: "TJ NANTERRE",
-                titre: "IA RH : déploiement suspendu faute de consultation du CSE",
-                ref: "Réf. TJ Nanterre, 29 janv. 2026, n° 25/02856",
-                analyse: "Une entreprise déploie deux outils de gestion des compétences intégrant de l'IA pour alimenter les entretiens annuels, le suivi des carrières et l'affectation des salariés sur les missions. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE. Le déploiement est suspendu jusqu'à l'achèvement de cette procédure.",
-                enseignement: "Une IA RH qui influence l'évaluation, les compétences ou les parcours professionnels n'est pas un simple outil informatique. Elle peut déclencher des obligations d'information-consultation du CSE avant sa mise en œuvre.",
-              },
-              {
-                couleur: "#F2A43A",
-                date: "FÉV. 2026",
-                juridiction: "TJ PARIS",
-                titre: "Copilot 365 : pas encore un « projet important »",
-                ref: "Réf. TJ Paris, 10 févr. 2026, n° 25/57412",
-                analyse: "Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L'outil est facultatif, temporaire et son impact reste limité à ce stade.",
-                enseignement: "L'introduction d'une IA ne suffit pas, à elle seule, à caractériser un projet important. Les juges regardent ses effets réels sur l'organisation du travail, les missions confiées aux salariés et leur environnement professionnel.",
-              },
-              {
-                couleur: "#1A47FF",
-                date: "MAI 2025",
-                juridiction: "COUR DE CASSATION",
-                titre: "Vidéoprotection : le RGPD s'applique pleinement",
-                ref: "Réf. Cass. soc., 21 mai 2025, n° 22-19.925",
-                analyse: "La Cour de cassation rappelle que l'exploitation d'images permettant d'identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut être utilisé comme preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits.",
-                enseignement: "Toute IA qui analyse, surveille ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.",
-              },
-              {
-                couleur: "#29A06A",
-                date: "MAI 2025",
-                juridiction: "CA LYON",
-                titre: "IA comptable validée : l'humain conserve la décision",
-                ref: "Réf. CA Lyon, 13 mai 2025, n° 23/04589",
-                analyse: "La cour valide un logiciel de comptabilité fondé sur l'IA. La solution automatise une grande partie du traitement comptable, mais l'utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L'assistance humaine se limite à des conseils ponctuels sans se substituer au client.",
-                enseignement: "L'automatisation est admise lorsque les responsabilités restent clairement identifiées. Plus une IA prend des décisions à la place de l'utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.",
-              },
-            ].map((d) => (
-              <article key={d.titre} style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderLeft: `3px solid ${d.couleur}`, borderRadius: 8, padding: CARD_PAD }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                  <span style={{ fontSize: 10, color: LIGHT.muted, textTransform: "uppercase", letterSpacing: ".06em" }}>{d.date}</span>
-                  <span style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em", color: d.couleur, border: `1px solid ${d.couleur}55`, borderRadius: 999, padding: "2px 8px" }}>{d.juridiction}</span>
-                </div>
-                <h3 style={{ ...TYPE.h3, margin: "0 0 4px" }}>{d.titre}</h3>
-                <p style={{ fontSize: 11, color: LIGHT.muted, margin: "0 0 4px" }}>{d.ref}</p>
-                <details>
-                  <summary className="juris-summary">
-                    <span className="juris-more">Lire l&apos;analyse →</span>
-                    <span className="juris-less">Replier l&apos;analyse ↑</span>
-                  </summary>
-                  <p style={{ fontSize: 12, color: "rgba(10,10,20,0.6)", lineHeight: 1.6, margin: "8px 0 8px" }}>{d.analyse}</p>
-                  <p style={{ fontSize: 12, color: LIGHT.muted, fontStyle: "italic", margin: 0 }}>{d.enseignement}</p>
-                </details>
-              </article>
-            ))}
-          </div>
-          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: 0, letterSpacing: ".04em" }}>
-            RÉFÉRENCES À VÉRIFIER AVANT PUBLICATION
-          </p>
+          {/* Les décisions passent par le composant partagé et ne s'affichent
+              qu'une fois vérifiées (verifiee: true). Tant que les quatre
+              références listées plus haut ne sont pas relues, rien ne s'affiche
+              ici — voir le TODO en tête de fichier. */}
+          <Jurisprudence decisions={JURIS_IA} />
         </div>
       </section>
 
