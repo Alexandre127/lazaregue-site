@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avocat M&amp;A Tech à Paris — due diligence technologique | Lazarègue Avocats</title>
+<meta name="description" content="Avocat du volet technologique des opérations de fusion-acquisition : due diligence juridique des logiciels, données, contrats IT et systèmes d'IA, garanties du SPA et remédiation. Paris, toute la France.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1A47FF;
+  --peri:#4D6FFF;
+  --deep:#0A2ACC;
+  --navy:#0A0F2E;
+  --ink:#0A0A14;
+  --ghost:#F4F4F8;
+  --white:#FFFFFF;
+  --muted:#8888A0;
+  --border:#E0E0EE;
+
+  --display:'Bebas Neue',Impact,sans-serif;
+  --sans:'Space Grotesk',system-ui,sans-serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+
+  --gut:clamp(20px,5vw,64px);
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--white);color:var(--ink);
+  font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+/* --- signalisation --- */
+.label{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.20em;
+  color:var(--muted);text-transform:lowercase;
+}
+.label--blue{color:var(--blue)}
+.label--peri{color:var(--peri)}
+.num{font-family:var(--display);font-size:clamp(38px,6vw,64px);line-height:.85;color:var(--border)}
+
+h1,h2,h3,h4{font-weight:500;letter-spacing:-.015em;margin:0}
+h2{font-size:clamp(26px,3.4vw,38px);line-height:1.18}
+h3{font-size:clamp(19px,2.2vw,23px);line-height:1.3}
+h4{font-size:17px;line-height:1.35}
+p{margin:0 0 1em}
+.lead{font-size:clamp(18px,2vw,21px);line-height:1.55;max-width:62ch}
+.small{font-size:15px;line-height:1.6}
+.measure{max-width:66ch}
+
+section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--border)}
+section.flush{border-top:none}
+
+/* --- header --- */
+header.nav{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px}
+.mark{display:block;width:22px;height:22px}
+.wordmark{font-family:var(--display);font-size:21px;letter-spacing:.06em;color:var(--ink)}
+.nav-links{display:flex;gap:26px}
+.nav-links a{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--ink)}
+.nav-links a:hover{color:var(--blue);text-decoration:none}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* --- hero --- */
+.hero{background:var(--navy);color:var(--white);padding:clamp(60px,9vw,116px) 0 clamp(48px,7vw,88px);position:relative;overflow:hidden}
+.hero:before{
+  content:"";position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,var(--blue),transparent 62%);opacity:.55;
+}
+.hero .wrap{position:relative}
+.hero .label{color:#9FB0FF}
+.hero h1{
+  font-size:clamp(34px,5.4vw,60px);line-height:1.06;margin:18px 0 0;max-width:19ch;
+}
+.hero h1 .tail{display:block;color:#B9C4FF;font-weight:300}
+.hero-sub{font-weight:300;font-size:clamp(17px,2.1vw,21px);line-height:1.5;color:#D5D9F0;max-width:56ch;margin:22px 0 0}
+.hero-intro{max-width:62ch;margin:26px 0 0;color:#C3C8E4;font-size:16.5px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.cta{
+  display:block;padding:15px 24px 16px;background:var(--blue);color:#fff;border:1px solid var(--blue);
+  min-width:238px;
+}
+.cta:hover{background:var(--deep);border-color:var(--deep);text-decoration:none}
+.cta em{display:block;font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.22em;color:#BFCBFF;margin-bottom:5px}
+.cta b{font-weight:500;font-size:16px}
+.cta.ghost{background:transparent;border-color:rgba(255,255,255,.34);color:#fff}
+.cta.ghost:hover{background:rgba(255,255,255,.08);border-color:#fff}
+.cta.ghost em{color:#9FB0FF}
+
+/* --- trois assertions --- */
+.assert{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:clamp(40px,6vw,72px);border-top:1px solid rgba(255,255,255,.18)}
+.assert div{padding:26px 26px 26px 0;border-right:1px solid rgba(255,255,255,.18)}
+.assert div:last-child{border-right:none}
+.assert p{color:#D5D9F0;font-size:15.5px;margin:10px 0 0;line-height:1.5}
+.assert .num{color:rgba(255,255,255,.3);font-size:34px}
+@media(max-width:800px){.assert{grid-template-columns:1fr}.assert div{border-right:none;border-bottom:1px solid rgba(255,255,255,.18);padding-right:0}}
+
+/* --- définition (NOUVEAU) --- */
+.definition{background:var(--ghost)}
+.def-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(28px,5vw,72px);align-items:start}
+@media(max-width:860px){.def-grid{grid-template-columns:1fr}}
+.def-grid h2{max-width:14ch}
+.def-body p:first-of-type{font-size:19px;line-height:1.55}
+.def-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;padding:6px 11px;background:#fff;border:1px solid var(--border);color:#4a4a63}
+
+/* --- encadré audit juridique / technique (NOUVEAU) --- */
+.scope{border:1px solid var(--ink);padding:clamp(24px,4vw,42px)}
+.scope h3{margin-bottom:14px}
+.compare{width:100%;border-collapse:collapse;margin-top:26px;font-size:15.5px}
+.compare th{
+  text-align:left;font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:.16em;
+  padding:0 0 12px;border-bottom:1px solid var(--ink);vertical-align:bottom;
+}
+.compare th:first-child{color:var(--blue)}
+.compare th:last-child{color:var(--muted)}
+.compare td{padding:12px 0;border-bottom:1px solid var(--border);width:50%}
+.compare td:last-child{color:#5a5a72;padding-left:22px}
+.compare tr td:first-child{padding-right:22px;border-right:1px solid var(--border)}
+.scope-note{margin-top:24px;font-size:15.5px;color:#3a3a52;max-width:70ch}
+
+/* --- pour qui --- */
+.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:40px}
+.who-grid article{background:#fff;padding:26px 22px}
+.who-grid h4{margin-bottom:10px}
+.who-grid p{font-size:15px;color:#4a4a63;margin:0;line-height:1.55}
+@media(max-width:960px){.who-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.who-grid{grid-template-columns:1fr}}
+
+/* --- rail --- */
+.rail{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+@media(max-width:900px){.rail{grid-template-columns:1fr}}
+.rail-side{position:sticky;top:96px;align-self:start}
+@media(max-width:900px){.rail-side{position:static}}
+.rail-side .num{display:block;margin-bottom:6px}
+.rail-side .step{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--ink)}
+.rail-side .when{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.45}
+
+/* --- tableau pense/vérifie --- */
+.think{width:100%;border-collapse:collapse;margin:34px 0 0;font-size:16px}
+.think th{
+  text-align:left;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;font-weight:400;
+  color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--ink);
+}
+.think td{padding:14px 0;border-bottom:1px solid var(--border)}
+.think td:first-child{font-weight:500;width:34%;padding-right:20px}
+.think td:last-child{color:#4a4a63}
+.think-foot{font-size:15px;color:var(--muted);margin-top:14px}
+
+/* --- bloc bascule --- */
+.switch{border:1px solid var(--ink);margin-top:34px}
+.switch-bar{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+  padding:12px 18px;border-bottom:1px solid var(--border)}
+.tg{display:flex;border:1px solid var(--ink)}
+.tg button{
+  appearance:none;border:0;background:transparent;cursor:pointer;color:#4a4a63;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;padding:9px 15px;
+}
+.tg button + button{border-left:1px solid var(--ink)}
+.tg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.switch[data-view="au"] .tg button[aria-pressed="true"]{background:var(--blue)}
+.switch-body{padding:28px 22px 22px}
+.doc-head{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
+.doc-h{font-size:clamp(19px,2.4vw,25px);line-height:1.2;max-width:28ch;margin-top:8px}
+.verdict{font-family:var(--mono);font-size:11px;letter-spacing:.14em;padding:7px 12px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.switch[data-view="au"] .verdict{border-color:var(--blue);color:var(--blue);background:rgba(26,71,255,.06)}
+ul.lines{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+ul.lines li{display:grid;grid-template-columns:92px minmax(0,1fr) 104px;gap:18px;
+  padding:15px 0;border-bottom:1px solid var(--border);align-items:start}
+.ln-ref{font-family:var(--mono);font-size:11.5px;color:var(--muted);padding-top:3px}
+.ln-t{font-size:15.5px;line-height:1.5;color:#25253a}
+.switch[data-view="au"] .ln-ref{color:var(--blue)}
+.doc-foot{margin:22px 0 0;font-size:14.5px;color:#4a4a63;max-width:74ch}
+@media(max-width:700px){ul.lines li{grid-template-columns:1fr;gap:7px}.ln-ref{padding-top:0}}
+
+/* --- emplacements photo --- */
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(28px,5vw,60px);align-items:end}
+@media(max-width:940px){.hero-grid{grid-template-columns:1fr}.hero-media{display:none}}
+.hero-media{margin:0}
+.hero-media figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#8290C8;margin-top:10px}
+.ph{
+  aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;line-height:1.7;
+  border:1px dashed var(--border);color:var(--muted);background:var(--ghost);
+}
+.ph--dark{border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.04);color:#9FB0FF}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.person .ph{aspect-ratio:1/1;margin-bottom:18px}
+
+/* --- domaines (accordéon) --- */
+.dom{border-top:1px solid var(--border);margin-top:44px}
+.dom details{border-bottom:1px solid var(--border)}
+.dom summary{
+  cursor:pointer;list-style:none;padding:18px 0;display:flex;align-items:baseline;gap:16px;
+  font-weight:500;font-size:18px;
+}
+.dom summary::-webkit-details-marker{display:none}
+.dom summary:before{
+  content:"+";font-family:var(--mono);color:var(--blue);font-size:15px;line-height:1;
+}
+.dom details[open] summary:before{content:"–"}
+.dom .body{padding:0 0 22px 30px;max-width:72ch;color:#3a3a52;font-size:16px}
+.dom .body a{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;display:inline-block;margin-top:10px}
+
+/* --- livrables --- */
+.deliver{background:var(--navy);color:#fff;padding:clamp(30px,4vw,44px);margin-top:56px}
+.deliver .label{color:#9FB0FF}
+.deliver ol{list-style:none;counter-reset:d;margin:22px 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px}
+@media(max-width:760px){.deliver ol{grid-template-columns:1fr}}
+.deliver li{counter-increment:d;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.16);
+  display:flex;gap:14px;font-size:15.5px;color:#DDE1F5}
+.deliver li:before{content:counter(d,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:#7E8FE8;padding-top:3px}
+
+/* --- matrice --- */
+.matrix{margin-top:56px}
+.matrix-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:16px}
+table.mx{width:100%;border-collapse:collapse;font-size:15px}
+table.mx th{
+  text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.16em;font-weight:400;color:var(--muted);
+  padding-bottom:11px;border-bottom:1px solid var(--ink);
+}
+table.mx td{padding:15px 14px 15px 0;border-bottom:1px solid var(--border);vertical-align:top;color:#3a3a52}
+table.mx td.c{font-family:var(--mono);font-size:12px;color:var(--muted);width:34px;padding-right:0}
+table.mx td.f{width:32%;color:var(--ink)}
+.sev{font-family:var(--mono);font-size:11px;letter-spacing:.12em;padding:4px 9px;border:1px solid;white-space:nowrap;display:inline-block}
+.sev.b{color:#C42B1C;border-color:#C42B1C}
+.sev.h{color:var(--deep);border-color:var(--deep)}
+.sev.m{color:#6a6a88;border-color:#B9B9CE}
+.sev.l{color:var(--muted);border-color:var(--border)}
+
+/* --- point juridique --- */
+.point{border-left:3px solid var(--blue);background:var(--ghost);padding:26px 28px;margin-top:48px}
+.point p{margin:12px 0 0;max-width:72ch;font-size:16px;color:#25253a}
+
+/* --- CTA de section --- */
+.cta-inline{display:inline-block;margin-top:36px;border:1px solid var(--ink);padding:14px 22px 15px;color:var(--ink)}
+.cta-inline:hover{background:var(--ink);color:#fff;text-decoration:none}
+.cta-inline em{display:block;font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.22em;color:var(--muted);margin-bottom:4px}
+.cta-inline:hover em{color:#9FB0FF}
+.cta-inline b{font-weight:500;font-size:16px}
+
+/* --- opérations --- */
+.ops{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:44px}
+.ops article{background:#fff;padding:26px 22px}
+.ops .label{display:block;margin-bottom:9px}
+.ops h4{margin-bottom:9px}
+.ops p{font-size:14.5px;color:#4a4a63;margin:0;line-height:1.55}
+@media(max-width:900px){.ops{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.ops{grid-template-columns:1fr}}
+
+/* --- équipe --- */
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:38px}
+@media(max-width:900px){.team{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.team{grid-template-columns:1fr}}
+.person{border:1px solid var(--border);padding:24px}
+.person .label{display:block;margin-bottom:12px}
+.person h4{font-size:19px}
+.person .role{color:var(--muted);font-size:15px;margin:4px 0 14px}
+.person .tags{display:flex;flex-wrap:wrap;gap:7px}
+.person .tags span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:5px 9px;background:var(--ghost);color:#4a4a63}
+
+/* --- FAQ --- */
+.faq details{border-bottom:1px solid var(--border)}
+.faq summary{cursor:pointer;list-style:none;padding:20px 0;font-weight:500;font-size:17.5px;display:flex;gap:14px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:before{content:"+";font-family:var(--mono);color:var(--blue);font-size:15px}
+.faq details[open] summary:before{content:"–"}
+.faq .a{padding:0 0 22px 28px;max-width:72ch;color:#3a3a52;font-size:16px}
+
+/* --- contact --- */
+.contact{background:var(--ghost)}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
+.contact h2{max-width:16ch}
+.steps{margin-top:36px;border-top:1px solid var(--border)}
+.steps div{display:flex;gap:18px;padding:16px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.steps b{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--blue);font-weight:400;min-width:74px}
+.steps span{font-size:15.5px;color:#3a3a52}
+
+/* --- footer --- */
+footer{background:var(--ink);color:#fff;padding:clamp(48px,6vw,76px) 0 30px}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+@media(max-width:860px){.f-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.f-grid{grid-template-columns:1fr}}
+footer h5{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);font-weight:400;margin:0 0 16px}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{margin-bottom:9px}
+footer a{color:#D5D9F0;font-size:15px}
+footer .addr{color:#9a9ab4;font-size:15px;line-height:1.7}
+.f-bottom{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14);
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-size:13px;color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#">
+      <svg class="mark" viewBox="0 0 22 22" aria-hidden="true">
+        <rect x="2" y="3" width="3.4" height="10" transform="rotate(-18 3.7 8)" fill="#0A0A14"/>
+        <rect x="9" y="1" width="4.6" height="20" transform="rotate(-18 11.3 11)" fill="#1A47FF"/>
+      </svg>
+      <span class="wordmark">Lazarègue Avocats</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#">nos domaines</a><a href="#">le cabinet</a><a href="#">analyses</a><a href="#">ressources</a><a href="#">contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HÉRO — H1 modifié ============ -->
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+    <div class="hero-copy">
+    <span class="label">lazarègue avocats — droit du numérique</span>
+    <h1>Avocat M&amp;A Tech :<span class="tail">due diligence juridique des actifs technologiques</span></h1>
+    <p class="hero-sub">Audit des logiciels, données, contrats IT, systèmes d’IA et risques cyber lors d’une acquisition, d’une cession ou d’une prise de participation.</p>
+    <p class="hero-intro">Lazarègue Avocats intervient comme avocat du volet technologique des opérations de fusion-acquisition, aux côtés des acquéreurs, cédants, fonds d’investissement et cabinets corporate : de l’audit d’acquisition à la rédaction des garanties technologiques du SPA et au plan de remédiation.</p>
+
+    <div class="cta-row">
+      <a class="cta" href="#contact"><em>buy-side</em><b>Faire auditer une cible</b></a>
+      <a class="cta ghost" href="#contact"><em>sell-side</em><b>Préparer une cession tech</b></a>
+    </div>
+
+    </div>
+
+    <figure class="hero-media">
+      <div class="ph ph--dark">photo héros<br>1200 × 1500 px<br>format portrait 4:5</div>
+      <figcaption>documentaire, sans visage, désaturée</figcaption>
+    </figure>
+    </div>
+
+    <div class="assert">
+      <div><span class="num">01</span><p>Une donnée peut avoir une forte valeur économique sans être juridiquement réutilisable par l’acquéreur.</p></div>
+      <div><span class="num">02</span><p>Un modèle performant peut ne pas être un actif maîtrisé.</p></div>
+      <div><span class="num">03</span><p>Un logiciel peut avoir été développé par des prestataires qui n’en ont jamais cédé les droits.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DÉFINITION — bloc nouveau ============ -->
+<section class="definition flush">
+  <div class="wrap def-grid">
+    <div>
+      <h2>Qu’est-ce qu’une due diligence technologique ?</h2>
+    </div>
+    <div class="def-body">
+      <p>Une due diligence technologique est l’audit des actifs, contrats, droits et risques liés à la technologie d’une société avant son acquisition ou sa cession. Elle vérifie que la cible détient et pourra continuer d’exploiter les logiciels, données, licences, infrastructures et systèmes d’intelligence artificielle qui fondent sa valorisation.</p>
+      <p class="small">On la rencontre aussi sous les appellations <strong>due diligence IT</strong>, <em>tech due diligence</em> ou <em>technology due diligence</em>. Côté vendeur, l’exercice symétrique est la <strong>vendor due diligence</strong> : le cédant fait auditer sa propre technologie avant d’ouvrir la data room.</p>
+      <div class="def-tags">
+        <span class="tag">acquisition</span><span class="tag">cession</span><span class="tag">prise de participation</span><span class="tag">carve-out</span><span class="tag">asset deal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIT JURIDIQUE / AUDIT TECHNIQUE — bloc nouveau ============ -->
+<section>
+  <div class="wrap">
+    <div class="scope">
+      <span class="label label--blue">périmètre</span>
+      <h3 style="margin-top:12px">Audit juridique ou audit technique ?</h3>
+      <p class="measure">Notre due diligence porte sur la maîtrise juridique et contractuelle des actifs technologiques : propriété du code, licences, données, contrats, dépendances, conformité et garanties. Lorsque l’opération nécessite un audit de l’architecture, de la qualité du code, de la scalabilité ou de la dette technique, nous coordonnons nos travaux avec l’expert technique désigné par le client.</p>
+
+      <table class="compare">
+        <thead>
+          <tr><th scope="col">due diligence juridique tech — notre intervention</th><th scope="col">due diligence technique — l’expert désigné</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Propriété du code et chaîne des droits</td><td>Qualité du code</td></tr>
+          <tr><td>Licences open source et composants tiers</td><td>Dette technique</td></tr>
+          <tr><td>Contrats clients et fournisseurs</td><td>Architecture</td></tr>
+          <tr><td>Données personnelles et RGPD</td><td>Scalabilité</td></tr>
+          <tr><td>Garanties du SPA et conditions suspensives</td><td>Performance</td></tr>
+          <tr><td>Risques réglementaires et responsabilité</td><td>Sécurité technique et tests d’intrusion</td></tr>
+        </tbody>
+      </table>
+
+      <p class="scope-note">Les deux revues sont complémentaires : un code de bonne facture peut appartenir à un prestataire, et un code médiocre peut être parfaitement détenu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POUR QUI ============ -->
+<section>
+  <div class="wrap">
+    <span class="label">pour qui</span>
+    <h2 style="margin-top:14px;max-width:20ch">Vous acquérez une cible technologique sans être une entreprise tech</h2>
+    <p class="lead" style="margin-top:20px">La plupart de nos interlocuteurs dirigent une PME ou une ETI industrielle, de distribution ou de services, ou investissent pour un fonds. Ils rachètent une société technologique pour se digitaliser ou pour la faire croître, sans disposer en interne d’une direction des systèmes d’information capable d’auditer ce qu’ils achètent.</p>
+
+    <div class="who-grid">
+      <article>
+        <h4>Vous êtes un fonds d’investissement sans DSI en interne</h4>
+        <p>Nous tenons le stream technologique d’une opération de private equity : red flags avant LOI, revue complète en data room, et rédaction des garanties spécifiques du SPA.</p>
+      </article>
+      <article>
+        <h4>Vous avez déjà un cabinet corporate</h4>
+        <p>Nous intervenons sur le seul volet technologique, en co-conseil, sans reprendre le pilotage de l’opération.</p>
+      </article>
+      <article>
+        <h4>Vous n’avez pas d’équipe technique dédiée</h4>
+        <p>Nous traduisons les constats techniques en conséquences sur le prix, les garanties et le calendrier, pas en jargon d’ingénieur.</p>
+      </article>
+      <article>
+        <h4>Vous voulez connaître le périmètre avant de vous engager</h4>
+        <p>Le périmètre est arrêté après un premier échange sur la cible et ses actifs, avant toute intervention et toute facturation.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 AUDITER — H2 explicité ============ -->
+<section>
+  <div class="wrap rail">
+    <aside class="rail-side">
+      <span class="num">01</span>
+      <span class="step">auditer</span>
+      <p class="when">Avant la LOI, puis en data room</p>
+    </aside>
+
+    <div>
+      <h2>Due diligence technologique lors d’une acquisition d’entreprise</h2>
+      <p class="lead" style="margin-top:18px">Une due diligence tech ne consiste pas à vérifier que les contrats existent, mais que les actifs qui fondent la valorisation existent, sont disponibles, et le resteront après l’opération.</p>
+
+      <div class="switch" id="switch" data-view="dr">
+        <div class="switch-bar">
+          <span class="label">exemple illustratif · société fictive · aucun dossier réel</span>
+          <div class="tg" role="group" aria-label="Lecture du dossier">
+            <button type="button" data-v="dr" aria-pressed="true">vue data room</button>
+            <button type="button" data-v="au" aria-pressed="false">vue audit</button>
+          </div>
+        </div>
+
+        <div class="switch-body" aria-live="polite">
+          <div class="view" data-v="dr">
+            <div class="doc-head">
+              <div>
+                <span class="label label--blue">pièce 4.2 — déclarations du cédant</span>
+                <h4 class="doc-h">Le socle technologique est détenu et exploitable en l’état.</h4>
+              </div>
+              <span class="verdict">déclaré conforme</span>
+            </div>
+            <ul class="lines">
+              <li><span class="ln-ref">DR / 4.2.1</span><span class="ln-t">Le module de reporting est développé en interne et distribué sous licence propriétaire.</span><span class="sev l">déclaré</span></li>
+              <li><span class="ln-ref">DR / 4.2.2</span><span class="ln-t">Les développements du cœur de produit ont été réalisés par l’équipe salariée.</span><span class="sev l">déclaré</span></li>
+              <li><span class="ln-ref">DR / 4.2.3</span><span class="ln-t">Les contrats clients ne comportent aucune clause de changement de contrôle ni restriction susceptible d’affecter l’opération.</span><span class="sev l">déclaré</span></li>
+              <li><span class="ln-ref">DR / 4.2.4</span><span class="ln-t">Le modèle est entraîné sur des données propres à la société.</span><span class="sev l">déclaré</span></li>
+              <li><span class="ln-ref">DR / 4.2.5</span><span class="ln-t">L’hébergement est assuré par deux prestataires référencés.</span><span class="sev l">déclaré</span></li>
+            </ul>
+            <p class="doc-foot">Les déclarations du cédant sont reprises telles quelles. Aucune vérification indépendante n’y est attachée.</p>
+          </div>
+
+          <div class="view" data-v="au" hidden>
+            <div class="doc-head">
+              <div>
+                <span class="label label--blue">rapport d’audit — constats</span>
+                <h4 class="doc-h">Le socle technologique n’est ni entièrement détenu, ni exploitable en l’état.</h4>
+              </div>
+              <span class="verdict">réserves majeures</span>
+            </div>
+            <ul class="lines">
+              <li><span class="ln-ref">AU / 4.2.1</span><span class="ln-t">Le module de reporting repose sur une bibliothèque sous licence à réciprocité forte, incompatible avec la distribution propriétaire envisagée.</span><span class="sev b">bloquant</span></li>
+              <li><span class="ln-ref">AU / 4.2.2</span><span class="ln-t">Trois prestataires ont contribué au cœur du produit entre 2019 et 2021 sans stipulation de cession de droits.</span><span class="sev h">élevé</span></li>
+              <li><span class="ln-ref">AU / 4.2.3</span><span class="ln-t">Quatre contrats clients, représentant 31 % des revenus récurrents, comportent une clause de changement de contrôle à consentement préalable.</span><span class="sev h">élevé</span></li>
+              <li><span class="ln-ref">AU / 4.2.4</span><span class="ln-t">L’origine et la base légale d’une partie des données d’entraînement du modèle ne sont pas documentées.</span><span class="sev m">moyen</span></li>
+              <li><span class="ln-ref">AU / 4.2.5</span><span class="ln-t">Aucun contrat de sous-traitance n’a été conclu avec l’hébergeur secondaire.</span><span class="sev l">faible</span></li>
+            </ul>
+            <p class="doc-foot">Chaque constat appelle un traitement : régularisation avant closing, condition suspensive, retenue de prix, garantie autonome ou plan de remédiation. Ces traitements figurent dans la matrice ci-dessous.</p>
+          </div>
+        </div>
+      </div>
+      <p class="think-foot">Chaque ligne non vérifiée est un écart entre le prix payé et l’actif acquis.</p>
+
+      <h3 style="margin-top:56px">Audit juridique du logiciel et des données</h3>
+      <div class="dom">
+        <details open>
+          <summary>Propriété du code et chaîne des droits</summary>
+          <div class="body">Titularité du code source, contrats des développeurs salariés et indépendants, cessions effectives, copropriétés, marques et noms de domaine, droits sur les bases de données, restrictions affectant les évolutions futures.</div>
+        </details>
+        <details>
+          <summary>Composants tiers et open source</summary>
+          <div class="body">Licences des bibliothèques et du middleware, obligations de réciprocité, d’attribution ou de mise à disposition du code, compatibilité avec le modèle d’exploitation de l’acquéreur.</div>
+        </details>
+        <details>
+          <summary>Contrats et revenus</summary>
+          <div class="body">Contrats clients stratégiques, niveaux de service, cloud et hébergement, sous-traitants critiques, exclusivités, et les clauses de changement de contrôle susceptibles de faire disparaître une part du chiffre d’affaires au lendemain du closing.<br><a href="#">Notre pratique Contrats IT &amp; responsabilité</a></div>
+        </details>
+        <details>
+          <summary>Données</summary>
+          <div class="body">Origine et licéité, finalités initiales, conditions de transmission, de migration, de combinaison et de réutilisation après l’opération, sous-traitance, transferts hors Union européenne, incidents et procédures CNIL, coût d’une mise en conformité.<br><a href="#">Notre pratique RGPD &amp; données personnelles</a></div>
+        </details>
+        <details>
+          <summary>Cybersécurité</summary>
+          <div class="body">Incidents passés, dépendance à un prestataire critique, vulnérabilités connues, sauvegarde et reprise, engagements contractuels des prestataires, risque de notification et de responsabilité.<br><a href="#">Notre pratique Cybersécurité &amp; NIS 2</a></div>
+        </details>
+        <details>
+          <summary>Systèmes d’intelligence artificielle</summary>
+          <div class="body">Qualification des systèmes, répartition des rôles entre fournisseur, déployeur et intégrateur, provenance des données d’entraînement, droits sur les modèles et recours à des modèles tiers, documentation, restrictions affectant l’exploitation commerciale.<br><a href="#">Notre pratique Intelligence artificielle &amp; AI Act</a></div>
+        </details>
+      </div>
+
+      <div class="deliver">
+        <span class="label">nos livrables</span>
+        <ol>
+          <li>Un rapport de red flags ciblé sur les risques technologiques majeurs</li>
+          <li>Une matrice des risques, hiérarchisée par effet sur l’opération</li>
+          <li>Une analyse des conditions et du coût de remédiation</li>
+          <li>Une liste des conditions suspensives recommandées</li>
+          <li>Un jeu de déclarations et garanties propres aux actifs numériques</li>
+          <li>Une revue des clauses correspondantes du contrat d’acquisition</li>
+          <li>Un plan de remédiation, pré-closing ou post-closing</li>
+        </ol>
+      </div>
+
+      <div class="matrix">
+        <div class="matrix-head">
+          <h3>Matrice des risques technologiques — même dossier</h3>
+          <span class="label">exemple illustratif · société fictive</span>
+        </div>
+        <table class="mx">
+          <thead><tr><th>#</th><th>constat</th><th>gravité</th><th>traitement retenu</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="c">01</td>
+              <td class="f">Module de reporting reposant sur une bibliothèque sous licence à réciprocité forte, incompatible avec la distribution propriétaire envisagée</td>
+              <td><span class="sev b">bloquant</span></td>
+              <td>Réécriture du module ou licence commerciale, en condition suspensive</td>
+            </tr>
+            <tr>
+              <td class="c">02</td>
+              <td class="f">Trois prestataires ayant contribué au cœur du produit entre 2019 et 2021 sans stipulation de cession de droits</td>
+              <td><span class="sev h">élevé</span></td>
+              <td>Régularisation avant closing ; à défaut, retenue de prix et garantie spécifique</td>
+            </tr>
+            <tr>
+              <td class="c">03</td>
+              <td class="f">Clause de changement de contrôle à consentement préalable dans quatre contrats clients représentant 31 % des revenus récurrents</td>
+              <td><span class="sev h">élevé</span></td>
+              <td>Obtention des consentements en condition suspensive ; ajustement de prix à défaut</td>
+            </tr>
+            <tr>
+              <td class="c">04</td>
+              <td class="f">Origine et base légale d’une partie des données d’entraînement du modèle non documentées</td>
+              <td><span class="sev m">moyen</span></td>
+              <td>Déclaration et garantie autonome, plafond et durée dédiés</td>
+            </tr>
+            <tr>
+              <td class="c">05</td>
+              <td class="f">Absence de contrat de sous-traitance avec l’hébergeur secondaire</td>
+              <td><span class="sev l">faible</span></td>
+              <td>Régularisation post-closing, plan de remédiation à J+90</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="point">
+        <span class="label label--blue">le point juridique</span>
+        <p>Acquérir les titres d’une société ne garantit pas que celle-ci détienne les droits nécessaires à l’exploitation de sa technologie. La propriété des logiciels, des données, des marques et des développements réalisés par des prestataires se vérifie séparément, actif par actif.</p>
+      </div>
+
+      <a class="cta-inline" href="#contact"><em>auditer 01</em><b>Faire auditer une cible technologique</b></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 TRADUIRE ============ -->
+<section>
+  <div class="wrap rail">
+    <aside class="rail-side">
+      <span class="num">02</span>
+      <span class="step">traduire</span>
+      <p class="when">Négociation du SPA</p>
+    </aside>
+    <div>
+      <h2>Garanties du SPA : du constat à la protection contractuelle</h2>
+      <p class="lead" style="margin-top:18px">Lister les non-conformités ne suffit pas. Ce qui compte est ce que chaque constat impose de faire.</p>
+      <p class="measure">Nous hiérarchisons les constats selon leur effet sur l’opération : risque bloquant, risque affectant la valorisation, régularisation à obtenir avant le closing, garantie spécifique à négocier, engagement post-closing, ou risque accepté et budgété.</p>
+      <p class="measure">Nous fournissons ensuite au conseil de l’opération, ou négocions directement selon le mandat, les stipulations correspondantes : déclarations et garanties spécifiques aux actifs numériques, conditions suspensives de régularisation, retenues ou séquestres adossés à un risque identifié, mécanismes d’indemnisation autonomes, ajustements de prix et earn-out conditionnés à la délivrance d’une technologie ou à la conservation de clients.</p>
+
+      <div class="point">
+        <span class="label label--blue">le point juridique</span>
+        <p>Une garantie générique de propriété intellectuelle ne protège pas nécessairement contre un défaut affectant un composant open source, un jeu de données ou une technologie développée par un prestataire. Les garanties doivent être construites à partir de l’architecture réelle du produit.</p>
+      </div>
+
+      <a class="cta-inline" href="#contact"><em>traduire 02</em><b>Sécuriser les garanties du contrat</b></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 REMÉDIER ============ -->
+<section>
+  <div class="wrap rail">
+    <aside class="rail-side">
+      <span class="num">03</span>
+      <span class="step">remédier</span>
+      <p class="when">Closing, puis intégration</p>
+    </aside>
+    <div>
+      <h2>Remédiation : avant et après le closing</h2>
+      <p class="lead" style="margin-top:18px">Une technologie peut être acquise juridiquement sans être immédiatement exploitable.</p>
+
+      <h3 style="margin-top:34px">Avant le closing</h3>
+      <p class="measure">Cessions de droits manquantes, consentements et levées de clauses de changement de contrôle, formalisation des licences, mise à disposition du code source, sécurisation des noms de domaine et des comptes techniques, documentation des traitements de données.</p>
+
+      <h3 style="margin-top:28px">Après le closing</h3>
+      <p class="measure">Continuité des contrats essentiels, accès au code et aux infrastructures, migration des données, services transitoires, incidents révélés après l’opération et mise en œuvre des garanties.</p>
+
+      <div class="point">
+        <span class="label label--blue">le point juridique</span>
+        <p>Les accès, les personnes clés, les licences et les services transitoires s’organisent avant le closing. Une fois l’opération réalisée, la négociation de ces points se fait sans levier.</p>
+      </div>
+
+      <a class="cta-inline" href="#contact"><em>remédier 03</em><b>Préparer une régularisation ou une intégration</b></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPÉRATIONS ============ -->
+<section>
+  <div class="wrap">
+    <h2>Acquisition SaaS, carve-out, asset deal : nos interventions</h2>
+    <div class="ops">
+      <article>
+        <span class="label label--peri">acquisition</span>
+        <h4>Entreprise SaaS</h4>
+        <p>Propriété du logiciel, contrats clients, revenus récurrents, renouvellement et résiliation, niveaux de service, hébergement, données, changement de contrôle.</p>
+      </article>
+      <article>
+        <span class="label label--peri">prise de participation</span>
+        <h4>Société d’intelligence artificielle</h4>
+        <p>Modèles, jeux de données et provenance, licences, documentation technique, cadre réglementaire applicable.</p>
+      </article>
+      <article>
+        <span class="label label--peri">cession</span>
+        <h4>Préparation d’une cession tech</h4>
+        <p>Vendor due diligence, régularisation de la chaîne des droits, préparation de la data room, anticipation des garanties demandées par l’acquéreur.</p>
+      </article>
+      <article>
+        <span class="label label--peri">acquisition</span>
+        <h4>Plateforme ou marketplace</h4>
+        <p>Conditions d’utilisation, flux de paiement, modération, conformité DSA, régime de responsabilité.</p>
+      </article>
+      <article>
+        <span class="label label--peri">carve-out</span>
+        <h4>Isolation d’une activité numérique</h4>
+        <p>Contrats, infrastructures, données, licences et outils nécessaires à la continuité de l’activité.</p>
+      </article>
+      <article>
+        <span class="label label--peri">asset deal</span>
+        <h4>Acquisition d’actifs technologiques</h4>
+        <p>Périmètre réellement nécessaire à une exploitation autonome : logiciels, droits, bases, comptes, domaines, contrats.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉQUIPE ============ -->
+<section>
+  <div class="wrap">
+    <span class="label">l’équipe</span>
+    <h2 style="margin-top:14px;max-width:24ch">Qui tient le stream technologique</h2>
+    <p class="lead" style="margin-top:18px">Le volet technologique d’une opération se joue entre la revue des actifs numériques, la conformité des données et la rédaction des garanties du contrat d’acquisition. Ces trois travaux sont menés par la même équipe.</p>
+
+    <div class="team">
+      <div class="person">
+        <div class="ph">portrait<br>1000 × 1000 px</div>
+        <span class="label">avocat au barreau de paris</span>
+        <h4>Me Alexandre Lazarègue</h4>
+        <p class="role">Actifs numériques &amp; due diligence</p>
+        <div class="tags"><span>propriété du code</span><span>open source</span><span>données</span></div>
+      </div>
+      <div class="person">
+        <div class="ph">portrait<br>1000 × 1000 px</div>
+        <span class="label">avocat au barreau de paris</span>
+        <h4>Me Amir Ben Majed</h4>
+        <p class="role">Contrats &amp; garanties du SPA</p>
+        <div class="tags"><span>spa</span><span>change of control</span><span>remédiation</span></div>
+      </div>
+      <div class="person">
+        <div class="ph">portrait<br>1000 × 1000 px</div>
+        <span class="label">avocat au barreau de paris</span>
+        <h4>Me Sarah Hinderer</h4>
+        <p class="role">Données &amp; conformité de la cible</p>
+        <div class="tags"><span>rgpd</span><span>transferts</span><span>ia</span></div>
+      </div>
+    </div>
+
+    <div class="point">
+      <span class="label label--blue">une pratique quotidienne</span>
+      <p>Lazarègue Avocats intervient en droit des logiciels, contrats IT, données personnelles, intelligence artificielle, plateformes et cybercriminalité. Cette pratique permet d’examiner la technologie acquise au-delà des seules déclarations de la data room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="wrap">
+    <h2>Questions fréquentes</h2>
+    <div class="faq" style="margin-top:26px">
+      <details open>
+        <summary>Pouvez-vous intervenir aux côtés de notre cabinet corporate ?</summary>
+        <div class="a">Oui. Nous prenons en charge le stream technologique sans reprendre le pilotage corporate de l’opération. Nous pouvons aussi être directement mandatés par un acquéreur ou un cédant : dans les deux configurations, le mandat reste délimité à l’audit juridique des actifs technologiques, aux garanties correspondantes et à leur remédiation.</div>
+      </details>
+      <details>
+        <summary>Quelle différence avec une due diligence technique ?</summary>
+        <div class="a">La due diligence technique examine la qualité du code, l’architecture, la scalabilité et la dette technique. La nôtre porte sur les droits, les contrats et la conformité. Les deux sont complémentaires et se conduisent en parallèle, avec l’expert technique désigné par le client.</div>
+      </details>
+      <details>
+        <summary>Comment se déroule une due diligence IT, et combien de temps prend-elle ?</summary>
+        <div class="a">Une revue de red flags avant la LOI se conduit en quelques jours à partir des éléments disponibles. La revue complète en data room dépend du nombre d’actifs et de la qualité de la documentation ; le calendrier est arrêté avec le conseil de l’opération dès l’ouverture de la data room.</div>
+      </details>
+      <details>
+        <summary>Les données d’une cible sont-elles exploitables par l’acquéreur ?</summary>
+        <div class="a">Dans une acquisition de titres, les données restent généralement détenues par la société cible ; leur réutilisation, leur combinaison avec celles de l’acquéreur ou leur migration doivent respecter les finalités, bases légales et informations initialement délivrées. Dans un asset deal, la question de leur transmission est plus sensible encore.</div>
+      </details>
+      <details>
+        <summary>Que couvre une vendor due diligence technologique ?</summary>
+        <div class="a">Côté cédant, l’audit porte sur les mêmes actifs, mais avant l’ouverture de la data room : régulariser la chaîne des droits, documenter les licences et les traitements de données, et anticiper les garanties que l’acquéreur demandera.</div>
+      </details>
+      <details>
+        <summary>À quel moment faut-il vous solliciter ?</summary>
+        <div class="a">Idéalement avant la signature de la lettre d’intention, et au plus tard avant l’ouverture complète de la due diligence. Une LOI fixe déjà un prix, une exclusivité et une structure.</div>
+      </details>
+      <details>
+        <summary>Comment le périmètre et le coût de l’intervention sont-ils arrêtés ?</summary>
+        <div class="a">Le périmètre dépend de la taille de la cible, du nombre d’actifs technologiques concernés et de l’état de la data room. Il est arrêté après un premier échange, avant toute intervention : une convention d’honoraires précise alors la mission, le mode de calcul et les frais prévisibles.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <h2>Vous envisagez l’acquisition, la cession ou la prise de participation dans une entreprise technologique ?</h2>
+      <p class="lead" style="margin-top:22px">Transmettez-nous les premiers éléments de l’opération : l’activité de la cible, les principaux actifs technologiques concernés et, s’ils existent, la lettre d’intention ou l’accès à la data room. Nous identifions les diligences tech prioritaires et le périmètre d’intervention adapté.</p>
+      <div class="cta-row">
+        <a class="cta" href="#"><em>buy-side</em><b>Faire auditer une cible</b></a>
+        <a class="cta" style="background:#fff;color:var(--ink);border-color:var(--ink)" href="#"><em style="color:var(--muted)">sell-side</em><b>Préparer une cession tech</b></a>
+      </div>
+    </div>
+    <div>
+      <span class="label">notre intervention</span>
+      <div class="steps">
+        <div><b>01</b><span>Auditer — avant la LOI, puis en data room</span></div>
+        <div><b>02</b><span>Traduire — négociation du SPA</span></div>
+        <div><b>03</b><span>Remédier — closing, puis intégration</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <span class="wordmark" style="color:#fff">Lazarègue Avocats</span>
+        <p class="addr" style="margin-top:14px">Cabinet en droit du numérique.<br>Paris, toute la France.<br><br>01 82 88 91 19<br>contact@lazaregue-avocats.fr<br>18 rue de Tilsitt, 75017 Paris</p>
+      </div>
+      <div>
+        <h5>nos domaines</h5>
+        <ul>
+          <li><a href="#">Cybersécurité</a></li>
+          <li><a href="#">RGPD &amp; protection des données</a></li>
+          <li><a href="#">Intelligence artificielle &amp; AI Act</a></li>
+          <li><a href="#">Contrats IT &amp; responsabilité</a></li>
+          <li><a href="#">Cybercriminalité &amp; fraudes</a></li>
+          <li><a href="#">Plateformes, médias &amp; réseaux sociaux</a></li>
+          <li><a href="#">M&amp;A Tech &amp; due diligence</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>le cabinet</h5>
+        <ul>
+          <li><a href="#">Notre approche</a></li><li><a href="#">L’équipe</a></li>
+          <li><a href="#">Analyses</a></li><li><a href="#">Ressources</a></li><li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>informations</h5>
+        <ul>
+          <li><a href="#">Nous écrire</a></li><li><a href="#">Prendre rendez-vous</a></li>
+          <li><a href="#">Mentions légales</a></li><li><a href="#">Politique de confidentialité</a></li><li><a href="#">Honoraires</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 Lazarègue Avocats — Tous droits réservés</span>
+      <span>Mentions légales · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var s=document.getElementById('switch');
+  if(!s) return;
+  var views=s.querySelectorAll('.view'), btns=s.querySelectorAll('.tg button');
+  function show(v){
+    s.dataset.view=v;
+    views.forEach(function(el){ el.hidden = el.dataset.v!==v; });
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.v===v)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.v); }); });
+})();
+</script>
+
+</body>
+</html>
