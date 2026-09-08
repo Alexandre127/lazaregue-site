@@ -58,7 +58,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Khalid Sookia",
-    statut: "Expert indépendant",
+    statut: "Notre consultant technique — cybersécurité",
     avocat: false,
     role: "Investigation numérique",
     photoBase: "/images/khalid-pro.jpg",

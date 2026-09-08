@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { fr } from "@/lib/typo";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
@@ -198,12 +199,12 @@ function Eyebrow({ children }: { children: ReactNode }) {
 function SectionHead({ label, title, sub }: { label: string; title: string; sub?: string }) {
   return (
     <>
-      <Eyebrow>{label}</Eyebrow>
+      <Eyebrow>{fr(label)}</Eyebrow>
       <h2 style={{ fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25, color: LIGHT.text, margin: "0 0 10px" }}>
-        {title}
+        {fr(title)}
       </h2>
       {sub ? (
-        <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 28px", maxWidth: 720 }}>{sub}</p>
+        <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 28px", maxWidth: 720 }}>{fr(sub)}</p>
       ) : null}
     </>
   );

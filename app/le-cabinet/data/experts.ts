@@ -39,7 +39,7 @@ export const EXPERTS: Expert[] = [
     slug: "khalid-sookia",
     nom: "Khalid Sookia",
     monogramme: "KS",
-    role: "expert en cybersécurité",
+    role: "consultant technique en cybersécurité",
     photo: "/images/khalid-pro.jpg",
     texte:
       "Intervient sur l'audit des systèmes d'information, les politiques de sécurité et l'investigation numérique. Sur un incident, il établit l'état réel du système et sécurise les traces — ce qui déterminera ce qui peut être démontré.",
@@ -48,7 +48,7 @@ export const EXPERTS: Expert[] = [
         cle: "intervient sur",
         valeur: "Incidents cyber · NIS 2 · contentieux techniques · preuve numérique",
       },
-      { cle: "statut", valeur: "Expert indépendant, mobilisé selon les besoins du dossier" },
+      { cle: "statut", valeur: "Consultant technique indépendant, mobilisé selon les besoins du dossier" },
     ],
     tags: ["audit SI", "PSSI", "forensic"],
   },

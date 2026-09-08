@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { fr } from "@/lib/typo";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import TestNis2 from "./TestNis2";
@@ -313,7 +314,7 @@ const TEAM = [
     photo: "/images/alexandre-pro.jpg",
     objectPosition: "center",
     intro:
-      "Me Alexandre Lazarègue accompagne les entreprises confrontées aux audits fournisseurs, aux incidents cyber et aux exigences de conformité NIS 2. Il intervient aux côtés de Khalid Sookia, expert en cybersécurité.",
+      "Me Alexandre Lazarègue accompagne les entreprises confrontées aux audits fournisseurs, aux incidents cyber et aux exigences de conformité NIS 2. Il intervient aux côtés de Khalid Sookia, consultant technique en cybersécurité.",
     tags: ["NIS 2", "RGPD", "Gestion de crise"],
     initialsBg: "#EEEDFE",
     initialsColor: "#3C3489",
@@ -323,7 +324,7 @@ const TEAM = [
   {
     initials: "KS",
     name: "Khalid Sookia",
-    role: "Expert en cybersécurité",
+    role: "Consultant technique — cybersécurité",
     photo: "/images/khalid-pro.jpg",
     objectPosition: "top",
     intro: "",
@@ -470,11 +471,11 @@ function Eyebrow({ children }: { children: ReactNode }) {
 function SectionHead({ label, title, sub }: { label: string; title: string; sub: string }) {
   return (
     <>
-      <Eyebrow>{label}</Eyebrow>
+      <Eyebrow>{fr(label)}</Eyebrow>
       <h2 style={{ fontSize: "clamp(20px, 2.8vw, 30px)", fontWeight: 600, color: LIGHT.text, margin: "0 0 10px" }}>
-        {title}
+        {fr(title)}
       </h2>
-      <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 28px", maxWidth: 720 }}>{sub}</p>
+      <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 28px", maxWidth: 720 }}>{fr(sub)}</p>
     </>
   );
 }
@@ -739,8 +740,8 @@ export default function CybersecuriteClient() {
               Une approche co-construite par{" "}
               <span style={{ fontWeight: 500, color: LIGHT.text }}>Me Alexandre Lazarègue</span>{" "}
               (Avocat — cybersécurité) et{" "}
-              <span style={{ fontWeight: 500, color: LIGHT.text }}>Khalid Sookia</span> (Expert en
-              cybersécurité).
+              <span style={{ fontWeight: 500, color: LIGHT.text }}>Khalid Sookia</span> (consultant
+              technique en cybersécurité).
             </p>
           </div>
         </div>

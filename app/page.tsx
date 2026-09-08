@@ -42,7 +42,7 @@ const EQUIPE = [
   { nom: "Alexandre Lazarègue", intitule: "Avocat au barreau de Paris", domaine: "Cybercriminalité & gestion de crise" },
   { nom: "Sarah Hinderer", intitule: "Avocate au barreau de Paris", domaine: "Données personnelles & intelligence artificielle" },
   { nom: "Amir Ben Majed", intitule: "Avocat au barreau de Paris", domaine: "Contrats IT & contentieux technologiques" },
-  { nom: "Khalid Sookia", intitule: "Expert indépendant", domaine: "Investigation numérique" },
+  { nom: "Khalid Sookia", intitule: "Notre consultant technique — cybersécurité", domaine: "Investigation numérique" },
   { nom: "Nadia Abchiche-Mimouni", intitule: "Experte indépendante", domaine: "Intelligence artificielle & éthique algorithmique" },
 ];
 

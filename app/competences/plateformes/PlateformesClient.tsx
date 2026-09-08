@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { fr } from "@/lib/typo";
 import { FAQ_ITEMS } from "./faq";
 import EquipeDossier from "@/components/equipe-dossier";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
@@ -269,10 +270,10 @@ function Eyebrow({ children }: { children: ReactNode }) {
 function SectionHead({ label, title, sub, dark }: { label: string; title: string; sub?: string; dark?: boolean }) {
   return (
     <>
-      <Eyebrow>{label}</Eyebrow>
-      <h2 style={{ ...TYPE.h2, color: dark ? DARK.text : LIGHT.text, margin: sub ? "0 0 6px" : "0 0 14px", whiteSpace: "pre-line" }}>{title}</h2>
+      <Eyebrow>{fr(label)}</Eyebrow>
+      <h2 style={{ ...TYPE.h2, color: dark ? DARK.text : LIGHT.text, margin: sub ? "0 0 6px" : "0 0 14px", whiteSpace: "pre-line" }}>{fr(title)}</h2>
       {sub ? (
-        <p style={{ fontSize: 14, color: dark ? DARK.muted : LIGHT.muted, lineHeight: 1.7, margin: "0 0 14px", maxWidth: 720, whiteSpace: "pre-line" }}>{sub}</p>
+        <p style={{ fontSize: 14, color: dark ? DARK.muted : LIGHT.muted, lineHeight: 1.7, margin: "0 0 14px", maxWidth: 720, whiteSpace: "pre-line" }}>{fr(sub)}</p>
       ) : null}
     </>
   );
@@ -805,7 +806,7 @@ export default function PlateformesClient() {
         <div style={INNER}>
           <div style={{ background: DARK.bg, borderRadius: 16, padding: "40px 32px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
             <div>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>Confronté à une plateforme ?</span>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>{fr("Confronté à une plateforme ?")}</span>
               <h2 style={{ fontSize: 30, fontWeight: 600, color: "#fff", margin: "12px 0 0", lineHeight: 1.15 }}>
                 Votre problème numérique a une <span style={{ color: BLUE }}>solution.</span>
               </h2>

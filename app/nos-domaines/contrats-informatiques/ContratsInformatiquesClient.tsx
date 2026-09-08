@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
+import { fr } from "@/lib/typo";
 import { FAQ_ITEMS } from "./faq";
 
 /* ==========================================================================
@@ -194,7 +195,7 @@ const REGIMES = [
     label: "Client PME / ETI",
     titre: "Devoir de collaboration",
     texte:
-      "Le client doit exprimer ses besoins, valider les étapes et conserver les preuves. Un manquement sérieux réduit la responsabilité du prestataire.",
+      "Le client doit exprimer ses besoins, valider les étapes et conserver les preuves. Un manquement sérieux du client peut réduire la responsabilité du prestataire.",
     points: [
       "Formaliser les besoins par écrit",
       "Valider et signer les recettes, réserves comprises",
@@ -370,7 +371,7 @@ const KHALID_EXAMINE = [
 // RGPD et AI Act n'est pas dupliqué ici : on y renvoie.
 const LIENS = [
   { ancre: "Obligations de sécurité et réponse à incident", href: "/nos-domaines/cybersecurite" },
-  { ancre: "Sous-traitance et article 28", href: "/nos-domaines/rgpd-donnees" },
+  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees" },
   { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/ia-act" },
   { ancre: "Responsabilité du prestataire informatique", href: null }, // page à venir
 ];
@@ -389,7 +390,7 @@ function Eyebrow({ children, light = false }: { children: ReactNode; light?: boo
         margin: "0 0 10px",
       }}
     >
-      {children}
+      {typeof children === "string" ? fr(children) : children}
     </p>
   );
 }
@@ -408,10 +409,10 @@ function SectionHead({
   return (
     <>
       <Eyebrow light={light}>{label}</Eyebrow>
-      <h2 style={{ ...TYPE.h2, color: light ? "#fff" : LIGHT.text, margin: "0 0 10px", maxWidth: "24ch" }}>{titre}</h2>
+      <h2 style={{ ...TYPE.h2, color: light ? "#fff" : LIGHT.text, margin: "0 0 10px", maxWidth: "24ch" }}>{fr(titre)}</h2>
       {sub ? (
         <p style={{ ...TYPE.secondary, color: light ? DARK.muted : LIGHT.muted, margin: "0 0 24px", maxWidth: "68ch" }}>
-          {sub}
+          {fr(sub)}
         </p>
       ) : null}
     </>
@@ -513,13 +514,13 @@ function ContratCard({ tag, titre, texte }: { tag: string; titre: string; texte:
               minHeight: 44,
             }}
           >
-            <span>{titre}</span>
+            <span>{fr(titre)}</span>
             <span aria-hidden style={{ color: BLUE, fontWeight: 400, flexShrink: 0 }}>
               {open ? "−" : "+"}
             </span>
           </button>
         ) : (
-          titre
+          fr(titre)
         )}
       </h3>
       <p
@@ -527,7 +528,7 @@ function ContratCard({ tag, titre, texte }: { tag: string; titre: string; texte:
         hidden={mobile && !open}
         style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: "10px 0 0" }}
       >
-        {texte}
+        {fr(texte)}
       </p>
     </article>
   );
@@ -574,6 +575,9 @@ export default function ContratsInformatiquesClient() {
         .cx-acc .cx-plus::after { content: "+"; }
         .cx-acc details[open] .cx-plus::after { content: "−"; color: ${BLUE}; }
         .cx-acc .cx-body { padding: 0 0 20px; }
+        /* Entrée du bouton conditionnel de l'autodiagnostic. */
+        @keyframes cxReveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        .cx-reveal { animation: cxReveal 240ms ease both; }
         @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
       `}</style>
 
@@ -792,7 +796,7 @@ export default function ContratsInformatiquesClient() {
         <div style={INNER}>
           <SectionHead
             label="Points de vigilance"
-            titre="Votre contrat présente-t-il l'un de ces points de vigilance ?"
+            titre="Votre situation présente-t-elle l'un de ces points de vigilance ?"
             sub="Ces lacunes sont courantes et restent le plus souvent invisibles jusqu'au premier incident."
           />
           <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 12, padding: "24px 22px", maxWidth: 860 }}>
@@ -843,29 +847,41 @@ export default function ContratsInformatiquesClient() {
                 );
               })}
             </div>
-            <p
-              aria-live="polite"
-              style={{
-                fontFamily: "var(--ff-mono)",
-                fontSize: 12,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                color: n > 0 ? LIGHT.text : LIGHT.faint,
-                margin: "20px 0 0",
-              }}
-            >
-              {n === 0 ? (
-                "Aucun point de vigilance coché pour l'instant"
-              ) : (
-                <>
-                  Votre situation présente{" "}
-                  <strong style={{ color: BLUE, fontWeight: 500 }}>
-                    {n} point{n > 1 ? "s" : ""} de vigilance
-                  </strong>
-                  . Un audit contractuel permet d'en déterminer les priorités.
-                </>
-              )}
-            </p>
+            {/* Zone de résultat en live region : le message ET le bouton
+                conditionnel y vivent, si bien que l'apparition du bouton est
+                annoncée. Le bouton n'est présent dans le DOM que lorsqu'au
+                moins une case est cochée. Son entrée est animée, mais
+                l'animation est neutralisée sous prefers-reduced-motion par la
+                règle globale du bloc <style> ci-dessus. */}
+            <div aria-live="polite">
+              <p
+                style={{
+                  fontFamily: "var(--ff-mono)",
+                  fontSize: 12,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: n > 0 ? LIGHT.text : LIGHT.faint,
+                  margin: "20px 0 0",
+                }}
+              >
+                {n === 0 ? (
+                  "Aucun point de vigilance coché pour l'instant"
+                ) : (
+                  <>
+                    Votre situation présente{" "}
+                    <strong style={{ color: BLUE, fontWeight: 500 }}>
+                      {n} point{n > 1 ? "s" : ""} de vigilance
+                    </strong>
+                    . Un audit contractuel permet d'en déterminer les priorités.
+                  </>
+                )}
+              </p>
+              {n > 0 ? (
+                <Link href={CONTACT} className="cx-reveal" style={{ ...BTN_PRIMARY, marginTop: 16 }}>
+                  Examiner ces points avec le cabinet
+                </Link>
+              ) : null}
+            </div>
           </div>
         </div>
       </section>
@@ -892,7 +908,7 @@ export default function ContratsInformatiquesClient() {
               >
                 <Eyebrow>{r.label}</Eyebrow>
                 <h3 style={{ ...TYPE.h3, margin: "0 0 8px" }}>{r.titre}</h3>
-                <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 14px" }}>{r.texte}</p>
+                <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 14px" }}>{fr(r.texte)}</p>
                 <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
                   {r.points.map((p) => (
                     <li key={p} style={{ fontSize: 13.5, color: LIGHT.muted, lineHeight: 1.5, paddingLeft: 14, borderLeft: `1px solid ${LIGHT.border}` }}>
@@ -919,11 +935,11 @@ export default function ContratsInformatiquesClient() {
               <details key={c.num}>
                 <summary>
                   <span style={{ fontFamily: "var(--ff-mono)", fontSize: 20, color: BLUE, minWidth: 34 }}>{c.num}</span>
-                  <span style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em" }}>{c.titre}</span>
+                  <span style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em" }}>{fr(c.titre)}</span>
                   <span className="cx-plus" aria-hidden />
                 </summary>
                 <div className="cx-body" style={{ paddingLeft: 50 }}>
-                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{c.texte}</p>
+                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(c.texte)}</p>
                 </div>
               </details>
             ))}
@@ -961,8 +977,10 @@ export default function ContratsInformatiquesClient() {
             ))}
           </ul>
           <p style={{ margin: "30px 0 0", fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, maxWidth: "70ch" }}>
-            Les dommages directs prouvés sont indemnisables : perte d'exploitation, coûts de remise en
-            état du système, ressaisie des données, surcharge des équipes internes. Les préjudices
+            Les dommages directs peuvent être indemnisés lorsqu'ils sont établis et imputables au
+            manquement, sous réserve des plafonds contractuels opposables : perte d'exploitation,
+            coûts de remise en état du système, ressaisie des données, surcharge des équipes internes.
+            Les préjudices
             indirects sont fréquemment écartés, soit par le jeu d'une clause d'exclusion, soit faute de
             preuve suffisante. La construction du dossier probatoire commence donc avant la mise en
             demeure, pas après l'assignation.
@@ -1029,7 +1047,7 @@ export default function ContratsInformatiquesClient() {
         <div style={INNER}>
           <SectionHead
             label="Méthode"
-            titre="Cinq étapes, de l'audit au contrat sécurisé"
+            titre="Une méthode, de l'audit du contrat au contentieux"
             sub="En conseil comme en contentieux, une démarche structurée et documentée."
           />
           <div>
@@ -1047,7 +1065,7 @@ export default function ContratsInformatiquesClient() {
                 <div style={{ fontFamily: "var(--ff-mono)", fontSize: 34, fontWeight: 500, color: BLUE, lineHeight: 1 }}>{e.n}</div>
                 <div>
                   <h3 style={{ ...TYPE.h3, margin: "0 0 6px" }}>{e.titre}</h3>
-                  <p style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{e.texte}</p>
+                  <p style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(e.texte)}</p>
                   <span
                     style={{
                       display: "inline-block",
@@ -1076,7 +1094,7 @@ export default function ContratsInformatiquesClient() {
             {QUAND.map((q) => (
               <div key={q.b} style={{ background: "#0b1130", padding: "22px 24px" }}>
                 <b style={{ display: "block", fontWeight: 500, color: "#fff", marginBottom: 6 }}>{q.b}</b>
-                <span style={{ fontSize: 14.5, color: DARK.muted, lineHeight: 1.55 }}>{q.d}</span>
+                <span style={{ fontSize: 14.5, color: DARK.muted, lineHeight: 1.55 }}>{fr(q.d)}</span>
               </div>
             ))}
           </div>
@@ -1167,11 +1185,11 @@ export default function ContratsInformatiquesClient() {
                   <span style={{ fontFamily: "var(--ff-mono)", fontSize: 18, color: BLUE, minWidth: 34 }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em", margin: 0 }}>{item.q}</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em", margin: 0 }}>{fr(item.q)}</h3>
                   <span className="cx-plus" aria-hidden />
                 </summary>
                 <div className="cx-body" style={{ paddingLeft: 50 }}>
-                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{item.a}</p>
+                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(item.a)}</p>
                 </div>
               </details>
             ))}
@@ -1238,7 +1256,7 @@ export default function ContratsInformatiquesClient() {
       <section style={{ background: BLUE, color: "#fff", padding: "72px 0", textAlign: "center" }}>
         <div style={INNER}>
           <h2 style={{ ...TYPE.h2, color: "#fff", margin: "0 auto 12px", maxWidth: "22ch" }}>
-            Un contrat à négocier ou un projet informatique en difficulté ?
+            {fr("Un contrat à négocier ou un projet informatique en difficulté ?")}
           </h2>
           <p style={{ fontSize: 16, color: "#DDE2FF", margin: "0 auto 28px", maxWidth: "52ch", lineHeight: 1.6 }}>
             Un premier échange pour examiner vos contrats, évaluer votre exposition ou apprécier un

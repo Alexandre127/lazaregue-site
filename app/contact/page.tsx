@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./contact.module.css";
 import ContactForm from "./_components/ContactForm";
+import { fr } from "@/lib/typo";
 import Faq from "./_components/Faq";
 import HeroVideo from "./_components/HeroVideo";
 import { AVIS, CHIFFRES, GARANTIES, TEMOIGNAGES } from "./data/reassurance";
@@ -199,7 +200,7 @@ export default function Page() {
 
         {/* Vous préférez nous rencontrer ? */}
         <section className={styles.rencontre}>
-          <div className={styles.folio}>Vous préférez nous rencontrer ?</div>
+          <div className={styles.folio}>{fr("Vous préférez nous rencontrer ?")}</div>
           <div className={styles.rencontreGrid}>
             <div>
               <h2>Nous vous accueillons au cabinet, sur rendez-vous.</h2>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { fr } from "@/lib/typo";
 import { FAQ_ITEMS } from "./faq";
 import EquipeDossier from "@/components/equipe-dossier";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
@@ -286,10 +287,10 @@ function Eyebrow({ children }: { children: ReactNode }) {
 function SectionHead({ label, title, sub }: { label?: string; title: string; sub?: string }) {
   return (
     <>
-      {label ? <Eyebrow>{label}</Eyebrow> : null}
-      <h2 style={{ ...TYPE.h2, color: LIGHT.text, margin: sub ? "0 0 6px" : "0 0 14px", whiteSpace: "pre-line" }}>{title}</h2>
+      {label ? <Eyebrow>{fr(label)}</Eyebrow> : null}
+      <h2 style={{ ...TYPE.h2, color: LIGHT.text, margin: sub ? "0 0 6px" : "0 0 14px", whiteSpace: "pre-line" }}>{fr(title)}</h2>
       {sub ? (
-        <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 14px", maxWidth: 720, whiteSpace: "pre-line" }}>{sub}</p>
+        <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: "0 0 14px", maxWidth: 720, whiteSpace: "pre-line" }}>{fr(sub)}</p>
       ) : null}
     </>
   );

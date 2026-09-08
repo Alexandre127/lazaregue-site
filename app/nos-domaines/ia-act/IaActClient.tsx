@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties, type ReactNode } from "react";
+import { fr } from "@/lib/typo";
 import Link from "next/link";
 import Image from "next/image";
 import { FAQ_TEXTE } from "./faq-texte";
@@ -640,7 +641,7 @@ export default function IaActClient() {
       {/* 5. SUIS-JE CONCERNÉ — cinq usages */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>Suis-je concerné ?</Eyebrow>
+          <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq usages qui appellent une qualification</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
             Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
