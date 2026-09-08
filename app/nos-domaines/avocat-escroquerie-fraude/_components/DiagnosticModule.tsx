@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../escroquerie.module.css";
 import { fr } from "@/lib/typo";
 
@@ -70,6 +70,15 @@ export default function DiagnosticModule() {
   const [date, setDate] = useState<string>("");
   const [ordre, setOrdre] = useState<"A" | "B" | "C" | null>(null);
   const [banque, setBanque] = useState<string | null>(null);
+  // Borne haute du champ = aujourd'hui (une date de débit future n'a pas de
+  // sens). Posée après montage pour éviter un écart d'hydratation SSR/client.
+  const [maxDate, setMaxDate] = useState<string>("");
+  useEffect(() => {
+    const t = new Date();
+    setMaxDate(
+      `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`,
+    );
+  }, []);
 
   const hasDate = Boolean(date);
   let num = "—";
@@ -143,6 +152,7 @@ export default function DiagnosticModule() {
               <input
                 type="date"
                 aria-label="Date du débit contesté"
+                max={maxDate || undefined}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />

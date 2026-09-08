@@ -153,8 +153,8 @@ export default function Page() {
             <div className={styles.debtors}>
               <div className={styles.debtor}>
                 <span className={styles.n}>01</span>
-                <div><h3>La banque du donneur d'ordre</h3><p>Remboursement de l'opération non autorisée à titre principal, y compris lorsque la validation a été obtenue par manœuvre. Manquement au devoir de vigilance à titre subsidiaire, ou à titre principal lorsque l'ordre a réellement été voulu.</p></div>
-                <p className={styles.base}>principal — L. 133-18 CMF<br />subsidiaire — vigilance</p>
+                <div><h3>La banque du donneur d'ordre</h3><p>Remboursement de l'opération non autorisée, lorsque la qualification est acquise — y compris, sous réserve de cette qualification, quand la validation a été obtenue par manœuvre. À défaut, manquement au devoir de vigilance, qui devient le fondement principal lorsque l'ordre a réellement été voulu.</p></div>
+                <p className={styles.base}>L. 133-18 CMF<br />devoir de vigilance</p>
               </div>
               <div className={styles.debtor}>
                 <span className={styles.n}>02</span>
