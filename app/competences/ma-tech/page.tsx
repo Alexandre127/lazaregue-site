@@ -45,11 +45,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-/* JSON-LD : LegalService (le site utilise déjà ce type) + HowTo (les trois
-   temps de l'intervention) + FAQPage (les sept questions de la page). Pas
-   d'Organization (déjà dans le layout), et PAS d'AggregateRating : un balisage
+/* JSON-LD : LegalService (le site utilise déjà ce type) + FAQPage (les sept
+   questions de la page). Pas de HowTo (non demandé, plus de résultat enrichi
+   depuis 2023, et il décrirait une prestation d'avocat comme un mode d'emploi) ;
+   pas d'Organization (déjà dans le layout) ; PAS d'AggregateRating (un balisage
    de notation auto-déclaré n'est pas éligible aux résultats enrichis et expose
-   à une action manuelle. */
+   à une action manuelle). */
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
@@ -63,19 +64,6 @@ const JSON_LD = {
       serviceType:
         "Due diligence technologique, audit juridique logiciel, acquisition entreprise tech, garanties SPA",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-    },
-    {
-      "@type": "HowTo",
-      name: "Sécuriser le volet technologique d'une acquisition",
-      description:
-        "Les trois temps de l'intervention sur le stream technologique d'une opération de M&A.",
-      step: ETAPES.map((e, i) => ({
-        "@type": "HowToStep",
-        position: i + 1,
-        name: e.h2,
-        text: e.these,
-        url: `https://lazaregue-avocats.fr/competences/ma-tech#${e.id}`,
-      })),
     },
     {
       "@type": "FAQPage",
@@ -108,8 +96,14 @@ export default function Page() {
 
       <div className={styles.wrap}>
         {/* ===== Héro — une seule colonne tant que la photographie n'existe
-             pas (pas de colonne droite vide ; la grille 2 colonnes sera
-             réintroduite avec le fichier image). ===== */}
+             pas (pas de colonne droite vide).
+             À RÉTABLIR quand l'image sera fournie :
+               • grille deux colonnes AU-DESSUS de 940 px (texte à gauche,
+                 image à droite), une seule colonne en dessous ;
+               • image portrait, ratio 4:5, 1200 × 1500 px, masquée sous 940 px ;
+               • next/image, priority (héro), alt descriptif, width/height
+                 explicites. La maquette (docs/ma-tech-v2.html : .hero-grid /
+                 .hero-media / .ph--dark) porte le gabarit de référence. ===== */}
         <header className={styles.hero}>
           <span className={styles.eyebrow}>{HERO.eyebrow}</span>
           <h1>

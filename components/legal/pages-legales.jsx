@@ -148,7 +148,7 @@ const MENTIONS = [
             ["SIRET du siège", "823 894 142 00038"],
             ["activité", "69.10Z — activités juridiques, en exercice depuis le 2 novembre 2016"],
             ["TVA intracommunautaire", "FR24 823 894 142"],
-            ["téléphone", "01 82 88 91 19"],
+            ["téléphone", "01 81 70 62 00"],
             ["courriel", "contact@lazaregue-avocats.fr"],
             ["directeur de la publication", "Alexandre Lazarègue, avocat au barreau de Paris"],
           ]}
