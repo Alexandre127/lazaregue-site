@@ -36,6 +36,15 @@ const nextConfig = {
         destination: "/nos-domaines/diffamation-retrait-de-contenus",
         statusCode: 301,
       },
+      // La page « escroquerie et fraude » a d'abord été poussée en top-level
+      // (/avocat-escroquerie-fraude) avant d'être rangée sous /nos-domaines.
+      // Redirection 301 au cas où l'ancienne URL aurait circulé depuis le
+      // premier push. (301 explicite, même convention que ci-dessus.)
+      {
+        source: "/avocat-escroquerie-fraude",
+        destination: "/nos-domaines/avocat-escroquerie-fraude",
+        statusCode: 301,
+      },
     ];
   },
 };
