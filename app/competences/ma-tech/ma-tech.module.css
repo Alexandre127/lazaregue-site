@@ -23,6 +23,14 @@ section.page,
 .page > section { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--bd); }
 .page > section:first-of-type { border-top: none; }
 
+/* GARDE-FOU couleur de texte. Le sélecteur global `p { color: blanc 82% }`
+   (globals.css, adapté au fond navy du body) rend illisible tout paragraphe
+   sans couleur propre sur une section claire. On repose donc une couleur
+   sombre sur les paragraphes des sections claires (toutes SAUF le héro, qui
+   garde ses couleurs claires). `:where()` maintient une spécificité basse :
+   les paragraphes dotés d'une classe de couleur explicite conservent la leur. */
+:where(.page > section:not(.hero)) p { color: #3a3a52; }
+
 /* ── Labels ── */
 .eyebrow {
   font-family: var(--ff-mono);
@@ -37,26 +45,45 @@ section.page,
 .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; flex: 0 0 22px; }
 .eyebrowBlue { color: var(--blue); }
 
-/* ── Héro (une seule colonne tant que la photographie n'existe pas) ── */
-.hero {
-  background: var(--navy);
-  color: var(--wh);
-  margin: 0 -32px;
-  padding: clamp(60px, 9vw, 112px) 32px clamp(44px, 6vw, 80px);
-}
-.hero .eyebrow { color: #9FB0FF; }
-/* Bebas Neue est proscrit dans les titres : le h1 est en Space Grotesk. */
-.hero h1 {
-  font-family: var(--ff-body);
+/* ── Héro — bande pleine largeur sur navy (gabarit des héros du site). La
+   section occupe 100 % de la largeur ; `.wrap` centre le contenu et porte le
+   rembourrage vertical (plus de marges négatives). ── */
+.hero { background: var(--navy); color: var(--wh); }
+/* Rembourrage propre au héro (prime sur le padding générique .page > section). */
+.page > section.hero { padding: clamp(60px, 9vw, 112px) 0 clamp(44px, 6vw, 80px); }
+/* Pastille de sur-titre : fond bleu translucide, bordure, DM Mono capitales,
+   termes séparés par des points médians — comme sur les autres pages. */
+.heroPastille {
+  display: inline-block;
+  font-family: var(--ff-mono);
+  font-size: 11px;
   font-weight: 500;
-  font-size: clamp(34px, 5.4vw, 60px);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  margin: 16px 0 0;
-  max-width: 20ch;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9FB0FF;
+  background: rgba(26, 71, 255, 0.22);
+  border: 1px solid rgba(77, 111, 255, 0.4);
+  border-radius: 8px;
+  padding: 5px 12px;
+  margin-bottom: 20px;
+}
+/* Titre de héro en Bebas Neue capitales : usage « display » prévu par la charte
+   (Bebas est réservé aux grands chiffres, au logo et aux titres de héros). */
+.hero h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  /* Titre long : plafond de taille abaissé pour éviter un bloc écrasant, et
+     largeur élargie pour que la partie « due diligence… » tienne en deux
+     lignes plutôt que trois. */
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 30ch;
   color: var(--wh);
 }
-.h1tail { display: block; color: #B9C4FF; font-weight: 300; }
+.h1tail { display: block; color: #B9C4FF; }
 .heroSub {
   font-weight: 300;
   font-size: clamp(17px, 2.1vw, 21px);
@@ -125,8 +152,8 @@ a.ctaPrimary:hover { background: var(--blue3); border-color: var(--blue3); }
 .definition { background: var(--off2, #F4F4F8); }
 .defGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
 .defGrid h2 { font-family: var(--ff-body); font-weight: 500; font-size: clamp(24px, 3.2vw, 34px); line-height: 1.18; letter-spacing: -0.02em; max-width: 14ch; margin: 0; }
-.defBody p { max-width: 66ch; margin: 0 0 1em; }
-.defBody p:first-of-type { font-size: 18.5px; line-height: 1.55; }
+.defBody p { max-width: 66ch; margin: 0 0 1em; color: #3a3a52; }
+.defBody p:first-of-type { font-size: 18.5px; line-height: 1.55; color: #25253a; }
 .small { font-size: 15px; line-height: 1.6; color: #4a4a63; }
 .defTags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 .tagChip { font-family: var(--ff-mono); font-size: 11.5px; letter-spacing: 0.08em; padding: 6px 11px; background: #fff; border: 1px solid var(--bd); color: #4a4a63; }

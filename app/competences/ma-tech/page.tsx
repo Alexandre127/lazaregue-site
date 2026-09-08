@@ -102,18 +102,21 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
-      <div className={styles.wrap}>
-        {/* ===== Héro — une seule colonne tant que la photographie n'existe
-             pas (pas de colonne droite vide).
-             À RÉTABLIR quand l'image sera fournie :
-               • grille deux colonnes AU-DESSUS de 940 px (texte à gauche,
-                 image à droite), une seule colonne en dessous ;
-               • image portrait, ratio 4:5, 1200 × 1500 px, masquée sous 940 px ;
-               • next/image, priority (héro), alt descriptif, width/height
-                 explicites. La maquette (docs/ma-tech-v2.html : .hero-grid /
-                 .hero-media / .ph--dark) porte le gabarit de référence. ===== */}
-        <header className={styles.hero}>
-          <span className={styles.eyebrow}>{HERO.eyebrow}</span>
+      {/* ===== Héro — bande pleine largeur sur navy (gabarit des héros du site,
+           comme la page diffamation) : la section occupe toute la largeur, le
+           conteneur `.wrap` centre le contenu.
+           UNE SEULE COLONNE tant que la photographie n'existe pas (pas de
+           colonne droite vide). À RÉTABLIR quand l'image sera fournie, sur le
+           modèle du héro diffamation :
+             • grille deux colonnes AU-DESSUS de 940 px (texte à gauche ~55 %,
+               image à droite ~45 %), une seule colonne en dessous ;
+             • image portrait, ratio 4:5, 1200 × 1500 px, object-fit cover,
+               masquée sous 940 px ;
+             • next/image, priority (héro), alt descriptif, width/height
+               explicites. ===== */}
+      <section className={styles.hero}>
+        <div className={styles.wrap}>
+          <span className={styles.heroPastille}>Due diligence technologique · M&amp;A Tech · Paris</span>
           <h1>
             {fr(HERO.h1)}
             <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
@@ -134,8 +137,8 @@ export default function Page() {
               </div>
             ))}
           </div>
-        </header>
-      </div>
+        </div>
+      </section>
 
       {/* ===== Définition ===== */}
       <section className={styles.definition}>
