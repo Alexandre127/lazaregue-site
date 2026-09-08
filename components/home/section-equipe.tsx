@@ -25,7 +25,7 @@ type TeamMember = {
 const TEAM_MEMBERS: TeamMember[] = [
   {
     fullName: "Alexandre Lazarègue",
-    statut: "Avocat à la Cour d'appel de Paris",
+    statut: "Avocat au barreau de Paris",
     avocat: true,
     role: "Cybercriminalité & gestion de crise",
     photoBase: "/images/alexandre-pro.jpg",
@@ -36,7 +36,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Sarah Hinderer",
-    statut: "Avocate à la Cour d'appel de Paris",
+    statut: "Avocate au barreau de Paris",
     avocat: true,
     role: "Données personnelles & intelligence artificielle",
     photoBase: "/images/sarah-pro.jpg",
@@ -47,7 +47,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Amir Ben Majed",
-    statut: "Avocat à la Cour d'appel de Paris",
+    statut: "Avocat au barreau de Paris",
     avocat: true,
     role: "Contrats IT & contentieux technologiques",
     photoBase: "/images/amir-pro.jpg",
@@ -58,7 +58,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Khalid Sookia",
-    statut: "Expert indépendant",
+    statut: "Notre consultant technique — cybersécurité",
     avocat: false,
     role: "Investigation numérique",
     photoBase: "/images/khalid-pro.jpg",

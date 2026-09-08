@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./contact.module.css";
 import ContactForm from "./_components/ContactForm";
+import { fr } from "@/lib/typo";
 import Faq from "./_components/Faq";
 import HeroVideo from "./_components/HeroVideo";
 import { AVIS, CHIFFRES, GARANTIES, TEMOIGNAGES } from "./data/reassurance";
@@ -30,10 +31,9 @@ export const metadata: Metadata = {
 /**
  * Données structurées LegalService.
  *
- * `aggregateRating` reprend la note réelle de la fiche Google du cabinet
- * (5,0 sur 17 avis, relevé du 21 juillet 2026). Google affiche ces valeurs
- * en étoiles dans les résultats : elles doivent rester exactes et être
- * réactualisées quand le nombre d'avis évolue — voir data/reassurance.ts.
+ * Pas d'`aggregateRating` : l'affichage d'une note en étoiles dans les
+ * résultats de recherche pose un problème de publicité pour un avocat. La note
+ * Google reste utilisée uniquement en affichage sur la page (voir plus bas).
  */
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -58,13 +58,7 @@ const JSON_LD = {
   },
   openingHours: "Mo-Fr 09:00-19:00",
   priceRange: "€€",
-  areaServed: { "@type": "City", name: "Paris" },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: AVIS.noteNum,
-    reviewCount: String(AVIS.nombre),
-    bestRating: "5",
-  },
+  areaServed: { "@type": "Country", name: "France" },
 };
 
 const CANAUX = [
@@ -103,7 +97,7 @@ export default function Page() {
         <div className={styles.heroVeil} aria-hidden />
         <div className={styles.heroInner}>
           <div className={styles.heroK}>
-            Contact · Paris 17<sup>e</sup>
+            Contact · Paris 17<sup>e</sup> · Toute la France
           </div>
           <h1>
             QUAND TOUT S&apos;ACCÉLÈRE,
@@ -206,7 +200,7 @@ export default function Page() {
 
         {/* Vous préférez nous rencontrer ? */}
         <section className={styles.rencontre}>
-          <div className={styles.folio}>Vous préférez nous rencontrer ?</div>
+          <div className={styles.folio}>{fr("Vous préférez nous rencontrer ?")}</div>
           <div className={styles.rencontreGrid}>
             <div>
               <h2>Nous vous accueillons au cabinet, sur rendez-vous.</h2>

@@ -47,10 +47,14 @@
 }
 
 /* Étape 1 — Curseur personnalisé : inutile au doigt, et positionné hors écran
-   il peut créer du défilement. Désactivé sur les appareils tactiles. */
-@media (pointer: coarse) {
+   il peut créer du défilement. Désactivé sur les appareils tactiles.
+   Étendu : sous 1024 px et sur tout appareil sans survol (hover: none), on
+   désactive aussi le halo `.laz-glow` — ces trois calques fixes recouvrent le
+   texte sur tactile et sont coûteux pour rien. */
+@media (pointer: coarse), (hover: none), (max-width: 1023px) {
   .laz-cur,
-  .laz-cur2 {
+  .laz-cur2,
+  .laz-glow {
     display: none !important;
   }
   .laz-site.cursor-custom {

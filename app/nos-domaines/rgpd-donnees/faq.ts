@@ -6,6 +6,10 @@
 
 export const FAQ_ITEMS = [
   {
+    q: "Quel est le prix d'un avocat pour une mise en conformité RGPD ?",
+    a: "Le coût dépend de sept variables : le nombre d'entités juridiques concernées, le nombre et la diversité des traitements, l'état du registre existant, le nombre de sous-traitants critiques, l'existence de transferts hors Union, le nombre d'analyses d'impact à réaliser, et le volume de documentation à créer ou à reprendre. Deux entreprises de deux cents salariés peuvent donc appeler des interventions très différentes : l'effectif est rarement le meilleur indicateur du coût d'une mise en conformité.",
+  },
+  {
     q: "Une PME de moins de 250 salariés doit-elle tenir un registre RGPD ?",
     a: "Juridiquement, l'obligation de registre ne vise en principe que les entreprises de 250 salariés et plus. Mais en pratique, toute PME qui met en œuvre des traitements non occasionnels ou à risque doit tenir un registre — car c'est la base de la démonstration de conformité (accountability) en cas de contrôle CNIL.",
   },
@@ -27,6 +31,6 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Quels contrats doivent intégrer l'article 28 RGPD ?",
-    a: "Tout contrat avec un prestataire qui traite des données personnelles pour votre compte : hébergeur, éditeur SaaS, agence marketing, cabinet de paie, intégrateur IT, prestataire RH. Sans clause article 28 conforme, vous restez responsable en cas de violation chez le prestataire — et vous perdez tout recours contractuel.",
+    a: "Tout contrat avec un prestataire qui traite des données personnelles pour votre compte : hébergeur, éditeur SaaS, agence marketing, cabinet de paie, intégrateur IT, prestataire RH. Sans clause article 28 conforme, vous restez responsable en cas de violation chez le prestataire — et votre recours contractuel contre lui s'en trouve fragilisé.",
   },
 ] as const;

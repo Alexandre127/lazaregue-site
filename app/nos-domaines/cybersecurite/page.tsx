@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
-import CybersecuriteClient from "./CybersecuriteClient";
-import { FAQ_TEXTE } from "./faq-texte";
+import PilierClient from "./PilierClient";
+import { FAQ_ITEMS } from "./faq";
 
-/**
- * Le titre vise l'intention de recherche (« NIS 2 PME », « sous-traitants »,
- * « mise en conformité ») plutôt que le seul terme « NIS 2 », sur lequel la
- * concurrence institutionnelle — ANSSI, Commission européenne — est hors de
- * portée. La longue traîne transactionnelle est le terrain jouable.
- */
-const TITLE =
-  "NIS 2 pour PME et sous-traitants : obligations et mise en conformité | Lazarègue Avocats";
+const TITLE = "Avocat en cybersécurité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Votre client vous demande des garanties NIS 2 ? Obligations, secteurs concernés, clauses contractuelles et mise en conformité pour les PME et ETI sous-traitantes d'acteurs critiques.";
+  "Cyberattaque, violation de données, conformité NIS 2, responsabilité du prestataire informatique : cabinet d'avocats en cybersécurité à Paris.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
+  // Canonical relatif : résolu contre `metadataBase` (NEXT_PUBLIC_SITE_URL,
+  // défini dans app/layout.tsx). Jamais de domaine écrit en dur ici.
   alternates: { canonical: "/nos-domaines/cybersecurite" },
   openGraph: {
     title: TITLE,
@@ -34,24 +28,26 @@ const JSON_LD = {
   "@graph": [
     {
       "@type": "LegalService",
-      name: "Avocat NIS 2 — Lazarègue Avocats",
+      name: "Avocat en cybersécurité — Lazarègue Avocats",
       description:
-        "Accompagnement des PME et ETI sous-traitantes d'acteurs critiques : audit de conformité NIS 2, PSSI, clauses contractuelles de cybersécurité, gestion de crise.",
+        "Cabinet d'avocats en cybersécurité à Paris : réponse à cyberattaque, violation de données, conformité NIS 2, responsabilité du prestataire informatique. Analyse juridique et audit technique menés ensemble.",
       url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite",
-      areaServed: "FR",
-      serviceType:
-        "Mise en conformité NIS 2, audit cybersécurité, clause NIS 2 contrat, PSSI, gestion de crise cyber",
-      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
+      telephone: "+33181706200",
+      areaServed: { "@type": "Country", name: "France" },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "18 rue de Tilsitt",
+        addressLocality: "Paris",
+        postalCode: "75017",
+        addressCountry: "FR",
       },
+      serviceType:
+        "Réponse à incident cyber, violation de données personnelles, conformité NIS 2, responsabilité du prestataire informatique",
+      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
     },
     {
       "@type": "FAQPage",
-      mainEntity: FAQ_TEXTE.map((f) => ({
+      mainEntity: FAQ_ITEMS.map((f) => ({
         "@type": "Question",
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -67,7 +63,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
-      <CybersecuriteClient />
+      <PilierClient />
     </>
   );
 }

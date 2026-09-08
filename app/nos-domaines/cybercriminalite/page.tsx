@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import CybercriminaliteClient from "./CybercriminaliteClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -10,10 +9,9 @@ import { FAQ_ITEMS } from "./faq";
  * position (poursuivre / défendre) est reprise telle quelle : elle
  * qualifie autant le mis en cause que la victime.
  */
-const TITLE =
-  "Avocat cybercriminalité & fraude numérique — poursuivre ou défendre | Lazarègue Avocats, Paris";
+const TITLE = "Avocat cybercriminalité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Rançongiciel, phishing non remboursé, fraude au virement, ex-salarié parti avec les données, enquête CNIL après attaque : nous construisons le dossier pénal. PME et ETI. 01 81 70 62 00.";
+  "Intrusion, rançongiciel, extorsion, salarié malveillant, exfiltration de données : le cabinet intervient au pénal, pour poursuivre comme pour défendre.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -55,19 +53,13 @@ const JSON_LD = {
       "@type": "LegalService",
       name: "Avocat cybercriminalité & fraude numérique — Lazarègue Avocats",
       description:
-        "Plainte pénale et défense après incident cyber : rançongiciel, hameçonnage, fraude au virement, extraction frauduleuse de données par un ex-salarié, atteinte à un système de traitement automatisé de données, mise en cause après violation de données.",
+        "Plainte pénale et défense après incident cyber : rançongiciel, fraude au virement, extraction frauduleuse de données par un ex-salarié, atteinte à un système de traitement automatisé de données, mise en cause après violation de données.",
       url: "https://lazaregue-avocats.fr/nos-domaines/cybercriminalite",
       telephone: "+33181706200",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
-        "Plainte pénale cybercriminalité, ransomware, phishing, fraude au virement, vol de données par un salarié, défense pénale informatique, notification CNIL après incident",
+        "Plainte pénale cybercriminalité, ransomware, fraude au virement, vol de données par un salarié, défense pénale informatique, notification CNIL après incident",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     ...AVOCATS.map((a) => ({
       "@type": "Person",

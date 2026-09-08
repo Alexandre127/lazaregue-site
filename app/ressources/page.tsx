@@ -39,7 +39,7 @@ const JSON_LD = {
   publisher: {
     "@type": "LegalService",
     name: "Lazarègue Avocats",
-    areaServed: "FR",
+    areaServed: { "@type": "Country", name: "France" },
     founder: {
       "@type": "Person",
       name: "Alexandre Lazarègue",

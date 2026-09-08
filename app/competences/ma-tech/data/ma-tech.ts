@@ -100,7 +100,7 @@ export const DOMAINES_AUDIT: Domaine[] = [
   {
     h3: "Cybersécurité",
     p: "Incidents passés, dépendance à un prestataire critique, vulnérabilités connues, sauvegarde et reprise, engagements contractuels des prestataires, risque de notification et de responsabilité.",
-    lien: { href: "/nos-domaines/cybersecurite", label: "Notre pratique Cybersécurité & NIS 2" },
+    lien: { href: "/nos-domaines/cybersecurite/nis2", label: "Notre pratique Cybersécurité & NIS 2" },
   },
   {
     h3: "Systèmes d'intelligence artificielle",

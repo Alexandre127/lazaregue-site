@@ -27,28 +27,31 @@ export const MEMBRES: Record<string, Membre> = {
   alexandre: {
     slug: "alexandre",
     nom: "Me Alexandre Lazarègue",
-    statut: "Avocat à la Cour d'appel de Paris",
+    statut: "Avocat au barreau de Paris",
     avocat: true,
     photo: "/images/alexandre-pro.jpg",
   },
   amir: {
     slug: "amir",
     nom: "Me Amir Ben Majed",
-    statut: "Avocat à la Cour d'appel de Paris",
+    statut: "Avocat au barreau de Paris",
     avocat: true,
     photo: "/images/amir-pro.jpg",
   },
   sarah: {
     slug: "sarah",
     nom: "Me Sarah Hinderer",
-    statut: "Avocate à la Cour d'appel de Paris",
+    statut: "Avocate au barreau de Paris",
     avocat: true,
     photo: "/images/sarah-pro.jpg",
   },
   khalid: {
     slug: "khalid",
     nom: "Khalid Sookia",
-    statut: "Expert indépendant — cybersécurité",
+    // Intitulé « consultant technique » plutôt qu'« expert » : le mot « expert »
+    // prête à confusion avec la qualité d'expert judiciaire, particulièrement
+    // sur les pages qui traitent de l'expertise judiciaire informatique.
+    statut: "Notre consultant technique — cybersécurité",
     avocat: false,
     photo: "/images/khalid-pro.jpg",
   },

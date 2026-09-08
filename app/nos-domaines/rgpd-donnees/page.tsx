@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AVIS } from "@/lib/avis";
 import RgpdClient from "./RgpdClient";
 import { FAQ_ITEMS } from "./faq";
 
@@ -9,10 +8,9 @@ import { FAQ_ITEMS } from "./faq";
  * transactionnelle (« avocat RGPD », « audit », « due diligence ») plutôt que
  * le terme « RGPD » seul, verrouillé par la CNIL et les grands cabinets.
  */
-const TITLE =
-  "Avocat RGPD : audit, due diligence M&A et conformité des données personnelles | Lazarègue Avocats";
+const TITLE = "Avocat RGPD et données personnelles à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Contrôle CNIL, levée de fonds, sous-traitance article 28, IA générative : le RGPD comme système de preuve. Audit, registre, contrats et gouvernance pour PME et ETI.";
+  "Audit, mise en conformité, gouvernance, contrats, contrôles CNIL et due diligence : le cabinet construit une conformité documentée pour les PME et ETI.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -38,16 +36,10 @@ const JSON_LD = {
       description:
         "Audit de conformité RGPD, registre des traitements, contrats de sous-traitance article 28, due diligence M&A et encadrement des usages d'IA générative.",
       url: "https://lazaregue-avocats.fr/nos-domaines/rgpd-donnees",
-      areaServed: "FR",
+      areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Audit RGPD, due diligence RGPD M&A, contrat sous-traitant article 28, AIPD, gouvernance des données, RGPD et IA générative",
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: AVIS.noteNum,
-        reviewCount: String(AVIS.nombre),
-        bestRating: "5",
-      },
     },
     {
       /* Renforce l'E-E-A-T : la personne qui porte l'expertise est identifiée. */

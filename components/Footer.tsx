@@ -212,7 +212,7 @@ export function Footer() {
                 LAZARÈGUE <span className="text-[#1A47FF]">AVOCATS</span>
               </p>
               <p className="mb-6 text-[13px] text-white/45">
-                Cabinet en droit du numérique. Paris.
+                Cabinet en droit du numérique. Paris, toute la France.
               </p>
               <ul className="space-y-3 text-[13px] text-white/55">
                 <li className="flex items-center gap-2.5">
@@ -244,7 +244,7 @@ export function Footer() {
                 Cette liste ne contient plus que des pages réellement publiées. */}
             <FooterColumn title="Nos domaines">
               <Link href="/nos-domaines/cybersecurite" className="hover:text-white">
-                Cybersécurité & NIS 2
+                Cybersécurité
               </Link>
               <Link href="/nos-domaines/rgpd-donnees" className="hover:text-white">
                 RGPD & protection des données
@@ -258,8 +258,8 @@ export function Footer() {
               <Link href="/nos-domaines/cybercriminalite" className="hover:text-white">
                 Cybercriminalité & fraudes
               </Link>
-              <Link href="/competences/plateformes" className="hover:text-white">
-                Plateformes, médias & réseaux sociaux
+              <Link href="/nos-domaines/diffamation-retrait-de-contenus" className="hover:text-white">
+                Diffamation et retrait de contenus
               </Link>
               <Link href="/competences/ma-tech" className="hover:text-white">
                 M&A Tech & due diligence
