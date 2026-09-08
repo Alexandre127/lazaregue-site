@@ -14,7 +14,7 @@ const DOMAINES_LINKS = [
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
-  { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
+  { label: "Cybercriminalité & atteintes aux systèmes", href: "/nos-domaines/cybercriminalite" },
   { label: "Escroquerie et fraude", href: "/nos-domaines/avocat-escroquerie-fraude" },
   {
     label: "Diffamation et retrait de contenus",
@@ -27,7 +27,7 @@ const DOMAINES_LINKS = [
 
 // Menu mobile — sept premiers domaines, puis « Tous nos domaines ». (Sept
 // depuis l'ajout de « Escroquerie et fraude », rattachée au registre pénal aux
-// côtés de « Cybercriminalité & fraudes », pour la garder visible sur mobile.)
+// côtés de « Cybercriminalité & atteintes aux systèmes », pour la garder visible sur mobile.)
 const DOMAINES_TOP5 = DOMAINES_LINKS.slice(0, 7);
 
 const MOBILE_ENTRIES: {
