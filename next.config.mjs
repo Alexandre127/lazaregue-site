@@ -28,6 +28,14 @@ const nextConfig = {
         destination: `https://${SITE_HOST}/:path*`,
         permanent: true,
       },
+      // L'ancienne page « plateformes » est devenue « Diffamation et retrait de
+      // contenus ». Redirection 301 (statusCode explicite : `permanent: true`
+      // émettrait un 308) pour conserver le référencement acquis.
+      {
+        source: "/competences/plateformes",
+        destination: "/nos-domaines/diffamation-retrait-de-contenus",
+        statusCode: 301,
+      },
     ];
   },
 };

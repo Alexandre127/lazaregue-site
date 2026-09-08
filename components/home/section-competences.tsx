@@ -263,8 +263,8 @@ const cards: CompetenceCard[] = [
     ],
     tagColor: "rgba(212,83,126,.12)",
     tagText: "#ED93B1",
-    href: "/competences/plateformes",
-    linkLabel: "Plateformes et réseaux sociaux",
+    href: "/nos-domaines/diffamation-retrait-de-contenus",
+    linkLabel: "Diffamation et retrait de contenus",
   },
 ];
 

@@ -16,8 +16,8 @@ const DOMAINES_LINKS = [
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
   { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
   {
-    label: "Plateformes, médias & Réseaux sociaux",
-    href: "/competences/plateformes",
+    label: "Diffamation et retrait de contenus",
+    href: "/nos-domaines/diffamation-retrait-de-contenus",
   },
   { label: "M&A Tech & Due diligence", href: "/competences/ma-tech" },
   // « Gaming, Esport & Industrie créative » pointait vers /competences/gaming,

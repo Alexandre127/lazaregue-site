@@ -2159,6 +2159,14 @@ export default function RgpdClient() {
           <a href="/nos-domaines/ia-act" style={{ color: BRAND, textDecoration: "underline" }}>
             règlement européen sur l&apos;intelligence artificielle
           </a>
+          {" "}; enfin, le déréférencement, le droit à l&apos;oubli et le retrait d&apos;un contenu
+          illicite relèvent de{" "}
+          <a
+            href="/nos-domaines/diffamation-retrait-de-contenus"
+            style={{ color: BRAND, textDecoration: "underline" }}
+          >
+            la diffamation et du retrait de contenus en ligne
+          </a>
           .
         </p>
       </section>

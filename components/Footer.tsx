@@ -258,8 +258,8 @@ export function Footer() {
               <Link href="/nos-domaines/cybercriminalite" className="hover:text-white">
                 Cybercriminalité & fraudes
               </Link>
-              <Link href="/competences/plateformes" className="hover:text-white">
-                Plateformes, médias & réseaux sociaux
+              <Link href="/nos-domaines/diffamation-retrait-de-contenus" className="hover:text-white">
+                Diffamation et retrait de contenus
               </Link>
               <Link href="/competences/ma-tech" className="hover:text-white">
                 M&A Tech & due diligence

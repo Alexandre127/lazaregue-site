@@ -93,6 +93,14 @@ const PORTES: Porte[] = [
     href: "/nos-domaines/contrats-informatiques#contentieux",
     disponible: true,
   },
+  {
+    titre: "Des contenus vous nuisent en ligne",
+    corps:
+      "Diffamation, faux avis, données diffusées après une fuite, compte usurpé : retrait, déréférencement, identification d'auteur.",
+    lien: "Diffamation et retrait de contenus",
+    href: "/nos-domaines/diffamation-retrait-de-contenus",
+    disponible: true,
+  },
 ];
 
 // Bloc C : quatre expositions. `precision` et `horloge` alimentent le schéma ;
