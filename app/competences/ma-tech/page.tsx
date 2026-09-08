@@ -102,31 +102,75 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
-      {/* ===== Héro — bande pleine largeur sur navy (gabarit des héros du site,
-           comme la page diffamation) : la section occupe toute la largeur, le
-           conteneur `.wrap` centre le contenu.
-           UNE SEULE COLONNE tant que la photographie n'existe pas (pas de
-           colonne droite vide). À RÉTABLIR quand l'image sera fournie, sur le
-           modèle du héro diffamation :
-             • grille deux colonnes AU-DESSUS de 940 px (texte à gauche ~55 %,
-               image à droite ~45 %), une seule colonne en dessous ;
-             • image portrait, ratio 4:5, 1200 × 1500 px, object-fit cover,
-               masquée sous 940 px ;
-             • next/image, priority (héro), alt descriptif, width/height
-               explicites. ===== */}
+      {/* Préchargement priorisé de l'image du héros (LCP), conditionné par media
+          pour ne PAS précharger sous 940 px où l'image est masquée. */}
+      <link
+        rel="preload"
+        as="image"
+        imageSrcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
+        imageSizes="(min-width: 1244px) 460px, 40vw"
+        type="image/webp"
+        media="(min-width: 940px)"
+      />
+
+      {/* ===== Héro — bande pleine largeur sur navy (gabarit des héros du site).
+           Grille DEUX COLONNES au-dessus de 940 px (texte à gauche, image à
+           droite ~40 %) ; UNE SEULE colonne en dessous, image masquée ET non
+           téléchargée.
+           L'image est servie en statique (WebP + repli JPEG, 1200/800 px),
+           recadrée 4:5 avec le bureau réduit ; le raccord au fond navy (dégradés
+           bord gauche + bas) est fait en CSS, pas dans le fichier.
+           next/image n'est PAS employé ici : son <img> serait téléchargé même
+           masqué en display:none sous 940 px, ce que la consigne de performance
+           proscrit. Un <picture> dont les <source> sont conditionnées par
+           `media:(min-width:940px)` n'émet aucune requête sous le seuil ; la
+           priorité (LCP) est portée par le <link rel="preload"> ci-dessus. ===== */}
       <section className={styles.hero}>
         <div className={styles.wrap}>
-          <span className={styles.heroPastille}>Due diligence technologique · M&amp;A Tech · Paris</span>
-          <h1>
-            {fr(HERO.h1)}
-            <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
-          </h1>
-          <p className={styles.heroSub}>{fr(HERO.sub)}</p>
-          <p className={styles.heroIntro}>{fr(HERO.intro)}</p>
+          <div className={styles.heroInner}>
+            <div className={styles.heroCopy}>
+              <span className={styles.heroPastille}>Due diligence technologique · M&amp;A Tech · Paris</span>
+              <h1>
+                {fr(HERO.h1)}
+                <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
+              </h1>
+              <p className={styles.heroSub}>{fr(HERO.sub)}</p>
+              <p className={styles.heroIntro}>{fr(HERO.intro)}</p>
 
-          <div className={styles.ctaRow}>
-            <Cta tag="buy-side" label="Faire auditer une cible" primary />
-            <Cta tag="sell-side" label="Préparer une cession tech" />
+              <div className={styles.ctaRow}>
+                <Cta tag="buy-side" label="Faire auditer une cible" primary />
+                <Cta tag="sell-side" label="Préparer une cession tech" />
+              </div>
+            </div>
+
+            <figure className={styles.heroMedia}>
+              <picture>
+                <source
+                  type="image/webp"
+                  media="(min-width: 940px)"
+                  srcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
+                  sizes="(min-width: 1244px) 460px, 40vw"
+                />
+                <source
+                  type="image/jpeg"
+                  media="(min-width: 940px)"
+                  srcSet="/images/ma-tech/ma-tech-800.jpg 800w, /images/ma-tech/ma-tech-1200.jpg 1200w"
+                  sizes="(min-width: 1244px) 460px, 40vw"
+                />
+                {/* Repli 1×1 transparent : sous 940 px aucune <source> ne
+                    s'applique, l'image n'est donc jamais téléchargée là où elle
+                    est masquée (un display:none ne suffirait pas). */}
+                <img
+                  className={styles.heroImg}
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  width={1200}
+                  height={1500}
+                  alt="Liasse de documents contractuels reliée, avec onglets de repérage"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
           </div>
 
           <div className={styles.assert}>

@@ -94,6 +94,31 @@ section.page,
 }
 .heroIntro { max-width: 62ch; margin: 24px 0 0; color: #C3C8E4; font-size: 16.5px; }
 
+/* ── Héro : grille deux colonnes (texte / image) au-dessus de 940 px ── */
+.heroInner { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+.heroCopy { min-width: 0; }
+/* Colonne image : masquée ET non chargée sous 940 px (cf. <picture media> côté JSX). */
+.heroMedia { display: none; }
+@media (min-width: 940px) {
+  .heroInner { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+  .heroMedia { display: block; position: relative; margin: 0; }
+}
+.heroImg {
+  display: block; width: 100%; height: auto; aspect-ratio: 4 / 5;
+  object-fit: cover; border-radius: 14px;
+}
+/* Raccord au fond navy fait en CSS (jamais dans le fichier image) : dégradé du
+   bord gauche vers le centre sur ~35 % de la largeur (du --navy opaque vers
+   transparent) + léger fondu du bord bas, pour que la photo se fonde dans la
+   bande du héros au lieu d'y être posée en vignette. */
+.heroMedia::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: 14px;
+  background:
+    linear-gradient(to right, var(--navy) 0%, rgba(10, 15, 46, 0) 35%),
+    linear-gradient(to bottom, rgba(10, 15, 46, 0) 82%, var(--navy) 100%);
+}
+
 /* Trois assertions, sur le fond navy. */
 .assert {
   display: grid;
