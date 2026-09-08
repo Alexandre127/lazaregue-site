@@ -314,7 +314,11 @@ export const OPERATIONS = [
 ];
 
 /** Équipe du stream technologique — rendue via EquipeDossier (portraits issus
- *  de lib/equipe.ts). Rôles propres à cette page. */
+ *  de lib/equipe.ts). Rôles propres à cette page.
+ *  NB : le rôle de Me Sarah Hinderer, « Données et conformité de la cible »,
+ *  est une PROPOSITION en attente de validation par l'intéressée. Ne pas la
+ *  propager à d'autres pages ni l'inscrire comme rôle canonique dans
+ *  lib/equipe.ts avant confirmation. */
 export const TEAM = [
   { slug: "alexandre", role: "Actifs numériques & due diligence", tags: ["Propriété du code", "Open source", "Données"] },
   { slug: "amir", role: "Contrats & garanties du SPA", tags: ["SPA", "Change of control", "Remédiation"] },
