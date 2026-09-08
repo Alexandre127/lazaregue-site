@@ -21,6 +21,14 @@ import Rail from "./_components/Rail";
 import Bascule from "./_components/Bascule";
 import EquipeDossier from "@/components/equipe-dossier";
 
+/** Échelle de sévérité partagée avec la bascule (b/h/m/l). */
+const SEV: Record<"b" | "h" | "m" | "l", string> = {
+  b: styles.sevB,
+  h: styles.sevH,
+  m: styles.sevM,
+  l: styles.sevL,
+};
+
 /**
  * Le title vise la requête réellement tapée par les acquéreurs et leurs
  * conseils ; la description reprend celle de la maquette.
@@ -172,7 +180,7 @@ export default function Page() {
                 {SCOPE.rows.map(([a, b]) => (
                   <tr key={a}>
                     <td>{fr(a)}</td>
-                    <td>{fr(b)}</td>
+                    <td data-lbl={SCOPE.lblB}>{fr(b)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -250,32 +258,28 @@ export default function Page() {
                         <h3>{fr(MATRICE.titre)}</h3>
                         <span className={styles.k}>{MATRICE.mention}</span>
                       </div>
-                      <div className={`${styles.specRow} ${styles.specHdr}`}>
-                        <span>#</span>
-                        <span>constat</span>
-                        <span>gravité</span>
-                        <span>traitement retenu</span>
-                      </div>
-                      {MATRICE.lignes.map((l) => (
-                        <div key={l.n} className={styles.specRow}>
-                          <span className={styles.specN}>{l.n}</span>
-                          <span className={styles.specF} data-col="Constat">
-                            {fr(l.constat)}
-                          </span>
-                          <span data-col="Gravité">
-                            <span
-                              className={`${styles.sev} ${
-                                l.ton === "hi" ? styles.sevHi : l.ton === "md" ? styles.sevMd : styles.sevLo
-                              }`}
-                            >
-                              {l.gravite}
-                            </span>
-                          </span>
-                          <span className={styles.specT} data-col="Traitement retenu">
-                            {fr(l.traitement)}
-                          </span>
-                        </div>
-                      ))}
+                      <table className={styles.mx}>
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">constat</th>
+                            <th scope="col">gravité</th>
+                            <th scope="col">traitement retenu</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {MATRICE.lignes.map((l) => (
+                            <tr key={l.n}>
+                              <td className={styles.c}>{l.n}</td>
+                              <td className={styles.f}>{fr(l.constat)}</td>
+                              <td>
+                                <span className={`${styles.sev} ${SEV[l.ton]}`}>{l.gravite}</span>
+                              </td>
+                              <td data-lbl={MATRICE.lblTraitement}>{fr(l.traitement)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </>
                 ) : null}

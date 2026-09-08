@@ -34,6 +34,9 @@ export const SCOPE = {
     "Notre due diligence porte sur la maîtrise juridique et contractuelle des actifs technologiques : propriété du code, licences, données, contrats, dépendances, conformité et garanties. Lorsque l'opération nécessite un audit de l'architecture, de la qualité du code, de la scalabilité ou de la dette technique, nous coordonnons nos travaux avec l'expert technique désigné par le client.",
   headA: "due diligence juridique tech — notre intervention",
   headB: "due diligence technique — l'expert désigné",
+  // Libellé injecté (attr(data-lbl)) au-dessus de la dernière cellule quand le
+  // tableau s'empile sous 700 px.
+  lblB: "audit technique",
   rows: [
     ["Propriété du code et chaîne des droits", "Qualité du code"],
     ["Licences open source et composants tiers", "Dette technique"],
@@ -171,17 +174,21 @@ export const LIVRABLES = [
   "Un plan de remédiation, pré-closing ou post-closing",
 ];
 
-/** Matrice des risques — même dossier fictif que la bascule ; mention affichée. */
+/** Matrice des risques — même dossier fictif que la bascule ; mention affichée.
+ *  `ton` partage l'échelle b/h/m/l de la bascule ; `lblTraitement` est injecté
+ *  (attr(data-lbl)) au-dessus de la dernière cellule quand le tableau s'empile
+ *  sous 700 px. */
 export const MATRICE = {
   titre: "Matrice des risques technologiques — même dossier",
   mention: "exemple illustratif · société fictive",
+  lblTraitement: "traitement retenu",
   lignes: [
     {
       n: "01",
       constat:
         "Module de reporting reposant sur une bibliothèque sous licence à réciprocité forte, incompatible avec la distribution propriétaire envisagée",
       gravite: "bloquant",
-      ton: "hi" as const,
+      ton: "b" as const,
       traitement: "Réécriture du module ou licence commerciale, en condition suspensive",
     },
     {
@@ -189,7 +196,7 @@ export const MATRICE = {
       constat:
         "Trois prestataires ayant contribué au cœur du produit entre 2019 et 2021 sans stipulation de cession de droits",
       gravite: "élevé",
-      ton: "hi" as const,
+      ton: "h" as const,
       traitement: "Régularisation avant closing ; à défaut, retenue de prix et garantie spécifique",
     },
     {
@@ -197,7 +204,7 @@ export const MATRICE = {
       constat:
         "Clause de changement de contrôle à consentement préalable dans quatre contrats clients représentant 31 % des revenus récurrents",
       gravite: "élevé",
-      ton: "hi" as const,
+      ton: "h" as const,
       traitement: "Obtention des consentements en condition suspensive ; ajustement de prix à défaut",
     },
     {
@@ -205,14 +212,14 @@ export const MATRICE = {
       constat:
         "Origine et base légale d'une partie des données d'entraînement du modèle non documentées",
       gravite: "moyen",
-      ton: "md" as const,
+      ton: "m" as const,
       traitement: "Déclaration et garantie autonome, plafond et durée dédiés",
     },
     {
       n: "05",
       constat: "Absence de contrat de sous-traitance avec l'hébergeur secondaire",
       gravite: "faible",
-      ton: "lo" as const,
+      ton: "l" as const,
       traitement: "Régularisation post-closing, plan de remédiation à J+90",
     },
   ],
