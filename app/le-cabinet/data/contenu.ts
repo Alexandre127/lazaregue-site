@@ -43,8 +43,10 @@ export const DOSSIERS: {
     titre: "Fraude numérique et responsabilité bancaire",
     corps:
       "À la suite d'une série d'opérations orientées vers des plateformes d'actifs numériques, le cabinet a reconstitué le parcours des fonds et distingué les opérations autorisées des anomalies susceptibles d'engager la responsabilité des prestataires de services de paiement.",
-    // Provisoire : à rebrancher vers /nos-domaines/avocat-escroquerie-fraude à la fusion.
-    lien: { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et fraudes" },
+    lien: {
+      href: "/nos-domaines/avocat-escroquerie-fraude",
+      label: "Escroquerie et fraude",
+    },
   },
   {
     eyebrow: "Contenus en ligne",
@@ -191,10 +193,9 @@ export const ENGAGEMENTS: { titre: string; corps: string }[] = [
 ];
 
 /*
- * DOMAINES — « Entrer par votre situation ». SEPT entrées : la maquette en
- * comptait huit, « Escroquerie et fraude » a été retirée (page non fusionnée),
- * pour rester aligné sur le pied de page global et le menu. À rétablir à la
- * fusion — docs/bascule-domaine-vercel.md.
+ * DOMAINES — « Entrer par votre situation ». HUIT entrées, alignées sur le menu
+ * et le pied de page global (« Escroquerie et fraude » désormais fusionnée dans
+ * main : sa route existe, le lien est rétabli).
  */
 export const DOMAINES: { href: string; label: string }[] = [
   { href: "/nos-domaines/contrats-informatiques", label: "Contentieux informatique et projets IT" },
@@ -202,6 +203,7 @@ export const DOMAINES: { href: string; label: string }[] = [
   { href: "/nos-domaines/rgpd-donnees", label: "RGPD et protection des données" },
   { href: "/nos-domaines/ia-act", label: "Intelligence artificielle et AI Act" },
   { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et atteintes aux systèmes" },
+  { href: "/nos-domaines/avocat-escroquerie-fraude", label: "Escroquerie et fraude" },
   { href: "/nos-domaines/diffamation-retrait-de-contenus", label: "Diffamation et retrait de contenus" },
   { href: "/competences/ma-tech", label: "M&A tech et due diligence" },
 ];

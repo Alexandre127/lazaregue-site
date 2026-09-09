@@ -121,31 +121,11 @@ Le tag **`prod-avant-fusion-seo`** (commit `4055fed`) marque l'état de
 production **avant** la mise en ligne du site retravaillé. Pour revenir en
 arrière : redéployer ce tag / réinitialiser `main` dessus.
 
-## À rebrancher quand la branche `avocat-escroquerie-fraude` sera fusionnée
+## Historique — page Escroquerie et fraude (rebranchée)
 
-La page **Escroquerie et fraude** (`/nos-domaines/avocat-escroquerie-fraude`)
-vit sur une branche non encore fusionnée. Tant qu'elle n'est pas dans `main`,
-**aucun lien ne doit pointer vers cette route** (sinon 404 au lancement). Elle a
-donc été volontairement **retirée du maillage**. Le jour de la fusion, rebrancher
-précisément ces points — vérifier chacun, ne pas s'en remettre à la mémoire :
-
-- **Grille des domaines + carte dossier, page `/le-cabinet`** — les deux listes
-  sont centralisées dans `app/le-cabinet/data/contenu.ts` (`DOMAINES` et
-  `DOSSIERS`). La grille est passée de 8 à **7 entrées** : réinsérer
-  « Escroquerie et fraude » → `/nos-domaines/avocat-escroquerie-fraude`
-  (6ᵉ position, entre Cybercriminalité et Diffamation, comme dans la maquette).
-  Et rebrancher le lien de la carte « Fraude numérique et responsabilité
-  bancaire », qui pointe **provisoirement vers `/nos-domaines/cybercriminalite`**.
-- **Menu principal** — `components/navbar-11.tsx`, tableau `DOMAINES_LINKS` :
-  y ajouter l'entrée escroquerie (et, le cas échéant, l'inclure dans
-  `DOMAINES_TOP5` du menu mobile).
-- **Pied de page** — `components/Footer.tsx`, colonne « Nos domaines » : y ajouter
-  le lien escroquerie pour rester cohérent avec le menu et la grille.
-- **Sitemap** — `app/sitemap.ts`, tableau `PAGES` : ajouter
-  `{ path: "/nos-domaines/avocat-escroquerie-fraude", priority: 0.9, frequence: "monthly" }`.
-- **Renvoi depuis Cybercriminalité** — `app/nos-domaines/cybercriminalite/CybercriminaliteClient.tsx`
-  (≈ l. 732) : le renvoi « Recours contre les banques » est aujourd'hui un `<span>`
-  inerte marqué « page à venir ». Le transformer en lien vers la page escroquerie.
-
-Vérification rapide après fusion : `grep -rn "avocat-escroquerie-fraude" app components`
-doit faire apparaître tous ces points (et non plus zéro occurrence).
+La page **Escroquerie et fraude** (`/nos-domaines/avocat-escroquerie-fraude`) a
+été **fusionnée dans `main`**. Son maillage est rebranché partout — menu, pied de
+page (8 domaines), sitemap, redirection 301 de l'ancienne route top-level, renvoi
+« Recours contre les banques » depuis Cybercriminalité, et, dans `/le-cabinet`,
+la grille des domaines (8 entrées) et la carte dossier « Fraude ». La note de
+suivi provisoire qui listait ces points n'a plus d'objet et a été retirée.
