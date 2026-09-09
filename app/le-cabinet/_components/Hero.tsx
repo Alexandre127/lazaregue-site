@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "../le-cabinet.module.css";
 import { FAITS } from "../data/contenu";
+import KeywordBadge from "@/components/keyword-badge";
 
 /**
  * Hero sur fond navy. Le H1 réel est discret (référencement) ; le slogan en
@@ -14,9 +15,11 @@ export default function Hero() {
         <div className={styles.heroGrid}>
           <div>
             <span className={`${styles.label} ${styles.labelLight}`}>Le cabinet</span>
-            <h1 className={styles.h1seo}>
-              Cabinet d&apos;avocats en droit du numérique à Paris
-            </h1>
+            <div className={styles.h1badge}>
+              <KeywordBadge>
+                Cabinet d&apos;avocats en droit du numérique à Paris
+              </KeywordBadge>
+            </div>
             <p className={styles.slogan}>
               Vous ne venez pas chercher une procédure.
               <br />

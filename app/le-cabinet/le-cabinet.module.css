@@ -117,12 +117,11 @@
   gap: 72px;
   align-items: end;
 }
-.h1seo {
-  font-weight: 400;
-  font-size: 17px;
-  letter-spacing: 0.04em;
-  color: var(--peri);
-  margin-bottom: 24px;
+/* Enveloppe du badge mot-clé (le <h1>, cf. components/keyword-badge) : assure
+   le retour à la ligne sous l'œil-de-bœuf et l'espacement avec le slogan. Le
+   badge porte lui-même son apparence (styles inline du composant). */
+.h1badge {
+  margin: 14px 0 30px;
 }
 .slogan {
   font-family: var(--ff-display);
