@@ -4,6 +4,24 @@
 > Objectif : comprendre pourquoi le site est en `noindex` aujourd'hui, et
 > ouvrir l'indexation **au bon moment, sur le bon domaine**, sans surprise.
 
+## ⚠️ Condition bloquante — contenu escroquerie à valider AVANT bascule
+
+La page **« Avocat escroquerie et fraude »** (`/nos-domaines/avocat-escroquerie-fraude`)
+est **déjà fusionnée dans `main`** : elle partira **au premier déploiement de
+production réussi**. Trois points de contenu ne sont **pas encore validés** et
+doivent l'être **avant** de faire passer le domaine `lazaregue-avocats.fr` sur
+Vercel (sans quoi ils seraient publiés en l'état) :
+
+1. **Descriptifs d'Amir Ben Majed et de Sarah Hinderer** — provisoires, à valider
+   par le cabinet.
+2. **Relecture des trois dossiers anonymisés** (`#dossiers`) au regard du **secret
+   professionnel** — ils sont tirés d'affaires en cours.
+3. **Mention du régime PSAN / MiCA** (section placement) — à confirmer sur le
+   texte en vigueur.
+
+Tant que ces trois points ne sont pas tranchés, **ne pas rattacher le domaine de
+production**. Le hero (passerelle + voile 72 %, accroche grise) est, lui, arbitré.
+
 ## État au moment où ce document est écrit (8 sept. 2026)
 
 - Le **nouveau site** (ce dépôt, Next.js) vit sur **Vercel**, servi à
