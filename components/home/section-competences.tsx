@@ -205,7 +205,7 @@ const cards: CompetenceCard[] = [
       "Anticiper, gérer et contenir les incidents cyber susceptibles d'interrompre l'activité et d'affecter durablement l'entreprise.",
     tags: [
       "CYBERSÉCURITÉ & NIS 2",
-      "CYBERCRIMINALITÉ & FRAUDES",
+      "CYBERCRIMINALITÉ & ATTEINTES AUX SYSTÈMES",
       "GESTION DE CRISE",
     ],
     tagColor: "rgba(26,71,255,.12)",

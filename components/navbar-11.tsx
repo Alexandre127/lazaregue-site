@@ -14,7 +14,8 @@ const DOMAINES_LINKS = [
   { label: "RGPD & Données", href: "/nos-domaines/rgpd-donnees" },
   { label: "Intelligence artificielle & AI Act", href: "/nos-domaines/ia-act" },
   { label: "Contrats IT & responsabilité", href: "/nos-domaines/contrats-informatiques" },
-  { label: "Cybercriminalité & fraudes", href: "/nos-domaines/cybercriminalite" },
+  { label: "Cybercriminalité & atteintes aux systèmes", href: "/nos-domaines/cybercriminalite" },
+  { label: "Escroquerie et fraude", href: "/nos-domaines/avocat-escroquerie-fraude" },
   {
     label: "Diffamation et retrait de contenus",
     href: "/nos-domaines/diffamation-retrait-de-contenus",
@@ -24,10 +25,10 @@ const DOMAINES_LINKS = [
   // qui n'existe pas. À remettre le jour où la page sera écrite.
 ];
 
-// Menu mobile — six premiers domaines, puis « Tous nos domaines ». (Six et non
-// cinq depuis la scission « Cybersécurité » / « NIS 2 et sous-traitance » : on
-// conserve ainsi tous les domaines déjà visibles sur mobile, plus la page fille.)
-const DOMAINES_TOP5 = DOMAINES_LINKS.slice(0, 6);
+// Menu mobile — sept premiers domaines, puis « Tous nos domaines ». (Sept
+// depuis l'ajout de « Escroquerie et fraude », rattachée au registre pénal aux
+// côtés de « Cybercriminalité & atteintes aux systèmes », pour la garder visible sur mobile.)
+const DOMAINES_TOP5 = DOMAINES_LINKS.slice(0, 7);
 
 const MOBILE_ENTRIES: {
   n: string;

@@ -23,6 +23,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/nos-domaines/ia-act", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/contrats-informatiques", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybercriminalite", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/avocat-escroquerie-fraude", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/diffamation-retrait-de-contenus", priority: 0.9, frequence: "monthly" },
   { path: "/competences/ma-tech", priority: 0.9, frequence: "monthly" },
 
