@@ -50,20 +50,16 @@
 .lede { font-size: 20px; line-height: 1.5; color: #3A3A55; max-width: 660px; }
 .navy .lede { color: #B9BDD6; }
 
-/* Bandeau éditorial pleine largeur (respiration entre le raisonnement sur le
-   consentement et l'architecture du recours). Hors .wrap : occupe toute la
-   largeur de la fenêtre. Hauteur fixe par palier → la place est réservée avant
-   le chargement, aucun décalage de mise en page. Angles droits, aucun voile. */
-.banner { position: relative; width: 100%; height: 420px; overflow: hidden; }
-.bannerImg { object-fit: cover; object-position: center; }
-@media (max-width: 700px) {
-  .banner { height: 280px; }
-  /* Décalage vers la gauche pour garder la silhouette dans le cadre resserré. */
-  .bannerImg { object-position: 30% center; }
-}
-
 /* héro */
-.hero { background: var(--navy); color: var(--ghost); padding: 96px 0 0; scroll-margin-top: 64px; }
+.hero { background: var(--navy); color: var(--ghost); padding: 96px 0 0; scroll-margin-top: 64px; position: relative; overflow: hidden; }
+/* Fond photo (la passerelle) en couverture + voile navy UNIFORME 72 % pour le
+   contraste du texte. Pas de dégradé, pas de plateau, pas de cadrage : image en
+   cover, object-position center. next/image fill est absolu ; le contenu (.wrap)
+   passe au-dessus par z-index. La hauteur du héros vient du contenu → aucun
+   décalage de mise en page. */
+.heroBg { object-fit: cover; object-position: center; z-index: 0; }
+.heroVeil { position: absolute; inset: 0; z-index: 1; background: #0A0F2E; opacity: 0.72; pointer-events: none; }
+.hero .wrap { position: relative; z-index: 2; }
 .hero h1 {
   font-family: "Bebas Neue", sans-serif; font-weight: 400;
   /* Aligné sur l'échelle commune des H1 de pages compétence
@@ -75,7 +71,12 @@
 }
 .claim {
   font-size: clamp(21px, 2.4vw, 28px); font-weight: 300; font-style: italic;
-  color: var(--peri); max-width: 620px; line-height: 1.35; margin-bottom: 22px;
+  /* Accroche sur l'image passerelle voilée à 72 % : gris clair #B9BDD6 (celui
+     du sous-titre) plutôt que le péri. Le péri, bleu mi-ton, tombait à ~3,05 de
+     contraste sur les fenêtres éclairées (échec AA corps, à la limite en grand
+     texte, échec sur mobile où l'accroche n'est plus « grand texte »). Le gris
+     tient ~8,8 partout. Décision arbitrée. */
+  color: #B9BDD6; max-width: 620px; line-height: 1.35; margin-bottom: 22px;
 }
 .sub { color: #B9BDD6; max-width: 620px; font-size: 18px; }
 .heroline { display: flex; gap: 0; margin-top: 56px; border-top: 1px solid rgba(255, 255, 255, .14); }

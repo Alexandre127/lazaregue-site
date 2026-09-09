@@ -70,6 +70,19 @@ export default function Page() {
       <div className={styles.page}>
         {/* ===== Héro ===== */}
         <div className={styles.hero}>
+          {/* Fond : la passerelle sur le périphérique de nuit (image unique de la
+              page). Couverture, object-position center, voile navy uniforme 72 %
+              par-dessus (.heroVeil) pour le contraste. priority (au-dessus de la
+              ligne de flottaison). Le texte reste inchangé, au-dessus (z-index). */}
+          <Image
+            className={styles.heroBg}
+            src="/images/escroquerie-passerelle.jpg"
+            alt="Une passante regarde la circulation nocturne depuis une passerelle, face aux tours d'un quartier d'affaires."
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className={styles.heroVeil} aria-hidden />
           <div className={styles.wrap}>
             <span className={styles.lbl}>victimes d'escroquerie · recours et récupération des fonds</span>
             <h1>Avocat<br />escroquerie<br />et fraude</h1>
@@ -139,20 +152,6 @@ export default function Page() {
             <p>C'est pourquoi la plainte, lorsqu'elle est déposée, n'est jamais l'unique action. Elle est conduite en parallèle du recours contre les établissements, pas avant lui, et surtout pas à sa place.</p>
           </div>
         </section>
-
-        {/* ===== Bandeau éditorial pleine largeur (respiration avant #qui-paie).
-             Hors .wrap : pleine largeur de la fenêtre. next/image en fill, la
-             hauteur fixe du conteneur réserve la place (aucun décalage). ===== */}
-        <div className={styles.banner}>
-          <Image
-            src="/images/escroquerie-passerelle.jpg"
-            alt="Une passante regarde la circulation nocturne depuis une passerelle, face aux tours d'un quartier d'affaires."
-            fill
-            sizes="100vw"
-            priority={false}
-            className={styles.bannerImg}
-          />
-        </div>
 
         {/* ===== Contre qui le recours peut être engagé ===== */}
         <section className={styles.navy} id="qui-paie">
