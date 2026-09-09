@@ -22,8 +22,8 @@ export default function Dossiers() {
             Trois affaires réelles, décrites sans nom ni chiffre : la situation de
             départ, la difficulté juridique et le travail accompli. Le cabinet
             intervient devant les juridictions civiles, commerciales et pénales,
-            devant les autorités administratives et devant les juridictions
-            administratives.
+            devant les autorités administratives indépendantes et devant les
+            juridictions administratives.
           </p>
         </div>
 
