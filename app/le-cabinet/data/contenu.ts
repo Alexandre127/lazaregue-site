@@ -115,12 +115,14 @@ export const EQUIPE: Intervenant[] = [
   },
   {
     slug: "nadia",
-    // Intitulé de lib/equipe : « Experte indépendante — docteure en IA ».
-    eyebrow: "Experte indépendante · docteure en IA",
+    // Sur cette page, l'intitulé « expert » est retenu (addendum au brief) : la
+    // convention de lib/equipe est écartée ICI. Le titre universitaire est un
+    // élément vérifiable, signal fort de la fiche.
+    eyebrow: "Experte en intelligence artificielle",
     accentEyebrow: true,
     tech: true,
     nom: "Nadia Abchiche-Mimouni",
-    bio: "Docteure en intelligence artificielle et maître de conférences à l'université Côte d'Azur, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
+    bio: "Docteure en intelligence artificielle et maître de conférences à Nice Sophia Antipolis, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
     meta: [
       { dt: "Intervient en", dd: "Dossiers IA et AI Act · qualification de systèmes · expertises" },
       { dt: "Modalités", dd: "Mobilisée selon les besoins du dossier" },
@@ -134,9 +136,9 @@ export const EQUIPE: Intervenant[] = [
   },
   {
     slug: "khalid",
-    // Intitulé de lib/equipe : « Notre consultant technique — cybersécurité ».
-    // « expert » est volontairement évité (confusion avec l'expert judiciaire).
-    eyebrow: "Consultant technique · cybersécurité",
+    // « Expert » retenu ICI (addendum) ; la ligne de statut « N'exerce pas la
+    // profession d'avocat » lève la confusion avec l'expert judiciaire.
+    eyebrow: "Expert en cybersécurité",
     accentEyebrow: true,
     tech: true,
     nom: "Khalid Sookia",

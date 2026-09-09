@@ -27,8 +27,8 @@ export default function Hero() {
               risque juridique d&apos;origine numérique : projet informatique qui
               dérape, incident de sécurité, contrôle d&apos;une autorité, fraude,
               litige de plateforme, opération sur actifs technologiques. Le cabinet
-              réunit des avocats et des intervenants techniques indépendants, à
-              Paris et dans toute la France.
+              réunit des avocats et des experts techniques, à Paris et dans toute
+              la France.
             </p>
             <div className={styles.heroActions}>
               <Link className={styles.btn} href="/contact">

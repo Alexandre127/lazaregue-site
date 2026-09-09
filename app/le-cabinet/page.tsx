@@ -7,7 +7,11 @@ import Equipe from "./_components/Equipe";
 import Engagements from "./_components/Engagements";
 import Domaines from "./_components/Domaines";
 import Portail from "./_components/Portail";
-import Contributions from "./_components/Contributions";
+// La section « Contributions » est retirée du rendu tant que le contenu réel
+// (publications, ouvrage, interventions, associations) n'est pas fourni : on
+// n'affiche pas de cartes « à renseigner » en production (addendum au brief).
+// Le composant, ses données et ses styles sont conservés pour réactivation.
+// import Contributions from "./_components/Contributions";
 import CtaFinal from "./_components/CtaFinal";
 
 const TITLE = "Cabinet d'avocats en droit du numérique à Paris | Lazarègue";
@@ -124,7 +128,7 @@ export default function Page() {
       <Engagements />
       <Domaines />
       <Portail />
-      <Contributions />
+      {/* <Contributions /> — masquée jusqu'à réception du contenu réel (addendum). */}
       <CtaFinal />
     </main>
   );
