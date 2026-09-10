@@ -48,16 +48,22 @@
 /* ---------- navigation desktop ---------- */
 .nav {
   display: flex;
+  align-self: stretch;
 }
 .navList {
   display: flex;
-  align-items: center;
+  /* Les entrées occupent TOUTE la hauteur de la barre : le <li> DOMAINES
+     (conteneur du survol) devient ainsi contigu au panneau posé juste en
+     dessous — aucun pixel non survolé entre le libellé et le panneau. */
+  align-items: stretch;
   gap: 26px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .navItem {
+  /* Volontairement NON positionné : le panneau (absolu) doit se caler sur le
+     header (pleine largeur), pas sur le <li>. */
   display: flex;
   align-items: center;
 }
@@ -146,10 +152,13 @@
 
 /* ---------- panneau DOMAINES ---------- */
 .panel {
+  /* Rendu dans le <li> mais calé sur le header (ancêtre positionné le plus
+     proche) : pleine largeur, juste sous la barre. */
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
+  z-index: 1;
   background: #0a0f2e;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 22px 44px rgba(0, 0, 0, 0.42);

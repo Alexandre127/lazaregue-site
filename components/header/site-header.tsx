@@ -77,6 +77,9 @@ export function SiteHeader() {
 
   const [sticky, setSticky] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  // Ouvert au CLIC (« épinglé ») : dans ce cas le survol ne le referme pas ;
+  // seuls un clic extérieur ou Échap le ferment.
+  const [openedByClick, setOpenedByClick] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showBottomBar, setShowBottomBar] = useState(false);
 
@@ -138,7 +141,9 @@ export function SiteHeader() {
   }, [mobileOpen]);
 
   const closePanel = useCallback((focusTrigger = false) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
     setPanelOpen(false);
+    setOpenedByClick(false);
     if (focusTrigger) triggerRef.current?.focus();
   }, []);
 
@@ -153,28 +158,43 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [panelOpen, mobileOpen, closePanel]);
 
-  /* ---- Clic extérieur : ferme le panneau ---- */
+  /* ---- Clic extérieur : ferme le panneau (y compris s'il est épinglé) ---- */
   useEffect(() => {
     if (!panelOpen) return;
     const onClick = (e: MouseEvent) => {
       if (navItemRef.current && !navItemRef.current.contains(e.target as Node)) {
+        if (closeTimer.current) window.clearTimeout(closeTimer.current);
         setPanelOpen(false);
+        setOpenedByClick(false);
       }
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [panelOpen]);
 
-  /* ---- Survol : ouvre le panneau (avec petit délai à la sortie) ---- */
+  /* ---- Survol du conteneur (entrée + panneau) ----
+     Le conteneur est le <li> qui enveloppe le libellé, le chevron ET le panneau
+     (le panneau est rendu à l'intérieur). Descendre du libellé vers le panneau
+     ne quitte donc pas le conteneur. Délai de fermeture (~180 ms) annulé si la
+     souris revient, pour tolérer une trajectoire diagonale. Un panneau ouvert au
+     clic (épinglé) ne se ferme pas au survol. */
   const openOnHover = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     setPanelOpen(true);
   };
   const closeOnHover = () => {
-    closeTimer.current = window.setTimeout(() => setPanelOpen(false), 120);
+    if (openedByClick) return;
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setPanelOpen(false), 180);
   };
-
-  const domainesEntry = NAV_ENTRIES.find((e) => e.type === "panel");
+  /* Clic sur le chevron : bascule, indépendamment du survol. Ouvrir épingle
+     (le survol ne le fermera plus) ; refermer désépingle. */
+  const toggleByClick = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    const next = !panelOpen;
+    setPanelOpen(next);
+    setOpenedByClick(next);
+  };
 
   return (
     <>
@@ -214,7 +234,7 @@ export function SiteHeader() {
                             ? "Fermer le panneau des domaines"
                             : "Ouvrir le panneau des domaines"
                         }
-                        onClick={() => setPanelOpen((o) => !o)}
+                        onClick={toggleByClick}
                       >
                         <svg
                           viewBox="0 0 12 8"
@@ -233,6 +253,11 @@ export function SiteHeader() {
                           />
                         </svg>
                       </button>
+                      {/* Panneau rendu À L'INTÉRIEUR du conteneur (le <li>), pour
+                          que descendre du libellé au panneau ne quitte pas la
+                          zone de survol. Positionné en pleine largeur sous la
+                          barre (position absolue relative au header). */}
+                      <DomainesPanel id={panelId} open={panelOpen} />
                     </li>
                   );
                 }
@@ -273,9 +298,6 @@ export function SiteHeader() {
             <span />
           </button>
         </div>
-
-        {/* Panneau DOMAINES — toujours dans le DOM (SSR), masqué en CSS. */}
-        {domainesEntry ? <DomainesPanel id={panelId} open={panelOpen} /> : null}
       </header>
 
       {/* --- Tiroir mobile plein écran --- */}
