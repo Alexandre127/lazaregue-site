@@ -117,15 +117,14 @@
   color: #fff;
   padding: 84px 0 0;
 }
-/* Sous le slogan pleine largeur : paragraphe de positionnement à gauche, grille
-   de faits à droite. La grille de faits est à droite du PARAGRAPHE, pas du
-   slogan (le slogan est sorti de la grille pour occuper toute la largeur). */
+/* Construction des hero de domaine : colonne gauche (œil-de-bœuf, badge, slogan,
+   paragraphe, boutons) sur ~la moitié, grille de faits en colonne droite — à la
+   place de l'image des pages de domaine. */
 .heroGrid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 72px;
   align-items: start;
-  margin-top: 44px;
 }
 /* Enveloppe du badge mot-clé (le <h1>, cf. components/keyword-badge) : assure
    le retour à la ligne sous l'œil-de-bœuf et l'espacement avec le slogan. Le
@@ -136,8 +135,11 @@
 .slogan {
   font-family: var(--ff-display);
   text-transform: uppercase;
-  font-size: clamp(38px, 4.2vw, 68px);
+  /* Échelle des titres de pages de domaine (TYPE.h1 : clamp(32px,5.5vw,60px)),
+     pas une valeur propre à cette page. Interligne serré du slogan. */
+  font-size: clamp(32px, 5.5vw, 60px);
   line-height: 0.9;
+  margin-bottom: 24px;
   color: #fff;
 }
 .slogan em {

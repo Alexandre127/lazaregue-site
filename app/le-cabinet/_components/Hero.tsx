@@ -4,30 +4,29 @@ import { FAITS } from "../data/contenu";
 import KeywordBadge from "@/components/keyword-badge";
 
 /**
- * Hero sur fond navy. Le H1 est un badge mot-clé (cf. KeywordBadge) ; le slogan
- * en Bebas est le titre visuel, dans un `<p>` pour ne pas multiplier les titres.
- *
- * Le slogan occupe toute la largeur du conteneur (hors grille) pour tenir en
- * trois-quatre lignes ; la grille de faits reste à droite du paragraphe de
- * positionnement, pas du slogan.
+ * Hero sur fond navy, même construction que les hero de pages de domaine :
+ * colonne gauche (œil-de-bœuf, badge mot-clé = <h1>, slogan Bebas, paragraphe,
+ * boutons) sur environ la moitié de la largeur, grille de faits en colonne
+ * droite — à la place où les pages de domaine mettent leur image. Le slogan
+ * reprend l'échelle de titre des pages de domaine (clamp(32px, 5.5vw, 60px)).
  */
 export default function Hero() {
   return (
     <div className={styles.hero}>
       <div className={styles.wrap}>
-        <span className={`${styles.label} ${styles.labelLight}`}>Le cabinet</span>
-        <div className={styles.h1badge}>
-          <KeywordBadge>
-            Cabinet d&apos;avocats en droit du numérique à Paris
-          </KeywordBadge>
-        </div>
-        <p className={styles.slogan}>
-          Vous ne venez pas chercher une procédure.
-          <br />
-          <em>Vous venez chercher une issue.</em>
-        </p>
         <div className={styles.heroGrid}>
           <div>
+            <span className={`${styles.label} ${styles.labelLight}`}>Le cabinet</span>
+            <div className={styles.h1badge}>
+              <KeywordBadge>
+                Cabinet d&apos;avocats en droit du numérique à Paris
+              </KeywordBadge>
+            </div>
+            <p className={styles.slogan}>
+              Vous ne venez pas chercher une procédure.
+              <br />
+              <em>Vous venez chercher une issue.</em>
+            </p>
             <p className={styles.heroCopy}>
               Lazarègue Avocats intervient auprès des entreprises confrontées à un
               risque juridique d&apos;origine numérique : projet informatique qui
