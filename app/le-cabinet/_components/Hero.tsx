@@ -1,70 +1,67 @@
+import Link from "next/link";
 import styles from "../le-cabinet.module.css";
-import { AVIS } from "@/lib/avis";
-import { CONTACT_HREF } from "../data/liens";
-import { CtaTransition } from "./MethodTransition";
-import Reveal from "./Reveal";
+import { FAITS } from "../data/contenu";
+import KeywordBadge from "@/components/keyword-badge";
 
 /**
- * Chaque chiffre doit rester exact dans la durée.
- *  · « 10+ ans » visait l'expérience du fondateur, pas l'âge du cabinet créé
- *    en 2016 : la mention devenait ambiguë et fragile. Remplacée par la note
- *    Google, vérifiable et adossée à une source publique.
- *  · Le suivi en ligne est précisé : il démarre à l'ouverture du dossier,
- *    faute de quoi l'engagement serait pris en défaut dès la prise de contact.
+ * Hero sur fond navy, même construction que les hero de pages de domaine :
+ * colonne gauche (œil-de-bœuf, badge mot-clé = <h1>, slogan Bebas, paragraphe,
+ * boutons) sur environ la moitié de la largeur, grille de faits en colonne
+ * droite — à la place où les pages de domaine mettent leur image. Le slogan
+ * reprend l'échelle de titre des pages de domaine (clamp(32px, 5.5vw, 60px)).
  */
-const STATS = [
-  { v: "2016", l: "création du cabinet" },
-  { v: `${AVIS.note}/5`, l: `note google · ${AVIS.nombre} avis` },
-  { v: "24H", l: "accusé de réception" },
-  { v: "TOUS", l: "les dossiers suivis en ligne dès leur ouverture" },
-];
-
 export default function Hero() {
   return (
-    <header className={styles.hero} data-dark>
+    <div className={styles.hero}>
       <div className={styles.wrap}>
-        <div className={styles.hgrid}>
-          <Reveal className={styles.reveal} inClassName={styles.in}>
-            <div className={styles.slabel}>le cabinet</div>
-            <h1>
-              Vous ne venez pas chercher
-              <br />
-              une procédure.
-              <br />
-              <span>Vous venez chercher une issue.</span>
-            </h1>
-          </Reveal>
-
-          <Reveal className={styles.reveal} inClassName={styles.in}>
-            <p className={styles.sub}>
-              Cabinet de droit du numérique pour les PME et les ETI technologiques — avocats
-              et experts techniques réunis.
-            </p>
-            <p className={styles.lede}>
-              Cabinet d&apos;avocats en nouvelles technologies : contentieux, conformité,
-              contrats et gestion de crise. Sortir d&apos;une difficulté, sécuriser une
-              décision ou reprendre le contrôle — avec, à chaque étape, la visibilité sur ce
-              qui est fait et sur ce que cela coûte.
-            </p>
-            <div className={styles.hstats}>
-              {STATS.map((s) => (
-                <div key={s.l} className={styles.stat}>
-                  <div className={styles.v}>{s.v}</div>
-                  <div className={styles.l}>{s.l}</div>
-                </div>
-              ))}
+        <div className={styles.heroGrid}>
+          <div>
+            <span className={`${styles.label} ${styles.labelLight}`}>Le cabinet</span>
+            <div className={styles.h1badge}>
+              <KeywordBadge as="h1">
+                Cabinet d&apos;avocats en droit du numérique à Paris
+              </KeywordBadge>
             </div>
-            <div className={styles.hcta}>
-              <CtaTransition href={CONTACT_HREF} className={`${styles.btn} ${styles.btnP}`}>
-                Parler de votre dossier <span className={styles.ar}>→</span>
-              </CtaTransition>
-              <a href="#equipe" className={`${styles.btn} ${styles.btnGo}`}>
-                L&apos;équipe <span className={styles.ar}>→</span>
-              </a>
+            <p className={styles.slogan}>
+              Vous ne venez pas chercher une procédure.
+              <br />
+              <em>Vous venez chercher une issue.</em>
+            </p>
+            <p className={styles.heroCopy}>
+              Lazarègue Avocats intervient auprès des entreprises confrontées à un
+              risque juridique d&apos;origine numérique : projet informatique qui
+              dérape, incident de sécurité, contrôle d&apos;une autorité, fraude,
+              litige de plateforme, opération sur actifs technologiques. Le cabinet
+              réunit des avocats et des experts techniques, à Paris et dans toute
+              la France.
+            </p>
+            <div className={styles.heroActions}>
+              <Link className={styles.btn} href="/contact">
+                Parler de votre dossier
+              </Link>
+              <Link className={`${styles.btn} ${styles.btnGhost}`} href="#equipe">
+                L&apos;équipe
+              </Link>
             </div>
-          </Reveal>
+          </div>
+          <div className={styles.facts}>
+            {FAITS.map((f) => (
+              <div className={styles.fact} key={f.chiffre}>
+                <b>{f.chiffre}</b>
+                <span>{f.libelle}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={styles.heroRule}>
+          <span className={`${styles.label} ${styles.labelLight}`}>
+            Contentieux · conformité · contrats · gestion de crise
+          </span>
+          <span className={`${styles.label} ${styles.labelLight}`}>
+            Paris · toute la France
+          </span>
         </div>
       </div>
-    </header>
+    </div>
   );
 }

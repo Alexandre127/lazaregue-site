@@ -1,23 +1,24 @@
+import Link from "next/link";
 import styles from "../le-cabinet.module.css";
-import { CONTACT_HREF } from "../data/liens";
-import { CtaTransition } from "./MethodTransition";
 
+/**
+ * Section 8 — appel à l'action final, sur fond bleu de marque.
+ */
 export default function CtaFinal() {
   return (
-    <section id="contact" className={styles.closing} data-dark>
+    <div className={styles.cta}>
       <div className={styles.wrap}>
-        <div>
-          <div className={styles.k}>réponse sous 1 jour ouvré</div>
-          <h2>
-            Exposez-nous
-            <br />
-            <span>votre dossier.</span>
-          </h2>
-        </div>
-        <CtaTransition href={CONTACT_HREF} className={`${styles.btn} ${styles.btnP}`}>
-          Prendre rendez-vous <span className={styles.ar}>→</span>
-        </CtaTransition>
+        <span className={styles.label}>Prise de contact</span>
+        <h2 className={styles.ctaTitle}>Exposez-nous votre dossier.</h2>
+        <p className={styles.ctaCopy}>
+          Vous ne traiterez peut-être qu&apos;un seul dossier comme celui-ci dans
+          votre vie. Nous en traitons chaque semaine — et nous n&apos;oublions pas
+          la différence.
+        </p>
+        <Link className={styles.btn} href="/contact">
+          Prendre rendez-vous
+        </Link>
       </div>
-    </section>
+    </div>
   );
 }

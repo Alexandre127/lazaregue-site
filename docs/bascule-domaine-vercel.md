@@ -120,3 +120,12 @@ sitemap et demander l'indexation des pages prioritaires.
 Le tag **`prod-avant-fusion-seo`** (commit `4055fed`) marque l'état de
 production **avant** la mise en ligne du site retravaillé. Pour revenir en
 arrière : redéployer ce tag / réinitialiser `main` dessus.
+
+## Historique — page Escroquerie et fraude (rebranchée)
+
+La page **Escroquerie et fraude** (`/nos-domaines/avocat-escroquerie-fraude`) a
+été **fusionnée dans `main`**. Son maillage est rebranché partout — menu, pied de
+page (8 domaines), sitemap, redirection 301 de l'ancienne route top-level, renvoi
+« Recours contre les banques » depuis Cybercriminalité, et, dans `/le-cabinet`,
+la grille des domaines (8 entrées) et la carte dossier « Fraude ». La note de
+suivi provisoire qui listait ces points n'a plus d'objet et a été retirée.
