@@ -380,10 +380,11 @@ export default function IaActClient() {
           background: LIGHT.bg,
           color: LIGHT.text,
           fontFamily: "var(--ff-body)",
-          // La barre de navigation du site est fixe (`.laz-nav`, 54px, opaque,
-          // z-index 100). Sans décalage, la pastille du héro passe dessous. On
-          // compense la hauteur du bandeau, comme la page cybersécurité.
-          paddingTop: 54,
+          // Le header global (SiteHeader) est en position absolue et transparent
+          // sur les heros sombres : le héro passe DESSOUS, comme les autres pages
+          // /nos-domaines. Pas de décalage ici — un paddingTop laisserait
+          // apparaître le fond clair du <main> sous le header (bande blanche). Le
+          // dégagement des 72px du header est géré dans le héro (.iaact-hero-text).
         } as CSSProperties
       }
     >
@@ -397,7 +398,7 @@ export default function IaActClient() {
           .iaact-hero-img { object-position: center top; }
           .iaact-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,20,0.86) 0%, rgba(8,10,20,0.78) 55%, rgba(8,10,20,0.66) 100%); }
           .iaact-hero-fade { display: none; }
-          .iaact-hero-text { position: relative; z-index: 1; padding: 40px 24px 44px; min-height: 360px; }
+          .iaact-hero-text { position: relative; z-index: 1; padding: 88px 24px 44px; min-height: 360px; }
           @media (min-width: 1024px) {
             .iaact-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
             .iaact-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 460px; z-index: auto; }
@@ -456,10 +457,10 @@ export default function IaActClient() {
               Une IA mal documentée devient un risque de responsabilité.
             </p>
             <p style={{ ...TYPE.body, maxWidth: 520, color: DARK.muted, marginBottom: 16 }}>
-              Le cabinet accompagne les PME et ETI qui utilisent, intègrent ou
+              Le cabinet accompagne les entreprises qui utilisent, intègrent ou
               développent des systèmes d&apos;intelligence artificielle. Nous
-              produisons une qualification, une documentation et, le jour du
-              contrôle, une défense.
+              produisons une qualification, une documentation et, le jour où
+              elle est discutée, une défense.
             </p>
 
             <div className="mb-4 flex flex-wrap gap-2">
@@ -480,15 +481,17 @@ export default function IaActClient() {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Un seul bouton principal (prompt 2.2) ; l'ancien second bouton
+                devient un lien texte discret placé SOUS le bouton. */}
+            <div className="flex flex-col" style={{ gap: 12, alignItems: "flex-start" }}>
               <Link
                 href="/contact"
                 style={{
                   background: BLUE,
                   color: DARK.text,
-                  padding: "0 18px",
+                  padding: "0 20px",
                   minHeight: 48,
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: 4,
@@ -497,26 +500,24 @@ export default function IaActClient() {
                   letterSpacing: ".04em",
                 }}
               >
-                Faire qualifier un système →
+                Faire le point sur vos systèmes d&apos;IA →
               </Link>
+              {/* Lien texte discret : DM Mono, Muted, flèche descendante, ancre
+                  #ce-que-les-juges. Pas de fond, pas de bordure. */}
               <Link
                 href="#ce-que-les-juges"
                 style={{
-                  background: "rgba(8,10,20,0.35)",
-                  color: DARK.text,
-                  border: `1px solid ${DARK.borderBlue}`,
-                  padding: "0 18px",
-                  minHeight: 48,
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 4,
+                  gap: 6,
+                  color: DARK.muted,
+                  fontFamily: "var(--ff-mono)",
+                  fontSize: 11,
+                  letterSpacing: ".06em",
                   textDecoration: "none",
-                  fontSize: 12,
-                  letterSpacing: ".04em",
                 }}
               >
-                Ce que les juges exigent déjà
+                Ce que les juges exigent déjà ↓
               </Link>
             </div>
           </div>
@@ -528,10 +529,10 @@ export default function IaActClient() {
         <div style={INNER}>
           <Eyebrow>En un mot</Eyebrow>
           <p style={{ fontSize: 16, lineHeight: 1.6, color: "#fff", margin: 0, maxWidth: 720 }}>
-            Le régime a été réécrit à près de trente pour cent en juillet 2026.
-            Certaines dates ont reculé, d&apos;autres non, et deux interdictions
-            sont apparues. Ce qui vous concerne dépend désormais autant de la date
-            de mise sur le marché de votre système que de sa nature.
+            Le régime a été modifié en juillet 2026. Certaines dates ont reculé,
+            d&apos;autres non, et deux interdictions sont apparues. Ce qui vous
+            concerne dépend désormais autant de la date de mise sur le marché de
+            votre système que de sa nature.
           </p>
         </div>
       </section>
@@ -544,34 +545,68 @@ export default function IaActClient() {
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>La démonstration</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Le même outil, deux régimes différents</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Le même outil, deux rôles</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Rien n&apos;a changé dans la loi. Tout a changé dans le régime applicable.
+            Rien n&apos;a changé dans l&apos;outil. Tout a changé dans le régime applicable.
           </p>
 
+          {/* Bandeau des rôles — trois colonnes courtes, intitulés en DM Mono. */}
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, marginBottom: GRID_GAP }}>
+            {[
+              {
+                role: "Fournisseur",
+                carac: "Développe ou fait développer un système et le met sur le marché sous son nom ou sa marque",
+                implique: "Le régime le plus lourd : conception, documentation, évaluation de conformité, marquage, surveillance",
+              },
+              {
+                role: "Déployeur",
+                carac: "Utilise un système sous sa propre autorité, dans un cadre professionnel",
+                implique: "Le rôle de la très grande majorité des entreprises : usage conforme, contrôle humain, information des personnes",
+              },
+              {
+                role: "Importateur, distributeur, mandataire",
+                carac: "Met en circulation ou représente un opérateur établi hors de l'Union",
+                implique: "Contrôle documentaire, devoir d'alerte, point de contact des autorités",
+              },
+            ].map((r) => (
+              <div key={r.role} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
+                <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>{r.role}</span>
+                <p style={{ fontSize: 13, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.5 }}>{r.carac}</p>
+                <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "8px 0 0", lineHeight: 1.55 }}>{r.implique}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Deux volets datés (le rôle) + le volet « La question ». Mise en forme conservée. */}
           <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
             <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>2025</span>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>Déployeur</span>
               <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
-                Une entreprise déploie un outil de tri de candidatures.
+                L&apos;entreprise achète un outil de tri de candidatures.
               </p>
               <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Elle bénéficie aujourd&apos;hui d&apos;un régime allégé : la
-                documentation complète et l&apos;évaluation de conformité ne lui
-                sont pas encore exigées.
+                Elle l&apos;utilise tel quel, sous l&apos;autorité de son service
+                RH. Elle est déployeur. Ses obligations sont opérationnelles :
+                usage conforme à la notice, contrôle humain, information des
+                salariés et de leurs représentants.
               </p>
             </div>
             <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>2027</span>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>Fournisseur</span>
               <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
-                La même entreprise modifie le paramétrage de l&apos;outil.
+                La même entreprise branche un modèle généraliste sur sa
+                présélection de candidatures.
               </p>
               <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Le régime allégé tombe. Documentation, supervision, évaluation :
-                tout devient exigible.
+                Elle assigne à cet outil une destination qui relève de
+                l&apos;annexe III. Elle devient fournisseur d&apos;un système à
+                haut risque au sens de l&apos;article 25, et l&apos;éditeur du
+                modèle cesse de l&apos;être pour cet usage. Documentation
+                technique, évaluation de conformité, enregistrement : le régime
+                le plus lourd du texte s&apos;applique à elle.
               </p>
             </div>
-            {/* Temps 3 — la bascule, visuellement distinct des deux premiers. */}
+            {/* Volet « La question » — inchangé sur le fond, mise en forme conservée. */}
             <div style={{ background: "#FBF7E8", border: "1px solid #E7D4A6", borderLeft: "3px solid #8A5A00", borderRadius: 10, padding: CARD_PAD }}>
               <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: "#8A5A00" }}>La question</span>
               <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.5 }}>
@@ -580,17 +615,6 @@ export default function IaActClient() {
               </p>
             </div>
           </div>
-
-          <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 12 }}>
-            <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.6 }}>
-              Le bénéfice du délai dépend de choix quotidiens qu&apos;une
-              entreprise fait sans savoir qu&apos;ils comptent. Ces choix ne se
-              détectent pas dans un inventaire : ils se qualifient.
-            </p>
-          </div>
-          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
-            SPÉCIMEN · AUCUNE DONNÉE RÉELLE
-          </p>
         </div>
       </section>
 
@@ -606,57 +630,115 @@ export default function IaActClient() {
             8 juillet 2026, en vigueur depuis le 27 juillet.
           </p>
 
-          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
-            {[
-              { date: "Fév. 2025", statut: "EN VIGUEUR", ton: "vigueur", titre: "Pratiques interdites · maîtrise de l'IA", corps: "L'obligation de maîtrise de l'IA a été réécrite en juillet 2026 : elle passe d'une garantie à un soutien au développement de cette littératie. Sanctionnable depuis l'été 2026." },
-              { date: "Août 2025", statut: "EN VIGUEUR", ton: "vigueur", titre: "Modèles d'IA à usage général", corps: "Ces obligations pèsent sur les fournisseurs des modèles, non sur l'entreprise qui les utilise." },
-              { date: "Août 2026", statut: "EN VIGUEUR", ton: "vigueur", titre: "Transparence · gouvernance · sanctions", corps: "Application générale du règlement hors haut risque. Pouvoirs de contrôle et de sanction actifs." },
-              { date: "Déc. 2026", statut: "PROCHAINE", ton: "alerte", titre: "Contenus synthétiques · deux interdictions nouvelles", corps: "Marquage des contenus générés et divulgation des hypertrucages pour les systèmes mis sur le marché avant août 2026. Interdiction des contenus intimes non consentis et des contenus pédocriminels générés par IA." },
-              { date: "Déc. 2027", statut: "REPORTÉ · +17 MOIS", ton: "reporte", titre: "Haut risque — annexe III", corps: "Recrutement, gestion des travailleurs, éducation, scoring de crédit, tarification de l'assurance, accès aux services essentiels." },
-              // TODO (à traiter AVANT publication) : vérifier dans le texte
-              // CONSOLIDÉ du règlement (UE) 2026/1744 la formulation exacte
-              // « ceux relevant du règlement Machines sortent du champ de
-              // l'AI Act » — reformuler si le texte consolidé ne la porte pas.
-              { date: "Août 2028", statut: "REPORTÉ · +12 MOIS", ton: "reporte", titre: "Haut risque — annexe I", corps: "Systèmes intégrés à des produits réglementés. Ceux relevant du règlement Machines sortent du champ de l'AI Act." },
-            ].map((m, idx) => {
-              const badge =
-                m.ton === "vigueur"
-                  ? { color: "#0F5545", bg: "#E4F2ED" }
-                  : m.ton === "alerte"
-                    ? { color: "#8A5A00", bg: "#F5E6C8" }
-                    : { color: "#5F5E5A", bg: "#EAEAE7" };
-              return (
-                <div
-                  key={m.date}
-                  style={{
-                    padding: "13px 14px",
-                    borderTop: idx > 0 ? `0.5px solid ${LIGHT.border}` : "none",
-                    background: m.ton === "alerte" ? "#FBF7E8" : LIGHT.panel,
-                  }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted }}>{m.date}</span>
-                    <span
-                      style={{
-                        fontFamily: "var(--ff-mono)",
-                        fontSize: 9,
-                        letterSpacing: ".04em",
-                        color: badge.color,
-                        background: badge.bg,
-                        padding: "2px 7px",
-                        borderRadius: 3,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {m.statut}
-                    </span>
+          {/* Calendrier réécrit (prompt 2.6) : une ligne = une date, une
+              obligation, et qui est tenu. Deux blocs. Dates complètes. Les
+              anciens badges « REPORTÉ » sont remplacés par une mention discrète
+              « initialement … » en fin de ligne de date. */}
+          {(() => {
+            const rowStyle = (first: boolean) => ({
+              padding: "13px 14px",
+              borderTop: first ? "none" : `0.5px solid ${LIGHT.border}`,
+              background: LIGHT.panel,
+            });
+            const dateStyle = { fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted } as const;
+            const initStyle = { fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, whiteSpace: "nowrap" } as const;
+            const titreStyle = { fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" } as const;
+            const corpsStyle = { fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 } as const;
+            const blocLabel = { fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.text, margin: "0 0 8px" } as const;
+            return (
+              <>
+                {/* ---- Bloc 1 : ce qui s'applique aujourd'hui ---- */}
+                <p style={blocLabel}>Ce qui s&apos;applique aujourd&apos;hui</p>
+                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 20 }}>
+                  <div style={rowStyle(true)}>
+                    <span style={dateStyle}>Depuis le 2 février 2025</span>
+                    <p style={titreStyle}>Pratiques interdites</p>
+                    <p style={corpsStyle}>
+                      {"Certains usages sont interdits, quels que soient la taille de l'entreprise, son secteur et la date de mise en service du système. Notamment : les techniques subliminales ou délibérément manipulatrices, l'exploitation des vulnérabilités liées à l'âge, au handicap ou à la situation sociale, la notation sociale, la prédiction du risque criminel fondée sur le seul profilage, le moissonnage non ciblé d'images faciales, l'inférence des émotions sur le lieu de travail et dans l'enseignement hors raisons médicales ou de sécurité, et la catégorisation biométrique déduisant des caractéristiques sensibles. C'est le seul étage exposé au plafond de 35 M€ ou 7 % du chiffre d'affaires mondial."}
+                    </p>
                   </div>
-                  <p style={{ fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" }}>{m.titre}</p>
-                  <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 }}>{m.corps}</p>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 février 2025</span>
+                    <p style={titreStyle}>Formation des équipes</p>
+                    <p style={corpsStyle}>
+                      {"Toute entreprise qui utilise ou fournit un système d'IA doit assurer un niveau suffisant de compétence des personnes qui s'en servent. L'obligation vaut à tous les étages de risque, y compris pour les outils les plus anodins, et elle se démontre par un plan de formation daté. C'est l'obligation la moins coûteuse à satisfaire et la première qu'une autorité vérifie. Sanctionnable depuis l'été 2026."}
+                    </p>
+                    {/* À VÉRIFIER — AL : rédaction de l'art. 4 modifiée en juillet 2026 */}
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 août 2026</span>
+                    <p style={titreStyle}>Transparence</p>
+                    <p style={corpsStyle}>
+                      {"L'obligation n'est pas de s'abstenir, elle est de dire. Un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. C'est la date qui concerne le plus grand nombre d'entreprises."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 août 2026</span>
+                    <p style={titreStyle}>Gouvernance et sanctions</p>
+                    <p style={corpsStyle}>
+                      {"Le règlement s'applique de manière générale hors haut risque. Les autorités nationales disposent de leurs pouvoirs de contrôle et de sanction. Plafond de 15 M€ ou 3 % du chiffre d'affaires mondial pour les manquements des fournisseurs et des déployeurs."}
+                    </p>
+                    {/* À VÉRIFIER — AL : le livre blanc du cabinet situe l'entrée en application du régime de
+                        sanctions au 2 août 2025, la page au 2 août 2026. Une des deux dates est fausse. */}
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* ---- Bloc 2 : ce qui vient ---- */}
+                <p style={blocLabel}>Ce qui vient</p>
+                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
+                  <div style={rowStyle(true)}>
+                    <span style={dateStyle}>2 décembre 2026</span>
+                    <p style={titreStyle}>Marquage des contenus générés</p>
+                    <p style={corpsStyle}>
+                      {"Pour les générateurs de contenus déjà sur le marché avant août 2026, l'obligation de marquer les sorties dans un format lisible par machine est décalée à cette date. Elle pèse sur l'éditeur du système, non sur l'entreprise qui l'utilise. Les IA interactives et la production d'hypertrucages ne bénéficient pas de ce report."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>2 décembre 2026</span>
+                    <p style={titreStyle}>Deux interdictions nouvelles</p>
+                    <p style={corpsStyle}>
+                      {"Contenus intimes non consentis et contenus pédocriminels générés par IA."}
+                    </p>
+                    {/* À VÉRIFIER — AL */}
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+                      <span style={dateStyle}>2 décembre 2027</span>
+                      <span style={initStyle}>initialement 2 août 2026</span>
+                    </div>
+                    <p style={titreStyle}>Haut risque, annexe III</p>
+                    <p style={corpsStyle}>
+                      {"Sont visés le recrutement et la gestion des travailleurs, l'éducation, le scoring de crédit, la tarification en assurance-vie et santé, l'accès aux services essentiels. Ce qui devient exigible dépend du rôle :"}
+                    </p>
+                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
+                      <strong style={{ color: LIGHT.text }}>Fournisseur</strong>
+                      {" — gestion des risques, gouvernance des données et examen des biais, documentation technique, journalisation, notice d'utilisation, conception permettant le contrôle humain, évaluation de conformité, marquage CE, enregistrement dans la base européenne."}
+                    </p>
+                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
+                      <strong style={{ color: LIGHT.text }}>Déployeur</strong>
+                      {" — usage conforme à la notice, contrôle humain confié à des personnes ayant l'autorité de contredire le système, conservation des journaux, information des travailleurs et de leurs représentants avant la mise en service, information des personnes soumises à une décision. C'est le cas de la plupart des entreprises."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+                      <span style={dateStyle}>2 août 2028</span>
+                      <span style={initStyle}>initialement 2 août 2027</span>
+                    </div>
+                    <p style={titreStyle}>Haut risque, annexe I</p>
+                    <p style={corpsStyle}>
+                      {"Sont visés les systèmes d'IA qui sont un composant de sécurité d'un produit déjà soumis à une réglementation européenne d'harmonisation avec évaluation par un tiers. L'IA entre alors dans la logique du marquage produit. Les systèmes relevant du règlement Machines sortent du champ de l'AI Act."}
+                    </p>
+                    {/* À VÉRIFIER — AL : ajouter ou non des exemples de produits concernés */}
+                  </div>
+                </div>
+
+                {/* Note de bas de section, petit corps, sous la frise. */}
+                <p style={{ fontSize: 12, color: LIGHT.muted, lineHeight: 1.6, margin: "14px 0 0", maxWidth: 760 }}>
+                  {"Si vous utilisez ChatGPT, Copilot, Gemini ou un modèle équivalent, les obligations entrées en application en août 2025 ne sont pas les vôtres : documentation technique du modèle, politique de respect du droit d'auteur et résumé des contenus d'entraînement pèsent sur l'éditeur du modèle. Ce qui vous concerne est contractuel : ce sont ces documents dont vous aurez besoin pour démontrer votre propre conformité. Exigez-les."}
+                </p>
+              </>
+            );
+          })()}
 
           {/* Bandeau à la suite du calendrier */}
           <div style={{ background: DARK.bg, borderRadius: 10, padding: 16, marginTop: 12 }}>
@@ -684,7 +766,7 @@ export default function IaActClient() {
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq usages qui appellent une qualification</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq situations qui appellent une qualification</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
             Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
             et les documents à conserver. Entrer dans le champ du règlement
@@ -697,6 +779,7 @@ export default function IaActClient() {
               { usage: "Scoring, profilage ou aide à la décision", suite: "souvent annexe III, et croisement avec le RGPD" },
               { usage: "IA intégrée à un produit ou un service", suite: "annexe I si le produit relève d'une réglementation à marquage" },
               { usage: "Fournisseur ou API d'IA externe", suite: "la répartition des rôles se joue au contrat" },
+              { usage: "Inférence des émotions au travail", suite: "pratique interdite, sanctionnable depuis février 2025" },
             ].map((u, i) => (
               <div
                 key={u.usage}
@@ -709,6 +792,78 @@ export default function IaActClient() {
                 <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, marginTop: 2 }}>{u.suite}</div>
               </div>
             ))}
+          </div>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-block",
+              marginTop: 12,
+              fontFamily: "var(--ff-mono)",
+              fontSize: 12,
+              letterSpacing: ".04em",
+              color: LIGHT.muted,
+              textDecoration: "none",
+            }}
+          >
+            Un autre usage ? →
+          </Link>
+        </div>
+      </section>
+
+      {/* 5b. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
+          correspondante n'existe pas encore → bouton DÉSACTIVÉ, aucune URL
+          inventée, aucun formulaire. À ACTIVER quand la page « Le règlement sur
+          l'IA : qui doit faire quoi » existera dans Ressources : pointer vers la
+          PAGE (pas le PDF). Signalé à AL. */}
+      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+              background: LIGHT.bg,
+              border: `0.5px solid ${LIGHT.border}`,
+              borderRadius: 12,
+              padding: CARD_PAD,
+            }}
+          >
+            <div style={{ maxWidth: 620 }}>
+              <p style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.4 }}>
+                {"Livre blanc — « Le règlement sur l'IA : qui doit faire quoi »"}
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                {"Le partage des obligations entre fournisseur, déployeur et éditeur de modèle, étape par étape."}
+                <br />
+                {"Révision août 2026. Lecture libre, sans formulaire."}
+              </p>
+            </div>
+            {/* Bouton désactivé tant que la page Ressources n'existe pas. */}
+            <span
+              aria-disabled="true"
+              title="Page en préparation"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0 18px",
+                minHeight: 44,
+                borderRadius: 4,
+                border: `1px solid ${LIGHT.border}`,
+                background: "transparent",
+                color: LIGHT.muted,
+                fontFamily: "var(--ff-mono)",
+                fontSize: 12,
+                letterSpacing: ".04em",
+                opacity: 0.5,
+                cursor: "not-allowed",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Consulter le livre blanc
+            </span>
           </div>
         </div>
       </section>
@@ -757,13 +912,6 @@ export default function IaActClient() {
                 <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>{n.corps}</p>
               </article>
             ))}
-          </div>
-          <div style={{ background: DARK.bg, borderRadius: 10, padding: 14, marginTop: 14 }}>
-            <p style={{ fontSize: 13, color: DARK.muted, margin: 0, lineHeight: 1.6 }}>
-              Dix-sept mois de délai ne sont pas un répit : c&apos;est le temps de
-              faire l&apos;inventaire et la qualification qu&apos;aucune entreprise
-              n&apos;a encore faits.
-            </p>
           </div>
         </div>
       </section>
@@ -822,9 +970,9 @@ export default function IaActClient() {
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que vous recevez concrètement</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Extraits de nos livrables</h2>
           <p style={{ ...TYPE.label, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 16px" }}>
-            Extraits inspirés de dossiers réels, anonymisés et adaptés à des fins pédagogiques.
+            Extraits inspirés de dossiers réels.
           </p>
 
           <div className="mb-3 overflow-x-auto">
@@ -943,9 +1091,6 @@ export default function IaActClient() {
               ))}
             </div>
           </div>
-          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "11px 0 0", letterSpacing: ".04em" }}>
-            SPÉCIMENS · AUCUNE DONNÉE RÉELLE
-          </p>
         </div>
       </section>
 
@@ -964,7 +1109,10 @@ export default function IaActClient() {
           {/* Les décisions passent par le composant partagé, qui ne rend que
               celles dont verifiee vaut true. Les quatre entrées ont été validées
               par le cabinet (voir JURIS_IA en tête de fichier). */}
-          <Jurisprudence decisions={JURIS_IA} />
+          {/* Mention de prudence de bas de section retirée (prompt 2.9) :
+              note={null} la masque pour cette page uniquement, sans toucher au
+              rendu des autres pages qui utilisent le composant partagé. */}
+          <Jurisprudence decisions={JURIS_IA} note={null} />
         </div>
       </section>
 
@@ -1077,10 +1225,6 @@ export default function IaActClient() {
             ))}
           </div>
 
-          <p style={{ ...TYPE.secondary, margin: "14px 0 0", maxWidth: 760 }}>
-            Le cabinet ne délivre ni certification ni évaluation de conformité au
-            sens du règlement, laquelle relève d&apos;organismes notifiés.
-          </p>
         </div>
       </section>
 

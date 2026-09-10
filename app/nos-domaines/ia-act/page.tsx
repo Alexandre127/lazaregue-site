@@ -48,6 +48,34 @@ const JSON_LD = {
         acceptedAnswer: { "@type": "Answer", text: f.a },
       })),
     },
+    // Article + Organization (prompt 2.11). Pas de doublon : le @graph ne
+    // contient par ailleurs qu'un LegalService et une FAQPage.
+    {
+      "@type": "Article",
+      headline: "Mise en conformité AI Act et gouvernance IA",
+      description: DESCRIPTION,
+      inLanguage: "fr-FR",
+      // À VÉRIFIER — AL : datePublished provisoire (= dateModified, la date
+      // « à jour au » affichée sur la page). À caler sur la vraie date de
+      // première publication le jour de la mise en ligne.
+      datePublished: "2026-09-01",
+      dateModified: "2026-09-01",
+      author: { "@type": "Person", name: "Alexandre Lazarègue" },
+      publisher: { "@type": "Organization", name: "Lazarègue Avocats" },
+      mainEntityOfPage: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
+    },
+    {
+      "@type": "Organization",
+      name: "Lazarègue Avocats",
+      url: "https://lazaregue-avocats.fr",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "18 rue de Tilsitt",
+        postalCode: "75017",
+        addressLocality: "Paris",
+        addressCountry: "FR",
+      },
+    },
   ],
 };
 

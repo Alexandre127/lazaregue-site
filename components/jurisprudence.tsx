@@ -34,8 +34,8 @@ export function Jurisprudence({
   note = NOTE_DEFAUT,
 }: {
   decisions: Decision[];
-  /** Mention de prudence sous la liste. */
-  note?: string;
+  /** Mention de prudence sous la liste. `null` la masque (aucune mention). */
+  note?: string | null;
 }) {
   const rendues = decisions.filter((d) => d.verifiee);
   // Aucune décision vérifiée : ne rien rendre (ni liste, ni mention).
@@ -79,7 +79,7 @@ export function Jurisprudence({
           </details>
         ))}
       </div>
-      <p className="jur-note">{fr(note)}</p>
+      {note ? <p className="jur-note">{fr(note)}</p> : null}
     </>
   );
 }
