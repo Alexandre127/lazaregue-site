@@ -9,8 +9,8 @@
 
 export const HERO = {
   eyebrow: "lazarègue avocats — droit du numérique",
-  h1: "Avocat M&A Tech",
-  h1tail: "et due diligence",
+  h1: "Avocat M&A Tech :",
+  h1tail: "due diligence juridique des actifs technologiques",
   sub: "Audit des logiciels, données, contrats IT, systèmes d'IA et risques cyber lors d'une acquisition, d'une cession ou d'une prise de participation.",
   intro:
     "Lazarègue Avocats intervient comme avocat du volet technologique des opérations de fusion-acquisition, aux côtés des acquéreurs, cédants, fonds d'investissement et cabinets corporate : de l'audit d'acquisition à la rédaction des garanties technologiques du SPA et au plan de remédiation.",
