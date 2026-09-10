@@ -113,36 +113,6 @@ function Eyebrow({ children }: { children: ReactNode }) {
 
 const heroTags = ["AI Act", "RGPD", "Responsabilité", "Preuve", "Gouvernance"];
 
-const steps = [
-  {
-    n: "01",
-    title: "Cartographier — tout ce que vous utilisez vraiment",
-    text: "Systèmes internes, API tierces, modèles intégrés. Sans inventaire, vous ne savez pas ce que vous exposez.",
-    pill: "Priorité immédiate",
-  },
-  {
-    n: "02",
-    title: "Qualifier — interdits, haut risque, transparence",
-    text: "La qualification conditionne tout le régime. C'est la décision la plus structurante — et la plus souvent mal faite en interne.",
-  },
-  {
-    n: "03",
-    title: "Documenter — construire la preuve en amont",
-    text: "Gouvernance des données, supervision humaine, traçabilité des décisions. Les durées de conservation dépendent du système et du rôle tenu.",
-  },
-  {
-    n: "04",
-    title: "Gouverner — chartes, politiques, formation",
-    text: "Comité IA, référent conformité, articulation DPO, DUERP, information des salariés.",
-  },
-  {
-    n: "05",
-    title: "Défendre — contrôles, incidents, contentieux",
-    text: "La documentation de conformité est votre première ligne de défense. Nous la construisons pour qu'elle tienne.",
-    pill: "Notre terrain naturel",
-  },
-];
-
 function B({ children }: { children: ReactNode }) {
   return <strong style={{ fontStyle: "normal", fontWeight: 600, color: LIGHT.text }}>{children}</strong>;
 }
@@ -524,16 +494,51 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 2. EN UN MOT — bandeau de cadrage */}
-      <section style={{ background: DARK.panel, color: DARK.text, padding: SECTION_PAD }}>
+      {/* 5. SUIS-JE CONCERNÉ — six situations */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>En un mot</Eyebrow>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: "#fff", margin: 0, maxWidth: 720 }}>
-            Le régime a été modifié en juillet 2026. Certaines dates ont reculé,
-            d&apos;autres non, et deux interdictions sont apparues. Ce qui vous
-            concerne dépend désormais autant de la date de mise sur le marché de
-            votre système que de sa nature.
+          <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Six situations qui appellent une qualification</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
+            Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
+            et les documents à conserver. Entrer dans le champ du règlement
+            n&apos;emporte pas les obligations les plus lourdes.
           </p>
+          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
+            {[
+              { usage: "IA générative utilisée par vos salariés", suite: "transparence et maîtrise de l'IA, applicables aujourd'hui" },
+              { usage: "Outils RH ou de recrutement automatisés", suite: "relève de l'annexe III, la qualification la plus lourde" },
+              { usage: "Scoring, profilage ou aide à la décision", suite: "souvent annexe III, et croisement avec le RGPD" },
+              { usage: "IA intégrée à un produit ou un service", suite: "annexe I si le produit relève d'une réglementation à marquage" },
+              { usage: "Fournisseur ou API d'IA externe", suite: "la répartition des rôles se joue au contrat" },
+              { usage: "Inférence des émotions au travail", suite: "pratique interdite, sanctionnable depuis février 2025" },
+            ].map((u, i) => (
+              <div
+                key={u.usage}
+                style={{
+                  padding: "12px 14px",
+                  borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none",
+                }}
+              >
+                <div style={{ fontSize: 14, color: LIGHT.text, lineHeight: 1.4 }}>{u.usage}</div>
+                <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, marginTop: 2 }}>{u.suite}</div>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-block",
+              marginTop: 12,
+              fontFamily: "var(--ff-mono)",
+              fontSize: 12,
+              letterSpacing: ".04em",
+              color: LIGHT.muted,
+              textDecoration: "none",
+            }}
+          >
+            Un autre usage ? →
+          </Link>
         </div>
       </section>
 
@@ -542,12 +547,13 @@ export default function IaActClient() {
           remplacé par trois blocs de même largeur, le 3e marquant la bascule.
           Aucun numéro d'article ni terme d'annexe ici : ils restent dans le
           calendrier, qui est leur place. */}
-      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>La démonstration</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Le même outil, deux rôles</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Acheter un outil d&apos;IA, ou en devenir responsable</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Rien n&apos;a changé dans l&apos;outil. Tout a changé dans le régime applicable.
+            Une entreprise peut changer de régime juridique sans changer
+            d&apos;outil, sans signer de contrat et sans le savoir.
           </p>
 
           {/* Bandeau des rôles — trois colonnes courtes, intitulés en DM Mono. */}
@@ -618,255 +624,6 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 4. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>Où en est le droit</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            Le calendrier, au 1<sup>er</sup> septembre 2026
-          </h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
-            Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du
-            8 juillet 2026, en vigueur depuis le 27 juillet.
-          </p>
-
-          {/* Calendrier réécrit (prompt 2.6) : une ligne = une date, une
-              obligation, et qui est tenu. Deux blocs. Dates complètes. Les
-              anciens badges « REPORTÉ » sont remplacés par une mention discrète
-              « initialement … » en fin de ligne de date. */}
-          {(() => {
-            const rowStyle = (first: boolean) => ({
-              padding: "13px 14px",
-              borderTop: first ? "none" : `0.5px solid ${LIGHT.border}`,
-              background: LIGHT.panel,
-            });
-            const dateStyle = { fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted } as const;
-            const initStyle = { fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, whiteSpace: "nowrap" } as const;
-            const titreStyle = { fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" } as const;
-            const corpsStyle = { fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 } as const;
-            const blocLabel = { fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.text, margin: "0 0 8px" } as const;
-            return (
-              <>
-                {/* ---- Bloc 1 : ce qui s'applique aujourd'hui ---- */}
-                <p style={blocLabel}>Ce qui s&apos;applique aujourd&apos;hui</p>
-                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 20 }}>
-                  <div style={rowStyle(true)}>
-                    <span style={dateStyle}>Depuis le 2 février 2025</span>
-                    <p style={titreStyle}>Pratiques interdites</p>
-                    <p style={corpsStyle}>
-                      {"Certains usages sont interdits, quels que soient la taille de l'entreprise, son secteur et la date de mise en service du système. Notamment : les techniques subliminales ou délibérément manipulatrices, l'exploitation des vulnérabilités liées à l'âge, au handicap ou à la situation sociale, la notation sociale, la prédiction du risque criminel fondée sur le seul profilage, le moissonnage non ciblé d'images faciales, l'inférence des émotions sur le lieu de travail et dans l'enseignement hors raisons médicales ou de sécurité, et la catégorisation biométrique déduisant des caractéristiques sensibles. C'est le seul étage exposé au plafond de 35 M€ ou 7 % du chiffre d'affaires mondial."}
-                    </p>
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 février 2025</span>
-                    <p style={titreStyle}>Formation des équipes</p>
-                    <p style={corpsStyle}>
-                      {"Toute entreprise qui utilise ou fournit un système d'IA doit assurer un niveau suffisant de compétence des personnes qui s'en servent. L'obligation vaut à tous les étages de risque, y compris pour les outils les plus anodins, et elle se démontre par un plan de formation daté. C'est l'obligation la moins coûteuse à satisfaire et la première qu'une autorité vérifie. Sanctionnable depuis l'été 2026."}
-                    </p>
-                    {/* À VÉRIFIER — AL : rédaction de l'art. 4 modifiée en juillet 2026 */}
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 août 2025</span>
-                    <p style={titreStyle}>Sanctions et autorités</p>
-                    <p style={corpsStyle}>
-                      {"Le régime de sanctions est en place et les États membres ont désigné leurs autorités de surveillance. Les plafonds : 35 M€ ou 7 % du chiffre d'affaires mondial pour les pratiques interdites, 15 M€ ou 3 % pour les manquements des fournisseurs et des déployeurs, 7,5 M€ ou 1 % pour les informations inexactes fournies aux autorités. Pour les PME, jeunes pousses comprises, la règle s'inverse : c'est le montant le plus faible qui plafonne l'amende, jamais le plus élevé."}
-                    </p>
-                    {/* À VÉRIFIER — AL : l'art. 113 réserve l'art. 101, applicable au 2 août 2026. Mention à ajouter ou non. */}
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 août 2026</span>
-                    <p style={titreStyle}>Transparence et application générale</p>
-                    <p style={corpsStyle}>
-                      {"L'obligation de transparence n'est pas de s'abstenir, elle est de dire : un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. À la même date, le règlement s'applique de manière générale hors haut risque et les autorités nationales disposent de leurs pouvoirs de contrôle. C'est la date qui concerne le plus grand nombre d'entreprises."}
-                    </p>
-                  </div>
-                </div>
-
-                {/* ---- Bloc 2 : ce qui vient ---- */}
-                <p style={blocLabel}>Ce qui vient</p>
-                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
-                  <div style={rowStyle(true)}>
-                    <span style={dateStyle}>2 décembre 2026</span>
-                    <p style={titreStyle}>Marquage des contenus générés</p>
-                    <p style={corpsStyle}>
-                      {"Pour les générateurs de contenus déjà sur le marché avant août 2026, l'obligation de marquer les sorties dans un format lisible par machine est décalée à cette date. Elle pèse sur l'éditeur du système, non sur l'entreprise qui l'utilise. Les IA interactives et la production d'hypertrucages ne bénéficient pas de ce report."}
-                    </p>
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>2 décembre 2026</span>
-                    <p style={titreStyle}>Deux interdictions nouvelles</p>
-                    <p style={corpsStyle}>
-                      {"Contenus intimes non consentis et contenus pédocriminels générés par IA."}
-                    </p>
-                    {/* À VÉRIFIER — AL */}
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-                      <span style={dateStyle}>2 décembre 2027</span>
-                      <span style={initStyle}>initialement 2 août 2026</span>
-                    </div>
-                    <p style={titreStyle}>Haut risque, annexe III</p>
-                    <p style={corpsStyle}>
-                      {"Sont visés le recrutement et la gestion des travailleurs, l'éducation, le scoring de crédit, la tarification en assurance-vie et santé, l'accès aux services essentiels. Ce qui devient exigible dépend du rôle :"}
-                    </p>
-                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
-                      <strong style={{ color: LIGHT.text }}>Fournisseur</strong>
-                      {" — gestion des risques, gouvernance des données et examen des biais, documentation technique, journalisation, notice d'utilisation, conception permettant le contrôle humain, évaluation de conformité, marquage CE, enregistrement dans la base européenne."}
-                    </p>
-                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
-                      <strong style={{ color: LIGHT.text }}>Déployeur</strong>
-                      {" — usage conforme à la notice, contrôle humain confié à des personnes ayant l'autorité de contredire le système, conservation des journaux, information des travailleurs et de leurs représentants avant la mise en service, information des personnes soumises à une décision. C'est le cas de la plupart des entreprises."}
-                    </p>
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-                      <span style={dateStyle}>2 août 2028</span>
-                      <span style={initStyle}>initialement 2 août 2027</span>
-                    </div>
-                    <p style={titreStyle}>Haut risque, annexe I</p>
-                    <p style={corpsStyle}>
-                      {"Sont visés les systèmes d'IA qui sont un composant de sécurité d'un produit déjà soumis à une réglementation européenne d'harmonisation avec évaluation par un tiers. L'IA entre alors dans la logique du marquage produit. Les systèmes relevant du règlement Machines sortent du champ de l'AI Act."}
-                    </p>
-                    {/* À VÉRIFIER — AL : ajouter ou non des exemples de produits concernés */}
-                  </div>
-                </div>
-
-                {/* Note de bas de section, petit corps, sous la frise. */}
-                <p style={{ fontSize: 12, color: LIGHT.muted, lineHeight: 1.6, margin: "14px 0 0", maxWidth: 760 }}>
-                  {"Si vous utilisez ChatGPT, Copilot, Gemini ou un modèle équivalent, les obligations entrées en application en août 2025 ne sont pas les vôtres : documentation technique du modèle, politique de respect du droit d'auteur et résumé des contenus d'entraînement pèsent sur l'éditeur du modèle. Ce qui vous concerne est contractuel : ce sont ces documents dont vous aurez besoin pour démontrer votre propre conformité. Exigez-les."}
-                </p>
-              </>
-            );
-          })()}
-
-          {/* Bandeau à la suite du calendrier */}
-          <div style={{ background: DARK.bg, borderRadius: 10, padding: 16, marginTop: 12 }}>
-            <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, margin: 0, lineHeight: 1.6 }}>
-              Le calendrier ne suffit pas à déterminer vos obligations.
-            </p>
-            {/* TODO (à traiter AVANT publication) : identifier la RÉFÉRENCE
-                EXACTE (article / considérant du règlement 2026/1744) des
-                allègements pour petites entreprises et entreprises à faible
-                capitalisation — préciser ou reformuler selon le texte trouvé. */}
-            <p style={{ fontSize: 13, color: DARK.muted, margin: "7px 0 0", lineHeight: 1.6 }}>
-              Il faut qualifier le système, établir le rôle de l&apos;entreprise,
-              et vérifier sa date de mise sur le marché. Les allègements prévus
-              pour les petites entreprises et les entreprises à faible
-              capitalisation entrent aussi en compte.
-            </p>
-          </div>
-          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "12px 0 0", letterSpacing: ".04em" }}>
-            À JOUR AU 1ᵉʳ SEPTEMBRE 2026 · RÉVISION TRIMESTRIELLE
-          </p>
-        </div>
-      </section>
-
-      {/* 5. SUIS-JE CONCERNÉ — six situations */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Six situations qui appellent une qualification</h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
-            et les documents à conserver. Entrer dans le champ du règlement
-            n&apos;emporte pas les obligations les plus lourdes.
-          </p>
-          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
-            {[
-              { usage: "IA générative utilisée par vos salariés", suite: "transparence et maîtrise de l'IA, applicables aujourd'hui" },
-              { usage: "Outils RH ou de recrutement automatisés", suite: "relève de l'annexe III, la qualification la plus lourde" },
-              { usage: "Scoring, profilage ou aide à la décision", suite: "souvent annexe III, et croisement avec le RGPD" },
-              { usage: "IA intégrée à un produit ou un service", suite: "annexe I si le produit relève d'une réglementation à marquage" },
-              { usage: "Fournisseur ou API d'IA externe", suite: "la répartition des rôles se joue au contrat" },
-              { usage: "Inférence des émotions au travail", suite: "pratique interdite, sanctionnable depuis février 2025" },
-            ].map((u, i) => (
-              <div
-                key={u.usage}
-                style={{
-                  padding: "12px 14px",
-                  borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none",
-                }}
-              >
-                <div style={{ fontSize: 14, color: LIGHT.text, lineHeight: 1.4 }}>{u.usage}</div>
-                <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, marginTop: 2 }}>{u.suite}</div>
-              </div>
-            ))}
-          </div>
-          <Link
-            href="/contact"
-            style={{
-              display: "inline-block",
-              marginTop: 12,
-              fontFamily: "var(--ff-mono)",
-              fontSize: 12,
-              letterSpacing: ".04em",
-              color: LIGHT.muted,
-              textDecoration: "none",
-            }}
-          >
-            Un autre usage ? →
-          </Link>
-        </div>
-      </section>
-
-      {/* 5b. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
-          correspondante n'existe pas encore → bouton DÉSACTIVÉ, aucune URL
-          inventée, aucun formulaire. À ACTIVER quand la page « Le règlement sur
-          l'IA : qui doit faire quoi » existera dans Ressources : pointer vers la
-          PAGE (pas le PDF). Signalé à AL. */}
-      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 16,
-              background: LIGHT.bg,
-              border: `0.5px solid ${LIGHT.border}`,
-              borderRadius: 12,
-              padding: CARD_PAD,
-            }}
-          >
-            <div style={{ maxWidth: 620 }}>
-              <p style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.4 }}>
-                {"Livre blanc — « Le règlement sur l'IA : qui doit faire quoi »"}
-              </p>
-              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                {"Le partage des obligations entre fournisseur, déployeur et éditeur de modèle, étape par étape."}
-                <br />
-                {"Révision août 2026. Lecture libre, sans formulaire."}
-              </p>
-            </div>
-            {/* Bouton désactivé tant que la page Ressources n'existe pas. */}
-            <span
-              aria-disabled="true"
-              title="Page en préparation"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "0 18px",
-                minHeight: 44,
-                borderRadius: 4,
-                border: `1px solid ${LIGHT.border}`,
-                background: "transparent",
-                color: LIGHT.muted,
-                fontFamily: "var(--ff-mono)",
-                fontSize: 12,
-                letterSpacing: ".04em",
-                opacity: 0.5,
-                cursor: "not-allowed",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Consulter le livre blanc
-            </span>
-          </div>
-        </div>
-      </section>
-
       {/* 6. NOS INTERVENTIONS — trois niveaux */}
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
@@ -879,6 +636,10 @@ export default function IaActClient() {
                 titre: "Diagnostic et audit AI Act",
                 phrase: "« Nous utilisons plusieurs IA sans savoir où nous en sommes. »",
                 corps: "Inventaire des systèmes officiels et des usages informels, qualification juridique, rôle de l'entreprise, feuille de route.",
+                concret: [
+                  "Cartographier les systèmes internes, API tierces et modèles intégrés.",
+                  "Qualifier chaque système : interdit, haut risque, transparence.",
+                ],
                 accent: true,
               },
               {
@@ -886,6 +647,10 @@ export default function IaActClient() {
                 titre: "Gouvernance IA : registre, charte et procédures",
                 phrase: "« Nous devons poser des règles dans l'entreprise. »",
                 corps: "Registre des systèmes d'IA, charte IA, outils autorisés et données interdites, validation humaine, gestion des incidents, formation.",
+                concret: [
+                  "Documenter la gouvernance des données et la traçabilité des décisions.",
+                  "Poser chartes, comité IA, référent conformité et formation.",
+                ],
                 accent: false,
               },
               {
@@ -893,6 +658,10 @@ export default function IaActClient() {
                 titre: "Conformité d'un système sensible ou à haut risque",
                 phrase: "« Notre produit ou notre usage peut relever de l'annexe III. »",
                 corps: "Analyse complète, documentation, supervision humaine, contrats fournisseurs, préparation au contrôle.",
+                concret: [
+                  "Documenter intégralement : supervision humaine, journalisation, contrats fournisseurs.",
+                  "Préparer le contrôle et la démonstration de conformité.",
+                ],
                 accent: false,
               },
             ].map((n) => (
@@ -909,64 +678,41 @@ export default function IaActClient() {
                 <h3 style={{ ...TYPE.h3, margin: "6px 0 0" }}>{n.titre}</h3>
                 <p style={{ fontSize: 13, color: LIGHT.text, fontStyle: "italic", margin: "8px 0 0", lineHeight: 1.5 }}>{n.phrase}</p>
                 <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>{n.corps}</p>
+                {/* Deux lignes concrètes reprises de l'ancienne section « Cinq
+                    étapes » (supprimée : elle doublonnait ces accompagnements). */}
+                <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+                  {n.concret.map((c) => (
+                    <li key={c} style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
+                      <span aria-hidden style={{ color: LIGHT.faint, flexShrink: 0 }}>—</span>
+                      <span>{c}</span>
+                    </li>
+                  ))}
+                </ul>
               </article>
             ))}
+            {/* 4e bloc, d'une AUTRE nature (pas une mission de conformité) :
+                l'intervention contentieuse. Volontairement distinct — fond navy. */}
+            <article
+              style={{
+                background: DARK.bg,
+                border: `0.5px solid ${DARK.borderBlue}`,
+                borderRadius: 10,
+                padding: CARD_PAD,
+              }}
+            >
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".07em", color: DARK.muted }}>+</span>
+              <h3 style={{ ...TYPE.h3, color: DARK.text, margin: "6px 0 0" }}>Défendre — contrôle, incident, contentieux</h3>
+              <p style={{ fontSize: 13, color: DARK.muted, margin: "8px 0 0", lineHeight: 1.6 }}>
+                La documentation de conformité est la première ligne de défense ;
+                le cabinet la construit pour qu&apos;elle tienne.
+              </p>
+            </article>
           </div>
         </div>
       </section>
 
-      {/* 7. NOTRE MÉTHODE — cinq étapes */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>Notre méthode</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq étapes — de l&apos;audit jusqu&apos;au contentieux</h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16 }}>
-            Une démarche structurée, proche du RGPD. Les enjeux techniques sont plus lourds.
-          </p>
-
-          <div className="flex flex-col">
-            {steps.map((s, idx) => (
-              <article
-                key={s.n}
-                style={{
-                  background: "transparent",
-                  padding: "10px 0",
-                  borderBottom: idx < steps.length - 1 ? "1px solid rgba(10,10,20,0.06)" : "none",
-                }}
-              >
-                <div className="mb-2 flex items-center gap-10">
-                  <span
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: "50%",
-                      border: "1px solid rgba(var(--famille-rgb),0.35)",
-                      color: ACCENT,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 11,
-                      fontFamily: "monospace",
-                    }}
-                  >
-                    {s.n}
-                  </span>
-                  {s.pill ? (
-                    <span style={{ fontSize: 10, color: ACCENT, border: "1px solid rgba(var(--famille-rgb),0.35)", borderRadius: 999, padding: "2px 8px" }}>
-                      {s.pill}
-                    </span>
-                  ) : null}
-                </div>
-                <h3 style={{ marginBottom: 6, ...TYPE.h3 }}>{s.title}</h3>
-                <p style={{ ...TYPE.body, color: LIGHT.muted, margin: 0 }}>{s.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 8. CE QUE VOUS RECEVEZ — spécimens */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+      {/* 8. LES LIVRABLES — extraits (section « offre » : fond LIGHT.panel). */}
+      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Extraits de nos livrables</h2>
@@ -1224,6 +970,207 @@ export default function IaActClient() {
             ))}
           </div>
 
+        </div>
+      </section>
+
+      {/* 4. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <Eyebrow>Où en est le droit</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
+            Le calendrier, au 1<sup>er</sup> septembre 2026
+          </h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
+            Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du
+            8 juillet 2026, en vigueur depuis le 27 juillet.
+          </p>
+
+          {/* Calendrier réécrit (prompt 2.6) : une ligne = une date, une
+              obligation, et qui est tenu. Deux blocs. Dates complètes. Les
+              anciens badges « REPORTÉ » sont remplacés par une mention discrète
+              « initialement … » en fin de ligne de date. */}
+          {(() => {
+            const rowStyle = (first: boolean) => ({
+              padding: "13px 14px",
+              borderTop: first ? "none" : `0.5px solid ${LIGHT.border}`,
+              background: LIGHT.panel,
+            });
+            const dateStyle = { fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted } as const;
+            const initStyle = { fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, whiteSpace: "nowrap" } as const;
+            const titreStyle = { fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" } as const;
+            const corpsStyle = { fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 } as const;
+            const blocLabel = { fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.text, margin: "0 0 8px" } as const;
+            return (
+              <>
+                {/* ---- Bloc 1 : ce qui s'applique aujourd'hui ---- */}
+                <p style={blocLabel}>Ce qui s&apos;applique aujourd&apos;hui</p>
+                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 20 }}>
+                  <div style={rowStyle(true)}>
+                    <span style={dateStyle}>Depuis le 2 février 2025</span>
+                    <p style={titreStyle}>Pratiques interdites</p>
+                    <p style={corpsStyle}>
+                      {"Certains usages sont interdits, quels que soient la taille de l'entreprise, son secteur et la date de mise en service du système. Notamment : les techniques subliminales ou délibérément manipulatrices, l'exploitation des vulnérabilités liées à l'âge, au handicap ou à la situation sociale, la notation sociale, la prédiction du risque criminel fondée sur le seul profilage, le moissonnage non ciblé d'images faciales, l'inférence des émotions sur le lieu de travail et dans l'enseignement hors raisons médicales ou de sécurité, et la catégorisation biométrique déduisant des caractéristiques sensibles. C'est le seul étage exposé au plafond de 35 M€ ou 7 % du chiffre d'affaires mondial."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 février 2025</span>
+                    <p style={titreStyle}>Formation des équipes</p>
+                    <p style={corpsStyle}>
+                      {"Toute entreprise qui utilise ou fournit un système d'IA doit assurer un niveau suffisant de compétence des personnes qui s'en servent. L'obligation vaut à tous les étages de risque, y compris pour les outils les plus anodins, et elle se démontre par un plan de formation daté. C'est l'obligation la moins coûteuse à satisfaire et la première qu'une autorité vérifie. Sanctionnable depuis l'été 2026."}
+                    </p>
+                    {/* À VÉRIFIER — AL : rédaction de l'art. 4 modifiée en juillet 2026 */}
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 août 2025</span>
+                    <p style={titreStyle}>Sanctions et autorités</p>
+                    <p style={corpsStyle}>
+                      {"Le régime de sanctions est en place et les États membres ont désigné leurs autorités de surveillance. Les plafonds : 35 M€ ou 7 % du chiffre d'affaires mondial pour les pratiques interdites, 15 M€ ou 3 % pour les manquements des fournisseurs et des déployeurs, 7,5 M€ ou 1 % pour les informations inexactes fournies aux autorités. Pour les PME, jeunes pousses comprises, la règle s'inverse : c'est le montant le plus faible qui plafonne l'amende, jamais le plus élevé."}
+                    </p>
+                    {/* À VÉRIFIER — AL : l'art. 113 réserve l'art. 101, applicable au 2 août 2026. Mention à ajouter ou non. */}
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>Depuis le 2 août 2026</span>
+                    <p style={titreStyle}>Transparence et application générale</p>
+                    <p style={corpsStyle}>
+                      {"L'obligation de transparence n'est pas de s'abstenir, elle est de dire : un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. À la même date, le règlement s'applique de manière générale hors haut risque et les autorités nationales disposent de leurs pouvoirs de contrôle. C'est la date qui concerne le plus grand nombre d'entreprises."}
+                    </p>
+                  </div>
+                </div>
+
+                {/* ---- Bloc 2 : ce qui vient ---- */}
+                <p style={blocLabel}>Ce qui vient</p>
+                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
+                  <div style={rowStyle(true)}>
+                    <span style={dateStyle}>2 décembre 2026</span>
+                    <p style={titreStyle}>Marquage des contenus générés</p>
+                    <p style={corpsStyle}>
+                      {"Pour les générateurs de contenus déjà sur le marché avant août 2026, l'obligation de marquer les sorties dans un format lisible par machine est décalée à cette date. Elle pèse sur l'éditeur du système, non sur l'entreprise qui l'utilise. Les IA interactives et la production d'hypertrucages ne bénéficient pas de ce report."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <span style={dateStyle}>2 décembre 2026</span>
+                    <p style={titreStyle}>Deux interdictions nouvelles</p>
+                    <p style={corpsStyle}>
+                      {"Contenus intimes non consentis et contenus pédocriminels générés par IA."}
+                    </p>
+                    {/* À VÉRIFIER — AL */}
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+                      <span style={dateStyle}>2 décembre 2027</span>
+                      <span style={initStyle}>initialement 2 août 2026</span>
+                    </div>
+                    <p style={titreStyle}>Haut risque, annexe III</p>
+                    <p style={corpsStyle}>
+                      {"Sont visés le recrutement et la gestion des travailleurs, l'éducation, le scoring de crédit, la tarification en assurance-vie et santé, l'accès aux services essentiels. Ce qui devient exigible dépend du rôle :"}
+                    </p>
+                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
+                      <strong style={{ color: LIGHT.text }}>Fournisseur</strong>
+                      {" — gestion des risques, gouvernance des données et examen des biais, documentation technique, journalisation, notice d'utilisation, conception permettant le contrôle humain, évaluation de conformité, marquage CE, enregistrement dans la base européenne."}
+                    </p>
+                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
+                      <strong style={{ color: LIGHT.text }}>Déployeur</strong>
+                      {" — usage conforme à la notice, contrôle humain confié à des personnes ayant l'autorité de contredire le système, conservation des journaux, information des travailleurs et de leurs représentants avant la mise en service, information des personnes soumises à une décision. C'est le cas de la plupart des entreprises."}
+                    </p>
+                  </div>
+                  <div style={rowStyle(false)}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
+                      <span style={dateStyle}>2 août 2028</span>
+                      <span style={initStyle}>initialement 2 août 2027</span>
+                    </div>
+                    <p style={titreStyle}>Haut risque, annexe I</p>
+                    <p style={corpsStyle}>
+                      {"Sont visés les systèmes d'IA qui sont un composant de sécurité d'un produit déjà soumis à une réglementation européenne d'harmonisation avec évaluation par un tiers. L'IA entre alors dans la logique du marquage produit. Les systèmes relevant du règlement Machines sortent du champ de l'AI Act."}
+                    </p>
+                    {/* À VÉRIFIER — AL : ajouter ou non des exemples de produits concernés */}
+                  </div>
+                </div>
+
+                {/* Note de bas de section, petit corps, sous la frise. */}
+                <p style={{ fontSize: 12, color: LIGHT.muted, lineHeight: 1.6, margin: "14px 0 0", maxWidth: 760 }}>
+                  {"Si vous utilisez ChatGPT, Copilot, Gemini ou un modèle équivalent, les obligations entrées en application en août 2025 ne sont pas les vôtres : documentation technique du modèle, politique de respect du droit d'auteur et résumé des contenus d'entraînement pèsent sur l'éditeur du modèle. Ce qui vous concerne est contractuel : ce sont ces documents dont vous aurez besoin pour démontrer votre propre conformité. Exigez-les."}
+                </p>
+              </>
+            );
+          })()}
+
+          {/* Bandeau à la suite du calendrier */}
+          <div style={{ background: DARK.bg, borderRadius: 10, padding: 16, marginTop: 12 }}>
+            <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, margin: 0, lineHeight: 1.6 }}>
+              Le calendrier ne suffit pas à déterminer vos obligations.
+            </p>
+            {/* TODO (à traiter AVANT publication) : identifier la RÉFÉRENCE
+                EXACTE (article / considérant du règlement 2026/1744) des
+                allègements pour petites entreprises et entreprises à faible
+                capitalisation — préciser ou reformuler selon le texte trouvé. */}
+            <p style={{ fontSize: 13, color: DARK.muted, margin: "7px 0 0", lineHeight: 1.6 }}>
+              Il faut qualifier le système, établir le rôle de l&apos;entreprise,
+              et vérifier sa date de mise sur le marché. Les allègements prévus
+              pour les petites entreprises et les entreprises à faible
+              capitalisation entrent aussi en compte.
+            </p>
+          </div>
+          <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "12px 0 0", letterSpacing: ".04em" }}>
+            À JOUR AU 1ᵉʳ SEPTEMBRE 2026 · RÉVISION TRIMESTRIELLE
+          </p>
+        </div>
+      </section>
+
+      {/* 5b. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
+          correspondante n'existe pas encore → bouton DÉSACTIVÉ, aucune URL
+          inventée, aucun formulaire. À ACTIVER quand la page « Le règlement sur
+          l'IA : qui doit faire quoi » existera dans Ressources : pointer vers la
+          PAGE (pas le PDF). Signalé à AL. */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+              background: LIGHT.panel,
+              border: `0.5px solid ${LIGHT.border}`,
+              borderRadius: 12,
+              padding: CARD_PAD,
+            }}
+          >
+            <div style={{ maxWidth: 620 }}>
+              <p style={{ fontSize: 16, fontWeight: 600, color: LIGHT.text, margin: 0, lineHeight: 1.4 }}>
+                {"Livre blanc — « Le règlement sur l'IA : qui doit faire quoi »"}
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                {"Le partage des obligations entre fournisseur, déployeur et éditeur de modèle, étape par étape."}
+                <br />
+                {"Révision août 2026. Lecture libre, sans formulaire."}
+              </p>
+            </div>
+            {/* Bouton désactivé tant que la page Ressources n'existe pas. */}
+            <span
+              aria-disabled="true"
+              title="Page en préparation"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "0 18px",
+                minHeight: 44,
+                borderRadius: 4,
+                border: `1px solid ${LIGHT.border}`,
+                background: "transparent",
+                color: LIGHT.muted,
+                fontFamily: "var(--ff-mono)",
+                fontSize: 12,
+                letterSpacing: ".04em",
+                opacity: 0.5,
+                cursor: "not-allowed",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Consulter le livre blanc
+            </span>
+          </div>
         </div>
       </section>
 
