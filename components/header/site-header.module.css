@@ -7,6 +7,20 @@
  * DM Mono (entrées de menu, intitulés de famille), Space Grotesk (panneaux).
  */
 
+/* Sentinelle de l'état collant : posée en haut du document, haute d'une barre
+   (72px). Quand elle a défilé au-dessus du viewport, le header au repos a lui
+   aussi disparu → on bascule en barre fixe (relais sans couture). Hors flux,
+   invisible, sans interception d'événements. */
+.sentinelFallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 72px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /* ---------- barre ---------- */
 .header {
   position: absolute;
@@ -14,12 +28,23 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: #05060f;
+  /* OPAQUE PAR DÉFAUT (#0a0f2e) : lisible sur n'importe quelle page, y compris
+     celles sans hero sombre (ex. /blog) et toute page future non déclarée.
+     Les routes à hero sombre reçoivent la classe `.heroDark` (drapeau
+     déclaratif calculé depuis le pathname, cf. ROUTES_HERO_SOMBRE) : le header
+     devient alors transparent AU REPOS pour flotter sur le hero. Ce n'est pas
+     une détection au défilement — l'état est connu dès le rendu serveur. */
+  background: #0a0f2e;
   color: #fff;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
+/* Route à hero sombre : header transparent au repos ; opaque dès qu'il colle
+   (.sticky l'emporte via :not). */
+.heroDark:not(.sticky) {
+  background: transparent;
+}
 /* Barre collante : fixe, compacte, ombre légère (transition franche, pas un
-   rétrécissement progressif au défilement). */
+   rétrécissement progressif au défilement). Toujours opaque. */
 .sticky {
   position: fixed;
   background: #0a0f2e;

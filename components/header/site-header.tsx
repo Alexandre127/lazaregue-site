@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Logo from "./logo";
 import {
+  aHeroSombre,
   FAMILLES,
   NAV_ENTRIES,
   PANEL_DOMAINES_FOOTER,
@@ -74,6 +75,9 @@ function DomainesPanel({ id, open }: { id: string; open: boolean }) {
 export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  // Header transparent au repos sur les pages à hero sombre ; opaque partout
+  // ailleurs (drapeau déclaratif, cf. nav-data → aHeroSombre).
+  const heroSombre = aHeroSombre(pathname);
 
   const [sticky, setSticky] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -87,17 +91,31 @@ export function SiteHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const navItemRef = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<number | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  /* ---- État collant + barre basse mobile (au défilement) ---- */
+  /* ---- État collant : sentinelle IntersectionObserver ----
+     On observe une sentinelle posée en haut du document, haute d'une barre
+     (.sentinelFallback = 72px). Le header devient collant dès que cette
+     sentinelle a défilé au-dessus du viewport, c.-à-d. quand le header au repos
+     (absolu, en haut) a lui-même disparu vers le haut : le relais vers la barre
+     fixe est donc sans couture. Aucune référence à la hauteur du hero ni à une
+     fraction de viewport — l'ancienne heuristique à 0,68·viewport se décalait
+     dès qu'un hero changeait de hauteur ; ici c'est stable partout, sans réglage
+     par page. Observé une seule fois (la sentinelle est dans le layout). */
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      // « hero entièrement dépassé » — approximation globale (la hauteur du hero
-      // varie selon la page) : ~0,68 hauteur d'écran, plancher 280 px.
-      const seuil = Math.max(280, window.innerHeight * 0.68);
-      setSticky(y > seuil);
-      setShowBottomBar(y > window.innerHeight / 3);
-    };
+    const sentinelle = sentinelRef.current;
+    if (!sentinelle) return;
+    const io = new IntersectionObserver(
+      ([e]) => setSticky(!e.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(sentinelle);
+    return () => io.disconnect();
+  }, []);
+
+  /* ---- Barre basse mobile (au défilement) ---- */
+  useEffect(() => {
+    const onScroll = () => setShowBottomBar(window.scrollY > window.innerHeight / 3);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -198,8 +216,13 @@ export function SiteHeader() {
 
   return (
     <>
+      {/* Sentinelle de repli pour l'état collant : observée uniquement quand
+          aucun hero n'est identifié sur la page. Invisible (1px de large). */}
+      <div ref={sentinelRef} className={styles.sentinelFallback} aria-hidden />
       <header
-        className={`${styles.header}${sticky ? ` ${styles.sticky}` : ""}`}
+        className={`${styles.header}${heroSombre ? ` ${styles.heroDark}` : ""}${
+          sticky ? ` ${styles.sticky}` : ""
+        }`}
         data-sticky={sticky ? "true" : "false"}
       >
         <div className={styles.bar}>

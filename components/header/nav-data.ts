@@ -125,3 +125,35 @@ export const PANEL_DOMAINES_FOOTER = {
 
 /** Téléphone (barre mobile + pied de tiroir). */
 export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
+
+/**
+ * Routes dont le HAUT DE PAGE est un hero sombre : le header s'y pose en
+ * transparent au repos (il flotte sur le hero), puis redevient opaque en
+ * collant. Toute route ABSENTE d'ici — dont /blog et toute page future non
+ * déclarée — garde le header opaque #0a0f2e, donc lisible par défaut.
+ *
+ * C'est un drapeau DÉCLARATIF (pas une détection au défilement ni une mesure du
+ * hero) : l'état est connu dès le rendu serveur, donc aucun clignotement.
+ *
+ * Correspondance par segment : `/nos-domaines` couvre l'index ET toutes les
+ * pages de domaine ; `/competences` couvre ma-tech (et les futures pages).
+ * Quand une page à hero sombre est ajoutée hors de ces préfixes, l'inscrire ici.
+ */
+export const ROUTES_HERO_SOMBRE = [
+  "/", // accueil
+  "/nos-domaines", // index + toutes les pages de domaine
+  "/competences", // ma-tech
+  "/le-cabinet",
+  "/ressources",
+  "/contact",
+  "/mentions-legales",
+  "/politique-de-confidentialite",
+] as const;
+
+/** Le header doit-il être transparent au repos sur cette route ? */
+export function aHeroSombre(pathname: string): boolean {
+  const p = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  return ROUTES_HERO_SOMBRE.some((r) =>
+    r === "/" ? p === "/" : p === r || p.startsWith(r + "/"),
+  );
+}
