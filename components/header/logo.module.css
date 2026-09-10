@@ -1,0 +1,42 @@
+/* Logo — bloc unique cliquable (symbole + nom). */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+/* État de survol visible — sauf sur la page d'accueil (aria-current). */
+.logo:hover {
+  opacity: 0.82;
+}
+.isHome {
+  cursor: default;
+}
+.isHome:hover {
+  opacity: 1;
+}
+.mark {
+  height: 24px;
+  width: auto;
+  flex: none;
+  display: block;
+}
+.word {
+  font-family: var(--ff-display, "Bebas Neue", sans-serif);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.avocats {
+  color: #1a47ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo {
+    transition: none;
+  }
+}

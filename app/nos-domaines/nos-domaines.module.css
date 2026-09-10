@@ -1,0 +1,107 @@
+/*
+ * Index /nos-domaines — structure minimale (H1 + chapô + 9 domaines en 3
+ * familles). Aucun bloc de réassurance, témoignage ni CTA (par consigne).
+ * Couleurs/polices via les tokens globaux.
+ */
+.page {
+  background: var(--wh);
+  color: var(--ink);
+  font-family: var(--ff-body);
+}
+.page p {
+  color: inherit;
+}
+
+.hero {
+  background: var(--navy);
+  color: #fff;
+  padding: 120px 0 64px;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 640px) {
+  .wrap {
+    padding: 0 20px;
+  }
+}
+.hero h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(32px, 5.5vw, 60px);
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.chapo {
+  max-width: 64ch;
+  margin-top: 22px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #c9cde4;
+}
+
+.familles {
+  padding: 72px 0 96px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+.familleLabel {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--blue2);
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--bd);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.card {
+  display: block;
+  padding: 14px 14px;
+  margin: 0 -14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.card:hover {
+  background: var(--off);
+}
+.cardTitle {
+  display: block;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.cardContext {
+  display: block;
+  font-size: 14px;
+  color: #4a4a63;
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

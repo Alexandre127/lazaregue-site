@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { PageEffects } from "@/components/lazaregue/page-effects";
-import { Navbar11 } from "@/components/navbar-11";
+import { SiteHeader } from "@/components/header/site-header";
 import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 import "./hero.css";
@@ -28,7 +28,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-navy antialiased text-wh">
         <PageEffects />
-        <Navbar11 />
+        <SiteHeader />
         {children}
         <Footer />
       </body>
