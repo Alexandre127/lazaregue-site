@@ -14,7 +14,7 @@
 export const FAQ_TEXTE: { q: string; a: string }[] = [
   {
     q: "Le report de 2026 me dispense-t-il d'agir ?",
-    a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites sont sanctionnables depuis février 2025, et les obligations de transparence, de gouvernance et le régime de sanctions s'appliquent depuis août 2026. Les dix-sept mois de délai sont surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
+    a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites sont sanctionnables depuis février 2025, le régime de sanctions et les autorités de surveillance sont en place depuis août 2025, et les obligations de transparence et de gouvernance s'appliquent depuis août 2026. Le report est surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
   },
   {
     q: "Comment qualifier un système d'IA ?",

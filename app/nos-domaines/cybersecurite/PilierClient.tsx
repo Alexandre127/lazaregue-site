@@ -434,10 +434,11 @@ export default function PilierClient() {
         fontFamily: "var(--ff-body)",
         maxWidth: 1200,
         margin: "0 auto",
-        // La barre de navigation du site est fixe (`.laz-nav`, 54px, opaque).
-        // Le bandeau incident étant le premier élément de la page, on décale le
-        // contenu de la hauteur de cette barre pour qu'il ne passe pas dessous.
-        paddingTop: 54,
+        // Header global en position absolue, transparent sur ce héro sombre :
+        // le contenu passe DESSOUS, comme les autres pages /nos-domaines. Pas
+        // de paddingTop — il ferait apparaître le fond clair du <main> sous le
+        // header (bande blanche). Le premier élément (bandeau incident, fond
+        // sombre) reste lisible sous le header transparent.
       }}
     >
       <style>{`
@@ -523,7 +524,10 @@ export default function PilierClient() {
           alignItems: "center",
           gap: 12,
           minHeight: 48,
-          padding: "8px 24px",
+          // Premier élément de la page : son fond rouge sombre s'étend SOUS le
+          // header transparent (blanc sur rouge reste lisible), mais son contenu
+          // est dégagé des 72px du header pour ne pas chevaucher logo et menu.
+          padding: "80px 24px 10px",
           background: "#57100f",
           color: "#ffffff",
           textDecoration: "none",

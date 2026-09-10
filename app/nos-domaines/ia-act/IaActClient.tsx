@@ -156,7 +156,7 @@ const interventionTabs = [
         icon: "ti-list-check",
         type: "Registre des systèmes d'IA",
         h3: "Inventaire des systèmes IA",
-        extraitLabel: "Exemple pédagogique — entreprise de services, une cinquantaine de salariés",
+        extraitLabel: "entreprise de services, une cinquantaine de salariés",
         extrait: (
           <div style={{ fontStyle: "normal" }}>
             {[
@@ -190,7 +190,7 @@ const interventionTabs = [
         icon: "ti-alert-triangle",
         type: "Matrice des risques",
         h3: "Risques prioritaires identifiés",
-        extraitLabel: "Exemple pédagogique — fintech de crédit",
+        extraitLabel: "fintech de crédit",
         extrait: (
           <div style={{ fontStyle: "normal" }}>
             {[
@@ -230,7 +230,7 @@ const interventionTabs = [
         icon: "ti-file-text",
         type: "Documentation technique Art. 11",
         h3: "Notice technique du système IA",
-        extraitLabel: "Exemple pédagogique — SaaS médical",
+        extraitLabel: "SaaS médical",
         extrait: (
           <>
             <B>§3.2 — Supervision humaine</B>. Le système ne produit pas de diagnostic. Il génère
@@ -244,7 +244,7 @@ const interventionTabs = [
         icon: "ti-eye",
         type: "Notice utilisateur Art. 13",
         h3: "Transparence envers les utilisateurs",
-        extraitLabel: "Exemple pédagogique — chatbot d'assureur",
+        extraitLabel: "chatbot d'assureur",
         extrait: (
           <>
             Vous interagissez avec un système d&apos;<B>intelligence artificielle</B>. Les réponses
@@ -264,7 +264,7 @@ const interventionTabs = [
         icon: "ti-settings",
         type: "Charte IA interne",
         h3: "Politique d'usage de l'IA",
-        extraitLabel: "Exemple pédagogique — ETI industrielle",
+        extraitLabel: "ETI industrielle",
         extrait: (
           <>
             <B>Art. 5 — Données interdites</B>. Il est interdit d&apos;injecter dans tout outil IA :
@@ -278,7 +278,7 @@ const interventionTabs = [
         icon: "ti-users",
         type: "Comité IA",
         h3: "Gouvernance et circuit de décision",
-        extraitLabel: "Exemple pédagogique — cabinet de conseil",
+        extraitLabel: "cabinet de conseil",
         extrait: (
           <>
             Tout déploiement d&apos;un nouveau système IA est soumis à validation du{" "}
@@ -299,7 +299,7 @@ const interventionTabs = [
         icon: "ti-file-check",
         type: "Clause fournisseur IA",
         h3: "Encadrement des API et SaaS IA",
-        extraitLabel: "Exemple pédagogique — clause type pour un contrat d'API",
+        extraitLabel: "clause type pour un contrat d'API",
         extrait: (
           <>
             <B>Art. 9.3</B> — Le fournisseur garantit que le modèle utilisé n&apos;est pas classé à
@@ -313,7 +313,7 @@ const interventionTabs = [
         icon: "ti-scale",
         type: "Clause CGV éditeur SaaS",
         h3: "Responsabilité et limites de l'automatisation",
-        extraitLabel: "Exemple pédagogique — CGV d'un éditeur SaaS",
+        extraitLabel: "CGV d'un éditeur SaaS",
         extrait: (
           <>
             Les résultats produits par le système constituent des propositions soumises à validation
@@ -333,7 +333,7 @@ const interventionTabs = [
         icon: "ti-alert-circle",
         type: "Procédure incident IA",
         h3: "Gestion d'un incident algorithmique",
-        extraitLabel: "Exemple pédagogique — outil RH de présélection",
+        extraitLabel: "outil RH de présélection",
         extrait: (
           <>
             Incident détecté : biais systématique dans le scoring de candidats. <B>H+0</B> :
@@ -348,7 +348,7 @@ const interventionTabs = [
         icon: "ti-shield",
         type: "Stratégie de défense",
         h3: "Réponse à un contrôle autorité",
-        extraitLabel: "Exemple pédagogique — dossier de contrôle CNIL",
+        extraitLabel: "dossier de contrôle CNIL",
         extrait: (
           <>
             Face à la demande de justification du système de scoring client : production du registre
@@ -666,20 +666,19 @@ export default function IaActClient() {
                     {/* À VÉRIFIER — AL : rédaction de l'art. 4 modifiée en juillet 2026 */}
                   </div>
                   <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 août 2026</span>
-                    <p style={titreStyle}>Transparence</p>
+                    <span style={dateStyle}>Depuis le 2 août 2025</span>
+                    <p style={titreStyle}>Sanctions et autorités</p>
                     <p style={corpsStyle}>
-                      {"L'obligation n'est pas de s'abstenir, elle est de dire. Un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. C'est la date qui concerne le plus grand nombre d'entreprises."}
+                      {"Le régime de sanctions est en place et les États membres ont désigné leurs autorités de surveillance. Les plafonds : 35 M€ ou 7 % du chiffre d'affaires mondial pour les pratiques interdites, 15 M€ ou 3 % pour les manquements des fournisseurs et des déployeurs, 7,5 M€ ou 1 % pour les informations inexactes fournies aux autorités. Pour les PME, jeunes pousses comprises, la règle s'inverse : c'est le montant le plus faible qui plafonne l'amende, jamais le plus élevé."}
                     </p>
+                    {/* À VÉRIFIER — AL : l'art. 113 réserve l'art. 101, applicable au 2 août 2026. Mention à ajouter ou non. */}
                   </div>
                   <div style={rowStyle(false)}>
                     <span style={dateStyle}>Depuis le 2 août 2026</span>
-                    <p style={titreStyle}>Gouvernance et sanctions</p>
+                    <p style={titreStyle}>Transparence et application générale</p>
                     <p style={corpsStyle}>
-                      {"Le règlement s'applique de manière générale hors haut risque. Les autorités nationales disposent de leurs pouvoirs de contrôle et de sanction. Plafond de 15 M€ ou 3 % du chiffre d'affaires mondial pour les manquements des fournisseurs et des déployeurs."}
+                      {"L'obligation de transparence n'est pas de s'abstenir, elle est de dire : un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. À la même date, le règlement s'applique de manière générale hors haut risque et les autorités nationales disposent de leurs pouvoirs de contrôle. C'est la date qui concerne le plus grand nombre d'entreprises."}
                     </p>
-                    {/* À VÉRIFIER — AL : le livre blanc du cabinet situe l'entrée en application du régime de
-                        sanctions au 2 août 2025, la page au 2 août 2026. Une des deux dates est fausse. */}
                   </div>
                 </div>
 
@@ -762,11 +761,11 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 5. SUIS-JE CONCERNÉ — cinq usages */}
+      {/* 5. SUIS-JE CONCERNÉ — six situations */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Cinq situations qui appellent une qualification</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Six situations qui appellent une qualification</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
             Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
             et les documents à conserver. Entrer dans le champ du règlement

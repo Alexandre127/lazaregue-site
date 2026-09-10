@@ -582,9 +582,11 @@ export default function DiffamationClient() {
         background: LIGHT.bg,
         color: LIGHT.text,
         fontFamily: "var(--ff-body)",
-        // Barre de navigation fixe (`.laz-nav`, 54px, opaque) : on compense sa
-        // hauteur pour que le héro ne passe pas dessous.
-        paddingTop: 54,
+        // Header global en position absolue, transparent sur ce héro sombre :
+        // le héro passe DESSOUS (comme les autres pages /nos-domaines). Pas de
+        // paddingTop — il ferait apparaître le fond clair du <main> sous le
+        // header (bande blanche). Le héro (photo 150px puis texte) dégage seul
+        // les 72px du header sur mobile.
       }}
     >
       <style>{`

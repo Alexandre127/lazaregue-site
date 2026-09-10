@@ -38,7 +38,7 @@ const JSON_LD = {
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Conformité AI Act, qualification haut risque, documentation technique IA, gouvernance IA, contrats fournisseurs IA, IA et droit du travail",
-      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
+      provider: { "@id": "https://lazaregue-avocats.fr/#cabinet" },
     },
     {
       "@type": "FAQPage",
@@ -55,17 +55,20 @@ const JSON_LD = {
       headline: "Mise en conformité AI Act et gouvernance IA",
       description: DESCRIPTION,
       inLanguage: "fr-FR",
-      // À VÉRIFIER — AL : datePublished provisoire (= dateModified, la date
-      // « à jour au » affichée sur la page). À caler sur la vraie date de
-      // première publication le jour de la mise en ligne.
-      datePublished: "2026-09-01",
+      // dateModified = la date « à jour au » affichée sur la page. Pas de
+      // datePublished : aucune date de première publication fiable à déclarer
+      // (déduire une date fausse serait une donnée erronée déclarée au moteur).
       dateModified: "2026-09-01",
       author: { "@type": "Person", name: "Alexandre Lazarègue" },
-      publisher: { "@type": "Organization", name: "Lazarègue Avocats" },
+      publisher: { "@id": "https://lazaregue-avocats.fr/#cabinet" },
       mainEntityOfPage: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
     },
     {
+      // Le cabinet — entité UNIQUE, reliée par @id : le LegalService ci-dessus
+      // la référence comme `provider`, l'Article comme `publisher`. Pas deux
+      // descriptions distinctes du même cabinet dans le @graph.
       "@type": "Organization",
+      "@id": "https://lazaregue-avocats.fr/#cabinet",
       name: "Lazarègue Avocats",
       url: "https://lazaregue-avocats.fr",
       address: {
