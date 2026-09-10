@@ -267,6 +267,9 @@ export function Footer() {
               <Link href="/competences/ma-tech" className="hover:text-white">
                 M&A Tech & due diligence
               </Link>
+              <Link href="/nos-domaines/crypto-actifs-blockchain" className="hover:text-white">
+                Crypto-actifs & blockchain
+              </Link>
             </FooterColumn>
 
             <FooterColumn title="Le cabinet">
