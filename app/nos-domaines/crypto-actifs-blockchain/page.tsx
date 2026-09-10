@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { fr } from "@/lib/typo";
 import { MEMBRES } from "@/lib/equipe";
+import KeywordBadge from "@/components/keyword-badge";
 import { FAQ_ITEMS } from "./faq";
 import styles from "./crypto.module.css";
 
@@ -143,7 +144,9 @@ export default function Page() {
       <header className={styles.hero}>
         <div className={`${styles.wrap} ${styles.heroGrid}`}>
           <div>
-            <span className={styles.eyebrow}>crypto-actifs · blockchain · web3</span>
+            <KeywordBadge style={{ marginBottom: 34 }}>
+              crypto-actifs · blockchain · web3
+            </KeywordBadge>
             <h1>
               Avocat en crypto-actifs,
               <br />
@@ -159,7 +162,7 @@ export default function Page() {
                 "Le régime applicable aux prestataires a changé de nature. Les risques juridiques et contractuels ont changé avec lui.",
               )}
             </p>
-            <a className={styles.btnHero} href="#contact">
+            <a className={`${styles.btn} ${styles.btnHero}`} href="#contact">
               exposer un projet ou un litige
             </a>
             <p className={styles.micro}>
