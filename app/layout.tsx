@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   title: "Lazarègue Avocats — Droit du numérique",
   description:
     "Cabinet d'avocats dédié au droit du numérique, à la cybersécurité, à l'intelligence artificielle et à la régulation des plateformes.",
+  // VERROU PRÉ-PROD — le site n'est pas encore public (contenus en placeholder,
+  // ex. {{CHAPO_A_REDIGER}}). noindex/nofollow à l'échelle du site. À RETIRER
+  // le jour de la mise en ligne publique (voir aussi app/robots.ts).
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({

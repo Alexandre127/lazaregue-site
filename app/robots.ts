@@ -1,30 +1,23 @@
 import type { MetadataRoute } from "next";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lazaregue-avocats.fr";
-
 /**
- * Directives d'exploration + déclaration du plan du site.
+ * VERROU PRÉ-PROD — le site n'est pas encore public.
  *
- * Tout est ouvert : le site n'a pas de zone privée. Seules les routes
- * techniques de Next.js sont exclues — elles n'ont rien à faire dans l'index.
+ * Tant que des contenus sont en placeholder (ex. {{CHAPO_A_REDIGER}}) et que la
+ * mise en ligne n'est pas décidée, on interdit toute exploration : `Disallow: /`
+ * pour tous les robots. Le `noindex, nofollow` posé dans app/layout.tsx couvre
+ * en plus le cas où une URL serait tout de même atteinte.
  *
- * Le groupe « * » autorise déjà tous les robots. Les robots des moteurs de
- * réponse par IA (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) sont
- * listés explicitement : c'est sans effet sur le comportement — ils étaient
- * déjà couverts — mais ça rend l'intention lisible et non ambiguë. Un robot
- * qui trouve son propre groupe l'utilise en priorité, d'où la reprise du même
- * `disallow` technique.
+ * Le site n'a pas encore de backlinks, donc aucun risque d'« indexation sans
+ * snippet » malgré le blocage. Pas de sitemap déclaré tant que c'est verrouillé.
+ *
+ * À RÉTABLIR le jour de la mise en ligne publique : rouvrir `allow: "/"`,
+ * exclure seulement /_next/ et /api/, redéclarer le sitemap, et retirer le
+ * `robots` de app/layout.tsx. (Ancienne config ouverte conservée en historique
+ * git.)
  */
-const DISALLOW = ["/_next/", "/api/"];
-const BOTS_IA = ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended"];
-
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      { userAgent: "*", allow: "/", disallow: DISALLOW },
-      ...BOTS_IA.map((userAgent) => ({ userAgent, allow: "/", disallow: DISALLOW })),
-    ],
-    sitemap: `${SITE}/sitemap.xml`,
-    host: SITE,
+    rules: [{ userAgent: "*", disallow: "/" }],
   };
 }
