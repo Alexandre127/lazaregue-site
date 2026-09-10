@@ -68,8 +68,15 @@ export default function Page() {
       <header className={styles.hero}>
         <div className={styles.wrap}>
           <h1>Domaines d&apos;intervention</h1>
-          {/* Chapô de 80 à 150 mots — À RÉDIGER par le cabinet, ne pas inventer. */}
-          <p className={styles.chapo}>{"{{CHAPO_A_REDIGER}}"}</p>
+          {/* Chapô — texte du cabinet (base fournie, légèrement corrigée). */}
+          <p className={styles.chapo}>
+            Le cabinet intervient sur les litiges et les obligations nés des
+            technologies numériques : conformité des traitements de données et
+            des systèmes d&apos;intelligence artificielle, sécurisation des
+            contrats informatiques, contentieux de la fraude bancaire, des
+            cyberattaques et des atteintes à la réputation en ligne. Les neuf
+            domaines ci-dessous précisent le périmètre de chaque intervention.
+          </p>
         </div>
       </header>
 
