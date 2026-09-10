@@ -21,6 +21,7 @@ const DOMAINES_LINKS = [
     href: "/nos-domaines/diffamation-retrait-de-contenus",
   },
   { label: "M&A Tech & Due diligence", href: "/competences/ma-tech" },
+  { label: "Crypto-actifs & blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
   // « Gaming, Esport & Industrie créative » pointait vers /competences/gaming,
   // qui n'existe pas. À remettre le jour où la page sera écrite.
 ];

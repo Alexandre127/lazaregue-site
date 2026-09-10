@@ -26,6 +26,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/nos-domaines/avocat-escroquerie-fraude", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/diffamation-retrait-de-contenus", priority: 0.9, frequence: "monthly" },
   { path: "/competences/ma-tech", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/crypto-actifs-blockchain", priority: 0.9, frequence: "monthly" },
 
   // Conversion et confiance
   { path: "/contact", priority: 0.8, frequence: "yearly" },
