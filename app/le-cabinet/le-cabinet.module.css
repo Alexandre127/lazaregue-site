@@ -27,14 +27,20 @@
   color: var(--ink);
   font-family: var(--ff-body);
   font-variant-ligatures: common-ligatures;
+  /* Interligne de lecture par défaut, posé sur `.page` pour être HÉRITÉ. La
+     maquette le portait sur un `p` nu (spécificité 0,0,1) ; le transposer en
+     `.page p` (0,1,1) écrasait le `line-height:.9` de `.slogan` (0,1,0) et
+     étirait le slogan sur plusieurs écrans. Hérité, il cède à toute valeur
+     posée directement (ex. `.slogan`). */
+  line-height: 1.62;
 }
 
 /* Neutralise la règle globale `p { color: blanc 82 % }` : sur cette page, le
-   paragraphe hérite de la couleur de sa section. */
+   paragraphe hérite de la couleur de sa section. (Pas de `line-height` ici :
+   il vient de `.page` par héritage — voir ci-dessus.) */
 .page p {
   font-family: var(--ff-body);
   color: inherit;
-  line-height: 1.62;
 }
 
 .page :focus-visible {
@@ -111,11 +117,15 @@
   color: #fff;
   padding: 84px 0 0;
 }
+/* Sous le slogan pleine largeur : paragraphe de positionnement à gauche, grille
+   de faits à droite. La grille de faits est à droite du PARAGRAPHE, pas du
+   slogan (le slogan est sorti de la grille pour occuper toute la largeur). */
 .heroGrid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 72px;
-  align-items: end;
+  align-items: start;
+  margin-top: 44px;
 }
 /* Enveloppe du badge mot-clé (le <h1>, cf. components/keyword-badge) : assure
    le retour à la ligne sous l'œil-de-bœuf et l'espacement avec le slogan. Le
@@ -138,7 +148,7 @@
   color: rgba(255, 255, 255, 0.76);
   font-size: 16px;
   max-width: 52ch;
-  margin-top: 26px;
+  margin-top: 0;
 }
 .heroActions {
   display: flex;
