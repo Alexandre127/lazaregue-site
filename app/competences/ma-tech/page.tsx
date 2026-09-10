@@ -129,7 +129,7 @@ export default function Page() {
         <div className={styles.wrap}>
           <div className={styles.heroInner}>
             <div className={styles.heroCopy}>
-              <span className={styles.heroPastille}>Due diligence technologique · M&amp;A Tech · Paris</span>
+              <span className={styles.heroPastille}>Fusions-acquisitions tech · Paris</span>
               <h1>
                 {fr(HERO.h1)}
                 <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
