@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, type CSSProperties, type ReactNode } from "react";
-import { fr } from "@/lib/typo";
 import Link from "next/link";
 import Image from "next/image";
 import { Jurisprudence, type Decision } from "@/components/jurisprudence";
@@ -429,8 +428,9 @@ export default function IaActClient() {
             <p style={{ ...TYPE.body, maxWidth: 520, color: DARK.muted, marginBottom: 16 }}>
               Le cabinet accompagne les entreprises qui utilisent, intègrent ou
               développent des systèmes d&apos;intelligence artificielle. Nous
-              produisons une qualification, une documentation et, le jour où
-              elle est discutée, une défense.
+              établissons les obligations qui vous incombent, nous posons les
+              règles que vos équipes appliqueront, et nous vous défendons le jour
+              où le sujet est contesté.
             </p>
 
             <div className="mb-4 flex flex-wrap gap-2">
@@ -494,34 +494,34 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 2. SUIS-JE CONCERNÉ — six situations */}
+      {/* 2. ÊTES-VOUS CONCERNÉ — six exemples, tableau Situation / Question. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
-          <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Six situations qui appellent une qualification</h2>
+          <Eyebrow>Périmètre</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Êtes-vous concerné ?</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Un seul de ces usages suffit à justifier d&apos;identifier votre rôle
-            et les documents à conserver. Entrer dans le champ du règlement
-            n&apos;emporte pas les obligations les plus lourdes.
+            Six exemples parmi les plus fréquents. La liste n&apos;est pas limitative.
           </p>
           <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden" }}>
+            <div className="hidden md:grid md:grid-cols-2" style={{ gap: "0 16px", padding: "10px 14px", background: LIGHT.panel, borderBottom: `0.5px solid ${LIGHT.border}` }}>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>Situation</span>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>La question qui se pose</span>
+            </div>
             {[
-              { usage: "IA générative utilisée par vos salariés", suite: "transparence et maîtrise de l'IA, applicables aujourd'hui" },
-              { usage: "Outils RH ou de recrutement automatisés", suite: "relève de l'annexe III, la qualification la plus lourde" },
-              { usage: "Scoring, profilage ou aide à la décision", suite: "souvent annexe III, et croisement avec le RGPD" },
-              { usage: "IA intégrée à un produit ou un service", suite: "annexe I si le produit relève d'une réglementation à marquage" },
-              { usage: "Fournisseur ou API d'IA externe", suite: "la répartition des rôles se joue au contrat" },
-              { usage: "Inférence des émotions au travail", suite: "pratique interdite, sanctionnable depuis février 2025" },
-            ].map((u, i) => (
+              { situation: "IA générative utilisée par vos salariés", question: "Quelles données peut-on y verser, et quelles règles fixer ?" },
+              { situation: "Recrutement et gestion RH", question: "Comment encadrer la décision et préparer le dialogue social ?" },
+              { situation: "Chatbot destiné à vos clients", question: "Que faut-il dire à l'interlocuteur, et qui répond des erreurs ?" },
+              { situation: "Scoring ou aide à la décision", question: "Quelles garanties pour les personnes, et quel lien avec le RGPD ?" },
+              { situation: "IA intégrée à votre produit", question: "Quel rôle tenons-nous, et quelles obligations nous incombent ?" },
+              { situation: "Inférence des émotions au travail", question: "Cet usage est interdit. Où s'arrête l'interdiction ?" },
+            ].map((r, i) => (
               <div
-                key={u.usage}
-                style={{
-                  padding: "12px 14px",
-                  borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none",
-                }}
+                key={r.situation}
+                className="grid grid-cols-1 md:grid-cols-2"
+                style={{ gap: "4px 16px", padding: "12px 14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none" }}
               >
-                <div style={{ fontSize: 14, color: LIGHT.text, lineHeight: 1.4 }}>{u.usage}</div>
-                <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, marginTop: 2 }}>{u.suite}</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.4 }}>{r.situation}</div>
+                <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>{r.question}</div>
               </div>
             ))}
           </div>
@@ -542,89 +542,61 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 3. LA DÉMONSTRATION — deux volets « utilisateur → fabricant » reliés
-          par un chevron (horizontal desktop / vertical mobile), un encadré ocre
-          pleine largeur, puis une ligne muette sur les autres rôles. Pas de
-          vocabulaire réglementaire en vitrine. */}
+      {/* 3. CE QUE LE RÈGLEMENT IMPOSE — obligations par rôle. Le vocabulaire
+          (fournisseur / déployeur / modèle) est posé ici, avant que l'offre ne
+          l'emploie au bloc suivant. Remplace l'ancienne « démonstration ». */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
-        <style>{`
-          .demo-volets { display: flex; flex-direction: column; gap: ${GRID_GAP}px; align-items: stretch; }
-          .demo-volets > .demo-card { flex: 1; }
-          .demo-chevron { display: flex; align-items: center; justify-content: center; color: ${BLUE}; flex-shrink: 0; }
-          .demo-chevron svg { transform: rotate(90deg); }
-          @media (min-width: 768px) {
-            .demo-volets { flex-direction: row; }
-            .demo-chevron svg { transform: none; }
-          }
-        `}</style>
         <div style={INNER}>
-          <Eyebrow>La démonstration</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Acheter un outil d&apos;IA, ou en devenir responsable</h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 720 }}>
-            Une entreprise peut changer de régime juridique sans changer
-            d&apos;outil, sans signer de contrat et sans le savoir.
+          <Eyebrow>Le cadre</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que le règlement impose</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
+            Le règlement qualifie des usages, système par système. Ce que vous
+            devez dépend du rôle que vous tenez sur chacun d&apos;eux.
           </p>
-
-          <div className="demo-volets">
-            {/* Volet gauche — utilisateur / déployeur */}
-            <div className="demo-card" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>
-                Vous êtes utilisateur
-              </span>
-              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 10.5, color: LIGHT.muted, marginTop: 2 }}>
-                le règlement dit déployeur
-              </span>
-              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "10px 0 0", lineHeight: 1.45 }}>
-                Vous achetez un logiciel de tri de candidatures et vous
-                l&apos;utilisez tel qu&apos;il vous a été vendu.
-              </p>
-              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Vos obligations sont limitées : respecter la notice, garder un
-                humain qui décide, informer vos salariés.
-              </p>
-            </div>
-
-            <div className="demo-chevron" aria-hidden>
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 6l6 6-6 6" />
-              </svg>
-            </div>
-
-            {/* Volet droite — fabricant / fournisseur */}
-            <div className="demo-card" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>
-                Vous devenez fabricant
-              </span>
-              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 10.5, color: LIGHT.muted, marginTop: 2 }}>
-                le règlement dit fournisseur
-              </span>
-              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "10px 0 0", lineHeight: 1.45 }}>
-                Une équipe branche un outil d&apos;IA du marché sur la
-                présélection des CV.
-              </p>
-              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Vous ne l&apos;utilisez plus : vous le fabriquez. Documentation
-                technique, évaluation de conformité, enregistrement européen.
-              </p>
-            </div>
+          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
+            {[
+              {
+                lead: "Formation",
+                texte:
+                  "Toute entreprise, qu'elle fournisse ou qu'elle utilise, prend des mesures pour faire monter en compétence les personnes qui exploitent ses systèmes. Le texte du 8 juillet 2026 en fait une obligation de moyens : aucun niveau individuel à garantir. Un plan de formation daté reste le moyen de preuve le plus simple.",
+                ref: "art. 4",
+              },
+              {
+                lead: "Transparence",
+                texte:
+                  "Le fournisseur conçoit le système pour qu'on sache qu'on parle à une IA et marque ses sorties de synthèse. Le déployeur signale les hypertrucages et informe les personnes exposées à un système de reconnaissance des émotions. Pour un texte publié sur une question d'intérêt public, la mention tombe si une personne assume la responsabilité éditoriale : nommer le relecteur, dater, conserver la trace.",
+                ref: "art. 50",
+              },
+              {
+                lead: "Vous utilisez un système à haut risque",
+                texte:
+                  "Suivre la notice, confier la supervision à quelqu'un qui a l'autorité de contredire le système, veiller aux données d'entrée, conserver les journaux, informer vos salariés avant la mise en service et les personnes visées par une décision.",
+                ref: "art. 26 — exigible selon la catégorie du système, voir le calendrier",
+              },
+              {
+                lead: "Vous en fournissez un",
+                texte:
+                  "Le régime le plus lourd : gestion des risques, gouvernance des données, documentation technique, journalisation, supervision, évaluation de conformité, marquage, enregistrement européen, incidents graves sous quinze jours. Le détail est dans notre livre blanc.",
+                ref: null,
+              },
+              {
+                lead: "Vous utilisez un modèle du marché",
+                texte:
+                  "Les obligations pèsent sur son éditeur. Ce que vous obtiendrez de lui dépend de votre contrat : c'est un point de négociation, pas un droit acquis.",
+                ref: "art. 53 et 55",
+              },
+            ].map((o, i) => (
+              <div key={o.lead} style={{ padding: "14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none", background: LIGHT.panel }}>
+                <p style={{ fontSize: 14, color: LIGHT.text, margin: 0, lineHeight: 1.6 }}>
+                  <strong style={{ fontWeight: 600 }}>{o.lead}.</strong>{" "}
+                  <span style={{ color: LIGHT.muted }}>{o.texte}</span>
+                  {o.ref ? (
+                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint }}> ({o.ref})</span>
+                  ) : null}
+                </p>
+              </div>
+            ))}
           </div>
-
-          {/* Encadré ocre pleine largeur, sans étiquette de titre. */}
-          <div style={{ background: "#FBF7E8", border: "1px solid #E7D4A6", borderLeft: "3px solid #8A5A00", borderRadius: 10, padding: CARD_PAD, marginTop: GRID_GAP }}>
-            <p style={{ fontSize: 14, color: LIGHT.text, margin: 0, lineHeight: 1.6 }}>
-              Personne n&apos;a signé quoi que ce soit. Une équipe a branché un
-              outil sur le tri des candidatures, un mardi après-midi. C&apos;est
-              ce geste qui change le régime applicable, et il n&apos;apparaît dans
-              aucun contrat.
-            </p>
-          </div>
-
-          {/* Ligne muette, sans carte, sur les autres rôles. */}
-          <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "12px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
-            Le règlement distingue aussi l&apos;importateur, le distributeur et le
-            mandataire, tenus d&apos;un contrôle documentaire et d&apos;un devoir
-            d&apos;alerte.
-          </p>
         </div>
       </section>
 
