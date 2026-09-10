@@ -4,7 +4,7 @@ import ContactForm from "./_components/ContactForm";
 import { fr } from "@/lib/typo";
 import Faq from "./_components/Faq";
 import HeroVideo from "./_components/HeroVideo";
-import { AVIS, CHIFFRES, GARANTIES, TEMOIGNAGES } from "./data/reassurance";
+import { CHIFFRES, GARANTIES } from "./data/reassurance";
 
 const TITLE = "Avocat droit du numérique Paris | Contact | Lazarègue Avocats";
 const DESCRIPTION =
@@ -240,48 +240,9 @@ export default function Page() {
 
       </div>
 
-      {/* Témoignages — avis Google publics, cités fidèlement */}
-      <section className={styles.temoignages} aria-labelledby="avis-titre">
-        <div className={styles.wrap}>
-          <div className={styles.folio}>Ils nous ont fait confiance</div>
-          <div className={styles.avisEntete}>
-            <h2 id="avis-titre" className={styles.avisTitre}>
-              {AVIS.note} sur 5
-            </h2>
-            <div className={styles.etoiles} aria-hidden>
-              ★★★★★
-            </div>
-            <a
-              className={styles.avisSource}
-              href={AVIS.href}
-              target="_blank"
-              rel="noopener"
-            >
-              {AVIS.source} · {AVIS.nombre} avis →
-            </a>
-          </div>
-
-          <div className={styles.avisGrille}>
-            {TEMOIGNAGES.map((t) => (
-              <figure key={t.auteur} className={styles.avis}>
-                <div className={styles.etoilesPetites} aria-label="5 étoiles sur 5">
-                  ★★★★★
-                </div>
-                <blockquote>{t.texte}</blockquote>
-                <figcaption>
-                  <span className={styles.avisInitiales} aria-hidden>
-                    {t.auteur
-                      .split(" ")
-                      .map((m) => m[0])
-                      .join("")}
-                  </span>
-                  <span className={styles.avisAuteur}>{t.auteur}</span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* La section « Témoignages » (note Google, nombre d'avis et citations
+          d'avis Google) a été retirée : plus aucune mention d'avis ou de note
+          Google sur le site. */}
 
       {/* Garanties */}
       <section className={styles.garanties} aria-label="Nos engagements">

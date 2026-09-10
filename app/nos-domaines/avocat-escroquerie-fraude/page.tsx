@@ -84,7 +84,26 @@ export default function Page() {
           />
           <div className={styles.heroVeil} aria-hidden />
           <div className={styles.wrap}>
-            <span className={styles.lbl}>victimes d'escroquerie · recours et récupération des fonds</span>
+            {/* Pastille œil-de-bœuf, au format des pages de domaine (cf.
+                cybersécurité). Simple œil-de-bœuf : le <h1> reste le grand titre
+                ci-dessous. Inline comme les autres pages de domaine sur main. */}
+            <span
+              style={{
+                display: "inline-block",
+                fontFamily: "var(--ff-mono)",
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#7fa8ff",
+                background: "rgba(26,71,255,0.25)",
+                borderRadius: 8,
+                padding: "4px 12px",
+                marginBottom: 18,
+              }}
+            >
+              Escroquerie et fraude · Paris
+            </span>
             <h1>Avocat<br />escroquerie<br />et fraude</h1>
             <p className={styles.claim}>{fr("L'escroc a disparu. Les établissements qui ont laissé circuler les fonds, non.")}</p>
             <p className={styles.sub}>{fr("Escroquerie bancaire, phishing, spoofing, faux conseiller, fraude au président, faux RIB, placement fictif, escroquerie hors ligne. Le cabinet intervient pour les victimes : il conduit l'action pénale et, surtout, recherche le remboursement ou l'indemnisation auprès des établissements et intermédiaires financiers.")}</p>

@@ -9,43 +9,16 @@
 
 export type Chiffre = { valeur: string; legende: string };
 
-/** Chiffres affichés — chacun adossé à un fait vérifiable. */
+/**
+ * Chiffres affichés — chacun adossé à un fait vérifiable.
+ *
+ * La note et le nombre d'avis Google ont été retirés : plus aucune mention
+ * d'avis ni de note Google sur le site.
+ */
 export const CHIFFRES: Chiffre[] = [
   { valeur: "2016", legende: "Année de création" },
-  { valeur: "5,0 / 5", legende: "Note Google · 17 avis" },
   { valeur: "24 h", legende: "Délai de réponse ouvré" },
   { valeur: "100 %", legende: "Droit du numérique" },
-];
-
-export { AVIS } from "@/lib/avis";
-
-export type Temoignage = {
-  texte: string;
-  auteur: string;
-  /** Vrai si la citation est tronquée, comme affichée par Google */
-  tronque?: boolean;
-};
-
-/**
- * Témoignages repris des avis Google publics, cités fidèlement et attribués
- * au nom d'affichage de leur auteur. Aucune fonction ni taille d'entreprise
- * n'est ajoutée : Google n'en publie pas, et les inventer fausserait l'avis.
- *
- * Les textes complets sont tronqués par Google (« … Plus ») ; la troncature
- * est signalée par des points de suspension.
- */
-export const TEMOIGNAGES: Temoignage[] = [
-  {
-    texte:
-      "Nous avons fait appel au cabinet Lazarègue Avocats dans le cadre d'une restructuration juridique impliquant à la fois des enjeux capitalistiques…",
-    auteur: "Carole Duval",
-    tronque: true,
-  },
-  {
-    texte:
-      "J'ai eu la chance d'être accompagné par Me Lazarègue dans une affaire délicate, et je tiens à souligner son professionnalisme et sa réactivité.",
-    auteur: "Rayan Kibz",
-  },
 ];
 
 /** Engagements — chacun correspond à une pratique effective du cabinet. */
