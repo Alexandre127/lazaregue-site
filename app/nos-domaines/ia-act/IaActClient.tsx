@@ -494,7 +494,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 5. SUIS-JE CONCERNÉ — six situations */}
+      {/* 2. SUIS-JE CONCERNÉ — six situations */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>{fr("Suis-je concerné ?")}</Eyebrow>
@@ -542,12 +542,21 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 3. LA DÉMONSTRATION — récit en trois temps. Le tableau A/B ne rendait
-          pas la chronologie et introduisait du vocabulaire réglementaire ;
-          remplacé par trois blocs de même largeur, le 3e marquant la bascule.
-          Aucun numéro d'article ni terme d'annexe ici : ils restent dans le
-          calendrier, qui est leur place. */}
+      {/* 3. LA DÉMONSTRATION — deux volets « utilisateur → fabricant » reliés
+          par un chevron (horizontal desktop / vertical mobile), un encadré ocre
+          pleine largeur, puis une ligne muette sur les autres rôles. Pas de
+          vocabulaire réglementaire en vitrine. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <style>{`
+          .demo-volets { display: flex; flex-direction: column; gap: ${GRID_GAP}px; align-items: stretch; }
+          .demo-volets > .demo-card { flex: 1; }
+          .demo-chevron { display: flex; align-items: center; justify-content: center; color: ${BLUE}; flex-shrink: 0; }
+          .demo-chevron svg { transform: rotate(90deg); }
+          @media (min-width: 768px) {
+            .demo-volets { flex-direction: row; }
+            .demo-chevron svg { transform: none; }
+          }
+        `}</style>
         <div style={INNER}>
           <Eyebrow>La démonstration</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Acheter un outil d&apos;IA, ou en devenir responsable</h2>
@@ -556,76 +565,72 @@ export default function IaActClient() {
             d&apos;outil, sans signer de contrat et sans le savoir.
           </p>
 
-          {/* Bandeau des rôles — trois colonnes courtes, intitulés en DM Mono. */}
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, marginBottom: GRID_GAP }}>
-            {[
-              {
-                role: "Fournisseur",
-                carac: "Développe ou fait développer un système et le met sur le marché sous son nom ou sa marque",
-                implique: "Le régime le plus lourd : conception, documentation, évaluation de conformité, marquage, surveillance",
-              },
-              {
-                role: "Déployeur",
-                carac: "Utilise un système sous sa propre autorité, dans un cadre professionnel",
-                implique: "Le rôle de la très grande majorité des entreprises : usage conforme, contrôle humain, information des personnes",
-              },
-              {
-                role: "Importateur, distributeur, mandataire",
-                carac: "Met en circulation ou représente un opérateur établi hors de l'Union",
-                implique: "Contrôle documentaire, devoir d'alerte, point de contact des autorités",
-              },
-            ].map((r) => (
-              <div key={r.role} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-                <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>{r.role}</span>
-                <p style={{ fontSize: 13, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.5 }}>{r.carac}</p>
-                <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "8px 0 0", lineHeight: 1.55 }}>{r.implique}</p>
-              </div>
-            ))}
+          <div className="demo-volets">
+            {/* Volet gauche — utilisateur / déployeur */}
+            <div className="demo-card" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
+              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>
+                Vous êtes utilisateur
+              </span>
+              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 10.5, color: LIGHT.muted, marginTop: 2 }}>
+                le règlement dit déployeur
+              </span>
+              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "10px 0 0", lineHeight: 1.45 }}>
+                Vous achetez un logiciel de tri de candidatures et vous
+                l&apos;utilisez tel qu&apos;il vous a été vendu.
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                Vos obligations sont limitées : respecter la notice, garder un
+                humain qui décide, informer vos salariés.
+              </p>
+            </div>
+
+            <div className="demo-chevron" aria-hidden>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </div>
+
+            {/* Volet droite — fabricant / fournisseur */}
+            <div className="demo-card" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
+              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".07em", textTransform: "uppercase", color: BLUE }}>
+                Vous devenez fabricant
+              </span>
+              <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 10.5, color: LIGHT.muted, marginTop: 2 }}>
+                le règlement dit fournisseur
+              </span>
+              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "10px 0 0", lineHeight: 1.45 }}>
+                Une équipe branche un outil d&apos;IA du marché sur la
+                présélection des CV.
+              </p>
+              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
+                Vous ne l&apos;utilisez plus : vous le fabriquez. Documentation
+                technique, évaluation de conformité, enregistrement européen.
+              </p>
+            </div>
           </div>
 
-          {/* Deux volets datés (le rôle) + le volet « La question ». Mise en forme conservée. */}
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
-            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>Déployeur</span>
-              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
-                L&apos;entreprise achète un outil de tri de candidatures.
-              </p>
-              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Elle l&apos;utilise tel quel, sous l&apos;autorité de son service
-                RH. Elle est déployeur. Ses obligations sont opérationnelles :
-                usage conforme à la notice, contrôle humain, information des
-                salariés et de leurs représentants.
-              </p>
-            </div>
-            <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: LIGHT.faint }}>Fournisseur</span>
-              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.45 }}>
-                La même entreprise branche un modèle généraliste sur sa
-                présélection de candidatures.
-              </p>
-              <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>
-                Elle assigne à cet outil une destination qui relève de
-                l&apos;annexe III. Elle devient fournisseur d&apos;un système à
-                haut risque au sens de l&apos;article 25, et l&apos;éditeur du
-                modèle cesse de l&apos;être pour cet usage. Documentation
-                technique, évaluation de conformité, enregistrement : le régime
-                le plus lourd du texte s&apos;applique à elle.
-              </p>
-            </div>
-            {/* Volet « La question » — inchangé sur le fond, mise en forme conservée. */}
-            <div style={{ background: "#FBF7E8", border: "1px solid #E7D4A6", borderLeft: "3px solid #8A5A00", borderRadius: 10, padding: CARD_PAD }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", color: "#8A5A00" }}>La question</span>
-              <p style={{ fontSize: 14, fontWeight: 600, color: LIGHT.text, margin: "8px 0 0", lineHeight: 1.5 }}>
-                Ce qui a changé n&apos;est pas la loi. C&apos;est une décision
-                interne que personne n&apos;a qualifiée.
-              </p>
-            </div>
+          {/* Encadré ocre pleine largeur, sans étiquette de titre. */}
+          <div style={{ background: "#FBF7E8", border: "1px solid #E7D4A6", borderLeft: "3px solid #8A5A00", borderRadius: 10, padding: CARD_PAD, marginTop: GRID_GAP }}>
+            <p style={{ fontSize: 14, color: LIGHT.text, margin: 0, lineHeight: 1.6 }}>
+              Personne n&apos;a signé quoi que ce soit. Une équipe a branché un
+              outil sur le tri des candidatures, un mardi après-midi. C&apos;est
+              ce geste qui change le régime applicable, et il n&apos;apparaît dans
+              aucun contrat.
+            </p>
           </div>
+
+          {/* Ligne muette, sans carte, sur les autres rôles. */}
+          <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "12px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
+            Le règlement distingue aussi l&apos;importateur, le distributeur et le
+            mandataire, tenus d&apos;un contrôle documentaire et d&apos;un devoir
+            d&apos;alerte.
+          </p>
         </div>
       </section>
 
-      {/* 6. NOS INTERVENTIONS — trois niveaux */}
-      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
+      {/* 4. NOS INTERVENTIONS — trois niveaux + bloc « Défendre ». Bas de section
+          resserré : livrables enchaîne sur le même fond (bloc « offre » continu). */}
+      <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: "40px 0 8px" }}>
         <div style={INNER}>
           <Eyebrow>Nos interventions</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 14 }}>Trois niveaux d&apos;accompagnement AI Act</h2>
@@ -700,18 +705,20 @@ export default function IaActClient() {
                 padding: CARD_PAD,
               }}
             >
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".07em", color: DARK.muted }}>+</span>
-              <h3 style={{ ...TYPE.h3, color: DARK.text, margin: "6px 0 0" }}>Défendre — contrôle, incident, contentieux</h3>
+              <h3 style={{ ...TYPE.h3, color: DARK.text, margin: 0 }}>Défendre — contrôle, incident, contentieux</h3>
               <p style={{ fontSize: 13, color: DARK.muted, margin: "8px 0 0", lineHeight: 1.6 }}>
                 La documentation de conformité est la première ligne de défense ;
                 le cabinet la construit pour qu&apos;elle tienne.
+              </p>
+              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".04em", color: DARK.muted, margin: "12px 0 0", lineHeight: 1.6 }}>
+                contrôle de l&apos;autorité · incident grave · contentieux avec un fournisseur ou un salarié
               </p>
             </article>
           </div>
         </div>
       </section>
 
-      {/* 8. LES LIVRABLES — extraits (section « offre » : fond LIGHT.panel). */}
+      {/* 5. LES LIVRABLES — extraits (section « offre » : fond LIGHT.panel). */}
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
@@ -839,7 +846,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 9. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
+      {/* 6. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
           affiche juridiction, date et enseignement essentiel ; l'analyse est
           repliée derrière un <details> natif (aucun JS). */}
       <section id="ce-que-les-juges" style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD, scrollMarginTop: 80 }}>
@@ -861,7 +868,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 10. NOTRE APPROCHE — le binôme (parité stricte : même format, même
+      {/* 7. NOTRE APPROCHE — le binôme (parité stricte : même format, même
           encadré de fonction, même nombre de points, hauteur identique via
           align-items:stretch + height 100%). Alexandre en premier. Un seul h2.
           TODO (cabinet) : valider avec Nadia Abchiche-Mimouni l'intitulé exact
@@ -973,7 +980,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 4. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
+      {/* 8. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Où en est le droit</Eyebrow>
@@ -1116,7 +1123,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 5b. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
+      {/* 9. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
           correspondante n'existe pas encore → bouton DÉSACTIVÉ, aucune URL
           inventée, aucun formulaire. À ACTIVER quand la page « Le règlement sur
           l'IA : qui doit faire quoi » existera dans Ressources : pointer vers la
@@ -1174,7 +1181,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 11. QUESTIONS FRÉQUENTES */}
+      {/* 10. QUESTIONS FRÉQUENTES */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Questions fréquentes</Eyebrow>
@@ -1254,7 +1261,7 @@ export default function IaActClient() {
       </section>
 
 
-      {/* 12. MAILLAGE — RGPD, contrats IT, NIS 2. Version simple posée dès le
+      {/* 11. MAILLAGE — RGPD, contrats IT, NIS 2. Version simple posée dès le
           lot 2 pour ne pas perdre les liens internes ; à peaufiner au lot 4. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
@@ -1277,7 +1284,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 13. CTA */}
+      {/* 12. CTA */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={{ ...INNER, textAlign: "center" }}>
           <h2 style={{ ...TYPE.h2, marginBottom: 6, color: DARK.text }}>
