@@ -220,7 +220,12 @@ export function SiteHeader() {
                     >
                       {/* Le libellé est un lien vers la rubrique ; le chevron est
                           un bouton distinct (accès à la rubrique en tactile). */}
-                      <Link className={styles.navLink} href={entry.href}>
+                      <Link
+                        className={`${styles.navLink}${
+                          panelOpen ? ` ${styles.navLinkOpen}` : ""
+                        }`}
+                        href={entry.href}
+                      >
                         {entry.label}
                       </Link>
                       <button
