@@ -18,7 +18,7 @@ export default function Hero() {
           <div>
             <span className={`${styles.label} ${styles.labelLight}`}>Le cabinet</span>
             <div className={styles.h1badge}>
-              <KeywordBadge>
+              <KeywordBadge as="h1">
                 Cabinet d&apos;avocats en droit du numérique à Paris
               </KeywordBadge>
             </div>

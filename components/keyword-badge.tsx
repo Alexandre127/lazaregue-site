@@ -1,18 +1,24 @@
 import type { CSSProperties, ReactNode } from "react";
 
 /**
- * Pastille mot-clé de héro — sert de `<h1>` à la page.
+ * Pastille mot-clé de héro.
  *
- * Centralise la « pastille du héro » déjà employée sur les pages de domaine
- * (contrats informatiques, diffamation, IA/AI Act, cybersécurité), jusqu'ici
- * répétée en style inline. Mêmes valeurs, rien de redéfini : DM Mono 11 px,
- * majuscules, texte `#7fa8ff` sur fond bleu translucide, coins arrondis 8.
+ * Centralise la « pastille du héros » des pages de domaine (contrats,
+ * diffamation, IA/AI Act, cybersécurité), jusqu'ici répétée en style inline :
+ * DM Mono 11 px, majuscules, texte `#7fa8ff` sur fond bleu translucide, coins 8.
  *
- * Rendu en `<h1>` : c'est le titre de la page (un seul par page), il porte le
- * mot-clé principal. Styles inline volontaires — d'une part parce que la
- * pastille d'origine l'était, d'autre part parce qu'ils priment sur la règle
- * globale `h1 { font-family: var(--ff-display) }` (Bebas) et sur tout sélecteur
- * hôte comme `.hero h1`, garantissant le même rendu partout sans `!important`.
+ * Rôle selon la page (`as`) :
+ *  - `span` (défaut) — simple **œil-de-bœuf** au-dessus du grand titre, qui reste
+ *    le `<h1>`. C'est le cas des pages de domaine, qui ont déjà un `<h1>` (ex.
+ *    « AVOCAT ESCROQUERIE ET FRAUDE »). Défaut volontaire : évite de créer un
+ *    second `<h1>` par accident.
+ *  - `h1` — la pastille EST le titre de la page. Réservé à `/le-cabinet`, qui n'a
+ *    pas d'autre titre (le slogan n'en est pas un).
+ *
+ * Styles inline volontaires : mêmes valeurs que la pastille d'origine, et ils
+ * priment sur la règle globale `h1 { font-family: var(--ff-display) }` (Bebas)
+ * et sur tout sélecteur hôte comme `.hero h1`, garantissant le même rendu
+ * partout sans `!important`.
  */
 const PASTILLE_STYLE: CSSProperties = {
   display: "inline-block",
@@ -32,18 +38,22 @@ const PASTILLE_STYLE: CSSProperties = {
 
 export default function KeywordBadge({
   children,
+  as = "span",
   className,
   style,
 }: {
-  /** Le mot-clé principal de la page — devient le texte du `<h1>`. */
+  /** Le mot-clé de la pastille. */
   children: ReactNode;
+  /** `span` (œil-de-bœuf, défaut) ou `h1` (uniquement /le-cabinet). */
+  as?: "span" | "h1";
   className?: string;
   /** Ajustements de positionnement de la page hôte (marges), pas d'apparence. */
   style?: CSSProperties;
 }) {
+  const Tag = as;
   return (
-    <h1 className={className} style={{ ...PASTILLE_STYLE, ...style }}>
+    <Tag className={className} style={{ ...PASTILLE_STYLE, ...style }}>
       {children}
-    </h1>
+    </Tag>
   );
 }
