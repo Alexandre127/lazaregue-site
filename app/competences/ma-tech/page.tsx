@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import styles from "./ma-tech.module.css";
-import { AVIS } from "@/lib/avis";
+import { fr } from "@/lib/typo";
 import {
+  BASCULE,
+  DEFINITION,
   DOMAINES_AUDIT,
-  ECART,
   ETAPES,
+  EQUIPE_POINT,
   FAQ,
   FIN,
   HERO,
@@ -13,14 +14,29 @@ import {
   MATRICE,
   OPERATIONS,
   POUR_QUI,
+  SCOPE,
+  TEAM,
 } from "./data/ma-tech";
 import Rail from "./_components/Rail";
+import Bascule from "./_components/Bascule";
 import EquipeDossier from "@/components/equipe-dossier";
 
+/** Échelle de sévérité partagée avec la bascule (b/h/m/l). */
+const SEV: Record<"b" | "h" | "m" | "l", string> = {
+  b: styles.sevB,
+  h: styles.sevH,
+  m: styles.sevM,
+  l: styles.sevL,
+};
+
+/**
+ * Le title vise la requête réellement tapée par les acquéreurs et leurs
+ * conseils ; la description reprend celle de la maquette.
+ */
 const TITLE =
-  "Avocat M&A Tech — due diligence technologique et audit juridique logiciel | Lazarègue Avocats";
+  "Avocat M&A Tech à Paris — due diligence technologique | Lazarègue Avocats";
 const DESCRIPTION =
-  "Due diligence technologique lors d'une acquisition : propriété du code, open source, données, garanties du SPA. Pour les PME et ETI qui rachètent une cible tech.";
+  "Avocat du volet technologique des opérations de fusion-acquisition : due diligence juridique des logiciels, données, contrats IT et systèmes d'IA, garanties du SPA et remédiation. Paris, toute la France.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -37,6 +53,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
+/* JSON-LD : LegalService (le site utilise déjà ce type) + FAQPage (les sept
+   questions de la page). Pas de HowTo (non demandé, plus de résultat enrichi
+   depuis 2023, et il décrirait une prestation d'avocat comme un mode d'emploi) ;
+   pas d'Organization (déjà dans le layout) ; PAS d'AggregateRating (un balisage
+   de notation auto-déclaré n'est pas éligible aux résultats enrichis et expose
+   à une action manuelle). */
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
@@ -52,19 +74,6 @@ const JSON_LD = {
       provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
     },
     {
-      "@type": "HowTo",
-      name: "Sécuriser le volet technologique d'une acquisition",
-      description:
-        "Les trois temps de l'intervention sur le stream technologique d'une opération de M&A.",
-      step: ETAPES.map((e, i) => ({
-        "@type": "HowToStep",
-        position: i + 1,
-        name: e.court,
-        text: e.these,
-        url: `https://lazaregue-avocats.fr/competences/ma-tech#${e.id}`,
-      })),
-    },
-    {
       "@type": "FAQPage",
       mainEntity: FAQ.map((f) => ({
         "@type": "Question",
@@ -76,22 +85,11 @@ const JSON_LD = {
 };
 
 /** Bouton d'action — pointe systématiquement vers la page contact. */
-function Cta({
-  tag,
-  label,
-  primary,
-}: {
-  tag: string;
-  label: string;
-  primary?: boolean;
-}) {
+function Cta({ tag, label, primary }: { tag: string; label: string; primary?: boolean }) {
   return (
-    <a
-      className={`${styles.cta} ${primary ? styles.ctaPrimary : ""}`.trim()}
-      href="/contact"
-    >
+    <a className={`${styles.cta} ${primary ? styles.ctaPrimary : ""}`.trim()} href="/contact">
       <span className={styles.tag}>{tag}</span>
-      <span className={styles.lbl}>{label}</span>
+      <span className={styles.lbl}>{fr(label)}</span>
     </a>
   );
 }
@@ -104,50 +102,161 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
-      <div className={styles.wrap}>
-        {/* Hero */}
-        <header className={styles.hero}>
-          <span className={styles.eyebrow}>{HERO.eyebrow}</span>
-          <h1>{HERO.h1}</h1>
-          <p className={styles.heroSub}>{HERO.sub}</p>
+      {/* Préchargement priorisé de l'image du héros (LCP), conditionné par media
+          pour ne PAS précharger sous 940 px où l'image est masquée. */}
+      <link
+        rel="preload"
+        as="image"
+        imageSrcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
+        imageSizes="(min-width: 1244px) 460px, 40vw"
+        type="image/webp"
+        media="(min-width: 940px)"
+      />
 
-          <div className={styles.tri}>
-            {HERO.triptyque.map((t, i) => (
-              <div key={t}>
-                <span>{String(i + 1).padStart(2, "0")}</span>
-                <p>{t}</p>
+      {/* ===== Héro — bande pleine largeur sur navy (gabarit des héros du site).
+           Grille DEUX COLONNES au-dessus de 940 px (texte à gauche, image à
+           droite ~40 %) ; UNE SEULE colonne en dessous, image masquée ET non
+           téléchargée.
+           L'image est servie en statique (WebP + repli JPEG, 1200/800 px),
+           recadrée 4:5 avec le bureau réduit ; le raccord au fond navy (dégradés
+           bord gauche + bas) est fait en CSS, pas dans le fichier.
+           next/image n'est PAS employé ici : son <img> serait téléchargé même
+           masqué en display:none sous 940 px, ce que la consigne de performance
+           proscrit. Un <picture> dont les <source> sont conditionnées par
+           `media:(min-width:940px)` n'émet aucune requête sous le seuil ; la
+           priorité (LCP) est portée par le <link rel="preload"> ci-dessus. ===== */}
+      <section className={styles.hero}>
+        <div className={styles.wrap}>
+          <div className={styles.heroInner}>
+            <div className={styles.heroCopy}>
+              <span className={styles.heroPastille}>Fusions-acquisitions tech · Paris</span>
+              <h1>
+                {fr(HERO.h1)}
+                <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
+              </h1>
+              <p className={styles.heroSub}>{fr(HERO.sub)}</p>
+              <p className={styles.heroIntro}>{fr(HERO.intro)}</p>
+
+              <div className={styles.ctaRow}>
+                <Cta tag="buy-side" label="Faire auditer une cible" primary />
+                <Cta tag="sell-side" label="Préparer une cession tech" />
+              </div>
+            </div>
+
+            <figure className={styles.heroMedia}>
+              <picture>
+                <source
+                  type="image/webp"
+                  media="(min-width: 940px)"
+                  srcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
+                  sizes="(min-width: 1244px) 460px, 40vw"
+                />
+                <source
+                  type="image/jpeg"
+                  media="(min-width: 940px)"
+                  srcSet="/images/ma-tech/ma-tech-800.jpg 800w, /images/ma-tech/ma-tech-1200.jpg 1200w"
+                  sizes="(min-width: 1244px) 460px, 40vw"
+                />
+                {/* Repli 1×1 transparent : sous 940 px aucune <source> ne
+                    s'applique, l'image n'est donc jamais téléchargée là où elle
+                    est masquée (un display:none ne suffirait pas). */}
+                <img
+                  className={styles.heroImg}
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  width={1200}
+                  height={1500}
+                  alt="Liasse de documents contractuels reliée, avec onglets de repérage"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
+          </div>
+
+          <div className={styles.assert}>
+            {HERO.assertions.map((a, i) => (
+              <div key={a}>
+                <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
+                <p>{fr(a)}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <p className={styles.scope}>
-            {HERO.scope}
-            <br />
-            {HERO.scope2}
-          </p>
-
-          <div className={styles.ctaRow}>
-            <Cta tag="Buy-side" label="Faire auditer une cible" primary />
-            <Cta tag="Sell-side" label="Préparer une cession tech" />
+      {/* ===== Définition ===== */}
+      <section className={styles.definition}>
+        <div className={`${styles.wrap} ${styles.defGrid}`}>
+          <div>
+            <h2>{fr(DEFINITION.h2)}</h2>
           </div>
-        </header>
+          <div className={styles.defBody}>
+            <p>{fr(DEFINITION.p1)}</p>
+            <p className={styles.small}>
+              On la rencontre aussi sous les appellations <strong>due diligence IT</strong>,{" "}
+              <em>tech due diligence</em> ou <em>technology due diligence</em>. Côté vendeur,
+              l&apos;exercice symétrique est la <strong>vendor due diligence</strong> : le cédant fait
+              auditer sa propre technologie avant d&apos;ouvrir la data room.
+            </p>
+            <div className={styles.defTags}>
+              {DEFINITION.tags.map((t) => (
+                <span key={t} className={styles.tagChip}>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* Pour qui */}
-        <section className={styles.pourQui} aria-labelledby="pour-qui">
-          <span className={styles.eyebrow}>Pour qui</span>
-          <h2 id="pour-qui">{POUR_QUI.titre}</h2>
-          <p className={styles.pourQuiTexte}>{POUR_QUI.texte}</p>
-          <div className={styles.pourQuiGrille}>
+      {/* ===== Audit juridique / audit technique ===== */}
+      <section>
+        <div className={styles.wrap}>
+          <div className={styles.scope}>
+            <span className={`${styles.eyebrow} ${styles.eyebrowBlue}`}>{SCOPE.label}</span>
+            <h3 className={styles.scopeH}>{fr(SCOPE.h3)}</h3>
+            <p className={styles.measure}>{fr(SCOPE.measure)}</p>
+            <table className={styles.compare}>
+              <thead>
+                <tr>
+                  <th scope="col">{SCOPE.headA}</th>
+                  <th scope="col">{SCOPE.headB}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {SCOPE.rows.map(([a, b]) => (
+                  <tr key={a}>
+                    <td>{fr(a)}</td>
+                    <td data-lbl={SCOPE.lblB}>{fr(b)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className={styles.scopeNote}>{fr(SCOPE.note)}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Pour qui ===== */}
+      <section>
+        <div className={styles.wrap}>
+          <span className={styles.eyebrow}>pour qui</span>
+          <h2 className={styles.pourQuiTitre}>{fr(POUR_QUI.titre)}</h2>
+          <p className={styles.lead}>{fr(POUR_QUI.texte)}</p>
+          <div className={styles.whoGrid}>
             {POUR_QUI.points.map((p) => (
-              <div key={p.k} className={styles.pourQuiItem}>
-                <h3>{p.k}</h3>
-                <p>{p.v}</p>
-              </div>
+              <article key={p.k}>
+                <h4>{fr(p.k)}</h4>
+                <p>{fr(p.v)}</p>
+              </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <div className={styles.bodyGrid}>
+      {/* ===== 01 / 02 / 03 — rail + contenu ===== */}
+      <section>
+        <div className={`${styles.wrap} ${styles.bodyGrid}`}>
           <Rail />
 
           <div className={styles.col}>
@@ -156,208 +265,168 @@ export default function Page() {
                 <span className={styles.eyebrow}>
                   {e.n} — {e.court}
                 </span>
-                <h2>{e.h2}</h2>
-                <p className={styles.these}>{e.these}</p>
+                <h2>{fr(e.h2)}</h2>
+                <p className={styles.these}>{fr(e.these)}</p>
 
-                {/* Tableau des écarts — propre à l'étape « Auditer » */}
+                {/* Étape 01 : bloc bascule, accordéon des domaines, livrables,
+                    matrice. */}
                 {e.id === "auditer" ? (
                   <>
-                    <figure className={styles.schema}>
-                      <div className={styles.gapTbl}>
-                        <div className={styles.gh}>
-                          <span>Ce que l&apos;acquéreur pense acheter</span>
-                          <span>Ce qu&apos;il doit vérifier</span>
-                        </div>
-                        {ECART.lignes.map((l) => (
-                          <div
-                            key={l.a}
-                            className={`${styles.gr} ${l.hl ? styles.hl : ""}`.trim()}
-                          >
-                            <span className={styles.a}>{l.a}</span>
-                            <span className={styles.b}>{l.b}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <figcaption className={styles.figcaption}>
-                        {ECART.legende}
-                      </figcaption>
-                    </figure>
+                    <Bascule />
 
-                    <h3 className={styles.eyebrow}>
-                      Audit juridique du logiciel et des données
-                    </h3>
-                    {DOMAINES_AUDIT.map((d) => (
-                      <div key={d.h3} className={styles.dom}>
-                        <h3>{d.h3}</h3>
-                        <p>{d.p}</p>
-                        {d.lien ? (
-                          <a className={styles.domLien} href={d.lien.href}>
-                            {d.lien.label} →
-                          </a>
-                        ) : null}
-                      </div>
-                    ))}
+                    <h3 className={styles.domTitre}>Audit juridique du logiciel et des données</h3>
+                    <div className={styles.dom}>
+                      {DOMAINES_AUDIT.map((d) => (
+                        <details key={d.h3}>
+                          <summary>{fr(d.h3)}</summary>
+                          <div className={styles.domBody}>
+                            <p>{fr(d.p)}</p>
+                            {d.lien ? (
+                              <a className={styles.domLien} href={d.lien.href}>
+                                {d.lien.label} →
+                              </a>
+                            ) : null}
+                          </div>
+                        </details>
+                      ))}
+                    </div>
 
                     <div className={styles.deliver}>
-                      <span className={styles.k}>Nos livrables</span>
+                      <span className={`${styles.k} ${styles.kBlue}`}>nos livrables</span>
                       <ol>
                         {LIVRABLES.map((l) => (
-                          <li key={l}>{l}</li>
+                          <li key={l}>{fr(l)}</li>
                         ))}
                       </ol>
                     </div>
 
-                    <div className={styles.spec}>
-                      <div className={styles.specTop}>
-                        <b>{MATRICE.titre}</b>
-                        <i>{MATRICE.mention}</i>
+                    <div className={styles.matrix}>
+                      <div className={styles.matrixHead}>
+                        <h3>{fr(MATRICE.titre)}</h3>
+                        <span className={styles.k}>{MATRICE.mention}</span>
                       </div>
-                      <div className={`${styles.specRow} ${styles.specHdr}`}>
-                        <span>#</span>
-                        <span>Constat</span>
-                        <span>Gravité</span>
-                        <span>Traitement retenu</span>
-                      </div>
-                      {MATRICE.lignes.map((l) => (
-                        <div key={l.n} className={styles.specRow}>
-                          <span className={styles.specN}>{l.n}</span>
-                          {/* `data-col` sert de libellé de repli sur mobile,
-                              où l'en-tête du tableau n'est plus affiché. */}
-                          <span className={styles.specF} data-col="Constat">
-                            {l.constat}
-                          </span>
-                          <span data-col="Gravité">
-                            <span
-                              className={`${styles.sev} ${
-                                l.ton === "hi"
-                                  ? styles.sevHi
-                                  : l.ton === "md"
-                                    ? styles.sevMd
-                                    : styles.sevLo
-                              }`}
-                            >
-                              {l.gravite}
-                            </span>
-                          </span>
-                          <span className={styles.specT} data-col="Traitement retenu">
-                            {l.traitement}
-                          </span>
-                        </div>
-                      ))}
+                      <table className={styles.mx}>
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">constat</th>
+                            <th scope="col">gravité</th>
+                            <th scope="col">traitement retenu</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {MATRICE.lignes.map((l) => (
+                            <tr key={l.n}>
+                              <td className={styles.c}>{l.n}</td>
+                              <td className={styles.f}>{fr(l.constat)}</td>
+                              <td>
+                                <span className={`${styles.sev} ${SEV[l.ton]}`}>{l.gravite}</span>
+                              </td>
+                              <td data-lbl={MATRICE.lblTraitement}>{fr(l.traitement)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </>
                 ) : null}
 
-                {e.paragraphes?.map((p) => <p key={p}>{p}</p>)}
+                {e.paragraphes?.map((p) => (
+                  <p key={p} className={styles.measure}>
+                    {fr(p)}
+                  </p>
+                ))}
 
-                {e.domaines?.map((d) => (
-                  <div key={d.h3} className={styles.dom}>
-                    <h3>{d.h3}</h3>
-                    <p>{d.p}</p>
-                    {d.lien ? (
-                      <a className={styles.domLien} href={d.lien.href}>
-                        {d.lien.label} →
-                      </a>
-                    ) : null}
+                {e.sousTitres?.map((d) => (
+                  <div key={d.h3}>
+                    <h3 className={styles.sousTitre}>{fr(d.h3)}</h3>
+                    <p className={styles.measure}>{fr(d.p)}</p>
                   </div>
                 ))}
 
                 <div className={styles.legal}>
-                  <span className={styles.k}>Le point juridique</span>
-                  <p>{e.point}</p>
+                  <span className={`${styles.k} ${styles.kBlue}`}>le point juridique</span>
+                  <p>{fr(e.point)}</p>
                 </div>
 
-                <div className={styles.ctaRow}>
-                  <Cta
-                    tag={`${e.court} ${e.n}`}
-                    label={e.cta}
-                    primary={e.id === "auditer"}
-                  />
-                </div>
+                <Cta tag={`${e.court} ${e.n}`} label={e.cta} primary={e.id === "auditer"} />
               </section>
             ))}
-
-            {/* Interventions */}
-            <section className={styles.ops} id="operations">
-              <h2>Acquisition SaaS, carve-out, asset deal : nos interventions</h2>
-              <div className={styles.grid}>
-                {OPERATIONS.map((o) => (
-                  <div key={o.h3} className={styles.op}>
-                    <span className={styles.k}>{o.k}</span>
-                    <h3>{o.h3}</h3>
-                    <p>{o.p}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Signature */}
-            <section className={styles.signature}>
-              <div className={styles.signaturePhoto}>
-                <Image
-                  src="/images/alexandre-pro.jpg"
-                  alt="Alexandre Lazarègue, avocat au barreau de Paris"
-                  fill
-                  sizes="92px"
-                />
-              </div>
-              <div>
-                <h2>Une pratique quotidienne du droit des actifs numériques</h2>
-                <p>
-                  Lazarègue Avocats intervient en droit des logiciels, contrats IT,
-                  données personnelles, intelligence artificielle, plateformes et
-                  cybercriminalité. Cette pratique permet d&apos;examiner la
-                  technologie acquise au-delà des seules déclarations de la data room.
-                </p>
-                <div className={styles.signatureNom}>Alexandre Lazarègue</div>
-                <div className={styles.signatureRole}>
-                  Avocat au barreau de Paris · fondateur du cabinet
-                </div>
-                <p className={styles.signatureAvis}>
-                  {AVIS.note} sur 5 —{" "}
-                  <a href={AVIS.href} target="_blank" rel="noopener">
-                    {AVIS.nombre} avis Google
-                  </a>
-                </p>
-              </div>
-            </section>
-
-            {/* Équipe du stream technologique */}
-            <section style={{ margin: "40px 0" }}>
-              <EquipeDossier
-                eyebrow="L'équipe"
-                titre="Qui tient le stream technologique"
-                chapeau="Le volet technologique d'une opération se joue entre la revue des actifs numériques et la rédaction des garanties du contrat d'acquisition. Les deux sont menées par la même équipe."
-                membres={[
-                  { slug: "alexandre", role: "Actifs numériques & due diligence", tags: ["Propriété du code", "Open source", "Données"] },
-                  { slug: "amir", role: "Contrats & garanties du SPA", tags: ["SPA", "Change of control", "Remédiation"] },
-                ]}
-              />
-            </section>
-
-            {/* FAQ */}
-            <section className={styles.faq}>
-              <h2>Questions fréquentes</h2>
-              {FAQ.map((f) => (
-                <div key={f.q} className={styles.qa}>
-                  <h3>{f.q}</h3>
-                  <p>{f.a}</p>
-                </div>
-              ))}
-            </section>
-
-            {/* Fin */}
-            <section className={styles.end} id="contact">
-              <h2>{FIN.h2}</h2>
-              <p>{FIN.p}</p>
-              <div className={styles.ctaRow}>
-                <Cta tag="Buy-side" label="Faire auditer une cible" primary />
-                <Cta tag="Sell-side" label="Préparer une cession tech" />
-              </div>
-            </section>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* ===== Opérations ===== */}
+      <section id="operations">
+        <div className={styles.wrap}>
+          <h2>Acquisition SaaS, carve-out, asset deal : nos interventions</h2>
+          <div className={styles.ops}>
+            {OPERATIONS.map((o) => (
+              <article key={o.h3}>
+                <span className={`${styles.k} ${styles.kPeri}`}>{o.k}</span>
+                <h4>{fr(o.h3)}</h4>
+                <p>{fr(o.p)}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Équipe ===== */}
+      <section>
+        <div className={styles.wrap}>
+          <EquipeDossier
+            eyebrow="l'équipe"
+            titre="Qui tient le stream technologique"
+            chapeau="Le volet technologique d'une opération se joue entre la revue des actifs numériques, la conformité des données et la rédaction des garanties du contrat d'acquisition. Ces trois travaux sont menés par la même équipe."
+            membres={TEAM}
+          />
+          <div className={styles.legal} style={{ marginTop: 24 }}>
+            <span className={`${styles.k} ${styles.kBlue}`}>une pratique quotidienne</span>
+            <p>{fr(EQUIPE_POINT)}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FAQ ===== */}
+      <section>
+        <div className={styles.wrap}>
+          <h2>Questions fréquentes</h2>
+          <div className={styles.faq}>
+            {FAQ.map((f) => (
+              <details key={f.q}>
+                <summary>{fr(f.q)}</summary>
+                <div className={styles.a}>{fr(f.a)}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Contact ===== */}
+      <section className={styles.contact} id="contact">
+        <div className={`${styles.wrap} ${styles.contactGrid}`}>
+          <div>
+            <h2 className={styles.contactH}>{fr(FIN.h2)}</h2>
+            <p className={styles.lead}>{fr(FIN.p)}</p>
+            <div className={styles.ctaRow}>
+              <Cta tag="buy-side" label="Faire auditer une cible" primary />
+              <Cta tag="sell-side" label="Préparer une cession tech" />
+            </div>
+          </div>
+          <div>
+            <span className={styles.eyebrow}>notre intervention</span>
+            <div className={styles.steps}>
+              {FIN.steps.map((s, i) => (
+                <div key={s}>
+                  <b>{String(i + 1).padStart(2, "0")}</b>
+                  <span>{fr(s)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Contact toujours à portée sur mobile */}
       <a href="/contact" className={styles.sticky}>
