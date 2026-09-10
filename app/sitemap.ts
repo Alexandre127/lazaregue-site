@@ -34,9 +34,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 
   // Contenus éditoriaux
   { path: "/ressources", priority: 0.7, frequence: "weekly" },
-  { path: "/blog", priority: 0.7, frequence: "weekly" },
   { path: "/ressources/oeuvre-originale", priority: 0.6, frequence: "yearly" },
-  { path: "/blog/ai-act-preuve-conformite", priority: 0.6, frequence: "yearly" },
 
   // Pages légales — priorité faible mais indexables
   { path: "/mentions-legales", priority: 0.3, frequence: "yearly" },

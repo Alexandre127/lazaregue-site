@@ -279,9 +279,6 @@ export function Footer() {
               <Link href="/le-cabinet#equipe" className="hover:text-white">
                 L&apos;équipe
               </Link>
-              <Link href="/blog" className="hover:text-white">
-                Analyses
-              </Link>
               <Link href="/ressources" className="hover:text-white">
                 Ressources
               </Link>

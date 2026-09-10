@@ -16,7 +16,7 @@ import styles from "./nos-domaines.module.css";
  * gabarit).
  */
 
-const TITLE = "Domaines d'intervention | Lazarègue Avocats";
+const TITLE = "Domaines d'intervention — Lazarègue Avocats";
 const DESCRIPTION =
   "Les domaines d'intervention du cabinet Lazarègue Avocats en droit du numérique : conformité et risques, contrats et opérations, contentieux et atteintes.";
 
@@ -33,6 +33,33 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+};
+
+/*
+ * Phrases de contexte PROPRES à la page (versions longues, rédigées par le
+ * cabinet). Le menu déroulant garde les versions courtes de FAMILLES (gabarit) ;
+ * ici on remplace par ces phrases, clé = href du domaine. Repli sur la phrase
+ * du menu si une clé venait à manquer.
+ */
+const PHRASES_PAGE: Record<string, string> = {
+  "/nos-domaines/rgpd-donnees":
+    "Cartographie des traitements, contrats de sous-traitance, notification d'une violation, contrôle et sanction de la CNIL.",
+  "/nos-domaines/ia-act":
+    "Qualification des systèmes au regard de l'AI Act, répartition fournisseur-déployeur, gouvernance interne et contrats avec les éditeurs.",
+  "/nos-domaines/cybersecurite":
+    "Assujettissement à NIS 2, obligations de la chaîne de sous-traitance, notification d'incident et responsabilité des dirigeants.",
+  "/nos-domaines/contrats-informatiques":
+    "Rédaction et négociation des contrats SaaS, maintenance et infogérance ; recette, réversibilité et contentieux de l'échec de projet.",
+  "/nos-domaines/crypto-actifs-blockchain":
+    "Agrément CASP sous MiCA, obligations des prestataires, litiges avec les plateformes et blocage de comptes.",
+  "/competences/ma-tech":
+    "Due diligence des actifs numériques : propriété du code, licences open source, passif RGPD et exposition cyber.",
+  "/nos-domaines/avocat-escroquerie-fraude":
+    "Contestation des opérations non autorisées, charge de la preuve du consentement, recours contre l'établissement teneur du compte.",
+  "/nos-domaines/cybercriminalite":
+    "Gestion des premières heures, préservation de la preuve, plainte, mise en cause du prestataire et contestation du refus de garantie.",
+  "/nos-domaines/diffamation-retrait-de-contenus":
+    "Qualification et délai de prescription, notification aux plateformes, identification de l'auteur et déréférencement.",
 };
 
 export default function Page() {
@@ -57,7 +84,9 @@ export default function Page() {
                     <li key={d.href}>
                       <Link className={styles.card} href={d.href}>
                         <span className={styles.cardTitle}>{d.titre}</span>
-                        <span className={styles.cardContext}>{d.contexte}</span>
+                        <span className={styles.cardContext}>
+                          {PHRASES_PAGE[d.href] ?? d.contexte}
+                        </span>
                       </Link>
                     </li>
                   ))}

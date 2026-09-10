@@ -129,8 +129,8 @@ export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
 /**
  * Routes dont le HAUT DE PAGE est un hero sombre : le header s'y pose en
  * transparent au repos (il flotte sur le hero), puis redevient opaque en
- * collant. Toute route ABSENTE d'ici — dont /blog et toute page future non
- * déclarée — garde le header opaque #0a0f2e, donc lisible par défaut.
+ * collant. Toute route ABSENTE d'ici — et toute page future non déclarée —
+ * garde le header opaque #0a0f2e, donc lisible par défaut.
  *
  * C'est un drapeau DÉCLARATIF (pas une détection au défilement ni une mesure du
  * hero) : l'état est connu dès le rendu serveur, donc aucun clignotement.

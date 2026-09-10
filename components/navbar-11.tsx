@@ -39,9 +39,8 @@ const MOBILE_ENTRIES: {
 }[] = [
   { n: "01", label: "Nos domaines", key: "domaines" },
   { n: "02", label: "Le cabinet", href: "/le-cabinet" },
-  { n: "03", label: "Analyses", href: "/blog" },
-  { n: "04", label: "Ressources", href: "/ressources" },
-  { n: "05", label: "Contact", href: "/contact" },
+  { n: "03", label: "Ressources", href: "/ressources" },
+  { n: "04", label: "Contact", href: "/contact" },
 ];
 
 const MONO = { fontFamily: "var(--ff-mono)" } as const;
@@ -389,9 +388,6 @@ export function Navbar11() {
           />
           <a href="/le-cabinet" className="laz-nlink">
             Le cabinet
-          </a>
-          <a href="/blog" className="laz-nlink">
-            Analyses
           </a>
           <a href="/ressources" className="laz-nlink">
             Ressources
