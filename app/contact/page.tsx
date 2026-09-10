@@ -32,8 +32,8 @@ export const metadata: Metadata = {
  * Données structurées LegalService.
  *
  * Pas d'`aggregateRating` : l'affichage d'une note en étoiles dans les
- * résultats de recherche pose un problème de publicité pour un avocat. La note
- * Google reste utilisée uniquement en affichage sur la page (voir plus bas).
+ * résultats de recherche pose un problème de publicité pour un avocat. Aucune
+ * note ni aucun avis ne figure plus sur la page non plus.
  */
 const JSON_LD = {
   "@context": "https://schema.org",
