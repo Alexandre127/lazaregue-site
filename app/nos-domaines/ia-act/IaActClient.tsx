@@ -605,40 +605,33 @@ export default function IaActClient() {
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: "40px 0 8px" }}>
         <div style={INNER}>
           <Eyebrow>Nos interventions</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 14 }}>Trois niveaux d&apos;accompagnement AI Act</h2>
+          <h2 style={{ ...TYPE.h2, marginBottom: 4 }}>Audit, gouvernance et conformité IA</h2>
+          <p style={{ ...TYPE.secondary, marginBottom: 16 }}>Trois accompagnements et une défense.</p>
           <div className="flex flex-col" style={{ gap: GRID_GAP }}>
             {[
               {
                 num: "01",
-                titre: "Diagnostic et audit AI Act",
+                titre: "Audit et diagnostic AI Act",
                 phrase: "« Nous utilisons plusieurs IA sans savoir où nous en sommes. »",
-                corps: "Inventaire des systèmes officiels et des usages informels, qualification juridique, rôle de l'entreprise, feuille de route.",
-                concret: [
-                  "Cartographier les systèmes internes, API tierces et modèles intégrés.",
-                  "Qualifier chaque système : interdit, haut risque, transparence.",
-                ],
+                corps: "Inventaire des systèmes officiels et des usages informels, qualification, rôle tenu, feuille de route.",
+                option: null,
                 accent: true,
               },
               {
                 num: "02",
                 titre: "Gouvernance IA : registre, charte et procédures",
-                phrase: "« Nous devons poser des règles dans l'entreprise. »",
-                corps: "Registre des systèmes d'IA, charte IA, outils autorisés et données interdites, validation humaine, gestion des incidents, formation.",
-                concret: [
-                  "Documenter la gouvernance des données et la traçabilité des décisions.",
-                  "Poser chartes, comité IA, référent conformité et formation.",
-                ],
+                phrase: "« Nous devons poser des règles. »",
+                corps: "Registre des systèmes, charte IA, outils autorisés et données interdites, validation humaine, incidents, formation.",
+                option:
+                  "En option, un suivi dans la durée : qualification des nouveaux systèmes, mise à jour du registre, ateliers sur site ou à distance, interlocuteur identifié, coordination avec le DPO et la DSI.",
                 accent: false,
               },
               {
                 num: "03",
-                titre: "Conformité d'un système sensible ou à haut risque",
-                phrase: "« Notre produit ou notre usage peut relever de l'annexe III. »",
+                titre: "Conformité d'un système à haut risque",
+                phrase: "« Notre produit peut relever de l'annexe III. »",
                 corps: "Analyse complète, documentation, supervision humaine, contrats fournisseurs, préparation au contrôle.",
-                concret: [
-                  "Documenter intégralement : supervision humaine, journalisation, contrats fournisseurs.",
-                  "Préparer le contrôle et la démonstration de conformité.",
-                ],
+                option: null,
                 accent: false,
               },
             ].map((n) => (
@@ -655,16 +648,9 @@ export default function IaActClient() {
                 <h3 style={{ ...TYPE.h3, margin: "6px 0 0" }}>{n.titre}</h3>
                 <p style={{ fontSize: 13, color: LIGHT.text, fontStyle: "italic", margin: "8px 0 0", lineHeight: 1.5 }}>{n.phrase}</p>
                 <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>{n.corps}</p>
-                {/* Deux lignes concrètes reprises de l'ancienne section « Cinq
-                    étapes » (supprimée : elle doublonnait ces accompagnements). */}
-                <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
-                  {n.concret.map((c) => (
-                    <li key={c} style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.5, display: "flex", gap: 8 }}>
-                      <span aria-hidden style={{ color: LIGHT.faint, flexShrink: 0 }}>—</span>
-                      <span>{c}</span>
-                    </li>
-                  ))}
-                </ul>
+                {n.option ? (
+                  <p style={{ fontSize: 12.5, color: LIGHT.faint, margin: "8px 0 0", lineHeight: 1.55 }}>{n.option}</p>
+                ) : null}
               </article>
             ))}
             {/* 4e bloc, d'une AUTRE nature (pas une mission de conformité) :
@@ -698,6 +684,27 @@ export default function IaActClient() {
           <p style={{ ...TYPE.label, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 16px" }}>
             Extraits inspirés de dossiers réels.
           </p>
+
+          {/* Tableau v4 : ce que chaque livrable apporte, AVANT les extraits en
+              onglets (conservés : registre, matrice, analyse signée). */}
+          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden", marginBottom: 18 }}>
+            <div className="hidden md:grid md:grid-cols-2" style={{ gap: "0 16px", padding: "10px 14px", background: LIGHT.bg, borderBottom: `0.5px solid ${LIGHT.border}` }}>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>Livrable</span>
+              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>Ce qu&apos;il vous donne</span>
+            </div>
+            {[
+              { livrable: "Cartographie des usages", donne: "Les outils réellement utilisés, leurs responsables, les données concernées" },
+              { livrable: "Registre des systèmes", donne: "Les règles applicables à chacun, et le rôle que vous tenez" },
+              { livrable: "Plan d'action priorisé", donne: "Ce qui est dû aujourd'hui, ce qui est reporté, avec responsables et échéances" },
+              { livrable: "Charte IA et procédures", donne: "Des règles utilisables par les équipes, pas un document de principe" },
+              { livrable: "Clauses contractuelles", donne: "Responsabilités, accès aux données et aux journaux, confidentialité, coopération documentaire" },
+            ].map((r, i) => (
+              <div key={r.livrable} className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "4px 16px", padding: "12px 14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none" }}>
+                <div style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.4 }}>{r.livrable}</div>
+                <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>{r.donne}</div>
+              </div>
+            ))}
+          </div>
 
           <div className="mb-3 overflow-x-auto">
             <div
