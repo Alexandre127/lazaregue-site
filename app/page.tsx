@@ -96,11 +96,11 @@ export default function Home() {
 
       <SectionCabinet />
 
-      <SectionEnjeux />
-      <SectionDifferenciateurs />
       <div id="section-competences">
         <SectionCompetences />
       </div>
+      <SectionDifferenciateurs />
+      <SectionEnjeux />
       <SectionCas />
       <SectionEquipe />
       <SectionContributions />

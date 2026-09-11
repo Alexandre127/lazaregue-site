@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type DifferentiateurCard = {
@@ -109,42 +110,6 @@ const PORTAL_TABS: { id: PortalTab; label: string }[] = [
   { id: "messages", label: "Messages" },
   { id: "profil", label: "Profil" },
 ];
-
-function CardShimmer({ index }: { index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const sh = ref.current;
-    if (!sh) return;
-
-    let intervalId: ReturnType<typeof setInterval>;
-
-    const go = () => {
-      sh.style.transition = "none";
-      sh.style.transform = "translateX(-160%)";
-      sh.style.opacity = "1";
-      setTimeout(() => {
-        sh.style.transition = "transform 0.9s cubic-bezier(0.16,1,0.3,1)";
-        sh.style.transform = "translateX(160%)";
-      }, 50);
-      setTimeout(() => {
-        sh.style.opacity = "0";
-      }, 960);
-    };
-
-    const startId = setTimeout(() => {
-      go();
-      intervalId = setInterval(go, 4000 + index * 600);
-    }, 800 + index * 700);
-
-    return () => {
-      clearTimeout(startId);
-      clearInterval(intervalId);
-    };
-  }, [index]);
-
-  return <div ref={ref} className="card-shimmer" aria-hidden />;
-}
 
 function PortalFileIcon({ type }: { type: PortalFile["type"] }) {
   const color = type === "pdf" ? "#E24B4A" : "#1A47FF";
@@ -773,23 +738,29 @@ function DifferentiateurSpotlightTitle() {
 
 const CARDS: DifferentiateurCard[] = [
   {
-    imageSrc: "/images/card-territoire.jpg",
-    imageAlt: "Un seul territoire — droit du numérique",
+    imageSrc: "/images/pourquoi-nous/logs-annotes.webp",
+    imageAlt:
+      "Page de journal serveur imprimée, annotée à la main de références au RGPD et au code pénal",
     title: "Un cabinet dédié au numérique",
+    text: "Le droit du numérique est la seule matière du cabinet, du contrat informatique au contentieux pénal des systèmes d'information.",
   },
   {
-    imageSrc: "/images/card-equipe.jpg",
-    imageAlt: "Une équipe juridique et technique",
+    imageSrc: "/images/pourquoi-nous/tableau-architecture.webp",
+    imageAlt:
+      "Schéma d'architecture de traitement de données dessiné au tableau, annoté de références juridiques",
     title: "Une équipe juridique et technique",
+    text: "Avocats et experts en cybersécurité confrontent l'analyse juridique aux réalités techniques du dossier, de la preuve numérique à l'architecture des systèmes.",
   },
   {
-    imageSrc: "/images/card-terrain.jpg",
-    imageAlt: "Une pratique du numérique depuis 2016",
+    imageSrc: "/images/pourquoi-nous/plaque-tilsitt.webp",
+    imageAlt: "Plaque du cabinet Lazarègue Avocats, 18 rue de Tilsitt, Paris",
     title: "Une pratique du numérique depuis 2016",
+    text: "Dix ans d'interventions sur les cyberattaques, les données personnelles, l'IA, les plateformes et les projets informatiques bloqués.",
   },
   {
     imageAlt: "Un portail client transparent — interface de suivi des dossiers",
-    title: "Un portail client avec un suivi continu des dossiers",
+    title: "Un portail client, un suivi continu",
+    text: "Documents, échanges, échéances et avancées du dossier sont centralisés dans un portail sécurisé, accessible à tout moment.",
     visual: "portail",
   },
 ];
@@ -801,6 +772,14 @@ function PortailDemo() {
   const [prog, setProg] = useState(68);
 
   useEffect(() => {
+    // La maquette est décorative (aria-hidden) : on la fige si l'utilisateur
+    // demande à réduire les animations.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
     const states = [
       { tab: "dossiers", notif: "Dossier RGPD mis à jour", prog: 72 },
       { tab: "docs", notif: "Nouveau document ajouté", prog: 72 },
@@ -1063,40 +1042,75 @@ export function SectionDifferenciateurs() {
           <DifferentiateurSpotlightTitle />
         </header>
 
-        <div className="grid grid-cols-1 grid-rows-[1fr] items-start gap-7 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-4">
-          {CARDS.map((card, index) => (
-            <article key={card.title} className="flex flex-col">
-              {card.visual === "portail" ? (
-                <div className="h-[240px] w-full shrink-0 overflow-hidden rounded-md border border-[rgba(0,0,0,0.08)]">
-                  <PortailDemo />
-                </div>
-              ) : (
-                <div
-                  className="group relative h-[240px] overflow-hidden rounded-md border border-[rgba(255,255,255,0.10)] hover:border-[rgba(26,71,255,0.55)] hover:shadow-[0_0_32px_rgba(26,71,255,0.18),inset_0_0_20px_rgba(26,71,255,0.06)]"
-                  style={{
-                    transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-                  }}
-                >
-                  <CardShimmer index={index} />
-                  <img
-                    src={card.imageSrc}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 16,
+          }}
+        >
+          {CARDS.map((card) => (
+            <article
+              key={card.title}
+              className="flex flex-col overflow-hidden"
+              style={{
+                background: "#FFFFFF",
+                border: "0.5px solid rgba(0,0,0,0.08)",
+                borderRadius: 12,
+              }}
+            >
+              {/* Bande visuelle — au plus le tiers de la carte : hauteur fixe
+                  76px (mobile) / 96px (≥768px), filet bas 0.5px. */}
+              <div
+                className="relative h-[76px] w-full shrink-0 overflow-hidden md:h-[96px]"
+                style={{ borderBottom: "0.5px solid rgba(0,0,0,0.08)" }}
+                aria-hidden={card.visual === "portail" ? true : undefined}
+              >
+                {card.visual === "portail" ? (
+                  // Maquette animée mise à l'échelle uniforme (aspect préservé)
+                  // et recadrée dans la bande, pas écrasée en hauteur. Purement
+                  // décorative : le texte de la carte porte l'information.
+                  <div
+                    className="absolute left-0 top-0 origin-top-left"
+                    style={{ width: "250%", transform: "scale(0.4)" }}
+                  >
+                    <PortailDemo />
+                  </div>
+                ) : (
+                  <Image
+                    src={card.imageSrc as string}
                     alt={card.imageAlt}
-                    loading="lazy"
-                    decoding="async"
-                    className="relative z-[1] h-full w-full object-cover"
+                    fill
+                    sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
+                    style={{ objectFit: "cover", objectPosition: "center" }}
                   />
-                </div>
-              )}
-              <div className={`px-8 pt-8 ${card.text ? "pb-8" : "pb-6"}`}>
+                )}
+              </div>
+
+              <div style={{ padding: "1rem 1.25rem 1.25rem" }}>
                 <h3
-                  className={`font-medium text-[#0A0F2E] ${
-                    card.text ? "mb-3 md:mb-4" : ""
-                  }`}
+                  style={{
+                    fontFamily: "var(--ff-body)",
+                    fontWeight: 500,
+                    fontSize: 16,
+                    lineHeight: 1.35,
+                    color: "#0A0F2E",
+                    margin: 0,
+                  }}
                 >
                   {card.title}
                 </h3>
                 {card.text ? (
-                  <p className="max-w-[280px] text-[13px] leading-[1.8] text-[#0A0F2E]/55">
+                  <p
+                    style={{
+                      fontFamily: "var(--ff-body)",
+                      fontWeight: 400,
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      color: "rgba(10,15,46,0.6)",
+                      margin: "8px 0 0",
+                    }}
+                  >
                     {card.text}
                   </p>
                 ) : null}
