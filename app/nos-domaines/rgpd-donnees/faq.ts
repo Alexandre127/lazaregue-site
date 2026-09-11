@@ -7,7 +7,7 @@
 export const FAQ_ITEMS = [
   {
     q: "Quel est le prix d'un avocat pour une mise en conformité RGPD ?",
-    a: "Le coût dépend de sept variables : le nombre d'entités juridiques concernées, le nombre et la diversité des traitements, l'état du registre existant, le nombre de sous-traitants critiques, l'existence de transferts hors Union, le nombre d'analyses d'impact à réaliser, et le volume de documentation à créer ou à reprendre. Deux entreprises de deux cents salariés peuvent donc appeler des interventions très différentes : l'effectif est rarement le meilleur indicateur du coût d'une mise en conformité.",
+    a: "Le coût dépend de sept variables : le nombre d'entités juridiques concernées, le nombre et la diversité des traitements, l'état du registre existant, le nombre de sous-traitants critiques, l'existence de transferts hors Union, le nombre d'analyses d'impact à réaliser, et le volume de documentation à créer ou à reprendre. Deux entreprises de deux cents salariés peuvent donc appeler des interventions très différentes : l'effectif est rarement le meilleur indicateur du coût d'une mise en conformité. En pratique, le chiffrage se fait après un premier échange : une fois le périmètre défini, un devis écrit vous est remis.",
   },
   {
     q: "Une PME de moins de 250 salariés doit-elle tenir un registre RGPD ?",

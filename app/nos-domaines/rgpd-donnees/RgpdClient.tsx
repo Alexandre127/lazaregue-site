@@ -60,31 +60,31 @@ const SR_ONLY: CSSProperties = {
 
 const HERO_STATS = [
   {
-    value: 20,
-    suffix: "M€",
-    label: "sanction maximale ou 4% CA mondial",
-    source: "RGPD Art. 83 §5",
+    display: "20 M€ ou 4 %",
+    label:
+      "du chiffre d'affaires annuel mondial, le montant le plus élevé étant retenu",
+    source: "RGPD, art. 83 §5",
   },
   {
-    value: 72,
-    suffix: "h",
-    label: "notification CNIL après violation",
-    source: "RGPD Art. 33",
-  },
-  {
-    display: "Art.25",
-    label: "Privacy by Design & by Default",
-    source: "RGPD Art. 25",
-  },
-  {
-    display: "Art.30",
-    label: "Registre des traitements obligatoire",
-    source: "RGPD Art. 30",
+    display: "72 h",
+    label:
+      "pour notifier une violation à la CNIL à compter de sa connaissance, lorsqu'elle présente un risque",
+    source: "RGPD, art. 33",
   },
 ] as const;
 
 function LivrablesPreview() {
   const [cur, setCur] = useState(0);
+  const [zoomed, setZoomed] = useState(false);
+
+  useEffect(() => {
+    if (!zoomed) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomed(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [zoomed]);
 
   const items = [
     {
@@ -112,23 +112,7 @@ function LivrablesPreview() {
       name: "Rapport de due diligence",
       sub: "Ce qu'un acquéreur regarde dans une base clients",
     },
-    {
-      num: "06",
-      name: "Vigie — conformité continue",
-      sub: "Vos documents tenus à jour, pas un audit oublié",
-    },
   ];
-
-  useEffect(() => {
-    let isMounted = true;
-    const timer = setInterval(() => {
-      if (isMounted) setCur((c) => (c + 1) % 6);
-    }, 5000);
-    return () => {
-      isMounted = false;
-      clearInterval(timer);
-    };
-  }, []);
 
   const docs = [
     // DOC 0 — Registre
@@ -605,112 +589,45 @@ function LivrablesPreview() {
       </div>
     </div>,
 
-    // DOC 5 — Vigie
-    <div
-      key="5"
-      style={{
-        padding: "12px 14px",
-        fontSize: "9px",
-        color: "#333",
-        lineHeight: 1.65,
-      }}
-    >
-      <div
-        style={{
-          fontSize: "10px",
-          fontWeight: 700,
-          color: "#111",
-          marginBottom: "4px",
-          textTransform: "uppercase",
-          letterSpacing: ".06em",
-        }}
-      >
-        Conformité continue — pas un audit oublié
-      </div>
-      <div style={{ fontSize: "8px", color: "#888", marginBottom: "12px" }}>
-        Espace client réservé · Abonnement mensuel
-      </div>
-      {[
-        "Registre des traitements centralisé et mis à jour",
-        "Suivi des sous-traitants et contrats Art. 28",
-        "Gestion des incidents et violations documentée",
-        "Documentation prête en cas de contrôle CNIL",
-      ].map((line) => (
-        <div
-          key={line}
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "8px",
-            marginBottom: "6px",
-            fontSize: "8.5px",
-            color: "#444",
-            lineHeight: 1.55,
-          }}
-        >
-          <span
-            style={{
-              width: "5px",
-              height: "5px",
-              borderRadius: "50%",
-              background: "#1D9E75",
-              flexShrink: 0,
-              marginTop: "4px",
-            }}
-          />
-          <span>{line}</span>
-        </div>
-      ))}
-      <div
-        style={{
-          display: "inline-block",
-          marginTop: "10px",
-          background: "rgba(29,158,117,.1)",
-          color: "#5dc9a0",
-          fontSize: "9px",
-          borderRadius: "2px",
-          padding: "3px 8px",
-        }}
-      >
-        Disponible après mission initiale
-      </div>
-    </div>,
   ];
 
   // Ordre d'affichage (A6) : le DPA passe en premier. Les blocs `docs` restent
   // définis dans leur ordre historique ; `order` mappe l'index affiché (celui
   // du menu et de `cur`) vers le bloc et son bandeau.
-  const order = [2, 3, 0, 1, 4, 5];
+  const order = [2, 3, 0, 1, 4];
   const docBadges = [
     "Registre Art.30",
     "Procédure Art.33",
     "DPA Art.28",
     "Politique RGPD",
     "Due Diligence M&A",
-    "Vigie by Lazarègue Avocats",
   ];
 
   return (
+    <>
     <div className="livr-grid">
       <div className="livr-menu">
-        <div className="livr-menu-items">
+        <div className="livr-menu-items" role="tablist" aria-label="Nos livrables">
         {items.map((item, i) => (
           <h3 key={i} style={{ margin: 0 }}>
             <button
               type="button"
+              role="tab"
               onClick={() => setCur(i)}
               id={`livrable-tab-${i}`}
               aria-controls={`livrable-doc-${i}`}
-              aria-current={cur === i ? "true" : undefined}
+              aria-selected={cur === i}
               style={{
                 width: "100%",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "12px",
-                padding: "10px 0",
+                padding: "10px 10px 10px 12px",
                 border: "none",
-                borderBottom: i < 5 ? `.5px solid ${LIGHT.border}` : "none",
-                background: "none",
+                borderLeft:
+                  cur === i ? `2px solid ${BRAND}` : "2px solid transparent",
+                borderBottom: i < 4 ? `.5px solid ${LIGHT.border}` : "none",
+                background: cur === i ? "rgba(var(--brand-rgb),0.05)" : "none",
                 textAlign: "left",
                 font: "inherit",
                 cursor: "pointer",
@@ -768,99 +685,183 @@ function LivrablesPreview() {
           </h3>
         ))}
         </div>
-        <div
-          className="livr-menu-progress"
-          style={{
-            height: "2px",
-            background: LIGHT.border,
-            marginTop: "14px",
-            borderRadius: "1px",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            key={cur}
-            style={{
-              height: "100%",
-              background: BRAND,
-              borderRadius: "1px",
-              animation: "progressAnim 5s linear forwards",
-            }}
-          />
-        </div>
-        <style>{`@keyframes progressAnim { from { width: 0% } to { width: 100% } }`}</style>
+        <style>{`@media (prefers-reduced-motion: reduce) { .livr-doc-card, .livr-zoom-inner { transition: none !important; } }`}</style>
         <p
           className="livr-menu-mention"
           style={{
-            marginTop: "12px",
+            marginTop: "16px",
             fontFamily: "monospace",
             fontSize: "9px",
             letterSpacing: ".08em",
             color: LIGHT.faint,
           }}
         >
-          SPÉCIMENS · AUCUNE DONNÉE RÉELLE
+          Extraits anonymisés · aucune donnée réelle
         </p>
       </div>
 
-      <div className="livr-doc" style={{ position: "relative", height: "320px" }}>
-        {order.map((docIdx, i) => (
-          <div
-            key={i}
-            id={`livrable-doc-${i}`}
-            role="group"
-            aria-labelledby={`livrable-tab-${i}`}
-            aria-hidden={cur === i ? undefined : "true"}
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "white",
-              borderRadius: "6px",
-              boxShadow: "0 20px 60px rgba(0,0,0,.5)",
-              overflow: "hidden",
-              fontFamily: "sans-serif",
-              transition: "all .5s cubic-bezier(.4,0,.2,1)",
-              opacity: cur === i ? 1 : 0,
-              transform:
-                cur === i
-                  ? "translateY(0) scale(1)"
-                  : `translateY(${(i - cur) * 12}px) scale(${Math.max(0.9, 1 - Math.abs(i - cur) * 0.02)})`,
-              zIndex: cur === i ? 10 : 5 - Math.abs(i - cur),
-              pointerEvents: cur === i ? "auto" : "none",
-            }}
-          >
+      <div>
+        <div className="livr-doc" style={{ position: "relative", height: "320px" }}>
+          {order.map((docIdx, i) => (
             <div
+              key={i}
+              className="livr-doc-card"
+              id={`livrable-doc-${i}`}
+              role="tabpanel"
+              aria-labelledby={`livrable-tab-${i}`}
+              aria-hidden={cur === i ? undefined : "true"}
               style={{
-                background: "#f7f7f7",
-                borderBottom: "1px solid #e5e5e5",
-                padding: "9px 14px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+                position: "absolute",
+                inset: 0,
+                background: "white",
+                borderRadius: "6px",
+                boxShadow: "0 20px 60px rgba(0,0,0,.5)",
+                overflow: "hidden",
+                fontFamily: "sans-serif",
+                transition: "all .5s cubic-bezier(.4,0,.2,1)",
+                opacity: cur === i ? 1 : 0,
+                transform:
+                  cur === i
+                    ? "translateY(0) scale(1)"
+                    : `translateY(${(i - cur) * 12}px) scale(${Math.max(0.9, 1 - Math.abs(i - cur) * 0.02)})`,
+                zIndex: cur === i ? 10 : 5 - Math.abs(i - cur),
+                pointerEvents: cur === i ? "auto" : "none",
               }}
             >
-              <span style={{ fontSize: "10px", fontWeight: 700, color: "#111", letterSpacing: ".04em" }}>
-                LAZARÈGUE <span style={{ color: "#1A47FF" }}>AVOCATS</span>
-              </span>
-              <span
+              <div
                 style={{
-                  fontSize: "8px",
-                  color: "#666",
-                  letterSpacing: ".06em",
-                  textTransform: "uppercase",
-                  background: "#eaeaea",
-                  padding: "2px 6px",
-                  borderRadius: "2px",
+                  background: "#f7f7f7",
+                  borderBottom: "1px solid #e5e5e5",
+                  padding: "9px 14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
-                {docBadges[docIdx]}
-              </span>
+                <span style={{ fontSize: "10px", fontWeight: 700, color: "#111", letterSpacing: ".04em" }}>
+                  LAZARÈGUE <span style={{ color: "#1A47FF" }}>AVOCATS</span>
+                </span>
+                <span
+                  style={{
+                    fontSize: "8px",
+                    color: "#666",
+                    letterSpacing: ".06em",
+                    textTransform: "uppercase",
+                    background: "#eaeaea",
+                    padding: "2px 6px",
+                    borderRadius: "2px",
+                  }}
+                >
+                  {docBadges[docIdx]}
+                </span>
+              </div>
+              {docs[docIdx]}
             </div>
-            {docs[docIdx]}
-          </div>
-        ))}
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setZoomed(true)}
+          style={{
+            marginTop: "14px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            fontSize: "12px",
+            color: BRAND,
+            background: "none",
+            border: `1px solid ${LIGHT.border}`,
+            borderRadius: "6px",
+            padding: "8px 14px",
+            cursor: "pointer",
+          }}
+        >
+          Agrandir le document
+        </button>
       </div>
     </div>
+
+    {zoomed ? (
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Document agrandi"
+        onClick={() => setZoomed(false)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 60,
+          background: "rgba(0,0,0,0.82)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "5vw",
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => setZoomed(false)}
+          aria-label="Fermer"
+          style={{
+            position: "absolute",
+            top: "16px",
+            right: "20px",
+            background: "none",
+            border: "none",
+            color: "white",
+            fontSize: "26px",
+            lineHeight: 1,
+            cursor: "pointer",
+          }}
+        >
+          ×
+        </button>
+        <div
+          className="livr-zoom-inner"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            width: "min(560px, 96vw)",
+            maxHeight: "90vh",
+            overflow: "auto",
+            background: "white",
+            borderRadius: "8px",
+            fontFamily: "sans-serif",
+          }}
+        >
+          <div
+            style={{
+              background: "#f7f7f7",
+              borderBottom: "1px solid #e5e5e5",
+              padding: "11px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              position: "sticky",
+              top: 0,
+            }}
+          >
+            <span style={{ fontSize: "12px", fontWeight: 700, color: "#111", letterSpacing: ".04em" }}>
+              LAZARÈGUE <span style={{ color: "#1A47FF" }}>AVOCATS</span>
+            </span>
+            <span
+              style={{
+                fontSize: "9px",
+                color: "#666",
+                letterSpacing: ".06em",
+                textTransform: "uppercase",
+                background: "#eaeaea",
+                padding: "3px 8px",
+                borderRadius: "2px",
+              }}
+            >
+              {docBadges[order[cur]]}
+            </span>
+          </div>
+          <div style={{ zoom: 1.55 }}>{docs[order[cur]]}</div>
+        </div>
+      </div>
+    ) : null}
+    </>
   );
 }
 
@@ -918,10 +919,7 @@ function FadeUp({
 function StatRow({ stat }: { stat: HeroStat }) {
   // Repère chiffré : élément non cliquable — aucun effet de survol (un survol
   // suggérerait une action qui n'existe pas).
-  const value =
-    "display" in stat && stat.display
-      ? stat.display
-      : `${"value" in stat ? stat.value : 0}${"suffix" in stat ? stat.suffix : ""}`;
+  const value = stat.display;
 
   return (
     <div
@@ -1175,14 +1173,11 @@ export default function RgpdClient() {
         /* ---- Carrousel de spécimens : deux colonnes en desktop ; sous 768 px,
              le menu passe en bandeau horizontal défilant au-dessus du document,
              lui-même en pleine largeur ---- */
-        .livr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .livr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
         @media (max-width: 767px) {
           .livr-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: stretch; }
           .livr-menu { min-width: 0; }
-          .livr-menu-items { display: flex; flex-direction: row; gap: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; scroll-snap-type: x mandatory; }
-          .livr-menu-items > h3 { flex: 0 0 82%; scroll-snap-align: start; }
-          .livr-menu-items > h3 > button { border: 0.5px solid rgba(0,0,0,0.12) !important; border-radius: 8px; padding: 10px 12px !important; height: 100%; }
-          .livr-menu-progress { display: none; }
+          .livr-menu-items { display: flex; flex-direction: column; gap: 0; }
         }
       `}</style>
 
@@ -1280,7 +1275,7 @@ export default function RgpdClient() {
                     border: "0.5px solid rgba(255,255,255,0.15)",
                   }}
                 >
-                  Voir nos cas clients
+                  Voir des situations concrètes
                 </a>
               </div>
             </FadeUp>
@@ -1374,8 +1369,8 @@ export default function RgpdClient() {
               lineHeight: 1.7,
             }}
           >
-            Les signaux qui justifient de sécuriser vos traitements — souvent
-            avant qu&apos;un contrôle ou une opération ne les révèle.
+            Les signaux qui justifient de sécuriser vos traitements — avant
+            qu&apos;un contrôle ou une opération ne révèle les non-conformités.
           </p>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {SITUATIONS.map((s) => (
@@ -1470,7 +1465,7 @@ export default function RgpdClient() {
             lineHeight: 1.25,
           }}
         >
-          Cartographier, organiser,
+          Mise en conformité RGPD : cartographier, organiser,
           <br />
           encadrer, documenter
         </h2>
@@ -1612,7 +1607,7 @@ export default function RgpdClient() {
                 titre: "Encadrer",
                 resume: "Maîtriser votre exposition contractuelle et technique",
                 detail:
-                  "Contrats sous-traitants Art. 28, clauses négociées, transferts hors UE (CCT, BCR), mesures de sécurité Art. 32.",
+                  "Contrats sous-traitants Art. 28, clauses négociées, transferts hors UE (CCT, BCR), mesures de sécurité Art. 32 et protection des données dès la conception (privacy by design, Art. 25).",
                 livrable: "Contrats sous-traitants Art. 28",
               },
               {
@@ -1690,7 +1685,7 @@ export default function RgpdClient() {
             marginBottom: "12px",
           }}
         >
-          Ce que nous livrons
+          Ce que vous recevez
         </p>
         <h2
           style={{
@@ -1701,7 +1696,7 @@ export default function RgpdClient() {
             lineHeight: 1.25,
           }}
         >
-          Des spécimens documentés, pas des modèles
+          Ce que vous recevez
         </h2>
         <LivrablesPreview />
       </section>
@@ -1749,35 +1744,23 @@ export default function RgpdClient() {
         >
           Le règlement impose la désignation d&apos;un délégué à la protection
           des données dans certains cas (art. 37). Selon votre organisation, le
-          cabinet exerce la fonction ou appuie le délégué en place — tenue du
-          registre, analyses d&apos;impact, sensibilisation des équipes,
-          relations avec la CNIL.
+          cabinet exerce la fonction en DPO externalisé ou appuie le délégué en
+          place — tenue du registre, analyses d&apos;impact, sensibilisation des
+          équipes, relations avec la CNIL.
         </p>
-        <span
+        <a
+          href="/contact"
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "10px",
             fontSize: "13px",
-            color: LIGHT.faint,
-            cursor: "default",
+            color: BRAND,
+            textDecoration: "underline",
           }}
         >
-          Découvrir notre offre DPO externe →
-          <span
-            style={{
-              fontSize: "9px",
-              letterSpacing: ".08em",
-              textTransform: "uppercase",
-              color: LIGHT.faint,
-              border: `1px solid ${LIGHT.border}`,
-              borderRadius: "3px",
-              padding: "2px 6px",
-            }}
-          >
-            Page à venir
-          </span>
-        </span>
+          Parler de votre DPO externalisé →
+        </a>
       </section>
 
       {/* CONTRÔLE CNIL & VIOLATION (section 8) */}
@@ -1815,6 +1798,48 @@ export default function RgpdClient() {
           Contrôle CNIL, violation de données et responsabilité des
           sous-traitants
         </h2>
+        {/* Sous-bloc A — Contrôle CNIL */}
+        <h3
+          style={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: LIGHT.text,
+            margin: "0 0 10px",
+            lineHeight: 1.3,
+          }}
+        >
+          Contrôle CNIL
+        </h3>
+        <p
+          style={{
+            fontSize: "14px",
+            color: LIGHT.muted,
+            maxWidth: "720px",
+            marginBottom: "28px",
+            lineHeight: 1.75,
+          }}
+        >
+          Lorsqu&apos;un contrôle s&apos;ouvre, le cabinet prépare le dossier et
+          sélectionne les pièces à produire, répond aux demandes de la
+          délégation de la CNIL, rédige les observations écrites et, si la
+          procédure se poursuit, assure la défense devant la formation
+          restreinte. L&apos;objectif reste le même à chaque étape : présenter
+          une conformité déjà documentée, plutôt que de la reconstituer dans
+          l&apos;urgence.
+        </p>
+
+        {/* Sous-bloc B — Violation de données */}
+        <h3
+          style={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: LIGHT.text,
+            margin: "0 0 10px",
+            lineHeight: 1.3,
+          }}
+        >
+          Violation de données
+        </h3>
         <p
           style={{
             fontSize: "14px",
@@ -1853,13 +1878,21 @@ export default function RgpdClient() {
             lineHeight: 1.7,
           }}
         >
-          L&apos;incident relève aussi du terrain pénal ?{" "}
+          Une même violation peut aussi relever de la{" "}
+          <a
+            href="/nos-domaines/cybersecurite/nis2"
+            style={{ color: BRAND, textDecoration: "underline" }}
+          >
+            directive NIS 2
+          </a>{" "}
+          ; et lorsque l&apos;incident relève du terrain pénal,{" "}
           <a
             href="/nos-domaines/cybercriminalite"
             style={{ color: BRAND, textDecoration: "underline" }}
           >
-            Avocat en cybercriminalité
+            avocat en cybercriminalité
           </a>
+          .
         </p>
       </section>
 
@@ -1897,33 +1930,6 @@ export default function RgpdClient() {
         </h2>
         <p
           style={{
-            fontSize: "16px",
-            fontWeight: 600,
-            color: LIGHT.text,
-            maxWidth: "720px",
-            marginBottom: "16px",
-            lineHeight: 1.5,
-          }}
-        >
-          Un fichier non conforme peut être déclaré illicite.
-        </p>
-        <p
-          style={{
-            fontSize: "14px",
-            color: LIGHT.muted,
-            maxWidth: "720px",
-            marginBottom: "16px",
-            lineHeight: 1.75,
-          }}
-        >
-          Dans toute opération de fusion-acquisition ou levée de fonds, le
-          niveau de conformité RGPD est audité. Un fichier clients constitué ou
-          exploité sans base légale peut voir sa licéité contestée, ce qui
-          affecte sa possibilité d&apos;exploitation, sa cessibilité et, par
-          conséquent, sa valorisation dans l&apos;opération.
-        </p>
-        <p
-          style={{
             fontSize: "14px",
             color: LIGHT.muted,
             maxWidth: "720px",
@@ -1931,9 +1937,17 @@ export default function RgpdClient() {
             lineHeight: 1.75,
           }}
         >
+          Un fichier clients constitué ou exploité sans base légale peut voir sa
+          licéité contestée, ce qui pèse sur sa cessibilité et sa valorisation.
           Nous intervenons en due diligence, côté acquéreur comme côté cible :
-          identification des non-conformités, régularisation avant closing,
-          garanties d&apos;actif et de passif RGPD rédigées et négociées.
+          régularisation avant closing, garanties d&apos;actif et de passif RGPD
+          rédigées et négociées.{" "}
+          <a
+            href="/competences/ma-tech"
+            style={{ color: BRAND, textDecoration: "underline" }}
+          >
+            Notre accompagnement M&amp;A tech →
+          </a>
         </p>
       </section>
 
@@ -1966,7 +1980,7 @@ export default function RgpdClient() {
             lineHeight: 1.25,
           }}
         >
-          Ce que nous voyons chaque semaine
+          Ce que nous voyons le plus souvent
         </h2>
         <p
           style={{
@@ -1981,12 +1995,16 @@ export default function RgpdClient() {
           quand elles ne sont pas anticipées.
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
+          {([
             {
               title: "Outils SaaS américains utilisés sans encadrement",
               sub: "Des outils SaaS empilés — sans encadrement contractuel suffisant ni documentation des traitements et des transferts",
               expand:
                 "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation.",
+              link: {
+                href: "/nos-domaines/contrats-informatiques",
+                label: "Encadrer vos contrats IT →",
+              },
             },
             {
               title: "Registre des traitements inexistant ou obsolète",
@@ -1999,6 +2017,10 @@ export default function RgpdClient() {
               sub: "CV, évaluations, données salariés — sans encadrement IA",
               expand:
                 "Double exposition : RGPD et AI Act (système IA à risque élevé). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
+              link: {
+                href: "/nos-domaines/ia-act",
+                label: "Conformité AI Act →",
+              },
             },
             {
               title: "Lancement d'appli mobile sans mise en conformité",
@@ -2018,7 +2040,12 @@ export default function RgpdClient() {
               expand:
                 "Un fichier prospects sans consentement valide peut être qualifié d'actif illicite — impact direct sur la valorisation. Nous accompagnons les fondateurs dans la régularisation pré-closing.",
             },
-          ].map((item, index) => {
+          ] as Array<{
+            title: string;
+            sub: string;
+            expand: string;
+            link?: { href: string; label: string };
+          }>).map((item, index) => {
             const isOpen = openTerrainCard === index;
             return (
               <div
@@ -2122,6 +2149,21 @@ export default function RgpdClient() {
                     >
                       {item.expand}
                     </div>
+                    {item.link ? (
+                      <a
+                        href={item.link.href}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          display: "inline-block",
+                          marginTop: "10px",
+                          fontSize: "11px",
+                          color: BRAND,
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {item.link.label}
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -2129,46 +2171,6 @@ export default function RgpdClient() {
           })}
         </div>
 
-        {/* Maillage interne : ces situations débordent du seul RGPD. */}
-        <p
-          style={{
-            marginTop: "22px",
-            fontSize: "13px",
-            color: LIGHT.muted,
-            lineHeight: 1.8,
-            maxWidth: "68ch",
-          }}
-        >
-          Ces situations dépassent souvent le seul RGPD. Les outils SaaS et le Cloud
-          Act relèvent aussi de vos{" "}
-          <a
-            href="/nos-domaines/contrats-informatiques"
-            style={{ color: BRAND, textDecoration: "underline" }}
-          >
-            contrats IT
-          </a>{" "}
-          ; une violation de données peut déclencher simultanément une notification
-          CNIL et une obligation au titre de{" "}
-          <a
-            href="/nos-domaines/cybersecurite/nis2"
-            style={{ color: BRAND, textDecoration: "underline" }}
-          >
-            la directive NIS 2
-          </a>{" "}
-          ; et l&apos;usage d&apos;IA générative croise le{" "}
-          <a href="/nos-domaines/ia-act" style={{ color: BRAND, textDecoration: "underline" }}>
-            règlement européen sur l&apos;intelligence artificielle
-          </a>
-          {" "}; enfin, le déréférencement, le droit à l&apos;oubli et le retrait d&apos;un contenu
-          illicite relèvent de{" "}
-          <a
-            href="/nos-domaines/diffamation-retrait-de-contenus"
-            style={{ color: BRAND, textDecoration: "underline" }}
-          >
-            la diffamation et du retrait de contenus en ligne
-          </a>
-          .
-        </p>
       </section>
 
       {/* NOTRE CONVICTION (section 11) — citation + portrait + vidéo */}
@@ -2249,7 +2251,7 @@ export default function RgpdClient() {
                   marginTop: "8px",
                 }}
               >
-                Avocate à la Cour d&apos;appel de Paris
+                Avocate aux barreaux de Paris et de Montréal
               </span>
               <p
                 style={{
