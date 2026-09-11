@@ -614,8 +614,8 @@ export default function IaActClient() {
         <style>{`
           .iaact-hero-grid { position: relative; display: block; }
           .iaact-hero-photo { position: absolute; inset: 0; z-index: 0; }
-          .iaact-hero-img { object-position: center top; }
-          .iaact-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,20,0.86) 0%, rgba(8,10,20,0.78) 55%, rgba(8,10,20,0.66) 100%); }
+          .iaact-hero-img { object-position: center center; }
+          .iaact-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,15,46,0.90) 0%, rgba(10,15,46,0.82) 55%, rgba(10,15,46,0.70) 100%); }
           .iaact-hero-fade { display: none; }
           .iaact-hero-text { position: relative; z-index: 1; padding: 88px 24px 44px; min-height: 360px; }
           @media (min-width: 1024px) {
@@ -630,7 +630,7 @@ export default function IaActClient() {
           <div className="iaact-hero-photo">
             <Image
               src="/images/ia-act-hero.jpg"
-              alt="Immeuble haussmannien à Paris au crépuscule, quelques fenêtres éclairées"
+              alt="escaliers en spirale entre deux immeubles de bureaux"
               fill
               priority
               sizes="(max-width: 1023px) 100vw, 45vw"
