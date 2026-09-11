@@ -396,17 +396,17 @@ export default function Page() {
               </div>
               <div>
                 <figure>
-                  <Image src="/images/amir-pro.jpg" alt="Amir Ben Majed, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
+                  <Image src="/images/amir-pro.jpg" alt="Amir Ben Majed, avocat au barreau de l'Essonne" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
                 </figure>
                 <div className={styles.teamBody}>
-                  <p className={styles.role}>avocat au barreau de paris</p>
+                  <p className={styles.role}>avocat au barreau de l&apos;essonne</p>
                   <h3>Amir Ben Majed</h3>
                   <p>Contentieux et procédure. Intervient sur les écritures, les mesures d'urgence et la conduite des instances devant les juridictions saisies.</p>
                 </div>
               </div>
               <div>
                 <figure>
-                  <Image src="/images/sarah-pro.jpg" alt="Sarah Hinderer, avocate au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 30%" }} />
+                  <Image src="/images/equipe/sarah-hinderer.webp" alt="Portrait de Me Sarah Hinderer, avocate au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center top" }} />
                 </figure>
                 <div className={styles.teamBody}>
                   <p className={styles.role}>avocate au barreau de paris</p>

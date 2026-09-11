@@ -1034,6 +1034,13 @@ function PortailDemo() {
 export function SectionDifferenciateurs() {
   return (
     <section className="w-full bg-[#F8F9FA] px-4 py-16 md:px-8 md:py-24 lg:px-12">
+      {/* Colonnes explicites (pas d'auto-fit) : 4 cartes sur une seule ligne
+          au-delà de 1200px, 2 entre 768 et 1199px, 1 en dessous. */}
+      <style>{`
+        .pourquoi-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .pourquoi-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1200px) { .pourquoi-grid { grid-template-columns: repeat(4, 1fr); } }
+      `}</style>
       <div className="container mx-auto">
         <header className="mx-auto mb-8 max-w-3xl text-center md:mb-10 lg:mb-16">
           <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0A0F2E]/65 md:mb-4">
@@ -1042,13 +1049,7 @@ export function SectionDifferenciateurs() {
           <DifferentiateurSpotlightTitle />
         </header>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 16,
-          }}
-        >
+        <div className="pourquoi-grid">
           {CARDS.map((card) => (
             <article
               key={card.title}

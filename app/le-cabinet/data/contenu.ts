@@ -95,7 +95,7 @@ export const EQUIPE: Intervenant[] = [
   },
   {
     slug: "amir",
-    eyebrow: "Avocat au barreau de Paris · contentieux IT",
+    eyebrow: "Avocat au barreau de l'Essonne · contentieux IT",
     nom: "Amir Ben Majed",
     bio: "Il intervient sur les litiges informatiques complexes : projets qui dérapent, responsabilité des prestataires, contentieux de la preuve technique — ces dossiers où le droit ne se départage qu'à condition de comprendre la machine.",
     meta: [

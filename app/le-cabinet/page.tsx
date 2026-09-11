@@ -66,7 +66,7 @@ const AVOCATS = [
   {
     slug: "amir-ben-majed",
     name: "Amir Ben Majed",
-    jobTitle: "Avocat au barreau de Paris",
+    jobTitle: "Avocat au barreau de l'Essonne",
     knowsAbout: ["Contrats IT", "Contentieux IT", "Responsabilité des prestataires"],
   },
   {

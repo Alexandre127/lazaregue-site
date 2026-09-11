@@ -20,6 +20,10 @@ type TeamMember = {
   avocat: boolean;
   /** Cadrage de la photo de survol, quand le sujet n'est pas centré. */
   positionHover?: string;
+  /** Cadrage du portrait recto, quand le sujet n'est pas centré. */
+  positionBase?: string;
+  /** Texte alternatif dédié du portrait recto (sinon dérivé du nom + rôle). */
+  portraitAlt?: string;
 };
 
 const TEAM_MEMBERS: TeamMember[] = [
@@ -39,7 +43,10 @@ const TEAM_MEMBERS: TeamMember[] = [
     statut: "Avocate au barreau de Paris",
     avocat: true,
     role: "Données personnelles & intelligence artificielle",
-    photoBase: "/images/sarah-pro.jpg",
+    photoBase: "/images/equipe/sarah-hinderer.webp",
+    portraitAlt: "Portrait de Me Sarah Hinderer, avocate au barreau de Paris",
+    // Portrait buste sur fond bleu : ancrage haut pour ne pas couper au menton.
+    positionBase: "center top",
     photoHover: "/images/sarah-cool.jpg",
     tag: { color: "#5DCAA5" },
     signature:
@@ -47,7 +54,7 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Amir Ben Majed",
-    statut: "Avocat au barreau de Paris",
+    statut: "Avocat au barreau de l'Essonne",
     avocat: true,
     role: "Contrats IT & contentieux technologiques",
     photoBase: "/images/amir-pro.jpg",
@@ -119,14 +126,12 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
           <span className="equipe-flip-face equipe-flip-front">
             <Image
               src={member.photoBase}
-              alt={altBase}
+              alt={member.portraitAlt ?? altBase}
               fill
               sizes={sizes}
               className="object-cover"
+              style={{ objectPosition: member.positionBase ?? "center" }}
             />
-            <span className="pointer-events-none absolute bottom-2 left-2 z-[1] flex items-center gap-1 rounded-sm bg-[#0A0A14]/75 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#C5CBDE]">
-              ↗ en dehors du cabinet
-            </span>
           </span>
           <span className="equipe-flip-face equipe-flip-back">
             <Image
@@ -138,9 +143,6 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
               className="object-cover"
               style={{ objectPosition: member.positionHover ?? "center" }}
             />
-            <span className="pointer-events-none absolute bottom-2 left-2 z-[1] flex items-center gap-1 rounded-sm bg-[#0A0A14]/75 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#C5CBDE]">
-              ↺ portrait
-            </span>
           </span>
         </span>
       </button>
@@ -173,25 +175,21 @@ export function SectionEquipe() {
           avocat / expert n'est plus portée par deux grilles séparées mais par
           la qualité affichée sous chaque carte. */}
       <style>{`
+        /* Option A : deux rangs. Trois avocats au rang 1, deux intervenants
+           centrés au rang 2 — même largeur de carte, jamais étirés. Flex centré
+           avec largeur de carte fixe et conteneur calé sur trois cartes. */
         .equipe-cards {
           display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           gap: 16px;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          padding-bottom: 8px;
+          max-width: 782px; /* 3 × 250 + 2 × 16 : exactement trois par rang */
+          margin: 0 auto;
         }
-        .equipe-cards > * { flex: 0 0 72%; scroll-snap-align: start; }
-        @media (min-width: 700px) {
-          .equipe-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            overflow: visible;
-          }
-          .equipe-cards > * { flex: none; }
-        }
-        @media (min-width: 1200px) {
-          .equipe-cards { grid-template-columns: repeat(5, 1fr); }
+        .equipe-cards > * { flex: 0 0 250px; max-width: 250px; }
+        @media (max-width: 639px) {
+          .equipe-cards { max-width: 340px; }
+          .equipe-cards > * { flex-basis: 100%; max-width: 100%; }
         }
 
         /* Retournement 3D du portrait — repris des cartes « études de cas ». */

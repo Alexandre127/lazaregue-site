@@ -44,7 +44,7 @@ const PERSONNES = [
   {
     name: "Amir Ben Majed",
     avocat: true,
-    jobTitle: "Avocat au barreau de Paris — conformité et contrats",
+    jobTitle: "Avocat au barreau de l'Essonne — conformité et contrats",
     knowsAbout: ["Conformité réglementaire", "Documentation contractuelle", "Procédures"],
   },
   {

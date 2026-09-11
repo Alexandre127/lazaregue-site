@@ -11,6 +11,11 @@ const nextConfig = {
     root: rootDir,
   },
 
+  // Masque l'indicateur de développement de Next (le rond « Dev Tools » en bas
+  // de l'écran, visible pendant les compilations). Purement cosmétique et sans
+  // effet en production, où il n'apparaît jamais.
+  devIndicators: false,
+
   // Une seule forme d'URL, sans barre oblique finale : `/page/` est redirigé
   // en 308 vers `/page`. C'est déjà le défaut de Next, rendu explicite ici
   // pour verrouiller l'intention et éviter les doublons d'exploration.
