@@ -1035,9 +1035,9 @@ function RgpdHeroMedia() {
       <span className="rgpd-hero-tint" aria-hidden />
       <span className="rgpd-hero-fade" aria-hidden />
       <span className="rgpd-hero-overlay" aria-hidden />
-      <p className="rgpd-hero-caption">
-        Les données personnelles, ce sont des personnes.
-      </p>
+      <div className="rgpd-hero-socle">
+        <p>Les données personnelles, ce sont des personnes.</p>
+      </div>
       {showVideo ? (
         <button
           type="button"
@@ -1245,11 +1245,16 @@ export default function RgpdClient() {
         .rgpd-hero-img { object-position: center 45%; filter: saturate(0.45) contrast(1.05) brightness(0.9); }
         .rgpd-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         /* Couche 1 : recolore l'image dans le Deep Navy de la charte. */
-        .rgpd-hero-tint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #0A0F2E; mix-blend-mode: color; opacity: 0.6; }
+        .rgpd-hero-tint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #0A0F2E; mix-blend-mode: color; opacity: 1; }
         .rgpd-hero-overlay { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
-        .rgpd-hero-caption { position: absolute; left: 16px; bottom: 14px; z-index: 4; pointer-events: none; margin: 0; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #8888A0; }
+        /* Socle de légende : bandeau opaque façon sous-titrage — contraste
+           constant quelle que soit l'image qui défile derrière. */
+        .rgpd-hero-socle { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: #0A0F2E; padding: 14px 20px; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; }
+        .rgpd-hero-socle p { margin: 0; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.14em; line-height: 1.45; color: rgba(255,255,255,0.9); }
+        /* Réserve à droite du texte pour le bouton pause (présent en ≥768px). */
+        @media (min-width: 768px) { .rgpd-hero-socle { padding-right: 62px; } }
         .rgpd-hero-fade { display: none; }
-        .rgpd-hero-pause { position: absolute; bottom: 12px; right: 12px; z-index: 4; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(10,15,46,0.55); border: 1px solid rgba(255,255,255,0.28); color: #fff; font-size: 9px; line-height: 1; cursor: pointer; transition: background 0.2s ease; }
+        .rgpd-hero-pause { position: absolute; bottom: 12px; right: 12px; z-index: 5; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(10,15,46,0.55); border: 1px solid rgba(255,255,255,0.28); color: #fff; font-size: 9px; line-height: 1; cursor: pointer; transition: background 0.2s ease; }
         .rgpd-hero-pause:hover { background: rgba(10,15,46,0.82); }
         .rgpd-hero-text { position: relative; z-index: 1; padding: 48px 24px 56px; min-height: 380px; }
         @media (min-width: 1024px) {
