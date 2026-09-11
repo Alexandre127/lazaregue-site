@@ -965,6 +965,93 @@ function StatRow({ stat }: { stat: HeroStat }) {
   );
 }
 
+function RgpdHeroMedia() {
+  // Le poster (Image `priority`) est l'élément LCP : rendu côté serveur, il
+  // s'affiche immédiatement. La vidéo, purement décorative, n'est montée que
+  // côté client, en desktop (≥768px) et hors `prefers-reduced-motion` — jamais
+  // sur mobile, où seul le poster est chargé. `preload="none"`, aucune priorité :
+  // elle ne bloque pas le rendu du H1 et se superpose au poster (aucun saut de
+  // mise en page, mêmes dimensions et même recadrage).
+  const [showVideo, setShowVideo] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const wide = window.matchMedia("(min-width: 768px)");
+    const decide = () => setShowVideo(wide.matches && !motion.matches);
+    decide();
+    motion.addEventListener("change", decide);
+    wide.addEventListener("change", decide);
+    return () => {
+      motion.removeEventListener("change", decide);
+      wide.removeEventListener("change", decide);
+    };
+  }, []);
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      void v.play();
+      setPaused(false);
+    } else {
+      v.pause();
+      setPaused(true);
+    }
+  };
+
+  return (
+    <>
+      <Image
+        src="/images/rgpd/hero-poster.webp"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="(max-width: 1023px) 100vw, 45vw"
+        className="rgpd-hero-img"
+        style={{ objectFit: "cover" }}
+      />
+      {showVideo ? (
+        <video
+          ref={videoRef}
+          className="rgpd-hero-img rgpd-hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster="/images/rgpd/hero-poster.webp"
+          aria-hidden="true"
+          onPlay={() => setPaused(false)}
+          onPause={() => setPaused(true)}
+          style={{ objectFit: "cover" }}
+        >
+          <source src="/videos/rgpd-hero.webm" type="video/webm" />
+          <source src="/videos/rgpd-hero.mp4" type="video/mp4" />
+        </video>
+      ) : null}
+      <span className="rgpd-hero-fade" aria-hidden />
+      <span className="rgpd-hero-overlay" aria-hidden />
+      {showVideo ? (
+        <button
+          type="button"
+          onClick={togglePlay}
+          className="rgpd-hero-pause"
+          aria-label={
+            paused
+              ? "Lire la vidéo d'arrière-plan"
+              : "Mettre en pause la vidéo d'arrière-plan"
+          }
+        >
+          <span aria-hidden="true">{paused ? "▶" : "❙❙"}</span>
+        </button>
+      ) : null}
+    </>
+  );
+}
+
 function SituationItem({ num, text }: { num: string; text: string }) {
   // Situation informative : élément non cliquable — pas d'effet de survol.
   return (
@@ -1150,14 +1237,17 @@ export default function RgpdClient() {
         .rgpd-hero-grid { position: relative; display: block; }
         .rgpd-hero-photo { position: absolute; inset: 0; z-index: 0; }
         .rgpd-hero-img { object-position: center 45%; }
-        .rgpd-hero-overlay { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
+        .rgpd-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+        .rgpd-hero-overlay { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
         .rgpd-hero-fade { display: none; }
+        .rgpd-hero-pause { position: absolute; bottom: 12px; right: 12px; z-index: 4; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(10,15,46,0.55); border: 1px solid rgba(255,255,255,0.28); color: #fff; font-size: 9px; line-height: 1; cursor: pointer; transition: background 0.2s ease; }
+        .rgpd-hero-pause:hover { background: rgba(10,15,46,0.82); }
         .rgpd-hero-text { position: relative; z-index: 1; padding: 48px 24px 56px; min-height: 380px; }
         @media (min-width: 1024px) {
           .rgpd-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
           .rgpd-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 460px; z-index: auto; }
           .rgpd-hero-overlay { display: none; }
-          .rgpd-hero-fade { display: block; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 60%, ${DARK.bg} 100%); }
+          .rgpd-hero-fade { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 60%, ${DARK.bg} 100%); }
           .rgpd-hero-text { order: 1; padding: 64px 40px 64px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
         }
 
@@ -1185,17 +1275,7 @@ export default function RgpdClient() {
       <section style={{ background: DARK.bg, position: "relative", overflow: "hidden" }}>
         <div className="rgpd-hero-grid" style={{ maxWidth: 900, margin: "0 auto" }}>
           <div className="rgpd-hero-photo">
-            <Image
-              src="/images/rgpd-hero.jpg"
-              alt="Meuble à tiroirs éclairé dans une salle sombre — archives classées"
-              fill
-              priority
-              sizes="(max-width: 1023px) 100vw, 45vw"
-              className="rgpd-hero-img"
-              style={{ objectFit: "cover" }}
-            />
-            <span className="rgpd-hero-fade" aria-hidden />
-            <span className="rgpd-hero-overlay" aria-hidden />
+            <RgpdHeroMedia />
           </div>
 
           <div className="rgpd-hero-text">
