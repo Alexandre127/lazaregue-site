@@ -749,7 +749,7 @@ const CARDS: DifferentiateurCard[] = [
     imageAlt:
       "Schéma d'architecture de traitement de données dessiné au tableau, annoté de références juridiques",
     title: "Une équipe juridique et technique",
-    text: "Avocats et experts en cybersécurité confrontent l'analyse juridique aux réalités techniques du dossier, de la preuve numérique à l'architecture des systèmes.",
+    text: "Avocats et experts en cybersécurité confrontent l'analyse juridique aux réalités techniques du dossier. Une double inscription aux barreaux de Paris et de Montréal complète cette approche sur les dossiers transatlantiques.",
   },
   {
     imageSrc: "/images/pourquoi-nous/plaque-tilsitt.webp",

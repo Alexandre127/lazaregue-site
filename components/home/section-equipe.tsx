@@ -40,11 +40,11 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
   {
     fullName: "Sarah Hinderer",
-    statut: "Avocate au barreau de Paris",
+    statut: "Avocate aux barreaux de Paris et de Montréal",
     avocat: true,
     role: "Données personnelles & intelligence artificielle",
     photoBase: "/images/equipe/sarah-hinderer.webp",
-    portraitAlt: "Portrait de Me Sarah Hinderer, avocate au barreau de Paris",
+    portraitAlt: "Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal",
     // Portrait buste sur fond bleu : ancrage haut pour ne pas couper au menton.
     positionBase: "center top",
     photoHover: "/images/sarah-cool.jpg",

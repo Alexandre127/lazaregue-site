@@ -406,10 +406,10 @@ export default function Page() {
               </div>
               <div>
                 <figure>
-                  <Image src="/images/equipe/sarah-hinderer.webp" alt="Portrait de Me Sarah Hinderer, avocate au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center top" }} />
+                  <Image src="/images/equipe/sarah-hinderer.webp" alt="Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center top" }} />
                 </figure>
                 <div className={styles.teamBody}>
-                  <p className={styles.role}>avocate au barreau de paris</p>
+                  <p className={styles.role}>avocate aux barreaux de paris et de montréal</p>
                   <h3>Sarah Hinderer</h3>
                   <p>Suit les dossiers de fraude bancaire et d'escroquerie, de la constitution du dossier de preuve au suivi des plaintes et du lien avec les services d'enquête.</p>
                 </div>

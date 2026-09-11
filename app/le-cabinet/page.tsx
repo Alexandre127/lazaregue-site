@@ -72,7 +72,7 @@ const AVOCATS = [
   {
     slug: "sarah-hinderer",
     name: "Sarah Hinderer",
-    jobTitle: "Avocate au barreau de Paris",
+    jobTitle: "Avocate aux barreaux de Paris et de Montréal",
     knowsAbout: ["RGPD", "Protection des données", "Due diligence"],
   },
 ];

@@ -106,7 +106,7 @@ export const EQUIPE: Intervenant[] = [
   },
   {
     slug: "sarah",
-    eyebrow: "Avocate au barreau de Paris · données personnelles",
+    eyebrow: "Avocate aux barreaux de Paris et de Montréal · données personnelles",
     nom: "Sarah Hinderer",
     bio: "Elle accompagne les entreprises sur la protection des données personnelles et les enjeux data des opérations et des levées de fonds — de la cartographie des traitements jusqu'à la due diligence. Elle traite le RGPD comme un système de preuve.",
     meta: [

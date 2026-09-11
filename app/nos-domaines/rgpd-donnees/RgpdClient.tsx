@@ -2218,7 +2218,7 @@ export default function RgpdClient() {
             >
               <Image
                 src="/images/equipe/sarah-hinderer.webp"
-                alt="Portrait de Me Sarah Hinderer, avocate au barreau de Paris"
+                alt="Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal"
                 fill
                 sizes="(max-width: 767px) 100vw, 240px"
                 style={{ objectFit: "cover", objectPosition: "center top" }}
