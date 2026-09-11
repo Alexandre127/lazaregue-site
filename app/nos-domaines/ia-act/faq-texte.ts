@@ -14,7 +14,7 @@
 export const FAQ_TEXTE: { q: string; a: string }[] = [
   {
     q: "Le report de 2026 me dispense-t-il d'agir ?",
-    a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites sont sanctionnables depuis février 2025, le régime de sanctions et les autorités de surveillance sont en place depuis août 2025, et les obligations de transparence et de gouvernance s'appliquent depuis août 2026. Le report est surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
+    a: "Non. Le report ne touche que les systèmes à haut risque — annexe III au 2 décembre 2027, annexe I au 2 août 2028. Les pratiques interdites s'appliquent depuis le 2 février 2025, mais les amendes ne sont exigibles que depuis le 2 août 2025, avec la désignation des autorités de surveillance. Les obligations de transparence et de gouvernance s'appliquent depuis le 2 août 2026. Le report est surtout le temps de faire l'inventaire et la qualification des systèmes — un travail que très peu d'entreprises ont engagé.",
   },
   {
     q: "Comment qualifier un système d'IA ?",
@@ -43,6 +43,10 @@ export const FAQ_TEXTE: { q: string; a: string }[] = [
   {
     q: "Sommes-nous fournisseur ou déployeur si nous avons configuré l'outil nous-mêmes ?",
     a: "Cela dépend de ce que « configurer » recouvre. Régler les paramètres prévus par la notice vous laisse déployeur. En revanche, assigner au système une destination qu'il n'avait pas — en particulier un usage relevant de l'annexe III — ou le modifier substantiellement peut faire de vous le fournisseur, avec le régime le plus lourd (art. 25). La qualification se fait système par système, sur l'usage réel.",
+  },
+  {
+    q: "Qui répond si nous utilisons un modèle du marché ?",
+    a: "Les obligations relatives aux modèles d'IA à usage général — documentation du modèle, politique de droit d'auteur, résumé des contenus d'entraînement — pèsent sur l'éditeur du modèle. Vous n'y avez pas droit de plein droit : la documentation destinée aux intégrateurs vise ceux qui construisent un système à partir du modèle, et ce que vous obtiendrez dépend de votre contrat. C'est donc un point de négociation, à traiter avant la signature. (art. 53 et 55)",
   },
   {
     q: "Combien risque une PME ?",

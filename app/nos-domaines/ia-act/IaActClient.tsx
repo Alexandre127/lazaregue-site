@@ -106,6 +106,170 @@ function B({ children }: { children: ReactNode }) {
   return <strong style={{ fontStyle: "normal", fontWeight: 600, color: LIGHT.text }}>{children}</strong>;
 }
 
+/* ---------------------------------------------------------------- Qualificateur
+   Bloc 3 interactif : trois questions recomposent, sous les yeux du lecteur, ce
+   que le règlement impose SUR SON OUTIL. « Je ne sais pas » (q3) l'emporte sur
+   tout. Le « socle » (formation, art. 4) apparaît dans les quatre combinaisons
+   de rôle. Aucune formulation de l'ancien bloc n'est conservée. */
+const OUTILS = [
+  { id: "assistant", label: "Un assistant de rédaction", nom: "votre assistant de rédaction" },
+  { id: "tri", label: "Un logiciel de tri de candidatures", nom: "votre logiciel de tri de candidatures" },
+  { id: "chatbot", label: "Un chatbot client", nom: "votre chatbot client" },
+  { id: "produit", label: "Une IA intégrée à votre produit", nom: "l'IA intégrée à votre produit" },
+] as const;
+const PROVENANCES = [
+  { id: "d", label: "Acheté sur le marché, utilisé tel quel" },
+  { id: "f", label: "Développé pour vous, ou diffusé sous votre nom" },
+] as const;
+const DECISIONS = [
+  { id: "n", label: "Non" },
+  { id: "o", label: "Oui" },
+  { id: "i", label: "Je ne sais pas" },
+] as const;
+type OutilId = (typeof OUTILS)[number]["id"];
+type ProvId = "d" | "f";
+type DecId = "n" | "o" | "i";
+
+const SOCLE =
+  "Prendre des mesures pour faire monter vos équipes en compétence, à proportion de leur profil et du contexte d'usage — et en garder la trace";
+
+type QualifResult = {
+  titre: string;
+  bullets: string[];
+  reference: string;
+  calendrier: boolean;
+  contact: boolean;
+};
+
+function qualif(q1: OutilId, q2: ProvId, q3: DecId): QualifResult {
+  const nom = OUTILS.find((o) => o.id === q1)!.nom;
+  if (q3 === "i") {
+    return {
+      titre: `Sur ${nom}, c'est la question qui commande tout le reste`,
+      bullets: [
+        "Le classement ne se lit pas dans une fiche produit : il dépend de la destination donnée à l'outil",
+        "Un filtre prévu par le texte peut en faire sortir un système listé, sous réserve d'une évaluation documentée",
+        "Une même entreprise est souvent hors champ pour un outil et à haut risque pour un autre",
+      ],
+      reference: "art. 6 et annexe III",
+      calendrier: false,
+      contact: true,
+    };
+  }
+  if (q2 === "d" && q3 === "n") {
+    const variantes: Record<OutilId, string[]> = {
+      assistant: ["Si vous publiez des contenus de synthèse, les cas de mention prévus par le texte s'appliquent"],
+      chatbot: ["Votre interlocuteur doit savoir qu'il s'adresse à une IA — l'obligation pèse d'abord sur l'éditeur de l'outil"],
+      produit: ["Vérifier si votre produit relève d'une réglementation à marquage : le régime changerait"],
+      tri: [],
+    };
+    return {
+      titre: `Sur ${nom} : le socle commun, et rien de plus`,
+      bullets: [SOCLE, ...variantes[q1]],
+      reference: "art. 4 · art. 50 — les obligations de l'article 26 ne s'appliquent pas ici",
+      calendrier: false,
+      contact: false,
+    };
+  }
+  if (q2 === "d" && q3 === "o") {
+    return {
+      titre: `Sur ${nom} : vous êtes déployeur d'un système à haut risque`,
+      bullets: [
+        "Utiliser l'outil conformément à sa notice",
+        "Confier la supervision à des personnes ayant l'autorité de contredire le système",
+        "Veiller aux données d'entrée dont vous avez le contrôle",
+        "Conserver les journaux",
+        "Informer les travailleurs et leurs représentants avant la mise en service",
+        "Informer les personnes visées par une décision",
+        SOCLE,
+      ],
+      reference: "art. 26 · exigible au 2 décembre 2027 pour l'annexe III",
+      calendrier: true,
+      contact: false,
+    };
+  }
+  if (q2 === "f" && q3 === "n") {
+    return {
+      titre: `Sur ${nom} : vous êtes fournisseur, hors haut risque`,
+      bullets: [
+        SOCLE,
+        "Concevoir l'outil pour qu'on sache qu'on s'adresse à une IA, lorsqu'il dialogue avec des personnes",
+        "Marquer les sorties de synthèse dans un format lisible par machine",
+      ],
+      reference: "art. 4 · art. 50 §1 et §2",
+      calendrier: false,
+      contact: false,
+    };
+  }
+  // f + o — fournisseur d'un système à haut risque
+  return {
+    titre: `Sur ${nom} : vous êtes fournisseur d'un système à haut risque`,
+    bullets: [
+      "Gestion des risques, gouvernance des données et examen des biais",
+      "Documentation technique et journalisation",
+      "Notice d'utilisation et conception permettant la supervision humaine",
+      "Évaluation de conformité, marquage, enregistrement européen",
+      "Surveillance après commercialisation",
+      "Incidents graves signalés sous quinze jours",
+      SOCLE,
+    ],
+    reference: "art. 16 et suivants · le détail figure dans notre livre blanc",
+    calendrier: false,
+    contact: false,
+  };
+}
+
+/** Un groupe de choix (boutons réels, aria-pressed, clavier natif). */
+function QGroup({
+  label,
+  hint,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  hint?: string;
+  options: readonly { id: string; label: string }[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div>
+      <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: LIGHT.muted, margin: "0 0 7px" }}>
+        {label}
+        {hint ? <span style={{ textTransform: "none", letterSpacing: 0, color: LIGHT.faint }}> {hint}</span> : null}
+      </p>
+      <div className="qualif-group" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {options.map((o) => {
+          const active = o.id === value;
+          return (
+            <button
+              key={o.id}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onChange(o.id)}
+              style={{
+                fontFamily: "var(--ff-body)",
+                fontSize: 13,
+                lineHeight: 1.3,
+                padding: "9px 14px",
+                borderRadius: 8,
+                border: `1px solid ${active ? BLUE : LIGHT.border}`,
+                background: active ? BLUE : LIGHT.panel,
+                color: active ? "#fff" : LIGHT.text,
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 const interventionTabs = [
   {
     id: "audit",
@@ -243,7 +407,7 @@ const interventionTabs = [
             Tout déploiement d&apos;un nouveau système IA est soumis à validation du{" "}
             <B>Comité IA</B> (DG + DPO + DSI) avant mise en production. Délai de traitement :{" "}
             <B>15 jours ouvrés</B>. Les systèmes à haut risque requièrent en outre une évaluation de
-            conformité externe et une information préalable du <B>CSE</B> si impact sur les
+            conformité et une information préalable du <B>CSE</B> si impact sur les
             conditions de travail.
           </>
         ),
@@ -325,6 +489,10 @@ const interventionTabs = [
 export default function IaActClient() {
   const [activeTab, setActiveTab] = useState("audit");
   const [openQuestions, setOpenQuestions] = useState<number[]>([0]);
+  // Qualificateur (bloc 3) — trois choix, défauts : assistant / acheté / non.
+  const [q1, setQ1] = useState<OutilId>("assistant");
+  const [q2, setQ2] = useState<ProvId>("d");
+  const [q3, setQ3] = useState<DecId>("n");
   const activePanel = interventionTabs.find((t) => t.id === activeTab) ?? interventionTabs[0];
 
   return (
@@ -532,61 +700,109 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 3. CE QUE LE RÈGLEMENT IMPOSE — obligations par rôle. Le vocabulaire
-          (fournisseur / déployeur / modèle) est posé ici, avant que l'offre ne
-          l'emploie au bloc suivant. Remplace l'ancienne « démonstration ». */}
+      {/* 3. CE QUE LE RÈGLEMENT IMPOSE — qualificateur interactif. Titre = vrai
+          <h2>. Trois questions recomposent le résultat SUR L'OUTIL (aria-live). */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <style>{`
+          @media (max-width: 640px) {
+            .qualif-group { flex-direction: column; }
+            .qualif-group button { width: 100%; }
+          }
+        `}</style>
         <div style={INNER}>
           <Eyebrow>Le cadre</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que le règlement impose</h2>
-          <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
-            Le règlement qualifie des usages, système par système. Ce que vous
-            devez dépend du rôle que vous tenez sur chacun d&apos;eux.
-          </p>
-          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
-            {[
-              {
-                lead: "Formation",
-                texte:
-                  "Toute entreprise, qu'elle fournisse ou qu'elle utilise, prend des mesures pour faire monter en compétence les personnes qui exploitent ses systèmes. Le texte du 8 juillet 2026 en fait une obligation de moyens : aucun niveau individuel à garantir. Un plan de formation daté reste le moyen de preuve le plus simple.",
-                ref: "art. 4",
-              },
-              {
-                lead: "Transparence",
-                texte:
-                  "Le fournisseur conçoit le système pour qu'on sache qu'on parle à une IA et marque ses sorties de synthèse. Le déployeur signale les hypertrucages et informe les personnes exposées à un système de reconnaissance des émotions. Pour un texte publié sur une question d'intérêt public, la mention tombe si une personne assume la responsabilité éditoriale : nommer le relecteur, dater, conserver la trace.",
-                ref: "art. 50",
-              },
-              {
-                lead: "Vous utilisez un système à haut risque",
-                texte:
-                  "Suivre la notice, confier la supervision à quelqu'un qui a l'autorité de contredire le système, veiller aux données d'entrée, conserver les journaux, informer vos salariés avant la mise en service et les personnes visées par une décision.",
-                ref: "art. 26 — exigible selon la catégorie du système, voir le calendrier",
-              },
-              {
-                lead: "Vous en fournissez un",
-                texte:
-                  "Le régime le plus lourd : gestion des risques, gouvernance des données, documentation technique, journalisation, supervision, évaluation de conformité, marquage, enregistrement européen, incidents graves sous quinze jours. Le détail est dans notre livre blanc.",
-                ref: null,
-              },
-              {
-                lead: "Vous utilisez un modèle du marché",
-                texte:
-                  "Les obligations pèsent sur son éditeur. Ce que vous obtiendrez de lui dépend de votre contrat : c'est un point de négociation, pas un droit acquis.",
-                ref: "art. 53 et 55",
-              },
-            ].map((o, i) => (
-              <div key={o.lead} style={{ padding: "14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none", background: LIGHT.panel }}>
-                <p style={{ fontSize: 14, color: LIGHT.text, margin: 0, lineHeight: 1.6 }}>
-                  <strong style={{ fontWeight: 600 }}>{o.lead}.</strong>{" "}
-                  <span style={{ color: LIGHT.muted }}>{o.texte}</span>
-                  {o.ref ? (
-                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint }}> ({o.ref})</span>
-                  ) : null}
-                </p>
-              </div>
-            ))}
+          <h2 style={{ ...TYPE.h2, marginBottom: 10 }}>Ce que le règlement impose, sur votre outil</h2>
+          <div style={{ ...TYPE.secondary, marginBottom: 18, maxWidth: 760 }}>
+            <p style={{ margin: "0 0 8px", lineHeight: 1.7 }}>
+              Depuis le 2 février 2025, les entreprises qui utilisent, intègrent ou
+              mettent sur le marché des systèmes d&apos;intelligence artificielle
+              sont soumises au{" "}
+              <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2024/1689</a>{" "}
+              du 13 juin 2024, dit règlement sur l&apos;intelligence artificielle
+              ou AI Act, modifié par le{" "}
+              <a href="https://eur-lex.europa.eu/eli/reg/2026/1744/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2026/1744</a>{" "}
+              du 8 juillet 2026. Il s&apos;applique aussi aux entreprises établies
+              hors de l&apos;Union lorsque les résultats de leurs systèmes y sont
+              utilisés.
+            </p>
+            <p style={{ margin: "0 0 8px", lineHeight: 1.7 }}>
+              Le texte ne classe pas les entreprises, il classe les usages :
+              certains sont <B>interdits</B>, d&apos;autres sont dits{" "}
+              <B>à haut risque</B> et relèvent d&apos;un régime proche de celui
+              d&apos;un produit industriel, d&apos;autres n&apos;appellent
+              qu&apos;une obligation de <B>transparence</B>, la plupart ne sont
+              pas réglementés. Vos obligations se déterminent donc outil par outil.
+            </p>
+            <p style={{ margin: 0, lineHeight: 1.7 }}>Trois questions suffisent à situer le vôtre.</p>
           </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <QGroup label="1 · De quel outil parlons-nous ?" options={OUTILS} value={q1} onChange={(v) => setQ1(v as OutilId)} />
+            <QGroup label="2 · D'où vient-il ?" options={PROVENANCES} value={q2} onChange={(v) => setQ2(v as ProvId)} />
+            <QGroup
+              label="3 · Sert-il à décider du sort de personnes ?"
+              hint="(recrutement, crédit, assurance, éducation, accès à un service essentiel)"
+              options={DECISIONS}
+              value={q3}
+              onChange={(v) => setQ3(v as DecId)}
+            />
+          </div>
+
+          {/* Panneau de résultat — recomposé à chaque choix. */}
+          <div aria-live="polite" style={{ marginTop: 16 }}>
+            {(() => {
+              const r = qualif(q1, q2, q3);
+              return (
+                <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.borderBlue}`, borderRadius: 10, padding: CARD_PAD }}>
+                  <p style={{ ...TYPE.h3, color: LIGHT.text, margin: 0 }}>{r.titre}</p>
+                  <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6 }}>
+                    {r.bullets.map((b) => (
+                      <li key={b} style={{ fontSize: 13.5, color: LIGHT.muted, lineHeight: 1.55, display: "flex", gap: 8 }}>
+                        <span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.faint, margin: "12px 0 0", letterSpacing: ".03em" }}>
+                    {r.reference}
+                    {r.calendrier ? (
+                      <>
+                        {" — "}
+                        <a href="#le-calendrier" style={{ color: BLUE, textDecoration: "none" }}>voir le calendrier</a>
+                      </>
+                    ) : null}
+                  </p>
+                  {r.contact ? (
+                    <Link
+                      href="/contact"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        marginTop: 14,
+                        background: BLUE,
+                        color: "#fff",
+                        padding: "0 18px",
+                        minHeight: 42,
+                        borderRadius: 4,
+                        textDecoration: "none",
+                        fontSize: 12,
+                        letterSpacing: ".04em",
+                      }}
+                    >
+                      Faire le point sur vos systèmes d&apos;IA →
+                    </Link>
+                  ) : null}
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Note de bas de bloc — toujours visible. */}
+          <p style={{ fontSize: 12, color: LIGHT.muted, margin: "16px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
+            Cette page ne remplace pas une analyse. La qualification d&apos;un
+            système donné suppose l&apos;examen de son fonctionnement réel, de sa
+            destination et de vos contrats.
+          </p>
         </div>
       </section>
 
@@ -604,7 +820,8 @@ export default function IaActClient() {
                 titre: "Audit et diagnostic AI Act",
                 phrase: "« Nous utilisons plusieurs IA sans savoir où nous en sommes. »",
                 corps: "Inventaire des systèmes officiels et des usages informels, qualification, rôle tenu, feuille de route.",
-                option: null,
+                recois: "cartographie des usages, registre des systèmes, plan d'action priorisé",
+                option: null as string | null,
                 accent: true,
               },
               {
@@ -612,8 +829,9 @@ export default function IaActClient() {
                 titre: "Gouvernance IA : registre, charte et procédures",
                 phrase: "« Nous devons poser des règles. »",
                 corps: "Registre des systèmes, charte IA, outils autorisés et données interdites, validation humaine, incidents, formation.",
+                recois: "charte IA et procédures, circuit de validation",
                 option:
-                  "En option, un suivi dans la durée : qualification des nouveaux systèmes, mise à jour du registre, ateliers sur site ou à distance, interlocuteur identifié, coordination avec le DPO et la DSI.",
+                  "En option, un suivi dans la durée. Les services marketing, RH et informatique lancent chacun leurs projets sans procédure commune, et un audit ponctuel devient vite obsolète. Le suivi consiste à examiner les nouveaux usages, revoir les fournisseurs, actualiser le registre et animer les ateliers avec les équipes, avec la direction, le DPO et la DSI." as string | null,
                 accent: false,
               },
               {
@@ -621,7 +839,8 @@ export default function IaActClient() {
                 titre: "Conformité d'un système à haut risque",
                 phrase: "« Notre produit peut relever de l'annexe III. »",
                 corps: "Analyse complète, documentation, supervision humaine, contrats fournisseurs, préparation au contrôle.",
-                option: null,
+                recois: "documentation adaptée au rôle, organisation de la supervision, clauses contractuelles",
+                option: null as string | null,
                 accent: false,
               },
             ].map((n) => (
@@ -638,6 +857,10 @@ export default function IaActClient() {
                 <h3 style={{ ...TYPE.h3, margin: "6px 0 0" }}>{n.titre}</h3>
                 <p style={{ fontSize: 13, color: LIGHT.text, fontStyle: "italic", margin: "8px 0 0", lineHeight: 1.5 }}>{n.phrase}</p>
                 <p style={{ fontSize: 13, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.6 }}>{n.corps}</p>
+                <p style={{ fontSize: 12.5, margin: "8px 0 0", lineHeight: 1.55 }}>
+                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".06em", textTransform: "uppercase", color: BLUE }}>Ce que vous recevez</span>{" "}
+                  <span style={{ color: LIGHT.muted }}>{n.recois}</span>
+                </p>
                 {n.option ? (
                   <p style={{ fontSize: 12.5, color: LIGHT.faint, margin: "8px 0 0", lineHeight: 1.55 }}>{n.option}</p>
                 ) : null}
@@ -815,7 +1038,60 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 6. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
+      {/* 6. NOS DOSSIERS — preuve vécue (entre livrables et jurisprudence). Deux
+          dossiers, quatre lignes chacun. Sobre : ni photo, ni icône. */}
+      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <div style={INNER}>
+          <Eyebrow>Retour d&apos;expérience</Eyebrow>
+          <h2 style={{ ...TYPE.h2, marginBottom: 16 }}>Nos dossiers</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
+            {[
+              {
+                titre: "Des salariés utilisent l'IA avec des documents confidentiels",
+                lignes: [
+                  ["Situation", "Une entreprise de conseil découvre que ses équipes transmettent des contrats clients et des comptes rendus internes à plusieurs assistants d'IA."],
+                  ["Difficulté", "Personne ne sait quels outils sont utilisés, quelles données sont conservées, ni quels engagements les fournisseurs prennent."],
+                  ["Notre intervention", "Recenser les usages, examiner les conditions contractuelles, définir les données autorisées, former les équipes à partir des situations rencontrées."],
+                  ["Résultat", "Une liste d'outils autorisés, une charte opérationnelle, un circuit de validation des nouveaux usages."],
+                ],
+              },
+              {
+                titre: "Un éditeur ajoute une fonction d'IA avant de signer avec un grand compte",
+                lignes: [
+                  ["Situation", "Un éditeur SaaS intègre un modèle tiers à son logiciel ; un client important demande des garanties sur les données, les résultats et la conformité avant de signer."],
+                  ["Difficulté", "Les engagements commerciaux envisagés dépassent les garanties obtenues du fournisseur du modèle."],
+                  ["Notre intervention", "Déterminer les rôles respectifs, examiner les flux de données, revoir les engagements contractuels, constituer le dossier de réponses aux questions du client."],
+                  ["Résultat", "Un périmètre et des responsabilités clarifiés, des clauses adaptées, une documentation qui a permis de poursuivre la négociation."],
+                ],
+              },
+            ].map((d) => (
+              <article key={d.titre} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD, display: "flex", flexDirection: "column", height: "100%" }}>
+                <h3 style={{ ...TYPE.h3, margin: 0, lineHeight: 1.3 }}>{d.titre}</h3>
+                <dl style={{ margin: "12px 0 0", display: "flex", flexDirection: "column", gap: 9 }}>
+                  {d.lignes.map(([k, v]) => (
+                    <div key={k}>
+                      <dt style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".06em", textTransform: "uppercase", color: BLUE }}>{k}</dt>
+                      <dd style={{ margin: "2px 0 0", fontSize: 13, color: LIGHT.muted, lineHeight: 1.55 }}>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
+            ))}
+          </div>
+          <p style={{ fontSize: 12, color: LIGHT.muted, margin: "12px 0 0", lineHeight: 1.55 }}>
+            Dossiers anonymisés. Chaque affaire dépend de ses circonstances propres.
+          </p>
+          {/* Rappel de contact — une ligne + le bouton, pas une nouvelle section. */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14, marginTop: 18 }}>
+            <span style={{ fontSize: 14, color: LIGHT.text }}>Une situation proche de la vôtre ?</span>
+            <Link href="/contact" style={{ display: "inline-flex", alignItems: "center", background: BLUE, color: "#fff", padding: "0 18px", minHeight: 42, borderRadius: 4, textDecoration: "none", fontSize: 12, letterSpacing: ".04em" }}>
+              Faire le point sur vos systèmes d&apos;IA →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CE QUE LES JUGES EXIGENT DÉJÀ — jurisprudence. Chaque carte
           affiche juridiction, date et enseignement essentiel ; l'analyse est
           repliée derrière un <details> natif (aucun JS). */}
       <section id="ce-que-les-juges" style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD, scrollMarginTop: 80 }}>
@@ -837,7 +1113,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 7. NOTRE APPROCHE — le binôme (parité stricte : même format, même
+      {/* 8. NOTRE APPROCHE — le binôme (parité stricte : même format, même
           encadré de fonction, même nombre de points, hauteur identique via
           align-items:stretch + height 100%). Alexandre en premier. Un seul h2.
           TODO (cabinet) : valider avec Nadia Abchiche-Mimouni l'intitulé exact
@@ -949,12 +1225,13 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 8. OÙ EN EST LE DROIT — le calendrier (section autonome) */}
-      <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+      {/* 9. OÙ EN EST LE DROIT — le calendrier (section autonome). id = cible de
+          l'ancre « voir le calendrier » du qualificateur (bloc 3). */}
+      <section id="le-calendrier" style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD, scrollMarginTop: 80 }}>
         <div style={INNER}>
           <Eyebrow>Où en est le droit</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>
-            Le calendrier, au 1<sup>er</sup> septembre 2026
+            Le calendrier, au 11 septembre 2026
           </h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
             Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 du
@@ -980,8 +1257,8 @@ export default function IaActClient() {
               rows: [
                 { date: "2 décembre 2026", titre: "Marquage lisible par machine", initial: null as string | null, desc: "Quatre mois de transition, pour les seuls fournisseurs ayant mis leur système sur le marché avant août 2026. L'annonce d'une IA interactive et la divulgation des hypertrucages ne sont pas reportées." as string | null },
                 { date: "2 décembre 2026", titre: "Deux interdictions nouvelles", initial: null as string | null, desc: "Contenus intimes non consentis et contenus pédocriminels générés par IA. Le déployeur n'est visé que s'il utilise le système dans ce but." as string | null },
-                { date: "2 décembre 2027", titre: "Haut risque, annexe III", initial: "initialement août 2026" as string | null, desc: null as string | null },
-                { date: "2 août 2028", titre: "Haut risque, annexe I", initial: "initialement août 2027" as string | null, desc: "Les machines relèvent désormais d'une approche sectorielle." as string | null },
+                { date: "2 décembre 2027", titre: "Haut risque, annexe III", initial: "initialement août 2026" as string | null, desc: "Par exemple : recrutement et gestion RH, scoring de crédit, tarification en assurance, éducation, accès aux services essentiels." as string | null },
+                { date: "2 août 2028", titre: "Haut risque, annexe I", initial: "initialement août 2027" as string | null, desc: "Par exemple : composant de sécurité d'un dispositif médical, d'une machine, d'un jouet. Les machines relèvent désormais d'une approche sectorielle." as string | null },
               ],
             },
           ].map((b) => (
@@ -1019,12 +1296,12 @@ export default function IaActClient() {
             </p>
           </div>
           <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, margin: "12px 0 0", letterSpacing: ".04em" }}>
-            À JOUR AU 1ᵉʳ SEPTEMBRE 2026 · RÉVISION TRIMESTRIELLE
+            À JOUR AU 11 SEPTEMBRE 2026 · RÉVISION TRIMESTRIELLE
           </p>
         </div>
       </section>
 
-      {/* 9. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
+      {/* 10. LIVRE BLANC — bloc de renvoi (prompt 2.10). La page Ressources
           correspondante n'existe pas encore → bouton DÉSACTIVÉ, aucune URL
           inventée, aucun formulaire. À ACTIVER quand la page « Le règlement sur
           l'IA : qui doit faire quoi » existera dans Ressources : pointer vers la
@@ -1082,7 +1359,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 10. QUESTIONS FRÉQUENTES */}
+      {/* 11. QUESTIONS FRÉQUENTES */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
           <Eyebrow>Questions fréquentes</Eyebrow>
@@ -1162,7 +1439,7 @@ export default function IaActClient() {
       </section>
 
 
-      {/* 11. MAILLAGE — RGPD, contrats IT, NIS 2. Version simple posée dès le
+      {/* 12. MAILLAGE — RGPD, contrats IT, NIS 2. Version simple posée dès le
           lot 2 pour ne pas perdre les liens internes ; à peaufiner au lot 4. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <div style={INNER}>
@@ -1185,7 +1462,7 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 12. CTA */}
+      {/* 13. CTA */}
       <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD, width: "100%" }}>
         <div style={{ ...INNER, textAlign: "center" }}>
           <h2 style={{ ...TYPE.h2, marginBottom: 6, color: DARK.text }}>
@@ -1207,7 +1484,7 @@ export default function IaActClient() {
               letterSpacing: ".04em",
             }}
           >
-            Faire qualifier un système →
+            Faire le point sur vos systèmes d&apos;IA →
           </Link>
         </div>
       </section>
