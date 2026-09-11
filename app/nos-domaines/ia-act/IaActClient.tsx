@@ -491,9 +491,60 @@ const interventionTabs = [
    regroupe les extraits existants (aucun perdu). « Cartographie » reste inerte :
    pas d'extrait dédié (l'inventaire actuel est en réalité le registre). */
 type ExtraitData = { icon: string; type: string; h3: string; extraitLabel: string; extrait: ReactNode };
+
+const CARTO_EXTRAIT: ExtraitData = {
+  icon: "ti-map-2",
+  type: "Cartographie des usages IA",
+  h3: "Les outils réellement utilisés",
+  extraitLabel: "Exemple — entreprise de services, une cinquantaine de salariés · extrait : 6 lignes sur 14 recensées",
+  extrait: (
+    <div style={{ fontStyle: "normal" }}>
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 620, fontSize: 10.5 }}>
+          <thead>
+            <tr>
+              {["#", "Outil", "Origine", "Service", "Données en entrée", "Validé", "Rôle présumé"].map((h) => (
+                <th key={h} style={{ textAlign: "left", fontFamily: "var(--ff-mono)", fontSize: 9, letterSpacing: ".05em", textTransform: "uppercase", color: LIGHT.faint, padding: "6px 8px", borderBottom: `0.5px solid ${LIGHT.border}`, whiteSpace: "nowrap" }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["1", "Assistant de rédaction généraliste", "abonnement éditeur", "Direction, commerce", "courriels, notes de réunion, projets de contrats", "oui", "déployeur"],
+              ["2", "Tri de candidatures", "module du SIRH", "RH", "CV, lettres, historiques de candidature", "oui", "déployeur"],
+              ["3", "Assistant de code", "extension installée par l'équipe", "IT", "code source, identifiants présents dans les extraits", "non", "déployeur"],
+              ["4", "Générateur d'images", "compte gratuit personnel", "Marketing", "briefs, visuels clients", "non", "déployeur"],
+              ["5", "Transcription de réunions", "connecteur visio activé par défaut", "toute l'entreprise", "enregistrements, voix des participants", "non", "déployeur"],
+              ["6", "Chatbot du site", "développé par un prestataire, diffusé sous la marque", "Marketing", "questions clients, adresses électroniques", "oui", "fournisseur présumé"],
+            ].map((row) => (
+              <tr key={row[0]}>
+                {row.map((cell, ci) => (
+                  <td key={ci} style={{ padding: "6px 8px", borderBottom: `0.5px solid ${LIGHT.border}`, color: LIGHT.muted, verticalAlign: "top", fontWeight: row[0] === "6" && ci === 6 ? 600 : 400 }}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ background: LIGHT.panel2, borderLeft: `2px solid ${ACCENT}`, padding: "10px 11px", marginTop: 11 }}>
+        <p style={{ fontFamily: "var(--ff-mono)", fontSize: 9, color: ACCENT, margin: "0 0 5px", letterSpacing: ".05em", textTransform: "uppercase" }}>Analyse</p>
+        <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: 0, lineHeight: 1.6 }}>
+          {"Cinq des quatorze systèmes recensés n'ont fait l'objet d'aucune validation. Trois traitent des données de personnes qui ignorent le traitement : candidats, participants aux réunions, visiteurs du site. Le chatbot est le seul système sur lequel l'entreprise est susceptible d'être fournisseur, parce qu'il est diffusé sous sa marque. C'est la ligne à qualifier en premier, non la plus visible mais la plus lourde de conséquences."}
+        </p>
+      </div>
+      <div style={{ background: "#F7F7F5", padding: "9px 11px", marginTop: 9, borderRadius: 4 }}>
+        <p style={{ fontSize: 11, color: LIGHT.muted, margin: 0, lineHeight: 1.55 }}>
+          <strong style={{ color: LIGHT.text, fontWeight: 600 }}>Ce que la cartographie révèle.</strong>
+          {" Les usages informels ne se déclarent pas : ils se trouvent dans les factures, les extensions de navigateur et les connecteurs activés par défaut. Un inventaire fondé sur les seules déclarations des services manque l'essentiel."}
+        </p>
+      </div>
+    </div>
+  ),
+};
+
 const tabCards = (id: string) => interventionTabs.find((t) => t.id === id)!.cards as unknown as ExtraitData[];
 const LIVRABLES: { nom: string; donne: string; cards: ExtraitData[] | null }[] = [
-  { nom: "Cartographie des usages", donne: "Les outils réellement utilisés, leurs responsables, les données concernées", cards: null },
+  { nom: "Cartographie des usages", donne: "Les outils réellement utilisés, leurs responsables, les données concernées", cards: [CARTO_EXTRAIT] },
   { nom: "Registre des systèmes", donne: "Le rôle que vous tenez sur chaque système et le régime qui en découle", cards: [tabCards("audit")[0]] },
   { nom: "Matrice des risques", donne: "Ce qui est dû aujourd'hui, ce qui est reporté, dans quel ordre traiter", cards: [tabCards("audit")[1]] },
   { nom: "Documentation technique", donne: "Le dossier que vous devez pouvoir produire à la demande", cards: tabCards("documentation") },
@@ -809,38 +860,40 @@ export default function IaActClient() {
                       </>
                     ) : null}
                   </p>
-                  {r.contact ? (
-                    <Link
-                      href="/contact"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        marginTop: 14,
-                        background: BLUE,
-                        color: "#fff",
-                        padding: "0 18px",
-                        minHeight: 42,
-                        borderRadius: 4,
-                        textDecoration: "none",
-                        fontSize: 12,
-                        letterSpacing: ".04em",
-                      }}
-                    >
-                      Faire le point sur vos systèmes d&apos;IA →
-                    </Link>
-                  ) : null}
+                  {/* Avertissement — dans le panneau, au corps courant, pleine
+                      largeur, détaché par un filet : c'est lui qui justifie le
+                      bouton. Identique pour les six combinaisons. */}
+                  <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6, margin: "14px 0 0", paddingTop: 14, borderTop: `0.5px solid ${LIGHT.border}` }}>
+                    Cette réponse ne vaut pas analyse. La qualification d&apos;un
+                    système suppose l&apos;examen de son fonctionnement réel, de sa
+                    destination et de vos contrats.
+                  </p>
+                  <Link
+                    href="/contact"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      marginTop: 14,
+                      background: BLUE,
+                      color: "#fff",
+                      padding: "0 18px",
+                      minHeight: 42,
+                      borderRadius: 4,
+                      textDecoration: "none",
+                      fontSize: 12,
+                      letterSpacing: ".04em",
+                    }}
+                  >
+                    Faire le point sur vos systèmes d&apos;IA →
+                  </Link>
                 </div>
               );
             })()}
           </div>
 
-          {/* Note de bas de bloc — toujours visible, + les références de règlement. */}
-          <p style={{ fontSize: 12, color: LIGHT.muted, margin: "16px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
-            Cette page ne remplace pas une analyse. La qualification d&apos;un
-            système donné suppose l&apos;examen de son fonctionnement réel, de sa
-            destination et de vos contrats.
-          </p>
-          <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
+          {/* Note de bas de bloc — références de règlement seulement (l'avertissement
+              est passé dans le panneau de résultat, au corps courant). */}
+          <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: "16px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
             <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>Règlement (UE) 2024/1689</a>{" "}
             du 13 juin 2024, modifié par le{" "}
             <a href="https://eur-lex.europa.eu/eli/reg/2026/1744/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2026/1744</a>{" "}
@@ -939,7 +992,7 @@ export default function IaActClient() {
           « Cartographie » est inerte : la pièce sera fournie. */}
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
         <style>{`
-          .livrable-row { display: grid; grid-template-columns: 1.05fr 1.4fr auto; gap: 16px; align-items: baseline; width: 100%; text-align: left; padding: 14px 4px; background: transparent; border: 0; cursor: pointer; font-family: var(--ff-body); }
+          .livrable-row { display: grid; grid-template-columns: 1.05fr 1.4fr 92px; gap: 16px; align-items: baseline; width: 100%; text-align: left; padding: 14px 4px; background: transparent; border: 0; cursor: pointer; font-family: var(--ff-body); }
           .livrable-row.inert { cursor: default; }
           @media (max-width: 640px) { .livrable-row { grid-template-columns: 1fr; gap: 4px; } }
         `}</style>
