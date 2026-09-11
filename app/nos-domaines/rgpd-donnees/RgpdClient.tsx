@@ -1032,8 +1032,12 @@ function RgpdHeroMedia() {
           <source src="/videos/rgpd-hero.mp4" type="video/mp4" />
         </video>
       ) : null}
+      <span className="rgpd-hero-tint" aria-hidden />
       <span className="rgpd-hero-fade" aria-hidden />
       <span className="rgpd-hero-overlay" aria-hidden />
+      <p className="rgpd-hero-caption">
+        Les données personnelles, ce sont des personnes.
+      </p>
       {showVideo ? (
         <button
           type="button"
@@ -1235,10 +1239,15 @@ export default function RgpdClient() {
            un voile sombre pour que le texte blanc passe. Desktop : deux colonnes
            55/45, photo à droite en cover, fondue à gauche dans le fond sombre. */
         .rgpd-hero-grid { position: relative; display: block; }
-        .rgpd-hero-photo { position: absolute; inset: 0; z-index: 0; }
-        .rgpd-hero-img { object-position: center 45%; }
+        .rgpd-hero-photo { position: absolute; inset: 0; z-index: 0; isolation: isolate; }
+        /* Filtre colorimétrique — appliqué UNE seule fois, en CSS (le fichier
+           vidéo n'est pas étalonné) : désature l'orangé et assombrit. */
+        .rgpd-hero-img { object-position: center 45%; filter: saturate(0.45) contrast(1.05) brightness(0.9); }
         .rgpd-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-        .rgpd-hero-overlay { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
+        /* Couche 1 : recolore l'image dans le Deep Navy de la charte. */
+        .rgpd-hero-tint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #0A0F2E; mix-blend-mode: color; opacity: 0.6; }
+        .rgpd-hero-overlay { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(180deg, rgba(9,13,38,0.92) 0%, rgba(9,13,38,0.84) 55%, rgba(9,13,38,0.72) 100%); }
+        .rgpd-hero-caption { position: absolute; left: 16px; bottom: 14px; z-index: 4; pointer-events: none; margin: 0; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: #8888A0; }
         .rgpd-hero-fade { display: none; }
         .rgpd-hero-pause { position: absolute; bottom: 12px; right: 12px; z-index: 4; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(10,15,46,0.55); border: 1px solid rgba(255,255,255,0.28); color: #fff; font-size: 9px; line-height: 1; cursor: pointer; transition: background 0.2s ease; }
         .rgpd-hero-pause:hover { background: rgba(10,15,46,0.82); }
@@ -1247,7 +1256,10 @@ export default function RgpdClient() {
           .rgpd-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; }
           .rgpd-hero-photo { position: relative; inset: auto; order: 2; height: auto; min-height: 460px; z-index: auto; }
           .rgpd-hero-overlay { display: none; }
-          .rgpd-hero-fade { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(to left, rgba(10,15,46,0) 60%, ${DARK.bg} 100%); }
+          /* Couche 2 : fondu vers la colonne de texte. Il DÉBORDE de 8px au-delà
+             de la jonction (left: -8px) et reste opaque navy sur les premiers %,
+             ce qui recouvre entièrement le liseré sous-pixel — raccord invisible. */
+          .rgpd-hero-fade { display: block; position: absolute; top: 0; bottom: 0; right: 0; left: -8px; z-index: 3; pointer-events: none; background: linear-gradient(to right, #0A0F2E 0%, #0A0F2E 8%, rgba(10,15,46,0.85) 16%, rgba(10,15,46,0) 44%); }
           .rgpd-hero-text { order: 1; padding: 64px 40px 64px 24px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
         }
 
