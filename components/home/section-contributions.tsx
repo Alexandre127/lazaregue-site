@@ -1,242 +1,142 @@
-"use client";
+import Link from "next/link";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+/*
+ * Section « Contributions & prises de position ».
+ *
+ * Règle de publication : aucune entrée sans destination, aucune entrée au
+ * titre provisoire. Quatre entrées étaient prévues ; l'interview Capital,
+ * dont le titre et l'URL restent provisoires, est retirée tant qu'ils ne
+ * sont pas fournis — la section affiche donc trois cartes. La grille reste
+ * équilibrée à trois comme à quatre (flex centré).
+ *
+ * Les liens sortants réels ouvrent un nouvel onglet (rel="noopener"). Les
+ * revues sous abonnement ou sans page éditeur publique pointent, à défaut,
+ * vers la fiche interne de /ressources : jamais de destination vide.
+ *
+ * L'ancienne carte vidéo (passage TV) et les quatre brèves (Les Échos, Forum
+ * InCyber, LegalTech Magazine, L'Usine Digitale) sont retirées de l'accueil.
+ */
 
-type BadgeVariant = "tribune" | "conference" | "interview";
+type BadgeKind = "tribune" | "etude" | "livre";
 
-const BADGE_STYLES: Record<BadgeVariant, string> = {
-  tribune: "bg-[#1A47FF]/18 text-[#6D8FFF]",
-  conference: "bg-[#1D9E75]/18 text-[#5DCAA5]",
-  interview: "bg-[#7F77DD]/18 text-[#AFA9EC]",
+const BADGE_STYLES: Record<BadgeKind, string> = {
+  tribune: "bg-[#1A47FF]/18 text-[#3F63E6]",
+  etude: "bg-[#1D9E75]/18 text-[#0F6E56]",
+  livre: "bg-[#ED93B1]/22 text-[#B65478]",
 };
 
-const BADGE_LABELS: Record<BadgeVariant, string> = {
+const BADGE_LABELS: Record<BadgeKind, string> = {
   tribune: "Tribune",
-  conference: "Conférence",
-  interview: "Interview",
+  etude: "Étude",
+  livre: "Livre",
 };
 
-type ContributionArticle = {
-  number: string;
-  badge: BadgeVariant;
+type Contribution = {
+  n: string;
+  kind: BadgeKind;
+  /** Titre affiché ; abrégé si le titre complet déborde de la carte. */
   title: string;
+  /** Titre complet, porté par l'attribut `title` du lien quand il diffère. */
+  fullTitle?: string;
   source: string;
   date: string;
+  href: string;
+  /** Vrai lien sortant : nouvel onglet + rel noopener. Faux = lien interne. */
+  external: boolean;
 };
 
-const ARTICLES: ContributionArticle[] = [
+const CONTRIBUTIONS: Contribution[] = [
   {
-    number: "03",
-    badge: "tribune",
+    n: "01",
+    kind: "tribune",
     title:
-      "AI Act : ce que les entreprises françaises doivent anticiper dès maintenant",
-    source: "Les Echos",
-    date: "Mars 2026",
+      "Transformer les discours sur la souveraineté numérique en une stratégie industrielle",
+    fullTitle:
+      "IA : « L'Europe doit transformer les discours sur la souveraineté numérique en une véritable stratégie industrielle »",
+    source: "Le Monde",
+    date: "21 juin 2026",
+    href: "https://www.lemonde.fr/idees/article/2026/06/21/ia-l-europe-doit-transformer-les-discours-sur-la-souverainete-numerique-en-une-veritable-strategie-industrielle_6706105_3232.html",
+    external: true,
   },
   {
-    number: "04",
-    badge: "conference",
+    n: "02",
+    kind: "etude",
     title:
-      "Responsabilité des systèmes d'IA : état du droit et perspectives",
-    source: "Forum InCyber 2026 · Lille",
-    date: "Avr. 2026",
+      "Canicule au travail : de l'obligation générale de sécurité vers un régime spécial",
+    source: "Semaine sociale Lamy n° 2193",
+    date: "13 juillet 2026",
+    // Revue sous abonnement, pas d'URL publique : fiche interne sur Ressources.
+    href: "/ressources",
+    external: false,
   },
   {
-    number: "05",
-    badge: "interview",
-    title:
-      "RGPD 7 ans après : le bilan des sanctions et ce qui change en 2026",
-    source: "LegalTech Magazine",
-    date: "Juin 2026",
-  },
-  {
-    number: "06",
-    badge: "tribune",
-    title:
-      "NIS 2 : les PME ne sont pas prêtes — et elles ont six mois pour l'être",
-    source: "L'Usine Digitale",
-    date: "Sept. 2026",
+    n: "03",
+    kind: "livre",
+    title: "Le « juge bashing », poison lent de la démocratie",
+    source: "Alexandre Lazarègue · Le Bord de l'eau · 15 €",
+    date: "2026",
+    // Pas d'URL éditeur fournie : fiche interne sur Ressources, à défaut.
+    href: "/ressources",
+    external: false,
   },
 ];
 
-const CARD_SHELL =
-  "flex h-full flex-col overflow-hidden rounded-lg border border-[#B0C0DF] bg-[#E8EEF8] shadow-[0_2px_8px_rgba(26,71,255,0.08)] transition-all hover:border-[#1A47FF]/50";
-
-function Badge({ variant }: { variant: BadgeVariant }) {
+function Badge({ kind }: { kind: BadgeKind }) {
   return (
     <span
-      className={`inline-block w-fit rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider ${BADGE_STYLES[variant]}`}
+      className={`inline-block w-fit rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider ${BADGE_STYLES[kind]}`}
     >
-      {BADGE_LABELS[variant]}
+      {BADGE_LABELS[kind]}
     </span>
   );
 }
 
-function ContributionBookCard() {
-  return (
-    <article className="flex h-full flex-row overflow-hidden rounded-lg border border-[#B0C0DF] bg-[#E8EEF8] shadow-[0_2px_8px_rgba(26,71,255,0.08)] transition-all hover:border-[#1A47FF]/50">
-      {/* `relative` requis par next/image `fill` ; visuellement neutre sur ce
-          bloc à taille fixe (160px de large, hauteur étirée). La conversion
-          apporte le WebP, le chargement différé et réserve la place (pas de
-          saut de mise en page), à rendu identique. */}
-      <div className="relative h-full w-[160px] shrink-0 self-stretch">
-        <Image
-          src="/images/livre-lazaregue.jpg"
-          alt="Couverture — Le Juge Bashing"
-          fill
-          sizes="160px"
-          loading="lazy"
-          className="object-cover object-top"
-        />
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-        <p className="font-mono text-[9px] uppercase tracking-wider text-[#1A47FF]">
-          ★ PUBLICATION
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          <span className="inline-block rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider bg-[#ED93B1]/18 text-[#ED93B1]">
-            Livre
-          </span>
-          <span className="inline-block rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider bg-[#F5A623]/18 text-[#F5A623]">
-            À paraître
-          </span>
-        </div>
-        <h3 className="text-[13px] font-medium leading-snug text-[#0A0F2E]">
-          Le « Juge Bashing »
-        </h3>
-        <p className="text-xs leading-relaxed text-[#0A0F2E]/70">
-          Poison lent de la démocratie
-        </p>
-        <p className="text-[11px] text-[#0A0F2E]/50">
-          Alexandre Lazarègue · Le Bord de l&apos;Eau
-        </p>
-      </div>
-    </article>
-  );
-}
+function ContributionCard({ item }: { item: Contribution }) {
+  const shell =
+    "group flex h-full flex-col gap-2 rounded-lg border border-[#B0C0DF] bg-[#E8EEF8] p-4 shadow-[0_2px_8px_rgba(26,71,255,0.08)] transition-colors hover:border-[#1A47FF]/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A47FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EEF1F8]";
 
-function ContributionVideoCard() {
-  const [videoOpen, setVideoOpen] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // La vignette est une boucle muette hébergée sur notre domaine : aucun appel
-  // à YouTube au chargement, donc aucun cookie tiers avant consentement. Le
-  // lecteur YouTube (youtube-nocookie) n'est chargé qu'après le clic.
-  //
-  // L'autoplay est porté par l'attribut `autoPlay` (fiable). Cet effet ne sert
-  // qu'à couper la boucle si l'utilisateur a demandé la réduction des animations.
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.autoplay = false;
-      video.pause(); // on laisse le poster figé
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!videoOpen) return;
-
-    const onEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setVideoOpen(false);
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onEscape);
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onEscape);
-    };
-  }, [videoOpen]);
-
-  return (
+  const body = (
     <>
-      <article className={`${CARD_SHELL} md:flex-row`}>
-        <button
-          type="button"
-          onClick={() => setVideoOpen(true)}
-          aria-label="Lire la vidéo : Réseaux sociaux et responsabilité des plateformes"
-          className="group relative aspect-video w-full shrink-0 cursor-pointer overflow-hidden bg-[#0a0f2e] md:aspect-auto md:h-full md:w-auto md:flex-1 md:self-stretch"
-        >
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            poster="/images/passage-tv-poster.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src="/videos/passage-tv-loop.mp4" type="video/mp4" />
-          </video>
-          {/* Voile + bouton lecture façon YouTube */}
-          <span className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-black/25" />
-          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/55 backdrop-blur-sm transition-transform group-hover:scale-110">
-            <span className="ml-0.5 border-y-[8px] border-l-[13px] border-y-transparent border-l-white" />
-          </span>
-        </button>
-        <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-          <p className="font-mono text-[9px] uppercase tracking-wider text-[#1A47FF]">
-            ★ À LA UNE
-          </p>
-          <span className="inline-block w-fit rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider bg-[#E24B4A]/18 text-[#F09595]">
-            PASSAGE TV
-          </span>
-          <h3 className="text-sm font-medium leading-snug text-[#0A0F2E]">
-            Réseaux sociaux et responsabilité des plateformes : ce que dit
-            vraiment la loi
-          </h3>
-          <p className="text-[11px] text-[#0A0F2E]/50">LAZARÈGUE AVOCATS · YouTube</p>
-        </div>
-      </article>
-
-      {videoOpen ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.92)] p-4 md:p-8"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Lecture de la vidéo"
-        >
-          <button
-            type="button"
-            onClick={() => setVideoOpen(false)}
-            className="absolute right-4 top-4 z-10 cursor-pointer text-2xl text-white/70 transition-colors hover:text-white"
-            aria-label="Fermer"
-          >
-            ✕
-          </button>
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/ccYVu3APMmw?autoplay=1"
-            title="Réseaux sociaux et responsabilité des plateformes : ce que dit vraiment la loi"
-            className="aspect-video w-[80vw] max-w-[900px] border-0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-          />
-        </div>
-      ) : null}
+      <span className="font-mono text-[26px] font-medium leading-none text-[#0A0F2E]/20">
+        {item.n}
+      </span>
+      <Badge kind={item.kind} />
+      <h3 className="flex-1 text-[13px] font-medium leading-snug text-[#0A0F2E]">
+        {item.title}
+      </h3>
+      <div className="flex items-center justify-between gap-3 border-t border-[#0A0F2E]/[0.08] pt-2">
+        <span className="text-[11px] leading-snug text-[#0A0F2E]/55">
+          {item.source}
+        </span>
+        <span className="shrink-0 font-mono text-[10px] text-[#0A0F2E]/50">
+          {item.date}
+        </span>
+      </div>
     </>
   );
-}
 
-function ContributionArticleCard({ card }: { card: ContributionArticle }) {
+  // Lien sortant réel → nouvel onglet ; sinon navigation interne (next/link).
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener"
+        title={item.fullTitle ?? item.title}
+        className={shell}
+      >
+        {body}
+      </a>
+    );
+  }
   return (
-    <article className={CARD_SHELL}>
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <span className="font-mono text-[26px] font-medium leading-none text-[#0A0F2E]/20">
-          {card.number}
-        </span>
-        <Badge variant={card.badge} />
-        <h3 className="flex-1 text-xs font-medium leading-snug text-[#0A0F2E]">
-          {card.title}
-        </h3>
-        <div className="flex justify-between border-t border-white/[0.07] pt-2">
-          <span className="text-[11px] text-[#0A0F2E]/50">{card.source}</span>
-          <span className="font-mono text-[10px] text-[#0A0F2E]/50">{card.date}</span>
-        </div>
-      </div>
-    </article>
+    <Link
+      href={item.href}
+      title={item.fullTitle ?? item.title}
+      className={shell}
+    >
+      {body}
+    </Link>
   );
 }
 
@@ -257,15 +157,22 @@ export function SectionContributions() {
           </h2>
         </header>
 
-        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2">
-          <ContributionBookCard />
-          <ContributionVideoCard />
-          {ARTICLES.map((card) => (
-            <ContributionArticleCard key={card.number} card={card} />
+        {/* Grille centrée : équilibrée à trois cartes comme à quatre. */}
+        <div className="mx-auto mb-6 flex max-w-5xl flex-wrap justify-center gap-3">
+          {CONTRIBUTIONS.map((item) => (
+            <div
+              key={item.n}
+              className="w-full grow basis-[280px] sm:w-[calc(50%-6px)] md:max-w-[360px]"
+            >
+              <ContributionCard item={item} />
+            </div>
           ))}
         </div>
 
-        <p className="text-[13px] font-medium text-[#0A0F2E]/60 underline underline-offset-4 transition-colors duration-200 hover:text-[#0A0F2E]">
+        {/* Renvoi vers l'archive complète. La page archive n'existe pas encore
+            (/contributions absente) : on conserve le libellé sans le rendre
+            cliquable plutôt que de créer un lien mort. */}
+        <p className="text-[13px] font-medium text-[#0A0F2E]/60 underline underline-offset-4">
           Voir toutes nos contributions →
         </p>
       </div>
