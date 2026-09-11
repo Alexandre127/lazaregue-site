@@ -49,6 +49,17 @@ const JSON_LD = {
       })),
     },
     {
+      // WebPage : porte le dateModified (cohérent avec la mention visible du
+      // calendrier, 11 sept. 2026). Pas d'Article, pas de datePublished.
+      "@type": "WebPage",
+      "@id": "https://lazaregue-avocats.fr/nos-domaines/ia-act",
+      url: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
+      name: TITLE,
+      inLanguage: "fr-FR",
+      dateModified: "2026-09-11",
+      publisher: { "@id": "https://lazaregue-avocats.fr/#cabinet" },
+    },
+    {
       // Le cabinet — entité UNIQUE, reliée par @id : le LegalService ci-dessus
       // la référence comme `provider`. v4 : PAS d'Article, PAS de datePublished
       // inventée. Une seule description du cabinet dans le @graph.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Jurisprudence, type Decision } from "@/components/jurisprudence";
@@ -486,14 +486,55 @@ const interventionTabs = [
   },
 ] as const;
 
+/* ------------------------------------------------------------ Livrables (bloc 5)
+   Liste dépliante de 7 lignes qui ABSORBE le tableau + les onglets. Chaque ligne
+   regroupe les extraits existants (aucun perdu). « Cartographie » reste inerte :
+   pas d'extrait dédié (l'inventaire actuel est en réalité le registre). */
+type ExtraitData = { icon: string; type: string; h3: string; extraitLabel: string; extrait: ReactNode };
+const tabCards = (id: string) => interventionTabs.find((t) => t.id === id)!.cards as unknown as ExtraitData[];
+const LIVRABLES: { nom: string; donne: string; cards: ExtraitData[] | null }[] = [
+  { nom: "Cartographie des usages", donne: "Les outils réellement utilisés, leurs responsables, les données concernées", cards: null },
+  { nom: "Registre des systèmes", donne: "Le rôle que vous tenez sur chaque système et le régime qui en découle", cards: [tabCards("audit")[0]] },
+  { nom: "Matrice des risques", donne: "Ce qui est dû aujourd'hui, ce qui est reporté, dans quel ordre traiter", cards: [tabCards("audit")[1]] },
+  { nom: "Documentation technique", donne: "Le dossier que vous devez pouvoir produire à la demande", cards: tabCards("documentation") },
+  { nom: "Charte IA et procédures", donne: "Des règles utilisables par les équipes, pas un document de principe", cards: tabCards("gouvernance") },
+  { nom: "Clauses contractuelles", donne: "La répartition des engagements avec vos prestataires", cards: tabCards("contrats") },
+  { nom: "Procédure d'incident et défense", donne: "Qui fait quoi le jour où le sujet est contesté", cards: tabCards("crise") },
+];
+
+function ExtraitCard({ card }: { card: ExtraitData }) {
+  return (
+    <div style={{ background: LIGHT.bg, border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, padding: CARD_PAD }}>
+      <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10.5, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em", color: LIGHT.muted }}>{card.type}</span>
+      <h3 style={{ ...TYPE.h3, color: LIGHT.text, margin: "4px 0 0" }}>{card.h3}</h3>
+      <p style={{ fontFamily: "var(--ff-mono)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.05em", color: LIGHT.faint, margin: "8px 0 6px" }}>{card.extraitLabel}</p>
+      <div style={{ fontSize: 12.5, color: LIGHT.muted, lineHeight: 1.6 }}>{card.extrait}</div>
+    </div>
+  );
+}
+
 export default function IaActClient() {
-  const [activeTab, setActiveTab] = useState("audit");
+  const [openLivrable, setOpenLivrable] = useState<number | null>(null);
   const [openQuestions, setOpenQuestions] = useState<number[]>([0]);
   // Qualificateur (bloc 3) — trois choix, défauts : assistant / acheté / non.
   const [q1, setQ1] = useState<OutilId>("assistant");
   const [q2, setQ2] = useState<ProvId>("d");
   const [q3, setQ3] = useState<DecId>("n");
-  const activePanel = interventionTabs.find((t) => t.id === activeTab) ?? interventionTabs[0];
+  const resultRef = useRef<HTMLDivElement>(null);
+  const qualifTouched = useRef(false);
+  // Au premier clic, on amène le panneau de résultat à l'écran ; ensuite, on ne
+  // rejoue le défilement que s'il n'est pas déjà entièrement visible.
+  useEffect(() => {
+    if (!qualifTouched.current) {
+      qualifTouched.current = true;
+      return;
+    }
+    const el = resultRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const visible = r.top >= 0 && r.bottom <= window.innerHeight;
+    if (!visible) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [q1, q2, q3]);
 
   return (
     <main
@@ -701,42 +742,38 @@ export default function IaActClient() {
       </section>
 
       {/* 3. CE QUE LE RÈGLEMENT IMPOSE — qualificateur interactif. Titre = vrai
-          <h2>. Trois questions recomposent le résultat SUR L'OUTIL (aria-live). */}
+          <h2>. Chapeau court ; les références de règlement passent en note de bas
+          de bloc. Résultat en aria-live, amené à l'écran au premier clic. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
         <style>{`
           @media (max-width: 640px) {
             .qualif-group { flex-direction: column; }
             .qualif-group button { width: 100%; }
           }
+          .qualif-result { animation: qualifFade 240ms ease both; }
+          @keyframes qualifFade { from { opacity: 0 } to { opacity: 1 } }
+          @media (prefers-reduced-motion: reduce) { .qualif-result { animation: none; } }
         `}</style>
         <div style={INNER}>
           <Eyebrow>Le cadre</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 10 }}>Ce que le règlement impose, sur votre outil</h2>
-          <div style={{ ...TYPE.secondary, marginBottom: 18, maxWidth: 760 }}>
-            <p style={{ margin: "0 0 8px", lineHeight: 1.7 }}>
-              Depuis le 2 février 2025, les entreprises qui utilisent, intègrent ou
-              mettent sur le marché des systèmes d&apos;intelligence artificielle
-              sont soumises au{" "}
-              <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2024/1689</a>{" "}
-              du 13 juin 2024, dit règlement sur l&apos;intelligence artificielle
-              ou AI Act, modifié par le{" "}
-              <a href="https://eur-lex.europa.eu/eli/reg/2026/1744/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2026/1744</a>{" "}
-              du 8 juillet 2026. Il s&apos;applique aussi aux entreprises établies
-              hors de l&apos;Union lorsque les résultats de leurs systèmes y sont
-              utilisés.
+          <h2 style={{ ...TYPE.h2, marginBottom: 8 }}>Ce que le règlement impose, sur votre outil</h2>
+          <div style={{ marginBottom: 14, maxWidth: 760 }}>
+            <p style={{ ...TYPE.secondary, color: LIGHT.muted, margin: "0 0 8px" }}>
+              Le règlement européen sur l&apos;IA s&apos;applique depuis février
+              2025. Il ne classe pas les entreprises, il classe les usages : la
+              plupart ne sont pas réglementés, certains sont{" "}
+              <strong style={{ fontWeight: 600, color: "inherit" }}>interdits</strong>, d&apos;autres appellent une
+              simple obligation de <strong style={{ fontWeight: 600, color: "inherit" }}>transparence</strong>,
+              quelques-uns relèvent d&apos;un régime proche de celui d&apos;un
+              produit industriel — le <strong style={{ fontWeight: 600, color: "inherit" }}>haut risque</strong>.
             </p>
-            <p style={{ margin: "0 0 8px", lineHeight: 1.7 }}>
-              Le texte ne classe pas les entreprises, il classe les usages :
-              certains sont <B>interdits</B>, d&apos;autres sont dits{" "}
-              <B>à haut risque</B> et relèvent d&apos;un régime proche de celui
-              d&apos;un produit industriel, d&apos;autres n&apos;appellent
-              qu&apos;une obligation de <B>transparence</B>, la plupart ne sont
-              pas réglementés. Vos obligations se déterminent donc outil par outil.
+            <p style={{ ...TYPE.secondary, color: LIGHT.muted, margin: 0 }}>
+              Vos obligations se déterminent donc outil par outil. Trois questions
+              suffisent à situer le vôtre.
             </p>
-            <p style={{ margin: 0, lineHeight: 1.7 }}>Trois questions suffisent à situer le vôtre.</p>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <QGroup label="1 · De quel outil parlons-nous ?" options={OUTILS} value={q1} onChange={(v) => setQ1(v as OutilId)} />
             <QGroup label="2 · D'où vient-il ?" options={PROVENANCES} value={q2} onChange={(v) => setQ2(v as ProvId)} />
             <QGroup
@@ -748,12 +785,12 @@ export default function IaActClient() {
             />
           </div>
 
-          {/* Panneau de résultat — recomposé à chaque choix. */}
-          <div aria-live="polite" style={{ marginTop: 16 }}>
+          {/* Panneau de résultat — ref pour le défilement, key pour rejouer le fondu. */}
+          <div ref={resultRef} aria-live="polite" style={{ marginTop: 14, scrollMarginTop: 90 }}>
             {(() => {
               const r = qualif(q1, q2, q3);
               return (
-                <div style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.borderBlue}`, borderRadius: 10, padding: CARD_PAD }}>
+                <div key={`${q1}-${q2}-${q3}`} className="qualif-result" style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD }}>
                   <p style={{ ...TYPE.h3, color: LIGHT.text, margin: 0 }}>{r.titre}</p>
                   <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 6 }}>
                     {r.bullets.map((b) => (
@@ -797,11 +834,18 @@ export default function IaActClient() {
             })()}
           </div>
 
-          {/* Note de bas de bloc — toujours visible. */}
+          {/* Note de bas de bloc — toujours visible, + les références de règlement. */}
           <p style={{ fontSize: 12, color: LIGHT.muted, margin: "16px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
             Cette page ne remplace pas une analyse. La qualification d&apos;un
             système donné suppose l&apos;examen de son fonctionnement réel, de sa
             destination et de vos contrats.
+          </p>
+          <p style={{ fontSize: 11.5, color: LIGHT.muted, margin: "6px 0 0", lineHeight: 1.55, maxWidth: 760 }}>
+            <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>Règlement (UE) 2024/1689</a>{" "}
+            du 13 juin 2024, modifié par le{" "}
+            <a href="https://eur-lex.europa.eu/eli/reg/2026/1744/oj" target="_blank" rel="noopener" style={{ color: BLUE, textDecoration: "none" }}>règlement (UE) 2026/1744</a>{" "}
+            du 8 juillet 2026. S&apos;applique aussi hors de l&apos;Union lorsque
+            les résultats du système y sont utilisés.
           </p>
         </div>
       </section>
@@ -889,196 +933,115 @@ export default function IaActClient() {
         </div>
       </section>
 
-      {/* 5. LES LIVRABLES — extraits (section « offre » : fond LIGHT.panel). */}
+      {/* 5. LES LIVRABLES — liste dépliante de sept lignes (absorbe l'ancien
+          tableau ET les onglets ; aucun extrait perdu). Une seule ligne ouverte
+          à la fois ; l'extrait s'affiche sous sa ligne, pleine largeur. La ligne
+          « Cartographie » est inerte : la pièce sera fournie. */}
       <section style={{ background: LIGHT.panel, color: LIGHT.text, padding: SECTION_PAD }}>
+        <style>{`
+          .livrable-row { display: grid; grid-template-columns: 1.05fr 1.4fr auto; gap: 16px; align-items: baseline; width: 100%; text-align: left; padding: 14px 4px; background: transparent; border: 0; cursor: pointer; font-family: var(--ff-body); }
+          .livrable-row.inert { cursor: default; }
+          @media (max-width: 640px) { .livrable-row { grid-template-columns: 1fr; gap: 4px; } }
+        `}</style>
         <div style={INNER}>
           <Eyebrow>Notre intervention</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Extraits de nos livrables</h2>
-          <p style={{ ...TYPE.label, fontStyle: "italic", color: LIGHT.faint, margin: "0 0 16px" }}>
+          <h2 style={{ ...TYPE.h2, marginBottom: 4 }}>Extraits de nos livrables</h2>
+          <p style={{ ...TYPE.secondary, color: LIGHT.muted, margin: "0 0 16px" }}>Les documents que nous produisons.</p>
+          <div style={{ borderTop: `0.5px solid ${LIGHT.border}` }}>
+            {LIVRABLES.map((lv, i) => {
+              const open = openLivrable === i;
+              const row = (
+                <>
+                  <span style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text }}>{lv.nom}</span>
+                  <span style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>{lv.donne}</span>
+                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".04em", color: lv.cards ? BLUE : LIGHT.faint, justifySelf: "end", whiteSpace: "nowrap" }}>
+                    {lv.cards ? (open ? "fermer ×" : "voir →") : "pièce à fournir"}
+                  </span>
+                </>
+              );
+              return (
+                <div key={lv.nom} style={{ borderBottom: `0.5px solid ${LIGHT.border}` }}>
+                  {lv.cards ? (
+                    <button
+                      type="button"
+                      className="livrable-row"
+                      aria-expanded={open}
+                      aria-controls={`livrable-panel-${i}`}
+                      onClick={() => setOpenLivrable(open ? null : i)}
+                    >
+                      {row}
+                    </button>
+                  ) : (
+                    <div className="livrable-row inert" aria-disabled="true">
+                      {row}
+                    </div>
+                  )}
+                  {lv.cards && open ? (
+                    <div id={`livrable-panel-${i}`} style={{ padding: "0 4px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+                      {lv.cards.map((card) => (
+                        <ExtraitCard key={card.h3} card={card} />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{ ...TYPE.label, fontStyle: "italic", color: LIGHT.faint, margin: "16px 0 0" }}>
             Extraits inspirés de dossiers réels.
           </p>
-
-          {/* Tableau v4 : ce que chaque livrable apporte, AVANT les extraits en
-              onglets (conservés : registre, matrice, analyse signée). */}
-          <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 8, overflow: "hidden", marginBottom: 18 }}>
-            <div className="hidden md:grid md:grid-cols-2" style={{ gap: "0 16px", padding: "10px 14px", background: LIGHT.bg, borderBottom: `0.5px solid ${LIGHT.border}` }}>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>Livrable</span>
-              <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.faint }}>Ce qu&apos;il vous donne</span>
-            </div>
-            {[
-              { livrable: "Cartographie des usages", donne: "Les outils réellement utilisés, leurs responsables, les données concernées" },
-              { livrable: "Registre des systèmes", donne: "Les règles applicables à chacun, et le rôle que vous tenez" },
-              { livrable: "Plan d'action priorisé", donne: "Ce qui est dû aujourd'hui, ce qui est reporté, avec responsables et échéances" },
-              { livrable: "Charte IA et procédures", donne: "Des règles utilisables par les équipes, pas un document de principe" },
-              { livrable: "Clauses contractuelles", donne: "Responsabilités, accès aux données et aux journaux, confidentialité, coopération documentaire" },
-            ].map((r, i) => (
-              <div key={r.livrable} className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "4px 16px", padding: "12px 14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none" }}>
-                <div style={{ fontSize: 14, fontWeight: 500, color: LIGHT.text, lineHeight: 1.4 }}>{r.livrable}</div>
-                <div style={{ fontSize: 13, color: LIGHT.muted, lineHeight: 1.5 }}>{r.donne}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mb-3 overflow-x-auto">
-            <div
-              className="inline-flex min-w-max"
-              style={{
-                border: "1px solid rgba(10,10,20,0.08)",
-                borderRadius: 6,
-                overflow: "hidden",
-                background: "white",
-              }}
-            >
-              {interventionTabs.map((t, idx) => (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
-                  style={{
-                    border: "none",
-                    borderRight: idx < interventionTabs.length - 1 ? "1px solid rgba(10,10,20,0.08)" : "none",
-                    background: activeTab === t.id ? DARK.bg : LIGHT.panel,
-                    color: activeTab === t.id ? DARK.text : "rgba(10,10,20,0.4)",
-                    padding: "8px 12px",
-                    fontSize: 12,
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              background: LIGHT.panel,
-              border: `1px solid ${LIGHT.border}`,
-              borderRadius: 8,
-              padding: CARD_PAD,
-            }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
-              {activePanel.cards.map((card) => (
-                <div
-                  key={card.h3}
-                  style={{
-                    background: LIGHT.panel,
-                    border: `1px solid ${LIGHT.border}`,
-                    borderRadius: 12,
-                    padding: CARD_PAD,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: GRID_GAP,
-                    height: "100%",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span
-                      style={{
-                        width: 34,
-                        height: 34,
-                        borderRadius: 8,
-                        background: "#E6F1FB",
-                        color: "#185FA5",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <i className={`ti ${card.icon}`} style={{ fontSize: 17 }} aria-hidden="true" />
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--ff-mono)",
-                        fontSize: 11,
-                        fontWeight: 500,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.07em",
-                        color: LIGHT.muted,
-                      }}
-                    >
-                      {card.type}
-                    </span>
-                  </div>
-                  <h3 style={{ ...TYPE.h3, color: LIGHT.text, margin: 0, lineHeight: 1.35 }}>
-                    {card.h3}
-                  </h3>
-                  <div
-                    style={{
-                      background: LIGHT.panel2,
-                      borderLeft: "2px solid #378ADD",
-                      borderRadius: "0 8px 8px 0",
-                      padding: "10px 14px",
-                      marginTop: "auto",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontFamily: "var(--ff-mono)",
-                        fontSize: 10,
-                        fontWeight: 500,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
-                        color: "#185FA5",
-                        margin: "0 0 6px",
-                      }}
-                    >
-                      {card.extraitLabel}
-                    </p>
-                    <div style={{ fontSize: 12, fontStyle: "italic", color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>
-                      {card.extrait}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* 6. NOS DOSSIERS — preuve vécue (entre livrables et jurisprudence). Deux
-          dossiers, quatre lignes chacun. Sobre : ni photo, ni icône. */}
+      {/* 6. NOS DOSSIERS — preuve vécue. Deux dossiers en LISTE (pas de carte) :
+          intitulés SITUATION / DIFFICULTÉ / NOTRE INTERVENTION / RÉSULTAT à gauche,
+          texte à droite ; filet fin entre les lignes, filet plus marqué entre les
+          deux dossiers. Facture distincte de la dépliante des livrables. */}
       <section style={{ background: LIGHT.bg, color: LIGHT.text, padding: SECTION_PAD }}>
+        <style>{`
+          .dossier-line { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 10px 0; border-top: 0.5px solid rgba(0,0,0,0.1); }
+          .dossier-line:first-child { border-top: 0; padding-top: 0; }
+          @media (max-width: 640px) { .dossier-line { grid-template-columns: 1fr; gap: 3px; } }
+        `}</style>
         <div style={INNER}>
           <Eyebrow>Retour d&apos;expérience</Eyebrow>
-          <h2 style={{ ...TYPE.h2, marginBottom: 16 }}>Nos dossiers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
-            {[
-              {
-                titre: "Des salariés utilisent l'IA avec des documents confidentiels",
-                lignes: [
-                  ["Situation", "Une entreprise de conseil découvre que ses équipes transmettent des contrats clients et des comptes rendus internes à plusieurs assistants d'IA."],
-                  ["Difficulté", "Personne ne sait quels outils sont utilisés, quelles données sont conservées, ni quels engagements les fournisseurs prennent."],
-                  ["Notre intervention", "Recenser les usages, examiner les conditions contractuelles, définir les données autorisées, former les équipes à partir des situations rencontrées."],
-                  ["Résultat", "Une liste d'outils autorisés, une charte opérationnelle, un circuit de validation des nouveaux usages."],
-                ],
-              },
-              {
-                titre: "Un éditeur ajoute une fonction d'IA avant de signer avec un grand compte",
-                lignes: [
-                  ["Situation", "Un éditeur SaaS intègre un modèle tiers à son logiciel ; un client important demande des garanties sur les données, les résultats et la conformité avant de signer."],
-                  ["Difficulté", "Les engagements commerciaux envisagés dépassent les garanties obtenues du fournisseur du modèle."],
-                  ["Notre intervention", "Déterminer les rôles respectifs, examiner les flux de données, revoir les engagements contractuels, constituer le dossier de réponses aux questions du client."],
-                  ["Résultat", "Un périmètre et des responsabilités clarifiés, des clauses adaptées, une documentation qui a permis de poursuivre la négociation."],
-                ],
-              },
-            ].map((d) => (
-              <article key={d.titre} style={{ background: LIGHT.panel, border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, padding: CARD_PAD, display: "flex", flexDirection: "column", height: "100%" }}>
-                <h3 style={{ ...TYPE.h3, margin: 0, lineHeight: 1.3 }}>{d.titre}</h3>
-                <dl style={{ margin: "12px 0 0", display: "flex", flexDirection: "column", gap: 9 }}>
-                  {d.lignes.map(([k, v]) => (
-                    <div key={k}>
-                      <dt style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".06em", textTransform: "uppercase", color: BLUE }}>{k}</dt>
-                      <dd style={{ margin: "2px 0 0", fontSize: 13, color: LIGHT.muted, lineHeight: 1.55 }}>{v}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </article>
-            ))}
-          </div>
-          <p style={{ fontSize: 12, color: LIGHT.muted, margin: "12px 0 0", lineHeight: 1.55 }}>
+          <h2 style={{ ...TYPE.h2, marginBottom: 4 }}>Nos dossiers</h2>
+          <p style={{ ...TYPE.secondary, color: LIGHT.muted, margin: "0 0 18px" }}>
+            Deux situations que nous avons traitées, et ce qu&apos;elles ont donné.
+          </p>
+          {[
+            {
+              titre: "Des salariés utilisent l'IA avec des documents confidentiels",
+              lignes: [
+                ["Situation", "Une entreprise de conseil découvre que ses équipes transmettent des contrats clients et des comptes rendus internes à plusieurs assistants d'IA."],
+                ["Difficulté", "Personne ne sait quels outils sont utilisés, quelles données sont conservées, ni quels engagements les fournisseurs prennent."],
+                ["Notre intervention", "Recenser les usages, examiner les conditions contractuelles, définir les données autorisées, former les équipes à partir des situations rencontrées."],
+                ["Résultat", "Une liste d'outils autorisés, une charte opérationnelle, un circuit de validation des nouveaux usages."],
+              ],
+            },
+            {
+              titre: "Un éditeur ajoute une fonction d'IA avant de signer avec un grand compte",
+              lignes: [
+                ["Situation", "Un éditeur SaaS intègre un modèle tiers à son logiciel ; un client important demande des garanties sur les données, les résultats et la conformité avant de signer."],
+                ["Difficulté", "Les engagements commerciaux envisagés dépassent les garanties obtenues du fournisseur du modèle."],
+                ["Notre intervention", "Déterminer les rôles respectifs, examiner les flux de données, revoir les engagements contractuels, constituer le dossier de réponses aux questions du client."],
+                ["Résultat", "Un périmètre et des responsabilités clarifiés, des clauses adaptées, une documentation qui a permis de poursuivre la négociation."],
+              ],
+            },
+          ].map((d, di) => (
+            <div key={d.titre} style={{ marginTop: di > 0 ? 22 : 0, paddingTop: di > 0 ? 22 : 0, borderTop: di > 0 ? `1.5px solid ${LIGHT.border}` : "none" }}>
+              <h3 style={{ ...TYPE.h3, color: LIGHT.text, margin: "0 0 8px" }}>{d.titre}</h3>
+              <div>
+                {d.lignes.map(([k, v]) => (
+                  <div key={k} className="dossier-line">
+                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: ".06em", textTransform: "uppercase", color: LIGHT.muted }}>{k}</span>
+                    <span style={{ fontSize: 13.5, color: LIGHT.text, lineHeight: 1.55 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          <p style={{ fontSize: 12, color: LIGHT.muted, margin: "18px 0 0", lineHeight: 1.55 }}>
             Dossiers anonymisés. Chaque affaire dépend de ses circonstances propres.
           </p>
           {/* Rappel de contact — une ligne + le bouton, pas une nouvelle section. */}
