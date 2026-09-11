@@ -87,57 +87,66 @@ const TEAM_MEMBERS: TeamMember[] = [
 
 function TeamMemberCard({ member }: { member: TeamMember }) {
   const altBase = `${member.fullName} — ${member.role}`;
-  // Le portrait par défaut, la photo « en dehors du cabinet » au clic.
-  // Un clic (et non un simple survol) rend la bascule utilisable au tap
-  // sur mobile ; l'état est mémorisé, ce qui évite le clignotement du hover.
-  const [dehors, setDehors] = useState(false);
+  // Recto = portrait, verso = la photo « en dehors du cabinet ». Le
+  // retournement 3D reprend le mécanisme des études de cas. Un <button> natif
+  // apporte gratuitement le focus clavier et l'activation par Entrée / Espace ;
+  // `aria-expanded` porte l'état persistant (clic / clavier). Le survol
+  // retourne en plus la carte, en pur CSS, sur les appareils qui le
+  // permettent. `prefers-reduced-motion` remplace la rotation par une
+  // substitution d'opacité (voir les styles de la section).
+  const [flipped, setFlipped] = useState(false);
+  const sizes = "(max-width: 700px) 72vw, (max-width: 1200px) 33vw, 20vw";
 
   return (
     <article className="flex flex-col overflow-hidden rounded-lg border border-white/10 bg-[#0A0A14]">
-      {/* Portrait au rapport 4/5 : jamais rogné verticalement, quelle que soit
-          la largeur de colonne. Le bouton porte la bascule — focusable au
-          clavier, activable au tap. */}
+      {/* Portrait au rapport 4/5, jamais rogné verticalement. La zone qui
+          tourne se limite à la photo : le nom et la qualité, sous la carte,
+          restent visibles recto comme verso. */}
       <button
         type="button"
-        onClick={() => setDehors((v) => !v)}
-        aria-pressed={dehors}
+        onClick={() => setFlipped((v) => !v)}
+        aria-expanded={flipped}
         aria-label={
-          dehors
+          flipped
             ? `${member.fullName} — revenir au portrait`
             : `${member.fullName} — voir en dehors du cabinet`
         }
-        className="group relative block aspect-[4/5] w-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A47FF]"
+        className={`equipe-flip group relative block aspect-[4/5] w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A47FF] focus-visible:ring-inset ${
+          flipped ? "is-flipped" : ""
+        }`}
       >
-        <Image
-          src={member.photoBase}
-          alt={altBase}
-          fill
-          sizes="(max-width: 700px) 72vw, (max-width: 1200px) 33vw, 20vw"
-          className="object-cover"
-          style={{ opacity: dehors ? 0 : 1, transition: "opacity 400ms ease" }}
-        />
-        <Image
-          src={member.photoHover}
-          alt=""
-          aria-hidden
-          fill
-          sizes="(max-width: 700px) 72vw, (max-width: 1200px) 33vw, 20vw"
-          className="object-cover"
-          style={{
-            opacity: dehors ? 1 : 0,
-            transition: "opacity 400ms ease",
-            objectPosition: member.positionHover ?? "center",
-          }}
-        />
-        {/* Indice d'affordance permanent : sans lui, personne ne devine
-            qu'il faut cliquer. Reste discret, en DM Mono. */}
-        <span className="pointer-events-none absolute bottom-2 left-2 z-[1] flex items-center gap-1 rounded-sm bg-[#0A0A14]/75 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#C5CBDE]">
-          {dehors ? "↺ portrait" : "↗ en dehors du cabinet"}
+        <span className="equipe-flip-inner">
+          <span className="equipe-flip-face equipe-flip-front">
+            <Image
+              src={member.photoBase}
+              alt={altBase}
+              fill
+              sizes={sizes}
+              className="object-cover"
+            />
+            <span className="pointer-events-none absolute bottom-2 left-2 z-[1] flex items-center gap-1 rounded-sm bg-[#0A0A14]/75 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#C5CBDE]">
+              ↗ en dehors du cabinet
+            </span>
+          </span>
+          <span className="equipe-flip-face equipe-flip-back">
+            <Image
+              src={member.photoHover}
+              alt=""
+              aria-hidden
+              fill
+              sizes={sizes}
+              className="object-cover"
+              style={{ objectPosition: member.positionHover ?? "center" }}
+            />
+            <span className="pointer-events-none absolute bottom-2 left-2 z-[1] flex items-center gap-1 rounded-sm bg-[#0A0A14]/75 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[#C5CBDE]">
+              ↺ portrait
+            </span>
+          </span>
         </span>
       </button>
 
-      {/* Sous la carte : nom, qualité (la distinction avocat / expert reste
-          lisible), puis fonction en libellé discret. */}
+      {/* Hors de la zone qui tourne : nom, qualité (la distinction avocat /
+          expert reste lisible), puis fonction en libellé discret. */}
       <div className="flex flex-col gap-1.5 px-3 pt-3 pb-4 sm:px-[18px] sm:pt-4">
         <p className="text-[15px] font-medium text-white sm:text-[16px]">
           {member.fullName}
@@ -183,6 +192,43 @@ export function SectionEquipe() {
         }
         @media (min-width: 1200px) {
           .equipe-cards { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        /* Retournement 3D du portrait — repris des cartes « études de cas ». */
+        .equipe-flip { perspective: 1000px; padding: 0; border: 0; background: transparent; cursor: pointer; overflow: hidden; }
+        .equipe-flip-inner {
+          position: absolute;
+          inset: 0;
+          transform-style: preserve-3d;
+          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .equipe-flip-face {
+          position: absolute;
+          inset: 0;
+          display: block;
+          overflow: hidden;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+        .equipe-flip-back { transform: rotateY(180deg); }
+        @media (hover: hover) and (pointer: fine) {
+          .equipe-flip:hover .equipe-flip-inner { transform: rotateY(180deg); }
+        }
+        .equipe-flip.is-flipped .equipe-flip-inner { transform: rotateY(180deg); }
+
+        /* Mouvement réduit : pas de rotation 3D, substitution directe par
+           opacité (transition neutralisée). */
+        @media (prefers-reduced-motion: reduce) {
+          .equipe-flip-inner { transition: none; transform: none !important; transform-style: flat; }
+          .equipe-flip-face { backface-visibility: visible; -webkit-backface-visibility: visible; }
+          .equipe-flip-back { transform: none; opacity: 0; }
+          .equipe-flip-front { opacity: 1; }
+          .equipe-flip.is-flipped .equipe-flip-front { opacity: 0; }
+          .equipe-flip.is-flipped .equipe-flip-back { opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+          .equipe-flip:hover .equipe-flip-front { opacity: 0; }
+          .equipe-flip:hover .equipe-flip-back { opacity: 1; }
         }
       `}</style>
 
