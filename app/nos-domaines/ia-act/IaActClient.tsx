@@ -6,8 +6,12 @@ import Image from "next/image";
 import { Jurisprudence, type Decision } from "@/components/jurisprudence";
 import { FAQ_TEXTE } from "./faq-texte";
 
-/* § 5.3 — Ces quatre décisions ont été validées par le cabinet le 8 septembre
-   2026 (retrouvées et lues) : verifiee: true, le composant partagé les rend.
+/* § 5.3 — Ces deux décisions ont été validées par le cabinet (retrouvées et
+   lues) : verifiee: true, le composant partagé les rend. Cass. soc. 22-19.925
+   et CA Lyon 23/04589 ont été retirées (objet ne correspondant pas à
+   l'enseignement affiché, v4). Remplacements POSSIBLES à valider séparément,
+   NON ajoutés (garde-fou) : TJ Nanterre 14 févr. 2025 n° 24/01457 ;
+   TJ Créteil 15 juil. 2025 n° 25/00851.
    Le garde-fou reste actif : toute décision future dont verifiee vaut false ne
    sera pas rendue (mécanisme mis en place après qu'une version antérieure de la
    page contrats a cité un « tribunal des activités économiques de Lille »,
@@ -17,32 +21,18 @@ const JURIS_IA: Decision[] = [
     juridiction: "TJ Nanterre",
     date: "29 janvier 2026",
     reference: "n° 25/02856",
-    intitule: "IA RH : déploiement suspendu faute de consultation du CSE",
-    regle: "Une entreprise déploie deux outils de gestion des compétences intégrant de l'IA pour alimenter les entretiens annuels, le suivi des carrières et l'affectation des salariés. Le tribunal considère que ces outils modifient concrètement les conditions de travail et imposent une consultation préalable du CSE ; le déploiement est suspendu jusqu'à l'achèvement de cette procédure. Une IA RH qui influence l'évaluation, les compétences ou les parcours n'est pas un simple outil informatique.",
+    intitule: "IA RH : déploiement suspendu, CSE non consulté",
+    regle:
+      "Deux logiciels RH intégrant de l'IA : déploiement suspendu, y compris en phase pilote, faute de consultation du CSE central.",
     verifiee: true,
   },
   {
     juridiction: "TJ Paris",
     date: "10 février 2026",
     reference: "n° 25/57412",
-    intitule: "Copilot 365 : pas encore un « projet important »",
-    regle: "Une association expérimente Copilot 365 pendant quatre mois auprès de salariés volontaires. Le tribunal juge que cette phase pilote — facultative, temporaire, à l'impact limité — ne modifie pas suffisamment les conditions de travail pour justifier une expertise du CSE. L'introduction d'une IA ne suffit pas, à elle seule, à caractériser un projet important : les juges regardent ses effets réels sur l'organisation du travail.",
-    verifiee: true,
-  },
-  {
-    juridiction: "Cass. soc.",
-    date: "21 mai 2025",
-    reference: "n° 22-19.925",
-    intitule: "Vidéoprotection : le RGPD s'applique pleinement",
-    regle: "L'exploitation d'images permettant d'identifier un salarié constitue un traitement de données personnelles soumis au RGPD. Un dispositif de surveillance peut servir de preuve à condition que les salariés aient été correctement informés de son existence, de ses finalités et de leurs droits. Toute IA qui analyse ou exploite des données relatives aux salariés engage simultanément le RGPD et le droit du travail.",
-    verifiee: true,
-  },
-  {
-    juridiction: "CA Lyon",
-    date: "13 mai 2025",
-    reference: "n° 23/04589",
-    intitule: "IA comptable validée : l'humain conserve la décision",
-    regle: "La cour valide un logiciel de comptabilité fondé sur l'IA : la solution automatise une grande partie du traitement, mais l'utilisateur conserve la maîtrise des choix et valide lui-même les opérations. L'automatisation est admise lorsque les responsabilités restent clairement identifiées ; plus une IA décide à la place de l'utilisateur, plus les exigences de documentation, de supervision et de gouvernance deviennent essentielles.",
+    intitule: "Copilot 365 : expertise du CSE annulée",
+    regle:
+      "Copilot 365 : expertise du CSE annulée, l'expérimentation étant limitée, volontaire et sans impact concret établi.",
     verifiee: true,
   },
 ];
@@ -833,9 +823,9 @@ export default function IaActClient() {
           <Eyebrow>Jurisprudence</Eyebrow>
           <h2 style={{ ...TYPE.h2, marginBottom: 6 }}>Ce que les juges exigent déjà</h2>
           <p style={{ ...TYPE.secondary, marginBottom: 16, maxWidth: 760 }}>
-            Documentation, transparence, supervision humaine : ces exigences
-            apparaissent dans les contentieux du travail et des données, bien
-            avant les premières sanctions de l&apos;AI Act.
+            Ces décisions ne sont pas des applications de l&apos;AI Act. Elles
+            montrent que le droit du travail encadre déjà le déploiement de
+            l&apos;IA en entreprise.
           </p>
           {/* Les décisions passent par le composant partagé, qui ne rend que
               celles dont verifiee vaut true. Les quatre entrées ont été validées
@@ -971,124 +961,56 @@ export default function IaActClient() {
             8 juillet 2026, en vigueur depuis le 27 juillet.
           </p>
 
-          {/* Calendrier réécrit (prompt 2.6) : une ligne = une date, une
-              obligation, et qui est tenu. Deux blocs. Dates complètes. Les
-              anciens badges « REPORTÉ » sont remplacés par une mention discrète
-              « initialement … » en fin de ligne de date. */}
-          {(() => {
-            const rowStyle = (first: boolean) => ({
-              padding: "13px 14px",
-              borderTop: first ? "none" : `0.5px solid ${LIGHT.border}`,
-              background: LIGHT.panel,
-            });
-            const dateStyle = { fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted } as const;
-            const initStyle = { fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, whiteSpace: "nowrap" } as const;
-            const titreStyle = { fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" } as const;
-            const corpsStyle = { fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 } as const;
-            const blocLabel = { fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.text, margin: "0 0 8px" } as const;
-            return (
-              <>
-                {/* ---- Bloc 1 : ce qui s'applique aujourd'hui ---- */}
-                <p style={blocLabel}>Ce qui s&apos;applique aujourd&apos;hui</p>
-                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 20 }}>
-                  <div style={rowStyle(true)}>
-                    <span style={dateStyle}>Depuis le 2 février 2025</span>
-                    <p style={titreStyle}>Pratiques interdites</p>
-                    <p style={corpsStyle}>
-                      {"Certains usages sont interdits, quels que soient la taille de l'entreprise, son secteur et la date de mise en service du système. Notamment : les techniques subliminales ou délibérément manipulatrices, l'exploitation des vulnérabilités liées à l'âge, au handicap ou à la situation sociale, la notation sociale, la prédiction du risque criminel fondée sur le seul profilage, le moissonnage non ciblé d'images faciales, l'inférence des émotions sur le lieu de travail et dans l'enseignement hors raisons médicales ou de sécurité, et la catégorisation biométrique déduisant des caractéristiques sensibles. C'est le seul étage exposé au plafond de 35 M€ ou 7 % du chiffre d'affaires mondial."}
-                    </p>
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 février 2025</span>
-                    <p style={titreStyle}>Formation des équipes</p>
-                    <p style={corpsStyle}>
-                      {"Toute entreprise qui utilise ou fournit un système d'IA doit assurer un niveau suffisant de compétence des personnes qui s'en servent. L'obligation vaut à tous les étages de risque, y compris pour les outils les plus anodins, et elle se démontre par un plan de formation daté. C'est l'obligation la moins coûteuse à satisfaire et la première qu'une autorité vérifie. Sanctionnable depuis l'été 2026."}
-                    </p>
-                    {/* À VÉRIFIER — AL : rédaction de l'art. 4 modifiée en juillet 2026 */}
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 août 2025</span>
-                    <p style={titreStyle}>Sanctions et autorités</p>
-                    <p style={corpsStyle}>
-                      {"Le régime de sanctions est en place et les États membres ont désigné leurs autorités de surveillance. Les plafonds : 35 M€ ou 7 % du chiffre d'affaires mondial pour les pratiques interdites, 15 M€ ou 3 % pour les manquements des fournisseurs et des déployeurs, 7,5 M€ ou 1 % pour les informations inexactes fournies aux autorités. Pour les PME, jeunes pousses comprises, la règle s'inverse : c'est le montant le plus faible qui plafonne l'amende, jamais le plus élevé."}
-                    </p>
-                    {/* À VÉRIFIER — AL : l'art. 113 réserve l'art. 101, applicable au 2 août 2026. Mention à ajouter ou non. */}
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>Depuis le 2 août 2026</span>
-                    <p style={titreStyle}>Transparence et application générale</p>
-                    <p style={corpsStyle}>
-                      {"L'obligation de transparence n'est pas de s'abstenir, elle est de dire : un agent conversationnel doit être annoncé comme tel, un hypertrucage identifié, un texte publié pour informer le public sur une question d'intérêt public signalé comme généré par IA, sauf contrôle éditorial assumé et tracé. À la même date, le règlement s'applique de manière générale hors haut risque et les autorités nationales disposent de leurs pouvoirs de contrôle. C'est la date qui concerne le plus grand nombre d'entreprises."}
-                    </p>
-                  </div>
-                </div>
-
-                {/* ---- Bloc 2 : ce qui vient ---- */}
-                <p style={blocLabel}>Ce qui vient</p>
-                <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
-                  <div style={rowStyle(true)}>
-                    <span style={dateStyle}>2 décembre 2026</span>
-                    <p style={titreStyle}>Marquage des contenus générés</p>
-                    <p style={corpsStyle}>
-                      {"Pour les générateurs de contenus déjà sur le marché avant août 2026, l'obligation de marquer les sorties dans un format lisible par machine est décalée à cette date. Elle pèse sur l'éditeur du système, non sur l'entreprise qui l'utilise. Les IA interactives et la production d'hypertrucages ne bénéficient pas de ce report."}
-                    </p>
-                  </div>
-                  <div style={rowStyle(false)}>
-                    <span style={dateStyle}>2 décembre 2026</span>
-                    <p style={titreStyle}>Deux interdictions nouvelles</p>
-                    <p style={corpsStyle}>
-                      {"Contenus intimes non consentis et contenus pédocriminels générés par IA."}
-                    </p>
-                    {/* À VÉRIFIER — AL */}
-                  </div>
-                  <div style={rowStyle(false)}>
+          {/* Calendrier v4 — version allégée : une ligne = une date + une
+              obligation. Le détail des rôles est au bloc « Ce que le règlement
+              impose », les montants dans la FAQ.
+              AVANT MISE EN LIGNE — AL : confirmer la date d'application des deux
+              interdictions (art. 1, point 40 a, du règlement (UE) 2026/1744). */}
+          {[
+            {
+              bloc: "Ce qui s'applique aujourd'hui",
+              rows: [
+                { date: "2 février 2025", titre: "Pratiques interdites et maîtrise de l'IA", initial: null as string | null, desc: null as string | null },
+                { date: "2 août 2025", titre: "Sanctions et autorités nationales", initial: null as string | null, desc: "Régime de sanctions et désignation des autorités nationales, sauf l'article 101 (amendes des fournisseurs de modèles), applicable depuis le 2 août 2026. Les amendes ne sont donc pas exigibles depuis février 2025." as string | null },
+                { date: "2 août 2026", titre: "Transparence et application générale du règlement", initial: null as string | null, desc: null as string | null },
+              ],
+            },
+            {
+              bloc: "Ce qui vient",
+              rows: [
+                { date: "2 décembre 2026", titre: "Marquage lisible par machine", initial: null as string | null, desc: "Quatre mois de transition, pour les seuls fournisseurs ayant mis leur système sur le marché avant août 2026. L'annonce d'une IA interactive et la divulgation des hypertrucages ne sont pas reportées." as string | null },
+                { date: "2 décembre 2026", titre: "Deux interdictions nouvelles", initial: null as string | null, desc: "Contenus intimes non consentis et contenus pédocriminels générés par IA. Le déployeur n'est visé que s'il utilise le système dans ce but." as string | null },
+                { date: "2 décembre 2027", titre: "Haut risque, annexe III", initial: "initialement août 2026" as string | null, desc: null as string | null },
+                { date: "2 août 2028", titre: "Haut risque, annexe I", initial: "initialement août 2027" as string | null, desc: "Les machines relèvent désormais d'une approche sectorielle." as string | null },
+              ],
+            },
+          ].map((b) => (
+            <div key={b.bloc} style={{ marginBottom: 18 }}>
+              <p style={{ fontFamily: "var(--ff-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: LIGHT.text, margin: "0 0 8px" }}>{b.bloc}</p>
+              <div style={{ border: `0.5px solid ${LIGHT.border}`, borderRadius: 10, overflow: "hidden" }}>
+                {b.rows.map((r, i) => (
+                  <div key={r.titre} style={{ padding: "13px 14px", borderTop: i > 0 ? `0.5px solid ${LIGHT.border}` : "none", background: LIGHT.panel }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-                      <span style={dateStyle}>2 décembre 2027</span>
-                      <span style={initStyle}>initialement 2 août 2026</span>
+                      <span style={{ fontFamily: "var(--ff-mono)", fontSize: 11, color: LIGHT.muted }}>{r.date}</span>
+                      {r.initial ? (
+                        <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, color: LIGHT.faint, whiteSpace: "nowrap" }}>{r.initial}</span>
+                      ) : null}
                     </div>
-                    <p style={titreStyle}>Haut risque, annexe III</p>
-                    <p style={corpsStyle}>
-                      {"Sont visés le recrutement et la gestion des travailleurs, l'éducation, le scoring de crédit, la tarification en assurance-vie et santé, l'accès aux services essentiels. Ce qui devient exigible dépend du rôle :"}
-                    </p>
-                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
-                      <strong style={{ color: LIGHT.text }}>Fournisseur</strong>
-                      {" — gestion des risques, gouvernance des données et examen des biais, documentation technique, journalisation, notice d'utilisation, conception permettant le contrôle humain, évaluation de conformité, marquage CE, enregistrement dans la base européenne."}
-                    </p>
-                    <p style={{ ...corpsStyle, margin: "6px 0 0" }}>
-                      <strong style={{ color: LIGHT.text }}>Déployeur</strong>
-                      {" — usage conforme à la notice, contrôle humain confié à des personnes ayant l'autorité de contredire le système, conservation des journaux, information des travailleurs et de leurs représentants avant la mise en service, information des personnes soumises à une décision. C'est le cas de la plupart des entreprises."}
-                    </p>
+                    <p style={{ fontSize: 14, color: LIGHT.text, fontWeight: 600, margin: "6px 0 0" }}>{r.titre}</p>
+                    {r.desc ? (
+                      <p style={{ fontSize: 12.5, color: LIGHT.muted, margin: "4px 0 0", lineHeight: 1.55 }}>{r.desc}</p>
+                    ) : null}
                   </div>
-                  <div style={rowStyle(false)}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-                      <span style={dateStyle}>2 août 2028</span>
-                      <span style={initStyle}>initialement 2 août 2027</span>
-                    </div>
-                    <p style={titreStyle}>Haut risque, annexe I</p>
-                    <p style={corpsStyle}>
-                      {"Sont visés les systèmes d'IA qui sont un composant de sécurité d'un produit déjà soumis à une réglementation européenne d'harmonisation avec évaluation par un tiers. L'IA entre alors dans la logique du marquage produit. Les systèmes relevant du règlement Machines sortent du champ de l'AI Act."}
-                    </p>
-                    {/* À VÉRIFIER — AL : ajouter ou non des exemples de produits concernés */}
-                  </div>
-                </div>
-
-                {/* Note de bas de section, petit corps, sous la frise. */}
-                <p style={{ fontSize: 12, color: LIGHT.muted, lineHeight: 1.6, margin: "14px 0 0", maxWidth: 760 }}>
-                  {"Si vous utilisez ChatGPT, Copilot, Gemini ou un modèle équivalent, les obligations entrées en application en août 2025 ne sont pas les vôtres : documentation technique du modèle, politique de respect du droit d'auteur et résumé des contenus d'entraînement pèsent sur l'éditeur du modèle. Ce qui vous concerne est contractuel : ce sont ces documents dont vous aurez besoin pour démontrer votre propre conformité. Exigez-les."}
-                </p>
-              </>
-            );
-          })()}
+                ))}
+              </div>
+            </div>
+          ))}
 
           {/* Bandeau à la suite du calendrier */}
           <div style={{ background: DARK.bg, borderRadius: 10, padding: 16, marginTop: 12 }}>
             <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, margin: 0, lineHeight: 1.6 }}>
               Le calendrier ne suffit pas à déterminer vos obligations.
             </p>
-            {/* TODO (à traiter AVANT publication) : identifier la RÉFÉRENCE
-                EXACTE (article / considérant du règlement 2026/1744) des
-                allègements pour petites entreprises et entreprises à faible
-                capitalisation — préciser ou reformuler selon le texte trouvé. */}
             <p style={{ fontSize: 13, color: DARK.muted, margin: "7px 0 0", lineHeight: 1.6 }}>
               Il faut qualifier le système, établir le rôle de l&apos;entreprise,
               et vérifier sa date de mise sur le marché. Les allègements prévus

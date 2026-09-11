@@ -9,7 +9,7 @@ import { FAQ_TEXTE } from "./faq-texte";
  */
 const TITLE = "Avocat AI Act : conformité et gouvernance IA | Lazarègue Avocats";
 const DESCRIPTION =
-  "Audit AI Act, cartographie des systèmes, charte IA, contrats et gouvernance. Le cabinet accompagne les PME et ETI dans leur mise en conformité.";
+  "Audit AI Act, registre et charte IA, conformité des systèmes à haut risque, défense en cas de contrôle. Cabinet de droit du numérique, Paris et toute la France.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -48,25 +48,10 @@ const JSON_LD = {
         acceptedAnswer: { "@type": "Answer", text: f.a },
       })),
     },
-    // Article + Organization (prompt 2.11). Pas de doublon : le @graph ne
-    // contient par ailleurs qu'un LegalService et une FAQPage.
-    {
-      "@type": "Article",
-      headline: "Mise en conformité AI Act et gouvernance IA",
-      description: DESCRIPTION,
-      inLanguage: "fr-FR",
-      // dateModified = la date « à jour au » affichée sur la page. Pas de
-      // datePublished : aucune date de première publication fiable à déclarer
-      // (déduire une date fausse serait une donnée erronée déclarée au moteur).
-      dateModified: "2026-09-01",
-      author: { "@type": "Person", name: "Alexandre Lazarègue" },
-      publisher: { "@id": "https://lazaregue-avocats.fr/#cabinet" },
-      mainEntityOfPage: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
-    },
     {
       // Le cabinet — entité UNIQUE, reliée par @id : le LegalService ci-dessus
-      // la référence comme `provider`, l'Article comme `publisher`. Pas deux
-      // descriptions distinctes du même cabinet dans le @graph.
+      // la référence comme `provider`. v4 : PAS d'Article, PAS de datePublished
+      // inventée. Une seule description du cabinet dans le @graph.
       "@type": "Organization",
       "@id": "https://lazaregue-avocats.fr/#cabinet",
       name: "Lazarègue Avocats",

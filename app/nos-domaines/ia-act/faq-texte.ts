@@ -40,4 +40,12 @@ export const FAQ_TEXTE: { q: string; a: string }[] = [
     q: "Combien coûte un diagnostic AI Act ?",
     a: "Le coût dépend de plusieurs variables : le nombre de systèmes officiels et d'usages informels, leur qualification, le rôle tenu par l'entreprise, l'état de la documentation existante et le volume à créer ou à reprendre. Un diagnostic commence par l'inventaire et la qualification — c'est de là que découlent le périmètre et la charge de la mise en conformité.",
   },
+  {
+    q: "Sommes-nous fournisseur ou déployeur si nous avons configuré l'outil nous-mêmes ?",
+    a: "Cela dépend de ce que « configurer » recouvre. Régler les paramètres prévus par la notice vous laisse déployeur. En revanche, assigner au système une destination qu'il n'avait pas — en particulier un usage relevant de l'annexe III — ou le modifier substantiellement peut faire de vous le fournisseur, avec le régime le plus lourd (art. 25). La qualification se fait système par système, sur l'usage réel.",
+  },
+  {
+    q: "Combien risque une PME ?",
+    a: "Les plafonds sont de 35 M€ ou 7 % du chiffre d'affaires mondial pour les pratiques interdites, 15 M€ ou 3 % pour les manquements des fournisseurs et des déployeurs, 7,5 M€ ou 1 % pour les informations inexactes fournies aux autorités. Pour les PME, jeunes pousses comprises, la règle s'inverse : c'est le montant le plus faible qui plafonne l'amende, jamais le plus élevé (art. 99 § 6).",
+  },
 ];
