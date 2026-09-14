@@ -1,324 +1,155 @@
-"use client";
-
-import { useCallback, useEffect, useState } from "react";
+/*
+ * Section « Le droit du numérique en action » — trois cas pratiques à plat.
+ *
+ * Aucun retournement : plus de perspective 3D, de rotateY, de backface, de rôle
+ * bouton, de tabindex, d'écouteurs de survol/focus, ni de texte d'instruction.
+ * Composant serveur (aucune interactivité). Les quatre éléments de chaque carte
+ * (titre + Situation + Ce que nous avons fait + Issue) sont en clair dans le DOM.
+ * Hauteur libre (grille `items-start`) : les cartes ne sont pas alignées de
+ * force, aucune description tronquée.
+ *
+ * Couleurs : les trois couleurs actuelles sont conservées comme repères (elles
+ * ne sont PAS alignées sur les couleurs de famille — chantier distinct). La
+ * couleur ne porte jamais seule l'information : chaque carte affiche son titre
+ * et ses trois intitulés de champ en toutes lettres.
+ *
+ * Contenus : Situation = recto existant ; « Ce que nous avons fait » = contenu
+ * du verso existant ; Issue = contenu validé par le cabinet.
+ */
 
 type CasCard = {
-  number: string;
-  tag: string;
-  tagClass: string;
+  key: string;
   title: string;
-  description: string;
-  frontBg: string;
-  backBg: string;
-  dotColor: string;
-  accentColor: string;
-  results: string[];
+  accent: string; // repère de couleur (filet supérieur + puces)
+  bg: string;
+  situation: string;
+  actions: string[]; // ex-verso « ce que le cabinet a fait »
+  issue: string;
 };
 
 const CASE_CARDS: CasCard[] = [
   {
-    number: "01 / 03",
-    tag: "Incident & crise",
-    tagClass: "bg-[#E24B4A]/15 text-[#F09595]",
+    key: "incident",
     title: "Une industrie paralysée après un piratage",
-    description:
+    accent: "#E24B4A",
+    bg: "#FDE8E8",
+    situation:
       "Une industrie a vu sa messagerie piratée. La production s'est arrêtée, des données clients et des fiches RH ont été volées, et le prestataire informatique était directement responsable.",
-    frontBg: "#FDE8E8",
-    backBg: "#1a2744",
-    dotColor: "#6a90cc",
-    accentColor: "#E24B4A",
-    results: [
+    actions: [
       "Coordination de la réponse à l'incident avec les experts techniques",
       "Obligations de notification auprès de la CNIL respectées dans les délais",
       "Responsabilité du prestataire informatique engagée",
     ],
+    issue:
+      "Reprise progressive de la production, préservation des preuves et mise en cause du prestataire d'infogérance.",
   },
   {
-    number: "02 / 03",
-    tag: "Intelligence artificielle",
-    tagClass: "bg-[#1D9E75]/10 text-[#0F6E56]",
+    key: "ia",
     title: "Mise en conformité d'une entreprise IA avant une levée de fonds",
-    description:
+    accent: "#1D9E75",
+    bg: "#E8F5F0",
+    situation:
       "Une entreprise développait des logiciels d'IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec les nouvelles réglementations européennes sur l'IA.",
-    frontBg: "#E8F5F0",
-    backBg: "#0e5c44",
-    dotColor: "#5dc9a0",
-    accentColor: "#1D9E75",
-    results: [
+    actions: [
       "Gouvernance juridique des systèmes d'IA documentée",
       "Contrats avec les fournisseurs cloud mis à niveau",
       "Levée de fonds conclue dans les délais",
     ],
+    issue:
+      "Gouvernance et documentation de conformité mises en place ; levée de fonds conclue dans les délais.",
   },
   {
-    number: "03 / 03",
-    tag: "Violation de données",
-    tagClass: "bg-[#1A47FF]/15 text-[#6D8FFF]",
+    key: "fuite",
     title: "Fuite massive de données clients chez un site de vente en ligne",
-    description:
+    accent: "#1A47FF",
+    bg: "#E8EEFF",
+    situation:
       "Un site de vente en ligne a découvert que les données personnelles de plusieurs centaines de milliers de clients avaient été volées chez un sous-traitant et revendues sur des forums illicites. La CNIL a ouvert une enquête.",
-    frontBg: "#E8EEFF",
-    backBg: "#1845c0",
-    dotColor: "#80aaff",
-    accentColor: "#1A47FF",
-    results: [
+    actions: [
       "Notification pilotée dans le respect des délais",
       "Responsabilité du sous-traitant engagée",
       "Risques d'action collective anticipés",
     ],
+    issue:
+      "Notification réalisée dans les délais, personnes concernées informées et responsabilité du sous-traitant documentée.",
   },
 ];
 
-function CasFlipCard({
-  card,
-  cardIndex,
-  flipped,
-  onToggle,
-  hoverFlipEnabled,
-}: {
-  card: CasCard;
-  cardIndex: number;
-  flipped: boolean;
-  onToggle: () => void;
-  hoverFlipEnabled: boolean;
-}) {
+function CasCardView({ card }: { card: CasCard }) {
   return (
-    <div
-      className={`cas-flip w-full ${flipped ? "cas-flip--flipped" : ""}`}
-      onClick={hoverFlipEnabled ? undefined : onToggle}
-      onKeyDown={
-        hoverFlipEnabled
-          ? undefined
-          : (event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onToggle();
-              }
-            }
-      }
-      role={hoverFlipEnabled ? undefined : "button"}
-      tabIndex={hoverFlipEnabled ? undefined : 0}
-      aria-label={hoverFlipEnabled ? undefined : `Retourner la carte : ${card.title}`}
+    <article
+      className="cas-card flex flex-col rounded-[2px] border border-[#E0E0EE] p-6"
+      style={{ background: card.bg, borderTop: `3px solid ${card.accent}` }}
     >
-      <div className="cas-flip-inner">
-        <div
-          className={`cas-flip-face cas-flip-front cas-flip-front-breathe cas-flip-front-breathe--${cardIndex} flex flex-col border-x border-b border-[0.5px] border-[rgba(10,15,46,0.12)]`}
-          style={{
-            backgroundColor: card.frontBg,
-            borderTop: `2px solid ${card.accentColor}`,
-          }}
-        >
-          <p className="mb-3 font-mono text-[11px] tracking-widest text-[#0A0F2E]/25">
-            {card.number}
-          </p>
-          <span
-            className={`mb-4 inline-block w-fit rounded-sm px-2 py-1 font-mono text-[9px] uppercase tracking-wider ${card.tagClass}`}
-          >
-            {card.tag}
-          </span>
-          <h3 className="mb-3 text-[14px] font-medium leading-snug text-[#0A0F2E]">
-            {card.title}
-          </h3>
-          <p className="flex-1 text-[12px] leading-relaxed text-[#55556A]">
-            {card.description}
-          </p>
-          <div className="mt-auto flex items-center gap-1.5 pt-4 text-[11px] text-[#8888A0]">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path
-                d="M6 1v10M1 6l5 5 5-5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="md:hidden">Appuyer pour voir les résultats</span>
-            <span className="hidden md:inline">Survoler pour voir les résultats</span>
-          </div>
-        </div>
+      <h3 className="mb-[18px] text-[19px] font-medium leading-[1.28] text-[#0A0F2E]">
+        {card.title}
+      </h3>
+      <dl className="m-0">
+        <dt className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-[#55556A]">
+          Situation
+        </dt>
+        <dd className="m-0 mb-4 text-[14.5px] leading-[1.58] text-[#3A3A50]">
+          {card.situation}
+        </dd>
 
-        <div
-          className="cas-flip-face cas-flip-back flex flex-col text-white"
-          style={{ backgroundColor: card.backBg }}
-        >
-          <span className="mb-4 inline-block w-fit rounded-sm bg-white/15 px-2 py-1 font-mono text-[9px] uppercase tracking-wider text-white/90">
-            Résultats
-          </span>
-          <p className="mb-4 font-mono text-[10px] uppercase tracking-wider text-white/50">
-            Ce que le cabinet a fait
-          </p>
-          <ul className="space-y-3">
-            {card.results.map((item) => (
+        <dt className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-[#55556A]">
+          Ce que nous avons fait
+        </dt>
+        <dd className="m-0 mb-4">
+          <ul className="m-0 list-none space-y-1.5 p-0">
+            {card.actions.map((action) => (
               <li
-                key={item}
-                className="flex items-start gap-2 text-[12px] leading-relaxed text-white/85"
+                key={action}
+                className="flex gap-2 text-[14.5px] leading-[1.58] text-[#3A3A50]"
               >
                 <span
-                  className="mt-[5px] h-[5px] w-[5px] shrink-0 rounded-full"
-                  style={{ backgroundColor: card.dotColor }}
+                  className="mt-[0.62em] h-[4px] w-[4px] shrink-0 rounded-full"
+                  style={{ background: card.accent }}
                   aria-hidden
                 />
-                <span>{item}</span>
+                <span>{action}</span>
               </li>
             ))}
           </ul>
-        </div>
-      </div>
-    </div>
+        </dd>
+
+        <dt className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-[#55556A]">
+          Issue
+        </dt>
+        <dd className="m-0 text-[14.5px] leading-[1.58] text-[#3A3A50]">
+          {card.issue}
+        </dd>
+      </dl>
+    </article>
   );
 }
 
 export function SectionCas() {
-  const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
-  const [canHoverFlip, setCanHoverFlip] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (min-width: 768px)");
-    const update = () => setCanHoverFlip(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  const handleToggle = useCallback(
-    (index: number) => {
-      if (canHoverFlip) return;
-      setFlippedIndex((prev) => (prev === index ? null : index));
-    },
-    [canHoverFlip],
-  );
-
   return (
     <section className="bg-[#F4F4F8]">
       <style>{`
-        .cas-flip {
-          perspective: 1000px;
-          height: 300px;
-          cursor: default;
-        }
-        .cas-flip-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-          transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .cas-flip-face {
-          position: absolute;
-          inset: 0;
-          border-radius: 12px;
-          padding: 22px;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-        }
-        .cas-flip-back {
-          transform: rotateY(180deg);
-        }
-        @media (hover: hover) and (min-width: 768px) {
-          .cas-flip:hover .cas-flip-inner {
-            transform: rotateY(180deg);
+        /* Impression : une carte ne doit pas être coupée entre deux pages, et
+           ses couleurs (filet, fond) doivent être conservées. Sans retournement,
+           les cartes s'impriment naturellement dans le bon sens. */
+        @media print {
+          .cas-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
-        }
-        .cas-flip--flipped .cas-flip-inner {
-          transform: rotateY(180deg);
-        }
-        @media (max-width: 767px) {
-          .cas-flip {
-            cursor: pointer;
-          }
-        }
-
-        @keyframes lineBreatheCas1 {
-          0%,
-          100% {
-            border-top-color: rgba(226, 75, 74, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #e24b4a;
-            box-shadow: 0 -2px 12px rgba(226, 75, 74, 0.6);
-          }
-        }
-
-        @keyframes lineBreatheCas2 {
-          0%,
-          100% {
-            border-top-color: rgba(29, 158, 117, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #1d9e75;
-            box-shadow: 0 -2px 12px rgba(29, 158, 117, 0.6);
-          }
-        }
-
-        @keyframes lineBreatheCas3 {
-          0%,
-          100% {
-            border-top-color: rgba(26, 71, 255, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #1a47ff;
-            box-shadow: 0 -2px 12px rgba(26, 71, 255, 0.6);
-          }
-        }
-
-        .cas-flip-front-breathe--0 {
-          animation: lineBreatheCas1 3s ease-in-out infinite;
-        }
-
-        .cas-flip-front-breathe--1 {
-          animation: lineBreatheCas2 3s ease-in-out infinite;
-        }
-
-        .cas-flip-front-breathe--2 {
-          animation: lineBreatheCas3 3s ease-in-out infinite;
         }
       `}</style>
 
       <div className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
-        <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#0A0F2E]/65">
-          Études de cas
-        </p>
-
-        <h2 className="mb-2 text-[22px] font-medium leading-snug text-[#0A0F2E]">
+        <h2 className="mb-8 text-[22px] font-medium leading-snug text-[#0A0F2E] md:mb-10">
           Le droit du numérique en action
         </h2>
 
-        <p className="mb-7 text-[13px] text-[#8888A0]">
-          Les noms sont anonymisés, les situations sont réelles.
-        </p>
-
-        <div className="mx-auto grid max-w-[600px] grid-cols-1 gap-4 md:max-w-none md:grid-cols-3">
-          {CASE_CARDS.map((card, index) => (
-            <CasFlipCard
-              key={card.number}
-              card={card}
-              cardIndex={index}
-              flipped={flippedIndex === index}
-              onToggle={() => handleToggle(index)}
-              hoverFlipEnabled={canHoverFlip}
-            />
+        <div className="mx-auto grid max-w-[600px] grid-cols-1 items-start gap-5 lg:max-w-none lg:grid-cols-3">
+          {CASE_CARDS.map((card) => (
+            <CasCardView key={card.key} card={card} />
           ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: "32px" }}>
-          <a
-            href="/references"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "13px",
-              color: "rgba(10,15,46,0.5)",
-              borderBottom: "0.5px solid rgba(10,15,46,0.2)",
-              paddingBottom: "2px",
-              textDecoration: "none",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Voir toutes nos études de cas →
-          </a>
         </div>
       </div>
     </section>
