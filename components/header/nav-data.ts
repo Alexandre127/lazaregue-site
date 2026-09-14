@@ -36,12 +36,12 @@ export const FAMILLES: Famille[] = [
       {
         titre: "RGPD et données personnelles",
         contexte: "Se mettre en conformité et gérer une violation de données",
-        href: "/nos-domaines/rgpd-donnees",
+        href: "/nos-domaines/rgpd-donnees-personnelles",
       },
       {
         titre: "Intelligence artificielle",
         contexte: "Appliquer l'AI Act et encadrer les usages internes",
-        href: "/nos-domaines/ia-act",
+        href: "/nos-domaines/intelligence-artificielle",
       },
       {
         titre: "Cybersécurité et NIS 2",
@@ -66,7 +66,7 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Fusions-acquisitions technologiques",
         contexte: "Auditer le passif numérique avant une acquisition",
-        href: "/competences/ma-tech",
+        href: "/nos-domaines/ma-tech",
       },
     ],
   },
@@ -76,7 +76,7 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Fraude bancaire et escroquerie en ligne",
         contexte: "Obtenir le remboursement des sommes détournées",
-        href: "/nos-domaines/avocat-escroquerie-fraude",
+        href: "/nos-domaines/escroquerie-fraude-bancaire",
       },
       {
         titre: "Cyberattaques et cybercriminalité",
@@ -86,7 +86,7 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Diffamation et retrait de contenus",
         contexte: "Faire retirer un contenu et identifier son auteur",
-        href: "/nos-domaines/diffamation-retrait-de-contenus",
+        href: "/nos-domaines/diffamation-retrait-contenus",
       },
     ],
   },

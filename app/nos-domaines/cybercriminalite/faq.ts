@@ -27,7 +27,7 @@ export const FAQ_ITEMS: {
   {
     q: "Un ex-salarié est parti avec notre base clients.",
     a: "Cela peut relever du droit pénal. L'accès ou le maintien sans droit dans un système, ainsi que l'extraction frauduleuse de données, peuvent notamment relever des articles 323-1 et suivants du code pénal. La qualification dépend des conditions concrètes d'accès, des habilitations résiduelles et de l'usage fait des données. Une plainte peut être accompagnée d'un référé pour faire cesser l'utilisation.",
-    lien: { href: "/nos-domaines/rgpd-donnees", label: "Le volet RGPD : fichier clients détourné et obligations envers les personnes" },
+    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Le volet RGPD : fichier clients détourné et obligations envers les personnes" },
   },
   {
     q: "On nous accuse d'une intrusion. Une adresse IP nous désigne.",
@@ -36,7 +36,7 @@ export const FAQ_ITEMS: {
   {
     q: "On a subi une attaque. La CNIL enquête sur nous.",
     a: "Être victime n'exclut pas d'être mis en cause pour insuffisance de sécurité. La défense repose sur trois démonstrations : les mesures prises, la réaction documentée à l'incident, et la responsabilité du prestataire si une vulnérabilité n'a pas été corrigée.",
-    lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
+    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
   },
   {
     q: "Les serveurs sont à l'étranger, peut-on agir ?",

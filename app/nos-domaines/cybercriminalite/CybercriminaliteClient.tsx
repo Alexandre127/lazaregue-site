@@ -82,7 +82,7 @@ const TROIS_TEMPS: {
     titre: "Construire la procédure",
     corps:
       "Une plainte documentée ouvre des investigations que la voie civile ne permet pas : réquisitions, saisies informatiques, expertise judiciaire. Une plainte contre X au commissariat ne donne le plus souvent presque rien. Puis constitution de partie civile — ou défense, si c'est vous qui êtes mis en cause.",
-    lien: { href: "/nos-domaines/rgpd-donnees", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
+    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
   },
 ];
 
@@ -730,7 +730,7 @@ export default function CybercriminaliteClient() {
           </p>
           <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.7, margin: 0 }}>
             Vous êtes une personne physique victime d&apos;une escroquerie ou d&apos;un virement frauduleux ?{" "}
-            <Link href="/nos-domaines/avocat-escroquerie-fraude" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
+            <Link href="/nos-domaines/escroquerie-fraude-bancaire" style={{ color: RED, fontWeight: 500, textDecoration: "none" }}>
               Recours contre les banques →
             </Link>
           </p>

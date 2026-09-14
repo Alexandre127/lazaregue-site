@@ -71,7 +71,7 @@ const PORTES: Porte[] = [
     // responsabilité des sous-traitants » de la page RGPD (ancre #controle-cnil),
     // créée au lot 3. La page fille annoncée auparavant n'est plus nécessaire.
     lien: "Violation de données personnelles",
-    href: "/nos-domaines/rgpd-donnees#controle-cnil",
+    href: "/nos-domaines/rgpd-donnees-personnelles#controle-cnil",
     disponible: true,
   },
   {
@@ -99,7 +99,7 @@ const PORTES: Porte[] = [
     corps:
       "Diffamation, faux avis, données diffusées après une fuite, compte usurpé : retrait, déréférencement, identification d'auteur.",
     lien: "Diffamation et retrait de contenus",
-    href: "/nos-domaines/diffamation-retrait-de-contenus",
+    href: "/nos-domaines/diffamation-retrait-contenus",
     disponible: true,
   },
 ];

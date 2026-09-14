@@ -44,7 +44,7 @@ export const DOSSIERS: {
     corps:
       "À la suite d'une série d'opérations orientées vers des plateformes d'actifs numériques, le cabinet a reconstitué le parcours des fonds et distingué les opérations autorisées des anomalies susceptibles d'engager la responsabilité des prestataires de services de paiement.",
     lien: {
-      href: "/nos-domaines/avocat-escroquerie-fraude",
+      href: "/nos-domaines/escroquerie-fraude-bancaire",
       label: "Escroquerie et fraude",
     },
   },
@@ -54,7 +54,7 @@ export const DOSSIERS: {
     corps:
       "Face à des publications portant atteinte à une entreprise sur plusieurs services numériques, le cabinet a identifié les responsables, sécurisé les constats, puis coordonné les demandes de retrait, le déréférencement et l'action contentieuse.",
     lien: {
-      href: "/nos-domaines/diffamation-retrait-de-contenus",
+      href: "/nos-domaines/diffamation-retrait-contenus",
       label: "Diffamation et retrait de contenus",
     },
   },
@@ -200,12 +200,12 @@ export const ENGAGEMENTS: { titre: string; corps: string }[] = [
 export const DOMAINES: { href: string; label: string }[] = [
   { href: "/nos-domaines/contrats-informatiques", label: "Contentieux informatique et projets IT" },
   { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et incidents" },
-  { href: "/nos-domaines/rgpd-donnees", label: "RGPD et protection des données" },
-  { href: "/nos-domaines/ia-act", label: "Intelligence artificielle et AI Act" },
+  { href: "/nos-domaines/rgpd-donnees-personnelles", label: "RGPD et protection des données" },
+  { href: "/nos-domaines/intelligence-artificielle", label: "Intelligence artificielle et AI Act" },
   { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et atteintes aux systèmes" },
-  { href: "/nos-domaines/avocat-escroquerie-fraude", label: "Escroquerie et fraude" },
-  { href: "/nos-domaines/diffamation-retrait-de-contenus", label: "Diffamation et retrait de contenus" },
-  { href: "/competences/ma-tech", label: "M&A tech et due diligence" },
+  { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Escroquerie et fraude" },
+  { href: "/nos-domaines/diffamation-retrait-contenus", label: "Diffamation et retrait de contenus" },
+  { href: "/nos-domaines/ma-tech", label: "M&A tech et due diligence" },
 ];
 
 /* PORTAIL — points et reproduction d'interface. */

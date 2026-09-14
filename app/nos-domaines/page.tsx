@@ -42,9 +42,9 @@ export const metadata: Metadata = {
  * du menu si une clé venait à manquer.
  */
 const PHRASES_PAGE: Record<string, string> = {
-  "/nos-domaines/rgpd-donnees":
+  "/nos-domaines/rgpd-donnees-personnelles":
     "Cartographie des traitements, contrats de sous-traitance, notification d'une violation, contrôle et sanction de la CNIL.",
-  "/nos-domaines/ia-act":
+  "/nos-domaines/intelligence-artificielle":
     "Qualification des systèmes au regard de l'AI Act, répartition fournisseur-déployeur, gouvernance interne et contrats avec les éditeurs.",
   "/nos-domaines/cybersecurite":
     "Assujettissement à NIS 2, obligations de la chaîne de sous-traitance, notification d'incident et responsabilité des dirigeants.",
@@ -52,13 +52,13 @@ const PHRASES_PAGE: Record<string, string> = {
     "Rédaction et négociation des contrats SaaS, maintenance et infogérance ; recette, réversibilité et contentieux de l'échec de projet.",
   "/nos-domaines/crypto-actifs-blockchain":
     "Agrément CASP sous MiCA, obligations des prestataires, litiges avec les plateformes et blocage de comptes.",
-  "/competences/ma-tech":
+  "/nos-domaines/ma-tech":
     "Due diligence des actifs numériques : propriété du code, licences open source, passif RGPD et exposition cyber.",
-  "/nos-domaines/avocat-escroquerie-fraude":
+  "/nos-domaines/escroquerie-fraude-bancaire":
     "Contestation des opérations non autorisées, charge de la preuve du consentement, recours contre l'établissement teneur du compte.",
   "/nos-domaines/cybercriminalite":
     "Gestion des premières heures, préservation de la preuve, plainte, mise en cause du prestataire et contestation du refus de garantie.",
-  "/nos-domaines/diffamation-retrait-de-contenus":
+  "/nos-domaines/diffamation-retrait-contenus":
     "Qualification et délai de prescription, notification aux plateformes, identification de l'auteur et déréférencement.",
 };
 

@@ -2040,7 +2040,7 @@ export default function RgpdClient() {
           régularisation avant closing, garanties d&apos;actif et de passif RGPD
           rédigées et négociées.{" "}
           <a
-            href="/competences/ma-tech"
+            href="/nos-domaines/ma-tech"
             style={{ color: BRAND, textDecoration: "underline" }}
           >
             Notre accompagnement M&amp;A tech →
@@ -2115,7 +2115,7 @@ export default function RgpdClient() {
               expand:
                 "Double exposition : RGPD et AI Act (système IA à risque élevé). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
               link: {
-                href: "/nos-domaines/ia-act",
+                href: "/nos-domaines/intelligence-artificielle",
                 label: "Conformité AI Act →",
               },
             },

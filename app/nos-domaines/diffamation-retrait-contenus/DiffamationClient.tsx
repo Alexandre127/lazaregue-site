@@ -418,7 +418,7 @@ const AVOCATS = [
 // dupliqué ici : on y renvoie. « Défendre une plateforme » reste inactif tant
 // que la page (DSA, responsabilité des intermédiaires) n'existe pas.
 const LIENS = [
-  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees" },
+  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees-personnelles" },
   { ancre: "Réponse à incident et preuve technique", href: "/nos-domaines/cybersecurite" },
   { ancre: "Contrats IT et responsabilité du prestataire", href: "/nos-domaines/contrats-informatiques" },
   { ancre: "Défendre une plateforme", href: null }, // page à venir

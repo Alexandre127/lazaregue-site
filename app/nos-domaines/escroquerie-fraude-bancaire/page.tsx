@@ -10,7 +10,7 @@ import Triangle from "./_components/Triangle";
 const TITLE = "Avocat escroquerie à Paris | Fraudes et recours bancaires";
 const DESCRIPTION =
   "Victime d'une escroquerie ou d'une fraude bancaire ? Lazarègue Avocats engage les recours contre les banques et les intermédiaires financiers.";
-const PATH = "/nos-domaines/avocat-escroquerie-fraude";
+const PATH = "/nos-domaines/escroquerie-fraude-bancaire";
 const ABS = "https://lazaregue-avocats.fr" + PATH;
 
 export const metadata: Metadata = {

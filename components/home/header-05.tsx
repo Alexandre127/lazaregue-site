@@ -11,7 +11,7 @@ const MOBILE_QUERY = "(max-width: 900px)";
 
 /**
  * Barre d'appel collante — mobile uniquement (<900px). Sur le modèle de la
- * barre fixe de /competences/ma-tech, mais elle n'apparaît qu'au défilement
+ * barre fixe de /nos-domaines/ma-tech, mais elle n'apparaît qu'au défilement
  * (pas au chargement) et s'efface dès que le pied de page entre dans le
  * viewport. Aucune écoute sur desktop.
  */
@@ -132,7 +132,10 @@ export function Header5() {
           </HeroReveal>
 
           <HeroReveal delay={60}>
-            <h2 className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px] md:leading-snug">
+            {/* Sous-titre du hero : c'est un paragraphe, pas un titre. Un seul
+                H1 par page, et ce texte introduit le H1 sans ouvrir une section
+                (hiérarchie de titres — refonte home, lot 2). */}
+            <p className="laz-hero-h2 max-w-[480px] text-[18px] leading-relaxed md:text-[20px] md:leading-snug">
               {/* Coupure typographique après « défense » : équilibre les deux
                   lignes plutôt que d'isoler « face aux risques numériques ». */}
               <span className="font-medium text-white/85">
@@ -143,7 +146,7 @@ export function Header5() {
               <span className="text-white/55">
                 face aux risques numériques.
               </span>
-            </h2>
+            </p>
           </HeroReveal>
 
           <HeroReveal delay={120} className="laz-hero-cta-wrap">

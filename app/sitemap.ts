@@ -17,15 +17,15 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/", priority: 1, frequence: "monthly" },
 
   // Pages de compétence — le cœur de l'offre
-  { path: "/nos-domaines/rgpd-donnees", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/rgpd-donnees-personnelles", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite/nis2", priority: 0.9, frequence: "monthly" },
-  { path: "/nos-domaines/ia-act", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/intelligence-artificielle", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/contrats-informatiques", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybercriminalite", priority: 0.9, frequence: "monthly" },
-  { path: "/nos-domaines/avocat-escroquerie-fraude", priority: 0.9, frequence: "monthly" },
-  { path: "/nos-domaines/diffamation-retrait-de-contenus", priority: 0.9, frequence: "monthly" },
-  { path: "/competences/ma-tech", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/escroquerie-fraude-bancaire", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/diffamation-retrait-contenus", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/ma-tech", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/crypto-actifs-blockchain", priority: 0.9, frequence: "monthly" },
 
   // Conversion et confiance

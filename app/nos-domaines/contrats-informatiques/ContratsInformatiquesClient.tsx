@@ -371,9 +371,9 @@ const KHALID_EXAMINE = [
 // RGPD et AI Act n'est pas dupliqué ici : on y renvoie.
 const LIENS = [
   { ancre: "Obligations de sécurité et réponse à incident", href: "/nos-domaines/cybersecurite" },
-  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees" },
-  { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/ia-act" },
-  { ancre: "Due diligence des actifs technologiques (M&A)", href: "/competences/ma-tech" },
+  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees-personnelles" },
+  { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/intelligence-artificielle" },
+  { ancre: "Due diligence des actifs technologiques (M&A)", href: "/nos-domaines/ma-tech" },
   { ancre: "Responsabilité du prestataire informatique", href: null }, // page à venir
 ];
 

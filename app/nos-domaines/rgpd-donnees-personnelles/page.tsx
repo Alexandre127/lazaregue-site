@@ -15,11 +15,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/nos-domaines/rgpd-donnees" },
+  alternates: { canonical: "/nos-domaines/rgpd-donnees-personnelles" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "/nos-domaines/rgpd-donnees",
+    url: "/nos-domaines/rgpd-donnees-personnelles",
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",
     type: "website",
@@ -35,7 +35,7 @@ const JSON_LD = {
       name: "Avocat RGPD & données personnelles — Lazarègue Avocats",
       description:
         "Audit de conformité RGPD, registre des traitements, contrats de sous-traitance article 28, due diligence M&A et encadrement des usages d'IA générative.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/rgpd-donnees",
+      url: "https://lazaregue-avocats.fr/nos-domaines/rgpd-donnees-personnelles",
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Audit RGPD, due diligence RGPD M&A, contrat sous-traitant article 28, AIPD, gouvernance des données, RGPD et IA générative",

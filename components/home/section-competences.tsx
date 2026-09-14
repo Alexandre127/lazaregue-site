@@ -12,7 +12,7 @@ import Link from "next/link";
  * Chaque href pointe vers une page de domaine vérifiée existante. Quatre
  * chemins diffèrent de ceux du brief (routes réelles du projet) : RGPD →
  * /rgpd-donnees, escroquerie → /avocat-escroquerie-fraude, M&A Tech →
- * /competences/ma-tech, crypto → /crypto-actifs-blockchain.
+ * /nos-domaines/ma-tech, crypto → /crypto-actifs-blockchain.
  */
 
 const BLUE = "#4D6FFF";
@@ -41,13 +41,13 @@ const DOMAINES: Domaine[] = [
     n: "03",
     title: "RGPD & données personnelles",
     desc: "Mise en conformité, registre, analyses d'impact et défense en cas de contrôle CNIL.",
-    href: "/nos-domaines/rgpd-donnees",
+    href: "/nos-domaines/rgpd-donnees-personnelles",
   },
   {
     n: "04",
     title: "Intelligence artificielle & AI Act",
     desc: "Qualification des systèmes d'IA, documentation et gouvernance au sens du règlement européen.",
-    href: "/nos-domaines/ia-act",
+    href: "/nos-domaines/intelligence-artificielle",
   },
   {
     n: "05",
@@ -59,19 +59,19 @@ const DOMAINES: Domaine[] = [
     n: "06",
     title: "Escroquerie & fraude bancaire",
     desc: "Recours des victimes, remboursement et mise en cause de la responsabilité des banques.",
-    href: "/nos-domaines/avocat-escroquerie-fraude",
+    href: "/nos-domaines/escroquerie-fraude-bancaire",
   },
   {
     n: "07",
     title: "Diffamation & retrait de contenus",
     desc: "Retrait de contenus, déréférencement et défense de la réputation en ligne.",
-    href: "/nos-domaines/diffamation-retrait-de-contenus",
+    href: "/nos-domaines/diffamation-retrait-contenus",
   },
   {
     n: "08",
     title: "M&A Tech & due diligence",
     desc: "Due diligence juridique des actifs technologiques dans les opérations de fusion-acquisition.",
-    href: "/competences/ma-tech",
+    href: "/nos-domaines/ma-tech",
   },
   {
     n: "09",
@@ -96,12 +96,16 @@ export default function SectionCompetences() {
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         <div className="mb-6 text-center md:mb-8">
-          <p
+          {/* Titre de section (H2) : chaque section principale porte un H2,
+              les cartes portent un H3. Le style « eyebrow » est conservé ; seul
+              le niveau sémantique change (hiérarchie de titres — refonte home,
+              lot 2). Le libellé définitif sera arbitré au lot 4. */}
+          <h2
             className="home-kicker text-xs uppercase tracking-[0.2em] text-[#C5CBDE]"
             style={{ fontFamily: "'DM Mono', monospace" }}
           >
             Nos compétences
-          </p>
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

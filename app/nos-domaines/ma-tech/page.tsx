@@ -41,11 +41,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/competences/ma-tech" },
+  alternates: { canonical: "/nos-domaines/ma-tech" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "/competences/ma-tech",
+    url: "/nos-domaines/ma-tech",
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",
     type: "website",
@@ -67,7 +67,7 @@ const JSON_LD = {
       name: "Avocat M&A Tech — Lazarègue Avocats",
       description:
         "Due diligence juridique des actifs numériques et technologiques lors d'une acquisition, d'une cession ou d'une prise de participation.",
-      url: "https://lazaregue-avocats.fr/competences/ma-tech",
+      url: "https://lazaregue-avocats.fr/nos-domaines/ma-tech",
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Due diligence technologique, audit juridique logiciel, acquisition entreprise tech, garanties SPA",

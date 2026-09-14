@@ -14,11 +14,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/nos-domaines/ia-act" },
+  alternates: { canonical: "/nos-domaines/intelligence-artificielle" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "/nos-domaines/ia-act",
+    url: "/nos-domaines/intelligence-artificielle",
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",
     type: "website",
@@ -34,7 +34,7 @@ const JSON_LD = {
       name: "Avocat AI Act & intelligence artificielle — Lazarègue Avocats",
       description:
         "Qualification des systèmes d'IA au sens du règlement (UE) 2024/1689, documentation technique, supervision humaine, encadrement contractuel des fournisseurs et articulation avec le RGPD et le droit du travail.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
+      url: "https://lazaregue-avocats.fr/nos-domaines/intelligence-artificielle",
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Conformité AI Act, qualification haut risque, documentation technique IA, gouvernance IA, contrats fournisseurs IA, IA et droit du travail",
@@ -52,8 +52,8 @@ const JSON_LD = {
       // WebPage : porte le dateModified (cohérent avec la mention visible du
       // calendrier, 11 sept. 2026). Pas d'Article, pas de datePublished.
       "@type": "WebPage",
-      "@id": "https://lazaregue-avocats.fr/nos-domaines/ia-act",
-      url: "https://lazaregue-avocats.fr/nos-domaines/ia-act",
+      "@id": "https://lazaregue-avocats.fr/nos-domaines/intelligence-artificielle",
+      url: "https://lazaregue-avocats.fr/nos-domaines/intelligence-artificielle",
       name: TITLE,
       inLanguage: "fr-FR",
       dateModified: "2026-09-11",

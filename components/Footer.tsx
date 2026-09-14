@@ -3,7 +3,7 @@
 import { HeroCTACard } from "@/components/home/hero-cta-card";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { LinkedinLogo, XLogo } from "relume-icons";
+import { LinkedinLogo } from "relume-icons";
 
 function IconPhone() {
   return (
@@ -246,10 +246,10 @@ export function Footer() {
               <Link href="/nos-domaines/cybersecurite" className="hover:text-white">
                 Cybersécurité
               </Link>
-              <Link href="/nos-domaines/rgpd-donnees" className="hover:text-white">
+              <Link href="/nos-domaines/rgpd-donnees-personnelles" className="hover:text-white">
                 RGPD & protection des données
               </Link>
-              <Link href="/nos-domaines/ia-act" className="hover:text-white">
+              <Link href="/nos-domaines/intelligence-artificielle" className="hover:text-white">
                 Intelligence artificielle & AI Act
               </Link>
               <Link href="/nos-domaines/contrats-informatiques" className="hover:text-white">
@@ -258,13 +258,13 @@ export function Footer() {
               <Link href="/nos-domaines/cybercriminalite" className="hover:text-white">
                 Cybercriminalité & atteintes aux systèmes
               </Link>
-              <Link href="/nos-domaines/avocat-escroquerie-fraude" className="hover:text-white">
+              <Link href="/nos-domaines/escroquerie-fraude-bancaire" className="hover:text-white">
                 Escroquerie et fraude
               </Link>
-              <Link href="/nos-domaines/diffamation-retrait-de-contenus" className="hover:text-white">
+              <Link href="/nos-domaines/diffamation-retrait-contenus" className="hover:text-white">
                 Diffamation et retrait de contenus
               </Link>
-              <Link href="/competences/ma-tech" className="hover:text-white">
+              <Link href="/nos-domaines/ma-tech" className="hover:text-white">
                 M&A Tech & due diligence
               </Link>
               <Link href="/nos-domaines/crypto-actifs-blockchain" className="hover:text-white">
@@ -360,19 +360,16 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex items-center gap-3">
+              {/* Un seul réseau : LinkedIn. Le lien X a été retiré (refonte
+                  home, lot 2). URL du profil validée par le cabinet. */}
               <a
-                href="#"
-                aria-label="LinkedIn"
+                href="https://www.linkedin.com/in/alexandre-lazarègue/"
+                aria-label="LinkedIn — Alexandre Lazarègue"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white/50 transition-colors hover:text-white"
               >
                 <LinkedinLogo className="size-5" />
-              </a>
-              <a
-                href="#"
-                aria-label="X"
-                className="text-white/50 transition-colors hover:text-white"
-              >
-                <XLogo className="size-5 p-0.5" />
               </a>
             </div>
           </div>

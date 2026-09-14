@@ -456,7 +456,7 @@ export default function Page() {
                 {fr(
                   "Les fraudes à l'investissement et les détournements de fonds relèvent d'une autre pratique du cabinet, dirigée principalement contre les établissements bancaires et les prestataires de services de paiement lorsque les fonds ont quitté un compte ouvert en France. Elle est exposée sur la page ",
                 )}
-                <Link href="/nos-domaines/avocat-escroquerie-fraude">
+                <Link href="/nos-domaines/escroquerie-fraude-bancaire">
                   escroquerie et fraude bancaire
                 </Link>
                 .

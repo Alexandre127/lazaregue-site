@@ -285,7 +285,7 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
     a: (
       <>
         Le{" "}
-        <Link href="/nos-domaines/rgpd-donnees" style={{ color: BLUE, textDecoration: "underline" }}>
+        <Link href="/nos-domaines/rgpd-donnees-personnelles" style={{ color: BLUE, textDecoration: "underline" }}>
           RGPD
         </Link>{" "}
         protège les données personnelles. NIS 2 protège les systèmes d&apos;information et la

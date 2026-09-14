@@ -1462,7 +1462,7 @@ export default function IaActClient() {
           <p style={{ fontSize: 14, color: LIGHT.muted, margin: 0, lineHeight: 1.7 }}>
             L&apos;IA croise vos autres obligations : les données personnelles
             relèvent du{" "}
-            <Link href="/nos-domaines/rgpd-donnees" style={{ color: BLUE, textDecoration: "underline" }}>
+            <Link href="/nos-domaines/rgpd-donnees-personnelles" style={{ color: BLUE, textDecoration: "underline" }}>
               RGPD
             </Link>
             , les prestataires et API de vos{" "}

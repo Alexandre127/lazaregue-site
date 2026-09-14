@@ -16,11 +16,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/nos-domaines/diffamation-retrait-de-contenus" },
+  alternates: { canonical: "/nos-domaines/diffamation-retrait-contenus" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "/nos-domaines/diffamation-retrait-de-contenus",
+    url: "/nos-domaines/diffamation-retrait-contenus",
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",
     type: "website",
@@ -36,7 +36,7 @@ const JSON_LD = {
       name: "Avocat diffamation et retrait de contenus en ligne — Lazarègue Avocats",
       description:
         "Notification opposable au visa de la LCEN, référé de retrait, déréférencement Google, suppression de faux avis, identification d'auteurs anonymes et défense de la réputation en ligne des entreprises et des personnes.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/diffamation-retrait-de-contenus",
+      url: "https://lazaregue-avocats.fr/nos-domaines/diffamation-retrait-contenus",
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
         "Retrait de contenu illicite, déréférencement, droit à l'oubli, suppression de faux avis, identification d'auteur anonyme, diffamation et e-réputation",

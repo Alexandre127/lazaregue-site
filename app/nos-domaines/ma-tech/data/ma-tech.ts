@@ -150,7 +150,7 @@ export const DOMAINES_AUDIT: Domaine[] = [
   {
     h3: "Données",
     p: "Origine et licéité, finalités initiales, conditions de transmission, de migration, de combinaison et de réutilisation après l'opération, sous-traitance, transferts hors Union européenne, incidents et procédures CNIL, coût d'une mise en conformité.",
-    lien: { href: "/nos-domaines/rgpd-donnees", label: "Notre pratique RGPD & données personnelles" },
+    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Notre pratique RGPD & données personnelles" },
   },
   {
     h3: "Cybersécurité",
@@ -160,7 +160,7 @@ export const DOMAINES_AUDIT: Domaine[] = [
   {
     h3: "Systèmes d'intelligence artificielle",
     p: "Qualification des systèmes, répartition des rôles entre fournisseur, déployeur et intégrateur, provenance des données d'entraînement, droits sur les modèles et recours à des modèles tiers, documentation, restrictions affectant l'exploitation commerciale.",
-    lien: { href: "/nos-domaines/ia-act", label: "Notre pratique Intelligence artificielle & AI Act" },
+    lien: { href: "/nos-domaines/intelligence-artificielle", label: "Notre pratique Intelligence artificielle & AI Act" },
   },
 ];
 
