@@ -3,7 +3,6 @@ import { Header5 } from "@/components/home/header-05";
 import { SectionCabinet } from "@/components/home/section-cabinet";
 import SectionCompetences from "@/components/home/section-competences";
 import { SectionDifferenciateurs } from "@/components/home/section-differenciateurs";
-import { SectionEnjeux } from "@/components/home/section-enjeux";
 import { SectionEquipe } from "@/components/home/section-equipe";
 import { SectionContributions } from "@/components/home/section-contributions";
 import { SectionCas } from "@/components/home/section-cas";
@@ -100,7 +99,6 @@ export default function Home() {
         <SectionCompetences />
       </div>
       <SectionDifferenciateurs />
-      <SectionEnjeux />
       <SectionCas />
       <SectionEquipe />
       <SectionContributions />
