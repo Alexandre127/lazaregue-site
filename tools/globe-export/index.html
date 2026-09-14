@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Globe export (outil interne)</title>
+<style>
+  html,body{margin:0;background:#06080f;}
+  #stage{position:fixed;inset:0;display:grid;place-items:center;}
+  /* 1040 = rendu 2x d'un affichage 520. Le pixelRatio du renderer peut doubler
+     encore le buffer interne ; on downscale ensuite avec sharp. */
+  #box{width:1040px;height:1040px;}
+</style>
+</head>
+<body>
+<div id="stage"><div id="box"></div></div>
+<script src="./bundle.js"></script>
+</body>
+</html>

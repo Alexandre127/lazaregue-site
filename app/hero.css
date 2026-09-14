@@ -233,6 +233,61 @@
   color: #fff;
 }
 
+/* Intitulé stable réservé aux technologies d'assistance (mot tournant du H1). */
+.laz-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mot tournant — troisième ligne du H1.
+   Mécanique « anti-décalage » : un gabarit invisible portant l'état le plus long
+   réserve la largeur ET la hauteur (retour à la ligne aux petites largeurs) ;
+   le terme visible est superposé en absolu, si bien qu'aucun changement d'état
+   ne déplace le sous-titre ni le bouton. */
+.laz-hero-rotator-vis {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.laz-hero-rotator-sizer {
+  visibility: hidden;
+  display: block;
+}
+
+.laz-hero-rotator-word {
+  position: absolute;
+  inset: 0;
+  display: block;
+  animation: lazRotWordIn 0.5s ease;
+}
+
+@keyframes lazRotWordIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.12em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laz-hero-rotator-word {
+    animation: none;
+  }
+}
+
 /* H2 — positionnement (styles de taille via Tailwind dans le composant) */
 .laz-hero-h2 {
   font-family: var(--ff-body);

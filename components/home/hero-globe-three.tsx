@@ -30,13 +30,23 @@ export function HeroGlobeThree() {
       return;
     }
 
-    const cleanup = initPremiumGlobe(container, {
-      card,
-      cardCity,
-      cardTitle,
-      cardInsight,
-      cardCoord,
-    });
+    // prefers-reduced-motion : globe figé (aucune rotation, aucun écouteur),
+    // même cadrage et mêmes dimensions. Le rendu par défaut est inchangé.
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const cleanup = initPremiumGlobe(
+      container,
+      {
+        card,
+        cardCity,
+        cardTitle,
+        cardInsight,
+        cardCoord,
+      },
+      { staticFrame: reduceMotion },
+    );
 
     return cleanup;
   }, []);

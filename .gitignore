@@ -61,3 +61,6 @@ public/videos/*.mp4
 
 # Outillage local Claude Code (config poste, hors dépôt).
 .claude/
+
+# Outil d'export globe : artefact régénérable (voir tools/globe-export/README.md)
+tools/globe-export/bundle.js

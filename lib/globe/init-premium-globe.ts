@@ -10,6 +10,42 @@ export type GlobeCardElements = {
   cardCoord: HTMLElement;
 };
 
+/**
+ * Base URL par défaut des textures planétaires (dépôt three.js). NB : dépendance
+ * externe à régler au lot technique (servir depuis /public). Défaut inchangé
+ * pour ne rien modifier au rendu desktop de production dans ce lot.
+ */
+const DEFAULT_TEXTURE_BASE =
+  "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/";
+
+export type InitPremiumGlobeOptions = {
+  /**
+   * Oriente le globe pour amener ce point (latitude, longitude) face à la
+   * caméra. Défaut : non défini → rotation initiale 0 (comportement historique).
+   */
+  initialLatLon?: [number, number];
+  /**
+   * Rend une image figée : aucune rotation (caméra ou maillage), aucun écouteur
+   * de pointeur/clavier, pas de boucle d'animation permanente (quelques rendus
+   * le temps que les textures arrivent, puis gel complet). Utilisé pour
+   * `prefers-reduced-motion` et pour l'export d'image. Défaut : false → boucle
+   * animée et interactive identique à l'existant.
+   */
+  staticFrame?: boolean;
+  /** Base URL des textures. Défaut : dépôt three.js (identique à l'existant). */
+  textureBaseUrl?: string;
+  /**
+   * Rappel d'outillage : fournit le renderer et la scène une fois montés, pour
+   * capturer l'image d'export. Jamais utilisé en production.
+   */
+  onReady?: (api: {
+    renderer: THREE.WebGLRenderer;
+    scene: THREE.Scene;
+    camera: THREE.PerspectiveCamera;
+    earth: THREE.Mesh;
+  }) => void;
+};
+
 function latLonToVec3(lat: number, lon: number, r: number) {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lon + 180) * (Math.PI / 180);
@@ -36,7 +72,14 @@ function createFallbackTexture(color: string) {
 export function initPremiumGlobe(
   container: HTMLElement,
   ui: GlobeCardElements,
+  options: InitPremiumGlobeOptions = {},
 ): () => void {
+  const { initialLatLon, staticFrame = false, textureBaseUrl, onReady } = options;
+  const TEXTURE_BASE = textureBaseUrl ?? DEFAULT_TEXTURE_BASE;
+  // Rendu d'une image figée : la vraie implémentation est assignée plus bas (une
+  // fois la scène montée). Initialisé à un noop pour rester appelable par les
+  // callbacks asynchrones de chargement de textures survenant en mode figé.
+  let renderStaticFrame: () => void = () => {};
   const cities = GLOBE_CITIES;
   const scene = new THREE.Scene();
 
@@ -69,7 +112,7 @@ export function initPremiumGlobe(
   controls.enableZoom = false;
   controls.minDistance = 3.2;
   controls.maxDistance = 3.2;
-  controls.autoRotate = true;
+  controls.autoRotate = !staticFrame;
   controls.autoRotateSpeed = 0.215625;
   controls.enablePan = false;
   controls.rotateSpeed = 0.4;
@@ -98,22 +141,33 @@ export function initPremiumGlobe(
   scene.add(bottomFill);
 
   const textureLoader = new THREE.TextureLoader();
+  // Rendu figé (reduced-motion / export) : on redessine à l'arrivée de chaque
+  // texture, puisqu'aucune boucle permanente ne tourne. `renderStaticFrame` est
+  // défini plus bas ; la référence tardive est sûre (callbacks asynchrones).
+  const onTextureLoad = staticFrame
+    ? () => {
+        renderStaticFrame?.();
+      }
+    : undefined;
   const dayTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg",
-    undefined,
+    TEXTURE_BASE + "earth_atmos_2048.jpg",
+    onTextureLoad,
     undefined,
     () => {
       earthMaterial.map = createFallbackTexture("#0a1a3a");
     },
   );
   const nightTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_lights_2048.png",
+    TEXTURE_BASE + "earth_lights_2048.png",
+    onTextureLoad,
   );
   const normalTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg",
+    TEXTURE_BASE + "earth_normal_2048.jpg",
+    onTextureLoad,
   );
   const specularTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg",
+    TEXTURE_BASE + "earth_specular_2048.jpg",
+    onTextureLoad,
   );
 
   const earthGeometry = new THREE.SphereGeometry(1, 128, 128);
@@ -194,7 +248,8 @@ export function initPremiumGlobe(
   scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.06, 48, 48), glowMaterial));
 
   const cloudsTexture = textureLoader.load(
-    "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png",
+    TEXTURE_BASE + "earth_clouds_1024.png",
+    onTextureLoad,
   );
   const clouds = new THREE.Mesh(
     new THREE.SphereGeometry(1.008, 64, 64),
@@ -395,8 +450,12 @@ export function initPremiumGlobe(
     if (e.code === "KeyR") controls.reset();
   };
 
-  renderer.domElement.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("keydown", onKeyDown);
+  // Aucun écouteur en mode figé (reduced-motion / export) : le globe est
+  // décoratif et ne doit intercepter ni pointeur ni clavier.
+  if (!staticFrame) {
+    renderer.domElement.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("keydown", onKeyDown);
+  }
 
   function updateHover() {
     let closest = -1;
@@ -461,8 +520,31 @@ export function initPremiumGlobe(
     });
   }
 
+  // Orientation initiale : amène le point (lat, lon) au centre du regard, en
+  // gardant le pôle Nord vers le haut (aucun roulis). Deux rotations composées :
+  //  - lacet (Y) pour placer la longitude cible sur le méridien face caméra ;
+  //  - tangage (X monde) pour faire descendre la latitude cible jusqu'à la
+  //    ligne de visée (la caméra vise un point légèrement au nord de l'équateur,
+  //    d'où le retrait de son élévation).
+  // Le maillage, les marqueurs, la grille et les nuages reçoivent le même
+  // quaternion. Sans option : orientation par défaut (historique).
+  if (initialLatLon) {
+    const [lat, lon] = initialLatLon;
+    const p0 = latLonToVec3(lat, lon, GLOBE_RADIUS);
+    const yawY = Math.atan2(-p0.x, p0.z);
+    const camElevRad = Math.asin(camera.position.clone().normalize().y);
+    const pitch = THREE.MathUtils.degToRad(lat) - camElevRad;
+    earth.rotation.set(0, yawY, 0);
+    earth.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), pitch);
+    cityGroup.quaternion.copy(earth.quaternion);
+    gridOverlay.quaternion.copy(earth.quaternion);
+    clouds.quaternion.copy(earth.quaternion);
+  }
+
   let time = 0;
   let frameId = 0;
+  let settleInterval: ReturnType<typeof setInterval> | null = null;
+  let settleTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const animate = () => {
     frameId = requestAnimationFrame(animate);
@@ -492,7 +574,30 @@ export function initPremiumGlobe(
     renderer.render(scene, camera);
   };
 
-  animate();
+  // Rendu d'une image figée : pas de rotation, pas de boucle permanente. On
+  // redessine tant que les textures arrivent (jusqu'à ~3 s) puis on gèle.
+  renderStaticFrame = () => {
+    atmosphereMaterial.uniforms.lightDirection.value
+      .copy(sunLight.position)
+      .normalize();
+    controls.update();
+    renderer.render(scene, camera);
+  };
+
+  if (staticFrame) {
+    renderStaticFrame();
+    settleInterval = setInterval(() => renderStaticFrame?.(), 120);
+    settleTimeout = setTimeout(() => {
+      if (settleInterval) {
+        clearInterval(settleInterval);
+        settleInterval = null;
+      }
+    }, 3000);
+  } else {
+    animate();
+  }
+
+  onReady?.({ renderer, scene, camera, earth });
 
   const resizeObserver = new ResizeObserver(() => {
     const size = getSize();
@@ -501,12 +606,16 @@ export function initPremiumGlobe(
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
+    // En mode figé, aucune boucle ne tourne : il faut redessiner à la main.
+    if (staticFrame) renderStaticFrame?.();
   });
   resizeObserver.observe(container);
 
   return () => {
     clearCardHideTimeout();
     cancelAnimationFrame(frameId);
+    if (settleInterval) clearInterval(settleInterval);
+    if (settleTimeout) clearTimeout(settleTimeout);
     resizeObserver.disconnect();
     renderer.domElement.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("keydown", onKeyDown);
