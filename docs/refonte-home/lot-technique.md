@@ -72,3 +72,12 @@ affiche aujourd'hui une vignette dégradée**. Préexistant, hors lot 3.
 
 À faire : ajouter un `apple-icon.png` (180×180) dans `app/` (convention Next) ou
 un `/apple-touch-icon.png` dans `public/`.
+
+## 6. Canevas transparent du globe interactif dans le vide (desktop)
+
+Le canevas du globe (520 px) est plus large que la sphère visible (~446 px) : les
+~74 px de marge transparente restent une **surface interactive** sur desktop —
+un glissement de souris dans le vide autour du globe pilote la rotation. Sans
+gravité, mais à consigner. Piste : restreindre les écouteurs de pointeur à la
+zone de la sphère, ou réduire le canevas à la sphère (voir aussi §3, la marge
+récupérable pour la colonne de copie).
