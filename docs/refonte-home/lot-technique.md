@@ -49,3 +49,26 @@ conservé pour réemploi éventuel mais n'est plus référencé par le site depu
 retrait de l'image mobile (lot 3). Voir son README. `bundle.js` est un artefact
 régénérable (gitignoré). Les textures locales (1,6 Mo) y restent pour la
 reproductibilité de l'outil.
+
+## 4. Contraste de la ligne bleue du H1 — marge nulle
+
+La ligne bleue tournante du H1 (`var(--blue)` = `#1A47FF`) sur le fond encre
+mesure **3,25 : 1**. Conforme au seuil WCAG AA « grand texte » (≥ 3 : 1, le H1
+étant large et gras), mais **la marge est nulle**. Préexistant et non modifié au
+lot 3.
+
+**Conséquence de règle :** toute réduction ultérieure du corps du H1 (option un
+temps envisagée pour la composition du premier écran, puis écartée) devra être
+**revérifiée à ce titre** — sous un certain corps, un texte « grand » redevient
+« normal » (seuil AA 4,5 : 1) et la ligne bleue échouerait. C'est une raison de
+plus d'écarter la réduction de corps.
+
+## 5. Icônes Apple absentes — deux 404
+
+`/apple-touch-icon.png` et `/apple-touch-icon-precomposed.png` renvoient 404
+(sondes automatiques du navigateur ; seul `app/favicon.ico` existe). Sans effet
+fonctionnel, mais un site de cabinet **ajouté à l'écran d'accueil d'un iPhone
+affiche aujourd'hui une vignette dégradée**. Préexistant, hors lot 3.
+
+À faire : ajouter un `apple-icon.png` (180×180) dans `app/` (convention Next) ou
+un `/apple-touch-icon.png` dans `public/`.
