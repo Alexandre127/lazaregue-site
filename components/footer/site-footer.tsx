@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/header/logo";
+import { FAMILLES } from "@/components/header/nav-data";
 import styles from "./footer.module.css";
 
 /**
@@ -13,22 +14,24 @@ import styles from "./footer.module.css";
  * Slugs vérifiés dans l'arborescence /nos-domaines (trailingSlash: false).
  */
 
+// Une entrée sans `href` est « à venir » (rendue en texte, jamais en lien) ;
+// lui ajouter un href — une seule donnée — la fait basculer en lien, sans
+// retoucher le composant ni le rendu.
 type FooterLink = { label: string; href?: string };
 
-// Colonne 2 — dix domaines, libellés exacts de la charte, slugs réels du projet.
-// « Contentieux informatique et commercial » n'a pas de page dédiée : rendu en
-// texte non cliquable (comme sur la home), jamais en faux lien.
+// Colonne 2 — SOURCE UNIQUE : le méga-menu (nav-data.ts). Libellés et slugs
+// repris VERBATIM, dans l'ordre des trois familles (aucune reformulation).
+const MENU_DOMAINES: FooterLink[] = FAMILLES.flatMap((f) =>
+  f.domaines.map((d) => ({ label: d.titre, href: d.href })),
+);
+
+// « Contentieux informatique et commercial » n'a pas encore de page : entrée
+// « à venir » à sa place dans la famille Contentieux (en tête, comme sur la
+// home). Un href la fera passer en lien.
 const DOMAINES: FooterLink[] = [
-  { label: "RGPD et protection des données", href: "/nos-domaines/rgpd-donnees-personnelles" },
-  { label: "Intelligence artificielle et AI Act", href: "/nos-domaines/intelligence-artificielle" },
-  { label: "Contrats informatiques", href: "/nos-domaines/contrats-informatiques" },
-  { label: "Contentieux informatique et commercial" }, // page à créer
-  { label: "Cybersécurité", href: "/nos-domaines/cybersecurite" },
-  { label: "Cybercriminalité et atteintes aux systèmes", href: "/nos-domaines/cybercriminalite" },
-  { label: "Fraude bancaire et escroqueries en ligne", href: "/nos-domaines/escroquerie-fraude-bancaire" },
-  { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
-  { label: "M&A Tech et due diligence", href: "/nos-domaines/ma-tech" },
-  { label: "Crypto-actifs et blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
+  ...MENU_DOMAINES.slice(0, 6), // Conformité + Contrats et opérations
+  { label: "Contentieux informatique et commercial" },
+  ...MENU_DOMAINES.slice(6), // Contentieux et atteintes numériques
 ];
 
 const CABINET: FooterLink[] = [
@@ -37,9 +40,12 @@ const CABINET: FooterLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-// Colonne 4 — seules les pages existantes sont liées. « Honoraires » et
-// « Colophon » n'ont pas de route : omises (aucun faux lien) et signalées.
+// Colonne 4 — « Honoraires » et « Colophon » n'ont pas encore de page : entrées
+// « à venir » (sans href), affichées à leur place. Un href les fera passer en
+// lien.
 const INFORMATIONS: FooterLink[] = [
+  { label: "Honoraires" },
+  { label: "Colophon" },
   { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
   { label: "Mentions légales", href: "/mentions-legales" },
 ];
@@ -53,8 +59,12 @@ function LinkList({ items }: { items: FooterLink[] }) {
             <Link href={item.href}>{item.label}</Link>
           </li>
         ) : (
+          // « À venir » : jamais un <a> (aucun href, aucun 404), non focusable.
           <li key={item.label}>
-            <span className={styles.pending}>{item.label}</span>
+            <span className={styles.pending}>
+              {item.label}
+              <span className={styles.soon}>bientôt</span>
+            </span>
           </li>
         ),
       )}

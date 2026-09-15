@@ -253,14 +253,30 @@
 .flist a:focus-visible {
   border-left-color: var(--blue);
 }
-/* Domaine sans page dédiée : texte non cliquable (pas de faux lien). */
+/* Entrée « à venir » : texte non cliquable (pas de faux lien, pas de 404).
+   Light Blue #9FB2FF (au lieu du blanc des liens), curseur normal, non
+   focusable (c'est un <span>). Enveloppe à la ligne pour ne pas déborder. */
 .flist .pending {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 0 10px;
   min-height: 44px;
   color: #9fb2ff;
   font-size: 16px;
   line-height: 1.6;
+  cursor: default;
+}
+/* Mention « bientôt » — DM Mono 12px, petite étiquette de statut. */
+.flist .soon {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9fb2ff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  padding: 2px 6px;
 }
 
 /* --- Ligne inférieure --------------------------------------------------- */
