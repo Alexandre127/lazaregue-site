@@ -117,7 +117,7 @@ const FAMILLES: Famille[] = [
 ];
 
 const CARD_BASE =
-  "relative flex h-full flex-col overflow-hidden rounded-xl p-5 md:p-6";
+  "relative flex h-full flex-col overflow-hidden rounded-xl p-5";
 const CARD_STYLE = {
   background: "rgba(255,255,255,0.03)",
   border: "1px solid rgba(255,255,255,0.08)",
@@ -177,7 +177,7 @@ function DomaineCard({ d }: { d: Domaine }) {
 
 export default function SectionCompetences() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-16 md:py-24">
+    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-8 md:py-14">
       <div
         className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
         style={{
@@ -191,13 +191,13 @@ export default function SectionCompetences() {
       <div className="relative mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         {/* Titre de section (H2) — traitement de titre de section, non de
             sur-titre. Aucun chapô. */}
-        <h2 className="mb-10 max-w-[22ch] text-[clamp(28px,3.4vw,38px)] font-medium leading-[1.18] tracking-[-0.01em] text-white md:mb-14">
+        <h2 className="mb-8 max-w-[22ch] text-[clamp(28px,3.4vw,38px)] font-medium leading-[1.18] tracking-[-0.01em] text-white md:mb-10">
           Domaines d&apos;intervention
         </h2>
 
         {FAMILLES.map((fam) => (
-          <div key={fam.key} className="mb-12 last:mb-0">
-            <div className="mb-5 flex items-center gap-4">
+          <div key={fam.key} className="mb-10 last:mb-0">
+            <div className="mb-4 flex items-center gap-4">
               {/* Titre de famille (H3) — intitulé en toutes lettres (la couleur
                   ne porte jamais seule l'information). Neutre pour l'instant. */}
               <h3
