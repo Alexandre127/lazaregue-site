@@ -12,10 +12,18 @@
  * interventions existantes fusionnées (déduplication limitée aux répétitions
  * littérales de l'issue) ; Issue = inchangée. Titres inchangés.
  *
- * Couleurs : les trois couleurs actuelles conservées comme repères (filet +
- * bandeau), NON alignées sur les couleurs de famille (chantier distinct).
+ * Couleurs : les trois teintes rouge / vert / bleu ont été NEUTRALISÉES au
+ * profit d'un accent UNIQUE (le bleu d'action de la marque). Depuis le passage
+ * des familles de domaines en neutre, ces trois couleurs étaient les seules
+ * hors bleu de marque — sans système ni signification. Un accent unique rétablit
+ * la cohérence chromatique (variété dans le système). Le bandeau reste le seul
+ * porteur de couleur ; le corps de carte est sombre.
  * Composant serveur, aucune interactivité, aucun élément focalisable.
  */
+
+// Accent unique : le bleu d'action de la marque (repère + filet du bandeau).
+const CAS_ACCENT = "#1A47FF";
+const CAS_BAND = "#E8EEFF";
 
 type CasCard = {
   key: string;
@@ -31,8 +39,8 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "incident",
     title: "Une industrie paralysée après un piratage",
-    accent: "#E24B4A",
-    band: "#FDE8E8",
+    accent: CAS_ACCENT,
+    band: CAS_BAND,
     situation:
       "Une industrie a vu sa messagerie piratée : production arrêtée, données clients et fiches RH volées.",
     action:
@@ -43,8 +51,8 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "ia",
     title: "Mise en conformité d'une entreprise IA avant une levée de fonds",
-    accent: "#1D9E75",
-    band: "#E8F5F0",
+    accent: CAS_ACCENT,
+    band: CAS_BAND,
     situation:
       "Une entreprise développait des logiciels d'IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec la réglementation européenne sur l'IA.",
     action:
@@ -55,8 +63,8 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "fuite",
     title: "Fuite massive de données clients chez un site de vente en ligne",
-    accent: "#1A47FF",
-    band: "#E8EEFF",
+    accent: CAS_ACCENT,
+    band: CAS_BAND,
     situation:
       "Un site de vente en ligne a découvert le vol des données personnelles de plusieurs centaines de milliers de clients chez un sous-traitant, revendues sur des forums illicites ; la CNIL a ouvert une enquête.",
     action:
@@ -78,9 +86,13 @@ function CasCardView({ card }: { card: CasCard }) {
       className="cas-card flex h-full flex-col overflow-hidden rounded-[3px] border border-white/10"
       style={{ background: "#0E1220" }}
     >
-      {/* Bandeau de titre : la couleur (repère) est limitée à cette zone. */}
+      {/* Bandeau de titre : accent unique limité à cette zone. Hauteur minimale
+          uniforme en desktop (lg:min-h) calée sur le titre le plus long (2 lignes)
+          pour que les trois corps de texte démarrent sur la même ligne — les
+          bandeaux n'ont pas la même hauteur naturelle car les titres n'occupent
+          pas le même nombre de lignes. Hauteur naturelle en mobile (une colonne). */}
       <div
-        className="px-5 pb-3 pt-[14px]"
+        className="px-5 pb-3 pt-[14px] lg:min-h-[76px]"
         style={{ background: card.band, borderTop: `3px solid ${card.accent}` }}
       >
         <h3 className="m-0 text-[18px] font-medium leading-[1.28] text-[#0A0F2E]">
@@ -121,7 +133,14 @@ export function SectionCas() {
         }
       `}</style>
 
-      <div className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
+      <div className="px-4 py-8 md:px-8 md:py-14 lg:px-12">
+        {/* Sur-titre : cohérence avec les sections à en-tête descriptif (Équipe,
+            Presse) qui portent un court sur-titre. « Cas pratiques » (et non
+            « cas clients » : la page parle de dossiers anonymisés, pas d'une
+            relation contractuelle). */}
+        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[#AEB4CC]">
+          Cas pratiques
+        </p>
         <h2 className="mb-6 text-[22px] font-medium leading-snug text-white md:mb-8">
           Le droit du numérique en action
         </h2>
