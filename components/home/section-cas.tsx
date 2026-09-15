@@ -68,10 +68,16 @@ const CASE_CARDS: CasCard[] = [
 
 function CasCardView({ card }: { card: CasCard }) {
   const label =
-    "mb-1 font-mono text-[11px] uppercase tracking-[0.14em] text-[#55556A]";
-  const body = "m-0 text-[14.5px] leading-[1.5] text-[#3A3A50]";
+    "mb-1 font-mono text-[11px] uppercase tracking-[0.14em] text-[#AEB4CC]";
+  const body = "m-0 text-[14.5px] leading-[1.5] text-[#C9CEDD]";
   return (
-    <article className="cas-card flex flex-col overflow-hidden rounded-[3px] border border-[#E0E0EE] bg-white">
+    // Carte au corps SOMBRE (h-full : s'étire à la plus haute de la rangée en
+    // desktop, cf. grille lg:items-stretch). Seul le bandeau de titre porte la
+    // couleur (repère).
+    <article
+      className="cas-card flex h-full flex-col overflow-hidden rounded-[3px] border border-white/10"
+      style={{ background: "#0E1220" }}
+    >
       {/* Bandeau de titre : la couleur (repère) est limitée à cette zone. */}
       <div
         className="px-5 pb-3 pt-[14px]"
@@ -81,7 +87,7 @@ function CasCardView({ card }: { card: CasCard }) {
           {card.title}
         </h3>
       </div>
-      {/* Corps sur blanc. */}
+      {/* Corps sombre. */}
       <div className="px-5 pb-4 pt-4">
         <dl className="m-0">
           <dt className={label}>Situation</dt>
@@ -92,7 +98,7 @@ function CasCardView({ card }: { card: CasCard }) {
 
           <dt className={label}>Issue</dt>
           {/* Issue mise en avant (résultat immédiatement identifiable). */}
-          <dd className="m-0 text-[14.5px] font-medium leading-[1.5] text-[#0A0F2E]">
+          <dd className="m-0 text-[14.5px] font-medium leading-[1.5] text-white">
             {card.issue}
           </dd>
         </dl>
@@ -103,7 +109,7 @@ function CasCardView({ card }: { card: CasCard }) {
 
 export function SectionCas() {
   return (
-    <section className="bg-[#F4F4F8]">
+    <section className="bg-[#0A0A14]">
       <style>{`
         @media print {
           .cas-card {
@@ -116,11 +122,13 @@ export function SectionCas() {
       `}</style>
 
       <div className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
-        <h2 className="mb-6 text-[22px] font-medium leading-snug text-[#0A0F2E] md:mb-8">
+        <h2 className="mb-6 text-[22px] font-medium leading-snug text-white md:mb-8">
           Le droit du numérique en action
         </h2>
 
-        <div className="mx-auto grid max-w-[600px] grid-cols-1 items-start gap-3 lg:max-w-none lg:grid-cols-3">
+        {/* Desktop : hauteurs égalisées par étirement de la grille (items-stretch
+            + h-full sur les cartes). Mobile : hauteur naturelle (items-start). */}
+        <div className="mx-auto grid max-w-[600px] grid-cols-1 items-start gap-3 lg:max-w-none lg:grid-cols-3 lg:items-stretch">
           {CASE_CARDS.map((card) => (
             <CasCardView key={card.key} card={card} />
           ))}
