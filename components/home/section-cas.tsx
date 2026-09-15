@@ -12,24 +12,24 @@
  * interventions existantes fusionnées (déduplication limitée aux répétitions
  * littérales de l'issue) ; Issue = inchangée. Titres inchangés.
  *
- * Couleurs : les trois teintes rouge / vert / bleu ont été NEUTRALISÉES au
- * profit d'un accent UNIQUE (le bleu d'action de la marque). Depuis le passage
- * des familles de domaines en neutre, ces trois couleurs étaient les seules
- * hors bleu de marque — sans système ni signification. Un accent unique rétablit
- * la cohérence chromatique (variété dans le système). Le bandeau reste le seul
- * porteur de couleur ; le corps de carte est sombre.
+ * Couleurs : plus de bandeau de couleur. Les trois teintes rouge / vert / bleu
+ * avaient d'abord été neutralisées en un bandeau lavande unique, mais trois
+ * rectangles clairs sur une page sombre étaient plus bruyants que ce qu'ils
+ * remplaçaient (contraste inversé sans gain de sobriété). Traitement retenu :
+ * titre de carte en BLANC directement sur le fond sombre, comme le reste du
+ * contenu ; un simple FILET horizontal bleu (3 px, bleu d'action) en haut de
+ * carte comme repère. Pour aligner les trois corps de texte, la hauteur du BLOC
+ * TITRE est réservée sur le titre le plus long — en desktop uniquement (grille
+ * à trois colonnes) ; hauteur naturelle en mobile.
  * Composant serveur, aucune interactivité, aucun élément focalisable.
  */
 
-// Accent unique : le bleu d'action de la marque (repère + filet du bandeau).
+// Accent unique : le bleu d'action de la marque (filet horizontal de repère).
 const CAS_ACCENT = "#1A47FF";
-const CAS_BAND = "#E8EEFF";
 
 type CasCard = {
   key: string;
   title: string;
-  accent: string;
-  band: string; // teinte du bandeau de titre
   situation: string;
   action: string; // interventions fusionnées en une phrase
   issue: string;
@@ -39,8 +39,6 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "incident",
     title: "Une industrie paralysée après un piratage",
-    accent: CAS_ACCENT,
-    band: CAS_BAND,
     situation:
       "Une industrie a vu sa messagerie piratée : production arrêtée, données clients et fiches RH volées.",
     action:
@@ -51,8 +49,6 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "ia",
     title: "Mise en conformité d'une entreprise IA avant une levée de fonds",
-    accent: CAS_ACCENT,
-    band: CAS_BAND,
     situation:
       "Une entreprise développait des logiciels d'IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec la réglementation européenne sur l'IA.",
     action:
@@ -63,8 +59,6 @@ const CASE_CARDS: CasCard[] = [
   {
     key: "fuite",
     title: "Fuite massive de données clients chez un site de vente en ligne",
-    accent: CAS_ACCENT,
-    band: CAS_BAND,
     situation:
       "Un site de vente en ligne a découvert le vol des données personnelles de plusieurs centaines de milliers de clients chez un sous-traitant, revendues sur des forums illicites ; la CNIL a ouvert une enquête.",
     action:
@@ -80,27 +74,22 @@ function CasCardView({ card }: { card: CasCard }) {
   const body = "m-0 text-[14.5px] leading-[1.5] text-[#C9CEDD]";
   return (
     // Carte au corps SOMBRE (h-full : s'étire à la plus haute de la rangée en
-    // desktop, cf. grille lg:items-stretch). Seul le bandeau de titre porte la
-    // couleur (repère).
+    // desktop, cf. grille lg:items-stretch). Filet bleu de repère en haut.
     <article
       className="cas-card flex h-full flex-col overflow-hidden rounded-[3px] border border-white/10"
-      style={{ background: "#0E1220" }}
+      style={{ background: "#0E1220", borderTop: `3px solid ${CAS_ACCENT}` }}
     >
-      {/* Bandeau de titre : accent unique limité à cette zone. Hauteur minimale
-          uniforme en desktop (lg:min-h) calée sur le titre le plus long (2 lignes)
-          pour que les trois corps de texte démarrent sur la même ligne — les
-          bandeaux n'ont pas la même hauteur naturelle car les titres n'occupent
-          pas le même nombre de lignes. Hauteur naturelle en mobile (une colonne). */}
-      <div
-        className="px-5 pb-3 pt-[14px] lg:min-h-[76px]"
-        style={{ background: card.band, borderTop: `3px solid ${card.accent}` }}
-      >
-        <h3 className="m-0 text-[18px] font-medium leading-[1.28] text-[#0A0F2E]">
+      {/* Bloc titre — hauteur réservée sur le titre le plus long (3 lignes) en
+          desktop (lg:min-h) pour que les trois corps de texte démarrent sur la
+          même ligne. Le titre est en blanc, sur le fond sombre de la carte.
+          Hauteur naturelle en mobile (une colonne). */}
+      <div className="px-5 pt-[18px] lg:min-h-[92px]">
+        <h3 className="m-0 text-[18px] font-medium leading-[1.28] text-white">
           {card.title}
         </h3>
       </div>
       {/* Corps sombre. */}
-      <div className="px-5 pb-4 pt-4">
+      <div className="px-5 pb-4 pt-3">
         <dl className="m-0">
           <dt className={label}>Situation</dt>
           <dd className={`${body} mb-2.5`}>{card.situation}</dd>
