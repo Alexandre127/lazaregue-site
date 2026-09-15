@@ -25,3 +25,24 @@ fiche qui n'invente rien ». Une entrée par décision, avec sa raison.
   surdimensionnés de la maquette).
 - JSON-LD (Person) d'Amir et Nadia à resynchroniser au lot 8 (données
   structurées).
+
+## Reprise post-audit — arbitrages appliqués
+- Cabinet : les deux boutons inertes sous le paragraphe (<button> sans handler)
+  convertis en liens réels (Parlons-en → /contact ; Découvrir le cabinet →
+  /le-cabinet). La photographie pointe vers /contact (aria-label explicite).
+- Cibles tactiles 44 px appliquées à des composants PARTAGÉS (Footer,
+  site-header, hero-cta-card) : conséquence assumée = pied de page plus haut sur
+  toutes les pages. Wordmark laissé comme lien de marque (exception 44 px usuelle).
+
+## Points NON techniques — à trancher par le cabinet (non traités, consigne F)
+Décisions éditoriales/stratégiques, hors périmètre technique :
+
+1. **Carte « Escroquerie et fraude bancaire ».** Elle décrit une démarche de
+   particulier au milieu de neuf cartes destinées aux entreprises. Cohérence de
+   cible à trancher (reformuler côté entreprise ? déplacer ? assumer le mixte ?).
+2. **Chevauchement pour un dirigeant** entre cybersécurité, cybercriminalité,
+   contentieux informatique et fraude : la frontière entre ces domaines n'est pas
+   explicitée pour le visiteur non juriste. Clarification éditoriale à arbitrer.
+3. **Absence d'indicateur de réussite** attaché à la page (aucun objectif de
+   conversion/mesure défini). À définir avant mise en ligne si un suivi est
+   souhaité (le site étant en préproduction noindex, aucune mesure d'audience).
