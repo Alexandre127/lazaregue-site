@@ -765,7 +765,7 @@
   display: flex;
   align-items: center;
   width: fit-content;
-  margin: 0;
+  margin: 0 0 10px;
   padding: 7px 14px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
@@ -819,7 +819,7 @@
     display: flex;
     align-items: center;
     width: fit-content;
-    margin: 0;
+    margin: 0 0 8px;
     padding: 6px 12px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;

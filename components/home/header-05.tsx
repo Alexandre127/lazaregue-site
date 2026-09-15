@@ -174,7 +174,7 @@ export function Header5() {
           supérieur droit (voir `.laz-hero::before` dans hero.css). Le vrai globe
           n'existe qu'au-dessus du seuil (import dynamique). */}
       <div className="laz-hero-left overflow-visible">
-        <div className="laz-hero-copy overflow-visible -mt-[70px]">
+        <div className="laz-hero-copy overflow-visible -mt-[28px]">
           {/* Badge — mobile uniquement (masqué ≥900px en CSS). */}
           <span className="laz-hero-badge">Paris · Depuis 2016</span>
 
