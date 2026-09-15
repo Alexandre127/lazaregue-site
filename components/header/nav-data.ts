@@ -110,8 +110,8 @@ export type NavEntry =
 
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  // Panneau réduit à une seule carte réelle (PicRights) → lien direct.
-  { type: "link", label: "ACTIONS COLLECTIVES", href: "/litige-afp-picrights/" },
+  // « Actions collectives » retirée (aucune page dédiée n'existe) : reviendra le
+  // jour où la page existera. Ne rien mettre à sa place.
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
