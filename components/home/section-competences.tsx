@@ -200,7 +200,7 @@ function DomaineCard({ d, titleMinH }: { d: Domaine; titleMinH: string }) {
 
 export default function SectionCompetences() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-8 md:py-14">
+    <section className="relative w-full overflow-hidden border-t border-white/[0.08] bg-[#0A0A14] py-8 md:py-14">
       <div
         className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
         style={{
