@@ -1,0 +1,419 @@
+/* ==========================================================================
+   Page RGPD — styles. Structure/rédaction/comportement d'après la maquette v3 ;
+   la CHARTE v1.1 prime (radius 0, #0A2ACC / #9FB2FF, #4A4A63, bouton 44px
+   15-16px/600, conteneur 1200px / marge 36px / 20px sous 640, jetons 4px,
+   corps 17px desktop). Tokens du projet (var(--blue/navy/ink/wh/off/bd/blue3)).
+   Portée : tout est descendant de la racine `.rgpd` (module hashé) ; le balisage
+   riche des spécimens garde ses classes via :global.
+   ========================================================================== */
+.rgpd {
+  --blue: #1a47ff;
+  --blue-dark: #0a2acc; /* charte : sur-titre clair, hover/actif bouton */
+  --peri: #4d6fff;
+  --navy: #0a0f2e;
+  --ink: #0a0a14;
+  --ghost: #f4f4f8;
+  --white: #ffffff;
+  --border: #e0e0ee;
+  --text: #14141f; /* corps sur clair (jamais #8888A0) */
+  --text-2: #4a4a63; /* secondaire sur clair (charte) */
+  --on-dark: #f2f3fa; /* corps sur sombre */
+  --on-dark-2: #9fb2ff; /* secondaire / labels / liens secondaires sur sombre (charte) */
+  --red: #b3231f;
+  --risk-h-bg: #fbebea; --risk-h-tx: #8e1b18; --risk-h-bd: #e7bdbb;
+  --risk-m-bg: #fcf3e3; --risk-m-tx: #7a4a00; --risk-m-bd: #e6d2ab;
+  --risk-b-bg: #eaf5ee; --risk-b-tx: #1b5c33; --risk-b-bd: #bedcc8;
+  --measure: 68ch;
+  --gut: 20px; /* marge latérale mobile (charte : 20px sous 640) */
+
+  background: var(--white);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.65;
+}
+@media (min-width: 640px) {
+  .rgpd { --gut: 36px; } /* charte : 36px au-delà */
+}
+@media (min-width: 768px) {
+  .rgpd { font-size: 17px; } /* charte : 17px de référence desktop */
+}
+
+/* --- primitives --- */
+.rgpd :global(.wrap) {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--gut);
+  padding-right: var(--gut);
+}
+.rgpd :global(section),
+.rgpd :global(.hero) {
+  padding: clamp(48px, 7vw, 96px) 0; /* jetons 48 / 72 / 96 */
+}
+.rgpd :global(.tint) { background: var(--ghost); }
+.rgpd :global(.dark) { background: var(--navy); color: var(--on-dark); }
+.rgpd :global(.dark) :global(p),
+.rgpd :global(.dark) :global(li) { color: var(--on-dark); }
+.rgpd :global(p) { max-width: var(--measure); margin: 0 0 1em; }
+.rgpd :global(ul),
+.rgpd :global(ol) { margin: 0 0 1em; padding-left: 1.25em; max-width: var(--measure); }
+.rgpd :global(li) { margin: 0 0 0.45em; }
+.rgpd :global(img),
+.rgpd :global(video) { max-width: 100%; display: block; }
+.rgpd :global(p),
+.rgpd :global(li),
+.rgpd :global(h1),
+.rgpd :global(h2),
+.rgpd :global(h3),
+.rgpd :global(td),
+.rgpd :global(th) { overflow-wrap: break-word; }
+/* enfants de grille : ne jamais imposer leur largeur intrinsèque */
+.rgpd :global(.hero-grid) > *,
+.rgpd :global(.specimens) > *,
+.rgpd :global(.livrables-groupes) > *,
+.rgpd :global(.urgences) > *,
+.rgpd :global(.honoraires) > *,
+.rgpd :global(.pourquoi) > *,
+.rgpd :global(.spec-panel),
+.rgpd :global(.doc),
+.rgpd :global(.doc-inner) { min-width: 0; }
+
+.rgpd :global(h1),
+.rgpd :global(h2),
+.rgpd :global(h3) { font-weight: 500; line-height: 1.18; margin: 0 0 0.5em; letter-spacing: -0.01em; }
+/* H1 en Bebas Neue (--ff-display) : ALIGNÉ sur toutes les pages /nos-domaines/.
+   Pour repasser en Space Grotesk, changer cette seule déclaration. */
+.rgpd :global(h1) {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+.rgpd :global(h2) { font-size: clamp(1.5rem, 3.4vw, 2.1rem); max-width: 22ch; }
+.rgpd :global(h3) { font-size: clamp(1.125rem, 1.8vw, 1.25rem); line-height: 1.3; } /* ≥18px */
+
+/* sur-titre de section (UX charte) : DM Mono, #0A2ACC clair / #9FB2FF sombre */
+.rgpd :global(.label) {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--blue-dark);
+  margin: 0 0 14px;
+}
+.rgpd :global(.dark) :global(.label) { color: var(--on-dark-2); }
+.rgpd :global(.lead) { font-size: 1.06em; color: var(--text-2); }
+.rgpd :global(.dark) :global(.lead) { color: var(--on-dark-2); }
+.rgpd :global(.sec-head) { margin-bottom: clamp(28px, 4vw, 44px); }
+.rgpd :global(.mention) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--text-2); }
+.rgpd :global(.sr-only) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.rgpd :global(a) { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.rgpd :global(a:hover) { color: var(--blue-dark); }
+/* liens de texte sur sombre — sauf les boutons, qui gardent leur couleur */
+.rgpd :global(.dark) :global(a:not(.btn)) { color: #cdd7ff; }
+
+/* --- lien d'évitement (UX-159) --- */
+.skipLink {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 90;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--ff-body);
+  font-size: 15px;
+  padding: 12px 18px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skipLink:focus {
+  top: 12px;
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* --- focus visible 3px, doublé d'un liseré blanc sur sombre --- */
+.rgpd :global(:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
+.rgpd :global(.dark) :global(:focus-visible),
+.rgpd :global(.doc-brand) :global(:focus-visible) { box-shadow: 0 0 0 1px #fff; outline-color: #9fb2ff; }
+
+/* --- fil d'Ariane (UX-035/036) --- */
+.rgpd :global(.breadcrumb) { padding: 16px 0 0; }
+.rgpd :global(.breadcrumb ol) { list-style: none; margin: 0; padding: 0; max-width: none; display: flex; flex-wrap: wrap; gap: 6px 8px; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; }
+.rgpd :global(.breadcrumb li) { margin: 0; color: var(--on-dark-2); display: flex; align-items: center; gap: 8px; }
+.rgpd :global(.breadcrumb li + li)::before { content: "›"; color: var(--on-dark-2); }
+.rgpd :global(.breadcrumb a) { color: var(--on-dark-2); text-decoration: none; }
+.rgpd :global(.breadcrumb a:hover) { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.rgpd :global(.breadcrumb [aria-current="page"]) { color: #fff; }
+
+/* ==========================================================================
+   CTA — trois niveaux
+   ========================================================================== */
+.rgpd :global(.btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 13px 24px;
+  font-family: var(--ff-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+.rgpd :global(.btn-primary) { background: var(--blue); color: #fff; border-color: var(--blue); }
+.rgpd :global(.btn-primary:hover),
+.rgpd :global(.btn-primary:active) { background: var(--blue-dark); border-color: var(--blue-dark); color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+/* bouton d'urgence : fond transparent, bordure #4A4A63, texte Ink, marqueur rouge */
+.rgpd :global(.btn-urgent) { background: transparent; color: var(--ink); border-color: var(--text-2); }
+.rgpd :global(.btn-urgent:hover) { border-color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+.rgpd :global(.btn-urgent)::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--red); flex: none; }
+.rgpd :global(.link-nav) { font-weight: 600; }
+
+/* ==========================================================================
+   1. HERO
+   ========================================================================== */
+.rgpd :global(.hero) { background: var(--navy); color: var(--on-dark); padding: clamp(28px, 4vw, 44px) 0 clamp(32px, 4.5vw, 56px); }
+.rgpd :global(.hero-grid) { display: grid; gap: 26px; }
+@media (min-width: 960px) { .rgpd :global(.hero-grid) { grid-template-columns: 58fr 42fr; gap: 48px; align-items: center; } }
+.rgpd :global(.hero h1) { max-width: 18ch; color: #fff; }
+.rgpd :global(.badge) { display: inline-block; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.16em; color: var(--on-dark-2); border: 1px solid rgba(159, 178, 255, 0.45); padding: 5px 12px; margin-bottom: 20px; }
+.rgpd :global(.hero p) { max-width: 58ch; color: var(--on-dark); }
+.rgpd :global(.hero .btn) { margin-top: 4px; }
+
+/* média : aucun texte posé dessus, voile sombre uniforme */
+.rgpd :global(.media) { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.16); background: #121936; }
+@media (max-width: 759px) { .rgpd :global(.media) { display: none; } } /* retiré du flux sous 760px */
+@media (min-width: 960px) { .rgpd :global(.media) { aspect-ratio: 3 / 4; max-height: 460px; } }
+.rgpd :global(.media video),
+.rgpd :global(.media img) { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.rgpd :global(.media)::after { content: ""; position: absolute; inset: 0; background: rgba(10, 15, 46, 0.38); pointer-events: none; }
+
+.rgpd :global(.reperes) { list-style: none; padding: 0; margin: clamp(28px, 4vw, 40px) 0 0; max-width: none; display: grid; gap: 1px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.14); }
+@media (min-width: 760px) { .rgpd :global(.reperes) { grid-template-columns: repeat(3, 1fr); } }
+.rgpd :global(.reperes li) { margin: 0; background: var(--navy); padding: 18px 20px; }
+.rgpd :global(.reperes b) { display: block; font-weight: 500; font-size: 1.02rem; color: #fff; margin-bottom: 4px; }
+.rgpd :global(.reperes span) { font-size: 0.92rem; color: var(--on-dark-2); }
+
+/* ==========================================================================
+   2. SITUATIONS — cartes padding 24, titre ≥18, interligne 1.5
+   ========================================================================== */
+.rgpd :global(.situations) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 18px; }
+@media (min-width: 680px) { .rgpd :global(.situations) { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .rgpd :global(.situations) { grid-template-columns: repeat(3, 1fr); } }
+.rgpd :global(.situations li) { margin: 0; background: var(--white); border: 1px solid var(--border); border-left: 3px solid var(--blue); padding: 24px; }
+.rgpd :global(.situations h3) { margin-bottom: 0.35em; }
+.rgpd :global(.situations p) { font-size: 0.95rem; line-height: 1.5; color: var(--text-2); margin: 0; max-width: none; }
+
+/* ==========================================================================
+   3. MISSIONS
+   ========================================================================== */
+.rgpd :global(.missions) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 26px; }
+@media (min-width: 760px) { .rgpd :global(.missions) { grid-template-columns: repeat(2, 1fr); gap: 34px; } }
+.rgpd :global(.missions li) { margin: 0; border-top: 2px solid var(--ink); padding-top: 18px; }
+.rgpd :global(.missions p) { max-width: 48ch; line-height: 1.5; margin: 0; color: var(--text-2); }
+
+/* ==========================================================================
+   4. LIVRABLES + SPÉCIMENS
+   ========================================================================== */
+.rgpd :global(.livrables-groupes) { display: grid; gap: 22px; margin-bottom: clamp(32px, 4vw, 48px); }
+@media (min-width: 760px) { .rgpd :global(.livrables-groupes) { grid-template-columns: repeat(3, 1fr); gap: 34px; } }
+.rgpd :global(.livrables-groupes h3) { font-size: 1.05rem; margin-bottom: 0.4em; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.rgpd :global(.livrables) { list-style: none; padding: 0; margin: 0; max-width: none; }
+.rgpd :global(.livrables li) { margin: 0; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.98rem; line-height: 1.5; }
+
+.rgpd :global(.specimens) { display: grid; gap: 12px; }
+@media (min-width: 960px) {
+  .rgpd :global(.specimens) { grid-template-columns: minmax(290px, 370px) 1fr; column-gap: 36px; align-items: start; }
+  .rgpd :global(.spec-btn) { grid-column: 1; }
+  .rgpd :global(.spec-panel) { grid-column: 2; grid-row: 1 / span 8; position: sticky; top: 92px; } /* sous le header collant */
+}
+.rgpd :global(.spec-btn) { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; min-height: 56px; padding: 14px 16px; margin: 0; background: var(--white); border: 1px solid var(--border); font-family: inherit; font-size: 1rem; color: var(--text); cursor: pointer; }
+.rgpd :global(.spec-btn .nom) { flex: 1; }
+.rgpd :global(.spec-btn .tick) { flex: none; width: 22px; height: 22px; border: 1px solid #afb4d0; display: none; align-items: center; justify-content: center; font-size: 14px; color: transparent; }
+.rgpd :global(.spec-btn .chev) { flex: none; font-family: var(--ff-mono); font-size: 17px; color: var(--blue); width: 22px; text-align: center; }
+.rgpd :global(.spec-btn .chev)::before { content: "+"; }
+.rgpd :global(.spec-btn[aria-expanded="true"] .chev)::before { content: "−"; }
+@media (min-width: 960px) {
+  .rgpd :global(.spec-btn .tick) { display: flex; }
+  .rgpd :global(.spec-btn .chev) { display: none; }
+}
+.rgpd :global(.spec-btn[aria-expanded="true"]) { border-color: var(--ink); border-left: 4px solid var(--blue); font-weight: 600; }
+.rgpd :global(.spec-btn[aria-expanded="true"] .tick) { background: var(--ink); border-color: var(--ink); color: #fff; }
+.rgpd :global(.spec-btn[aria-expanded="true"] .tick)::before { content: "✓"; }
+.rgpd :global(.spec-panel[hidden]) { display: none; }
+.rgpd :global(.spec-panel) { background: var(--white); border: 1px solid var(--border); padding: 18px; margin: -2px 0 6px; }
+@media (min-width: 960px) { .rgpd :global(.spec-panel) { padding: 24px; margin: 0; } }
+.rgpd :global(.spec-panel .explain) { font-size: 0.95rem; line-height: 1.5; color: var(--text-2); max-width: 58ch; margin-top: 16px; }
+.rgpd :global(.spec-actions) { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+.rgpd :global(.btn-ghost) { min-height: 44px; padding: 10px 16px; background: var(--white); border: 1px solid var(--text-2); font-family: inherit; font-size: 0.95rem; color: var(--ink); cursor: pointer; }
+.rgpd :global(.btn-ghost:hover) { border-color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* --- documents (spécimens) --- */
+.rgpd :global(.doc) { background: #fff; border: 1px solid #d7d9e8; box-shadow: 0 1px 0 #edeef6, 0 10px 24px -20px rgba(10, 15, 46, 0.5); }
+.rgpd :global(.table-scroll) { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+.rgpd :global(.scroll-hint) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--text-2); margin: 0 0 6px; max-width: none; }
+.rgpd :global(.doc-brand) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; background: var(--navy); color: #fff; padding: 12px 16px; }
+.rgpd :global(.doc-brand .id) { display: flex; align-items: center; gap: 10px; }
+.rgpd :global(.doc-brand b) { font-size: 0.86rem; font-weight: 500; letter-spacing: 0.02em; }
+.rgpd :global(.doc-brand span) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.06em; color: var(--on-dark-2); }
+.rgpd :global(.doc-inner) { padding: 16px; }
+.rgpd :global(.doc-title) { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 14px; }
+.rgpd :global(.doc-title h4) { margin: 0; font-size: 1rem; font-weight: 500; }
+.rgpd :global(.doc-title span) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.06em; color: var(--text-2); }
+.rgpd :global(.doc h5) { margin: 18px 0 8px; font-size: 0.9rem; font-weight: 500; color: var(--text); font-family: var(--ff-mono); letter-spacing: 0.1em; text-transform: lowercase; }
+.rgpd :global(.doc h5:first-of-type) { margin-top: 0; }
+.rgpd :global(.doc table) { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.rgpd :global(.doc th),
+.rgpd :global(.doc td) { border: 1px solid #dddfec; padding: 8px 10px; text-align: left; vertical-align: top; }
+.rgpd :global(.doc th) { background: var(--ghost); font-weight: 500; }
+.rgpd :global(.doc ol),
+.rgpd :global(.doc ul) { font-size: 14px; line-height: 1.5; padding-left: 1.15em; max-width: none; }
+.rgpd :global(.fill) { display: inline-block; background: var(--ghost); border-bottom: 1px solid #c9cde4; color: var(--text-2); padding: 0 6px; }
+.rgpd :global(.pill) { display: inline-block; font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.06em; padding: 2px 8px; white-space: nowrap; }
+.rgpd :global(.pill.h) { background: var(--risk-h-bg); color: var(--risk-h-tx); border: 1px solid var(--risk-h-bd); }
+.rgpd :global(.pill.m) { background: var(--risk-m-bg); color: var(--risk-m-tx); border: 1px solid var(--risk-m-bd); }
+.rgpd :global(.pill.b) { background: var(--risk-b-bg); color: var(--risk-b-tx); border: 1px solid var(--risk-b-bd); }
+.rgpd :global(.doc-note) { border-left: 3px solid var(--ink); background: var(--ghost); padding: 10px 12px; font-size: 14px; line-height: 1.5; margin-top: 14px; }
+.rgpd :global(.doc-foot) { border-top: 1px solid #dddfec; margin-top: 16px; padding-top: 10px; font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--text-2); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.rgpd :global(.diff) { display: grid; gap: 10px; margin-bottom: 14px; }
+@media (min-width: 620px) { .rgpd :global(.diff) { grid-template-columns: 1fr 1fr; gap: 14px; } }
+.rgpd :global(.diff .col) { border: 1px solid #dddfec; padding: 10px 12px; font-size: 14px; line-height: 1.5; }
+.rgpd :global(.diff .col p) { max-width: none; margin: 0; }
+.rgpd :global(.diff .col .tag) { display: block; font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.1em; margin-bottom: 6px; color: var(--text-2); }
+.rgpd :global(.diff .col.recue) { background: #fafafc; }
+.rgpd :global(.diff .col.proposee) { background: #f3f6ff; border-color: #c3cffb; }
+.rgpd :global(.diff .col.proposee .tag) { color: var(--blue-dark); }
+.rgpd :global(.clause) { border-top: 1px solid #dddfec; padding-top: 12px; margin-top: 12px; }
+.rgpd :global(.clause:first-of-type) { border-top: 0; padding-top: 0; margin-top: 0; }
+.rgpd :global(.clause .nom-clause) { font-weight: 500; font-size: 0.92rem; margin-bottom: 8px; }
+
+/* Sous 620px : les tableaux deviennent des blocs libellé/valeur (UX-045/144/149) */
+@media (max-width: 619px) {
+  .rgpd :global(.scroll-hint) { display: none; }
+  .rgpd :global(.doc table) { min-width: 0; }
+  .rgpd :global(.doc table),
+  .rgpd :global(.doc thead),
+  .rgpd :global(.doc tbody),
+  .rgpd :global(.doc tr),
+  .rgpd :global(.doc th),
+  .rgpd :global(.doc td) { display: block; width: 100%; }
+  .rgpd :global(.doc thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* en-têtes lus via data-col */
+  .rgpd :global(.doc tr) { border: 1px solid #dddfec; margin-bottom: 10px; }
+  .rgpd :global(.doc td) { border: 0; border-bottom: 1px solid #eef0f7; padding: 8px 10px; }
+  .rgpd :global(.doc td:last-child) { border-bottom: 0; }
+  .rgpd :global(.doc td[data-col])::before { content: attr(data-col); display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-2); margin-bottom: 2px; }
+}
+
+/* ==========================================================================
+   5. URGENCES
+   ========================================================================== */
+.rgpd :global(.urgences) { display: grid; gap: 22px; }
+@media (min-width: 860px) { .rgpd :global(.urgences) { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
+.rgpd :global(.urg) { background: var(--white); border: 1px solid var(--border); border-top: 4px solid var(--red); padding: 24px; }
+.rgpd :global(.urg p) { font-size: 0.98rem; line-height: 1.55; }
+.rgpd :global(.urg .delai) { font-family: var(--ff-mono); font-size: 14px; color: var(--red); letter-spacing: 0.12em; margin-bottom: 10px; }
+
+/* ==========================================================================
+   6. RENVOIS
+   ========================================================================== */
+.rgpd :global(.renvois) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 16px; }
+@media (min-width: 760px) { .rgpd :global(.renvois) { grid-template-columns: repeat(3, 1fr); gap: 28px; } }
+.rgpd :global(.renvois li) { margin: 0; padding-top: 14px; border-top: 1px solid var(--border); }
+.rgpd :global(.renvois p) { font-size: 0.95rem; line-height: 1.5; color: var(--text-2); margin: 0.3em 0 0.5em; max-width: 40ch; }
+
+/* ==========================================================================
+   7. MÉTHODE
+   ========================================================================== */
+.rgpd :global(.methode) { counter-reset: etape; list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 18px; }
+@media (min-width: 760px) { .rgpd :global(.methode) { grid-template-columns: repeat(5, 1fr); gap: 20px; } }
+.rgpd :global(.methode li) { counter-increment: etape; margin: 0; border-top: 1px solid rgba(255, 255, 255, 0.25); padding-top: 14px; }
+.rgpd :global(.methode li)::before { content: counter(etape); font-family: var(--ff-mono); font-size: 14px; color: var(--on-dark-2); display: block; margin-bottom: 8px; letter-spacing: 0.1em; }
+.rgpd :global(.methode h3) { color: #fff; font-size: 1.02rem; }
+.rgpd :global(.methode p) { font-size: 0.94rem; line-height: 1.5; color: var(--on-dark-2); margin: 0; max-width: 34ch; }
+
+/* ==========================================================================
+   8. POURQUOI
+   ========================================================================== */
+.rgpd :global(.pourquoi) { display: grid; gap: 32px; }
+@media (min-width: 900px) { .rgpd :global(.pourquoi) { grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: start; } }
+.rgpd :global(.arguments) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 22px; }
+.rgpd :global(.arguments li) { margin: 0; border-left: 3px solid var(--blue); padding-left: 18px; }
+.rgpd :global(.arguments p) { font-size: 0.97rem; line-height: 1.5; color: var(--text-2); margin: 0.25em 0 0; max-width: 52ch; }
+.rgpd :global(.portrait) { background: var(--ghost); border: 1px solid var(--border); padding: 22px; }
+.rgpd :global(.portrait .shot) { position: relative; aspect-ratio: 4 / 5; overflow: hidden; margin-bottom: 16px; }
+.rgpd :global(.portrait .shot img) { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.rgpd :global(.portrait b) { display: block; font-weight: 500; }
+.rgpd :global(.portrait .role) { font-size: 0.93rem; line-height: 1.5; color: var(--text-2); }
+
+/* ==========================================================================
+   9. HONORAIRES
+   ========================================================================== */
+.rgpd :global(.honoraires) { display: grid; gap: 30px; }
+@media (min-width: 860px) { .rgpd :global(.honoraires) { grid-template-columns: 1fr 1fr; gap: 48px; } }
+.rgpd :global(.facteurs) { list-style: none; padding: 0; margin: 0; max-width: none; }
+.rgpd :global(.facteurs li) { border-bottom: 1px solid var(--border); padding: 11px 0; font-size: 0.97rem; line-height: 1.5; margin: 0; }
+
+/* ==========================================================================
+   10. FAQ
+   ========================================================================== */
+.rgpd :global(.faq) { border-top: 1px solid var(--border); max-width: var(--measure); }
+.rgpd :global(.faq h3) { margin: 0; }
+.rgpd :global(.faq-btn) { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 18px; min-height: 56px; padding: 16px 4px; background: none; border: 0; border-bottom: 1px solid var(--border); font-family: inherit; font-size: 1.02rem; font-weight: 500; color: var(--text); text-align: left; cursor: pointer; }
+.rgpd :global(.faq-btn .chev) { flex: none; font-family: var(--ff-mono); font-size: 16px; color: var(--blue); }
+.rgpd :global(.faq-btn .chev)::before { content: "+"; }
+.rgpd :global(.faq-btn[aria-expanded="true"] .chev)::before { content: "−"; }
+.rgpd :global(.faq-panel) { padding: 14px 4px 22px; border-bottom: 1px solid var(--border); }
+.rgpd :global(.faq-panel[hidden]) { display: none; }
+.rgpd :global(.faq-panel p) { font-size: 0.97rem; line-height: 1.6; color: var(--text-2); margin: 0; }
+.rgpd :global(.faq-suite) { margin-top: 26px; font-size: 0.95rem; line-height: 1.6; color: var(--text-2); max-width: var(--measure); }
+
+/* ==========================================================================
+   11. CONTACT FINAL
+   ========================================================================== */
+.rgpd :global(.final h2) { color: #fff; max-width: 18ch; }
+.rgpd :global(.final p) { max-width: 56ch; }
+
+/* ==========================================================================
+   BARRE DE CONTACT MOBILE (< 768px)
+   ========================================================================== */
+.rgpd :global(.barre) {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  background: #fff; border-top: 1px solid var(--border);
+  padding: 10px var(--gut) calc(10px + env(safe-area-inset-bottom));
+  display: flex; gap: 12px; align-items: center; justify-content: space-between;
+}
+.rgpd :global(.barre .btn) { flex: 1; min-height: 48px; padding: 12px 16px; font-size: 0.95rem; }
+.rgpd :global(.barre .tel) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; min-height: 48px; min-width: 44px; display: flex; align-items: center; white-space: nowrap; }
+.rgpd :global(.barre .tel-court) { display: none; }
+@media (max-width: 359px) { .rgpd :global(.barre .tel-long) { display: none; } .rgpd :global(.barre .tel-court) { display: inline; } }
+@media (min-width: 768px) { .rgpd :global(.barre) { display: none; } }
+/* réserve basse pour ne pas masquer le contact final */
+@media (max-width: 767px) { .rgpd { padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }
+/* masquée quand la modale est ouverte (classe posée sur <body>) */
+:global(body.rgpd-modal-open) .rgpd :global(.barre) { display: none; }
+
+/* ==========================================================================
+   MODALE
+   ========================================================================== */
+.rgpd :global(.modal[hidden]) { display: none; }
+.rgpd :global(.modal) { position: fixed; inset: 0; z-index: 80; background: rgba(10, 15, 46, 0.72); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.rgpd :global(.modal-box) { background: #fff; width: min(940px, 100%); max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; }
+.rgpd :global(.modal-head) { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.rgpd :global(.modal-head h2) { margin: 0; font-size: 1.05rem; max-width: none; font-family: var(--ff-body); }
+.rgpd :global(.modal-close) { min-height: 44px; min-width: 44px; background: #fff; border: 1px solid var(--text-2); font-family: inherit; font-size: 1rem; cursor: pointer; color: var(--ink); padding: 8px 14px; }
+.rgpd :global(.modal-close:hover) { border-color: var(--ink); }
+.rgpd :global(.modal-body) { overflow: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
+.rgpd :global(.modal-body .doc) { box-shadow: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rgpd :global(*) { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .skipLink { transition: none !important; }
+}
