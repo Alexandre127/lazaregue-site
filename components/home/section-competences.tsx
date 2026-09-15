@@ -35,6 +35,12 @@ type Famille = {
   key: string;
   label: string; // intitulé définitif — repris au mot près au menu (lot 8)
   cols: 3 | 4;
+  /**
+   * Réserve de hauteur du bloc titre en desktop (lg), calée sur le titre le plus
+   * long DE CETTE famille, pour que les descriptions démarrent sur la même ligne.
+   * Vide si tous les titres tiennent sur une ligne (aucune réserve nécessaire).
+   */
+  titleReserve: string;
   domaines: Domaine[];
 };
 
@@ -43,6 +49,7 @@ const FAMILLES: Famille[] = [
     key: "conformite",
     label: "Conformité et gouvernance",
     cols: 3,
+    titleReserve: "lg:min-h-[47px]", // « Intelligence artificielle et AI Act » passe à 2 lignes
     domaines: [
       {
         title: "RGPD et données personnelles",
@@ -65,6 +72,7 @@ const FAMILLES: Famille[] = [
     key: "operations",
     label: "Contrats et opérations numériques",
     cols: 3,
+    titleReserve: "", // tous les titres tiennent sur une ligne en desktop
     domaines: [
       {
         title: "Contrats informatiques",
@@ -87,6 +95,7 @@ const FAMILLES: Famille[] = [
     key: "contentieux",
     label: "Contentieux et atteintes numériques",
     cols: 4,
+    titleReserve: "lg:min-h-[70px]", // cartes plus étroites (4 col) : titres jusqu'à 3 lignes
     domaines: [
       {
         // TODO(lot ultérieur) : rendre cette carte interactive dès que la page
@@ -123,7 +132,15 @@ const CARD_STYLE = {
   border: "1px solid rgba(255,255,255,0.08)",
 } as const;
 
-function CardInner({ d, interactive }: { d: Domaine; interactive: boolean }) {
+function CardInner({
+  d,
+  interactive,
+  titleMinH,
+}: {
+  d: Domaine;
+  interactive: boolean;
+  titleMinH: string;
+}) {
   return (
     <>
       {/* Filet de carte — neutre pour l'instant (recevra la couleur de famille
@@ -133,7 +150,13 @@ function CardInner({ d, interactive }: { d: Domaine; interactive: boolean }) {
         style={{ background: "rgba(255,255,255,0.25)" }}
         aria-hidden
       />
-      <h4 className="mb-2.5 text-[17px] font-medium leading-snug tracking-[-0.005em] text-white">
+      {/* Hauteur de titre réservée sur le titre le plus long de la famille, en
+          desktop (lg) uniquement, pour que les descriptions démarrent sur la
+          même ligne. La famille à quatre colonnes a des cartes plus étroites
+          (titres jusqu'à trois lignes) : réserve plus haute. */}
+      <h4
+        className={`mb-2.5 text-[17px] font-medium leading-snug tracking-[-0.005em] text-white ${titleMinH}`}
+      >
         {d.title}
       </h4>
       <p
@@ -155,7 +178,7 @@ function CardInner({ d, interactive }: { d: Domaine; interactive: boolean }) {
   );
 }
 
-function DomaineCard({ d }: { d: Domaine }) {
+function DomaineCard({ d, titleMinH }: { d: Domaine; titleMinH: string }) {
   if (d.href) {
     return (
       <Link
@@ -163,14 +186,14 @@ function DomaineCard({ d }: { d: Domaine }) {
         className={`domaine-card group ${CARD_BASE} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A14]`}
         style={CARD_STYLE}
       >
-        <CardInner d={d} interactive />
+        <CardInner d={d} interactive titleMinH={titleMinH} />
       </Link>
     );
   }
   // Carte non interactive : aucun lien, aucun rôle, aucun survol, aucun focus.
   return (
     <div className={CARD_BASE} style={CARD_STYLE}>
-      <CardInner d={d} interactive={false} />
+      <CardInner d={d} interactive={false} titleMinH={titleMinH} />
     </div>
   );
 }
@@ -221,7 +244,7 @@ export default function SectionCompetences() {
               }`}
             >
               {fam.domaines.map((d) => (
-                <DomaineCard key={d.title} d={d} />
+                <DomaineCard key={d.title} d={d} titleMinH={fam.titleReserve} />
               ))}
             </div>
           </div>

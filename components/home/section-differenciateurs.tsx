@@ -944,18 +944,24 @@ export function SectionDifferenciateurs() {
               </div>
 
               <div style={{ padding: "1rem 1.25rem 1.25rem" }}>
-                <h3
-                  style={{
-                    fontFamily: "var(--ff-body)",
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: 1.35,
-                    color: "#0A0F2E",
-                    margin: 0,
-                  }}
-                >
-                  {card.title}
-                </h3>
+                {/* Hauteur du bloc titre réservée sur le titre le plus long
+                    (2 lignes) en desktop (md : grille à 3 colonnes) pour que les
+                    trois paragraphes démarrent sur la même ligne. Naturel en
+                    mobile. */}
+                <div className="md:min-h-[44px]">
+                  <h3
+                    style={{
+                      fontFamily: "var(--ff-body)",
+                      fontWeight: 500,
+                      fontSize: 16,
+                      lineHeight: 1.35,
+                      color: "#0A0F2E",
+                      margin: 0,
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+                </div>
                 {card.text ? (
                   <p
                     style={{
