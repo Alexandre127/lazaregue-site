@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type DifferentiateurCard = {
   imageSrc?: string;
@@ -538,17 +538,74 @@ function ClientPortalMockupVisual() {
 const SPOTLIGHT_TITLE = "Le droit du numérique, notre ";
 const SPOTLIGHT_ACCENT = "seul métier";
 
-// Titre simple, lisible dès le rendu initial (SSR) et à l'impression. L'effet de
-// projection « spotlight » a été abandonné : il ne pouvait s'obtenir sans
-// dupliquer le texte du titre dans le DOM (risque d'écart SSR/client, décalage
-// de mise en page, texte en double). La fiche exige de toute façon un titre
-// lisible avant toute animation.
+// Titre « spotlight » rétabli SANS duplication de texte : UN SEUL nœud de texte,
+// un dégradé animé découpé sur les lettres (background-clip: text) dont la
+// position suit le défilement (variable --spot). Dégradation en couleur unie si
+// background-clip: text n'est pas supporté ; effet neutralisé sous
+// prefers-reduced-motion (et écouteur non attaché) ; couleur unie forcée à
+// l'impression (sinon texte transparent = invisible). Lisible avant toute
+// animation (couleur de repli #0A0F2E au rendu initial).
 function DifferentiateurSpotlightTitle() {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      // 0 quand le titre entre par le bas, 1 quand il sort par le haut.
+      const p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+      el.style.setProperty("--spot", `${(p * 100).toFixed(1)}%`);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <h2 className="mb-5 text-2xl font-bold leading-snug text-[#0A0F2E] md:mb-6 md:text-3xl lg:text-4xl">
-      {SPOTLIGHT_TITLE}
-      <span className="text-[#1A47FF]">{SPOTLIGHT_ACCENT}</span>
-    </h2>
+    <>
+      <style>{`
+        .laz-spotlight-title { color: #0A0F2E; }
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+          @media (prefers-reduced-motion: no-preference) {
+            .laz-spotlight-title {
+              background: linear-gradient(100deg, #0A0F2E 0%, #0A0F2E 42%, #1A47FF 50%, #0A0F2E 58%, #0A0F2E 100%);
+              background-size: 260% 100%;
+              background-position: var(--spot, 0%) 50%;
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
+              color: transparent;
+            }
+          }
+        }
+        @media print {
+          .laz-spotlight-title {
+            -webkit-text-fill-color: #0A0F2E !important;
+            color: #0A0F2E !important;
+            background: none !important;
+          }
+        }
+      `}</style>
+      <h2
+        ref={ref}
+        className="laz-spotlight-title mb-5 text-2xl font-bold leading-snug md:mb-6 md:text-3xl lg:text-4xl"
+      >
+        {`${SPOTLIGHT_TITLE}${SPOTLIGHT_ACCENT}`}
+      </h2>
+    </>
   );
 }
 
