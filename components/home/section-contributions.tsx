@@ -39,15 +39,20 @@ type ArticleEntry = {
   kind: BadgeKind;
   title: string;
   source: string;
+  /** Date de publication fournie (toutes lettres, jamais devinée ni recalculée). */
+  date: string;
   href: string;
 };
 
+// Ordre d'affichage fixe (Le Monde, Capital, Sud Ouest, Le Revenu) — pas de tri
+// par date. Dates fournies par le cabinet.
 const ARTICLES: ArticleEntry[] = [
   {
     kind: "tribune",
     title:
       "IA : « L'Europe doit transformer les discours sur la souveraineté numérique en une véritable stratégie industrielle »",
     source: "Le Monde",
+    date: "21 juin 2026",
     href: "https://www.lemonde.fr/idees/article/2026/06/21/ia-l-europe-doit-transformer-les-discours-sur-la-souverainete-numerique-en-une-veritable-strategie-industrielle_6706105_3232.html",
   },
   {
@@ -55,6 +60,7 @@ const ARTICLES: ArticleEntry[] = [
     title:
       "Piratage bancaire : dans quels cas votre banque doit-elle obligatoirement vous rembourser ?",
     source: "Capital",
+    date: "2 septembre 2026",
     href: "https://www.capital.fr/votre-argent/piratage-bancaire-dans-quels-cas-votre-banque-doit-elle-obligatoirement-vous-rembourser-1529747",
   },
   {
@@ -62,6 +68,7 @@ const ARTICLES: ArticleEntry[] = [
     title:
       "Les entreprises ne savent pas précisément quels outils d'IA elles utilisent",
     source: "Sud Ouest",
+    date: "2 août 2026",
     href: "https://www.sudouest.fr/sciences-et-technologie/intelligence-artificielle-les-entreprises-ne-savent-pas-precisement-quels-outils-ia-elles-utilisent-analyse-un-avocat-30114992.php",
   },
   {
@@ -69,6 +76,7 @@ const ARTICLES: ArticleEntry[] = [
     title:
       "Fraude bancaire en ligne : les banques se dérobent, les épargnants paient le prix",
     source: "Le Revenu",
+    date: "21 octobre 2024",
     href: "https://www.lerevenu.com/diversifier-placements/placements-divers/fraude-bancaire-en-ligne-les-banques-se-derobent-les-epargnants-paient-le-prix/",
   },
 ];
@@ -82,7 +90,7 @@ function ArticleCard({ item }: { item: ArticleEntry }) {
       href={item.href}
       target="_blank"
       rel="noopener"
-      aria-label={`${item.title} — ${item.source}, ${BADGE_LABELS[item.kind]} (ouvre un nouvel onglet)`}
+      aria-label={`${item.title} — ${item.source}, ${item.date}, ${BADGE_LABELS[item.kind]} (ouvre un nouvel onglet)`}
       className={SHELL}
     >
       <div className="flex flex-1 flex-col gap-2 p-4">
@@ -90,9 +98,13 @@ function ArticleCard({ item }: { item: ArticleEntry }) {
         <h3 className="flex-1 text-[13px] font-medium leading-snug text-[#0A0F2E]">
           {item.title}
         </h3>
+        {/* Nom du média puis, dessous, la date de publication. */}
         <div className="border-t border-[#0A0F2E]/[0.08] pt-2">
-          <span className="text-[11px] leading-snug text-[#0A0F2E]/55">
+          <span className="block text-[11px] leading-snug text-[#0A0F2E]/60">
             {item.source}
+          </span>
+          <span className="mt-0.5 block font-mono text-[10px] tracking-[0.04em] text-[#0A0F2E]/45">
+            {item.date}
           </span>
         </div>
       </div>
