@@ -571,7 +571,7 @@ const CARDS: DifferentiateurCard[] = [
     imageSrc: "/images/pourquoi-nous/plaque-tilsitt.webp",
     imageAlt: "Plaque du cabinet Lazarègue Avocats, 18 rue de Tilsitt, Paris",
     title: "Une pratique du numérique depuis 2016",
-    text: "Dix ans d'interventions sur les cyberattaques, les données personnelles, l'IA, les plateformes et les projets informatiques bloqués.",
+    text: "Le cabinet intervient sur les cyberattaques, les données personnelles, l'intelligence artificielle, les plateformes et les projets informatiques en difficulté.",
   },
 ];
 
