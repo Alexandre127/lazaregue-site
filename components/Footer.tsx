@@ -89,10 +89,12 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-white/35">
+      <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-white/55">
         {title}
       </p>
-      <div className="flex flex-col gap-2 text-[13px] leading-relaxed text-white/55">
+      {/* Cibles tactiles : chaque lien de colonne fait au moins 44px de haut
+          (zone cliquable), texte centré verticalement. */}
+      <div className="flex flex-col gap-1 text-[13px] leading-relaxed text-white/55 [&>a]:flex [&>a]:min-h-[44px] [&>a]:items-center">
         {children}
       </div>
     </div>
@@ -178,7 +180,7 @@ export function Footer() {
         <div className="border-b border-white/[0.07] bg-[#06080f] px-4 py-10 md:px-8 md:py-20 lg:px-12">
           <div className="container mx-auto flex flex-col items-start justify-between gap-5 md:flex-row md:items-center">
             <div className="max-w-xl">
-              <p className="mb-4 font-mono text-[10px] tracking-widest text-white/35">
+              <p className="mb-4 font-mono text-[10px] tracking-widest text-white/55">
                 QUELLE QUE SOIT LA SITUATION
               </p>
               <h2 className="text-2xl font-medium leading-snug text-white md:text-3xl">
@@ -211,13 +213,16 @@ export function Footer() {
               <p className="mb-3 text-lg font-medium tracking-wide text-white">
                 LAZARÈGUE <span className="text-[#1A47FF]">AVOCATS</span>
               </p>
-              <p className="mb-6 text-[13px] text-white/45">
+              <p className="mb-6 text-[13px] text-white/55">
                 Cabinet en droit du numérique. Paris, toute la France.
               </p>
               <ul className="space-y-3 text-[13px] text-white/55">
                 <li className="flex items-center gap-2.5">
                   <IconPhone />
-                  <a href="tel:+33181706200" className="hover:text-white">
+                  <a
+                    href="tel:+33181706200"
+                    className="flex min-h-[44px] items-center hover:text-white"
+                  >
                     +33 1 81 70 62 00
                   </a>
                 </li>
@@ -225,7 +230,7 @@ export function Footer() {
                   <IconMail />
                   <a
                     href="mailto:contact@lazaregue-avocats.fr"
-                    className="hover:text-white"
+                    className="flex min-h-[44px] items-center hover:text-white"
                   >
                     contact@lazaregue-avocats.fr
                   </a>
@@ -345,16 +350,19 @@ export function Footer() {
             LAZARÈGUE AVOCATS
           </p>
 
-          <div className="container relative z-10 mx-auto flex flex-col items-center justify-between gap-4 text-[12px] text-white/40 md:flex-row">
+          <div className="container relative z-10 mx-auto flex flex-col items-center justify-between gap-4 text-[12px] text-white/55 md:flex-row">
             <p>© 2026 Lazarègue Avocats — Tous droits réservés</p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/mentions-legales" className="hover:text-white">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Link
+                href="/mentions-legales"
+                className="inline-flex min-h-[44px] items-center px-2 hover:text-white"
+              >
                 Mentions légales
               </Link>
-              <span className="text-white/20">·</span>
+              <span className="text-white/25">·</span>
               <Link
                 href="/politique-de-confidentialite"
-                className="hover:text-white"
+                className="inline-flex min-h-[44px] items-center px-2 hover:text-white"
               >
                 Confidentialité
               </Link>
@@ -368,7 +376,7 @@ export function Footer() {
                 aria-label="LinkedIn — Alexandre Lazarègue"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/50 transition-colors hover:text-white"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center text-white/60 transition-colors hover:text-white"
               >
                 <LinkedinLogo className="size-5" />
               </a>

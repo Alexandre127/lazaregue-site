@@ -100,10 +100,10 @@ function ArticleCard({ item }: { item: ArticleEntry }) {
         </h3>
         {/* Nom du média puis, dessous, la date de publication. */}
         <div className="border-t border-[#0A0F2E]/[0.08] pt-2">
-          <span className="block text-[11px] leading-snug text-[#0A0F2E]/60">
+          <span className="block text-[11px] leading-snug text-[#0A0F2E]/70">
             {item.source}
           </span>
-          <span className="mt-0.5 block font-mono text-[10px] tracking-[0.04em] text-[#0A0F2E]/45">
+          <span className="mt-0.5 block font-mono text-[10px] tracking-[0.04em] text-[#0A0F2E]/60">
             {item.date}
           </span>
         </div>
