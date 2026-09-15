@@ -124,11 +124,12 @@ export function SectionCas() {
 
       <div className="px-4 py-8 md:px-8 md:py-14 lg:px-12">
         {/* Sur-titre : cohérence avec les sections à en-tête descriptif (Équipe,
-            Presse) qui portent un court sur-titre. « Cas pratiques » (et non
-            « cas clients » : la page parle de dossiers anonymisés, pas d'une
-            relation contractuelle). */}
+            Presse) qui portent un court sur-titre. « Dossiers traités » — ni
+            « cas pratiques » (exercice d'école), ni « cas d'usage » (vocabulaire
+            logiciel), ni « cas client » (clients identifiables, contraire à
+            l'anonymisation des dossiers). */}
         <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[#AEB4CC]">
-          Cas pratiques
+          Dossiers traités
         </p>
         <h2 className="mb-6 text-[22px] font-medium leading-snug text-white md:mb-8">
           Le droit du numérique en action
