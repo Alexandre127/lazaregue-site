@@ -1,6 +1,5 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
 
 export function SectionCabinet() {
   return (
@@ -9,23 +8,21 @@ export function SectionCabinet() {
       style={{ backgroundColor: "#060912" }}
     >
       {/*
-        La photo d'équipe était servie brute en pleine résolution pour un
-        affichage de 340 px de haut. `next/image` la redimensionne et la
-        convertit en WebP ; `sizes="100vw"` parce qu'elle occupe toute la
-        largeur du conteneur.
+        Photographie du cabinet. Elle pointe vers /contact (aria-label explicite
+        pour que la destination du lien soit claire malgré l'image). Le cartouche
+        d'adresse superposé (« coordonnées » que rien ne signalait) a été retiré —
+        l'adresse figure au pied de page.
 
-        Elle est plus haute que large dans un bandeau très large : en `cover`,
-        plus l'écran s'élargit, plus le rognage vertical est sévère — au point
-        de couper les visages. La hauteur suit donc la largeur (35vw), la
-        largeur est plafonnée, et le cadrage à 48 % centre la bande sur les
-        deux personnes, dont les visages sont vers 48 % de la hauteur.
+        `next/image` la redimensionne en WebP ; `sizes="100vw"` (pleine largeur).
+        Plus haute que large dans un bandeau large : en `cover`, la hauteur suit
+        la largeur (35vw), la largeur est plafonnée, cadrage à 30 % centré sur les
+        visages.
       */}
-      <div
-        className="relative overflow-hidden mt-2 md:mt-8"
+      <Link
+        href="/contact"
+        aria-label="Contacter le cabinet Lazarègue Avocats"
+        className="relative block overflow-hidden mt-2 md:mt-8"
         style={{
-          /* Sans plafond de largeur, le bandeau continue de s'élargir sur
-             les très grands écrans alors que sa hauteur est bornée : le
-             rognage se resserre et finit par recouper les visages. */
           maxWidth: "1400px",
           marginInline: "auto",
           height: "clamp(340px, 35vw, 560px)",
@@ -34,17 +31,11 @@ export function SectionCabinet() {
       >
         <style>{`
           @keyframes kenBurns {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.06);
-            }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.06); }
           }
           @media (prefers-reduced-motion: reduce) {
-            .kenBurns {
-              animation: none !important;
-            }
+            .kenBurns { animation: none !important; }
           }
         `}</style>
         <Image
@@ -55,50 +46,11 @@ export function SectionCabinet() {
           sizes="100vw"
           style={{
             objectFit: "cover",
-            // Trois visages : têtes à ~18%, yeux ~30%, mentons ~43% de la
-            // hauteur. Point focal à 30% → au rognage large du desktop, la bande
-            // visible va de ~12% à ~71% : têtes dégagées (headroom ~6%), mentons
-            // largement inclus. Sur mobile le cadre est quasi carré : toute la
-            // hauteur est visible, seul un rognage latéral centré s'applique et
-            // les trois visages (29/51/74%) restent dans la zone visible.
             objectPosition: "center 30%",
             animation: "kenBurns 12s ease-in-out infinite alternate",
           }}
         />
-        {/* Légende — superposée en bas de l'image sur desktop (inchangé). Sur
-            mobile, ce cartouche bleu sur fond sombre était peu lisible et se
-            faisait couper par le bord de l'image : on le masque et on le
-            reporte sous l'image (voir <p> ci-dessous). */}
-        <span
-          className="absolute hidden md:block"
-          style={{
-            bottom: "12px",
-            left: "16px",
-            fontSize: "12px",
-            color: "#1A47FF",
-            fontWeight: 500,
-            letterSpacing: "0.06em",
-            background: "rgba(6,9,18,0.7)",
-            padding: "4px 10px",
-            borderRadius: "3px",
-          }}
-        >
-          Lazarègue Avocats · 18 rue de Tilsitt · 75017 Paris
-        </span>
-      </div>
-
-      {/* Légende mobile : hors de l'image, lisible (gris clair, pas de rognage). */}
-      <p
-        className="md:hidden"
-        style={{
-          marginTop: "10px",
-          fontSize: "11px",
-          color: "#8892A6",
-          letterSpacing: "0.04em",
-        }}
-      >
-        Lazarègue Avocats · 18 rue de Tilsitt · 75017 Paris
-      </p>
+      </Link>
 
       <p
         className="home-kicker"
@@ -147,12 +99,13 @@ export function SectionCabinet() {
         litiges liés aux plateformes numériques.
       </p>
 
+      {/* Deux liens réels (les boutons précédents étaient inertes). */}
       <div
-        className="flex justify-center"
+        className="flex flex-wrap justify-center"
         style={{ marginTop: "24px", gap: "16px" }}
       >
-        <button
-          type="button"
+        <Link
+          href="/contact"
           style={{
             backgroundColor: "#1A47FF",
             color: "white",
@@ -160,14 +113,13 @@ export function SectionCabinet() {
             borderRadius: "4px",
             fontSize: "12px",
             textTransform: "uppercase",
-            border: "none",
-            cursor: "pointer",
+            textDecoration: "none",
           }}
         >
           Une problématique juridique ? Parlons-en →
-        </button>
-        <button
-          type="button"
+        </Link>
+        <Link
+          href="/le-cabinet"
           style={{
             backgroundColor: "transparent",
             color: "#C5CBDE",
@@ -175,11 +127,11 @@ export function SectionCabinet() {
             padding: "14px 24px",
             borderRadius: "4px",
             fontSize: "12px",
-            cursor: "pointer",
+            textDecoration: "none",
           }}
         >
           Découvrir le cabinet →
-        </button>
+        </Link>
       </div>
     </section>
   );
