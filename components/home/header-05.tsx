@@ -281,7 +281,7 @@ export function Header5() {
                 explorer » a été retirée — une consigne de survol ne fonctionne ni
                 au toucher ni au clavier (UX-045). */}
             <p style={{ color: "rgba(255,255,255,0.50)" }}>
-              ATLAS MONDIAL DU DROIT DU NUMÉRIQUE
+              ATLAS INTERACTIF DU DROIT DU NUMÉRIQUE
             </p>
           </div>
 
