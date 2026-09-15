@@ -581,7 +581,7 @@ function DifferentiateurSpotlightTitle() {
         @supports ((-webkit-background-clip: text) or (background-clip: text)) {
           @media (prefers-reduced-motion: no-preference) {
             .laz-spotlight-title {
-              background: linear-gradient(100deg, #0A0F2E 0%, #0A0F2E 42%, #1A47FF 50%, #0A0F2E 58%, #0A0F2E 100%);
+              background: linear-gradient(100deg, #0A0F2E 0%, #0A0F2E 34%, #4D6FFF 50%, #0A0F2E 66%, #0A0F2E 100%);
               background-size: 260% 100%;
               background-position: var(--spot, 0%) 50%;
               -webkit-background-clip: text;
@@ -900,7 +900,7 @@ function PortailDemo() {
 
 export function SectionDifferenciateurs() {
   return (
-    <section className="w-full bg-[#F8F9FA] px-4 py-16 md:px-8 md:py-24 lg:px-12">
+    <section className="w-full bg-[#F8F9FA] px-4 py-8 md:px-8 md:py-14 lg:px-12">
       {/* Trois cartes illustrées : 1 colonne en mobile, 3 colonnes ≥768px.
           Le grand bloc portail passe en deux colonnes ≥768px. */}
       <style>{`
