@@ -38,11 +38,11 @@ export const metadata: Metadata = {
  * cette page serveur, d'où la reprise à l'identique ici.
  */
 const EQUIPE = [
-  { nom: "Alexandre Lazarègue", intitule: "Avocat au barreau de Paris", domaine: "Cybercriminalité & gestion de crise" },
-  { nom: "Sarah Hinderer", intitule: "Avocate aux barreaux de Paris et de Montréal", domaine: "Données personnelles & intelligence artificielle" },
-  { nom: "Amir Ben Majed", intitule: "Avocat au barreau de l'Essonne", domaine: "Contrats IT & contentieux technologiques" },
-  { nom: "Khalid Sookia", intitule: "Notre consultant technique — cybersécurité", domaine: "Investigation numérique" },
-  { nom: "Nadia Abchiche-Mimouni", intitule: "Experte indépendante", domaine: "Intelligence artificielle & éthique algorithmique" },
+  { nom: "Alexandre Lazarègue", intitule: "Avocat au barreau de Paris", domaine: "Cybercriminalité et gestion de crise" },
+  { nom: "Sarah Hinderer", intitule: "Avocate aux barreaux de Paris et de Montréal", domaine: "Données personnelles et intelligence artificielle" },
+  { nom: "Amir Ben Majed", intitule: "Avocat au barreau d'Évry", domaine: "Contrats IT et contentieux informatique" },
+  { nom: "Khalid Sookia", intitule: "Consultant en cybersécurité", domaine: "Investigation numérique" },
+  { nom: "Nadia Abchiche-Mimouni", intitule: "Maîtresse de conférences en informatique à l'Université Côte d'Azur", domaine: "Intelligence artificielle et éthique algorithmique" },
 ];
 
 const CABINET_ID = "https://lazaregue-avocats.fr/#cabinet";
