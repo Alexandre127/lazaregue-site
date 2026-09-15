@@ -117,7 +117,7 @@ const FAMILLES: Famille[] = [
 ];
 
 const CARD_BASE =
-  "relative flex h-full flex-col rounded-xl p-5 md:p-6";
+  "relative flex h-full flex-col overflow-hidden rounded-xl p-5 md:p-6";
 const CARD_STYLE = {
   background: "rgba(255,255,255,0.03)",
   border: "1px solid rgba(255,255,255,0.08)",
@@ -232,12 +232,29 @@ export default function SectionCompetences() {
         .domaine-card {
           transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
         }
+        /* Halo lumineux : un balayage traverse la carte AU SEUL SURVOL (pas de
+           boucle permanente — dix cartes animées en continu = bruit visuel).
+           Purement décoratif (pointer-events:none). Aucun effet au toucher : le
+           balayage part hors champ et ne bouge qu'au survol pointeur fin. */
+        .domaine-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.10) 50%, transparent 68%);
+          transform: translateX(-120%);
+          transition: transform 0.7s ease;
+        }
         @media (hover: hover) and (pointer: fine) {
           a.domaine-card:hover {
             border-color: rgba(26,71,255,0.5);
             background-color: rgba(26,71,255,0.06);
             transform: translateY(-2px);
           }
+          a.domaine-card:hover::after { transform: translateX(120%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .domaine-card::after { display: none; }
         }
       `}</style>
     </section>
