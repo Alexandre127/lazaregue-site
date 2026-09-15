@@ -92,7 +92,7 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
 
 export function SectionEquipe() {
   return (
-    <section className="bg-[#0A0F2E] py-16 md:py-24">
+    <section className="bg-[#0A0F2E] py-8 md:py-14">
       {/* Trois avocats au rang 1, deux experts centrés au rang 2 — même largeur
           de carte, jamais étirées. Conteneur calé sur trois cartes. */}
       <style>{`

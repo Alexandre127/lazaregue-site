@@ -4,7 +4,7 @@ import Link from "next/link";
 export function SectionCabinet() {
   return (
     <section
-      className="pt-8 pb-14 md:py-24 px-[5%] text-center"
+      className="py-8 md:py-14 px-[5%] text-center"
       style={{ backgroundColor: "#060912" }}
     >
       {/*

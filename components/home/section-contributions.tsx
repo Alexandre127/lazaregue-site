@@ -114,7 +114,7 @@ function ArticleCard({ item }: { item: ArticleEntry }) {
 
 export function SectionContributions() {
   return (
-    <section className="bg-[#EEF1F8] py-16 md:py-24">
+    <section className="bg-[#EEF1F8] py-8 md:py-14">
       <div className="relative z-20 px-4 md:px-8 lg:px-12">
         <header className="mb-7 max-w-2xl">
           <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#0A0F2E]/65">
