@@ -240,6 +240,7 @@
   font-family: var(--ff-mono);
   font-size: 9.5px;
   letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: #7f8aff;
   margin: 0 0 16px;
 }

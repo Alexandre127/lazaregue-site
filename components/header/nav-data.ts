@@ -7,10 +7,8 @@
  * VERBATIM (phrases verbales, pas des listes de mots-clés) : ne pas les
  * raccourcir ni y ajouter de mots-clés.
  *
- * Câblage sur les routes RÉELLES du projet (le brief employait un schéma
- * /domaines/* qui n'existe pas). Correspondance validée avec le cabinet.
- * ⚠️ « Fusions-acquisitions technologiques » est la seule sous /competences/
- * (et non /nos-domaines/) — incohérence de structure à traiter séparément.
+ * Câblage sur les routes RÉELLES du projet. Depuis le lot 2, les dix domaines
+ * (M&A Tech compris) sont sous /nos-domaines/ ; plus aucune route /competences/.
  */
 
 export type DomaineLink = {
@@ -23,7 +21,10 @@ export type DomaineLink = {
 };
 
 export type Famille = {
-  /** Intitulé de famille (bas de casse, non cliquable). */
+  /**
+   * Intitulé de famille, non cliquable. Repris AU MOT PRÈS de la section
+   * « Domaines d'intervention » de la home (lot 8) : ne pas reformuler.
+   */
   intitule: string;
   domaines: DomaineLink[];
 };
@@ -31,7 +32,7 @@ export type Famille = {
 /** Les trois familles du panneau DOMAINES (3 × 3). */
 export const FAMILLES: Famille[] = [
   {
-    intitule: "conformité et risques",
+    intitule: "Conformité et gouvernance",
     domaines: [
       {
         titre: "RGPD et données personnelles",
@@ -51,7 +52,7 @@ export const FAMILLES: Famille[] = [
     ],
   },
   {
-    intitule: "contrats et opérations",
+    intitule: "Contrats et opérations numériques",
     domaines: [
       {
         titre: "Contrats informatiques",
@@ -71,7 +72,7 @@ export const FAMILLES: Famille[] = [
     ],
   },
   {
-    intitule: "contentieux et atteintes",
+    intitule: "Contentieux et atteintes numériques",
     domaines: [
       {
         titre: "Fraude bancaire et escroquerie en ligne",
@@ -136,13 +137,12 @@ export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
  * hero) : l'état est connu dès le rendu serveur, donc aucun clignotement.
  *
  * Correspondance par segment : `/nos-domaines` couvre l'index ET toutes les
- * pages de domaine ; `/competences` couvre ma-tech (et les futures pages).
+ * pages de domaine (M&A Tech compris depuis le lot 2).
  * Quand une page à hero sombre est ajoutée hors de ces préfixes, l'inscrire ici.
  */
 export const ROUTES_HERO_SOMBRE = [
   "/", // accueil
   "/nos-domaines", // index + toutes les pages de domaine
-  "/competences", // ma-tech
   "/le-cabinet",
   "/ressources",
   "/contact",
