@@ -210,8 +210,7 @@ export default function Page() {
               </div>
             </div>
 
-            <h3>Quatre spécimens</h3>
-            <p className="mention">Documents reconstitués pour illustration&nbsp;: aucune donnée réelle n’y figure.</p>
+            <h3>Quatre extraits</h3>
             <SpecimenViewer />
           </div>
         </section>

@@ -17,20 +17,22 @@ import { track } from "@/lib/track";
 
 // Lettre-tête de document — composant Logo du projet (charte § 02), pas une
 // reconstruction CSS.
-function DocBrand() {
+function DocBrand({ badge }: { badge: string }) {
   return (
     <div className="doc-brand">
       <span className="id">
         <Logo />
       </span>
-      <span>spécimen</span>
+      <span className="doc-badge">{badge}</span>
     </div>
   );
 }
 
 type Specimen = {
   id: string;
+  num: string;
   name: string;
+  accroche: string;
   ariaLabel: string;
   doc: ReactNode;
   explain: ReactNode;
@@ -39,11 +41,13 @@ type Specimen = {
 const SPECIMENS: Specimen[] = [
   {
     id: "spec-1",
+    num: "01",
     name: "Rapport d’audit et plan d’action",
+    accroche: "Les écarts constatés, hiérarchisés par risque",
     ariaLabel: "Aperçu : rapport d’audit et plan d’action",
     doc: (
       <div className="doc">
-        <DocBrand />
+        <DocBrand badge="Rapport d’audit" />
         <div className="doc-inner">
           <div className="doc-title">
             <h4>Rapport d’audit — protection des données</h4>
@@ -129,11 +133,13 @@ const SPECIMENS: Specimen[] = [
   },
   {
     id: "spec-2",
+    num: "02",
     name: "Registre des activités de traitement",
+    accroche: "La base légale documentée, traitement par traitement",
     ariaLabel: "Aperçu : registre des activités de traitement",
     doc: (
       <div className="doc">
-        <DocBrand />
+        <DocBrand badge="Registre art. 30" />
         <div className="doc-inner">
           <div className="doc-title">
             <h4>Registre des activités de traitement</h4>
@@ -213,11 +219,13 @@ const SPECIMENS: Specimen[] = [
   },
   {
     id: "spec-3",
-    name: "Contrat de sous-traitance — article 28",
+    num: "03",
+    name: "DPA sous-traitant — art. 28",
+    accroche: "Les clauses que les éditeurs refusent, et comment elles se rédigent",
     ariaLabel: "Aperçu : contrat de sous-traitance, article 28",
     doc: (
       <div className="doc">
-        <DocBrand />
+        <DocBrand badge="DPA art. 28" />
         <div className="doc-inner">
           <div className="doc-title">
             <h4>Accord de sous-traitance — révision des clauses</h4>
@@ -228,7 +236,7 @@ const SPECIMENS: Specimen[] = [
             <p className="nom-clause">Recours à un sous-traitant ultérieur</p>
             <div className="diff">
               <div className="col recue">
-                <span className="tag">version reçue</span>
+                <span className="tag">version de départ</span>
                 <p>Le prestataire peut recourir à tout sous-traitant de son choix pour l’exécution du service.</p>
               </div>
               <div className="col proposee">
@@ -242,7 +250,7 @@ const SPECIMENS: Specimen[] = [
             <p className="nom-clause">Violation de données</p>
             <div className="diff">
               <div className="col recue">
-                <span className="tag">version reçue</span>
+                <span className="tag">version de départ</span>
                 <p>Le prestataire informe le client dans les meilleurs délais en cas d’incident de sécurité.</p>
               </div>
               <div className="col proposee">
@@ -256,7 +264,7 @@ const SPECIMENS: Specimen[] = [
             <p className="nom-clause">Sort des données en fin de contrat</p>
             <div className="diff">
               <div className="col recue">
-                <span className="tag">version reçue</span>
+                <span className="tag">version de départ</span>
                 <p>Les données sont conservées par le prestataire à des fins d’archivage.</p>
               </div>
               <div className="col proposee">
@@ -290,11 +298,13 @@ const SPECIMENS: Specimen[] = [
   },
   {
     id: "spec-4",
+    num: "04",
     name: "Procédure de gestion d’une violation",
+    accroche: "Notifier ou non : les critères de la décision",
     ariaLabel: "Aperçu : procédure de gestion d’une violation de données",
     doc: (
       <div className="doc">
-        <DocBrand />
+        <DocBrand badge="Procédure art. 33" />
         <div className="doc-inner">
           <div className="doc-title">
             <h4>Procédure — violation de données personnelles</h4>
@@ -370,9 +380,30 @@ const SPECIMENS: Specimen[] = [
 export function SpecimenViewer() {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+
+  // Mention « faire défiler » affichée UNIQUEMENT quand un tableau déborde
+  // réellement de sa carte (jamais en desktop si le tableau tient ; sous 620px
+  // les tableaux sont recomposés en blocs, donc aucun débordement). Recalcul au
+  // changement d'extrait, à l'ouverture de la modale et au redimensionnement.
+  useEffect(() => {
+    const sync = () => {
+      const root = rootRef.current;
+      if (!root) return;
+      root.querySelectorAll<HTMLElement>(".table-scroll").forEach((box) => {
+        const hint = box.previousElementSibling;
+        if (!hint || !hint.classList.contains("scroll-hint")) return;
+        const overflows = box.scrollWidth > box.clientWidth + 1;
+        hint.classList.toggle("is-visible", overflows);
+      });
+    };
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, [active, zoomed]);
 
   const select = (i: number) => {
     if (i === active) return;
@@ -434,7 +465,7 @@ export function SpecimenViewer() {
   }, [zoomed, closeModal]);
 
   return (
-    <>
+    <div ref={rootRef}>
       <div className="specimens">
         {SPECIMENS.map((s, i) => {
           const open = i === active;
@@ -447,8 +478,12 @@ export function SpecimenViewer() {
                 aria-controls={s.id}
                 onClick={() => select(i)}
               >
-                <span className="tick" aria-hidden="true" />
-                <span className="nom">{s.name}</span>
+                <span className="num" aria-hidden="true">{s.num}</span>
+                <span className="txt">
+                  <span className="nom">{s.name}</span>
+                  <span className="accroche">{s.accroche}</span>
+                </span>
+                <span className="dot" aria-hidden="true" />
                 <span className="chev" aria-hidden="true" />
                 <span className="sr-only">
                   {open ? "document affiché" : "document masqué"}
@@ -469,13 +504,14 @@ export function SpecimenViewer() {
                     type="button"
                     onClick={(e) => openModal(i, e.currentTarget)}
                   >
-                    Agrandir le spécimen
+                    Agrandir le document
                   </button>
                 </div>
               </div>
             </Fragment>
           );
         })}
+        <p className="livr-mention">Extraits anonymisés · aucune donnée réelle</p>
       </div>
 
       {zoomed && (
@@ -504,13 +540,13 @@ export function SpecimenViewer() {
             <div
               className="modal-body"
               tabIndex={0}
-              aria-label={`Spécimen : ${SPECIMENS[active].name}`}
+              aria-label={`Extrait : ${SPECIMENS[active].name}`}
             >
               {SPECIMENS[active].doc}
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

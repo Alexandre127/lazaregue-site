@@ -80,6 +80,9 @@ export function HeroVideo() {
         <source src="/videos/rgpd-hero.webm" type="video/webm" />
         <source src="/videos/rgpd-hero.mp4" type="video/mp4" />
       </video>
+      {/* Couches du duoton bleu — décoratives. */}
+      <div className="media-color" aria-hidden="true" />
+      <div className="media-lift" aria-hidden="true" />
     </div>
   );
 }
