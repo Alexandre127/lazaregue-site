@@ -81,3 +81,14 @@ un glissement de souris dans le vide autour du globe pilote la rotation. Sans
 gravité, mais à consigner. Piste : restreindre les écouteurs de pointeur à la
 zone de la sphère, ou réduire le canevas à la sphère (voir aussi §3, la marge
 récupérable pour la colonne de copie).
+
+## 7. Deuxième implémentation morte du portail (section « Pourquoi nous »)
+
+`components/home/section-differenciateurs.tsx` contient une seconde implémentation
+du portail, morte : `ClientPortalMockupVisual` (et ses fonctions d'aide
+PortalFileIcon, IconDossiers, etc., types PortalFile/PortalDossier). Elle n'est
+appelée nulle part — seule `PortailDemo` est rendue (grand bloc portail).
+Conservée pour l'instant (retrait de ~400 lignes reporté hors exécution
+autonome, pour ne pas risquer une régression non revue). Avertissements lint
+préexistants : `ClientPortalMockupVisual` inutilisé, `prog` inutilisé.
+À supprimer au lot technique.
