@@ -1,0 +1,318 @@
+/* ==========================================================================
+   Pied de page + CTA global — charte v1.1 (§ 04–09).
+   Tokens repris de globals.css (var(--navy), var(--ink), var(--blue),
+   var(--blue3), var(--wh), var(--ff-*)). #9FB2FF = Light Blue « muted-on-dark »
+   de la charte (texte secondaire sur fond sombre) ; hors palette Tailwind, donc
+   en littéral. Aucune couleur hors charte.
+   Rendu côté serveur, media queries (le pied de page occupe la largeur de la
+   fenêtre en production ; pas de container query nécessaire).
+   ========================================================================== */
+
+/* Rail latéral : 20px sous 768px, 36px au-delà (charte § 05). */
+.ctaGlobal,
+.siteFooter,
+.footerBottom {
+  --gutter: 20px;
+}
+@media (min-width: 768px) {
+  .ctaGlobal,
+  .siteFooter,
+  .footerBottom {
+    --gutter: 36px;
+  }
+}
+
+/* --- Focus visible : anneau 3px (charte § 09). L'anneau bleu ne mesure que
+   3,02:1 sur Navy : doublé d'un liseré blanc de 1px pour rester perceptible. -- */
+.brandWrap a:focus-visible,
+.contact a:focus-visible,
+.flist a:focus-visible,
+.btn:focus-visible,
+.social:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--wh);
+}
+
+/* Logo réutilisé (composant partagé) — le conteneur borne l'anneau de focus.
+   La cible cliquable du logo est portée à 44px de haut sans modifier le
+   composant Logo (sélecteur de descendance sur son <a>). */
+.brandWrap {
+  display: inline-flex;
+  width: fit-content;
+}
+.brandWrap a {
+  min-height: 44px;
+}
+
+/* ==========================================================================
+   1. CTA GLOBAL COMPACT — fond Ink
+   ========================================================================== */
+.ctaGlobal {
+  background: var(--ink);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.ctaInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+.ctaEyebrow {
+  margin: 0 0 12px;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb2ff;
+}
+.ctaTitle {
+  margin: 0;
+  font-family: var(--ff-body);
+  font-weight: 500;
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--wh);
+  max-width: 24ch;
+}
+@media (min-width: 768px) {
+  .ctaInner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+  }
+  .ctaTitle {
+    max-width: 36ch;
+  }
+}
+
+/* Bouton primaire — charte § 06 : Space Grotesk 16px/600, casse phrase,
+   min-height 44px, padding 13px 24px, border-radius 0. Survol / actif : fond
+   Deep Blue + soulignement (l'état ne repose pas sur la seule couleur). */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 13px 24px;
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  color: var(--wh);
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+.btn:hover {
+  background: var(--blue3);
+  border-color: var(--blue3);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.btn:active {
+  background: var(--blue3);
+  border-color: var(--wh);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   2. PIED DE PAGE — fond Navy
+   ========================================================================== */
+.siteFooter {
+  background: var(--navy);
+  color: #9fb2ff;
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px var(--gutter) 24px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+@media (min-width: 640px) {
+  .cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .colIdentity {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1040px) {
+  .cols {
+    grid-template-columns: 1.3fr 1.3fr 0.75fr 0.85fr;
+    column-gap: 36px;
+  }
+  .colIdentity {
+    grid-column: auto;
+  }
+  .inner {
+    padding: 72px var(--gutter) 24px;
+  }
+}
+
+/* --- Colonne 1 : identité et coordonnées ------------------------------- */
+.brandText {
+  margin: 24px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #9fb2ff;
+  max-width: 36ch;
+}
+.bar {
+  margin: 12px 0 0;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: #9fb2ff;
+}
+.contact {
+  font-style: normal;
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+.contact a,
+.contact span {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.contact a {
+  color: var(--wh);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  align-self: flex-start;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.contact a:hover {
+  color: #9fb2ff;
+  border-bottom-color: var(--blue);
+}
+.contact span {
+  color: #9fb2ff;
+}
+
+/* --- Colonnes 2 à 4 : navigation --------------------------------------- */
+/* Titre de section — <p>, jamais <h2> (ne perturbe pas la hiérarchie de la
+   page). DM Mono 13px, tracking 0.16em, #9FB2FF (charte § 06). */
+.colTitle {
+  margin: 0 0 16px;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb2ff;
+}
+.flist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.flist a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--wh);
+  font-size: 16px;
+  line-height: 1.6;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0;
+  transition: padding-left 0.18s ease, border-color 0.18s ease;
+}
+.flist a:hover {
+  border-left-color: var(--blue);
+  padding-left: 12px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.flist a:focus-visible {
+  border-left-color: var(--blue);
+}
+/* Domaine sans page dédiée : texte non cliquable (pas de faux lien). */
+.flist .pending {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: #9fb2ff;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* --- Ligne inférieure --------------------------------------------------- */
+.footerBottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px var(--gutter) 36px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+.copyright {
+  margin: 0;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #9fb2ff;
+}
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--wh);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+.social:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.social svg {
+  display: block;
+}
+/* Réserve basse mobile : rien ne doit masquer le copyright si une barre
+   d'action collante existe (aucune sur ce site : --mobile-bar-h = 0). */
+@media (max-width: 767px) {
+  .footerBottom {
+    padding-bottom: calc(24px + var(--mobile-bar-h, 0px) + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .contact a,
+  .flist a,
+  .social {
+    transition: none;
+  }
+}

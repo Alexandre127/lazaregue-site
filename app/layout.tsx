@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
+import { GlobalCta } from "@/components/footer/global-cta";
+import { SiteFooter } from "@/components/footer/site-footer";
 import { PageEffects } from "@/components/lazaregue/page-effects";
 import { SiteHeader } from "@/components/header/site-header";
 import { SITE_URL } from "@/lib/site-url";
@@ -34,7 +35,8 @@ export default function RootLayout({
         <PageEffects />
         <SiteHeader />
         {children}
-        <Footer />
+        <GlobalCta />
+        <SiteFooter />
       </body>
     </html>
   );
