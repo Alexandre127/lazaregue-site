@@ -20,7 +20,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/nos-domaines/rgpd-donnees-personnelles", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite/nis2", priority: 0.9, frequence: "monthly" },
-  { path: "/nos-domaines/intelligence-artificielle", priority: 0.9, frequence: "monthly" },
+  { path: "/nos-domaines/avocat-intelligence-artificielle", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/contrats-informatiques", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybercriminalite", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/escroquerie-fraude-bancaire", priority: 0.9, frequence: "monthly" },

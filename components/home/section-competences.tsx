@@ -59,7 +59,7 @@ const FAMILLES: Famille[] = [
       {
         title: "Intelligence artificielle et AI Act",
         desc: "Encadrer les outils d'IA utilisés ou développés par l'entreprise et préparer la conformité à l'AI Act.",
-        href: "/nos-domaines/intelligence-artificielle",
+        href: "/nos-domaines/avocat-intelligence-artificielle",
       },
       {
         title: "Cybersécurité et NIS 2",

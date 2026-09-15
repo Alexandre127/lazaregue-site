@@ -372,7 +372,7 @@ const KHALID_EXAMINE = [
 const LIENS = [
   { ancre: "Obligations de sécurité et réponse à incident", href: "/nos-domaines/cybersecurite" },
   { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees-personnelles" },
-  { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/intelligence-artificielle" },
+  { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/avocat-intelligence-artificielle" },
   { ancre: "Due diligence des actifs technologiques (M&A)", href: "/nos-domaines/ma-tech" },
   { ancre: "Responsabilité du prestataire informatique", href: null }, // page à venir
 ];

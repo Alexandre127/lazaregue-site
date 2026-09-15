@@ -263,7 +263,7 @@ export default function Page() {
               <li>
                 <h3>AI Act et projets d’intelligence artificielle</h3>
                 <p>L’articulation entre le règlement sur l’intelligence artificielle et la protection des données.</p>
-                <Link className="link-nav" href="/nos-domaines/intelligence-artificielle">Découvrir l’AI Act</Link>
+                <Link className="link-nav" href="/nos-domaines/avocat-intelligence-artificielle">Découvrir l’AI Act</Link>
               </li>
             </ul>
           </div>

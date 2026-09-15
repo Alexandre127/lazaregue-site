@@ -201,7 +201,7 @@ export const DOMAINES: { href: string; label: string }[] = [
   { href: "/nos-domaines/contrats-informatiques", label: "Contentieux informatique et projets IT" },
   { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et incidents" },
   { href: "/nos-domaines/rgpd-donnees-personnelles", label: "RGPD et protection des données" },
-  { href: "/nos-domaines/intelligence-artificielle", label: "Intelligence artificielle et AI Act" },
+  { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Intelligence artificielle et AI Act" },
   { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et atteintes aux systèmes" },
   { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Escroquerie et fraude" },
   { href: "/nos-domaines/diffamation-retrait-contenus", label: "Diffamation et retrait de contenus" },

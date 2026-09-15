@@ -42,7 +42,7 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Intelligence artificielle",
         contexte: "Appliquer l'AI Act et encadrer les usages internes",
-        href: "/nos-domaines/intelligence-artificielle",
+        href: "/nos-domaines/avocat-intelligence-artificielle",
       },
       {
         titre: "Cybersécurité et NIS 2",

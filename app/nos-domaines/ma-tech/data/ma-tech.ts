@@ -160,7 +160,7 @@ export const DOMAINES_AUDIT: Domaine[] = [
   {
     h3: "Systèmes d'intelligence artificielle",
     p: "Qualification des systèmes, répartition des rôles entre fournisseur, déployeur et intégrateur, provenance des données d'entraînement, droits sur les modèles et recours à des modèles tiers, documentation, restrictions affectant l'exploitation commerciale.",
-    lien: { href: "/nos-domaines/intelligence-artificielle", label: "Notre pratique Intelligence artificielle & AI Act" },
+    lien: { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Notre pratique Intelligence artificielle & AI Act" },
   },
 ];
 

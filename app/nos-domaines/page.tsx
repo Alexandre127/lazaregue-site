@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 const PHRASES_PAGE: Record<string, string> = {
   "/nos-domaines/rgpd-donnees-personnelles":
     "Cartographie des traitements, contrats de sous-traitance, notification d'une violation, contrôle et sanction de la CNIL.",
-  "/nos-domaines/intelligence-artificielle":
+  "/nos-domaines/avocat-intelligence-artificielle":
     "Qualification des systèmes au regard de l'AI Act, répartition fournisseur-déployeur, gouvernance interne et contrats avec les éditeurs.",
   "/nos-domaines/cybersecurite":
     "Assujettissement à NIS 2, obligations de la chaîne de sous-traitance, notification d'incident et responsabilité des dirigeants.",

@@ -62,7 +62,14 @@ const nextConfig = {
       },
       {
         source: "/nos-domaines/ia-act",
-        destination: "/nos-domaines/intelligence-artificielle",
+        destination: "/nos-domaines/avocat-intelligence-artificielle",
+        statusCode: 301,
+      },
+      // La page IA a été renommée en /avocat-intelligence-artificielle (maquette
+      // V9). 301 directe vers le slug définitif.
+      {
+        source: "/nos-domaines/intelligence-artificielle",
+        destination: "/nos-domaines/avocat-intelligence-artificielle",
         statusCode: 301,
       },
       {
