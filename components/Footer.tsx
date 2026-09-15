@@ -194,7 +194,7 @@ export function Footer() {
                 className="inline-flex items-center gap-3 rounded-full border border-[#1A47FF] bg-transparent px-8 py-4 text-[15px] text-[#1A47FF] transition-all duration-200 hover:bg-[#1A47FF] hover:text-white"
               >
                 <IconUserCircle />
-                Parler à un avocat
+                Exposer votre situation à un avocat
               </button>
               <HeroCTACard
                 open={ctaOpen}
@@ -361,9 +361,10 @@ export function Footer() {
             </div>
             <div className="flex items-center gap-3">
               {/* Un seul réseau : LinkedIn. Le lien X a été retiré (refonte
-                  home, lot 2). URL du profil validée par le cabinet. */}
+                  home, lot 2). URL exacte fournie par le cabinet, posée telle
+                  quelle (accent « è », sans barre finale, sans ré-encodage). */}
               <a
-                href="https://www.linkedin.com/in/alexandre-lazarègue/"
+                href="https://www.linkedin.com/in/alexandre-lazarègue"
                 aria-label="LinkedIn — Alexandre Lazarègue"
                 target="_blank"
                 rel="noopener noreferrer"
