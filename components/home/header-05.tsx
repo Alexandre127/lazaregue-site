@@ -175,8 +175,13 @@ export function Header5() {
           n'existe qu'au-dessus du seuil (import dynamique). */}
       <div className="laz-hero-left overflow-visible">
         <div className="laz-hero-copy overflow-visible -mt-[28px]">
-          {/* Badge — mobile uniquement (masqué ≥900px en CSS). */}
-          <span className="laz-hero-badge">Paris · Depuis 2016</span>
+          {/* Badge du hero — appartient au titre, pas au logo. Une pastille
+              bleue (décorative) le distingue du traitement de marque : il se lit
+              comme un repère du hero, non comme un sous-titre du cabinet. */}
+          <span className="laz-hero-badge">
+            <span className="laz-hero-badge-dot" aria-hidden />
+            Paris · Depuis 2016
+          </span>
 
           <HeroReveal delay={0}>
             <h1

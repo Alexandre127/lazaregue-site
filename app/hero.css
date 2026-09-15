@@ -764,8 +764,11 @@
 .laz-hero-badge {
   display: flex;
   align-items: center;
+  gap: 8px;
   width: fit-content;
-  margin: 0 0 10px;
+  /* Écart accru avec l'en-tête (margin-top) et réduit avec le H1 (margin-bottom)
+     pour que le badge soit manifestement plus proche du titre que du logo. */
+  margin: 18px 0 6px;
   padding: 7px 14px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
@@ -777,6 +780,17 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
   white-space: nowrap;
+}
+
+/* Pastille bleue décorative — distingue le badge du traitement de marque. */
+.laz-hero-badge-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #1a47ff;
+  box-shadow: 0 0 0 3px rgba(26, 71, 255, 0.18);
+  flex-shrink: 0;
 }
 
 @media (max-width: 900px) {
@@ -814,12 +828,14 @@
     animation: lazHeroHaloDrift 20s ease-in-out infinite alternate;
   }
 
-  /* 2 — Badge discret au-dessus du titre. */
+  /* 2 — Badge discret au-dessus du titre. Écart accru avec l'en-tête et réduit
+     avec le H1 (cf. règle desktop). */
   .laz-hero-badge {
     display: flex;
     align-items: center;
+    gap: 7px;
     width: fit-content;
-    margin: 0 0 8px;
+    margin: 16px 0 5px;
     padding: 6px 12px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 999px;
