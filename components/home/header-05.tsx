@@ -277,10 +277,12 @@ export function Header5() {
               border: "0.5px solid rgba(255,255,255,0.08)",
             }}
           >
+            {/* Légende discrète : le seul intitulé. L'instruction « survolez pour
+                explorer » a été retirée — une consigne de survol ne fonctionne ni
+                au toucher ni au clavier (UX-045). */}
             <p style={{ color: "rgba(255,255,255,0.50)" }}>
               ATLAS MONDIAL DU DROIT DU NUMÉRIQUE
             </p>
-            <p style={{ color: "#1A47FF" }}>SURVOLEZ POUR EXPLORER</p>
           </div>
 
           <div
