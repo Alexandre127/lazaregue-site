@@ -1,39 +1,58 @@
 /**
- * FAQ de la page « Crypto-actifs et blockchain ».
+ * Source unique des six questions fréquentes — page « Crypto-actifs, blockchain
+ * et Web3 » (maquette v6). Texte repris à l'identique.
  *
- * Source unique partagée par l'affichage (`<details>`) ET le JSON-LD FAQPage,
- * pour garantir l'identité mot pour mot. Textes repris de la maquette
- * (version affichée, la plus complète).
+ * Chaque réponse est une suite de segments : texte, exposant (`sup`) ou lien
+ * (`link`). Le composant FAQ les rend (avec `<sup>` / `<a>`), et le JSON-LD
+ * FAQPage concatène le MÊME texte (segments mis bout à bout) — le texte affiché
+ * et le texte structuré sont donc strictement identiques.
  */
-export type FaqItem = { q: string; a: string };
+export type Seg = string | { sup: string } | { link: string; href: string };
 
-export const FAQ_ITEMS: FaqItem[] = [
+export const FAQ_ITEMS: { q: string; a: Seg[] }[] = [
   {
-    q: "Un ancien enregistrement PSAN permet-il encore d'exercer ?",
-    a: "Non. Depuis le 1er juillet 2026, l'enregistrement ou l'agrément national obtenu sous l'ancien régime ne suffit plus, à lui seul, pour fournir en France les services sur crypto-actifs relevant du règlement MiCA. L'opérateur doit disposer d'une autorisation délivrée au titre du règlement, d'un passeport européen obtenu dans un autre État membre, ou, lorsque son statut le permet, du régime de notification prévu à l'article 60 pour certaines entités financières.",
+    q: "L'enregistrement PSAN permet-il encore d'exercer en France ?",
+    a: [
+      "Non, pas à lui seul. Depuis le 1",
+      { sup: "er" },
+      " juillet 2026, les services sur crypto-actifs relevant du règlement MiCA supposent une autorisation PSCA, un passeport obtenu dans un autre État membre ou, pour certaines entités financières, le régime de notification prévu par le règlement.",
+    ],
   },
   {
-    q: "Cryptomonnaie ou crypto-actif : la distinction a-t-elle une portée juridique ?",
-    a: "Oui. « Cryptomonnaie » est un terme d'usage sans définition légale. Le droit européen raisonne sur les crypto-actifs et distingue notamment les jetons se référant à un ou plusieurs actifs, les jetons de monnaie électronique et les autres crypto-actifs, chacun relevant d'obligations différentes. Certains instruments échappent d'ailleurs au règlement MiCA pour relever du droit des instruments financiers. La qualification retenue commande le régime applicable : elle constitue toujours la première étape du travail.",
+    q: "Quelle différence entre PSAN et PSCA ?",
+    a: [
+      "Le PSAN relevait d'un régime français d'enregistrement ou d'agrément auprès de l'AMF. Le PSCA est le statut créé par le règlement MiCA : il repose sur une autorisation, ouvre un passeport européen et comporte des exigences de gouvernance, de fonds propres, de conservation et de traitement des réclamations.",
+    ],
   },
   {
-    q: "Mon projet nécessite-t-il une autorisation ?",
-    a: "La réponse dépend de la nature exacte du service fourni et de la question de savoir si l'entreprise détient ou non les actifs et les clés de ses utilisateurs. Un modèle purement logiciel, une interface ou un service d'information ne relèvent pas nécessairement du périmètre régulé. L'analyse doit être conduite sur le fonctionnement réel du dispositif et non sur sa présentation commerciale.",
+    q: "Un smart contract remplace-t-il un contrat juridique ?",
+    a: [
+      "Non. Le code peut automatiser l'exécution de certaines obligations, mais l'interprétation, la suspension, la résiliation, la responsabilité et la loi applicable restent régies par la documentation contractuelle et par le droit.",
+    ],
   },
   {
-    q: "Une entreprise déjà agréée doit-elle solliciter une autorisation distincte ?",
-    a: "Certains établissements de crédit, entreprises d'investissement et établissements de monnaie électronique peuvent fournir certains services sur crypto-actifs après une simple notification à leur autorité de tutelle, dans les conditions de l'article 60 du règlement. Le périmètre des services ainsi ouverts est limité et doit être vérifié service par service.",
+    q: "Peut-on agir contre une plateforme qui bloque des crypto-actifs ?",
+    a: [
+      "Oui, selon le motif du blocage, les conditions générales et les obligations de vigilance invoquées. L'action commence en général par une demande documentée ; un référé peut être envisagé si l'urgence le justifie. L'issue dépend des faits et n'est jamais garantie.",
+    ],
   },
   {
-    q: "Un smart contract a-t-il valeur de contrat ?",
-    a: "Le code peut matérialiser ou automatiser l'exécution de certaines obligations, mais il ne détermine pas à lui seul l'ensemble de l'accord. L'interprétation, la suspension, la résiliation, la responsabilité et le droit applicable restent régis par la documentation contractuelle et par le droit. C'est la raison pour laquelle tout projet reposant sur des smart contracts doit s'accompagner d'un écrit cohérent avec le fonctionnement du programme.",
+    q: "Le cabinet peut-il récupérer des cryptomonnaies volées ?",
+    a: [
+      "Aucune récupération ne peut être promise. Une action suppose d'identifier un interlocuteur atteignable, le plus souvent un intermédiaire régulé par lequel les fonds ont transité. En cas de faux conseiller ou de faux investissement, consultez la page ",
+      { link: "Escroquerie et fraude bancaire", href: "/nos-domaines/escroquerie-fraude-bancaire" },
+      ".",
+    ],
   },
   {
-    q: "Est-il possible de récupérer des crypto-actifs détournés ?",
-    a: "Aucune réponse générale ne peut être donnée. Les perspectives de recouvrement dépendent de l'existence d'un intermédiaire régulé dans la chaîne des flux, de la localisation des actifs et de la solvabilité des intervenants identifiés. Le cabinet procède à cette analyse avant d'engager une procédure et se prononce sur son opportunité.",
-  },
-  {
-    q: "Le cabinet intervient-il en dehors de Paris ?",
-    a: "Oui. Le cabinet est établi à Paris et intervient devant les juridictions de l'ensemble du territoire.",
+    q: "L'achat d'un NFT transfère-t-il les droits d'auteur ?",
+    a: [
+      "Non, pas à lui seul. La propriété du jeton est distincte des droits d'auteur sur l'œuvre, dont la cession suppose un écrit précisant les droits cédés, leur étendue et leur durée.",
+    ],
   },
 ];
+
+/** Texte plat d'une réponse (pour le JSON-LD FAQPage). */
+export function faqAnswerText(a: Seg[]): string {
+  return a.map((s) => (typeof s === "string" ? s : "sup" in s ? s.sup : s.link)).join("");
+}
