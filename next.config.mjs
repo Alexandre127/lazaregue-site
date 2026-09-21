@@ -35,19 +35,56 @@ const nextConfig = {
       },
       // L'ancienne page « plateformes » est devenue « Diffamation et retrait de
       // contenus ». Redirection 301 (statusCode explicite : `permanent: true`
-      // émettrait un 308) pour conserver le référencement acquis.
+      // émettrait un 308) pointant directement vers le slug définitif, sans
+      // enchaîner sur une autre redirection.
       {
         source: "/competences/plateformes",
-        destination: "/nos-domaines/diffamation-retrait-de-contenus",
+        destination: "/nos-domaines/diffamation-retrait-contenus",
         statusCode: 301,
       },
       // La page « escroquerie et fraude » a d'abord été poussée en top-level
       // (/avocat-escroquerie-fraude) avant d'être rangée sous /nos-domaines.
-      // Redirection 301 au cas où l'ancienne URL aurait circulé depuis le
-      // premier push. (301 explicite, même convention que ci-dessus.)
+      // Redirection 301 pointant directement sur le slug définitif, sans chaîne.
       {
         source: "/avocat-escroquerie-fraude",
-        destination: "/nos-domaines/avocat-escroquerie-fraude",
+        destination: "/nos-domaines/escroquerie-fraude-bancaire",
+        statusCode: 301,
+      },
+
+      // Renommage des cinq routes de domaines (refonte home, lot 2). Le site
+      // étant en préproduction (noindex), rien n'est indexé ; ces 301 couvrent
+      // les anciennes adresses qui auraient pu circuler par ailleurs. Chacune
+      // vise directement le slug définitif : aucune n'en appelle une autre.
+      {
+        source: "/nos-domaines/rgpd-donnees",
+        destination: "/nos-domaines/rgpd-donnees-personnelles",
+        statusCode: 301,
+      },
+      {
+        source: "/nos-domaines/ia-act",
+        destination: "/nos-domaines/avocat-intelligence-artificielle",
+        statusCode: 301,
+      },
+      // La page IA a été renommée en /avocat-intelligence-artificielle (maquette
+      // V9). 301 directe vers le slug définitif.
+      {
+        source: "/nos-domaines/intelligence-artificielle",
+        destination: "/nos-domaines/avocat-intelligence-artificielle",
+        statusCode: 301,
+      },
+      {
+        source: "/competences/ma-tech",
+        destination: "/nos-domaines/ma-tech",
+        statusCode: 301,
+      },
+      {
+        source: "/nos-domaines/avocat-escroquerie-fraude",
+        destination: "/nos-domaines/escroquerie-fraude-bancaire",
+        statusCode: 301,
+      },
+      {
+        source: "/nos-domaines/diffamation-retrait-de-contenus",
+        destination: "/nos-domaines/diffamation-retrait-contenus",
         statusCode: 301,
       },
     ];

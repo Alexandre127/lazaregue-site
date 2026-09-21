@@ -1,168 +1,98 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+
+/*
+ * Section « L'équipe » — composant serveur.
+ *
+ * V4 : les cinq profils sont répartis en DEUX groupes explicitement nommés —
+ * « Les avocats » (trois) et « Les intervenants techniques » (deux) — pour
+ * porter la distinction par la proximité et non par une étiquette (MAR-019).
+ *  · grand écran (≥ 1101px) : les deux groupes côte à côte, séparés par un filet
+ *    vertical ;
+ *  · ≤ 1100px : ils se succèdent, séparés par un filet horizontal, les cartes
+ *    restant en ligne dans chaque groupe ;
+ *  · téléphone (≤ 639px) : une carte par ligne, photo plus grande (4:3), puis
+ *    statut, nom, qualité et compétence dessous.
+ *
+ * Chaque carte porte un statut en toutes lettres (AVOCAT / APPUI TECHNIQUE) :
+ * la distinction avocat / intervenant technique n'est jamais portée par la seule
+ * couleur. Portrait = image simple (aucun retournement, non focalisable). Fond
+ * marine conservé (rythme des sections committé). Qualités exactes de la fiche.
+ */
 
 type TeamMember = {
   fullName: string;
-  role: string;
-  photoBase: string;
-  photoHover: string;
-  tag: { color: string };
-  signature: string;
-  /**
-   * Avocat ou intervenant extérieur. La distinction n'est pas cosmétique :
-   * le RIN interdit d'entretenir une confusion entre les avocats du cabinet
-   * et les experts indépendants qui interviennent à leurs côtés.
-   */
-  statut: string;
-  avocat: boolean;
-  /** Cadrage de la photo de survol, quand le sujet n'est pas centré. */
-  positionHover?: string;
-  /** Cadrage du portrait recto, quand le sujet n'est pas centré. */
+  status: string; // AVOCAT / AVOCATE / APPUI TECHNIQUE
+  quality: string; // qualité exacte (barreau / fonction)
+  role: string; // champ d'intervention
+  photo: string;
   positionBase?: string;
-  /** Texte alternatif dédié du portrait recto (sinon dérivé du nom + rôle). */
   portraitAlt?: string;
 };
 
-const TEAM_MEMBERS: TeamMember[] = [
+const LAWYERS: TeamMember[] = [
   {
     fullName: "Alexandre Lazarègue",
-    statut: "Avocat au barreau de Paris",
-    avocat: true,
-    role: "Cybercriminalité & gestion de crise",
-    photoBase: "/images/alexandre-pro.jpg",
-    photoHover: "/images/alexandre-cool.jpg",
-    tag: { color: "#4D6FFF" },
-    signature:
-      "« Les attaques les plus graves paralysent désormais l'activité avant même d'être détectées. »",
+    status: "Avocat",
+    quality: "Avocat au barreau de Paris",
+    role: "Cybercriminalité et gestion de crise",
+    photo: "/images/alexandre-pro.jpg",
   },
   {
     fullName: "Sarah Hinderer",
-    statut: "Avocate aux barreaux de Paris et de Montréal",
-    avocat: true,
-    role: "Données personnelles & intelligence artificielle",
-    photoBase: "/images/equipe/sarah-hinderer.webp",
-    portraitAlt: "Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal",
-    // Portrait buste sur fond bleu : ancrage haut pour ne pas couper au menton.
+    status: "Avocate",
+    quality: "Avocate aux barreaux de Paris et de Montréal",
+    role: "Données personnelles et intelligence artificielle",
+    photo: "/images/equipe/sarah-hinderer.webp",
     positionBase: "center top",
-    photoHover: "/images/sarah-cool.jpg",
-    tag: { color: "#5DCAA5" },
-    signature:
-      "« Les systèmes d'IA doivent rester explicables, traçables et gouvernables. »",
+    portraitAlt:
+      "Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal",
   },
   {
     fullName: "Amir Ben Majed",
-    statut: "Avocat au barreau de l'Essonne",
-    avocat: true,
-    role: "Contrats IT & contentieux technologiques",
-    photoBase: "/images/amir-pro.jpg",
-    photoHover: "/images/amir-cool.jpg",
-    tag: { color: "#F09595" },
-    signature:
-      "« Les projets numériques échouent rarement pour des raisons uniquement techniques. »",
+    status: "Avocat",
+    quality: "Avocat au barreau d'Évry",
+    role: "Contrats IT et contentieux informatique",
+    photo: "/images/amir-pro.jpg",
   },
+];
+
+const TECHNICAL: TeamMember[] = [
   {
     fullName: "Khalid Sookia",
-    statut: "Notre consultant technique — cybersécurité",
-    avocat: false,
+    status: "Appui technique",
+    quality: "Consultant en cybersécurité",
     role: "Investigation numérique",
-    photoBase: "/images/khalid-pro.jpg",
-    photoHover: "/images/khalid-cool.jpg",
-    tag: { color: "#ED93B1" },
-    signature:
-      "« Les cybercriminels exploitent autant les vulnérabilités humaines que techniques. »",
+    photo: "/images/khalid-pro.jpg",
   },
   {
     fullName: "Nadia Abchiche-Mimouni",
-    statut: "Experte indépendante",
-    avocat: false,
-    role: "Intelligence artificielle & éthique algorithmique",
-    photoBase: "/images/nadia-pro.jpg",
-    // La photo de conférence est cadrée large, le sujet à droite : le
-    // décalage horizontal la garde dans le champ au survol.
-    photoHover: "/images/nadia-cool.jpg",
-    positionHover: "68% 30%",
-    tag: { color: "#C9A227" },
-    // TODO à faire valider par l'intéressée : phrase rédigée par le cabinet,
-    // attribuée à une personne réelle. Ne pas mettre en ligne sans son accord.
-    signature:
-      "« Un algorithme n'a pas d'intention. Il a des données, des choix de conception, et des conséquences. »",
+    status: "Appui technique",
+    quality:
+      "Maîtresse de conférences en informatique à l'Université Côte d'Azur",
+    role: "Intelligence artificielle et éthique algorithmique",
+    photo: "/images/nadia-pro.jpg",
   },
 ];
 
 function TeamMemberCard({ member }: { member: TeamMember }) {
-  const altBase = `${member.fullName} — ${member.role}`;
-  // Recto = portrait, verso = la photo « en dehors du cabinet ». Le
-  // retournement 3D reprend le mécanisme des études de cas. Un <button> natif
-  // apporte gratuitement le focus clavier et l'activation par Entrée / Espace ;
-  // `aria-expanded` porte l'état persistant (clic / clavier). Le survol
-  // retourne en plus la carte, en pur CSS, sur les appareils qui le
-  // permettent. `prefers-reduced-motion` remplace la rotation par une
-  // substitution d'opacité (voir les styles de la section).
-  const [flipped, setFlipped] = useState(false);
-  const sizes = "(max-width: 700px) 72vw, (max-width: 1200px) 33vw, 20vw";
-
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg border border-white/10 bg-[#0A0A14]">
-      {/* Portrait au rapport 4/5, jamais rogné verticalement. La zone qui
-          tourne se limite à la photo : le nom et la qualité, sous la carte,
-          restent visibles recto comme verso. */}
-      <button
-        type="button"
-        onClick={() => setFlipped((v) => !v)}
-        aria-expanded={flipped}
-        aria-label={
-          flipped
-            ? `${member.fullName} — revenir au portrait`
-            : `${member.fullName} — voir en dehors du cabinet`
-        }
-        className={`equipe-flip group relative block aspect-[4/5] w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A47FF] focus-visible:ring-inset ${
-          flipped ? "is-flipped" : ""
-        }`}
-      >
-        <span className="equipe-flip-inner">
-          <span className="equipe-flip-face equipe-flip-front">
-            <Image
-              src={member.photoBase}
-              alt={member.portraitAlt ?? altBase}
-              fill
-              sizes={sizes}
-              className="object-cover"
-              style={{ objectPosition: member.positionBase ?? "center" }}
-            />
-          </span>
-          <span className="equipe-flip-face equipe-flip-back">
-            <Image
-              src={member.photoHover}
-              alt=""
-              aria-hidden
-              fill
-              sizes={sizes}
-              className="object-cover"
-              style={{ objectPosition: member.positionHover ?? "center" }}
-            />
-          </span>
-        </span>
-      </button>
-
-      {/* Hors de la zone qui tourne : nom, qualité (la distinction avocat /
-          expert reste lisible), puis fonction en libellé discret. */}
-      <div className="flex flex-col gap-1.5 px-3 pt-3 pb-4 sm:px-[18px] sm:pt-4">
-        <p className="text-[15px] font-medium text-white sm:text-[16px]">
-          {member.fullName}
-        </p>
-        <p
-          className={`font-mono text-[9px] uppercase tracking-[0.12em] ${
-            member.avocat ? "text-[#9FA8C0]" : "text-[#C5CBDE]"
-          }`}
-        >
-          {member.statut}
-        </p>
-        <p className="font-mono text-[11px] tracking-[0.04em] text-[#C5CBDE]">
-          {member.role}
-        </p>
+    <article className="person-card">
+      <div className="person-photo">
+        <Image
+          src={member.photo}
+          alt={member.portraitAlt ?? `Portrait de ${member.fullName}`}
+          fill
+          sizes="(max-width: 639px) 100vw, (max-width: 1100px) 33vw, 220px"
+          className="object-cover"
+          style={{ objectPosition: member.positionBase ?? "center 22%" }}
+        />
+      </div>
+      <div className="person-info">
+        <p className="person-status">{member.status}</p>
+        <h3 className="person-name">{member.fullName}</h3>
+        <p className="person-role">{member.quality}</p>
+        <p className="person-expertise">{member.role}</p>
       </div>
     </article>
   );
@@ -170,68 +100,131 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
 
 export function SectionEquipe() {
   return (
-    <section className="bg-[#0A0F2E] py-16 md:py-24">
-      {/* 5 cartes de taille identique sur une seule rangée. La distinction
-          avocat / expert n'est plus portée par deux grilles séparées mais par
-          la qualité affichée sous chaque carte. */}
+    <section className="equipe-v4 border-t border-white/[0.08] bg-[#0A0F2E] py-8 md:py-14">
       <style>{`
-        /* Option A : deux rangs. Trois avocats au rang 1, deux intervenants
-           centrés au rang 2 — même largeur de carte, jamais étirés. Flex centré
-           avec largeur de carte fixe et conteneur calé sur trois cartes. */
-        .equipe-cards {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 16px;
-          max-width: 782px; /* 3 × 250 + 2 × 16 : exactement trois par rang */
+        .equipe-v4 .team-grid {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 24px;
+          max-width: 1100px;
           margin: 0 auto;
         }
-        .equipe-cards > * { flex: 0 0 250px; max-width: 250px; }
-        @media (max-width: 639px) {
-          .equipe-cards { max-width: 340px; }
-          .equipe-cards > * { flex-basis: 100%; max-width: 100%; }
+        .equipe-v4 .team-group {
+          display: grid;
+          gap: 22px;
+          align-content: start;
+          min-width: 0;
+          position: relative;
         }
-
-        /* Retournement 3D du portrait — repris des cartes « études de cas ». */
-        .equipe-flip { perspective: 1000px; padding: 0; border: 0; background: transparent; cursor: pointer; overflow: hidden; }
-        .equipe-flip-inner {
-          position: absolute;
-          inset: 0;
-          transform-style: preserve-3d;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        .equipe-v4 .team-group-lawyers {
+          grid-column: 1 / span 3;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
-        .equipe-flip-face {
+        .equipe-v4 .team-group-technical {
+          grid-column: 4 / span 2;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .equipe-v4 .team-group-technical::before {
+          content: "";
           position: absolute;
-          inset: 0;
-          display: block;
+          left: -12px;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: rgba(255, 255, 255, 0.16);
+        }
+        .equipe-v4 .team-group-label {
+          grid-column: 1 / -1;
+          margin: 0;
+          font-family: 'DM Mono', monospace;
+          font-size: 12px;
+          line-height: 1.5;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #9FA8C0;
+        }
+        .equipe-v4 .person-card { min-width: 0; }
+        .equipe-v4 .person-photo {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 0.82;
           overflow: hidden;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
+          background: #0A0A14;
+          border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .equipe-flip-back { transform: rotateY(180deg); }
-        @media (hover: hover) and (pointer: fine) {
-          .equipe-flip:hover .equipe-flip-inner { transform: rotateY(180deg); }
+        .equipe-v4 .person-info { min-width: 0; }
+        .equipe-v4 .person-status {
+          margin: 14px 0 0;
+          font-family: 'DM Mono', monospace;
+          font-size: 12px;
+          line-height: 1.4;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #4D6FFF;
         }
-        .equipe-flip.is-flipped .equipe-flip-inner { transform: rotateY(180deg); }
+        .equipe-v4 .person-name {
+          margin: 7px 0 0;
+          font-size: 18px;
+          font-weight: 500;
+          line-height: 1.25;
+          color: #fff;
+        }
+        .equipe-v4 .person-role {
+          margin: 8px 0 0;
+          font-family: 'DM Mono', monospace;
+          font-size: 12px;
+          line-height: 1.5;
+          letter-spacing: 0.02em;
+          color: #9FA8C0;
+        }
+        .equipe-v4 .person-expertise {
+          margin: 12px 0 0;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #C5CBDE;
+        }
 
-        /* Mouvement réduit : pas de rotation 3D, substitution directe par
-           opacité (transition neutralisée). */
-        @media (prefers-reduced-motion: reduce) {
-          .equipe-flip-inner { transition: none; transform: none !important; transform-style: flat; }
-          .equipe-flip-face { backface-visibility: visible; -webkit-backface-visibility: visible; }
-          .equipe-flip-back { transform: none; opacity: 0; }
-          .equipe-flip-front { opacity: 1; }
-          .equipe-flip.is-flipped .equipe-flip-front { opacity: 0; }
-          .equipe-flip.is-flipped .equipe-flip-back { opacity: 1; }
+        /* ≤ 1100px : les groupes se succèdent, filet horizontal entre eux ;
+           cartes toujours en ligne (3 puis 2). */
+        @media (max-width: 1100px) {
+          .equipe-v4 .team-grid { grid-template-columns: 1fr; gap: 34px; max-width: 720px; }
+          .equipe-v4 .team-group-lawyers,
+          .equipe-v4 .team-group-technical {
+            grid-column: 1;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+          }
+          .equipe-v4 .team-group-technical {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+          }
+          .equipe-v4 .team-group-technical::before { display: none; }
+          .equipe-v4 .person-photo { aspect-ratio: 0.88; }
         }
-        @media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
-          .equipe-flip:hover .equipe-flip-front { opacity: 0; }
-          .equipe-flip:hover .equipe-flip-back { opacity: 1; }
+
+        /* Téléphone (≤ 639px) : une carte par ligne, photo 4:3 plus grande,
+           statut / nom / qualité / compétence dessous. */
+        @media (max-width: 639px) {
+          .equipe-v4 .team-grid { gap: 40px; max-width: 420px; }
+          .equipe-v4 .team-group-lawyers,
+          .equipe-v4 .team-group-technical {
+            grid-template-columns: 1fr;
+            gap: 32px;
+          }
+          .equipe-v4 .person-photo { aspect-ratio: 4 / 3; }
+          .equipe-v4 .person-photo img { object-position: center 20% !important; }
+          .equipe-v4 .person-name { font-size: 22px; }
+          .equipe-v4 .person-role { font-size: 13px; }
+          .equipe-v4 .person-expertise { font-size: 15px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .equipe-v4 .person-photo img { transition: none !important; }
         }
       `}</style>
 
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
-        <header className="mb-8 text-center">
+        <header className="mb-8 text-center md:mb-10">
           <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#C5CBDE] md:mb-4">
             L&apos;équipe
           </p>
@@ -240,20 +233,44 @@ export function SectionEquipe() {
             <br />
             Des experts techniques qui comprennent le droit.
           </h2>
-          {/* Paragraphe « Trois avocats… deux experts… » retiré : les cartes
-              qui suivent portent déjà ces informations. */}
         </header>
 
-        <div className="equipe-cards">
-          {TEAM_MEMBERS.map((member) => (
-            <TeamMemberCard key={member.fullName} member={member} />
-          ))}
+        <div className="team-grid">
+          <div
+            className="team-group team-group-lawyers"
+            role="group"
+            aria-labelledby="groupe-avocats"
+          >
+            <p className="team-group-label" id="groupe-avocats">
+              Les avocats
+            </p>
+            {LAWYERS.map((member) => (
+              <TeamMemberCard key={member.fullName} member={member} />
+            ))}
+          </div>
+          <div
+            className="team-group team-group-technical"
+            role="group"
+            aria-labelledby="groupe-technique"
+          >
+            <p className="team-group-label" id="groupe-technique">
+              Les intervenants techniques
+            </p>
+            {TECHNICAL.map((member) => (
+              <TeamMemberCard key={member.fullName} member={member} />
+            ))}
+          </div>
         </div>
+
+        <p className="mx-auto mt-8 max-w-[720px] text-center text-[13px] leading-relaxed text-[#9FA8C0] md:mt-10">
+          Les intervenants techniques apportent leur expertise aux côtés des
+          avocats. Ils n&apos;exercent pas la profession d&apos;avocat.
+        </p>
 
         {/* /equipe n'existe pas : la page de l'équipe, c'est /le-cabinet. */}
         <Link
           href="/le-cabinet"
-          className="mx-auto mt-10 block w-fit border border-white/15 px-8 py-3 text-sm text-white transition-colors hover:border-[#1A47FF] hover:bg-[#1A47FF]"
+          className="mx-auto mt-8 block w-fit border border-white/15 px-8 py-3 text-sm text-white transition-colors hover:border-[#1A47FF] hover:bg-[#1A47FF]"
         >
           Rencontrer l&apos;équipe →
         </Link>

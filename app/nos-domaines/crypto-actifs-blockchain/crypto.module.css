@@ -1,526 +1,318 @@
-/*
- * Page « Crypto-actifs et blockchain » — transposition de la maquette
- * maquette-crypto-actifs-blockchain.html. Couleurs et polices mappées sur les
- * tokens globaux de globals.css (pas de redéfinition). Tout est scopé sous
- * `.page` : la classe étant hachée par CSS Modules, les sélecteurs d'éléments
- * (`.page h2`, `.page p`…) ne fuient pas en global.
- */
-
-.page {
-  /* Alias maquette → tokens globaux. */
-  --electric: var(--blue);
-  --periwinkle: var(--blue2);
-  --deep: var(--blue3);
-  --ghost: var(--off);
-  --white: var(--wh);
-  --muted: var(--mu);
-  --border: var(--bd);
-  /* Accent éditorial « contrats et opérations » — provisoire (maquette),
-     à remplacer par la valeur de charte quand elle sera fixée. */
-  --famille: var(--blue2);
-  --display: var(--ff-display);
+/* ==========================================================================
+   Page « Crypto-actifs, blockchain et Web3 » — maquette v6, charte v1.1.
+   Portée : descendants de `.crypto` (hashé) ; :global pour le balisage repris.
+   Le CSS de la maquette est déjà conforme à la charte (radius 0, tokens, focus
+   #9FB2FF sur fond sombre). On le réutilise en scopé, on retire le chrome
+   (header/footer/menu, fournis par le layout global) et on aliase les tokens du
+   dépôt (aucune valeur en dur : ces --alias pointent tous vers des tokens réels).
+   ========================================================================== */
+.crypto {
   --sans: var(--ff-body);
   --mono: var(--ff-mono);
-  /* --navy, --ink sont déjà globaux. */
+  --display: var(--ff-display);
+  --white: var(--wh);
+  --border: var(--bd);
+  --pad: var(--page-margin);
+  --header-h: 72px;
 
   background: var(--wh);
   color: var(--ink);
   font-family: var(--sans);
-  font-weight: 400;
   font-size: 17px;
-  line-height: 1.62;
+  line-height: 1.65;
+  overflow-x: clip;
 }
+@media (max-width: 639px) { .crypto { --pad: var(--page-margin-mobile); font-size: 17px; } }
 
-/* Neutralise la règle globale `p { color: blanc 82 % }` et fixe l'interligne de
-   base sur `.page` (hérité) plutôt que sur `.page p`. */
-.page p {
-  font-family: var(--sans);
-  color: inherit;
-  margin-bottom: 18px;
-}
-.page a {
-  color: var(--electric);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(26, 71, 255, 0.28);
-}
-.page a:hover {
-  border-bottom-color: var(--electric);
-}
-.page :focus-visible {
-  outline: 2px solid var(--electric);
-  outline-offset: 3px;
-}
+/* Neutralise le défaut global (p blanc 82 %) sur fond clair. */
+.crypto :global(p),
+.crypto :global(li),
+.crypto :global(dd) { color: var(--ink); }
 
-.wrap {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
+.crypto :global(h1),
+.crypto :global(h2),
+.crypto :global(h3) { font-family: var(--sans); font-weight: 500; margin: 0; line-height: 1.15; letter-spacing: -0.01em; color: var(--ink); }
+.crypto :global(p) { margin: 0 0 16px; }
+.crypto :global(p:last-child) { margin-bottom: 0; }
+.crypto :global(ul),
+.crypto :global(ol) { margin: 0; padding: 0; }
+.crypto :global(a) { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.crypto :global(a:hover) { color: var(--blue3); text-decoration-thickness: 2px; }
+.crypto :global(:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.crypto :global(.dark :focus-visible) { outline-color: #ffffff; }
 
-/* ---------- héro ---------- */
-.hero {
-  background: var(--navy);
-  color: var(--white);
-  padding: 96px 0 84px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.045) 0 1px,
-    transparent 1px 84px
-  );
-}
-.hero .wrap {
-  position: relative;
-}
-.heroGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 400px;
-  gap: 72px;
-  align-items: end;
-}
-/* Le badge du héros est la pastille partagée du site (components/keyword-badge,
-   mode span). Aucun style de badge propre à cette page. */
-.hero h1 {
-  /* Échelle commune des H1 de pages compétence : Bebas Neue en capitales,
-     interlignage serré (identique à escroquerie / cybersécurité). La maquette,
-     antérieure à cette convention, employait Space Grotesk casse normale. */
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(32px, 5.5vw, 60px);
-  line-height: 0.9;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-  color: var(--white);
-}
-.lede {
-  font-weight: 300;
-  font-style: italic;
-  font-size: 20px;
-  line-height: 1.55;
-  color: #c9cde4;
-  margin-top: 24px;
-  max-width: 52ch;
-}
-.sub {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #9aa0be;
-  margin-top: 16px;
-  max-width: 52ch;
-}
-/* Bouton primaire — style commun du site (BTN_PRIMARY : fond bleu, texte blanc,
-   angles arrondis). Scopé `.page a.btn` pour l'emporter sur la règle `.page a`
-   (qui, sinon, colore le texte en bleu et souligne le bouton → texte bleu sur
-   fond bleu, illisible, comme le faisait le style de la maquette). */
-.page a.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--electric);
-  color: #fff;
-  padding: 15px 26px;
-  border: 0;
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: normal;
-  text-decoration: none;
-  min-height: 48px;
-}
-.page a.btn:hover {
-  background: var(--deep);
-}
-/* Modificateur : espace le bouton du héros du paragraphe qui précède. */
-.btnHero {
-  margin-top: 32px;
-}
-.micro {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.08em;
-  color: #8e95b8;
-  margin-top: 14px;
-  max-width: 44ch;
-  line-height: 1.7;
-}
-.cutoff {
-  border-left: 2px solid var(--electric);
-  padding-left: 26px;
-}
-.cutoff .d {
-  font-family: var(--display);
-  font-size: 76px;
-  line-height: 0.86;
-  letter-spacing: 0.01em;
-  color: var(--white);
-}
-.cutoff .m {
-  font-family: var(--display);
-  font-size: 30px;
-  line-height: 1;
-  color: var(--periwinkle);
-  margin-top: 6px;
-}
-.cutoff p {
-  font-size: 15px;
-  line-height: 1.5;
-  color: #a8aecb;
-  margin-top: 18px;
-}
-.cutoff cite {
-  display: block;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  margin-top: 14px;
-  font-style: normal;
-}
+.crypto :global(.wrap) { max-width: 1272px; margin: 0 auto; padding: 0 var(--pad); }
+.crypto :global(.measure) { max-width: 68ch; }
+.crypto :global(.label) { font-family: var(--mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 16px; display: block; line-height: 1.4; }
+.crypto :global(.dark .label) { color: rgba(255, 255, 255, 0.8); }
 
-/* ---------- sommaire mobile ---------- */
-.tocMobile {
-  display: none;
+/* boutons */
+.crypto :global(.btn) { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 13px 24px; font-family: var(--sans); font-size: 16px; font-weight: 600; line-height: 1.2; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.crypto :global(.btn-primary) { background: var(--blue); color: var(--white); }
+.crypto :global(.btn-primary:hover) { background: var(--blue3); color: var(--white); }
+.crypto :global(.tel) { display: inline-flex; align-items: center; min-height: 44px; color: var(--white); font-weight: 500; }
+
+/* fil d'Ariane (réserve la hauteur du header global) */
+.crypto :global(.crumbs) { background: var(--navy); color: rgba(255, 255, 255, 0.8); }
+.crypto :global(.crumbs ol) { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 8px; padding: calc(var(--header-h) + 16px) 0 0; font-size: 14px; }
+.crypto :global(.crumbs li) { display: flex; align-items: center; gap: 8px; }
+.crypto :global(.crumbs li + li)::before { content: "\203A"; color: rgba(255, 255, 255, 0.8); }
+.crypto :global(.crumbs a) { color: rgba(255, 255, 255, 0.8); display: inline-flex; align-items: center; min-height: 44px; }
+.crypto :global(.crumbs a:hover) { color: var(--white); }
+.crypto :global(.crumbs [aria-current]) { color: var(--white); }
+
+/* hero */
+.crypto :global(.hero) { background-color: var(--navy); color: var(--white); padding: 36px 0 96px; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 72px 72px; }
+.crypto :global(.hero-grid) { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 72px; align-items: end; }
+.crypto :global(.hero h1) { color: var(--white); font-size: clamp(40px, 3.1vw + 24px, 64px); line-height: 1.06; letter-spacing: -0.02em; max-width: 15ch; margin-bottom: 24px; }
+@media (min-width: 640px) { .crypto :global(.nobr) { white-space: nowrap; } }
+.crypto :global(.promise) { font-size: clamp(19px, 0.6vw + 15px, 22px); line-height: 1.5; max-width: 40ch; margin-bottom: 16px; color: var(--white); }
+.crypto :global(.audience) { color: rgba(255, 255, 255, 0.8); font-size: 16px; margin-bottom: 36px; }
+/* Encadré réglementaire — trois niveaux visuellement distincts (aucun mot
+   modifié) : (1) repère + date, (2) explication, (3) source réglementaire. */
+.crypto :global(.cutoff) { border: 1px solid rgba(255, 255, 255, 0.42); border-top: 4px solid var(--blue); padding: 24px; background: rgba(6, 8, 18, 0.55); }
+.crypto :global(.cutoff .label) { color: #ffffff; }
+.crypto :global(.cutoff time) { display: block; font-family: var(--display); font-weight: 400; font-size: clamp(56px, 3vw + 36px, 80px); line-height: 0.95; letter-spacing: 0.02em; margin: 0 0 18px; color: var(--white); }
+.crypto :global(.cutoff time sup) { font-family: var(--sans); font-weight: 500; font-size: 0.4em; vertical-align: top; position: relative; top: 0.2em; margin-right: 0.12em; }
+.crypto :global(.cutoff p) { font-size: 16px; line-height: 1.6; color: var(--white); }
+.crypto :global(.cutoff .note) { margin: 20px 0 0; padding: 12px 14px; background: rgba(255, 255, 255, 0.06); border-top: 0; border-left: 3px solid var(--blue); font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.88); line-height: 1.55; }
+
+/* situations */
+.crypto :global(.situations) { padding: 72px 0; border-bottom: 1px solid var(--border); }
+.crypto :global(.situations h2) { font-size: clamp(28px, 1.4vw + 20px, 36px); margin-bottom: 36px; }
+.crypto :global(.sit-list) { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.crypto :global(.sit) { border-top: 3px solid var(--ink); padding-top: 24px; display: flex; flex-direction: column; }
+.crypto :global(.sit .label) { margin-bottom: 12px; }
+.crypto :global(.sit h3) { font-size: clamp(20px, 0.5vw + 17px, 23px); line-height: 1.25; margin-bottom: 12px; }
+.crypto :global(.sit p) { color: var(--text-muted); line-height: 1.55; margin-bottom: 16px; flex: 1; }
+.crypto :global(.anchor-link) { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+/* Repère : la carte d'aiguillage réagit au survol / focus de son lien. */
+.crypto :global(.sit) { transition: border-top-color 0.15s ease; }
+.crypto :global(.sit:hover), .crypto :global(.sit:focus-within) { border-top-color: var(--blue); }
+.crypto :global(.anchor-link:hover) { text-decoration: underline; text-underline-offset: 3px; }
+
+/* corps documentaire */
+.crypto :global(.doc) { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 72px; padding-top: 72px; }
+.crypto :global(.toc h2) { font-family: var(--mono); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+.crypto :global(.toc ol) { list-style: none; counter-reset: toc; }
+.crypto :global(.toc li) { counter-increment: toc; }
+.crypto :global(.toc a) { display: flex; gap: 12px; align-items: baseline; min-height: 44px; padding: 8px 0 8px 12px; border-left: 3px solid transparent; color: var(--ink); text-decoration: none; font-size: 15px; line-height: 1.4; }
+.crypto :global(.toc a)::before { content: counter(toc, decimal-leading-zero); font-family: var(--mono); font-size: 12px; color: var(--text-muted); flex: none; }
+.crypto :global(.toc a:hover) { text-decoration: underline; }
+.crypto :global(.toc a[aria-current="true"]) { border-left-color: var(--blue); font-weight: 600; }
+@media (min-width: 1024px) and (min-height: 640px) {
+  .crypto :global(.toc) { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; }
+}
+.crypto :global(.topic) { padding: 0 0 96px; scroll-margin-top: calc(var(--header-h) + 12px); }
+.crypto :global(.topic > .label) { margin-bottom: 12px; }
+.crypto :global(.topic h2) { font-size: clamp(28px, 1.8vw + 18px, 44px); line-height: 1.12; max-width: 22ch; margin-bottom: 24px; }
+.crypto :global(.topic h3) { font-size: clamp(18px, 0.5vw + 15px, 22px); line-height: 1.3; margin-bottom: 8px; }
+.crypto :global(.lead) { font-size: 18px; max-width: 64ch; margin-bottom: 36px; }
+.crypto :global(.deliv) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 36px; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.crypto :global(.deliv p) { font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); margin: 0; line-height: 1.5; }
+.crypto :global(.deliv p b) { font-weight: 400; color: var(--ink); }
+.crypto :global(.deliv a) { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+.crypto :global(ul.dash) { list-style: none; }
+.crypto :global(ul.dash li) { position: relative; padding-left: 24px; margin-bottom: 8px; line-height: 1.5; }
+.crypto :global(ul.dash li)::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 12px; height: 1px; background: var(--ink); }
+
+/* axes 2×2 */
+.crypto :global(.axes) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.crypto :global(.axes > div) { padding: 24px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.crypto :global(.axes p) { color: var(--text-muted); line-height: 1.55; font-size: 16px; }
+.crypto :global(details.more) { margin-top: 24px; border-bottom: 1px solid var(--border); }
+.crypto :global(details.more summary) { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 12px 0; cursor: pointer; font-weight: 600; list-style: none; }
+.crypto :global(details.more summary)::-webkit-details-marker { display: none; }
+.crypto :global(details.more summary)::after { content: "+"; font-family: var(--mono); font-size: 20px; line-height: 1; }
+.crypto :global(details.more[open] summary)::after { content: "\2212"; }
+.crypto :global(details.more > div) { padding: 0 0 24px; }
+
+/* PSCA familles */
+.crypto :global(.families) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
+.crypto :global(.families section) { border-top: 1px solid var(--ink); padding-top: 16px; }
+.crypto :global(.families h3) { margin-bottom: 12px; }
+.crypto :global(.families ul.dash li) { font-size: 16px; color: var(--text-muted); }
+.crypto :global(.families ul.dash li)::before { background: var(--text-muted); }
+.crypto :global(.pull) { margin: 36px 0 0; padding: 24px 0 24px 24px; border-left: 3px solid var(--blue); font-size: clamp(19px, 0.6vw + 15px, 22px); line-height: 1.45; max-width: 52ch; }
+
+/* contrats niveaux */
+.crypto :global(.principle) { font-size: clamp(26px, 1.6vw + 18px, 38px); line-height: 1.15; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 24px; max-width: 20ch; }
+.crypto :global(.layers) { list-style: none; margin-top: 36px; border: 1px solid var(--border); }
+.crypto :global(.layers li) { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px; padding: 24px; border-top: 1px solid var(--border); }
+.crypto :global(.layers li:first-child) { border-top: 0; }
+.crypto :global(.layers li:nth-child(1)) { background: var(--off); }
+.crypto :global(.layers .label) { margin-bottom: 8px; }
+.crypto :global(.layers p) { font-size: 16px; line-height: 1.55; color: var(--text-muted); }
+
+/* lecture technique — bande sombre */
+.crypto :global(.topic.band) { background: var(--ink); color: var(--white); padding: 36px; margin-bottom: 96px; }
+.crypto :global(.band .lead) { color: var(--white); }
+.crypto :global(.readings) { width: 100%; border-collapse: collapse; font-size: 16px; line-height: 1.5; }
+.crypto :global(.readings caption) { text-align: left; font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.8); padding-bottom: 12px; }
+.crypto :global(.readings th),
+.crypto :global(.readings td) { text-align: left; vertical-align: top; padding: 16px 16px 16px 0; border-top: 1px solid rgba(255, 255, 255, 0.25); color: var(--white); }
+.crypto :global(.readings thead th) { font-family: var(--mono); font-weight: 400; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); border-top: 0; padding-top: 0; }
+.crypto :global(.readings tbody th) { font-weight: 600; width: 18%; }
+.crypto :global(.readings td:last-child) { font-weight: 500; }
+.crypto :global(.band .deliv) { border-color: rgba(255, 255, 255, 0.25); }
+.crypto :global(.band .deliv p) { color: rgba(255, 255, 255, 0.8); }
+.crypto :global(.band .deliv p b) { color: var(--white); }
+.crypto :global(.band .caveat) { margin-top: 24px; font-size: 16px; color: rgba(255, 255, 255, 0.8); max-width: 64ch; }
+
+/* jetons */
+.crypto :global(.rights) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0 0 36px; border-top: 3px solid var(--ink); }
+.crypto :global(.rights div) { padding: 16px 24px 16px 0; }
+.crypto :global(.rights dt) { font-weight: 600; margin-bottom: 4px; }
+.crypto :global(.rights dd) { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.5; }
+.crypto :global(.two) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; }
+.crypto :global(.statement) { background: var(--off); padding: 24px; border-top: 3px solid var(--blue); }
+.crypto :global(.statement p.big) { font-size: clamp(20px, 0.6vw + 16px, 24px); line-height: 1.35; font-weight: 500; margin-bottom: 12px; }
+.crypto :global(.statement p.src) { font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); }
+
+/* LCB-FT */
+.crypto :global(.split) { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 36px; align-items: start; }
+.crypto :global(.aside-box) { border: 1px solid var(--border); padding: 24px; }
+.crypto :global(.aside-box p) { font-size: 16px; line-height: 1.55; color: var(--text-muted); }
+.crypto :global(.aside-box h3) { margin-bottom: 12px; }
+
+/* contentieux */
+.crypto :global(.cases) { list-style: none; border-top: 1px solid var(--ink); }
+.crypto :global(.case) { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+.crypto :global(.case h3) { font-size: clamp(18px, 0.4vw + 16px, 21px); }
+.crypto :global(.case dl) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; margin: 0; }
+.crypto :global(.case dt) { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.crypto :global(.case dd) { margin: 0; font-size: 16px; line-height: 1.5; }
+.crypto :global(.limit) { margin-top: 24px; max-width: 64ch; }
+.crypto :global(.redirect) { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding: 24px; border: 1px solid var(--ink); }
+.crypto :global(.redirect p) { margin: 0; font-weight: 500; font-size: 18px; line-height: 1.4; max-width: 44ch; }
+.crypto :global(.redirect a) { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+/* intervention */
+.crypto :global(.steps) { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; counter-reset: st; }
+.crypto :global(.steps li) { counter-increment: st; border-top: 1px solid var(--ink); padding-top: 16px; }
+.crypto :global(.steps li)::before { content: counter(st); display: block; font-family: var(--display); font-size: 56px; line-height: 1; color: var(--blue); margin-bottom: 12px; }
+.crypto :global(.steps h3) { margin-bottom: 8px; }
+.crypto :global(.steps p) { font-size: 16px; line-height: 1.5; color: var(--text-muted); }
+
+/* pleine largeur */
+.crypto :global(.full) { padding: 96px 0; border-top: 1px solid var(--border); }
+.crypto :global(.full.off) { background: var(--off); border-top: 0; }
+.crypto :global(.full h2) { font-size: clamp(28px, 1.8vw + 18px, 44px); line-height: 1.12; max-width: 24ch; margin-bottom: 36px; }
+.crypto :global(.docs) { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.crypto :global(.docs li) { background: var(--white); padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 100%; }
+.crypto :global(.docs .kind) { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.crypto :global(.docs h3) { font-size: 20px; line-height: 1.3; }
+.crypto :global(.docs p) { font-size: 16px; line-height: 1.5; color: var(--text-muted); }
+.crypto :global(.docs .sheet) { width: 36px; height: 44px; border: 1px solid var(--ink); position: relative; flex: none; }
+.crypto :global(.docs .sheet)::before,
+.crypto :global(.docs .sheet)::after { content: ""; position: absolute; left: 8px; right: 8px; height: 1px; background: var(--ink); }
+.crypto :global(.docs .sheet)::before { top: 12px; }
+.crypto :global(.docs .sheet)::after { top: 20px; right: 16px; }
+
+.crypto :global(.team) { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.crypto :global(.person) { display: flex; flex-direction: column; gap: 16px; }
+.crypto :global(.ph) { aspect-ratio: 4 / 5; background: var(--off); border: 1px dashed var(--text-muted); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); }
+.crypto :global(.person .ph--filled) { padding: 0; border-style: solid; border-color: var(--border); position: relative; overflow: hidden; }
+.crypto :global(.person .ph--filled img) { width: 100%; height: 100%; object-fit: cover; }
+.crypto :global(.person h3) { font-size: 21px; }
+.crypto :global(.person p) { font-size: 16px; line-height: 1.5; color: var(--text-muted); }
+.crypto :global(.person .role) { color: var(--ink); font-weight: 500; margin-bottom: 4px; }
+
+.crypto :global(.faq) { max-width: 840px; border-top: 1px solid var(--ink); }
+.crypto :global(.faq-item) { border-bottom: 1px solid var(--border); }
+.crypto :global(.faq-item h3) { font-size: inherit; margin: 0; }
+.crypto :global(.faq-btn) { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 44px; padding: 24px 0; background: none; border: 0; color: var(--ink); font-family: var(--sans); font-size: clamp(18px, 0.4vw + 16px, 20px); font-weight: 500; line-height: 1.35; text-align: left; cursor: pointer; }
+.crypto :global(.faq-btn:hover) { text-decoration: underline; }
+.crypto :global(.faq-btn .sign) { font-family: var(--mono); font-size: 22px; flex: none; width: 24px; text-align: center; }
+.crypto :global(.faq-panel) { padding: 0 0 24px; max-width: 68ch; }
+.crypto :global(.faq-panel[hidden]) { display: none; }
+
+.crypto :global(.related) { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.crypto :global(.related > li > a),
+.crypto :global(.related > li > .soon-cell) { display: flex; flex-direction: column; gap: 8px; min-height: 100%; padding: 24px 24px 24px 0; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--border); }
+.crypto :global(.related a:hover span.t) { text-decoration: underline; }
+.crypto :global(.related span.t) { font-weight: 600; font-size: 18px; line-height: 1.3; color: var(--blue); }
+.crypto :global(.related .soon-cell span.t) { color: var(--ink); }
+.crypto :global(.related span.d) { font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+.crypto :global(.related .soon) { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: auto; }
+
+.crypto :global(.contact) { background: var(--navy); color: var(--white); padding: 96px 0; }
+.crypto :global(.contact-grid) { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 72px; align-items: end; }
+.crypto :global(.contact h2) { color: var(--white); font-size: clamp(34px, 2.4vw + 22px, 56px); line-height: 1.05; margin-bottom: 24px; }
+.crypto :global(.contact p) { max-width: 52ch; font-size: 18px; color: var(--white); }
+.crypto :global(.contact-actions) { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.crypto :global(.contact address) { font-style: normal; color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.5; margin-top: 12px; }
+
+/* tablette */
+@media (max-width: 1023px) {
+  .crypto :global(.hero-grid),
+  .crypto :global(.contact-grid) { grid-template-columns: 1fr; gap: 36px; }
+  .crypto :global(.doc) { grid-template-columns: 1fr; gap: 36px; }
+  .crypto :global(.toc) { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; }
+  .crypto :global(.toc ol) { columns: 2; column-gap: 24px; }
+  .crypto :global(.toc li) { break-inside: avoid; }
+  .crypto :global(.related) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crypto :global(.related li:nth-child(odd) a),
+  .crypto :global(.related li:nth-child(odd) .soon-cell) { padding-right: 24px; }
+  .crypto :global(.steps) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
+  .crypto :global(.case) { grid-template-columns: 1fr; gap: 12px; }
 }
 @media (max-width: 900px) {
-  .heroGrid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  .cutoff .d {
-    font-size: 60px;
-  }
-  .tocMobile {
-    display: block;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 38px;
-  }
-  .tocMobile summary {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.16em;
-    color: var(--muted);
-    padding: 16px 0;
-    font-weight: 400;
-  }
-  .tocMobile ol {
-    list-style: none;
-    padding-bottom: 14px;
-  }
-  .tocMobile li {
-    padding: 6px 0;
-    font-family: var(--mono);
-    font-size: 12.5px;
-    letter-spacing: 0.06em;
-  }
-  .tocMobile li a {
-    color: var(--ink);
-    border: 0;
-  }
+  .crypto :global(.sit-list) { grid-template-columns: 1fr; gap: 0; }
+  .crypto :global(.sit) { border-top: 1px solid var(--border); padding: 24px 0; }
+  .crypto :global(.sit:first-child) { border-top: 3px solid var(--ink); }
+  .crypto :global(.team) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crypto :global(.docs) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crypto :global(.rights) { grid-template-columns: 1fr; }
+  .crypto :global(.rights div) { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .crypto :global(.two),
+  .crypto :global(.split) { grid-template-columns: 1fr; gap: 24px; }
+  .crypto :global(.layers li) { grid-template-columns: 1fr; gap: 8px; }
+  .crypto :global(.case dl) { grid-template-columns: 1fr; gap: 12px; }
 }
+/* mobile */
+@media (max-width: 639px) {
+  .crypto :global(.hero) { padding: 24px 0 72px; }
+  .crypto :global(.situations) { padding: 36px 0; }
+  .crypto :global(.situations h2) { margin-bottom: 24px; }
+  .crypto :global(.sit p) { margin-bottom: 8px; }
+  .crypto :global(.hero .btn),
+  .crypto :global(.contact .btn) { width: 100%; }
+  .crypto :global(.cutoff) { padding: 16px; }
+  .crypto :global(.axes),
+  .crypto :global(.families),
+  .crypto :global(.docs),
+  .crypto :global(.team),
+  .crypto :global(.related),
+  .crypto :global(.steps) { grid-template-columns: 1fr; }
+  .crypto :global(.axes > div) { padding: 16px; }
+  .crypto :global(.families) { gap: 24px; }
+  .crypto :global(.toc ol) { columns: 1; }
+  .crypto :global(.topic) { padding-bottom: 72px; }
+  .crypto :global(.topic.band) { padding: 24px 20px; margin: 0 -20px 72px; }
+  .crypto :global(.readings thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .crypto :global(.readings),
+  .crypto :global(.readings tbody),
+  .crypto :global(.readings tr),
+  .crypto :global(.readings th),
+  .crypto :global(.readings td) { display: block; width: 100%; }
+  .crypto :global(.readings caption) { display: block; width: 100%; }
+  .crypto :global(.readings tr) { border-top: 1px solid rgba(255, 255, 255, 0.25); padding: 16px 0; }
+  .crypto :global(.readings th),
+  .crypto :global(.readings td) { border: 0; padding: 4px 0; }
+  .crypto :global(.readings td)::before { content: attr(data-h); display: block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); margin-top: 8px; }
+  .crypto :global(.readings tbody th) { width: auto; font-size: 18px; }
+  .crypto :global(.steps li)::before { font-size: 44px; }
+  .crypto :global(.full) { padding: 72px 0; }
+  .crypto :global(.full h2) { margin-bottom: 24px; }
+  .crypto :global(.related a),
+  .crypto :global(.related .soon-cell) { padding: 16px 0; }
+  .crypto :global(.contact) { padding: 72px 0; }
+  .crypto :global(.redirect) { padding: 16px; }
+  .crypto :global(.deliv) { flex-direction: column; align-items: flex-start; }
+}
+@media print { .crypto :global(.toc) { display: none; } }
 
-/* ---------- corps ---------- */
-.body {
-  display: grid;
-  grid-template-columns: 238px minmax(0, 1fr);
-  gap: 64px;
-  padding: 80px 0 40px;
-  align-items: start;
-}
-.toc {
-  position: sticky;
-  top: 100px;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  line-height: 1.9;
-}
-.toc ol {
-  list-style: none;
-  counter-reset: t;
-}
-.toc li {
-  counter-increment: t;
-  padding: 5px 0;
-  border-left: 1px solid var(--border);
-  padding-left: 16px;
-}
-.toc li a {
-  color: var(--muted);
-  border: 0;
-  display: block;
-}
-.toc li a:hover {
-  color: var(--ink);
-}
-.toc li a::before {
-  content: counter(t, decimal-leading-zero);
-  color: var(--border);
-  margin-right: 10px;
-}
-@media (max-width: 900px) {
-  .body {
-    grid-template-columns: 1fr;
-    gap: 0;
-    padding-top: 52px;
-  }
-  .toc {
-    display: none;
-  }
-}
-
-.page section {
-  padding: 0 0 62px;
-  max-width: 70ch;
-}
-.page section + section {
-  border-top: 1px solid var(--border);
-  padding-top: 56px;
-}
-.page h2 {
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 29px;
-  line-height: 1.22;
-  letter-spacing: -0.015em;
-  margin-bottom: 20px;
-}
-.page h3 {
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 19px;
-  margin: 32px 0 10px;
-}
-.intro {
-  font-size: 19px;
-  line-height: 1.6;
-  color: #3a3a52;
-}
-.tag {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  color: var(--famille);
-  background: rgba(77, 111, 255, 0.08);
-  padding: 5px 11px;
-  margin-bottom: 18px;
-}
-.stack {
-  list-style: none;
-  margin: 22px 0;
-}
-.stack li {
-  padding: 13px 0 13px 22px;
-  border-top: 1px solid var(--border);
-  position: relative;
-}
-.stack li:last-child {
-  border-bottom: 1px solid var(--border);
-}
-.stack li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 21px;
-  width: 9px;
-  height: 1px;
-  background: var(--electric);
-}
-.stack b {
-  font-weight: 500;
-}
-.note {
-  background: var(--ghost);
-  border-left: 2px solid var(--famille);
-  padding: 22px 26px;
-  margin: 26px 0;
-  font-size: 16px;
-}
-.note p:last-child {
-  margin-bottom: 0;
-}
-.ref {
-  font-family: var(--mono);
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-}
-
-/* ---------- bloc résultats (styles conservés, section volontairement absente) ---------- */
-.results {
-  background: var(--navy);
-  color: var(--white);
-  padding: 72px 0;
-  margin-top: 24px;
-}
-.results h2 {
-  color: var(--white);
-}
-.slots {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.14);
-  margin-top: 34px;
-}
-.slot {
-  background: var(--navy);
-  padding: 30px 26px;
-  min-height: 190px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.slot .n {
-  font-family: var(--display);
-  font-size: 40px;
-  color: var(--periwinkle);
-  line-height: 1;
-}
-.slot p {
-  font-size: 14.5px;
-  color: #9aa0be;
-  margin: 0;
-}
-@media (max-width: 800px) {
-  .slots {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------- équipe ---------- */
-.team {
-  padding: 74px 0;
-  border-top: 1px solid var(--border);
-  background: var(--ghost);
-}
-.team h2 {
-  margin-bottom: 8px;
-}
-.lead {
-  color: #3a3a52;
-  max-width: 62ch;
-  margin-bottom: 40px;
-}
-.members {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
-}
-.portrait {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: #e4e4ee;
-  border: 1px solid var(--border);
-  margin-bottom: 18px;
-  overflow: hidden;
-}
-.name {
-  font-family: var(--sans);
-  font-weight: 500;
-  font-size: 19px;
-}
-.role {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.14em;
-  color: var(--famille);
-  margin: 6px 0 12px;
-}
-.member p {
-  font-size: 15px;
-  line-height: 1.55;
-  color: #3a3a52;
-  margin: 0;
-}
-@media (max-width: 800px) {
-  .members {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .portrait {
-    aspect-ratio: 16 / 9;
-  }
-}
-
-/* ---------- questions ---------- */
-.faq {
-  padding: 76px 0;
-}
-.faq h2 {
-  margin-bottom: 28px;
-}
-.page details {
-  border-top: 1px solid var(--border);
-  padding: 0;
-}
-.page details:last-of-type {
-  border-bottom: 1px solid var(--border);
-}
-.page summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 22px 40px 22px 0;
-  font-weight: 500;
-  font-size: 18px;
-  position: relative;
-}
-.page summary::-webkit-details-marker {
-  display: none;
-}
-.page summary::after {
-  content: "+";
-  position: absolute;
-  right: 6px;
-  top: 20px;
-  font-family: var(--mono);
-  font-size: 20px;
-  color: var(--electric);
-}
-.page details[open] summary::after {
-  content: "–";
-}
-.page details p {
-  max-width: 68ch;
-  padding-right: 40px;
-}
-
-/* ---------- pied de section (CTA) ---------- */
-.cta {
-  background: var(--ghost);
-  padding: 70px 0;
-  border-top: 1px solid var(--border);
-}
-.ctaGrid {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 48px;
-  align-items: center;
-}
-.cta h2 {
-  margin-bottom: 10px;
-}
-.coord {
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 2;
-  color: var(--muted);
-}
-.coord a {
-  color: var(--ink);
-  border: 0;
-}
-@media (max-width: 800px) {
-  .ctaGrid {
-    grid-template-columns: 1fr;
-  }
-}
+/* lien d'évitement */
+.skipLink { position: absolute; left: 16px; top: -72px; z-index: 200; background: var(--wh); color: var(--ink); padding: 12px 16px; font-weight: 600; text-decoration: none; }
+.skipLink:focus { top: 16px; outline: 3px solid var(--blue); outline-offset: 2px; }

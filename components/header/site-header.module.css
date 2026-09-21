@@ -169,8 +169,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 8px;
   background: transparent;
   border: 0;
@@ -240,6 +240,7 @@
   font-family: var(--ff-mono);
   font-size: 9.5px;
   letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: #7f8aff;
   margin: 0 0 16px;
 }
@@ -326,12 +327,17 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 .drawerClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: -8px;
   background: transparent;
   border: 0;
   color: #fff;
   font-size: 22px;
   line-height: 1;
-  padding: 8px;
   cursor: pointer;
 }
 .drawerNav {

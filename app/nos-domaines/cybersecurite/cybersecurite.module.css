@@ -1,0 +1,238 @@
+/* ==========================================================================
+   Page Cybersécurité — charte v1.1. Copie/structure d'après maquette v7 (fait
+   foi) ; CSS reconstruit avec les tokens du site. Disclosure = <details>/<summary>
+   natifs (repliés au chargement, lisibles sans JS, état porté par un MOT).
+   Portée : descendants de `.cyber` (module hashé) ; :global pour le balisage repris.
+   ========================================================================== */
+.cyber {
+  --blue: #1a47ff;
+  --deep-blue: #0a2acc;
+  --navy: #0a0f2e;
+  --ink: #0a0a14;
+  --ghost: #f4f4f8;
+  --white: #fff;
+  --border: #e0e0ee;
+  --text: #14141f;
+  --text-2: #4a4a63;
+  --on-dark: #ededf6;
+  --on-dark-2: #9fb2ff;
+  --red: #b3231f;
+  --periwinkle: #4d6fff;
+  --maxw: 1200px;
+  --gut: 36px;
+
+  --header-h: 72px;
+
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.68;
+  overflow-x: clip;
+  /* Le header global est `position:absolute; top:0` et transparent sur les routes
+     à hero sombre : il flotte sur le haut de page. On lui réserve sa hauteur en
+     haut du conteneur ; cette bande reste transparente et laisse voir le fond
+     navy du <body>, exactement comme le haut de hero des autres pages. Le bandeau
+     d'urgence (rouge) vient donc SOUS le header, sans collision. Le blanc des
+     sections de contenu est porté par `.section` (plus par `.cyber`). */
+  padding-top: var(--header-h);
+}
+@media (max-width: 640px) { .cyber { --gut: 20px; } }
+
+/* Défaut global de globals.css (p en blanc 82 %) neutralisé en opacité pleine. */
+.cyber :global(p),
+.cyber :global(li) { color: var(--text); }
+.cyber :global(.section--ghost) :global(.side) :global(li) { color: var(--text); }
+
+.cyber :global(.wrap) { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); }
+.cyber :global(.section) { padding: 88px 0; background: var(--white); }
+.cyber :global(.section--tight) { padding: 56px 0; }
+.cyber :global(.section--ghost) { background: var(--ghost); }
+/* Ancre atteinte : dégager la hauteur du header collant (54px) + marge. */
+.cyber :global(section[id]) { scroll-margin-top: 72px; }
+
+.cyber :global(h1),
+.cyber :global(h2),
+.cyber :global(h3) { font-family: var(--ff-body); font-weight: 500; line-height: 1.18; letter-spacing: -0.01em; margin: 0 0 0.5em; color: var(--text); }
+.cyber :global(.hero h1) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 0.98; letter-spacing: 0.01em; text-transform: uppercase; margin: 0 0 0.35em; color: #fff; }
+.cyber :global(h2) { font-size: clamp(1.6rem, 3vw, 2.25rem); max-width: 24ch; }
+.cyber :global(h3) { font-size: 1.16rem; }
+.cyber :global(p) { margin: 0 0 1.05em; max-width: 68ch; }
+.cyber :global(.lead) { font-size: 1.14rem; color: var(--text-2); max-width: 66ch; }
+.cyber :global(.eyebrow) { display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: lowercase; color: var(--deep-blue); margin: 0 0 14px; }
+.cyber :global(.hero) :global(.eyebrow),
+.cyber :global(.bg-navy) :global(.eyebrow) { color: var(--on-dark-2); }
+.cyber :global(.meta) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; color: var(--text-2); }
+.cyber :global(.label) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: lowercase; color: var(--deep-blue); margin: 18px 0 8px; }
+.cyber :global(.result) { border-left: 3px solid var(--blue); padding-left: 14px; color: var(--text); }
+.cyber :global(.result b),
+.cyber :global(.stake b),
+.cyber :global(.precision b) { font-weight: 600; }
+.cyber :global(.precision) { font-size: 0.96rem; color: var(--text-2); border-left: 2px solid var(--border); padding-left: 14px; }
+
+.cyber :global(a) { color: var(--deep-blue); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.cyber :global(a:hover) { color: var(--blue); }
+.cyber :global(.link-strong) { font-weight: 600; }
+.cyber :global(:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+/* lien d'évitement */
+.skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; padding: 12px 18px; text-decoration: none; }
+.skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* fil d'Ariane */
+.cyber :global(.breadcrumb) { font-family: var(--ff-mono); font-size: 12.5px; letter-spacing: 0.04em; color: var(--on-dark-2); margin: 0 0 26px; }
+.cyber :global(.breadcrumb a) { color: var(--on-dark-2); text-decoration: none; }
+.cyber :global(.breadcrumb a:hover) { color: #fff; text-decoration: underline; }
+
+/* boutons */
+.cyber :global(.btn) { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 13px 24px; font-family: var(--ff-body); font-size: 16px; font-weight: 600; text-decoration: none; border: 1px solid var(--blue); background: var(--blue); color: #fff; transition: background 0.18s ease, border-color 0.18s ease; }
+.cyber :global(.btn:hover) { background: var(--deep-blue); border-color: var(--deep-blue); color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+.cyber :global(.btn--ghost) { background: transparent; color: var(--blue); }
+.cyber :global(.btn--ghost:hover) { background: rgba(26, 71, 255, 0.07); color: var(--deep-blue); }
+.cyber :global(.btn-row) { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; margin-top: 8px; }
+.cyber :global(.btn-note) { font-size: 0.92rem; color: var(--text-2); margin-top: 14px; max-width: 60ch; }
+
+/* ---- 1. bandeau d'urgence (seul rouge de la page) ---- */
+.cyber :global(.urgence) { background: var(--red); color: #fff; }
+.cyber :global(.urgence .wrap) { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; padding-top: 12px; padding-bottom: 12px; }
+.cyber :global(.urgence span) { font-weight: 600; }
+.cyber :global(.urgence a) { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; }
+.cyber :global(.urgence a:hover) { color: #fff; }
+.cyber :global(.urgence :focus-visible) { outline-color: #fff; }
+
+/* ---- 2. héros ---- */
+.cyber :global(.hero) { background: var(--navy); color: var(--on-dark); padding: 64px 0 72px; }
+.cyber :global(.hero) :global(p) { color: var(--on-dark); max-width: 62ch; }
+.cyber :global(.hero .grid) { display: grid; gap: 44px; align-items: center; }
+@media (min-width: 900px) { .cyber :global(.hero .grid) { grid-template-columns: 1.15fr 0.85fr; gap: 56px; } }
+.cyber :global(.hero .accroche) { font-size: 1.28rem; line-height: 1.4; color: #fff; max-width: 30ch; font-weight: 400; }
+.cyber :global(.hero .chapo) { color: var(--on-dark-2); }
+.cyber :global(.hero .repere) { color: var(--on-dark-2); border-left: 2px solid var(--periwinkle); padding-left: 14px; }
+.cyber :global(.hero-media) { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.16); background: #10173a; }
+.cyber :global(.hero-media img) { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- 3. triple (avant/pendant/après) ---- */
+.cyber :global(.triple) { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 38px; }
+@media (min-width: 820px) { .cyber :global(.triple) { grid-template-columns: repeat(3, 1fr); } }
+.cyber :global(.triple article) { background: #fff; padding: 30px 28px; }
+.cyber :global(.triple p) { font-size: 0.98rem; }
+
+/* ---- 4. fronts ---- */
+.cyber :global(.fronts) { display: grid; gap: 28px; margin-top: 38px; }
+@media (min-width: 760px) { .cyber :global(.fronts) { grid-template-columns: repeat(2, 1fr); gap: 34px; } }
+.cyber :global(.fronts > div) { border-top: 2px solid var(--ink); padding-top: 18px; }
+.cyber :global(.fronts .tag),
+.cyber :global(.cases .badge),
+.cyber :global(.cat) { display: inline-block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: lowercase; color: var(--deep-blue); margin-bottom: 8px; }
+.cyber :global(.fronts p) { font-size: 0.98rem; }
+
+/* ---- accordéons <details> (fronts + FAQ) ---- */
+.cyber :global(.acc) { margin-top: 30px; border-top: 1px solid var(--border); }
+.cyber :global(.acc > div) { border-bottom: 1px solid var(--border); }
+.cyber :global(.acc h3) { margin: 0; font-size: 1.05rem; }
+.cyber :global(.acc summary) { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 18px; min-height: 44px; padding: 18px 4px; font-weight: 500; color: var(--text); }
+.cyber :global(.acc summary)::-webkit-details-marker { display: none; }
+.cyber :global(.acc .state) { flex: none; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--deep-blue); text-transform: lowercase; }
+.cyber :global(.acc .state)::after { content: "lire"; }
+.cyber :global(.acc details[open] .state)::after { content: "masquer"; }
+.cyber :global(.acc .panel) { padding: 0 4px 22px; max-width: 74ch; }
+.cyber :global(.acc .panel p) { font-size: 0.98rem; color: var(--text-2); }
+
+/* ---- 5. binôme ---- */
+.cyber :global(.duo-expert) { display: grid; gap: 40px; margin-top: 34px; }
+@media (min-width: 900px) { .cyber :global(.duo-expert) { grid-template-columns: 1fr 0.9fr; gap: 56px; align-items: start; } }
+.cyber :global(.people) { display: grid; gap: 24px; }
+.cyber :global(.people article) { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: start; }
+.cyber :global(.people img) { width: 96px; height: 120px; object-fit: cover; border: 1px solid var(--border); }
+.cyber :global(.people h3) { margin: 0 0 2px; font-size: 1.05rem; }
+.cyber :global(.people .role) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--deep-blue); display: block; margin-bottom: 8px; }
+.cyber :global(.people p) { font-size: 0.94rem; color: var(--text-2); margin: 0; }
+@media (max-width: 420px) { .cyber :global(.people article) { grid-template-columns: 1fr; } }
+
+/* ---- 6. livrables ---- */
+.cyber :global(.deliver) { display: grid; gap: 22px; margin-top: 38px; }
+@media (min-width: 720px) { .cyber :global(.deliver) { grid-template-columns: repeat(2, 1fr); gap: 26px; } }
+@media (min-width: 1040px) { .cyber :global(.deliver) { grid-template-columns: repeat(3, 1fr); } }
+.cyber :global(.deliver article) { background: #fff; border: 1px solid var(--border); border-top: 3px solid var(--blue); padding: 24px 24px 20px; display: flex; flex-direction: column; }
+.cyber :global(.deliver h3) { font-size: 1.05rem; margin: 0 0 8px; }
+.cyber :global(.deliver > article > p:not(.cat)) { font-size: 0.95rem; color: var(--text-2); }
+.cyber :global(.deliver details) { margin-top: auto; border-top: 1px solid var(--border); padding-top: 12px; }
+.cyber :global(.deliver summary) { list-style: none; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--deep-blue); }
+.cyber :global(.deliver summary)::-webkit-details-marker { display: none; }
+.cyber :global(.deliver summary .lbl)::after { content: "Voir un exemple d’extrait"; }
+.cyber :global(.deliver details[open] summary .lbl)::after { content: "Masquer l’extrait"; }
+.cyber :global(.deliver .extrait) { margin-top: 12px; background: var(--ghost); border-left: 3px solid var(--blue); padding: 14px 16px; }
+.cyber :global(.deliver .extrait .src) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--text-2); margin: 0 0 8px; }
+.cyber :global(.deliver .extrait p) { font-size: 0.92rem; line-height: 1.55; color: var(--text); margin: 0; }
+.cyber :global(.anon) { margin-top: 26px; font-family: var(--ff-mono); font-size: 12.5px; letter-spacing: 0.03em; color: var(--text-2); }
+.cyber :global(.proof) { margin: 26px 0 0; border: 1px solid var(--border); border-left: 3px solid var(--ink); background: #fff; padding: 22px 24px; max-width: 90ch; }
+.cyber :global(.proof dt) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-2); margin-top: 14px; }
+.cyber :global(.proof dt:first-child) { margin-top: 0; }
+.cyber :global(.proof dd) { margin: 5px 0 0; font-size: 0.95rem; }
+
+/* ---- 7. quatre situations (2 + « voir deux autres » via <details>) ---- */
+.cyber :global(.cases) { display: grid; gap: 24px; margin-top: 34px; }
+@media (min-width: 760px) { .cyber :global(.cases) { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
+.cyber :global(.cases article) { background: #fff; border: 1px solid var(--border); padding: 26px 26px 22px; }
+.cyber :global(.cases .head) { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.cyber :global(.cases .num) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--text-2); margin: 0; }
+.cyber :global(.cases .ctx) { font-size: 0.98rem; }
+.cyber :global(.cases .stake) { font-size: 0.96rem; }
+.cyber :global(.cases ul) { margin: 0 0 12px; padding-left: 0; list-style: none; }
+.cyber :global(.cases li) { position: relative; padding-left: 20px; font-size: 0.94rem; color: var(--text-2); margin-bottom: 6px; }
+.cyber :global(.cases li)::before { content: ""; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--blue); }
+/* Le bouton d'ouverture : sous 700px il révèle les 2 autres (natif, sans JS) ;
+   au-delà de 700px les 4 sont affichées et le bouton disparaît. */
+.cyber :global(.cases-extra) { margin-top: 28px; }
+.cyber :global(.cases-extra > summary) { list-style: none; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; padding: 12px 20px; border: 1px solid var(--border); background: #fff; font-family: var(--ff-body); font-size: 15px; font-weight: 600; color: var(--deep-blue); }
+.cyber :global(.cases-extra > summary)::-webkit-details-marker { display: none; }
+.cyber :global(.cases-extra > summary:hover) { border-color: var(--blue); }
+.cyber :global(.cases-extra > .cases) { margin-top: 24px; }
+@media (min-width: 700px) {
+  /* Summary masqué uniquement quand le script a tourné : sans JS, le bouton
+     natif reste présent pour révéler les deux situations. */
+  .cyber :global(.cases-extra[data-ready] > summary) { display: none; }
+  .cyber :global(.cases-extra > .cases) { display: grid; margin-top: 28px; }
+}
+
+/* ---- 8. déroulé ---- */
+.cyber :global(.checks) { margin: 12px 0 0; padding-left: 0; list-style: none; max-width: 74ch; }
+.cyber :global(.checks li) { position: relative; padding: 8px 0 8px 26px; border-bottom: 1px solid var(--border); font-size: 0.98rem; }
+.cyber :global(.checks li)::before { content: ""; position: absolute; left: 0; top: 15px; width: 9px; height: 9px; background: var(--blue); }
+.cyber :global(.parcours) { display: grid; gap: 28px; margin-top: 34px; }
+@media (min-width: 820px) { .cyber :global(.parcours) { grid-template-columns: 1fr 1fr; gap: 34px; align-items: start; } }
+.cyber :global(.parcours article) { border: 1px solid var(--border); padding: 26px 26px 22px; background: #fff; }
+.cyber :global(.parcours--urgence) { border-top: 3px solid var(--red); }
+.cyber :global(.parcours ol) { counter-reset: p; list-style: none; padding: 0; margin: 8px 0 18px; }
+.cyber :global(.parcours ol li) { counter-increment: p; position: relative; padding: 8px 0 8px 34px; font-size: 0.96rem; }
+.cyber :global(.parcours ol li)::before { content: counter(p); position: absolute; left: 0; top: 6px; font-family: var(--ff-mono); font-size: 13px; color: var(--blue); }
+.cyber :global(.parcours ul) { padding-left: 0; list-style: none; margin: 8px 0 16px; }
+.cyber :global(.parcours ul li) { position: relative; padding-left: 20px; font-size: 0.95rem; color: var(--text-2); margin-bottom: 8px; }
+.cyber :global(.parcours ul li)::before { content: ""; position: absolute; left: 0; top: 12px; width: 8px; height: 1px; background: var(--blue); }
+.cyber :global(.parcours p) { font-size: 0.96rem; }
+
+/* ---- 9. NIS 2 ---- */
+.cyber :global(.nis) { display: grid; gap: 34px; }
+@media (min-width: 860px) { .cyber :global(.nis) { grid-template-columns: 1.4fr 0.6fr; gap: 48px; align-items: start; } }
+.cyber :global(.nis p) { font-size: 0.98rem; }
+.cyber :global(.nis .side) { border: 1px solid var(--border); background: #fff; padding: 22px 24px; }
+.cyber :global(.nis .side h3) { font-size: 1.02rem; margin: 0 0 10px; }
+.cyber :global(.nis .side ul) { padding-left: 0; list-style: none; margin: 0; }
+.cyber :global(.nis .side li) { position: relative; padding-left: 18px; font-size: 0.94rem; color: var(--text-2); margin-bottom: 8px; }
+.cyber :global(.nis .side li)::before { content: ""; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--blue); }
+
+/* ---- 11. contact final ---- */
+.cyber :global(.final) { background: var(--navy); color: var(--on-dark); }
+.cyber :global(.final h2) { color: #fff; max-width: 20ch; }
+.cyber :global(.final p) { color: var(--on-dark-2); max-width: 62ch; }
+.cyber :global(.final .btn-note) { color: var(--on-dark-2); }
+.cyber :global(.final .btn--ghost) { color: #fff; border-color: rgba(255, 255, 255, 0.45); }
+.cyber :global(.final .btn--ghost:hover) { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+/* ---- 12. sujets liés ---- */
+.cyber :global(.related) { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.cyber :global(.related a) { font-size: 1rem; }
+
+.cyber :global(.sr-only) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber :global(*) { animation: none !important; transition: none !important; }
+}

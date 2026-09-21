@@ -537,202 +537,75 @@ function ClientPortalMockupVisual() {
 
 const SPOTLIGHT_TITLE = "Le droit du numérique, notre ";
 const SPOTLIGHT_ACCENT = "seul métier";
-const SPOTLIGHT_WIDTH = 80;
-const SPOTLIGHT_INITIAL_MS = 1400;
-const SPOTLIGHT_LOOP_MS = 6000;
-const SPOTLIGHT_PASS_MS = 800;
 
-function easeInOut(t: number) {
-  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-}
-
+// Titre « spotlight » rétabli SANS duplication de texte : UN SEUL nœud de texte,
+// un dégradé animé découpé sur les lettres (background-clip: text) dont la
+// position suit le défilement (variable --spot). Dégradation en couleur unie si
+// background-clip: text n'est pas supporté ; effet neutralisé sous
+// prefers-reduced-motion (et écouteur non attaché) ; couleur unie forcée à
+// l'impression (sinon texte transparent = invisible). Lisible avant toute
+// animation (couleur de repli #0A0F2E au rendu initial).
 function DifferentiateurSpotlightTitle() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef(0);
-  const loopTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const revealedRef = useRef(false);
-  const [revealWidth, setRevealWidth] = useState(0);
-  const [spotlightLeft, setSpotlightLeft] = useState(-SPOTLIGHT_WIDTH);
-  const [spotlightStrong, setSpotlightStrong] = useState(true);
-  const [revealed, setRevealed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  const titleClass =
-    "text-2xl font-bold leading-snug md:text-3xl lg:text-4xl";
+  const ref = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const update = () => setIsMobile(mq.matches);
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      // 0 quand le titre entre par le bas, 1 quand il sort par le haut.
+      const p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+      el.style.setProperty("--spot", `${(p * 100).toFixed(1)}%`);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
     update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
-  useEffect(() => {
-    if (isMobile) {
-      setRevealWidth(9999);
-      setRevealed(true);
-      revealedRef.current = true;
-      setSpotlightLeft(-SPOTLIGHT_WIDTH);
-      return;
-    }
-
-    let cancelled = false;
-    let session = 0;
-
-    const stopSpotlight = () => {
-      cancelled = true;
-      cancelAnimationFrame(rafRef.current);
-      if (loopTimerRef.current) {
-        clearInterval(loopTimerRef.current);
-        loopTimerRef.current = null;
-      }
-    };
-
-    const playSpotlight = () => {
-      stopSpotlight();
-      cancelled = false;
-      const currentSession = ++session;
-
-      setRevealed(false);
-      revealedRef.current = false;
-      setRevealWidth(0);
-      setSpotlightLeft(-SPOTLIGHT_WIDTH);
-      setSpotlightStrong(true);
-
-      requestAnimationFrame(() => {
-        if (cancelled || currentSession !== session) return;
-
-        const wrap = wrapRef.current;
-        if (!wrap) return;
-
-        const textWidth = wrap.offsetWidth;
-
-        const runPass = (
-          duration: number,
-          strong: boolean,
-          onDone?: () => void,
-        ) => {
-          setSpotlightStrong(strong);
-          const start = performance.now();
-
-          const tick = (now: number) => {
-            if (cancelled || currentSession !== session) return;
-
-            const t = Math.min((now - start) / duration, 1);
-            const eased = easeInOut(t);
-            const left =
-              -SPOTLIGHT_WIDTH + eased * (textWidth + SPOTLIGHT_WIDTH);
-            setSpotlightLeft(left);
-
-            if (!revealedRef.current) {
-              setRevealWidth(Math.min(left + SPOTLIGHT_WIDTH, textWidth));
-            }
-
-            if (t < 1) {
-              rafRef.current = requestAnimationFrame(tick);
-            } else {
-              onDone?.();
-            }
-          };
-
-          cancelAnimationFrame(rafRef.current);
-          rafRef.current = requestAnimationFrame(tick);
-        };
-
-        runPass(SPOTLIGHT_INITIAL_MS, true, () => {
-          if (cancelled || currentSession !== session) return;
-
-          setRevealWidth(textWidth);
-          setRevealed(true);
-          revealedRef.current = true;
-          setSpotlightLeft(-SPOTLIGHT_WIDTH);
-
-          loopTimerRef.current = setInterval(() => {
-            runPass(SPOTLIGHT_PASS_MS, false);
-          }, SPOTLIGHT_LOOP_MS);
-        });
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          playSpotlight();
-        } else {
-          stopSpotlight();
-          setRevealed(false);
-          revealedRef.current = false;
-          setRevealWidth(0);
-          setSpotlightLeft(-SPOTLIGHT_WIDTH);
-        }
-      },
-      { threshold: 0.3 },
-    );
-
-    if (titleRef.current) {
-      observer.observe(titleRef.current);
-    }
-
-    return () => {
-      stopSpotlight();
-      observer.disconnect();
-    };
-  }, [isMobile]);
-
-  const titleContent = (visible: boolean) => (
-    <span
-      className={titleClass}
-      style={{ color: visible ? "#0A0F2E" : "rgba(10,15,46,0.08)" }}
-    >
-      {SPOTLIGHT_TITLE}
-      <span style={{ color: visible ? "#1A47FF" : "rgba(10,15,46,0.08)" }}>
-        {SPOTLIGHT_ACCENT}
-      </span>
-    </span>
-  );
-
-  if (isMobile) {
-    return (
-      <h2 className="mb-5 md:mb-6">
-        <span className={titleClass} style={{ color: "#0A0F2E" }}>
-          {SPOTLIGHT_TITLE}
-          <span className="text-[#1A47FF]">{SPOTLIGHT_ACCENT}</span>
-        </span>
-      </h2>
-    );
-  }
-
   return (
-    <h2 ref={titleRef} className="mb-5 md:mb-6">
-      <div ref={wrapRef} className="relative inline-block">
-        <div aria-hidden="true">{titleContent(false)}</div>
-
-        <div
-          className="absolute left-0 top-0 overflow-hidden whitespace-nowrap"
-          style={{ width: revealed ? "100%" : revealWidth }}
-        >
-          {titleContent(true)}
-        </div>
-
-        <div
-          className="spotlight pointer-events-none absolute"
-          style={{
-            top: -20,
-            bottom: -20,
-            width: SPOTLIGHT_WIDTH,
-            left: spotlightLeft,
-            opacity:
-              revealed && spotlightLeft <= -SPOTLIGHT_WIDTH / 2 ? 0 : 1,
-            background: spotlightStrong
-              ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.5) 50%, transparent)"
-              : "linear-gradient(90deg, transparent, rgba(255,255,255,0.2) 50%, transparent)",
-          }}
-          aria-hidden
-        />
-      </div>
-    </h2>
+    <>
+      <style>{`
+        .laz-spotlight-title { color: #0A0F2E; }
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+          @media (prefers-reduced-motion: no-preference) {
+            .laz-spotlight-title {
+              background: linear-gradient(100deg, #0A0F2E 0%, #0A0F2E 34%, #4D6FFF 50%, #0A0F2E 66%, #0A0F2E 100%);
+              background-size: 260% 100%;
+              background-position: var(--spot, 0%) 50%;
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
+              color: transparent;
+            }
+          }
+        }
+        @media print {
+          .laz-spotlight-title {
+            -webkit-text-fill-color: #0A0F2E !important;
+            color: #0A0F2E !important;
+            background: none !important;
+          }
+        }
+      `}</style>
+      <h2
+        ref={ref}
+        className="laz-spotlight-title mb-5 text-2xl font-bold leading-snug md:mb-6 md:text-3xl lg:text-4xl"
+      >
+        {`${SPOTLIGHT_TITLE}${SPOTLIGHT_ACCENT}`}
+      </h2>
+    </>
   );
 }
 
@@ -755,17 +628,11 @@ const CARDS: DifferentiateurCard[] = [
     imageSrc: "/images/pourquoi-nous/plaque-tilsitt.webp",
     imageAlt: "Plaque du cabinet Lazarègue Avocats, 18 rue de Tilsitt, Paris",
     title: "Une pratique du numérique depuis 2016",
-    text: "Dix ans d'interventions sur les cyberattaques, les données personnelles, l'IA, les plateformes et les projets informatiques bloqués.",
-  },
-  {
-    imageAlt: "Un portail client transparent — interface de suivi des dossiers",
-    title: "Un portail client, un suivi continu",
-    text: "Documents, échanges, échéances et avancées du dossier sont centralisés dans un portail sécurisé, accessible à tout moment.",
-    visual: "portail",
+    text: "Le cabinet intervient sur les cyberattaques, les données personnelles, l'intelligence artificielle, les plateformes et les projets informatiques en difficulté.",
   },
 ];
 
-function PortailDemo() {
+export function PortailDemo() {
   const [activeTab, setActiveTab] = useState("dossiers");
   const [showNotif, setShowNotif] = useState(false);
   const [notif, setNotif] = useState("");
@@ -1033,13 +900,14 @@ function PortailDemo() {
 
 export function SectionDifferenciateurs() {
   return (
-    <section className="w-full bg-[#F8F9FA] px-4 py-16 md:px-8 md:py-24 lg:px-12">
-      {/* Colonnes explicites (pas d'auto-fit) : 4 cartes sur une seule ligne
-          au-delà de 1200px, 2 entre 768 et 1199px, 1 en dessous. */}
+    <section className="w-full bg-[#F8F9FA] px-4 py-8 md:px-8 md:py-14 lg:px-12">
+      {/* Trois cartes illustrées : 1 colonne en mobile, 3 colonnes ≥768px.
+          Le grand bloc portail passe en deux colonnes ≥768px. */}
       <style>{`
         .pourquoi-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .pourquoi-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1200px) { .pourquoi-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 768px) { .pourquoi-grid { grid-template-columns: repeat(3, 1fr); } }
+        .portal-block { display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .portal-block { grid-template-columns: minmax(0,0.95fr) minmax(0,1.05fr); } }
       `}</style>
       <div className="container mx-auto">
         <header className="mx-auto mb-8 max-w-3xl text-center md:mb-10 lg:mb-16">
@@ -1060,47 +928,40 @@ export function SectionDifferenciateurs() {
                 borderRadius: 12,
               }}
             >
-              {/* Bande visuelle — au plus le tiers de la carte : hauteur fixe
-                  76px (mobile) / 96px (≥768px), filet bas 0.5px. */}
+              {/* Bande illustrée — hauteur 116px (mobile) / 128px (≥768px),
+                  cadrage cover, filet bas 0.5px. */}
               <div
-                className="relative h-[76px] w-full shrink-0 overflow-hidden md:h-[96px]"
+                className="relative h-[116px] w-full shrink-0 overflow-hidden md:h-[128px]"
                 style={{ borderBottom: "0.5px solid rgba(0,0,0,0.08)" }}
-                aria-hidden={card.visual === "portail" ? true : undefined}
               >
-                {card.visual === "portail" ? (
-                  // Maquette animée mise à l'échelle uniforme (aspect préservé)
-                  // et recadrée dans la bande, pas écrasée en hauteur. Purement
-                  // décorative : le texte de la carte porte l'information.
-                  <div
-                    className="absolute left-0 top-0 origin-top-left"
-                    style={{ width: "250%", transform: "scale(0.4)" }}
-                  >
-                    <PortailDemo />
-                  </div>
-                ) : (
-                  <Image
-                    src={card.imageSrc as string}
-                    alt={card.imageAlt}
-                    fill
-                    sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
-                    style={{ objectFit: "cover", objectPosition: "center" }}
-                  />
-                )}
+                <Image
+                  src={card.imageSrc as string}
+                  alt={card.imageAlt}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 33vw"
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                />
               </div>
 
               <div style={{ padding: "1rem 1.25rem 1.25rem" }}>
-                <h3
-                  style={{
-                    fontFamily: "var(--ff-body)",
-                    fontWeight: 500,
-                    fontSize: 16,
-                    lineHeight: 1.35,
-                    color: "#0A0F2E",
-                    margin: 0,
-                  }}
-                >
-                  {card.title}
-                </h3>
+                {/* Hauteur du bloc titre réservée sur le titre le plus long
+                    (2 lignes) en desktop (md : grille à 3 colonnes) pour que les
+                    trois paragraphes démarrent sur la même ligne. Naturel en
+                    mobile. */}
+                <div className="md:min-h-[44px]">
+                  <h3
+                    style={{
+                      fontFamily: "var(--ff-body)",
+                      fontWeight: 500,
+                      fontSize: 16,
+                      lineHeight: 1.35,
+                      color: "#0A0F2E",
+                      margin: 0,
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+                </div>
                 {card.text ? (
                   <p
                     style={{
@@ -1118,6 +979,33 @@ export function SectionDifferenciateurs() {
               </div>
             </article>
           ))}
+        </div>
+
+        {/* Grand bloc portail — titre, texte définitif et aperçu réel de
+            l'interface. PortailDemo est réutilisé (non recopié) : c'est la seule
+            implémentation rendue. Aucun bouton (aucune page portail n'existe). */}
+        <div className="portal-block mt-11 overflow-hidden rounded-[2px] border border-white/15">
+          <div className="bg-[#0A0F2E] px-8 py-8 md:px-9 md:py-10">
+            <h3 className="m-0 mb-3 text-[21px] font-medium leading-snug text-white">
+              Votre dossier accessible à tout moment
+            </h3>
+            <p className="m-0 max-w-[44ch] text-[15px] leading-[1.6] text-[#B7BEE4]">
+              Chaque client dispose d&apos;un espace personnel réunissant les
+              documents, les échanges, les échéances et l&apos;avancement de son
+              dossier. Il bénéficie ainsi d&apos;un suivi clair tout au long de
+              notre intervention.
+            </p>
+          </div>
+          {/* Aperçu réel de l'interface — décoratif (aria-hidden) : le titre et
+              le texte portent l'information. */}
+          <div
+            className="flex items-center justify-center border-t border-white/[0.12] bg-[#070B24] p-6 md:border-l md:border-t-0 md:p-8"
+            aria-hidden="true"
+          >
+            <div className="w-full max-w-[380px]">
+              <PortailDemo />
+            </div>
+          </div>
         </div>
       </div>
     </section>

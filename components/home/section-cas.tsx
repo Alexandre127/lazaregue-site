@@ -1,324 +1,146 @@
-"use client";
+/*
+ * Section « Le droit du numérique en action » — trois cas pratiques à plat,
+ * condensés (correction post-lot 6).
+ *
+ * Objectif : réduire le poids visuel (surtout la hauteur empilée sur mobile)
+ * sans toucher aux faits. Leviers utilisés : fusion des trois interventions en
+ * une phrase (suppression des puces), espacements resserrés, et couleur limitée
+ * à un BANDEAU DE TITRE (corps sur blanc) au lieu de toute la carte. Aucune
+ * hauteur fixe, aucun corps de texte réduit.
+ *
+ * Contenus : validés. Situation = recto allégé ; « Ce que nous avons fait » =
+ * interventions existantes fusionnées (déduplication limitée aux répétitions
+ * littérales de l'issue) ; Issue = inchangée. Titres inchangés.
+ *
+ * Couleurs : plus de bandeau de couleur. Les trois teintes rouge / vert / bleu
+ * avaient d'abord été neutralisées en un bandeau lavande unique, mais trois
+ * rectangles clairs sur une page sombre étaient plus bruyants que ce qu'ils
+ * remplaçaient (contraste inversé sans gain de sobriété). Traitement retenu :
+ * titre de carte en BLANC directement sur le fond sombre, comme le reste du
+ * contenu ; un simple FILET horizontal bleu (3 px, bleu d'action) en haut de
+ * carte comme repère. Pour aligner les trois corps de texte, la hauteur du BLOC
+ * TITRE est réservée sur le titre le plus long — en desktop uniquement (grille
+ * à trois colonnes) ; hauteur naturelle en mobile.
+ * Composant serveur, aucune interactivité, aucun élément focalisable.
+ */
 
-import { useCallback, useEffect, useState } from "react";
+// Accent unique : le bleu d'action de la marque (filet horizontal de repère).
+const CAS_ACCENT = "#1A47FF";
 
 type CasCard = {
-  number: string;
-  tag: string;
-  tagClass: string;
+  key: string;
   title: string;
-  description: string;
-  frontBg: string;
-  backBg: string;
-  dotColor: string;
-  accentColor: string;
-  results: string[];
+  situation: string;
+  action: string; // interventions fusionnées en une phrase
+  issue: string;
 };
 
 const CASE_CARDS: CasCard[] = [
   {
-    number: "01 / 03",
-    tag: "Incident & crise",
-    tagClass: "bg-[#E24B4A]/15 text-[#F09595]",
+    key: "incident",
     title: "Une industrie paralysée après un piratage",
-    description:
-      "Une industrie a vu sa messagerie piratée. La production s'est arrêtée, des données clients et des fiches RH ont été volées, et le prestataire informatique était directement responsable.",
-    frontBg: "#FDE8E8",
-    backBg: "#1a2744",
-    dotColor: "#6a90cc",
-    accentColor: "#E24B4A",
-    results: [
-      "Coordination de la réponse à l'incident avec les experts techniques",
-      "Obligations de notification auprès de la CNIL respectées dans les délais",
-      "Responsabilité du prestataire informatique engagée",
-    ],
+    situation:
+      "Une industrie a vu sa messagerie piratée : production arrêtée, données clients et fiches RH volées.",
+    action:
+      "Nous avons coordonné la réponse à l'incident avec les experts techniques et respecté les obligations de notification auprès de la CNIL dans les délais.",
+    issue:
+      "Reprise progressive de la production, préservation des preuves et mise en cause du prestataire d'infogérance.",
   },
   {
-    number: "02 / 03",
-    tag: "Intelligence artificielle",
-    tagClass: "bg-[#1D9E75]/10 text-[#0F6E56]",
+    key: "ia",
     title: "Mise en conformité d'une entreprise IA avant une levée de fonds",
-    description:
-      "Une entreprise développait des logiciels d'IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec les nouvelles réglementations européennes sur l'IA.",
-    frontBg: "#E8F5F0",
-    backBg: "#0e5c44",
-    dotColor: "#5dc9a0",
-    accentColor: "#1D9E75",
-    results: [
-      "Gouvernance juridique des systèmes d'IA documentée",
-      "Contrats avec les fournisseurs cloud mis à niveau",
-      "Levée de fonds conclue dans les délais",
-    ],
+    situation:
+      "Une entreprise développait des logiciels d'IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec la réglementation européenne sur l'IA.",
+    action:
+      "Nous avons documenté la gouvernance juridique des systèmes d'IA et mis à niveau les contrats avec les fournisseurs cloud.",
+    issue:
+      "Gouvernance et documentation de conformité mises en place ; levée de fonds conclue dans les délais.",
   },
   {
-    number: "03 / 03",
-    tag: "Violation de données",
-    tagClass: "bg-[#1A47FF]/15 text-[#6D8FFF]",
+    key: "fuite",
     title: "Fuite massive de données clients chez un site de vente en ligne",
-    description:
-      "Un site de vente en ligne a découvert que les données personnelles de plusieurs centaines de milliers de clients avaient été volées chez un sous-traitant et revendues sur des forums illicites. La CNIL a ouvert une enquête.",
-    frontBg: "#E8EEFF",
-    backBg: "#1845c0",
-    dotColor: "#80aaff",
-    accentColor: "#1A47FF",
-    results: [
-      "Notification pilotée dans le respect des délais",
-      "Responsabilité du sous-traitant engagée",
-      "Risques d'action collective anticipés",
-    ],
+    situation:
+      "Un site de vente en ligne a découvert le vol des données personnelles de plusieurs centaines de milliers de clients chez un sous-traitant, revendues sur des forums illicites ; la CNIL a ouvert une enquête.",
+    action:
+      "Nous avons mis en cause la responsabilité du sous-traitant et anticipé les risques d'action collective.",
+    issue:
+      "Notification réalisée dans les délais, personnes concernées informées et responsabilité du sous-traitant documentée.",
   },
 ];
 
-function CasFlipCard({
-  card,
-  cardIndex,
-  flipped,
-  onToggle,
-  hoverFlipEnabled,
-}: {
-  card: CasCard;
-  cardIndex: number;
-  flipped: boolean;
-  onToggle: () => void;
-  hoverFlipEnabled: boolean;
-}) {
+function CasCardView({ card }: { card: CasCard }) {
+  const label =
+    "mb-1 font-mono text-[11px] uppercase tracking-[0.14em] text-[#AEB4CC]";
+  const body = "m-0 text-[14.5px] leading-[1.5] text-[#C9CEDD]";
   return (
-    <div
-      className={`cas-flip w-full ${flipped ? "cas-flip--flipped" : ""}`}
-      onClick={hoverFlipEnabled ? undefined : onToggle}
-      onKeyDown={
-        hoverFlipEnabled
-          ? undefined
-          : (event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onToggle();
-              }
-            }
-      }
-      role={hoverFlipEnabled ? undefined : "button"}
-      tabIndex={hoverFlipEnabled ? undefined : 0}
-      aria-label={hoverFlipEnabled ? undefined : `Retourner la carte : ${card.title}`}
+    // Carte au corps SOMBRE (h-full : s'étire à la plus haute de la rangée en
+    // desktop, cf. grille lg:items-stretch). Filet bleu de repère en haut.
+    <article
+      className="cas-card flex h-full flex-col overflow-hidden rounded-[3px] border border-white/10"
+      style={{ background: "#0E1220", borderTop: `3px solid ${CAS_ACCENT}` }}
     >
-      <div className="cas-flip-inner">
-        <div
-          className={`cas-flip-face cas-flip-front cas-flip-front-breathe cas-flip-front-breathe--${cardIndex} flex flex-col border-x border-b border-[0.5px] border-[rgba(10,15,46,0.12)]`}
-          style={{
-            backgroundColor: card.frontBg,
-            borderTop: `2px solid ${card.accentColor}`,
-          }}
-        >
-          <p className="mb-3 font-mono text-[11px] tracking-widest text-[#0A0F2E]/25">
-            {card.number}
-          </p>
-          <span
-            className={`mb-4 inline-block w-fit rounded-sm px-2 py-1 font-mono text-[9px] uppercase tracking-wider ${card.tagClass}`}
-          >
-            {card.tag}
-          </span>
-          <h3 className="mb-3 text-[14px] font-medium leading-snug text-[#0A0F2E]">
-            {card.title}
-          </h3>
-          <p className="flex-1 text-[12px] leading-relaxed text-[#55556A]">
-            {card.description}
-          </p>
-          <div className="mt-auto flex items-center gap-1.5 pt-4 text-[11px] text-[#8888A0]">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path
-                d="M6 1v10M1 6l5 5 5-5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="md:hidden">Appuyer pour voir les résultats</span>
-            <span className="hidden md:inline">Survoler pour voir les résultats</span>
-          </div>
-        </div>
-
-        <div
-          className="cas-flip-face cas-flip-back flex flex-col text-white"
-          style={{ backgroundColor: card.backBg }}
-        >
-          <span className="mb-4 inline-block w-fit rounded-sm bg-white/15 px-2 py-1 font-mono text-[9px] uppercase tracking-wider text-white/90">
-            Résultats
-          </span>
-          <p className="mb-4 font-mono text-[10px] uppercase tracking-wider text-white/50">
-            Ce que le cabinet a fait
-          </p>
-          <ul className="space-y-3">
-            {card.results.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-2 text-[12px] leading-relaxed text-white/85"
-              >
-                <span
-                  className="mt-[5px] h-[5px] w-[5px] shrink-0 rounded-full"
-                  style={{ backgroundColor: card.dotColor }}
-                  aria-hidden
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Bloc titre — hauteur réservée sur le titre le plus long (3 lignes) en
+          desktop (lg:min-h) pour que les trois corps de texte démarrent sur la
+          même ligne. Le titre est en blanc, sur le fond sombre de la carte.
+          Hauteur naturelle en mobile (une colonne). */}
+      <div className="px-5 pt-[18px] lg:min-h-[92px]">
+        <h3 className="m-0 text-[18px] font-medium leading-[1.28] text-white">
+          {card.title}
+        </h3>
       </div>
-    </div>
+      {/* Corps sombre. */}
+      <div className="px-5 pb-4 pt-3">
+        <dl className="m-0">
+          <dt className={label}>Situation</dt>
+          <dd className={`${body} mb-2.5`}>{card.situation}</dd>
+
+          <dt className={label}>Ce que nous avons fait</dt>
+          <dd className={`${body} mb-2.5`}>{card.action}</dd>
+
+          <dt className={label}>Issue</dt>
+          {/* Issue mise en avant (résultat immédiatement identifiable). */}
+          <dd className="m-0 text-[14.5px] font-medium leading-[1.5] text-white">
+            {card.issue}
+          </dd>
+        </dl>
+      </div>
+    </article>
   );
 }
 
 export function SectionCas() {
-  const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
-  const [canHoverFlip, setCanHoverFlip] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (min-width: 768px)");
-    const update = () => setCanHoverFlip(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  const handleToggle = useCallback(
-    (index: number) => {
-      if (canHoverFlip) return;
-      setFlippedIndex((prev) => (prev === index ? null : index));
-    },
-    [canHoverFlip],
-  );
-
   return (
-    <section className="bg-[#F4F4F8]">
+    <section className="bg-[#0A0A14]">
       <style>{`
-        .cas-flip {
-          perspective: 1000px;
-          height: 300px;
-          cursor: default;
-        }
-        .cas-flip-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transform-style: preserve-3d;
-          transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .cas-flip-face {
-          position: absolute;
-          inset: 0;
-          border-radius: 12px;
-          padding: 22px;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-        }
-        .cas-flip-back {
-          transform: rotateY(180deg);
-        }
-        @media (hover: hover) and (min-width: 768px) {
-          .cas-flip:hover .cas-flip-inner {
-            transform: rotateY(180deg);
+        @media print {
+          .cas-card {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
-        }
-        .cas-flip--flipped .cas-flip-inner {
-          transform: rotateY(180deg);
-        }
-        @media (max-width: 767px) {
-          .cas-flip {
-            cursor: pointer;
-          }
-        }
-
-        @keyframes lineBreatheCas1 {
-          0%,
-          100% {
-            border-top-color: rgba(226, 75, 74, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #e24b4a;
-            box-shadow: 0 -2px 12px rgba(226, 75, 74, 0.6);
-          }
-        }
-
-        @keyframes lineBreatheCas2 {
-          0%,
-          100% {
-            border-top-color: rgba(29, 158, 117, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #1d9e75;
-            box-shadow: 0 -2px 12px rgba(29, 158, 117, 0.6);
-          }
-        }
-
-        @keyframes lineBreatheCas3 {
-          0%,
-          100% {
-            border-top-color: rgba(26, 71, 255, 0.3);
-            box-shadow: none;
-          }
-          50% {
-            border-top-color: #1a47ff;
-            box-shadow: 0 -2px 12px rgba(26, 71, 255, 0.6);
-          }
-        }
-
-        .cas-flip-front-breathe--0 {
-          animation: lineBreatheCas1 3s ease-in-out infinite;
-        }
-
-        .cas-flip-front-breathe--1 {
-          animation: lineBreatheCas2 3s ease-in-out infinite;
-        }
-
-        .cas-flip-front-breathe--2 {
-          animation: lineBreatheCas3 3s ease-in-out infinite;
         }
       `}</style>
 
-      <div className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
-        <p className="home-kicker mb-3 font-mono text-[10px] uppercase tracking-widest text-[#0A0F2E]/65">
-          Études de cas
+      <div className="px-4 py-8 md:px-8 md:py-14 lg:px-12">
+        {/* Sur-titre : cohérence avec les sections à en-tête descriptif (Équipe,
+            Presse) qui portent un court sur-titre. « Dossiers traités » — ni
+            « cas pratiques » (exercice d'école), ni « cas d'usage » (vocabulaire
+            logiciel), ni « cas client » (clients identifiables, contraire à
+            l'anonymisation des dossiers). */}
+        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-[#AEB4CC]">
+          Dossiers traités
         </p>
-
-        <h2 className="mb-2 text-[22px] font-medium leading-snug text-[#0A0F2E]">
+        <h2 className="mb-6 text-[22px] font-medium leading-snug text-white md:mb-8">
           Le droit du numérique en action
         </h2>
 
-        <p className="mb-7 text-[13px] text-[#8888A0]">
-          Les noms sont anonymisés, les situations sont réelles.
-        </p>
-
-        <div className="mx-auto grid max-w-[600px] grid-cols-1 gap-4 md:max-w-none md:grid-cols-3">
-          {CASE_CARDS.map((card, index) => (
-            <CasFlipCard
-              key={card.number}
-              card={card}
-              cardIndex={index}
-              flipped={flippedIndex === index}
-              onToggle={() => handleToggle(index)}
-              hoverFlipEnabled={canHoverFlip}
-            />
+        {/* Desktop : hauteurs égalisées par étirement de la grille (items-stretch
+            + h-full sur les cartes). Mobile : hauteur naturelle (items-start). */}
+        <div className="mx-auto grid max-w-[600px] grid-cols-1 items-start gap-3 lg:max-w-none lg:grid-cols-3 lg:items-stretch">
+          {CASE_CARDS.map((card) => (
+            <CasCardView key={card.key} card={card} />
           ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: "32px" }}>
-          <a
-            href="/references"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "13px",
-              color: "rgba(10,15,46,0.5)",
-              borderBottom: "0.5px solid rgba(10,15,46,0.2)",
-              paddingBottom: "2px",
-              textDecoration: "none",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Voir toutes nos études de cas →
-          </a>
         </div>
       </div>
     </section>

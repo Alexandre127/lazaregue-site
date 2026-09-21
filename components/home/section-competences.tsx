@@ -1,89 +1,203 @@
 import Link from "next/link";
 
 /*
- * Section « Nos compétences » — une carte par domaine (neuf).
+ * Section « Domaines d'intervention » — dix domaines en trois familles (3/3/4).
  *
- * Grille 3 colonnes en desktop, 2 sous 1024px, 1 sous 640px. Chaque carte
- * est un lien réel (<a> via next/link) englobant le titre : la carte entière
- * est cliquable, sans onClick sur une div. Surface uniforme (la palette des
- * anciennes cartes thématiques ne correspondait pas à ce découpage par
- * domaine) ; l'accent Electric Blue marque le numéro et le renvoi.
+ * - Les dix cartes sont présentes dans le DOM au premier rendu : pas
+ *   d'accordéon, pas de « voir plus », pas de carrousel.
+ * - Grille 3/3/4 en desktop (lg), une colonne en mobile. Les familles à trois
+ *   cartes passent de 3 à 1 colonne sans étape à 2 (aucune carte orpheline) ;
+ *   la famille à quatre cartes passe par 2 colonnes.
+ * - Lien natif couvrant toute la surface de la carte (une seule tabulation) ;
+ *   le renvoi « voir le domaine » est décoratif (`aria-hidden`, non focalisable).
+ * - Les dix cartes sont désormais interactives : « Contentieux informatique et
+ *   commercial » a rejoint /nos-domaines/contentieux-informatique-commercial (et
+ *   le sitemap) en même temps que sa page a été créée.
  *
- * Chaque href pointe vers une page de domaine vérifiée existante. Quatre
- * chemins diffèrent de ceux du brief (routes réelles du projet) : RGPD →
- * /rgpd-donnees, escroquerie → /avocat-escroquerie-fraude, M&A Tech →
- * /competences/ma-tech, crypto → /crypto-actifs-blockchain.
+ * Couleurs de famille : le système de jetons ne définit qu'UN accent de famille
+ * validé (vert « Données/conformité », posé sur les pages de domaine via
+ * `data-domaine`), les deux autres étant en attente d'arbitrage du cabinet
+ * (« ne pas inventer »). Les propositions de la maquette (teal/ambre/rose) ne
+ * sont pas des jetons validés et divergent même du vert. La section est donc
+ * livrée EN NEUTRE (titres de famille et filets de carte sans couleur de
+ * famille), en attendant l'arbitrage. Le bleu reste la seule couleur d'action.
  */
 
-const BLUE = "#4D6FFF";
+const BLUE = "#4D6FFF"; // action uniquement (renvoi décoratif)
+const DESC = "rgba(255,255,255,0.70)"; // corps des descriptions — contraste ≥ 4,5:1 relevé
 
 type Domaine = {
-  n: string;
   title: string;
   desc: string;
-  href: string;
+  href?: string; // absent = carte non interactive (page à créer)
 };
 
-const DOMAINES: Domaine[] = [
+type Famille = {
+  key: string;
+  label: string; // intitulé définitif — repris au mot près au menu (lot 8)
+  cols: 3 | 4;
+  /**
+   * Réserve de hauteur du bloc titre en desktop (lg), calée sur le titre le plus
+   * long DE CETTE famille, pour que les descriptions démarrent sur la même ligne.
+   * Vide si tous les titres tiennent sur une ligne (aucune réserve nécessaire).
+   */
+  titleReserve: string;
+  domaines: Domaine[];
+};
+
+const FAMILLES: Famille[] = [
   {
-    n: "01",
-    title: "Cybersécurité & NIS 2",
-    desc: "Conformité NIS 2, gouvernance du risque et sécurité des systèmes d'information.",
-    href: "/nos-domaines/cybersecurite",
+    key: "conformite",
+    label: "Conformité et gouvernance",
+    cols: 3,
+    titleReserve: "lg:min-h-[47px]", // « Intelligence artificielle et AI Act » passe à 2 lignes
+    domaines: [
+      {
+        title: "RGPD et données personnelles",
+        desc: "Mettre les traitements de données en conformité et répondre à un contrôle ou à une violation de données.",
+        href: "/nos-domaines/rgpd-donnees-personnelles",
+      },
+      {
+        title: "Intelligence artificielle et AI Act",
+        desc: "Encadrer les outils d'IA utilisés ou développés par l'entreprise et préparer la conformité à l'AI Act.",
+        href: "/nos-domaines/avocat-intelligence-artificielle",
+      },
+      {
+        title: "Cybersécurité et NIS 2",
+        desc: "Organiser la prévention des incidents et respecter les obligations de sécurité, notamment celles de NIS 2.",
+        href: "/nos-domaines/cybersecurite",
+      },
+    ],
   },
   {
-    n: "02",
-    title: "Cybercriminalité & atteintes aux systèmes",
-    desc: "Réponse aux intrusions, rançongiciels et atteintes aux systèmes de traitement automatisé.",
-    href: "/nos-domaines/cybercriminalite",
+    key: "operations",
+    label: "Contrats et opérations numériques",
+    cols: 3,
+    titleReserve: "", // tous les titres tiennent sur une ligne en desktop
+    domaines: [
+      {
+        title: "Contrats informatiques",
+        desc: "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d'infogérance.",
+        href: "/nos-domaines/contrats-informatiques",
+      },
+      {
+        title: "M&A Tech et due diligence",
+        desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.",
+        href: "/nos-domaines/ma-tech",
+      },
+      {
+        title: "Crypto-actifs et blockchain",
+        desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues de MiCA.",
+        href: "/nos-domaines/crypto-actifs-blockchain",
+      },
+    ],
   },
   {
-    n: "03",
-    title: "RGPD & données personnelles",
-    desc: "Mise en conformité, registre, analyses d'impact et défense en cas de contrôle CNIL.",
-    href: "/nos-domaines/rgpd-donnees",
-  },
-  {
-    n: "04",
-    title: "Intelligence artificielle & AI Act",
-    desc: "Qualification des systèmes d'IA, documentation et gouvernance au sens du règlement européen.",
-    href: "/nos-domaines/ia-act",
-  },
-  {
-    n: "05",
-    title: "Contrats IT & responsabilité",
-    desc: "Négociation, exécution et contentieux des contrats informatiques et des prestataires.",
-    href: "/nos-domaines/contrats-informatiques",
-  },
-  {
-    n: "06",
-    title: "Escroquerie & fraude bancaire",
-    desc: "Recours des victimes, remboursement et mise en cause de la responsabilité des banques.",
-    href: "/nos-domaines/avocat-escroquerie-fraude",
-  },
-  {
-    n: "07",
-    title: "Diffamation & retrait de contenus",
-    desc: "Retrait de contenus, déréférencement et défense de la réputation en ligne.",
-    href: "/nos-domaines/diffamation-retrait-de-contenus",
-  },
-  {
-    n: "08",
-    title: "M&A Tech & due diligence",
-    desc: "Due diligence juridique des actifs technologiques dans les opérations de fusion-acquisition.",
-    href: "/competences/ma-tech",
-  },
-  {
-    n: "09",
-    title: "Crypto-actifs & blockchain",
-    desc: "MiCA, prestataires sur actifs numériques, tokenisation et projets Web3.",
-    href: "/nos-domaines/crypto-actifs-blockchain",
+    key: "contentieux",
+    label: "Contentieux et atteintes numériques",
+    cols: 4,
+    titleReserve: "lg:min-h-[70px]", // cartes plus étroites (4 col) : titres jusqu'à 3 lignes
+    domaines: [
+      {
+        title: "Contentieux informatique et commercial",
+        desc: "Agir lorsqu'un projet IT échoue, qu'un prestataire manque à ses obligations ou qu'une expertise devient nécessaire.",
+        href: "/nos-domaines/contentieux-informatique-commercial",
+      },
+      {
+        title: "Cybercriminalité et atteintes aux systèmes",
+        desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une atteinte au système informatique.",
+        href: "/nos-domaines/cybercriminalite",
+      },
+      {
+        title: "Escroquerie et fraude bancaire",
+        desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.",
+        href: "/nos-domaines/escroquerie-fraude-bancaire",
+      },
+      {
+        title: "Diffamation et retrait de contenus",
+        desc: "Faire retirer un contenu, identifier son auteur ou défendre l'entreprise contre une atteinte à sa réputation.",
+        href: "/nos-domaines/diffamation-retrait-contenus",
+      },
+    ],
   },
 ];
 
+const CARD_BASE =
+  "relative flex h-full flex-col overflow-hidden rounded-xl p-5";
+const CARD_STYLE = {
+  background: "rgba(255,255,255,0.03)",
+  border: "1px solid rgba(255,255,255,0.08)",
+} as const;
+
+function CardInner({
+  d,
+  interactive,
+  titleMinH,
+}: {
+  d: Domaine;
+  interactive: boolean;
+  titleMinH: string;
+}) {
+  return (
+    <>
+      {/* Filet de carte — neutre pour l'instant (recevra la couleur de famille
+          une fois l'accent arbitré par le cabinet). */}
+      <span
+        className="mb-4 block h-[2px] w-[26px] rounded-[1px]"
+        style={{ background: "rgba(255,255,255,0.25)" }}
+        aria-hidden
+      />
+      {/* Hauteur de titre réservée sur le titre le plus long de la famille, en
+          desktop (lg) uniquement, pour que les descriptions démarrent sur la
+          même ligne. La famille à quatre colonnes a des cartes plus étroites
+          (titres jusqu'à trois lignes) : réserve plus haute. */}
+      <h4
+        className={`mb-2.5 text-[17px] font-medium leading-snug tracking-[-0.005em] text-white ${titleMinH}`}
+      >
+        {d.title}
+      </h4>
+      <p
+        className="flex-1 text-[14.5px] leading-[1.55]"
+        style={{ color: DESC }}
+      >
+        {d.desc}
+      </p>
+      {interactive && (
+        <span
+          className="mt-4 font-mono text-[11.5px] tracking-[0.14em] opacity-80 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+          style={{ color: BLUE }}
+          aria-hidden
+        >
+          voir le domaine →
+        </span>
+      )}
+    </>
+  );
+}
+
+function DomaineCard({ d, titleMinH }: { d: Domaine; titleMinH: string }) {
+  if (d.href) {
+    return (
+      <Link
+        href={d.href}
+        className={`domaine-card group ${CARD_BASE} focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A14]`}
+        style={CARD_STYLE}
+      >
+        <CardInner d={d} interactive titleMinH={titleMinH} />
+      </Link>
+    );
+  }
+  // Carte non interactive : aucun lien, aucun rôle, aucun survol, aucun focus.
+  return (
+    <div className={CARD_BASE} style={CARD_STYLE}>
+      <CardInner d={d} interactive={false} titleMinH={titleMinH} />
+    </div>
+  );
+}
+
 export default function SectionCompetences() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0A0A14] py-16 md:py-24">
+    <section className="relative w-full overflow-hidden border-t border-white/[0.08] bg-[#0A0A14] py-8 md:py-14">
       <div
         className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
         style={{
@@ -95,60 +209,72 @@ export default function SectionCompetences() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
-        <div className="mb-6 text-center md:mb-8">
-          <p
-            className="home-kicker text-xs uppercase tracking-[0.2em] text-[#C5CBDE]"
-            style={{ fontFamily: "'DM Mono', monospace" }}
-          >
-            Nos compétences
-          </p>
-        </div>
+        {/* Titre de section (H2) — traitement de titre de section, non de
+            sur-titre. Aucun chapô. */}
+        <h2 className="mb-8 max-w-[22ch] text-[clamp(28px,3.4vw,38px)] font-medium leading-[1.18] tracking-[-0.01em] text-white md:mb-10">
+          Domaines d&apos;intervention
+        </h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {DOMAINES.map((d) => (
-            <Link
-              key={d.n}
-              href={d.href}
-              className="competence-tile group flex h-full flex-col rounded-xl p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A14]"
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-            >
-              <span
-                className="font-mono text-[11px] tracking-[0.12em]"
-                style={{ color: BLUE }}
+        {FAMILLES.map((fam) => (
+          <div key={fam.key} className="mb-10 last:mb-0">
+            <div className="mb-4 flex items-center gap-4">
+              {/* Titre de famille (H3) — intitulé en toutes lettres (la couleur
+                  ne porte jamais seule l'information). Neutre pour l'instant. */}
+              <h3
+                className="m-0 whitespace-nowrap text-[12.5px] uppercase tracking-[0.16em] text-[#C5CBDE]"
+                style={{ fontFamily: "'DM Mono', monospace" }}
               >
-                {d.n}
-              </span>
-              <h3 className="mt-2 text-[15px] font-medium leading-snug text-white">
-                {d.title}
+                {fam.label}
               </h3>
-              <p className="mt-1.5 flex-1 text-[13px] leading-[1.5] text-white/45">
-                {d.desc}
-              </p>
               <span
-                className="mt-3 font-mono text-[11px] opacity-70 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
-                style={{ color: BLUE }}
+                className="h-px flex-1"
+                style={{ background: "rgba(255,255,255,0.12)" }}
                 aria-hidden
-              >
-                Voir le domaine →
-              </span>
-            </Link>
-          ))}
-        </div>
+              />
+            </div>
+
+            <div
+              className={`grid grid-cols-1 gap-4 ${
+                fam.cols === 4
+                  ? "sm:grid-cols-2 lg:grid-cols-4"
+                  : "lg:grid-cols-3"
+              }`}
+            >
+              {fam.domaines.map((d) => (
+                <DomaineCard key={d.title} d={d} titleMinH={fam.titleReserve} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       <style>{`
-        .competence-tile {
+        .domaine-card {
           transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
         }
+        /* Halo lumineux : un balayage traverse la carte AU SEUL SURVOL (pas de
+           boucle permanente — dix cartes animées en continu = bruit visuel).
+           Purement décoratif (pointer-events:none). Aucun effet au toucher : le
+           balayage part hors champ et ne bouge qu'au survol pointeur fin. */
+        .domaine-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.10) 50%, transparent 68%);
+          transform: translateX(-120%);
+          transition: transform 0.7s ease;
+        }
         @media (hover: hover) and (pointer: fine) {
-          .competence-tile:hover {
+          a.domaine-card:hover {
             border-color: rgba(26,71,255,0.5);
             background-color: rgba(26,71,255,0.06);
             transform: translateY(-2px);
           }
+          a.domaine-card:hover::after { transform: translateX(120%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .domaine-card::after { display: none; }
         }
       `}</style>
     </section>

@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Rubrique « Cas clients » — page générale + pages de cas (21 sept. 2026).
+   Portée : descendants de `.cas` (classe hashée) ; :global pour le balisage repris
+   des maquettes. Hero clair. Charte : Bebas grands numéros ; bleu #1A47FF.
+   ========================================================================== */
+.cas {
+  --tint: #eef1fb;
+  --header-h: 72px;
+  color: var(--ink);
+  background: #fff;
+}
+:where(.cas) p,
+:where(.cas) li,
+:where(.cas) dd { color: var(--ink); }
+
+.cas :global(.wrap) { max-width: var(--content-max); margin: 0 auto; padding-inline: var(--page-margin); }
+@media (max-width: 640px) { .cas :global(.wrap) { padding-inline: var(--page-margin-mobile); } }
+.cas :global(.sec) { padding-block: clamp(56px, 7vw, 104px); }
+.cas :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.cas :global(.ghost) { background: var(--off); }
+.cas :global(.navy) { background: var(--navy); color: #fff; }
+.cas :global(.navy :focus-visible) { outline-color: #fff; }
+
+.cas :global(.label) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); }
+.cas :global(.h2) { font-family: var(--ff-body); font-size: clamp(28px, 3.2vw, 40px); font-weight: 500; line-height: 1.12; letter-spacing: -0.015em; max-width: 900px; margin: 0; }
+.cas :global(.navy .h2) { color: #fff; }
+.cas :global(.head) { display: flex; flex-direction: column; gap: 14px; margin-bottom: 44px; max-width: 900px; }
+.cas :global(.ctahead) { margin-bottom: 24px; }
+.cas :global(.lead) { font-size: 18px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; margin: 0; }
+.cas :global(.navy .lead) { color: rgba(255, 255, 255, 0.82); }
+.cas :global(.tx) { font-size: 16px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+.cas :global(.tagd) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 0; }
+.cas :global(.meta) { font-family: var(--ff-mono); font-size: 12px; color: var(--text-muted); }
+.cas :global(.btn) { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 13px 24px; background: var(--blue); color: #fff; font: 600 16px var(--ff-body); text-decoration: none; border: 0; }
+.cas :global(.btn:hover) { background: var(--blue3); color: #fff; }
+.cas :global(.link) { font-weight: 600; font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
+
+/* Statut « Dossier clos — issue favorable » (bleu, pas seulement la couleur : texte + pastille) */
+.cas :global(.status) { display: inline-flex; align-items: center; gap: 8px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 10px; border: 1px solid currentColor; }
+.cas :global(.status)::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.cas :global(.stOk) { color: var(--blue); }
+
+/* ============================== HUB (générale) ====================== */
+.cas :global(.hub-hero) { background: var(--off); padding: calc(var(--header-h) + 20px) 0 64px; }
+.cas :global(.crumb) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; color: var(--text-muted); }
+.cas :global(.crumb a) { color: var(--text-muted); text-decoration: none; }
+.cas :global(.crumb a:hover) { color: var(--blue); text-decoration: underline; }
+.cas :global(.crumb [aria-current]) { color: var(--ink); }
+.cas :global(.heroLabel) { margin-top: 22px; display: block; }
+.cas :global(.hub-hero h1) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(46px, 6vw, 88px); line-height: 0.92; margin: 14px 0 18px; max-width: 980px; color: var(--ink); overflow-wrap: break-word; }
+.cas :global(.heroLead) { max-width: 780px; }
+.cas :global(.chips) { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.cas :global(.chips button) { min-height: 44px; padding: 0 14px; border: 1px solid var(--ink); background: #fff; font: 500 14px var(--ff-body); cursor: pointer; color: var(--ink); }
+.cas :global(.chips button[aria-pressed="true"]) { background: var(--ink); color: #fff; }
+.cas :global(.casSec) { padding-top: 56px; }
+
+.cas :global(.feat) { display: grid; grid-template-columns: 7fr 5fr; gap: 0; border: 1px solid var(--ink); background: #fff; margin-top: 14px; }
+.cas :global(.featL) { padding: 36px; display: flex; flex-direction: column; gap: 14px; }
+.cas :global(.featL h2) { font-family: var(--ff-body); font-size: clamp(26px, 2.8vw, 36px); font-weight: 500; line-height: 1.15; margin: 0; }
+.cas :global(.featL h2 a) { color: inherit; text-decoration: none; }
+.cas :global(.featL h2 a:hover) { color: var(--blue); text-decoration: underline; }
+.cas :global(.ftx) { font-size: 16px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+.cas :global(.featR) { background: var(--navy); color: #fff; padding: 32px; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.cas :global(.featR dl) { margin: 0; }
+.cas :global(.featR dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
+.cas :global(.featR dd) { margin: 2px 0 12px; font-size: 16px; line-height: 1.45; color: #fff; }
+
+.cas :global(.grid3) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.cas :global(.ccard) { background: #fff; border: 1px solid var(--bd); border-top: 4px solid var(--ink); padding: 22px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+.cas :global(.ccard[hidden]) { display: none; }
+.cas :global(.ccard .num) { font-family: var(--ff-display); font-size: 36px; line-height: 0.85; color: var(--blue); }
+.cas :global(.ccard h3) { font-family: var(--ff-body); font-size: 19px; font-weight: 600; line-height: 1.3; margin: 0; }
+.cas :global(.ccard h3 a) { color: inherit; text-decoration: none; }
+.cas :global(.ccard h3 a)::after { content: ""; position: absolute; inset: 0; }
+.cas :global(.ccard:hover h3 a),
+.cas :global(.ccard h3 a:focus-visible) { color: var(--blue); text-decoration: underline; }
+.cas :global(.ccard:focus-within) { outline: 3px solid var(--blue); outline-offset: 2px; }
+.cas :global(.ctx) { font-size: 15px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+.cas :global(.ccard .foot) { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--bd); }
+.cas :global(.clink) { font-weight: 600; font-size: 15px; color: var(--blue); }
+.cas :global(.empty) { margin-top: 16px; padding: 20px; background: var(--off); }
+.cas :global(.note-a) { margin-top: 24px; font-size: 14px; color: var(--text-muted); line-height: 1.55; max-width: 860px; }
+
+.cas :global(.alsodo) { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+.cas :global(.alsohead) { margin: 0; }
+.cas :global(.alsodo ul) { border-top: 2px solid var(--ink); display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; list-style: none; margin: 0; padding: 0; }
+.cas :global(.alsodo li a) { display: flex; justify-content: space-between; min-height: 52px; align-items: center; border-bottom: 1px solid var(--bd); color: var(--ink); text-decoration: none; font-weight: 500; gap: 12px; }
+.cas :global(.alsodo li a)::after { content: "→"; color: var(--blue); flex: none; }
+.cas :global(.alsodo li a:hover) { color: var(--blue); }
+
+/* ================================ CASE ============================= */
+.cas :global(.case-hero) { background: var(--off); padding: calc(var(--header-h) + 20px) 0 56px; }
+.cas :global(.heroTag) { margin-top: 22px; }
+.cas :global(.case-hero h1) { font-family: var(--ff-body); font-size: clamp(32px, 4vw, 50px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; margin: 14px 0 18px; max-width: 900px; color: var(--ink); }
+.cas :global(.chapo) { font-size: 19px; line-height: 1.6; max-width: 820px; color: var(--ink); }
+.cas :global(.sumbar) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--ink); margin-top: 28px; background: #fff; }
+.cas :global(.sumbar > div) { padding: 16px 18px; }
+.cas :global(.sumbar > div + div) { border-left: 1px solid var(--bd); }
+.cas :global(.sumbar dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.cas :global(.sumbar dd) { margin: 6px 0 0; font-size: 16px; line-height: 1.45; font-weight: 500; }
+.cas :global(.sumbar > div:last-child) { background: var(--blue); color: #fff; }
+.cas :global(.sumbar > div:last-child dt) { color: rgba(255, 255, 255, 0.8); }
+.cas :global(.sumbar > div:last-child dd) { color: #fff; }
+
+.cas :global(.cgrid) { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 56px; padding: 56px var(--page-margin) 80px; max-width: 1296px; margin: 0 auto; }
+@media (max-width: 640px) { .cas :global(.cgrid) { padding-inline: var(--page-margin-mobile); } }
+.cas :global(.cbody) { min-width: 0; }
+.cas :global(.cbody .scroll) { max-width: 100%; overflow-x: auto; }
+.cas :global(.cbody section) { padding: 0 0 40px; margin-bottom: 40px; border-bottom: 1px solid var(--bd); }
+.cas :global(.cbody section:last-child) { border-bottom: 0; }
+.cas :global(.cbody .sn) { font-family: var(--ff-display); font-size: 40px; line-height: 0.85; color: var(--blue); }
+.cas :global(.cbody h2) { font-family: var(--ff-body); font-size: 26px; font-weight: 500; margin: 8px 0 14px; color: var(--ink); }
+.cas :global(.cbody p),
+.cas :global(.cbody li) { font-size: 17px; line-height: 1.65; }
+.cas :global(.cbody p + p) { margin-top: 12px; }
+.cas :global(.arbTitle) { margin-top: 18px; font-weight: 600; }
+.cas :global(.diff) { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cas :global(.diffTop) { margin-top: 18px; }
+.cas :global(.diff > div) { border: 1px solid var(--bd); padding: 16px; display: grid; grid-template-columns: 28px 1fr; gap: 10px; }
+.cas :global(.diff b) { font-family: var(--ff-display); font-size: 26px; line-height: 0.9; color: var(--blue); font-weight: 400; }
+.cas :global(.diff strong) { display: block; font-size: 16px; }
+.cas :global(.diff span) { font-size: 15px; color: var(--text-muted); }
+.cas :global(.tbl) { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+.cas :global(.tbl th),
+.cas :global(.tbl td) { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--bd); }
+.cas :global(.tbl thead th) { font-family: var(--ff-mono); font-weight: 400; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--ink); }
+.cas :global(.arb th[scope="row"]) { font-weight: 600; }
+.cas :global(.ret) { color: var(--blue); font-weight: 600; }
+.cas :global(.state) { background: var(--tint); border-left: 4px solid var(--blue); padding: 18px 20px; }
+.cas :global(.stateP) { margin-top: 10px; }
+.cas :global(.keep) { list-style: none; margin: 0; padding: 0; }
+.cas :global(.keep li) { padding-left: 22px; position: relative; }
+.cas :global(.keep li)::before { content: "→"; position: absolute; left: 0; color: var(--blue); }
+.cas :global(.keep li + li) { margin-top: 8px; }
+
+.cas :global(.fiche) { position: sticky; top: calc(var(--header-h) + 16px); align-self: start; border: 1px solid var(--ink); background: #fff; }
+.cas :global(.fiche .t) { background: var(--navy); color: #fff; padding: 14px 18px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+.cas :global(.fiche dl) { margin: 0; padding: 6px 18px 14px; }
+.cas :global(.fiche dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding-top: 12px; }
+.cas :global(.fiche dd) { margin: 4px 0 0; font-size: 15px; line-height: 1.45; padding-bottom: 10px; border-bottom: 1px solid var(--bd); }
+.cas :global(.fiche .who) { display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--bd); font-size: 14px; }
+.cas :global(.fiche .ava) { width: 48px; height: 48px; background: #e0e0ee; }
+.cas :global(.wsm) { font-size: 11px; margin: 0; }
+.cas :global(.wnm) { font-weight: 600; margin: 2px 0 0; }
+.cas :global(.wlk) { font-size: 13px; }
+
+.cas :global(.rel3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cas :global(.rel3 article) { background: #fff; border: 1px solid var(--bd); padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.cas :global(.rel3 article.comp) { background: var(--navy); color: #fff; border-color: var(--navy); }
+.cas :global(.rel3 article.comp a) { color: #fff; }
+.cas :global(.rel3 article.comp .tagd) { color: rgba(255, 255, 255, 0.8); }
+.cas :global(.rel3 h3) { font-family: var(--ff-body); font-size: 17px; font-weight: 600; line-height: 1.3; margin: 0; }
+.cas :global(.rel3 article.comp h3) { color: #fff; }
+
+.cas :global(.pn) { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--ink); padding-top: 18px; margin-top: 32px; }
+.cas :global(.pn a) { font-weight: 600; max-width: 48%; }
+.cas :global(.pnRight) { text-align: right; }
+.cas :global(.ctaAll) { color: #fff; margin-left: 16px; text-decoration: underline; }
+
+/* ================================ responsive ======================== */
+@media (max-width: 1280px) { .cas :global(.grid3) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1100px) {
+  .cas :global(.cgrid) { grid-template-columns: 1fr; }
+  .cas :global(.fiche) { position: static; }
+  .cas :global(.feat) { grid-template-columns: 1fr; }
+  .cas :global(.grid3),
+  .cas :global(.rel3) { grid-template-columns: 1fr 1fr; }
+  .cas :global(.alsodo) { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .cas :global(.hub-hero h1) { font-size: clamp(38px, 11vw, 88px); }
+  .cas :global(.grid3),
+  .cas :global(.rel3),
+  .cas :global(.diff),
+  .cas :global(.sumbar),
+  .cas :global(.alsodo ul) { grid-template-columns: 1fr; }
+  .cas :global(.sumbar > div + div) { border-left: 0; border-top: 1px solid var(--bd); }
+  .cas :global(.pn a) { max-width: 100%; }
+  /* tableau d'arbitrage → fiches verticales, sans débordement de page */
+  .cas :global(.arb thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .cas :global(.arb),
+  .cas :global(.arb tbody),
+  .cas :global(.arb tr),
+  .cas :global(.arb td),
+  .cas :global(.arb th) { display: block; width: 100%; }
+  .cas :global(.arb tr) { border: 1px solid var(--bd); padding: 6px 14px; margin-bottom: 12px; background: #fff; }
+  .cas :global(.arb td),
+  .cas :global(.arb th) { border: 0; padding: 8px 0; }
+  .cas :global(.arb td)::before,
+  .cas :global(.arb th[scope="row"])::before { content: attr(data-l); display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+}

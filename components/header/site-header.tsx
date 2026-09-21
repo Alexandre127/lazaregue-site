@@ -92,6 +92,13 @@ export function SiteHeader() {
   const navItemRef = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<number | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  // Ferme le tiroir mobile ET rend le focus au hamburger (élément d'origine).
+  const closeMobile = useCallback(() => {
+    setMobileOpen(false);
+    hamburgerRef.current?.focus();
+  }, []);
 
   /* ---- État collant : sentinelle IntersectionObserver ----
      On observe une sentinelle posée en haut du document, haute d'une barre
@@ -170,11 +177,11 @@ export function SiteHeader() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       if (panelOpen) closePanel(true);
-      if (mobileOpen) setMobileOpen(false);
+      if (mobileOpen) closeMobile();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [panelOpen, mobileOpen, closePanel]);
+  }, [panelOpen, mobileOpen, closePanel, closeMobile]);
 
   /* ---- Clic extérieur : ferme le panneau (y compris s'il est épinglé) ---- */
   useEffect(() => {
@@ -300,9 +307,15 @@ export function SiteHeader() {
                     </li>
                   );
                 }
+                const active =
+                  pathname === entry.href || pathname?.startsWith(entry.href + "/");
                 return (
                   <li key={entry.label} className={styles.navItem}>
-                    <Link className={styles.navLink} href={entry.href}>
+                    <Link
+                      className={styles.navLink}
+                      href={entry.href}
+                      aria-current={active ? "page" : undefined}
+                    >
                       {entry.label}
                     </Link>
                   </li>
@@ -315,6 +328,7 @@ export function SiteHeader() {
 
           {/* --- Hamburger mobile --- */}
           <button
+            ref={hamburgerRef}
             type="button"
             className={styles.hamburger}
             aria-label="Ouvrir le menu"
@@ -331,7 +345,7 @@ export function SiteHeader() {
       {/* --- Tiroir mobile plein écran --- */}
       <MobileDrawer
         open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
+        onClose={closeMobile}
         isHome={isHome}
       />
 
@@ -369,6 +383,13 @@ function MobileDrawer({
   isHome: boolean;
 }) {
   const [accordion, setAccordion] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // À l'ouverture, le focus entre dans le tiroir (bouton Fermer) — dialogue
+  // modal correct. Le retour du focus au hamburger est géré par le parent.
+  useEffect(() => {
+    if (open) closeRef.current?.focus();
+  }, [open]);
 
   return (
     <div
@@ -380,7 +401,13 @@ function MobileDrawer({
     >
       <div className={styles.drawerTop}>
         <Logo isHome={isHome} />
-        <button type="button" className={styles.drawerClose} aria-label="Fermer le menu" onClick={onClose}>
+        <button
+          ref={closeRef}
+          type="button"
+          className={styles.drawerClose}
+          aria-label="Fermer le menu"
+          onClick={onClose}
+        >
           ✕
         </button>
       </div>

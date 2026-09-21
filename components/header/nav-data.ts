@@ -7,10 +7,8 @@
  * VERBATIM (phrases verbales, pas des listes de mots-clés) : ne pas les
  * raccourcir ni y ajouter de mots-clés.
  *
- * Câblage sur les routes RÉELLES du projet (le brief employait un schéma
- * /domaines/* qui n'existe pas). Correspondance validée avec le cabinet.
- * ⚠️ « Fusions-acquisitions technologiques » est la seule sous /competences/
- * (et non /nos-domaines/) — incohérence de structure à traiter séparément.
+ * Câblage sur les routes RÉELLES du projet. Depuis le lot 2, les dix domaines
+ * (M&A Tech compris) sont sous /nos-domaines/ ; plus aucune route /competences/.
  */
 
 export type DomaineLink = {
@@ -23,7 +21,10 @@ export type DomaineLink = {
 };
 
 export type Famille = {
-  /** Intitulé de famille (bas de casse, non cliquable). */
+  /**
+   * Intitulé de famille, non cliquable. Repris AU MOT PRÈS de la section
+   * « Domaines d'intervention » de la home (lot 8) : ne pas reformuler.
+   */
   intitule: string;
   domaines: DomaineLink[];
 };
@@ -31,17 +32,17 @@ export type Famille = {
 /** Les trois familles du panneau DOMAINES (3 × 3). */
 export const FAMILLES: Famille[] = [
   {
-    intitule: "conformité et risques",
+    intitule: "Conformité et gouvernance",
     domaines: [
       {
         titre: "RGPD et données personnelles",
         contexte: "Se mettre en conformité et gérer une violation de données",
-        href: "/nos-domaines/rgpd-donnees",
+        href: "/nos-domaines/rgpd-donnees-personnelles",
       },
       {
         titre: "Intelligence artificielle",
         contexte: "Appliquer l'AI Act et encadrer les usages internes",
-        href: "/nos-domaines/ia-act",
+        href: "/nos-domaines/avocat-intelligence-artificielle",
       },
       {
         titre: "Cybersécurité et NIS 2",
@@ -51,7 +52,7 @@ export const FAMILLES: Famille[] = [
     ],
   },
   {
-    intitule: "contrats et opérations",
+    intitule: "Contrats et opérations numériques",
     domaines: [
       {
         titre: "Contrats informatiques",
@@ -66,17 +67,22 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Fusions-acquisitions technologiques",
         contexte: "Auditer le passif numérique avant une acquisition",
-        href: "/competences/ma-tech",
+        href: "/nos-domaines/ma-tech",
       },
     ],
   },
   {
-    intitule: "contentieux et atteintes",
+    intitule: "Contentieux et atteintes numériques",
     domaines: [
+      {
+        titre: "Contentieux informatique et commercial",
+        contexte: "Agir quand un projet IT échoue ou qu'un prestataire manque à ses obligations",
+        href: "/nos-domaines/contentieux-informatique-commercial",
+      },
       {
         titre: "Fraude bancaire et escroquerie en ligne",
         contexte: "Obtenir le remboursement des sommes détournées",
-        href: "/nos-domaines/avocat-escroquerie-fraude",
+        href: "/nos-domaines/escroquerie-fraude-bancaire",
       },
       {
         titre: "Cyberattaques et cybercriminalité",
@@ -86,7 +92,7 @@ export const FAMILLES: Famille[] = [
       {
         titre: "Diffamation et retrait de contenus",
         contexte: "Faire retirer un contenu et identifier son auteur",
-        href: "/nos-domaines/diffamation-retrait-de-contenus",
+        href: "/nos-domaines/diffamation-retrait-contenus",
       },
     ],
   },
@@ -109,10 +115,12 @@ export type NavEntry =
 
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  // Panneau réduit à une seule carte réelle (PicRights) → lien direct.
-  { type: "link", label: "ACTIONS COLLECTIVES", href: "/litige-afp-picrights/" },
+  // « Actions collectives » retirée (aucune page dédiée n'existe) : reviendra le
+  // jour où la page existera. Ne rien mettre à sa place.
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
+  { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
+  { type: "link", label: "FORMATIONS", href: "/formations" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
   { type: "link", label: "CONTACT", href: "/contact" },
 ];
@@ -136,23 +144,35 @@ export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
  * hero) : l'état est connu dès le rendu serveur, donc aucun clignotement.
  *
  * Correspondance par segment : `/nos-domaines` couvre l'index ET toutes les
- * pages de domaine ; `/competences` couvre ma-tech (et les futures pages).
+ * pages de domaine (M&A Tech compris depuis le lot 2).
  * Quand une page à hero sombre est ajoutée hors de ces préfixes, l'inscrire ici.
  */
 export const ROUTES_HERO_SOMBRE = [
   "/", // accueil
   "/nos-domaines", // index + toutes les pages de domaine
-  "/competences", // ma-tech
-  "/le-cabinet",
-  "/ressources",
+  // « /le-cabinet » et « /ressources » retirés : ces pages ont désormais un
+  // hero CLAIR (refonte sept. 2026). Le header opaque (navy) au repos reste
+  // lisible dessus ; un hero sombre rendrait le texte blanc du header invisible.
   "/contact",
   "/mentions-legales",
   "/politique-de-confidentialite",
 ] as const;
 
+/**
+ * Exceptions à hero CLAIR sous un préfixe sombre. La page Fraude bancaire
+ * (refonte UX sept. 2026) a un hero clair : le header transparent à texte blanc
+ * y serait invisible, alors que `/nos-domaines` reste sombre par défaut.
+ */
+export const ROUTES_HERO_CLAIR = [
+  "/nos-domaines/escroquerie-fraude-bancaire",
+] as const;
+
 /** Le header doit-il être transparent au repos sur cette route ? */
 export function aHeroSombre(pathname: string): boolean {
   const p = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  if (ROUTES_HERO_CLAIR.some((r) => p === r || p.startsWith(r + "/"))) {
+    return false;
+  }
   return ROUTES_HERO_SOMBRE.some((r) =>
     r === "/" ? p === "/" : p === r || p.startsWith(r + "/"),
   );

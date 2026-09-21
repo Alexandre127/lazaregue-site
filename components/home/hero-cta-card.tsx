@@ -50,13 +50,13 @@ export function HeroCTACard({ open, onClose, className = "" }: HeroCTACardProps)
       <div className="space-y-1.5 px-4 pb-4 text-sm text-[#0A0F2E]">
         <a
           href="tel:+33181706200"
-          className="block font-mono text-[12px] text-[#0A0F2E]/70 hover:text-[#1A47FF]"
+          className="flex min-h-[44px] items-center font-mono text-[12px] text-[#0A0F2E]/70 hover:text-[#1A47FF]"
         >
           01 81 70 62 00
         </a>
         <a
           href="mailto:contact@lazaregue-avocats.fr"
-          className="block font-mono text-[11px] text-[#0A0F2E]/60 hover:text-[#1A47FF]"
+          className="flex min-h-[44px] items-center font-mono text-[11px] text-[#0A0F2E]/70 hover:text-[#1A47FF]"
         >
           contact@lazaregue-avocats.fr
         </a>

@@ -1,0 +1,278 @@
+/* ==========================================================================
+   Page « Cybercriminalité » — refonte UX v2 (`cybercriminalite-maquette-v2.html`).
+   Portée : descendants de `.cc` (hashé) ; :global pour le balisage repris.
+   Angles droits. Pas de Bebas Neue (arbitrage) : tout en Space Grotesk / DM Mono.
+   BLEU électrique = sur-titres, numéros, puces, en-têtes de tableau, actions.
+   ROUGE = bandeau d'urgence UNIQUEMENT.
+   ========================================================================== */
+.cc {
+  --red: #b3261e;
+  --tintb: #eef1fb; /* bleu très clair (encadrés) */
+  --borderb: #cdd8ff;
+
+  --gut: 24px;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
+  --header-h: 72px;
+  --muted-onDark: rgba(255, 255, 255, 0.78); /* surcharge du token global #9fb2ff (contraste AA) */
+
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: clip;
+  padding-top: var(--header-h);
+}
+@media (max-width: 640px) { .cc { font-size: 16px; } }
+
+/* Couleur de texte pilotée par --text : encre sur fond clair, blanc sur fond
+   sombre. Corrige À LA SOURCE les textes hérités (panneau « mis en cause »,
+   sections sombres) sans surcharge au cas par cas. */
+.cc { --text: var(--ink); }
+.cc :global(.onDark),
+.cc :global(.urgent),
+.cc :global(.vband),
+.cc :global(.dtop) { --text: #fff; }
+.cc :global(p),
+.cc :global(li),
+.cc :global(dd) { color: var(--text); }
+.cc :global(.onDark .kicker),
+.cc :global(.vband .kicker) { color: var(--muted-onDark); }
+
+.cc :global(.wrap) { max-width: var(--content-max); margin: 0 auto; padding-left: var(--page-margin); padding-right: var(--page-margin); }
+@media (max-width: 640px) { .cc :global(.wrap) { padding-left: var(--page-margin-mobile); padding-right: var(--page-margin-mobile); } }
+.cc :global(section) { padding: var(--s8) 0; background: var(--wh); }
+@media (max-width: 640px) { .cc :global(section) { padding: var(--s7) 0; } }
+.cc :global(.alt) { background: var(--off); }
+.cc :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+
+/* ---- Typographie (Space Grotesk + DM Mono ; aucune Bebas) ---- */
+.cc :global(h1),
+.cc :global(h2),
+.cc :global(h3) { font-family: var(--ff-body); letter-spacing: -0.015em; margin: 0; color: var(--text); }
+.cc :global(h1) { font-weight: 600; font-size: clamp(34px, 5.2vw, 56px); line-height: 1.06; }
+.cc :global(h2) { font-weight: 500; font-size: clamp(25px, 3.2vw, 36px); line-height: 1.15; margin-bottom: var(--s5); }
+.cc :global(h3) { font-weight: 600; font-size: 18px; line-height: 1.35; margin-bottom: var(--s2); }
+.cc :global(p) { margin: 0 0 var(--s4); max-width: 66ch; }
+.cc :global(p:last-child) { margin-bottom: 0; }
+
+.cc :global(.kicker) { font-family: var(--ff-mono); font-weight: 500; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); margin: 0 0 var(--s3); }
+.cc :global(.meta) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.05em; color: var(--text-muted); margin: 0; }
+.cc :global(.lead) { font-size: clamp(17px, 1.9vw, 20px); color: var(--text-muted); max-width: 62ch; }
+
+/* ---- Liens / focus ---- */
+.cc :global(a) { color: var(--blue3); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.cc :global(a:hover) { color: var(--blue); }
+.cc :global(p a),
+.cc :global(li a),
+.cc :global(dd a) { text-decoration: underline; }
+.cc :global(:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.cc :global(.onDark a:focus-visible) { outline-color: #fff; }
+
+/* ---- Boutons ---- */
+.cc :global(.btn) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 13px 24px; font-family: var(--ff-body); font-size: 16px; font-weight: 600; text-decoration: none; border: 1px solid var(--blue); background: var(--blue); color: #fff; cursor: pointer; transition: background 0.18s ease, border-color 0.18s ease; }
+.cc :global(.btn:hover) { background: var(--blue3); border-color: var(--blue3); color: #fff; }
+.cc :global(.btn--ghost) { background: transparent; color: var(--blue); }
+.cc :global(.btn--ghost:hover) { background: rgba(26, 71, 255, 0.08); color: var(--blue3); }
+.cc :global(.onDark .btn) { border-color: var(--blue2); }
+.cc :global(.onDark .btn--ghost) { color: #fff; border-color: rgba(255, 255, 255, 0.5); background: transparent; }
+.cc :global(.onDark .btn--ghost:hover) { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.cc :global(.btns) { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s5); }
+@media (max-width: 400px) { .cc :global(.btns) { flex-direction: column; align-items: stretch; } .cc :global(.btns .btn) { width: 100%; } }
+
+/* ---- Bandeau d'urgence (SEUL rouge) ---- */
+.cc :global(.urgent) { background: var(--red); color: #fff; }
+.cc :global(.urgent .wrap) { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-height: 48px; padding-top: 10px; padding-bottom: 10px; font-size: 15px; }
+.cc :global(.urgent a) { color: #fff; font-weight: 600; text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+.cc :global(.urgent :focus-visible) { outline-color: #fff; }
+
+/* ============================= HÉRO (vidéo fondue) ====================== */
+.cc :global(.hero-y) { position: relative; overflow: hidden; background: var(--navy); color: #f0eee8; padding: var(--s6) 0 var(--s8); }
+.cc :global(.hero-y .wrap) { position: relative; z-index: 1; }
+/* Spécificité (.hero-y .vidbg) volontairement > .media pour que le fond vidéo
+   reste ABSOLU (sinon .media position:relative, défini plus bas, l'écrase et le
+   hero « perd » sa vidéo — cause de la disparition constatée). */
+.cc :global(.hero-y .vidbg) { position: absolute; inset: 0 0 0 40%; border: 0; aspect-ratio: auto; }
+.cc :global(.hero-y .vidbg)::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, var(--navy) 0%, rgba(10, 15, 46, 0.85) 30%, rgba(10, 15, 46, 0.35) 100%); }
+.cc :global(.hero-y .videoBtn) { z-index: 3; }
+.cc :global(.heroInner) { max-width: 760px; margin-top: var(--s6); }
+.cc :global(.hero-y h1) { color: #fff; }
+.cc :global(.hero-y .kicker) { color: var(--muted-onDark); }
+.cc :global(.hero-y .chapo) { color: #e2e5f4; font-size: clamp(18px, 1.9vw, 21px); font-weight: 400; margin-top: var(--s5); max-width: 58ch; line-height: 1.5; }
+.cc :global(.hero-y .repere) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-onDark); margin-top: var(--s5); }
+.cc :global(.hero-y .conf) { margin-top: var(--s4); font-size: 14px; color: var(--muted-onDark); max-width: 48ch; }
+.cc :global(.crumb) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.05em; padding: var(--s4) 0 0; position: relative; z-index: 1; }
+.cc :global(.crumb ol) { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.cc :global(.crumb a) { color: rgba(255, 255, 255, 0.82); text-decoration: underline; text-underline-offset: 3px; }
+.cc :global(.crumb a:hover) { color: #fff; }
+.cc :global(.crumb [aria-current]) { color: #fff; }
+
+/* Portes victime / mis en cause */
+.cc :global(.doors) { display: grid; grid-template-columns: 1fr 1fr; margin-top: var(--s6); border: 1px solid rgba(255, 255, 255, 0.35); }
+.cc :global(.doors a) { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; min-height: 72px; text-decoration: none; color: #fff; }
+.cc :global(.doors a + a) { border-left: 1px solid rgba(255, 255, 255, 0.35); background: rgba(26, 71, 255, 0.22); }
+.cc :global(.doors a:hover) { background: var(--blue); }
+.cc :global(.doors small) { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-onDark); margin-bottom: 4px; }
+.cc :global(.doors b) { font-size: 19px; font-weight: 600; }
+@media (max-width: 640px) {
+  .cc :global(.doors) { grid-template-columns: 1fr; }
+  .cc :global(.doors a + a) { border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.35); }
+}
+
+/* ---- Emplacement média (repli) ---- */
+.cc :global(.media) { position: relative; overflow: hidden; background: radial-gradient(120% 80% at 70% 20%, rgba(77, 111, 255, 0.28), rgba(10, 15, 46, 0) 62%), linear-gradient(170deg, #182051, #0b1030 60%, #070b22); }
+.cc :global(.media video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.videoBtn { position: absolute; right: 12px; bottom: 12px; z-index: 2; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: rgba(10, 15, 46, 0.72); border: 1px solid rgba(255, 255, 255, 0.55); color: #fff; font-size: 14px; line-height: 1; cursor: pointer; }
+.videoBtn:hover { background: rgba(10, 15, 46, 0.9); }
+.videoBtn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+@media (max-width: 767px) {
+  .cc :global(.hero-y .vidbg) { inset: 0; }
+  .cc :global(.hero-y .vidbg video) { opacity: 0.3; }
+  .cc :global(.hero-y .vidbg)::after { background: linear-gradient(180deg, rgba(10, 15, 46, 0.55) 0%, rgba(10, 15, 46, 0.82) 62%, var(--navy) 100%); }
+}
+
+/* ============================= AVANT D'AGIR (4) ========================= */
+.cc :global(.four) { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s7); margin-top: var(--s6); }
+.cc :global(.four article) { display: grid; grid-template-columns: 48px 1fr; gap: 14px; padding: 22px 0; border-top: 1px solid var(--ink); }
+.cc :global(.four .n) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); padding-top: 3px; }
+.cc :global(.four h3) { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.cc :global(.four p) { font-size: 16px; color: var(--text-muted); margin: 0; }
+@media (max-width: 760px) { .cc :global(.four) { grid-template-columns: 1fr; gap: 0; } }
+.cc :global(.bridge-line) { margin-top: var(--s6); font-size: 16px; }
+
+/* ============================= SITUATIONS (6) =========================== */
+.cc :global(.six) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gut); }
+@media (max-width: 1000px) { .cc :global(.six) { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .cc :global(.six) { grid-template-columns: 1fr; } }
+.cc :global(.sixc) { background: var(--wh); border: 1px solid var(--bd); border-top: 4px solid var(--ink); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+.cc :global(.sixc--mis) { border-top-color: var(--blue); }
+.cc :global(.sixc h3) { font-size: 19px; font-weight: 600; margin: 0; }
+.cc :global(.sixc p) { font-size: 15px; color: var(--text-muted); margin: 0; }
+.cc :global(.sixc .who) { margin-top: auto; padding-top: var(--s2); font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--blue); }
+.cc :global(.fraude-line) { margin-top: var(--s5); font-size: 15px; }
+
+/* ============================= TABLEAU QUALIF =========================== */
+.cc :global(figure.tbl) { margin: var(--s5) 0 0; }
+.cc :global(table) { border-collapse: collapse; width: 100%; font-size: 16px; }
+.cc :global(caption) { text-align: left; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.05em; color: var(--text-muted); padding-bottom: var(--s3); }
+.cc :global(th),
+.cc :global(td) { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--bd); vertical-align: top; }
+.cc :global(thead th) { font-family: var(--ff-mono); font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); background: var(--tintb); border-bottom: 1px solid var(--borderb); }
+.cc :global(tbody th) { font-weight: 600; }
+.cc :global(td.ref) { font-family: var(--ff-mono); font-size: 14px; white-space: nowrap; color: var(--blue); }
+.cc :global(td.stake) { color: var(--text-muted); }
+@media (max-width: 860px) {
+  .cc :global(table), .cc :global(tbody), .cc :global(tr), .cc :global(td), .cc :global(th) { display: block; width: 100%; }
+  .cc :global(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cc :global(tbody tr) { border: 1px solid var(--bd); margin-bottom: var(--gut); padding: var(--s4); background: var(--wh); }
+  .cc :global(tbody th), .cc :global(tbody td) { border: 0; padding: 0 0 var(--s3); }
+  .cc :global(tbody td:last-child) { padding-bottom: 0; }
+  .cc :global(tbody td)::before { content: attr(data-label); display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
+  .cc :global(td.ref) { white-space: normal; }
+}
+
+/* ============================= MÉTHODE (3 col) ========================= */
+.cc :global(.meth) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); list-style: none; padding: 0; }
+.cc :global(.meth li) { border-top: 4px solid var(--blue); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.cc :global(.meth .n) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); }
+.cc :global(.meth h3) { font-size: 24px; font-weight: 600; margin: 0; }
+.cc :global(.meth p) { font-size: 16px; color: var(--text-muted); margin: 0; }
+@media (max-width: 860px) { .cc :global(.meth) { grid-template-columns: 1fr; gap: var(--s5); } }
+
+/* ================= VICTIME / MIS EN CAUSE (2 panneaux) ================= */
+.cc :global(.pos) { display: grid; grid-template-columns: 1fr 1fr; }
+.cc :global(.pos > section) { padding: var(--s8) var(--page-margin); display: flex; flex-direction: column; gap: var(--s4); }
+.cc :global(.pos-v) { background: var(--tintb); padding-left: max(var(--page-margin), calc((100vw - var(--content-max)) / 2)); }
+.cc :global(.pos-m) { background: var(--navy); color: #fff; padding-right: max(var(--page-margin), calc((100vw - var(--content-max)) / 2)); }
+.cc :global(.pos-m .kicker) { color: var(--muted-onDark); }
+.cc :global(.pos h2) { font-size: clamp(28px, 3vw, 38px); font-weight: 500; }
+.cc :global(.pos ul) { list-style: none; margin: 0; padding: 0; }
+.cc :global(.pos li) { display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 14px 0; border-top: 1px solid rgba(10, 10, 20, 0.15); font-size: 17px; line-height: 1.45; }
+.cc :global(.pos-m li) { border-top-color: rgba(255, 255, 255, 0.22); }
+.cc :global(.pos li span) { font-family: var(--ff-mono); font-size: 13px; color: var(--blue); padding-top: 3px; }
+.cc :global(.pos-m li span) { color: var(--muted-onDark); }
+.cc :global(.gl) { margin-top: var(--s2); background: #fff; padding: 14px 16px; font-size: 14px; line-height: 1.55; border-left: 3px solid var(--blue); }
+.cc :global(.gl b) { font-weight: 600; }
+.cc :global(.pos-cta) { margin-top: auto; }
+.cc :global(.pos-m .btn) { background: #fff; color: var(--blue); border-color: #fff; }
+.cc :global(.pos-m .btn:hover) { background: #e7ecff; border-color: #e7ecff; color: var(--blue3); }
+@media (max-width: 1000px) {
+  .cc :global(.pos) { grid-template-columns: 1fr; }
+  .cc :global(.pos-v), .cc :global(.pos-m) { padding-left: var(--page-margin) !important; padding-right: var(--page-margin) !important; }
+}
+
+/* ===== Bandeau vidéo pleine largeur (intérieur du Palais) + slogan ===== */
+.cc :global(.vband) { position: relative; overflow: hidden; background: var(--navy); min-height: 560px; display: flex; align-items: center; justify-content: center; }
+/* Spécificité (.vband .vband-bg) > .media : garde le fond vidéo ABSOLU. */
+.cc :global(.vband .vband-bg) { position: absolute; inset: 0; }
+.cc :global(.vband .vband-bg)::after { content: ""; position: absolute; inset: 0; z-index: 1; background: rgba(10, 15, 46, 0.55); }
+.cc :global(.vband .videoBtn) { z-index: 3; }
+.cc :global(.vband-t) { position: relative; z-index: 2; font-family: var(--ff-body); font-weight: 500; text-align: center; color: #fff; font-size: clamp(24px, 2.6vw, 36px); line-height: 1.4; max-width: 920px; margin: 0 auto; padding: var(--s6) var(--page-margin); text-wrap: balance; }
+@media (max-width: 640px) {
+  .cc :global(.vband) { min-height: 360px; }
+  .cc :global(.vband-t) { font-size: 24px; padding-left: var(--page-margin-mobile); padding-right: var(--page-margin-mobile); }
+}
+
+/* ============================= DOSSIERS (dcard) ========================= */
+.cc :global(.dos3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gut); }
+@media (max-width: 1000px) { .cc :global(.dos3) { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .cc :global(.dos3) { grid-template-columns: 1fr; } }
+.cc :global(.dcard) { background: var(--wh); border: 1px solid var(--bd); display: flex; flex-direction: column; }
+.cc :global(.dtop) { padding: 22px; background: var(--ink); border-bottom: 4px solid var(--blue); display: flex; flex-direction: column; gap: 8px; min-height: 124px; }
+.cc :global(.dtop .pp) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); margin: 0; }
+.cc :global(.dtop .ct) { font-size: 20px; font-weight: 600; line-height: 1.3; color: #fff; margin: 0; }
+.cc :global(.dcard dl) { margin: 0; padding: 0 22px 16px; }
+.cc :global(.dcard dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); padding-top: 14px; }
+.cc :global(.dcard dd) { margin: 4px 0 0; font-size: 15px; line-height: 1.55; padding-bottom: 12px; border-bottom: 1px solid var(--bd); color: var(--text-muted); }
+.cc :global(.dcard dd:last-of-type) { border-bottom: 0; padding-bottom: 0; }
+
+/* ============================== ÉQUIPE (team3) ========================= */
+.cc :global(.team3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); }
+@media (max-width: 760px) { .cc :global(.team3) { grid-template-columns: 1fr; } }
+.cc :global(.team3 article) { display: flex; flex-direction: column; gap: 6px; }
+.cc :global(.team3 .ph) { position: relative; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--bd); background: linear-gradient(160deg, #e4e6f4, #c9cde4); margin-bottom: var(--s3); }
+.cc :global(.team3 .ph img) { width: 100%; height: 100%; object-fit: cover; }
+.cc :global(.team3 .barreau) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--blue); margin: 0; }
+.cc :global(.team3 h3) { font-size: 20px; font-weight: 600; margin: 0; }
+.cc :global(.team3 .role) { font-size: 15px; color: var(--text-muted); margin: 0; }
+
+/* ================================= FAQ ================================= */
+.cc :global(.faq) { border-top: 1px solid var(--bd); margin-top: var(--s5); }
+.cc :global(.faq details) { border-bottom: 1px solid var(--bd); }
+.cc :global(.faq summary) { display: flex; gap: var(--s4); align-items: flex-start; padding: 16px 0; cursor: pointer; list-style: none; min-height: 48px; font-size: 17px; font-weight: 600; line-height: 1.4; }
+.cc :global(.faq summary)::-webkit-details-marker { display: none; }
+.cc :global(.faq summary .sign) { margin-left: auto; font-family: var(--ff-mono); font-size: 20px; line-height: 1.2; color: var(--blue); flex: none; }
+.cc :global(.faq summary .sign)::before { content: "+"; }
+.cc :global(.faq details[open] summary .sign)::before { content: "\2212"; }
+.cc :global(.faq .num) { font-family: var(--ff-mono); font-size: 13px; color: var(--blue); flex: none; padding-top: 3px; }
+.cc :global(.faq .ans) { padding: 0 44px var(--s5) 0; }
+.cc :global(.faq .ans p) { font-size: 16px; color: var(--text-muted); }
+@media (max-width: 640px) { .cc :global(.faq .ans) { padding-right: 0; } }
+
+/* ============================== SUJETS LIÉS ============================ */
+.cc :global(.rel4) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.cc :global(.rel4 article) { padding: 22px 20px 22px 0; display: flex; flex-direction: column; gap: 8px; }
+.cc :global(.rel4 article + article) { padding-left: 20px; border-left: 1px solid var(--bd); }
+.cc :global(.rel4 h3) { font-size: 19px; font-weight: 600; margin: 0; }
+.cc :global(.rel4 h3 a) { color: var(--blue); text-decoration: none; }
+.cc :global(.rel4 h3 a:hover) { text-decoration: underline; }
+.cc :global(.rel4 p) { font-size: 15px; color: var(--text-muted); margin: 0; }
+@media (max-width: 1000px) {
+  .cc :global(.rel4) { grid-template-columns: 1fr 1fr; }
+  .cc :global(.rel4 article + article) { border-left: 0; padding-left: 0; }
+  .cc :global(.rel4 article:nth-child(2n)) { padding-left: 20px; border-left: 1px solid var(--bd); }
+}
+@media (max-width: 560px) {
+  .cc :global(.rel4) { grid-template-columns: 1fr; }
+  .cc :global(.rel4 article:nth-child(2n)) { padding-left: 0; border-left: 0; }
+}
+
+/* ============================== CTA FINAL ============================= */
+.cc :global(.final) { background: var(--navy); color: #f0eee8; }
+.cc :global(.final .kicker) { color: var(--muted-onDark); }
+.cc :global(.final h2) { color: #fff; max-width: 18ch; }
+.cc :global(.final p) { color: var(--muted-onDark); }
+
+@media (prefers-reduced-motion: reduce) { .cc :global(*) { animation: none !important; transition: none !important; } }
+
+/* Lien d'évitement. */
+.skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; font-weight: 600; padding: 12px 18px; text-decoration: none; }
+.skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }

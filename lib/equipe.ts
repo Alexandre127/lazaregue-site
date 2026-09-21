@@ -34,7 +34,10 @@ export const MEMBRES: Record<string, Membre> = {
   amir: {
     slug: "amir",
     nom: "Me Amir Ben Majed",
-    statut: "Avocat au barreau de Paris",
+    // Correction factuelle (brief Contrats IT §3.1) : Me Ben Majed est inscrit au
+    // barreau d'Évry (Essonne), non à celui de Paris. Source unique : la reprise
+    // se propage aux pages qui affichent ce membre (crypto-actifs, cybercriminalité).
+    statut: "Avocat au barreau d'Évry (Essonne)",
     avocat: true,
     photo: "/images/amir-pro.jpg",
   },

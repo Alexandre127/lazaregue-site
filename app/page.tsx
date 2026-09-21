@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
-import { Header5 } from "@/components/home/header-05";
-import { SectionCabinet } from "@/components/home/section-cabinet";
-import SectionCompetences from "@/components/home/section-competences";
-import { SectionDifferenciateurs } from "@/components/home/section-differenciateurs";
-import { SectionEnjeux } from "@/components/home/section-enjeux";
-import { SectionEquipe } from "@/components/home/section-equipe";
-import { SectionContributions } from "@/components/home/section-contributions";
-import { SectionCas } from "@/components/home/section-cas";
+import { AccueilV4 } from "@/components/home/accueil-v4/AccueilV4";
 
 /**
  * La page d'accueil n'avait pas de métadonnées propres : elle héritait du
@@ -39,11 +32,11 @@ export const metadata: Metadata = {
  * cette page serveur, d'où la reprise à l'identique ici.
  */
 const EQUIPE = [
-  { nom: "Alexandre Lazarègue", intitule: "Avocat au barreau de Paris", domaine: "Cybercriminalité & gestion de crise" },
-  { nom: "Sarah Hinderer", intitule: "Avocate aux barreaux de Paris et de Montréal", domaine: "Données personnelles & intelligence artificielle" },
-  { nom: "Amir Ben Majed", intitule: "Avocat au barreau de l'Essonne", domaine: "Contrats IT & contentieux technologiques" },
-  { nom: "Khalid Sookia", intitule: "Notre consultant technique — cybersécurité", domaine: "Investigation numérique" },
-  { nom: "Nadia Abchiche-Mimouni", intitule: "Experte indépendante", domaine: "Intelligence artificielle & éthique algorithmique" },
+  { nom: "Alexandre Lazarègue", intitule: "Avocat au barreau de Paris", domaine: "Cybercriminalité et gestion de crise" },
+  { nom: "Sarah Hinderer", intitule: "Avocate aux barreaux de Paris et de Montréal", domaine: "Données personnelles et intelligence artificielle" },
+  { nom: "Amir Ben Majed", intitule: "Avocat au barreau d'Évry", domaine: "Contrats IT et contentieux informatique" },
+  { nom: "Khalid Sookia", intitule: "Consultant en cybersécurité", domaine: "Investigation numérique" },
+  { nom: "Nadia Abchiche-Mimouni", intitule: "Maîtresse de conférences en informatique à l'Université Côte d'Azur", domaine: "Intelligence artificielle et éthique algorithmique" },
 ];
 
 const CABINET_ID = "https://lazaregue-avocats.fr/#cabinet";
@@ -92,25 +85,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
-      <Header5 />
-
-      <SectionCabinet />
-
-      <div id="section-competences">
-        <SectionCompetences />
-      </div>
-      <SectionDifferenciateurs />
-      <SectionEnjeux />
-      <SectionCas />
-      <SectionEquipe />
-      <SectionContributions />
-      <hr
-        style={{
-          border: "none",
-          borderTop: "0.5px solid rgba(0,0,0,0.08)",
-          margin: "0",
-        }}
-      />
+      <AccueilV4 />
     </>
   );
 }
