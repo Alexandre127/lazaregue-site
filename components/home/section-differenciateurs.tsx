@@ -632,7 +632,7 @@ const CARDS: DifferentiateurCard[] = [
   },
 ];
 
-function PortailDemo() {
+export function PortailDemo() {
   const [activeTab, setActiveTab] = useState("dossiers");
   const [showNotif, setShowNotif] = useState(false);
   const [notif, setNotif] = useState("");

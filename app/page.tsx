@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import { Header5 } from "@/components/home/header-05";
-import { SectionCabinet } from "@/components/home/section-cabinet";
-import SectionCompetences from "@/components/home/section-competences";
-import { SectionDifferenciateurs } from "@/components/home/section-differenciateurs";
-import { SectionEquipe } from "@/components/home/section-equipe";
-import { SectionContributions } from "@/components/home/section-contributions";
-import { SectionCas } from "@/components/home/section-cas";
+import { AccueilV4 } from "@/components/home/accueil-v4/AccueilV4";
 
 /**
  * La page d'accueil n'avait pas de métadonnées propres : elle héritait du
@@ -91,24 +85,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
-      <Header5 />
-
-      <SectionCabinet />
-
-      <div id="section-competences">
-        <SectionCompetences />
-      </div>
-      <SectionDifferenciateurs />
-      <SectionCas />
-      <SectionEquipe />
-      <SectionContributions />
-      <hr
-        style={{
-          border: "none",
-          borderTop: "0.5px solid rgba(0,0,0,0.08)",
-          margin: "0",
-        }}
-      />
+      <AccueilV4 />
     </>
   );
 }

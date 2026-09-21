@@ -21,21 +21,42 @@ export function SectionCabinet() {
       <Link
         href="/contact"
         aria-label="Contacter le cabinet Lazarègue Avocats"
-        className="relative block overflow-hidden mt-2 md:mt-8"
-        style={{
-          maxWidth: "1400px",
-          marginInline: "auto",
-          height: "clamp(340px, 35vw, 560px)",
-          borderRadius: "10px",
-        }}
+        className="cabinet-photo relative block overflow-hidden mt-2 md:mt-8"
       >
         <style>{`
+          .cabinet-photo {
+            max-width: 1400px;
+            margin-inline: auto;
+            height: clamp(340px, 35vw, 560px);
+            border-radius: 10px;
+          }
           @keyframes kenBurns {
             0% { transform: scale(1); }
             100% { transform: scale(1.06); }
           }
           @media (prefers-reduced-motion: reduce) {
             .kenBurns { animation: none !important; }
+          }
+          /* V4 · mobile : la photo occupe toute la largeur de l'écran, à ses
+             proportions naturelles (3:2), sans rogner de personnes ni ajouter de
+             bande latérale. Plein cadre par marges négatives (pas de transform,
+             donc aucun défilement horizontal), coins droits, zoom Ken Burns
+             désactivé (il recadrerait). */
+          @media (max-width: 639px) {
+            .cabinet-photo {
+              width: 100vw;
+              margin-left: calc(50% - 50vw);
+              margin-right: calc(50% - 50vw);
+              max-width: none;
+              height: auto;
+              aspect-ratio: 1537 / 1023;
+              border-radius: 0;
+            }
+            .cabinet-photo img {
+              animation: none !important;
+              transform: none !important;
+              object-position: center !important;
+            }
           }
         `}</style>
         <Image

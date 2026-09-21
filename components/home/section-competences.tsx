@@ -10,8 +10,9 @@ import Link from "next/link";
  *   la famille à quatre cartes passe par 2 colonnes.
  * - Lien natif couvrant toute la surface de la carte (une seule tabulation) ;
  *   le renvoi « voir le domaine » est décoratif (`aria-hidden`, non focalisable).
- * - « Contentieux informatique et commercial » est strictement NON interactif :
- *   sa page n'existe pas encore (chantier distinct). Aucune entrée au sitemap.
+ * - Les dix cartes sont désormais interactives : « Contentieux informatique et
+ *   commercial » a rejoint /nos-domaines/contentieux-informatique-commercial (et
+ *   le sitemap) en même temps que sa page a été créée.
  *
  * Couleurs de famille : le système de jetons ne définit qu'UN accent de famille
  * validé (vert « Données/conformité », posé sur les pages de domaine via
@@ -98,13 +99,9 @@ const FAMILLES: Famille[] = [
     titleReserve: "lg:min-h-[70px]", // cartes plus étroites (4 col) : titres jusqu'à 3 lignes
     domaines: [
       {
-        // TODO(lot ultérieur) : rendre cette carte interactive dès que la page
-        // /nos-domaines/contentieux-informatique existe (avant toute mise en
-        // ligne, faute de quoi la home partirait avec une carte morte). En
-        // attendant : aucun <a>, aucun href, aucun rôle de lien, aucun curseur
-        // de clic, absente du sitemap.
         title: "Contentieux informatique et commercial",
         desc: "Agir lorsqu'un projet IT échoue, qu'un prestataire manque à ses obligations ou qu'une expertise devient nécessaire.",
+        href: "/nos-domaines/contentieux-informatique-commercial",
       },
       {
         title: "Cybercriminalité et atteintes aux systèmes",

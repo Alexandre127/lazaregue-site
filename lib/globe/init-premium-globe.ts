@@ -611,12 +611,23 @@ export function initPremiumGlobe(
   });
   resizeObserver.observe(container);
 
+  // Pause à la demande : la commande « Pause » du hero (accueilV4) gèle aussi la
+  // rotation du globe, en plus du gel automatique sous prefers-reduced-motion.
+  const onMotionToggle = (event: Event) => {
+    const paused = Boolean(
+      (event as CustomEvent<{ paused?: boolean }>).detail?.paused,
+    );
+    controls.autoRotate = !paused && !staticFrame;
+  };
+  document.addEventListener("accueilv4:motion", onMotionToggle);
+
   return () => {
     clearCardHideTimeout();
     cancelAnimationFrame(frameId);
     if (settleInterval) clearInterval(settleInterval);
     if (settleTimeout) clearTimeout(settleTimeout);
     resizeObserver.disconnect();
+    document.removeEventListener("accueilv4:motion", onMotionToggle);
     renderer.domElement.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("keydown", onKeyDown);
     controls.dispose();
