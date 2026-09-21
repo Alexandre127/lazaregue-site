@@ -21,31 +21,25 @@ type FooterLink = { label: string; href?: string };
 
 // Colonne 2 — SOURCE UNIQUE : le méga-menu (nav-data.ts). Libellés et slugs
 // repris VERBATIM, dans l'ordre des trois familles (aucune reformulation).
-const MENU_DOMAINES: FooterLink[] = FAMILLES.flatMap((f) =>
+// « Contentieux informatique et commercial » a désormais sa page et figure dans
+// nav-data : plus d'entrée « à venir » ajoutée à la main (elle faisait doublon
+// avec l'entrée réelle du menu).
+const DOMAINES: FooterLink[] = FAMILLES.flatMap((f) =>
   f.domaines.map((d) => ({ label: d.titre, href: d.href })),
 );
 
-// « Contentieux informatique et commercial » n'a pas encore de page : entrée
-// « à venir » à sa place dans la famille Contentieux (en tête, comme sur la
-// home). Un href la fera passer en lien.
-const DOMAINES: FooterLink[] = [
-  ...MENU_DOMAINES.slice(0, 6), // Conformité + Contrats et opérations
-  { label: "Contentieux informatique et commercial" },
-  ...MENU_DOMAINES.slice(6), // Contentieux et atteintes numériques
-];
-
 const CABINET: FooterLink[] = [
   { label: "Le cabinet", href: "/le-cabinet" },
+  { label: "Cas clients", href: "/cas-clients" },
+  { label: "Formations", href: "/formations" },
   { label: "Ressources", href: "/ressources" },
   { label: "Contact", href: "/contact" },
 ];
 
-// Colonne 4 — « Honoraires » et « Colophon » n'ont pas encore de page : entrées
-// « à venir » (sans href), affichées à leur place. Un href les fera passer en
-// lien.
+// Colonne 4 — seules les pages réelles sont listées. « Honoraires » et
+// « Colophon » (sans page) ont été retirées : leurs mentions « bientôt »
+// résiduelles n'apportaient rien tant que les pages n'existent pas.
 const INFORMATIONS: FooterLink[] = [
-  { label: "Honoraires" },
-  { label: "Colophon" },
   { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
   { label: "Mentions légales", href: "/mentions-legales" },
 ];

@@ -75,6 +75,11 @@ export const FAMILLES: Famille[] = [
     intitule: "Contentieux et atteintes numériques",
     domaines: [
       {
+        titre: "Contentieux informatique et commercial",
+        contexte: "Agir quand un projet IT échoue ou qu'un prestataire manque à ses obligations",
+        href: "/nos-domaines/contentieux-informatique-commercial",
+      },
+      {
         titre: "Fraude bancaire et escroquerie en ligne",
         contexte: "Obtenir le remboursement des sommes détournées",
         href: "/nos-domaines/escroquerie-fraude-bancaire",
@@ -114,6 +119,8 @@ export const NAV_ENTRIES: NavEntry[] = [
   // jour où la page existera. Ne rien mettre à sa place.
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
+  { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
+  { type: "link", label: "FORMATIONS", href: "/formations" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
   { type: "link", label: "CONTACT", href: "/contact" },
 ];
@@ -143,16 +150,29 @@ export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
 export const ROUTES_HERO_SOMBRE = [
   "/", // accueil
   "/nos-domaines", // index + toutes les pages de domaine
-  "/le-cabinet",
-  "/ressources",
+  // « /le-cabinet » et « /ressources » retirés : ces pages ont désormais un
+  // hero CLAIR (refonte sept. 2026). Le header opaque (navy) au repos reste
+  // lisible dessus ; un hero sombre rendrait le texte blanc du header invisible.
   "/contact",
   "/mentions-legales",
   "/politique-de-confidentialite",
 ] as const;
 
+/**
+ * Exceptions à hero CLAIR sous un préfixe sombre. La page Fraude bancaire
+ * (refonte UX sept. 2026) a un hero clair : le header transparent à texte blanc
+ * y serait invisible, alors que `/nos-domaines` reste sombre par défaut.
+ */
+export const ROUTES_HERO_CLAIR = [
+  "/nos-domaines/escroquerie-fraude-bancaire",
+] as const;
+
 /** Le header doit-il être transparent au repos sur cette route ? */
 export function aHeroSombre(pathname: string): boolean {
   const p = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  if (ROUTES_HERO_CLAIR.some((r) => p === r || p.startsWith(r + "/"))) {
+    return false;
+  }
   return ROUTES_HERO_SOMBRE.some((r) =>
     r === "/" ? p === "/" : p === r || p.startsWith(r + "/"),
   );

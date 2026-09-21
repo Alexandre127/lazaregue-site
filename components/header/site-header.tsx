@@ -307,9 +307,15 @@ export function SiteHeader() {
                     </li>
                   );
                 }
+                const active =
+                  pathname === entry.href || pathname?.startsWith(entry.href + "/");
                 return (
                   <li key={entry.label} className={styles.navItem}>
-                    <Link className={styles.navLink} href={entry.href}>
+                    <Link
+                      className={styles.navLink}
+                      href={entry.href}
+                      aria-current={active ? "page" : undefined}
+                    >
                       {entry.label}
                     </Link>
                   </li>
