@@ -1,0 +1,265 @@
+/* ==========================================================================
+   Rubrique « Formations » — hub /formations + pages RGPD, IA & AI Act,
+   cybersécurité (21 sept. 2026). Feuille UNIQUE partagée par les quatre pages
+   (le <style> des quatre maquettes est identique).
+
+   Portée : descendants de `.formations` (classe hashée) ; `:global(...)` pour le
+   balisage repris des maquettes. Hero clair (Space Grotesk 500, comme la
+   maquette). Le header et le footer sont les composants globaux du site — leurs
+   règles de maquette sont retirées ici. Les polices littérales sont mappées sur
+   les variables de charte (--ff-display / --ff-body / --ff-mono).
+   ========================================================================== */
+
+.formations {
+  /* alias : charte de la maquette → tokens globaux du site */
+  --blue-d: var(--blue3, #0a2acc);
+  --ghost: var(--off, #f4f4f8);
+  --tint: #eef1fb;
+  --border: var(--bd, #e0e0ee);
+  --muted: var(--text-muted, #4a4a63);
+  --px: 120px;
+  --py: 104px;
+  --header-h: 72px;
+  color: var(--ink);
+  background: #fff;
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+}
+.formations *,
+.formations *::before,
+.formations *::after { box-sizing: border-box; }
+.formations h1,
+.formations h2,
+.formations h3,
+.formations h4,
+.formations p { margin: 0; }
+.formations ul,
+.formations ol { margin: 0; padding: 0; list-style: none; }
+.formations a { color: var(--blue); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.formations a:hover { color: var(--blue-d); }
+.formations :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.formations :global(.navy) :focus-visible { outline-color: #fff; }
+
+/* neutralise le p{color:blanc 82%} global sur fond clair (spécificité nulle),
+   puis rétablit le blanc à l'intérieur des sections navy. */
+:where(.formations) p,
+:where(.formations) li,
+:where(.formations) dd { color: var(--ink); }
+.formations :global(.navy) p,
+.formations :global(.navy) li,
+.formations :global(.navy) dd { color: #fff; }
+
+.formations :global(.wrap) { max-width: calc(1200px + 2 * var(--px)); margin: 0 auto; padding: 0 var(--px); }
+.formations :global(.sec) { padding: var(--py) 0; }
+.formations :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.formations :global(.navy) { background: var(--navy); color: #fff; }
+.formations :global(.ghost) { background: var(--ghost); }
+.formations :global(.warm) { background: #f7f6f2; }
+.formations :global(.label) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); }
+.formations :global(.navy .label) { color: rgba(255, 255, 255, 0.72); }
+.formations :global(.h2) { font-size: clamp(28px, 3.2vw, 40px); font-weight: 500; line-height: 1.12; letter-spacing: -0.015em; max-width: 900px; }
+.formations :global(.head) { display: flex; flex-direction: column; gap: 14px; margin-bottom: 44px; max-width: 900px; }
+.formations :global(.lead) { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 68ch; }
+.formations :global(.navy .lead),
+.formations :global(.navy .tx) { color: rgba(255, 255, 255, 0.82); }
+.formations :global(.tx) { font-size: 16px; line-height: 1.6; color: var(--muted); }
+.formations :global(.h3) { font-size: 21px; font-weight: 500; line-height: 1.3; }
+.formations :global(.meta) { font-family: var(--ff-mono); font-size: 12px; color: var(--muted); }
+.formations :global(.btn) { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 13px 24px; background: var(--blue); color: #fff; font: 600 16px var(--ff-body); text-decoration: none; border: 0; }
+.formations :global(.btn:hover) { background: var(--blue-d); color: #fff; }
+.formations :global(.btn-o) { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 22px; border: 1px solid currentColor; color: var(--ink); font: 600 16px var(--ff-body); text-decoration: none; }
+.formations :global(.navy .btn-o) { color: #fff; }
+.formations :global(.link) { font-weight: 600; font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
+
+/* FAQ (détails natifs) */
+.formations :global(.faq details) { border-bottom: 1px solid var(--border); }
+.formations :global(.faq summary) { cursor: pointer; list-style: none; min-height: 64px; display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 18px; font-weight: 500; }
+.formations :global(.faq summary)::-webkit-details-marker { display: none; }
+.formations :global(.faq summary)::after { content: "+"; font-family: var(--ff-mono); font-size: 22px; color: var(--blue); }
+.formations :global(.faq details[open] summary)::after { content: "−"; }
+.formations :global(.faq details p) { padding-bottom: 20px; font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 760px; }
+.formations :global(.faq-grid) { display: grid; grid-template-columns: 4fr 8fr; gap: 64px; }
+
+/* ============ Blocs propres aux pages Formations (2ᵉ partie du <style>) ============ */
+.formations :global(.crumb.dk),
+.formations :global(.crumb.dk a) { color: var(--muted); }
+.formations :global(.crumb) { font-family: var(--ff-mono); font-size: 13px; }
+.formations :global(.crumb a) { text-decoration: none; }
+.formations :global(.crumb a:hover) { text-decoration: underline; }
+.formations :global(.crumb [aria-current]) { color: var(--ink); }
+
+/* hero clair — dégage le header global (absolu, 72px) */
+.formations :global(.hero-f) { padding: calc(var(--header-h) + 28px) 0 72px; }
+.formations :global(.hero-f .grid) { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: center; }
+.formations :global(.hero-f .grid > *) { min-width: 0; }
+.formations :global(.hero-f h1) { font-size: clamp(34px, 4.4vw, 56px); font-weight: 500; line-height: 1.06; letter-spacing: -0.02em; margin: 14px 0 18px; }
+.formations :global(.hero-f .lead) { color: var(--ink); }
+
+.formations :global(.phv) { min-height: 380px; background: #e3e3ec; display: flex; align-items: flex-end; padding: 14px; font-family: var(--ff-mono); font-size: 11px; color: var(--muted); }
+/* photo réelle : l'image next/image remplace le fond gris quand elle est fournie */
+.formations :global(.phv.has-photo) { background: none; padding: 0; position: relative; overflow: hidden; }
+.formations :global(.phv.has-photo img) { object-fit: cover; }
+
+.formations :global(.need3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.formations :global(.need3 article) { background: #fff; border: 1px solid var(--border); border-top: 4px solid var(--ink); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.formations :global(.need3 h3) { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.formations :global(.tags) { display: flex; flex-wrap: wrap; gap: 6px; }
+.formations :global(.tags span) { border: 1px solid #c9c9da; padding: 4px 8px; font-size: 13px; background: #fff; }
+.formations :global(.need3 .go) { margin-top: auto; font-weight: 600; font-size: 15px; }
+
+.formations :global(.obj) { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 28px; }
+.formations :global(.obj div) { border-top: 2px solid rgba(255, 255, 255, 0.35); padding-top: 16px; }
+.formations :global(.obj h3) { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+.formations :global(.obj p) { color: rgba(255, 255, 255, 0.85); line-height: 1.55; }
+.formations :global(.quote) { margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: clamp(20px, 2.2vw, 28px); line-height: 1.4; max-width: 900px; }
+
+.formations :global(.prog) { border-top: 2px solid var(--ink); }
+.formations :global(.prog article) { display: grid; grid-template-columns: 56px minmax(0, 1fr) minmax(0, 360px); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+.formations :global(.prog article.hl) { background: var(--tint); padding-left: 16px; padding-right: 16px; margin: 0 -16px; }
+.formations :global(.prog .n) { font-family: var(--ff-mono); color: var(--blue); font-size: 14px; padding-top: 4px; }
+.formations :global(.prog h3) { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+.formations :global(.prog dl) { margin: 0; }
+.formations :global(.prog dt) { font-weight: 600; font-size: 15px; margin-top: 10px; }
+.formations :global(.prog dd) { margin: 2px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.formations :global(.prog .side) { background: #fff; border: 1px solid var(--border); padding: 16px; align-self: start; font-size: 15px; line-height: 1.5; }
+.formations :global(.prog .side b) { display: block; font-family: var(--ff-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.formations :global(.prog .side ol) { list-style: decimal; padding-left: 18px; }
+.formations :global(.prog .more) { font-size: 14px; margin-top: 10px; }
+
+.formations :global(.jobs) { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+.formations :global(.jobs div) { display: grid; grid-template-columns: 200px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid var(--ink); }
+.formations :global(.jobs h3) { font-size: 18px; font-weight: 600; }
+.formations :global(.jobs p) { color: var(--muted); line-height: 1.55; font-size: 15px; }
+
+.formations :global(.mis) { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formations :global(.mis article) { background: #fff; border-left: 4px solid var(--ink); padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.formations :global(.mis h3) { font-size: 19px; font-weight: 600; }
+.formations :global(.mis .q) { font-weight: 600; font-size: 15px; margin-top: 4px; }
+
+.formations :global(.liv) { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 16px; }
+.formations :global(.liv article) { background: #fff; border: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.formations :global(.liv h3) { font-size: 18px; font-weight: 600; }
+.formations :global(.liv ul li) { font-size: 14px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.formations :global(.liv .wide) { grid-column: 1 / -1; border-style: dashed; }
+
+.formations :global(.mod) { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 20px; }
+.formations :global(.mod div) { border-top: 2px solid var(--ink); padding-top: 14px; }
+.formations :global(.mod div:last-child) { border-top-color: var(--blue); }
+.formations :global(.mod h3) { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.formations :global(.mod p) { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+.formations :global(.steps4) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+.formations :global(.steps4 span) { font-family: var(--ff-mono); color: var(--blue); font-size: 13px; }
+.formations :global(.steps4 h3) { font-size: 17px; font-weight: 600; margin: 6px 0; }
+.formations :global(.steps4 p) { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+.formations :global(.cab) { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: center; }
+.formations :global(.cab .phv) { min-height: 320px; }
+.formations :global(.cab .pull) { border-left: 4px solid var(--blue); padding-left: 16px; font-size: 19px; font-weight: 500; margin-top: 16px; }
+
+/* — spécifiques — */
+.formations :global(.mail) { display: grid; grid-template-columns: 7fr 5fr; gap: 32px; align-items: start; }
+.formations :global(.mail .box) { background: #fff; border: 1px solid var(--border); }
+.formations :global(.mail .hd) { background: var(--navy); color: #fff; font-family: var(--ff-mono); font-size: 11px; padding: 10px 14px; letter-spacing: 0.06em; }
+.formations :global(.mail .ln) { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; gap: 10px; align-items: center; }
+.formations :global(.mk) { display: inline-flex; min-width: 22px; height: 22px; align-items: center; justify-content: center; background: var(--blue); color: #fff; font-size: 12px; font-family: var(--ff-mono); }
+.formations :global(.mail .body) { padding: 14px; font-size: 15px; line-height: 1.6; }
+.formations :global(.mail .fakebtn) { display: inline-block; background: var(--navy); color: #fff; padding: 8px 14px; font-weight: 600; }
+.formations :global(.idx li) { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 12px 0; border-top: 1px solid var(--border); }
+.formations :global(.idx b) { display: block; }
+
+.formations :global(.fr4) { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formations :global(.fr4 article) { background: #fff; border: 1px solid var(--ink); display: flex; flex-direction: column; }
+.formations :global(.fr4 .in) { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.formations :global(.fr4 blockquote) { margin: 0; background: var(--ghost); padding: 12px 14px; font-size: 15px; }
+.formations :global(.fr4 .rx) { background: var(--blue); color: #fff; padding: 14px 20px; }
+.formations :global(.fr4 .rx b) { font-family: var(--ff-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 4px; color: rgba(255, 255, 255, 0.85); }
+
+/* .two — la 2ᵉ définition de la maquette (cartes) prime sur la 1ʳᵉ ; on ne garde que celle-ci (seule utilisée) */
+.formations :global(.two) { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formations :global(.two article) { background: #fff; border: 1px solid var(--border); padding: 24px; }
+.formations :global(.two h3) { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+.formations :global(.two li) { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+.formations :global(.two article.dark) { background: var(--navy); color: #fff; border-color: var(--navy); }
+.formations :global(.two article.dark li) { border-color: rgba(255, 255, 255, 0.2); }
+.formations :global(.two article.dark p) { color: rgba(255, 255, 255, 0.85); }
+.formations :global(.two article.dark .tags span) { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+
+.formations :global(.m4) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--ink); background: #fff; }
+.formations :global(.m4 div) { padding: 18px; border-right: 1px solid var(--border); font-size: 15px; line-height: 1.5; }
+.formations :global(.m4 div:last-child) { border-right: 0; }
+.formations :global(.m4 b) { display: block; font-family: var(--ff-mono); font-weight: 400; font-size: 12px; color: var(--blue); margin-bottom: 8px; }
+
+.formations :global(.charte) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--ink); background: #fff; }
+.formations :global(.charte div) { padding: 18px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.formations :global(.charte span) { font-family: var(--ff-mono); font-size: 12px; color: var(--blue); }
+.formations :global(.charte h3) { font-size: 17px; font-weight: 600; margin: 4px 0; }
+.formations :global(.charte p) { font-size: 14px; color: var(--muted); }
+
+/* hub */
+.formations :global(.sitrows) { border-top: 2px solid var(--ink); }
+.formations :global(.sitrows a) { display: grid; grid-template-columns: 5fr 6fr 180px; gap: 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); color: var(--ink); text-decoration: none; }
+.formations :global(.sitrows a:hover strong) { color: var(--blue); }
+.formations :global(.sitrows strong) { font-size: 17px; font-weight: 600; }
+.formations :global(.sitrows span) { color: var(--muted); font-size: 15px; }
+.formations :global(.sitrows em) { font-style: normal; color: var(--blue); font-weight: 600; font-size: 14px; text-align: right; }
+.formations :global(.f3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.formations :global(.f3 article) { background: #fff; border: 1px solid var(--ink); display: flex; flex-direction: column; }
+.formations :global(.f3 .top) { background: var(--navy); color: #fff; padding: 22px; border-bottom: 4px solid var(--blue); min-height: 150px; display: flex; flex-direction: column; gap: 8px; }
+.formations :global(.f3 .top h3) { font-size: 22px; font-weight: 600; line-height: 1.25; }
+.formations :global(.f3 .in) { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.formations :global(.f3 .for) { font-size: 14px; color: var(--muted); }
+.formations :global(.f3 .btn) { margin-top: auto; align-self: flex-start; }
+.formations :global(.sm) { margin-top: 16px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; background: #fff; border: 1px dashed var(--ink); padding: 20px 24px; }
+.formations :global(.aa) { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: center; }
+.formations :global(.aa .tags span) { background: transparent; border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+.formations :global(.aa .pull) { border-left: 3px solid var(--blue); padding-left: 18px; font-size: 22px; line-height: 1.4; }
+
+/* ------------------------------- tablette ------------------------------- */
+@media (max-width: 1100px) {
+  .formations { --px: 40px; --py: 80px; }
+  .formations :global(.faq-grid) { }
+  .formations :global(.need3),
+  .formations :global(.f3) { grid-template-columns: 1fr; }
+  .formations :global(.obj) { grid-template-columns: 1fr 1fr; }
+  .formations :global(.hero-f .grid),
+  .formations :global(.cab),
+  .formations :global(.mail),
+  .formations :global(.aa) { grid-template-columns: 1fr; }
+  .formations :global(.prog article) { grid-template-columns: 44px 1fr; }
+  .formations :global(.prog .side) { grid-column: 2; }
+  .formations :global(.liv) { grid-template-columns: 1fr 1fr; }
+  .formations :global(.mod) { grid-template-columns: 1fr 1fr 1fr; }
+  .formations :global(.steps4),
+  .formations :global(.m4) { grid-template-columns: 1fr 1fr; }
+  .formations :global(.jobs) { grid-template-columns: 1fr; }
+  .formations :global(.charte) { grid-template-columns: 1fr 1fr; }
+  .formations :global(.sitrows a) { grid-template-columns: 1fr; gap: 4px; }
+  .formations :global(.sitrows em) { text-align: left; }
+}
+@media (max-width: 1023px) {
+  /* la navigation est le header global : rien à masquer ici */
+}
+@media (max-width: 767px) {
+  .formations { --px: 20px; --py: 56px; }
+  .formations :global(.phv) { min-height: 220px; }
+  .formations :global(.obj),
+  .formations :global(.mis),
+  .formations :global(.liv),
+  .formations :global(.mod),
+  .formations :global(.steps4),
+  .formations :global(.fr4),
+  .formations :global(.two),
+  .formations :global(.m4),
+  .formations :global(.charte),
+  .formations :global(.faq-grid) { grid-template-columns: 1fr; }
+  .formations :global(.jobs div) { grid-template-columns: 1fr; gap: 6px; }
+  .formations :global(.prog article) { grid-template-columns: 1fr; }
+  .formations :global(.prog .side) { grid-column: auto; }
+  .formations :global(.m4 div) { border-right: 0; border-bottom: 1px solid var(--border); }
+  .formations :global(.hero-cta .btn),
+  .formations :global(.hero-cta .btn-o) { width: 100%; }
+}
+
+/* --- CTA du hero (utilitaire commun) --- */
+.formations :global(.hero-cta) { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
