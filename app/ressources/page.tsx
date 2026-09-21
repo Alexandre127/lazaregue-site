@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import styles from "./ressources.module.css";
-import { DOMAINES, FEATURED, PILLARS } from "./data/articles";
-import Catalogue from "./_components/Catalogue";
-import Reveal from "./_components/Reveal";
+import RessourcesIndex from "./_components/RessourcesIndex";
+import { DOM_LABEL } from "./data/ressources-index";
 
-const TITLE =
-  "Ressources — ce qu'il faut savoir avant de décider | Lazarègue Avocats";
+const TITLE = "Ressources en droit du numérique pour les entreprises | Lazarègue Avocats";
 const DESCRIPTION =
-  "Repères clairs sur la propriété intellectuelle, les marques, la concurrence et les données personnelles, écrits par le cabinet Lazarègue Avocats. Consultation libre.";
+  "Repères juridiques pour les entreprises : RGPD, IA et AI Act, cybersécurité et NIS 2, fraudes bancaires, contrats informatiques, contentieux et retrait de contenus.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -33,9 +31,9 @@ const JSON_LD = {
   isPartOf: {
     "@type": "WebSite",
     name: "Lazarègue Avocats",
-    url: "https://www.lazaregue-avocats.fr",
+    url: "https://lazaregue-avocats.fr",
   },
-  about: [...DOMAINES],
+  about: Object.values(DOM_LABEL),
   publisher: {
     "@type": "LegalService",
     name: "Lazarègue Avocats",
@@ -48,65 +46,16 @@ const JSON_LD = {
   },
 };
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ domaine?: string }>;
+}) {
+  const { domaine } = await searchParams;
   return (
-    <main className={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
-
-      {/* Hero + catalogue : la recherche du hero pilote la grille, d'où
-          le regroupement dans un seul composant client. « À la une » se glisse
-          entre les deux, comme dans la maquette. */}
-      <Catalogue>
-        <section className={styles.featureSection}>
-          <div className={styles.featureInner}>
-            <Reveal className={styles.kicker} inClassName={styles.in}>
-              <span>À la une</span>
-            </Reveal>
-
-            <Reveal
-              as="a"
-              className={`${styles.feature} ${styles.reveal}`}
-              inClassName={styles.in}
-            >
-              <div className={styles.featureBody}>
-                <div className={styles.featureTags}>
-                  <span className={styles.tagOutline}>{FEATURED.domain}</span>
-                  <span className={styles.tagPlain}>{FEATURED.read} de lecture</span>
-                </div>
-                <h2>{FEATURED.title}</h2>
-                <p className={styles.featureExcerpt}>{FEATURED.excerpt}</p>
-                <span className={styles.featureLink}>Lire l&apos;article →</span>
-              </div>
-              <div className={styles.featureAside}>
-                <div className={styles.featureBig} aria-hidden>
-                  {FEATURED.big}
-                </div>
-              </div>
-              <div className={styles.underline} aria-hidden />
-            </Reveal>
-          </div>
-        </section>
-      </Catalogue>
-
-      {/* Maillage thématique — un lien par domaine */}
-      <section className={styles.pillarsSection}>
-        <div className={styles.pillarsInner}>
-          <div className={styles.pillarsK}>Explorer par thème</div>
-          <div className={styles.pillars}>
-            {PILLARS.map((p) => (
-              <a key={p.label} href={p.href} className={styles.pillar}>
-                <span>{p.label}</span>
-                <span className={styles.pillarArrow} aria-hidden>
-                  →
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+    <main className={styles.page} id="contenu">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <RessourcesIndex initialDomaine={domaine} />
     </main>
   );
 }
