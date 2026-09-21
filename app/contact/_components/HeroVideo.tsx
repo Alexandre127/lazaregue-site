@@ -1,50 +1,54 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "../contact.module.css";
 
 /**
- * Paris ralentit à mesure qu'on descend vers le formulaire :
- * la vitesse de lecture passe de 1× à 0,12× sur environ 1,6 hauteur d'écran.
- *
- * Neutralisé si l'utilisateur a demandé moins d'animations — dans ce cas
- * le CSS masque aussi la vidéo et le fond navy prend le relais.
+ * Vidéo de fond du hero (Arc de Triomphe, nuit) — CONSERVÉE (contrainte cabinet).
+ * · autoplay muted loop playsInline ;
+ * · bouton pause/lecture ≥ 44 px (exigence d'accessibilité) ;
+ * · `prefers-reduced-motion` : la vidéo est masquée par le CSS et le fond navy
+ *   dégradé (fixe) prend le relais — le bouton est alors masqué lui aussi.
  */
 export default function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const r = Math.min(Math.max(window.scrollY / (window.innerHeight * 1.6), 0), 1);
-        video.playbackRate = Math.max(1 - r * 0.88, 0.12);
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  function toggle() {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) {
+      void v.play();
+      setPaused(false);
+    } else {
+      v.pause();
+      setPaused(true);
+    }
+  }
 
   return (
-    <video
-      ref={ref}
-      className={styles.heroBg}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      aria-hidden
-    >
-      <source src="/videos/contact-paris.mp4" type="video/mp4" />
-    </video>
+    <>
+      <video
+        ref={ref}
+        className={styles.heroBg}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden
+      >
+        <source src="/videos/contact-paris.mp4" type="video/mp4" />
+      </video>
+      {/* Masqué sous prefers-reduced-motion (CSS) : la vidéo y est déjà coupée. */}
+      <button
+        type="button"
+        className={styles.vidPause}
+        onClick={toggle}
+        aria-label={paused ? "Lire la vidéo de fond" : "Mettre la vidéo de fond en pause"}
+      >
+        {paused ? "▶" : "❚❚"}
+      </button>
+    </>
   );
 }
