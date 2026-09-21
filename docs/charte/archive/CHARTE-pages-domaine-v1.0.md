@@ -1,3 +1,9 @@
+> ⚠️ **ARCHIVÉE — superseded par la Charte graphique v1.1 (septembre 2026).**
+> Ce document (grammaire des pages de domaine, v1.0) n'est plus la référence. La
+> référence unique du site est désormais `docs/charte/charte-graphique-v1.1.md`
+> (et le `.docx` source). Conservé pour mémoire uniquement ; aucune valeur
+> visuelle ne se décide ici.
+
 # Charte des pages de domaine — Lazarègue Avocats
 
 Règles transversales validées sur les pages RGPD, cybersécurité, cybercriminalité
