@@ -1,94 +1,69 @@
 /*
  * Contenu de la page « Le cabinet ».
  *
- * Les données rédactionnelles et le maillage sont réunis ici pour que le jour
- * où la page Escroquerie et fraude sera publiée (branche non encore fusionnée),
- * il n'y ait qu'un seul endroit à corriger — voir docs/bascule-domaine-vercel.md.
+ * Reconstruction fidèle de la maquette de référence (cabinet@1x, sept. 2026) :
+ * hero clair, repères, équipe (avocats + intervenants techniques), méthode,
+ * exemple de décision, engagements, domaines, portail, honoraires, démarrage,
+ * contact. Les biographies, le maillage et les liens externes proviennent des
+ * données validées du cabinet (lib/equipe + arbitrages des pages de domaine),
+ * pas des textes « à préciser » restés à l'état de gabarit dans la maquette.
  */
 
-import { MEMBRES } from "@/lib/equipe";
+/* ------------------------------------------------------------------ HERO */
+export const HERO = {
+  eyebrow: "Le cabinet",
+  titre1: "Le cabinet Lazarègue ",
+  titreAccent: "Avocats",
+  accroche1: "Vous ne venez pas chercher une procédure.",
+  accroche2: "Vous venez chercher une issue.",
+  intro1:
+    "Cabinet d'avocats en droit du numérique à Paris, Lazarègue Avocats accompagne les PME, les ETI et leurs dirigeants dans leurs projets technologiques, leurs obligations de conformité, leurs situations de crise et leurs contentieux.",
+  intro2:
+    "Le cabinet associe analyse juridique, compréhension des faits techniques et prise en compte des enjeux opérationnels pour proposer une stratégie lisible, proportionnée et directement exploitable.",
+  photoLegende: "Photographie collective — équipe au cabinet",
+};
 
-/* HERO — grille de quatre faits. */
-export const FAITS: { chiffre: string; libelle: string }[] = [
-  { chiffre: "2016", libelle: "Création du cabinet" },
-  { chiffre: "5", libelle: "Trois avocats et deux intervenants techniques" },
-  {
-    chiffre: "Portail",
-    libelle: "Votre dossier consultable en ligne dès son ouverture",
-  },
-  { chiffre: "France", libelle: "Paris, et intervention sur tout le territoire" },
+/* Repères — bandeau de quatre faits sous le hero. */
+export const REPERES: { k: string; label: string }[] = [
+  { k: "2016", label: "Année de fondation du cabinet" },
+  { k: "Paris · Évry · Montréal", label: "Barreaux d'inscription des avocats" },
+  { k: "Partout en France", label: "Zone d'intervention" },
+  { k: "Suivi en ligne", label: "Espace client dédié à chaque dossier" },
 ];
 
-/*
- * DOSSIERS — section 2. Récits PROVISOIRES : ils attendent la validation du
- * cabinet (cf. commentaire dans Dossiers.tsx). Le lien de la carte « Fraude »
- * pointe provisoirement vers Cybercriminalité : la page Escroquerie et fraude
- * n'est pas encore fusionnée (docs/bascule-domaine-vercel.md).
- */
-export const DOSSIERS: {
-  eyebrow: string;
-  titre: string;
-  corps: string;
-  lien: { href: string; label: string };
-}[] = [
-  {
-    eyebrow: "Contentieux IT",
-    titre: "Projet informatique paralysé, contrats imbriqués",
-    corps:
-      "Une entreprise subit l'échec de son système d'information alors que coexistent le contrat du prestataire, celui de maintenance et ceux de plusieurs financeurs. Le cabinet a reconstitué l'économie de l'opération, rapproché les obligations techniques de chaque contrat et organisé la preuve en vue du contentieux.",
-    lien: { href: "/nos-domaines/contrats-informatiques", label: "Contrats et projets IT" },
-  },
-  {
-    eyebrow: "Fraude",
-    titre: "Fraude numérique et responsabilité bancaire",
-    corps:
-      "À la suite d'une série d'opérations orientées vers des plateformes d'actifs numériques, le cabinet a reconstitué le parcours des fonds et distingué les opérations autorisées des anomalies susceptibles d'engager la responsabilité des prestataires de services de paiement.",
-    lien: {
-      href: "/nos-domaines/escroquerie-fraude-bancaire",
-      label: "Escroquerie et fraude",
-    },
-  },
-  {
-    eyebrow: "Contenus en ligne",
-    titre: "Contenus dommageables maintenus en ligne",
-    corps:
-      "Face à des publications portant atteinte à une entreprise sur plusieurs services numériques, le cabinet a identifié les responsables, sécurisé les constats, puis coordonné les demandes de retrait, le déréférencement et l'action contentieuse.",
-    lien: {
-      href: "/nos-domaines/diffamation-retrait-contenus",
-      label: "Diffamation et retrait de contenus",
-    },
-  },
-];
-
-/* ÉQUIPE — cinq intervenants, même format. Les photos viennent de lib/equipe. */
+/* ---------------------------------------------------------------- ÉQUIPE */
 type LigneMeta = { dt: string; dd: string };
-export type Intervenant = {
-  slug: keyof typeof MEMBRES;
-  /** Œil-de-bœuf (DM Mono). */
+export type Membre = {
+  slug: "alexandre" | "amir" | "sarah" | "nadia" | "khalid";
   eyebrow: string;
-  accentEyebrow?: boolean;
-  /** Nom affiché en Bebas (sans « Me », usage d'en-tête de fiche). */
   nom: string;
   bio: string;
+  /** « Intervient en » éclaté en pastilles. */
+  domaines: string[];
   meta: LigneMeta[];
   /** Intervenants techniques uniquement. */
   statut?: string;
-  /** Lien « en savoir plus ». Externe pour les intervenants techniques. */
   lien?: { href: string; label: string; externe?: boolean };
-  tech?: boolean;
 };
 
-export const EQUIPE: Intervenant[] = [
+export const EQUIPE_INTRO_1 =
+  "Les dossiers sont suivis par des avocats identifiés. Lorsque la situation l'exige, le cabinet s'appuie sur des compétences techniques complémentaires, sans diluer la responsabilité du suivi juridique.";
+export const EQUIPE_INTRO_2 =
+  "Le droit détermine la stratégie et la procédure. L'analyse technique établit ce qui s'est réellement produit et ce qui peut être démontré.";
+
+export const AVOCATS: Membre[] = [
   {
     slug: "alexandre",
     eyebrow: "Fondateur · avocat au barreau de Paris",
     nom: "Alexandre Lazarègue",
     bio: "Fondateur du cabinet en 2016, il intervient depuis plus de dix ans dans les contentieux liés aux plateformes, aux cyberfraudes, aux données personnelles et à la propriété intellectuelle. Il pilote personnellement le suivi des dossiers.",
+    domaines: [
+      "Contentieux des plateformes",
+      "Cybersécurité",
+      "Données personnelles",
+      "Propriété intellectuelle",
+    ],
     meta: [
-      {
-        dt: "Intervient en",
-        dd: "Contentieux des plateformes · cybersécurité · données personnelles · propriété intellectuelle",
-      },
       { dt: "Modalités", dd: "Cabinet · visioconférence · correspondance écrite" },
       { dt: "Langues", dd: "Français · anglais" },
     ],
@@ -98,8 +73,8 @@ export const EQUIPE: Intervenant[] = [
     eyebrow: "Avocat au barreau de l'Essonne · contentieux IT",
     nom: "Amir Ben Majed",
     bio: "Il intervient sur les litiges informatiques complexes : projets qui dérapent, responsabilité des prestataires, contentieux de la preuve technique — ces dossiers où le droit ne se départage qu'à condition de comprendre la machine.",
+    domaines: ["Contrats IT", "Contentieux IT", "Responsabilité des prestataires"],
     meta: [
-      { dt: "Intervient en", dd: "Contrats IT · contentieux IT · responsabilité" },
       { dt: "Modalités", dd: "Cabinet · visioconférence · correspondance écrite" },
       { dt: "Langues", dd: "Français · anglais" },
     ],
@@ -109,46 +84,22 @@ export const EQUIPE: Intervenant[] = [
     eyebrow: "Avocate aux barreaux de Paris et de Montréal · données personnelles",
     nom: "Sarah Hinderer",
     bio: "Elle accompagne les entreprises sur la protection des données personnelles et les enjeux data des opérations et des levées de fonds — de la cartographie des traitements jusqu'à la due diligence. Elle traite le RGPD comme un système de preuve.",
+    domaines: ["RGPD", "Protection des données", "Due diligence"],
     meta: [
-      { dt: "Intervient en", dd: "RGPD · données · due diligence" },
       { dt: "Modalités", dd: "Cabinet · visioconférence · correspondance écrite" },
       { dt: "Langues", dd: "Français · anglais" },
     ],
   },
-  {
-    slug: "nadia",
-    // Sur cette page, l'intitulé « expert » est retenu (addendum au brief) : la
-    // convention de lib/equipe est écartée ICI. Le titre universitaire est un
-    // élément vérifiable, signal fort de la fiche.
-    eyebrow: "Experte en intelligence artificielle",
-    accentEyebrow: true,
-    tech: true,
-    nom: "Nadia Abchiche-Mimouni",
-    bio: "Docteure en intelligence artificielle et maître de conférences à Nice Sophia Antipolis, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
-    meta: [
-      { dt: "Intervient en", dd: "Dossiers IA et AI Act · qualification de systèmes · expertises" },
-      { dt: "Modalités", dd: "Mobilisée selon les besoins du dossier" },
-    ],
-    statut: "N'exerce pas la profession d'avocat.",
-    lien: {
-      href: "https://webusers.i3s.unice.fr/~abchiche/",
-      label: "Sa page universitaire",
-      externe: true,
-    },
-  },
+];
+
+export const EXPERTS: Membre[] = [
   {
     slug: "khalid",
-    // « Expert » retenu ICI (addendum) ; la ligne de statut « N'exerce pas la
-    // profession d'avocat » lève la confusion avec l'expert judiciaire.
-    eyebrow: "Expert en cybersécurité",
-    accentEyebrow: true,
-    tech: true,
+    eyebrow: "Consultant technique en cybersécurité",
     nom: "Khalid Sookia",
     bio: "Il intervient sur l'audit des systèmes d'information, les politiques de sécurité et l'investigation numérique. Sur un incident, il établit l'état réel du système et sécurise les traces — ce qui déterminera ce qui peut être démontré.",
-    meta: [
-      { dt: "Intervient en", dd: "Incidents cyber · NIS 2 · preuve numérique · contentieux techniques" },
-      { dt: "Modalités", dd: "Mobilisé selon les besoins du dossier" },
-    ],
+    domaines: ["Incidents cyber", "NIS 2", "Preuve numérique", "Contentieux techniques"],
+    meta: [{ dt: "Modalités", dd: "Mobilisé selon les besoins du dossier" }],
     statut: "N'exerce pas la profession d'avocat.",
     lien: {
       href: "https://www.kinsa.fr/cybersecurite.html",
@@ -156,97 +107,159 @@ export const EQUIPE: Intervenant[] = [
       externe: true,
     },
   },
+  {
+    slug: "nadia",
+    eyebrow: "Experte indépendante — docteure en IA",
+    nom: "Nadia Abchiche-Mimouni",
+    bio: "Docteure en intelligence artificielle et maître de conférences à Nice Sophia Antipolis, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
+    domaines: ["Dossiers IA et AI Act", "Qualification de systèmes", "Expertise"],
+    meta: [{ dt: "Modalités", dd: "Mobilisée selon les besoins du dossier" }],
+    statut: "N'exerce pas la profession d'avocat.",
+    lien: {
+      href: "https://webusers.i3s.unice.fr/~abchiche/",
+      label: "Sa page universitaire",
+      externe: true,
+    },
+  },
 ];
 
-/* ENGAGEMENTS — six, à l'affirmative. */
+/* --------------------------------------------------------------- MÉTHODE */
+export const METHODE: { n: string; titre: string; corps: string }[] = [
+  {
+    n: "01",
+    titre: "Comprendre la situation",
+    corps:
+      "Identifier les faits, les acteurs, les documents disponibles, les contraintes opérationnelles et les échéances.",
+  },
+  {
+    n: "02",
+    titre: "Qualifier les enjeux",
+    corps:
+      "Distinguer les questions juridiques, techniques, économiques et probatoires afin d'éviter une lecture partielle du dossier.",
+  },
+  {
+    n: "03",
+    titre: "Définir la stratégie",
+    corps:
+      "Présenter les options, leurs conséquences, les coûts prévisibles et l'ordre dans lequel agir.",
+  },
+  {
+    n: "04",
+    titre: "Mettre en œuvre et suivre",
+    corps:
+      "Exécuter la stratégie retenue, rendre compte des avancées et réévaluer les choix lorsque la situation évolue.",
+  },
+];
+
+/* ----------------------------------------------------------- ENGAGEMENTS */
 export const ENGAGEMENTS: { titre: string; corps: string }[] = [
   {
-    titre: "Une réponse sous un jour ouvré",
-    corps:
-      "Chaque demande reçoit une réponse dans ce délai, y compris pour dire que nous avons besoin de plus de temps pour l'examiner.",
+    titre: "Un interlocuteur identifié",
+    corps: "Vous savez qui suit votre dossier et à qui vous adresser.",
   },
   {
-    titre: "Un avis franc, y compris quand il vous déplaît",
+    titre: "Des réponses utilisables pour décider",
     corps:
-      "Si l'action n'en vaut pas le coût, si vos chances sont faibles ou si votre situation sort de nos domaines, nous vous le disons — et nous vous orientons vers qui la traitera mieux que nous.",
+      "Les règles juridiques sont traduites en options, risques, conséquences et recommandations.",
   },
   {
-    titre: "Les options exposées avant l'action",
+    titre: "Une stratégie expliquée avant d'être engagée",
     corps:
-      "Votre situation, les voies ouvertes, leurs conséquences pratiques et des jalons réalistes, expliqués en langage clair avant toute décision.",
+      "Les objectifs, les étapes et les arbitrages sont expliqués avant leur mise en œuvre.",
   },
   {
-    titre: "Aucune dépense engagée sans votre accord",
+    titre: "Une visibilité sur les honoraires",
     corps:
-      "Si le dossier évolue et que le budget doit bouger, vous l'apprenez avant, jamais sur la facture.",
+      "Le mode de facturation et le périmètre de l'intervention sont définis avant le commencement de la mission.",
   },
   {
-    titre: "Un avocat identifié du début à la fin",
+    titre: "Un suivi convenu dès le départ",
     corps:
-      "Vous savez qui conduit votre dossier, et vous êtes informé si cette personne devait changer.",
+      "Vous connaissez le prochain jalon, les éléments attendus et le moment auquel un nouveau point sera effectué.",
   },
   {
-    titre: "L'avancement visible sans avoir à le demander",
+    titre: "La maîtrise de la confidentialité",
     corps:
-      "Votre portail montre à tout moment l'étape en cours, les diligences accomplies et les prochaines échéances.",
+      "Les documents, les accès et les échanges sont organisés selon la sensibilité du dossier. Les personnes qui interviennent et les outils utilisés sont identifiés.",
   },
 ];
 
-/*
- * DOMAINES — « Entrer par votre situation ». HUIT entrées, alignées sur le menu
- * et le pied de page global (« Escroquerie et fraude » désormais fusionnée dans
- * main : sa route existe, le lien est rétabli).
- */
-export const DOMAINES: { href: string; label: string }[] = [
-  { href: "/nos-domaines/contrats-informatiques", label: "Contentieux informatique et projets IT" },
-  { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et incidents" },
-  { href: "/nos-domaines/rgpd-donnees-personnelles", label: "RGPD et protection des données" },
-  { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Intelligence artificielle et AI Act" },
-  { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et atteintes aux systèmes" },
-  { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Escroquerie et fraude" },
-  { href: "/nos-domaines/diffamation-retrait-contenus", label: "Diffamation et retrait de contenus" },
-  { href: "/nos-domaines/ma-tech", label: "M&A tech et due diligence" },
-];
-
-/* PORTAIL — points et reproduction d'interface. */
-export const PORTAIL_POINTS: { titre: string; suite: string }[] = [
-  { titre: "Avancement en temps réel", suite: "l'étape en cours, ce qui est fait, ce qui reste à faire." },
-  { titre: "Diligences détaillées", suite: "chaque action tracée et datée." },
-  { titre: "Prochaines échéances", suite: "les jalons, mis à jour au fil du dossier." },
-  { titre: "Suivi du budget", suite: "les diligences engagées et leur incidence au regard du cadre convenu." },
-  { titre: "Documents et messagerie", suite: "vos pièces et vos échanges, réunis et sécurisés." },
-];
-
-export const PORTAIL_STEPS: { libelle: string; etat: string; on?: boolean }[] = [
-  { libelle: "Assignation en référé déposée", etat: "12 mars · fait" },
-  { libelle: "Constitution du dossier de preuve", etat: "en cours", on: true },
-  { libelle: "Audience de mise en état", etat: "à venir · 4 avr." },
-  { libelle: "6 pièces · mise à jour aujourd'hui", etat: "démonstration" },
-];
-
-/*
- * CONTRIBUTIONS — quatre cases à l'état de gabarit. Mentions « à renseigner »
- * CONSERVÉES : ces éléments attendent les données réelles du cabinet (brief).
- */
-export const CONTRIBUTIONS: { titre: string; corps: string; todo: string }[] = [
+/* -------------------------------------------------------------- DOMAINES
+ * Dix domaines regroupés dans les trois familles de la page d'accueil.
+ * Intitulés strictement identiques à ceux des menus (nav-data) et routes
+ * réelles du site. */
+export const DOMAINES_FAMILLES: {
+  nom: string;
+  items: { href: string; label: string }[];
+}[] = [
   {
-    titre: "Publications",
-    corps: "Contributions en revue juridique et articles de doctrine.",
-    todo: "à renseigner : titres et revues",
+    nom: "Conformité et gouvernance",
+    items: [
+      { href: "/nos-domaines/rgpd-donnees-personnelles", label: "RGPD et données personnelles" },
+      { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Intelligence artificielle et AI Act" },
+      { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et NIS 2" },
+    ],
   },
   {
-    titre: "Ouvrage",
-    corps: "Essai consacré à la victime numérique.",
-    todo: "à renseigner : titre et éditeur",
+    nom: "Contrats et opérations numériques",
+    items: [
+      { href: "/nos-domaines/contrats-informatiques", label: "Contrats informatiques" },
+      { href: "/nos-domaines/ma-tech", label: "Fusions-acquisitions technologiques" },
+      { href: "/nos-domaines/crypto-actifs-blockchain", label: "Crypto-actifs et blockchain" },
+    ],
   },
   {
-    titre: "Interventions publiques",
-    corps: "Conférences, colloques et interventions dans les médias.",
-    todo: "à renseigner : trois références",
+    nom: "Contentieux et atteintes numériques",
+    items: [
+      { href: "/nos-domaines/contentieux-informatique-commercial", label: "Contentieux informatique et commercial" },
+      { href: "/nos-domaines/cybercriminalite", label: "Cyberattaques et cybercriminalité" },
+      { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Fraude bancaire et escroquerie en ligne" },
+      { href: "/nos-domaines/diffamation-retrait-contenus", label: "Diffamation et retrait de contenus" },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------ HONORAIRES */
+export const HONORAIRES_MODALITES: { titre: string; corps: string }[] = [
+  {
+    titre: "Forfait",
+    corps: "Un montant convenu à l'avance, lorsque la mission peut être précisément définie.",
   },
   {
-    titre: "Associations professionnelles",
-    corps: "Appartenances aux organisations de la matière.",
-    todo: "à renseigner : ADIJ, Cyberlex, AFDIT, AFCDP ?",
+    titre: "Temps passé",
+    corps:
+      "Un taux horaire et des modalités de suivi précisés dans la convention, lorsque la mission ne se prête pas à un forfait.",
+  },
+  {
+    titre: "Abonnement",
+    corps: "Un accompagnement récurrent, pour les besoins juridiques suivis dans la durée.",
+  },
+];
+
+export const HONORAIRES_PRINCIPES: string[] = [
+  "Le mode d'honoraires est proposé avant tout engagement.",
+  "Le périmètre de la mission est validé avant son commencement.",
+  "Tout événement modifiant le coût prévu est signalé avant d'être engagé.",
+  "Une estimation est toujours distinguée d'un engagement ferme.",
+];
+
+/* --------------------------------------------------- DÉMARRER UNE MISSION */
+export const DEMARRAGE: { n: string; titre: string; corps: string }[] = [
+  {
+    n: "01",
+    titre: "Premier échange",
+    corps:
+      "Nous précisons votre situation, votre objectif et son éventuel degré d'urgence.",
+  },
+  {
+    n: "02",
+    titre: "Proposition d'intervention",
+    corps:
+      "Vous recevez un périmètre de mission, le nom de l'avocat référent, les premières étapes et les modalités d'honoraires.",
+  },
+  {
+    n: "03",
+    titre: "Démarrage de la mission",
+    corps: "Les documents utiles sont transmis et le premier jalon de suivi est convenu.",
   },
 ];
