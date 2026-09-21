@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { MembreCarte } from "@/components/equipe-dossier";
 import { fr } from "@/lib/typo";
 import { FAQ_ITEMS } from "./faq";
@@ -9,1167 +9,983 @@ import { FAQ_ITEMS } from "./faq";
 /* ==========================================================================
    Page « Contrats informatiques et projets IT ».
 
-   Reconstruite à partir de la maquette de référence avec les primitives du
-   site (jetons repris à l'identique des autres pages de domaine). La barre de
-   navigation, le pied de page et le bandeau de clôture « Votre problème
-   numérique a une solution » sont fournis par le layout global : la page ne
-   les redéclare pas.
+   Intégration de la maquette validée par le cabinet (18 sept. 2026). La maquette
+   est la référence de COMPOSITION, de couleurs et d’interactions ; le contenu
+   métier et SEO reste celui du dépôt. Alignements repris de la maquette :
+   héro à étapes (« Votre contrat, à chaque étape ») sans photo, section
+   « Auditer. Rédiger. Négocier. », cinq clauses en tableau à onglets (colonnes
+   Le risque / Les questions à poser / Les points à négocier + Ce que nous
+   examinons), bandeau contentieux en bleu électrique, FAQ + renvois en deux
+   colonnes, contact final en bleu nuit.
 
-   Pas de couleur de famille inventée : la famille « Contrats / opérations »
-   n'a pas encore d'accent arbitré par le cabinet. On s'en tient donc au bleu
-   d'action et aux gris neutres.
+   Couleurs = tokens de `app/globals.css` (charte v1.1) : --blue #1A47FF (CTA,
+   liens clairs, carte Rédaction, bandeau contentieux, onglet actif), --blue3
+   #0A2ACC (survol), --navy #0A0F2E (héro, clauses, contact), --off #F4F4F8,
+   --text-muted #4A4A63. Aucune valeur bleu ciel/désaturée. Angles droits.
+
+   Header, menu, pied de page, barre de contact mobile (site-header_bottomBar) et
+   parcours /contact sont fournis par le layout global : aucune barre ni modale
+   propres à la page (les modales de démonstration de la maquette sont remplacées
+   par de vrais liens internes). Le noindex, le title « Maquette » et les routes
+   de démonstration de la maquette ne sont pas repris.
+
+   Le contenu des cinq clauses fusionne la présentation de la maquette (colonnes)
+   avec les précisions juridiques VERBATIM du dépôt (obligation essentielle et
+   clause réputée non écrite ; caducité de l’ensemble des contrats
+   interdépendants ; « sauvegarde = pratique, pas obligation » ; récupération au
+   rapport de force défavorable ; SLA sans pénalité = promesse commerciale).
+   Aucune règle juridique ni jurisprudence nouvelle n’est inventée.
    ========================================================================== */
 
-const DARK = {
-  bg: "#0a0f2e",
-  text: "#FFFFFF",
-  muted: "rgba(255,255,255,0.68)",
-  border: "rgba(255,255,255,0.2)",
-};
+/* ---- Tokens de la charte (aucune valeur en dur) ---- */
+const BLUE = "var(--blue)";
+const BLUE3 = "var(--blue3)"; // survol / labels sur clair
+const NAVY = "var(--navy)";
+const INK = "var(--ink)";
+const WH = "var(--wh)";
+const GHOST = "var(--off)";
+const BD = "var(--bd)";
+const MUTED = "var(--text-muted)";
+const ON_DARK = "var(--wh)";
 
-const LIGHT = {
-  bg: "#f8f8f6",
-  panel: "#ffffff",
-  panel2: "#f1f1ee",
-  text: "#1a1a1a",
-  muted: "#4a4a4a",
-  faint: "#6a6a6a",
-  border: "rgba(0,0,0,0.1)",
-};
+const HEADER_H = 72;
 
-const BLUE = "#1A47FF";
-const DEEP = "#0A2ACC";
+/* Parcours de contact réel. On transmet l’objet et, quand c’est utile, la
+   situation, selon la convention du site (`/contact?objet=…`). */
+const CONTACT = "/contact?objet=contrats-informatiques";
+const contactObjet = (situation?: string) =>
+  situation ? `${CONTACT}&situation=${situation}` : CONTACT;
 
-const INNER: CSSProperties = { maxWidth: 960, margin: "0 auto", padding: "0 24px" };
-const SECTION_PAD = "56px 0";
-const CARD_PAD = 18;
-const GRID_GAP = 12;
+/* Route de la page contentieux (publiée). */
+const CONTENTIEUX = "/nos-domaines/contentieux-informatique-commercial";
 
-const TYPE = {
-  h1: { fontSize: "clamp(32px, 5.5vw, 60px)", fontWeight: 600, lineHeight: 1.08 } as const,
-  h2: { fontSize: "clamp(22px, 2.8vw, 30px)", fontWeight: 600, lineHeight: 1.25 } as const,
-  h3: { fontSize: 18, fontWeight: 600, lineHeight: 1.35 } as const,
-  body: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } as const,
-  secondary: { fontSize: 14, fontWeight: 400, lineHeight: 1.6, color: LIGHT.muted } as const,
-};
+/* ---------- Données (contenu du dépôt) ----------------------------------- */
 
-/* -----------------------------------------------------------------------
-   § 6 — DRAPEAU DE FONCTIONNALITÉ « DOSSIERS »
+const HERO_STAGES = [
+  { n: "01", t: "Avant de signer.", s: "Définir les engagements et négocier.", href: "#accompagnement" },
+  { n: "02", t: "Pendant le projet.", s: "Encadrer l’exécution et les évolutions.", href: "#contrats" },
+  { n: "03", t: "Au moment de sortir.", s: "Organiser la transition et la réversibilité.", href: "#reversibilite" },
+];
 
-   Ces quatre dossiers sont anonymisés mais très caractérisants, en
-   particulier le quatrième — identifiable par le nombre d'intervenants et
-   l'ordre de grandeur. Leur publication soulève une question de secret
-   professionnel que seul le cabinet peut trancher. Tant que le drapeau vaut
-   `false`, la section n'est pas rendue et aucun lien de la page n'y renvoie.
+const HERO_BASELINE = [
+  "Clients et prestataires informatiques",
+  "Paris · Intervention partout en France",
+  "Cabinet fondé en 2016",
+];
 
-   TODO (cabinet) — décider de la levée du drapeau et du niveau de détail.
-   ----------------------------------------------------------------------- */
-const DOSSIERS_ENABLED = false;
-
-// TODO (cabinet) — destinations réelles des boutons « Faire auditer un
-// contrat » et « Évaluer un litige » : formulaire dédié, prise de rendez-vous
-// ou page contact. `/contact` est une page réelle (aucun href="#" en
-// production) ; à confirmer par le cabinet.
-const CONTACT = "/contact";
-
-/* ---------- Données ------------------------------------------------------ */
-
-const HERO_CHIPS = ["Contrats IT", "SaaS & cloud", "Infogérance", "Responsabilité", "Preuve"];
-
-const ROUTES = [
+const SITUATIONS = [
   {
-    q: "Un contrat est sur la table",
-    d: "Négociation, renouvellement, contrat imposé par un éditeur ou un donneur d'ordre.",
-    l: "Faire auditer un contrat",
-    href: "#contrats",
+    q: "Un contrat est sur la table.",
+    d: "Contrat imposé par un éditeur ou un donneur d’ordre, négociation à engager, projet à cadrer avant signature.",
+    l: "Audit, rédaction et négociation",
+    href: "#accompagnement",
   },
   {
-    q: "Un projet informatique dérape",
-    d: "Retards, anomalies persistantes, recette contestée, dépassement budgétaire.",
-    l: "Contentieux des projets IT",
+    q: "Un contrat doit être renouvelé ou corrigé.",
+    d: "Échéance proche, avenant, niveaux de service à revoir ou obligation de sauvegarde absente.",
+    l: "Les cinq clauses décisives",
+    href: "#clauses",
+  },
+  {
+    q: "Un changement de prestataire est bloqué.",
+    d: "Réversibilité refusée, format inexploitable ou frais de sortie disproportionnés.",
+    l: "Examiner la réversibilité",
+    href: "#reversibilite",
+  },
+  {
+    q: "Un différend est déjà engagé.",
+    d: "Retards contestés, logiciel non conforme, rupture, perte de données ou mise en demeure.",
+    l: "Le contentieux informatique",
     href: "#contentieux",
-  },
-  {
-    // La page dédiée « Responsabilité du prestataire informatique » n'existe
-    // pas encore : cette porte pointe vers le contentieux de la présente page.
-    // Le jour où la page dédiée est créée, la faire pointer vers elle (brief §5).
-    q: "Une perte de données ou un incident",
-    d: "Sauvegardes défaillantes, indisponibilité prolongée, défaillance après cyberattaque.",
-    l: "Responsabilité du prestataire",
-    href: "#contentieux",
-  },
-  {
-    q: "Un changement de prestataire est bloqué",
-    d: "Réversibilité refusée, format inexploitable, frais de sortie disproportionnés.",
-    l: "Débloquer la sortie du contrat",
-    href: "#contrats",
   },
 ];
 
-const CONTRATS = [
+const SERVICES = [
   {
-    tag: "SaaS & cloud",
+    n: "01",
+    titre: "Auditer un contrat",
+    p: "Identifier les engagements, les clauses défavorables et les risques avant de décider.",
+    items: ["Qualification de l’opération", "Matrice des risques contractuels", "Points à corriger ou à négocier"],
+    link: "Faire examiner un contrat",
+    situation: "audit",
+    primary: false,
+  },
+  {
+    n: "02",
+    titre: "Rédiger le contrat",
+    p: "Traduire le projet en obligations précises, avec des procédures de validation et de sortie.",
+    items: ["Expression du besoin et livrables", "Contrat ou avenant adapté", "Articulation avec les autres contrats"],
+    link: "Présenter votre projet",
+    situation: "redaction",
+    primary: true,
+  },
+  {
+    n: "03",
+    titre: "Négocier les conditions",
+    p: "Porter vos positions face au client, à l’éditeur ou au prestataire et travailler les points de désaccord.",
+    items: ["Priorités et marges de négociation", "Propositions de rédaction", "Appui dans les échanges"],
+    link: "Préparer la négociation",
+    situation: "negociation",
+    primary: false,
+  },
+];
+
+/* Dix familles : résumé court (visible, maquette) + précisions du dépôt (corps
+   de l’accordéon, plus détaillé). */
+const FAMILIES = [
+  {
     titre: "Contrats SaaS et cloud",
-    texte:
-      "Un contrat SaaS n'est ni une vente ni une licence classique : il organise l'accès à un service continu dont le client ne maîtrise ni l'infrastructure, ni le rythme des évolutions. Niveaux de service et sanctions, localisation des données, conditions de sortie, plafonnement des frais de migration.",
+    desc: "Disponibilité du service, évolution de l’offre et conditions de sortie.",
+    body: "Ni vente ni licence classique : l’accès à un service continu dont le client ne maîtrise ni l’infrastructure, ni le rythme des évolutions. Niveaux de service, localisation des données, conditions de sortie, frais de migration.",
   },
   {
-    tag: "Licence",
     titre: "Licences de logiciels",
-    texte:
-      "Étendue des droits concédés, nombre d'utilisateurs et de postes, périmètre géographique, droit d'audit de l'éditeur, sous-licence, sort des développements spécifiques. La licence détermine ce que l'entreprise peut faire de son outil, et ce que l'éditeur peut lui réclamer des années après la signature.",
+    desc: "Droits d’utilisation, audits éditeur et développements spécifiques.",
+    body: "Étendue des droits concédés, nombre d’utilisateurs et de postes, périmètre géographique, droit d’audit de l’éditeur, sous-licence, sort des développements spécifiques.",
   },
   {
-    tag: "Développement",
-    titre: "Développement de logiciels et d'applications",
-    texte:
-      "Le prestataire est tenu d'une obligation de moyens renforcée : il lui appartient de démontrer ses diligences. Une obligation de résultat peut être retenue lorsqu'il s'engage sur un livrable conforme à un cahier des charges précis. La propriété du code source se joue au même endroit.",
+    titre: "Développement de logiciels et d’applications",
+    desc: "Cahier des charges, livraison et propriété du code source.",
+    body: "Obligation de moyens renforcée, pouvant devenir obligation de résultat lorsque le prestataire s’engage sur un livrable conforme à un cahier des charges précis. La propriété du code source se joue au même endroit.",
   },
   {
-    tag: "Intégration",
-    titre: "Intégration d'ERP, de CRM et de solutions métier",
-    texte:
-      "Ces projets concentrent les causes classiques d'échec : besoin insuffisamment exprimé, reprise de données sous-estimée, recette conduite sans réserves écrites, calendrier glissant. Structuration du projet, procédure de recette, traçabilité des alertes et des validations.",
+    titre: "Intégration d’ERP, de CRM et de solutions métier",
+    desc: "Expression du besoin, reprise des données et procédure de recette.",
+    body: "Causes classiques d’échec : besoin insuffisamment exprimé, reprise de données sous-estimée, recette conduite sans réserves écrites, calendrier glissant. Structuration du projet, procédure de recette, traçabilité des alertes.",
   },
   {
-    tag: "Infogérance",
     titre: "Infogérance et externalisation",
-    texte:
-      "Le contrat transfère au prestataire l'exploitation de tout ou partie du système d'information. Périmètre exact des services, engagements de disponibilité, obligations de sécurité et de sauvegarde, plan de réversibilité et durée de l'assistance à la transition.",
+    desc: "Périmètre des services, sauvegardes et changement de prestataire.",
+    body: "Transfert au prestataire de tout ou partie de l’exploitation du système d’information : périmètre exact des services, engagements de disponibilité, obligations de sécurité et de sauvegarde, plan de réversibilité.",
   },
   {
-    tag: "Maintenance",
     titre: "Maintenance et support informatique",
-    texte:
-      "Un contrat de maintenance informatique se lit d'abord par ce qu'il exclut. Correctif, évolutif et préventif, délais de prise en charge et de rétablissement, plages d'astreinte, sort des versions non maintenues, articulation avec la licence et la fourniture du matériel.",
+    desc: "Délais d’intervention, rétablissement et exclusions de service.",
+    body: "Un contrat de maintenance se lit d’abord par ce qu’il exclut : correctif, évolutif et préventif, délais de prise en charge et de rétablissement, plages d’astreinte, versions non maintenues.",
   },
   {
-    tag: "Hébergement",
     titre: "Hébergement, cloud et services managés",
-    texte:
-      "Localisation et souveraineté des données, mesures de sécurité contractualisées, notification des incidents, sous-traitance en cascade, conditions et coût de récupération des données en fin de contrat. Le cabinet traite également l'hébergement de données de santé.",
+    desc: "Localisation, sous-traitance et récupération des données.",
+    body: "Localisation et souveraineté des données, mesures de sécurité contractualisées, notification des incidents, sous-traitance en cascade, conditions et coût de récupération des données en fin de contrat. Le cabinet traite également l’hébergement de données de santé.",
   },
   {
-    tag: "Régie & forfait",
     titre: "Assistance technique, régie et forfait",
-    texte:
-      "Le choix entre régie et forfait modifie la répartition des responsabilités, le pilotage du projet et l'appréciation des retards ou des dépassements budgétaires. Il emporte aussi un risque de requalification lorsque l'encadrement effectif des intervenants échappe au prestataire.",
+    desc: "Pilotage du projet, responsabilité et répartition des rôles.",
+    body: "Le choix entre régie et forfait modifie la répartition des responsabilités, le pilotage du projet et l’appréciation des retards. Il emporte aussi un risque de requalification lorsque l’encadrement effectif des intervenants échappe au prestataire.",
   },
   {
-    tag: "Données & API",
     titre: "Contrats de données, API et interconnexions",
-    texte:
-      "Mise à disposition de bases de données, contrats d'interface, conditions d'accès aux API, droits d'usage et de réutilisation, articulation avec les rôles de responsable de traitement et de sous-traitant au sens du RGPD.",
+    desc: "Accès, réutilisation et responsabilités sur les données.",
+    body: "Mise à disposition de bases de données, contrats d’interface, conditions d’accès aux API, droits d’usage et de réutilisation, articulation avec les rôles de responsable de traitement et de sous-traitant au sens du RGPD.",
   },
   {
-    tag: "Cybersécurité",
     titre: "Contrats de cybersécurité et de sauvegarde",
-    texte:
-      "Sauvegarde, supervision, détection et réponse à incident. Ces contrats doivent énoncer précisément ce à quoi le prestataire s'engage : c'est cette rédaction, et non la qualification générale du contrat, qui déterminera sa responsabilité le jour de l'incident.",
+    desc: "Détection, restauration et engagements en cas d’incident.",
+    body: "Sauvegarde, supervision, détection et réponse à incident. C’est la rédaction de ces engagements, et non la qualification générale du contrat, qui déterminera la responsabilité le jour de l’incident.",
   },
 ];
 
-const AUTODIAG = [
-  "Un contrat IT a été signé sans cahier des charges formalisé et signé.",
-  "Les contrats SaaS ou cloud ne précisent pas comment récupérer les données en fin de contrat, ni à quel coût.",
-  "Le prestataire n'a aucune obligation contractuelle de sécurité ni de sauvegarde.",
-  "Une perte de données ou un incident est survenu et le recours contre le prestataire reste incertain.",
-  "La résiliation d'un contrat IT est envisagée, mais les pénalités réclamées paraissent disproportionnées.",
-  "Les contrats de fourniture, de maintenance et de financement ont été signés séparément, sans clause d'interdépendance.",
-  "En tant que prestataire, vous intervenez sur le système d'information de vos clients sans encadrement contractuel de votre responsabilité.",
-];
-
-const REGIMES = [
-  {
-    label: "Prestataire IT",
-    titre: "Obligations renforcées",
-    texte:
-      "Le prestataire doit s'informer des besoins de son client et l'alerter sur les difficultés ou les risques que ses compétences lui permettent d'identifier.",
-    points: [
-      "Devoir de conseil et de mise en garde, y compris sur les risques de cybersécurité",
-      "Engagement exprès de sauvegardes exploitables : leur absence ou leur inefficacité peut caractériser l'inexécution",
-      "Selon la mission et les engagements souscrits : obligation de moyens, parfois renforcée, ou de résultat portant sur certains livrables",
-    ],
-  },
-  {
-    label: "Client PME / ETI",
-    titre: "Devoir de collaboration",
-    texte:
-      "Le client doit exprimer ses besoins, valider les étapes et conserver les preuves. Un manquement sérieux du client peut réduire la responsabilité du prestataire.",
-    points: [
-      "Formaliser les besoins par écrit",
-      "Valider et signer les recettes, réserves comprises",
-      "Documenter les refus de recommandations",
-    ],
-  },
-  {
-    label: "Devant le juge",
-    titre: "La preuve technique",
-    texte: "Audits, journaux, rapports d'expert, constats. Le juge tranche sur les pièces, pas sur les déclarations.",
-    points: [
-      "Configuration conforme aux référentiels applicables",
-      "Journaux de sauvegarde horodatés",
-      "Traçabilité écrite des mises en garde",
-    ],
-  },
-];
-
+/* Cinq clauses décisives — présentation en colonnes (maquette) + précisions
+   juridiques du dépôt. Clé « reversibilite » = ancre #reversibilite, ouverte au
+   départ (index 1). Aucune règle nouvelle : les points de droit (obligation
+   essentielle / clause réputée non écrite ; caducité de l’ensemble) proviennent
+   du contenu validé du dépôt. */
 const CLAUSES = [
   {
-    num: "01",
-    titre: "La clause de sauvegarde",
-    texte:
-      "« Mon prestataire gère les sauvegardes » ne se vérifie qu'au contrat. Il faut y lire la fréquence, la rétention, l'externalisation, le test de restauration et l'engagement sur le délai de reprise. Sans ces éléments, la sauvegarde est une pratique, pas une obligation.",
+    key: "sauvegarde",
+    titre: "Sécurité et sauvegarde",
+    heading: "Une sauvegarde prévue. Des données réellement restaurables.",
+    risque:
+      "Une sauvegarde existe, mais elle est incomplète, inaccessible ou inutilisable lors de la restauration. Sans engagement écrit, la sauvegarde reste une pratique, pas une obligation.",
+    questions:
+      "Quelles données sont couvertes ? À quelle fréquence ? La sauvegarde est-elle externalisée ? Qui teste la restauration, en conserve la preuve et sur quel délai de reprise s’engage-t-il ?",
+    negociation:
+      "Le périmètre des sauvegardes, la fréquence, la rétention, l’externalisation, les tests de restauration, le délai de reprise garanti et la répartition des responsabilités.",
+    work:
+      "Nous rapprochons les engagements écrits du dispositif technique décrit par le prestataire. Les obligations de sauvegarde, de contrôle et d’alerte doivent pouvoir être vérifiées.",
   },
   {
-    num: "02",
-    titre: "La clause de réversibilité",
-    texte:
-      "Formats de restitution, délais, durée de l'assistance à la transition, plafonnement du coût. En l'absence de cette clause, la récupération des données se négocie au moment où le rapport de force est le plus défavorable.",
+    key: "reversibilite",
+    titre: "Réversibilité",
+    heading: "Changer de prestataire sans perdre la maîtrise de ses données.",
+    risque:
+      "Des données restituées dans un format inexploitable, une assistance à la transition non prévue ou des frais de sortie contestés. À défaut de clause, la récupération se négocie au moment où le rapport de force est le plus défavorable.",
+    questions:
+      "Dans quel format, à quel prix et dans quel délai les données seront-elles remises ? Qui accompagne la transition, et pendant combien de temps ?",
+    negociation:
+      "Les formats de restitution, la durée et le contenu de l’assistance à la migration, le plafonnement du coût, les délais et la conservation des données pendant la transition.",
+    work:
+      "Nous examinons les conditions de sortie pendant que le contrat peut encore être négocié ou exécuté. L’objectif est de définir une transition réalisable et les engagements de chacun.",
   },
   {
-    num: "03",
-    titre: "La clause limitative de responsabilité",
-    texte:
-      "Un plafond aligné sur douze mois d'abonnement couvre rarement une perte de données réelle. Seule est réputée non écrite la clause qui contredit la portée de l'obligation essentielle souscrite : un plafond non dérisoire, librement négocié, résiste au manquement même essentiel.",
+    key: "responsabilite",
+    titre: "Responsabilité",
+    heading: "Un plafond de responsabilité à mesurer au regard du risque.",
+    risque:
+      "Une réparation plafonnée sans rapport avec les conséquences possibles d’une indisponibilité ou d’une perte de données. Un plafond aligné sur douze mois d’abonnement couvre rarement une perte réelle.",
+    questions:
+      "Quels dommages sont couverts ou exclus ? Comment le plafond se calcule-t-il ? Que couvre effectivement l’assurance du prestataire ?",
+    negociation:
+      "Le plafond, son périmètre, les exclusions et leur articulation avec l’obligation essentielle du contrat et les assurances.",
+    work:
+      "Nous analysons la portée des limitations au regard du contrat et de la mission. Seule est réputée non écrite la clause qui contredit la portée de l’obligation essentielle : un plafond non dérisoire, librement négocié, résiste au manquement même essentiel.",
   },
   {
-    num: "04",
-    titre: "Le niveau de service",
-    texte:
-      "Disponibilité, délai de prise en charge, délai de rétablissement, périmètre des exclusions. Un engagement de service sans pénalité ni crédit associé reste une promesse commerciale.",
+    key: "service",
+    titre: "Niveaux de service",
+    heading: "Des engagements mesurables, au-delà d’un taux de disponibilité.",
+    risque:
+      "Un engagement de disponibilité affiché, mais des exclusions larges ou aucun délai précis de rétablissement. Un engagement de service sans pénalité ni crédit associé reste une promesse commerciale.",
+    questions:
+      "Comment le service est-il mesuré ? Quand le délai de prise en charge commence-t-il ? Les pénalités excluent-elles tout autre recours ?",
+    negociation:
+      "Les indicateurs, les exclusions, les délais de prise en charge et de rétablissement, l’escalade, les pénalités ou crédits et les conséquences des manquements.",
+    work:
+      "Nous examinons ensemble les niveaux de service, les procédures d’incident et les clauses de responsabilité pour éviter des engagements qui se contredisent.",
   },
   {
-    num: "05",
-    titre: "La clause d'interdépendance",
-    texte:
-      "Fourniture, maintenance et financement sont signés séparément, puis traités isolément le jour où le projet s'arrête. Lorsque ces contrats poursuivent un même but et n'ont aucun sens séparément, leur interdépendance peut être reconnue et emporter la caducité de l'ensemble.",
+    key: "interdependance",
+    titre: "Interdépendance contractuelle",
+    heading: "Licence, intégration, maintenance, financement : lire l’ensemble.",
+    risque:
+      "Une prestation défaillante alors que les autres contrats et les échéances de financement continuent de produire leurs effets.",
+    questions:
+      "Quels contrats forment l’opération ? Que prévoit chacun si l’intégration échoue ou si l’un des contrats prend fin ?",
+    negociation:
+      "L’articulation des contrats, les validations communes et les conséquences de la défaillance ou de la fin d’un engagement.",
+    work:
+      "Nous reconstituons l’opération contractuelle dans son ensemble. Lorsque ces contrats poursuivent un même but et n’ont aucun sens séparément, leur interdépendance peut être reconnue et emporter la caducité de l’ensemble.",
   },
-];
-
-const LITIGES = [
-  "Retards de livraison et dépassements budgétaires",
-  "Logiciel inutilisable ou non conforme au cahier des charges",
-  "Échec d'une intégration ou d'une migration de données",
-  "Indisponibilités prolongées et pertes de données",
-  "Défaillance du prestataire à la suite d'une cyberattaque",
-  "Manquement au devoir de conseil et de mise en garde",
-  "Blocage de la réversibilité et rétention des données",
-  "Rupture anticipée d'un contrat à durée déterminée",
-  "Expertise judiciaire informatique, de la désignation au rapport",
-  "Résolution du contrat, restitutions et indemnisation",
-];
-
-// § 8 — TODO (cabinet) : les quatre chiffres ci-dessous (1,8 M€, dix-huit
-// mois, quatre millions de fichiers, cinq ans / plusieurs centaines de
-// milliers d'euros) sont à recouper dans les dossiers avant toute publication.
-// La section n'est de toute façon rendue que si DOSSIERS_ENABLED vaut true.
-const DOSSIERS = [
-  {
-    num: "01",
-    type: "Production paralysée",
-    titre: "Des sauvegardes inutilisables après une cyberattaque",
-    corps: [
-      "À la suite d'un rançongiciel, une entreprise industrielle découvre que ses sauvegardes ne permettent pas de restaurer son système. Le prestataire soutient que leur contrôle ne relevait pas de son périmètre.",
-      "Le cabinet analyse le contrat, les tickets d'assistance, les rapports d'intervention et les journaux techniques afin d'identifier les engagements effectivement souscrits. Les preuves susceptibles de disparaître sont immédiatement préservées, avant l'envoi de la mise en demeure et l'organisation d'une expertise contradictoire.",
-    ],
-    enjeu: "Plusieurs semaines d'arrêt de production et des pertes d'exploitation majeures",
-  },
-  {
-    num: "02",
-    type: "Projet ERP hors de contrôle",
-    titre: "1,8 million d'euros engagés et dix-huit mois de retard",
-    corps: [
-      "L'intégrateur réclame le paiement du solde alors que plusieurs fonctions essentielles de l'ERP restent inutilisables. Il oppose au client des procès-verbaux de recette signés ainsi qu'un plafond de responsabilité très faible.",
-      "Le cabinet reconstitue la chronologie du projet. L'analyse porte notamment sur les réserves formulées lors des validations, les anomalies critiques reportées d'une version à l'autre et le caractère déterminant du calendrier. Le dossier est construit autour des engagements inexécutés et des preuves techniques, plutôt que d'une simple insatisfaction du client.",
-    ],
-    enjeu: "Résolution du contrat, restitution des sommes versées et financement d'une solution de remplacement",
-  },
-  {
-    num: "03",
-    type: "Données prises en otage",
-    titre: "Quatre millions de fichiers bloqués au moment de changer de prestataire",
-    corps: [
-      "Une société décide de quitter sa solution cloud. Le fournisseur accepte de restituer les données, mais uniquement dans un format inexploitable et contre une facture de sortie représentant près de deux années d'abonnement.",
-      "Le cabinet examine la clause de réversibilité, les engagements commerciaux, les spécifications d'export et la documentation technique. Une stratégie d'urgence est préparée pour préserver l'accès au service et obtenir la restitution des données dans un format effectivement réutilisable.",
-    ],
-    enjeu: "Continuité d'activité et récupération du patrimoine informationnel de l'entreprise",
-  },
-  {
-    num: "04",
-    type: "Quatre contrats, un seul échec",
-    titre: "Des loyers encore prélevés pour un système devenu inutilisable",
-    corps: [
-      "Une PME demeure engagée pendant cinq ans auprès de plusieurs sociétés : fournisseur de matériels, intégrateur, mainteneur et organisme de financement. Le projet informatique échoue, mais les loyers continuent d'être prélevés pour des équipements et des services devenus inutiles.",
-      "Le cabinet reconstitue l'opération dans son ensemble : dates de signature, identité des intervenants, matériels financés, circulation des documents et dépendance économique entre les contrats. L'analyse vise à déterminer si la disparition du contrat principal peut entraîner la caducité des contrats de financement associés.",
-    ],
-    enjeu: "Plusieurs centaines de milliers d'euros d'engagements résiduels",
-  },
-];
-
-const ETAPES = [
-  {
-    n: "1",
-    titre: "Audit contractuel",
-    texte:
-      "Inventaire des contrats IT, SaaS, cloud et infogérance. Identification des lacunes critiques : sauvegarde, réversibilité, responsabilité, pénalités.",
-    deliv: "Livrable — matrice des risques contractuels",
-  },
-  {
-    n: "2",
-    titre: "Analyse juridique",
-    texte:
-      "Qualification des obligations de chaque partie, examen des clauses limitatives, articulation entre fourniture, maintenance et financement.",
-    deliv: "Livrable — note de qualification",
-  },
-  {
-    n: "3",
-    titre: "Négociation et rédaction",
-    texte:
-      "Clauses sur mesure : cahier des charges, sauvegarde, cybersécurité, réversibilité, plafonds de responsabilité adaptés à l'exposition réelle.",
-    deliv: "Livrable — contrats ou avenants",
-  },
-  {
-    n: "4",
-    titre: "Formalisation et preuve",
-    texte:
-      "Recettes signées, mises en garde tracées, registre des engagements. Ce qui tient devant un juge si le litige survient.",
-    deliv: "Livrable — dossier de preuve",
-  },
-  {
-    n: "5",
-    titre: "Contentieux et défense",
-    texte:
-      "Perte de données, projet avorté, résiliation contestée, expertise judiciaire. Articulation de la preuve technique et de l'argumentaire juridique.",
-    deliv: "Terrain naturel du cabinet",
-  },
-];
-
-const QUAND = [
-  { b: "Avant l'appel d'offres", d: "Pour cadrer l'expression des besoins et le futur cahier des charges." },
-  { b: "Avant la signature ou le renouvellement", d: "Tant que le contrat est encore négociable." },
-  { b: "Lorsque le projet dérape", d: "Au moment où les réserves peuvent encore être formalisées utilement." },
-  { b: "Avant une mise en demeure ou une résiliation", d: "Sa rédaction détermine la suite du dossier." },
-  { b: "Lors d'un incident ou d'une expertise", d: "Pour organiser la conservation et la production des preuves techniques." },
-  { b: "Avant une migration ou un changement de prestataire", d: "Pour faire jouer la réversibilité pendant que le contrat court encore." },
 ];
 
 const AVOCATS = [
-  { slug: "alexandre", role: "Droit du numérique et cybersécurité", tags: ["Contrats IT", "Cybersécurité", "Contentieux"] },
-  { slug: "amir", role: "Contrats informatiques et contentieux IT", tags: ["Contrats IT", "Responsabilité", "Preuve"] },
-  { slug: "sarah", role: "Données personnelles et intelligence artificielle", tags: ["RGPD", "Contrats de données", "Conformité numérique"] },
+  { slug: "alexandre", role: "Contrats, négociation et structuration des projets.", tags: ["Contrats IT", "Négociation", "Cybersécurité"] },
+  { slug: "amir", role: "Analyse et exécution des contrats IT.", tags: ["Contrats IT", "Exécution", "Responsabilité"] },
+  { slug: "sarah", role: "Données personnelles et intelligence artificielle.", tags: ["RGPD", "Contrats de données", "IA"] },
 ];
 
 const KHALID_EXAMINE = [
+  "Architecture applicative et dépendances entre les briques du système",
   "État réel des sauvegardes et des tests de restauration",
-  "Journaux, configurations et traces d'intervention du prestataire",
+  "Journaux, configurations et traces d’intervention du prestataire",
   "Chronologie technique des anomalies et des correctifs",
   "Faisabilité et format des opérations de réversibilité",
 ];
 
-// § 5 — Maillage sortant. Le contenu de conformité des pages cybersécurité,
-// RGPD et AI Act n'est pas dupliqué ici : on y renvoie.
-const LIENS = [
-  { ancre: "Obligations de sécurité et réponse à incident", href: "/nos-domaines/cybersecurite" },
-  { ancre: "Contrat de sous-traitance RGPD", href: "/nos-domaines/rgpd-donnees-personnelles" },
-  { ancre: "Systèmes d'IA fournis par un prestataire", href: "/nos-domaines/avocat-intelligence-artificielle" },
-  { ancre: "Due diligence des actifs technologiques (M&A)", href: "/nos-domaines/ma-tech" },
-  { ancre: "Responsabilité du prestataire informatique", href: null }, // page à venir
+/* « Ce qui engage les parties — et ce qui permet de le prouver » : le contenu de
+   différenciation juridique/technique restauré de la version initiale. */
+const ENGAGE: { titre: string; p: string }[] = [
+  {
+    titre: "Les obligations du prestataire",
+    p: "Obligation d’information, de conseil et de mise en garde ; engagements de sécurité, de disponibilité, de sauvegarde et de réversibilité.",
+  },
+  {
+    titre: "La coopération du client",
+    p: "Expression des besoins, validation des livrables, recettes, réserves et décisions prises pendant le projet.",
+  },
+  {
+    titre: "Les preuves à conserver",
+    p: "Contrat et cahier des charges, avenants, courriels, tickets, journaux techniques, tests de restauration, procès-verbaux et rapports d’expertise.",
+  },
+];
+
+/* Trois cas COMPACTS présentés comme des situations-types (aucun dossier réel,
+   aucun montant, aucun résultat — cf. brief : à confirmer par le cabinet avant
+   toute présentation en dossier réel). */
+const CAS: { situation: string; examine: string; enjeu: string }[] = [
+  {
+    situation: "Des sauvegardes prévues au contrat se révèlent inutilisables après un incident.",
+    examine: "Le périmètre réellement sauvegardé, la fréquence, les tests de restauration et les engagements écrits du prestataire.",
+    enjeu: "Déterminer si l’inexécution engage la responsabilité du prestataire ou relève d’un partage.",
+  },
+  {
+    situation: "Un projet ERP accuse un retard important ou ne fonctionne pas comme prévu.",
+    examine: "Le cahier des charges, la procédure de recette, les réserves émises et la chronologie des alertes.",
+    enjeu: "Décider entre poursuite encadrée, renégociation ou sortie, en sécurisant les preuves.",
+  },
+  {
+    situation: "Les données sont bloquées lors d’un changement de prestataire.",
+    examine: "La clause de réversibilité, les formats de restitution, les délais et le coût de sortie annoncés.",
+    enjeu: "Rétablir l’accès aux données et organiser une transition réalisable.",
+  },
+];
+
+/* FAQ complémentaire (« Autres questions ») — réponses VERBATIM de la version
+   initiale (git a8fd008). */
+const AUTRES_FAQ: { q: string; a: string }[] = [
+  {
+    q: "Que doit contenir un cahier des charges informatique ?",
+    a: "Périmètre fonctionnel, environnement technique existant, volumétrie, contraintes d’interopérabilité, jalons, livrables et critères de recette. Son absence ne profite pas au prestataire : il lui appartient d’en exiger la rédaction, d’émettre des réserves ou de refuser de s’engager.",
+  },
+  {
+    q: "Comment organiser la recette d’un logiciel ?",
+    a: "Par une procédure écrite : jeux d’essai, critères d’acceptation, délais de vérification, effets d’une recette avec réserves et d’un refus. Une recette signée sans réserve fragilise durablement toute contestation ultérieure.",
+  },
+  {
+    q: "Comment se prépare une expertise judiciaire informatique ?",
+    a: "Par la conservation immédiate des journaux, configurations et échanges, l’identification d’un conseil technique aux côtés de l’avocat, et la préparation des dires. L’expertise se joue largement sur les pièces produites lors des premières réunions.",
+  },
+];
+
+const RELATED = [
+  { label: "Obligations de sécurité et réponse à incident", href: "/nos-domaines/cybersecurite" },
+  { label: "Sous-traitance et données personnelles", href: "/nos-domaines/rgpd-donnees-personnelles" },
+  { label: "Intelligence artificielle et prestataires", href: "/nos-domaines/avocat-intelligence-artificielle" },
+  { label: "Acquisition et due diligence technologique", href: "/nos-domaines/ma-tech" },
+  { label: "Contentieux informatique et commercial", href: CONTENTIEUX },
 ];
 
 /* ---------- Primitives locales ------------------------------------------- */
 
 function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
-    <p
-      style={{
-        fontFamily: "var(--ff-mono)",
-        fontSize: 11,
-        letterSpacing: "0.18em",
-        textTransform: "uppercase",
-        color: light ? "#7fa8ff" : BLUE,
-        margin: "0 0 10px",
-      }}
+    <span
+      className="cx-label"
+      style={{ color: light ? "#fff" : BLUE3 }}
     >
       {typeof children === "string" ? fr(children) : children}
-    </p>
+    </span>
   );
 }
 
-function SectionHead({
-  label,
-  titre,
-  sub,
-  light = false,
-}: {
-  label: string;
-  titre: string;
-  sub?: string;
-  light?: boolean;
-}) {
-  return (
-    <>
-      <Eyebrow light={light}>{label}</Eyebrow>
-      <h2 style={{ ...TYPE.h2, color: light ? "#fff" : LIGHT.text, margin: "0 0 10px", maxWidth: "24ch" }}>{fr(titre)}</h2>
-      {sub ? (
-        <p style={{ ...TYPE.secondary, color: light ? DARK.muted : LIGHT.muted, margin: "0 0 24px", maxWidth: "68ch" }}>
-          {fr(sub)}
-        </p>
-      ) : null}
-    </>
-  );
-}
-
-const BTN_PRIMARY: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 8,
-  background: BLUE,
-  color: "#fff",
-  padding: "15px 26px",
-  borderRadius: 8,
-  fontSize: 14,
-  fontWeight: 500,
-  textDecoration: "none",
-  minHeight: 48,
-};
-
-const BTN_GHOST: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 8,
-  background: "transparent",
-  color: "rgba(255,255,255,0.9)",
-  padding: "15px 24px",
-  borderRadius: 8,
-  fontSize: 14,
-  textDecoration: "none",
-  border: `1px solid ${DARK.border}`,
-  minHeight: 48,
-};
-
-/* ---------- Carte de contrat (repliable sous 900 px) --------------------- */
-
-function ContratCard({ tag, titre, texte }: { tag: string; titre: string; texte: string }) {
-  // Sous 900 px, la description se replie derrière un vrai bouton placé DANS
-  // le h3 ; au-dessus, le titre redevient du texte et le paragraphe est
-  // visible. On ne rend jamais le h3 lui-même cliquable (défaut de la version
-  // précédente). Le premier rendu (serveur + hydratation) est toujours la vue
-  // « bureau » — l'état mobile n'est appliqué qu'après montage, ce qui évite
-  // toute divergence d'hydratation. Le paragraphe reste dans le DOM (attribut
-  // `hidden`), donc lisible par les moteurs.
-  const [mobile, setMobile] = useState(false);
-  const [open, setOpen] = useState(false);
-  const pid = `contrat-${titre.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
+/* Tableau des cinq clauses. Amélioration progressive : sans JavaScript, les cinq
+   panneaux sont empilés et lisibles (contenu disponible pour l’indexation). Une
+   fois monté (`enhanced`), le composant bascule en onglets (bureau) ou en
+   accordéon (mobile), en répliquant la logique de la maquette validée. */
+function ClauseBoard() {
+  const [enhanced, setEnhanced] = useState(false);
+  const [selected, setSelected] = useState(1); // Réversibilité par défaut
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState<Record<number, boolean>>({ 1: true });
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 899px)");
-    const apply = () => setMobile(mq.matches);
-    apply();
+    const mq = window.matchMedia("(max-width: 760px)");
+    const apply = () => setIsMobile(mq.matches);
+    // setState différé (hors corps synchrone de l'effet) : bascule en mode
+    // « enhanced » après le premier rendu, qui reste identique au HTML serveur.
+    const id = window.setTimeout(() => {
+      setEnhanced(true);
+      apply();
+    }, 0);
     mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+    return () => {
+      window.clearTimeout(id);
+      mq.removeEventListener("change", apply);
+    };
   }, []);
 
+  // Ouverture de la clause réversibilité par ancre (#reversibilite), y compris à
+  // l’arrivée directe par URL, depuis le héro ou la carte « situation ».
+  const openReversibilite = useCallback(() => {
+    setSelected(1);
+    setMobileOpen((m) => ({ ...m, 1: true }));
+  }, []);
+
+  useEffect(() => {
+    const onHash = () => {
+      if (typeof window === "undefined") return;
+      if (/reversibilite/.test(window.location.hash)) openReversibilite();
+    };
+    onHash();
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [openReversibilite]);
+
+  const onTabKey = (e: React.KeyboardEvent, i: number) => {
+    let next = i;
+    if (e.key === "ArrowDown") next = (i + 1) % CLAUSES.length;
+    else if (e.key === "ArrowUp") next = (i + CLAUSES.length - 1) % CLAUSES.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = CLAUSES.length - 1;
+    else return;
+    e.preventDefault();
+    setSelected(next);
+    tabRefs.current[next]?.focus();
+  };
+
   return (
-    <article
-      style={{
-        background: LIGHT.panel,
-        border: `1px solid ${LIGHT.border}`,
-        borderRadius: 12,
-        padding: CARD_PAD,
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "var(--ff-mono)",
-          fontSize: 10,
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-          color: BLUE,
-          display: "block",
-          marginBottom: 10,
-        }}
-      >
-        {tag}
-      </span>
-      <h3 style={{ ...TYPE.h3, margin: 0 }}>
-        {mobile ? (
+    <div className={`cx-clause-board${enhanced ? " enhanced" : ""}`} id="clause-board">
+      <div className="cx-clause-nav" role="tablist" aria-label="Clauses contractuelles" aria-orientation="vertical">
+        {CLAUSES.map((c, i) => (
           <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls={pid}
-            style={{
-              all: "unset",
-              boxSizing: "border-box",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-              gap: 14,
-              width: "100%",
-              font: "inherit",
-              color: "inherit",
-              minHeight: 44,
+            key={c.key}
+            id={`tab-${c.key}`}
+            ref={(el) => {
+              tabRefs.current[i] = el;
             }}
+            role="tab"
+            type="button"
+            aria-selected={i === selected}
+            aria-controls={`panel-${c.key}`}
+            tabIndex={i === selected ? 0 : -1}
+            onClick={() => setSelected(i)}
+            onKeyDown={(e) => onTabKey(e, i)}
           >
-            <span>{fr(titre)}</span>
-            <span aria-hidden style={{ color: BLUE, fontWeight: 400, flexShrink: 0 }}>
-              {open ? "−" : "+"}
-            </span>
+            <span aria-hidden>{`0${i + 1}`}</span>
+            {fr(c.titre)}
           </button>
-        ) : (
-          fr(titre)
-        )}
-      </h3>
-      <p
-        id={pid}
-        hidden={mobile && !open}
-        style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: "10px 0 0" }}
-      >
-        {fr(texte)}
-      </p>
-    </article>
+        ))}
+      </div>
+
+      <div className="cx-clause-panels">
+        {CLAUSES.map((c, i) => {
+          // Bureau amélioré : seul le panneau sélectionné est visible.
+          const hiddenDesktop = enhanced && !isMobile && i !== selected;
+          const open = mobileOpen[i] ?? false;
+          return (
+            <article
+              key={c.key}
+              className={`cx-clause-panel${open ? " mobile-open" : ""}`}
+              id={i === 1 ? "reversibilite" : `panel-${c.key}`}
+              hidden={hiddenDesktop || undefined}
+              role={enhanced && !isMobile ? "tabpanel" : undefined}
+              aria-labelledby={enhanced && !isMobile ? `tab-${c.key}` : undefined}
+              style={{ scrollMarginTop: HEADER_H + 12 }}
+            >
+              <button
+                type="button"
+                className="cx-clause-mobile-title"
+                aria-expanded={open}
+                aria-controls={`body-${c.key}`}
+                onClick={() => setMobileOpen((m) => ({ ...m, [i]: !open }))}
+              >
+                <span>{`0${i + 1} / ${c.titre}`}</span>
+                <span aria-hidden>{open ? "−" : "+"}</span>
+              </button>
+              <div className="cx-clause-body" id={`body-${c.key}`}>
+                <span className="cx-label" style={{ color: BLUE }}>{`Clause 0${i + 1} / 05 · ${c.titre}`}</span>
+                <h3>{fr(c.heading)}</h3>
+                <div className="cx-clause-columns">
+                  <div>
+                    <h4>Le risque</h4>
+                    <p>{fr(c.risque)}</p>
+                  </div>
+                  <div>
+                    <h4>Les questions à poser</h4>
+                    <p>{fr(c.questions)}</p>
+                  </div>
+                  <div>
+                    <h4>Les points à négocier</h4>
+                    <p>{fr(c.negociation)}</p>
+                  </div>
+                </div>
+                <div className="cx-clause-work">
+                  <strong>Ce que nous examinons</strong>
+                  <p>{fr(c.work)}</p>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
 /* ======================================================================== */
 
 export default function ContratsInformatiquesClient() {
-  const [checked, setChecked] = useState<number[]>([]);
-  const toggle = (i: number) =>
-    setChecked((prev) => (prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]));
-  const n = checked.length;
-
   return (
-    <main
-      data-domaine="contrats"
-      style={{
-        background: LIGHT.bg,
-        color: LIGHT.text,
-        fontFamily: "var(--ff-body)",
-        // Header global en position absolue, transparent sur ce héro sombre :
-        // le héro passe DESSOUS (comme les autres pages /nos-domaines). Pas de
-        // paddingTop — il ferait apparaître le fond clair du <main> sous le
-        // header (bande blanche). Le héro (photo 150px puis texte) dégage seul
-        // les 72px du header sur mobile.
-      }}
-    >
+    <main data-domaine="contrats" style={{ background: WH, color: INK, fontFamily: "var(--ff-body)", fontSize: 17, overflowX: "clip" }}>
       <style>{`
-        /* ---- Héro : deux colonnes ≥1024 px, image en bande ≤1023 px ----
-           Le texte reste toujours sur aplat navy (l'image n'est jamais en
-           fond du texte), donc le contraste du texte blanc est garanti. */
-        .cx-hero-grid { display: block; }
-        .cx-hero-photo { position: relative; width: 100%; height: 150px; overflow: hidden; }
-        .cx-hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        .cx-hero-text { padding: 32px 24px 40px; }
-        @media (min-width: 1024px) {
-          .cx-hero-grid { display: grid; grid-template-columns: 55fr 45fr; align-items: stretch; gap: 0; }
-          .cx-hero-photo { order: 2; height: auto; min-height: 460px; }
-          .cx-hero-text { order: 1; padding: 72px 40px 72px 0; display: flex; flex-direction: column; justify-content: center; }
+        [data-domaine="contrats"] .cx-wrap { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--page-margin); }
+        @media (max-width: 640px) { [data-domaine="contrats"] .cx-wrap { padding: 0 var(--page-margin-mobile); } }
+        [data-domaine="contrats"] .cx-section { padding: clamp(56px, 8vw, 88px) 0; }
+
+        /* Labels de section — DM Mono, tracking large, majuscules. */
+        [data-domaine="contrats"] .cx-label { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 16px; line-height: 1.5; }
+
+        /* Titres. */
+        [data-domaine="contrats"] h2 { font-family: var(--ff-body); font-weight: 500; font-size: clamp(29px, 3.3vw, 44px); line-height: 1.14; letter-spacing: -0.02em; margin: 0; }
+        [data-domaine="contrats"] h3 { font-family: var(--ff-body); font-weight: 500; font-size: 22px; line-height: 1.3; letter-spacing: -0.02em; margin: 0; }
+
+        /* En-tête de section à deux colonnes. */
+        [data-domaine="contrats"] .cx-split-head { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.8fr); gap: 48px; align-items: end; margin-bottom: 38px; }
+        [data-domaine="contrats"] .cx-split-head > div { max-width: 700px; }
+        [data-domaine="contrats"] .cx-split-head > p { max-width: 385px; color: var(--text-muted); margin: 0; font-size: 16px; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-split-head { display: block; margin-bottom: 27px; } [data-domaine="contrats"] .cx-split-head > p { margin-top: 18px; max-width: none; } }
+
+        /* Boutons. */
+        [data-domaine="contrats"] .cx-btn { display: inline-flex; gap: 24px; align-items: center; justify-content: space-between; min-height: 50px; padding: 14px 22px; background: var(--blue); border: 1px solid var(--blue); color: #fff; text-decoration: none; font-family: var(--ff-body); font-size: 16px; font-weight: 600; line-height: 1.4; transition: background 0.18s ease; }
+        [data-domaine="contrats"] .cx-btn:hover { background: var(--blue3); }
+        [data-domaine="contrats"] .cx-btn.outline { background: transparent; color: inherit; border-color: currentColor; }
+        [data-domaine="contrats"] .cx-link { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; color: var(--blue); font-weight: 500; font-size: 16px; text-decoration: none; }
+        [data-domaine="contrats"] .cx-link:hover { text-decoration: underline; text-underline-offset: 5px; }
+
+        /* Fil d’Ariane. */
+        [data-domaine="contrats"] .cx-crumb ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 9px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.04em; }
+        [data-domaine="contrats"] .cx-crumb a { color: var(--muted-on-dark); text-decoration: none; }
+        [data-domaine="contrats"] .cx-crumb a:hover { text-decoration: underline; }
+
+        /* Héro. */
+        [data-domaine="contrats"] .cx-hero { position: relative; isolation: isolate; overflow: hidden; background: var(--navy); color: #fff; }
+        [data-domaine="contrats"] .cx-hero::before { content: ""; position: absolute; width: 750px; height: 700px; background: radial-gradient(ellipse, rgba(26,71,255,0.14), transparent 68%); right: -260px; top: -200px; z-index: -1; }
+        [data-domaine="contrats"] .cx-hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr); gap: 50px; align-items: center; padding: 37px 0 55px; }
+        [data-domaine="contrats"] .cx-hero h1 { font-family: var(--ff-display); font-weight: 400; font-size: clamp(48px, 5.3vw, 76px); line-height: 1.02; letter-spacing: 0; margin: 0; max-width: 12ch; text-transform: uppercase; }
+        [data-domaine="contrats"] .cx-hero-copy { margin-top: 24px; color: #e1e2eb; font-size: 18px; line-height: 1.6; max-width: 60ch; }
+        [data-domaine="contrats"] .cx-hero-copy strong { color: #fff; font-weight: 600; }
+        [data-domaine="contrats"] .cx-hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 28px; }
+        [data-domaine="contrats"] .cx-hero-actions .cx-link { color: #fff; font-size: 14px; }
+        [data-domaine="contrats"] .cx-hero-art { align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding: 26px 0; }
+        [data-domaine="contrats"] .cx-hero-art .cx-overline { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; color: #d6d8e9; margin: 0 0 23px; }
+        [data-domaine="contrats"] .cx-hero-stage { border-top: 1px solid rgba(255,255,255,0.35); padding: 20px 0; display: grid; grid-template-columns: 40px 1fr 24px; gap: 16px; align-items: start; text-decoration: none; color: #fff; transition: padding 0.2s ease, background 0.2s ease; }
+        [data-domaine="contrats"] .cx-hero-stage:last-child { border-bottom: 1px solid rgba(255,255,255,0.35); }
+        [data-domaine="contrats"] .cx-hero-stage:hover { padding-inline: 12px; background: rgba(255,255,255,0.05); }
+        [data-domaine="contrats"] .cx-hero-stage strong { font-size: 22px; line-height: 1.2; font-weight: 500; display: block; }
+        [data-domaine="contrats"] .cx-hero-stage small { display: block; margin-top: 7px; color: #c6c8d6; font-size: 14px; }
+        [data-domaine="contrats"] .cx-hero-stage .n { font-family: var(--ff-display); font-weight: 400; font-size: 32px; line-height: 1; }
+        [data-domaine="contrats"] .cx-hero-baseline { border-top: 1px solid rgba(255,255,255,0.25); display: flex; gap: 34px; padding: 20px 0; font-family: var(--ff-mono); font-size: 12px; color: #dedfea; flex-wrap: wrap; }
+        [data-domaine="contrats"] .cx-hero-baseline span::before { content: ""; display: inline-block; width: 5px; height: 5px; background: #fff; margin-right: 10px; vertical-align: middle; }
+        @media (max-width: 1050px) { [data-domaine="contrats"] .cx-hero-grid { grid-template-columns: 1.25fr 0.75fr; gap: 28px; } [data-domaine="contrats"] .cx-hero-stage strong { font-size: 21px; } }
+        @media (max-width: 760px) {
+          [data-domaine="contrats"] .cx-hero-grid { grid-template-columns: 1fr; padding: 24px 0 32px; gap: 0; }
+          [data-domaine="contrats"] .cx-hero-art { display: none; }
+          [data-domaine="contrats"] .cx-hero h1 { font-size: clamp(46px, 8.8vw, 64px); max-width: none; }
+          [data-domaine="contrats"] .cx-hero-copy { font-size: 17px; }
+          [data-domaine="contrats"] .cx-hero-baseline { gap: 12px 25px; font-size: 11px; }
         }
-        /* ---- Accordéons natifs (clauses + FAQ) : indicateur +/− en CSS ---- */
-        .cx-acc details { border-bottom: 1px solid ${LIGHT.border}; }
-        .cx-acc summary { list-style: none; cursor: pointer; display: flex; gap: 16px; align-items: baseline; padding: 18px 0; }
-        .cx-acc summary::-webkit-details-marker { display: none; }
-        .cx-acc .cx-plus { margin-left: auto; color: ${LIGHT.faint}; font-size: 20px; line-height: 1; flex-shrink: 0; }
-        .cx-acc .cx-plus::after { content: "+"; }
-        .cx-acc details[open] .cx-plus::after { content: "−"; color: ${BLUE}; }
-        .cx-acc .cx-body { padding: 0 0 20px; }
-        /* Entrée du bouton conditionnel de l'autodiagnostic. */
-        @keyframes cxReveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-        .cx-reveal { animation: cxReveal 240ms ease both; }
-        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+        @media (max-width: 480px) {
+          [data-domaine="contrats"] .cx-hero h1 { font-size: 48px; }
+          [data-domaine="contrats"] .cx-hero-actions { display: block; }
+          [data-domaine="contrats"] .cx-hero-actions .cx-btn { width: 100%; }
+          [data-domaine="contrats"] .cx-hero-actions .cx-link { margin-top: 10px; }
+          [data-domaine="contrats"] .cx-hero-baseline span:last-child { display: none; }
+        }
+
+        /* Situations. */
+        [data-domaine="contrats"] .cx-situations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--bd); }
+        [data-domaine="contrats"] .cx-situation { padding: 29px 25px; display: flex; flex-direction: column; gap: 18px; text-decoration: none; color: inherit; transition: background 0.2s ease, color 0.2s ease; }
+        [data-domaine="contrats"] .cx-situation + .cx-situation { border-left: 1px solid var(--bd); }
+        [data-domaine="contrats"] .cx-situation h3 { font-size: 21px; }
+        [data-domaine="contrats"] .cx-situation p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+        [data-domaine="contrats"] .cx-situation .route { margin-top: auto; font-size: 14px; font-weight: 500; color: var(--blue); display: flex; justify-content: space-between; gap: 12px; align-items: center; line-height: 1.45; padding-top: 7px; }
+        [data-domaine="contrats"] .cx-situation:hover, [data-domaine="contrats"] .cx-situation:focus-visible { background: var(--navy); color: #fff; }
+        [data-domaine="contrats"] .cx-situation:hover p, [data-domaine="contrats"] .cx-situation:hover .route, [data-domaine="contrats"] .cx-situation:focus-visible p, [data-domaine="contrats"] .cx-situation:focus-visible .route { color: #fff; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-situations { grid-template-columns: repeat(2, minmax(0, 1fr)); } [data-domaine="contrats"] .cx-situation:nth-child(3) { border-left: 0; } [data-domaine="contrats"] .cx-situation:nth-child(n+3) { border-top: 1px solid var(--bd); } }
+        @media (max-width: 480px) { [data-domaine="contrats"] .cx-situations { grid-template-columns: 1fr; } [data-domaine="contrats"] .cx-situation + .cx-situation { border-left: 0; border-top: 1px solid var(--bd); } }
+
+        /* Services : Auditer. Rédiger. Négocier. */
+        [data-domaine="contrats"] .cx-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+        [data-domaine="contrats"] .cx-service { background: #fff; padding: 30px 28px; border-top: 3px solid var(--ink); display: flex; flex-direction: column; align-items: start; }
+        [data-domaine="contrats"] .cx-service .big { font-family: var(--ff-display); font-weight: 400; font-size: 64px; line-height: 1; color: var(--blue); margin-bottom: 22px; }
+        [data-domaine="contrats"] .cx-service h3 { font-size: 25px; margin-bottom: 15px; }
+        [data-domaine="contrats"] .cx-service p { font-size: 16px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-service ul { padding: 0; margin: 22px 0; list-style: none; width: 100%; font-size: 15px; }
+        [data-domaine="contrats"] .cx-service li { border-top: 1px solid var(--bd); padding: 10px 0; }
+        [data-domaine="contrats"] .cx-service .cx-link { margin-top: auto; }
+        [data-domaine="contrats"] .cx-service.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+        [data-domaine="contrats"] .cx-service.primary .big, [data-domaine="contrats"] .cx-service.primary p, [data-domaine="contrats"] .cx-service.primary .cx-link { color: #fff; }
+        [data-domaine="contrats"] .cx-service.primary li { border-color: rgba(255,255,255,0.45); }
+        [data-domaine="contrats"] .cx-timing { margin-top: 32px; display: flex; gap: 22px; align-items: baseline; }
+        [data-domaine="contrats"] .cx-timing .cx-label { flex-shrink: 0; margin: 0; color: var(--blue3); }
+        [data-domaine="contrats"] .cx-timing p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-services { grid-template-columns: 1fr; gap: 18px; } [data-domaine="contrats"] .cx-service { padding: 25px; display: grid; grid-template-columns: 58px minmax(0, 1fr); column-gap: 20px; } [data-domaine="contrats"] .cx-service .big { font-size: 49px; grid-row: 1 / 3; margin: 0; } [data-domaine="contrats"] .cx-service h3 { font-size: 23px; margin: 0 0 12px; } [data-domaine="contrats"] .cx-service p, [data-domaine="contrats"] .cx-service ul, [data-domaine="contrats"] .cx-service .cx-link { grid-column: 2; } [data-domaine="contrats"] .cx-service ul { margin: 17px 0 8px; } [data-domaine="contrats"] .cx-timing { display: block; } [data-domaine="contrats"] .cx-timing p { margin-top: 12px; } }
+
+        /* Familles de contrats. */
+        [data-domaine="contrats"] .cx-contract-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; margin-bottom: 35px; }
+        [data-domaine="contrats"] .cx-contract-intro p { color: var(--text-muted); font-size: 16px; margin: 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-family-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 42px; }
+        [data-domaine="contrats"] .cx-family { border-top: 1px solid var(--bd); }
+        [data-domaine="contrats"] .cx-family summary { list-style: none; display: grid; grid-template-columns: 1fr 22px; gap: 14px; padding: 22px 0; min-height: 96px; align-items: center; }
+        [data-domaine="contrats"] .cx-family summary::-webkit-details-marker { display: none; }
+        [data-domaine="contrats"] .cx-family h3 { font-size: 20px; }
+        [data-domaine="contrats"] .cx-family .desc { font-size: 15px; color: var(--text-muted); margin-top: 6px; display: block; }
+        [data-domaine="contrats"] .cx-family .plus { font-family: var(--ff-body); font-weight: 400; font-size: 25px; line-height: 1; color: var(--blue); align-self: center; transition: transform 0.2s ease; }
+        [data-domaine="contrats"] .cx-family[open] .plus { transform: rotate(45deg); }
+        [data-domaine="contrats"] .cx-family[open] { border-top-color: var(--blue); }
+        [data-domaine="contrats"] .cx-family > p { padding: 0 36px 23px 0; font-size: 16px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-family summary:hover h3 { color: var(--blue); }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-contract-intro { grid-template-columns: 1fr; gap: 20px; } [data-domaine="contrats"] .cx-family-grid { grid-template-columns: 1fr; } [data-domaine="contrats"] .cx-family summary { min-height: 0; padding: 20px 0; } }
+
+        /* Clauses (tableau à onglets). */
+        [data-domaine="contrats"] .cx-clause-board { display: grid; grid-template-columns: 285px minmax(0, 1fr); border: 1px solid rgba(255,255,255,0.35); align-items: start; }
+        [data-domaine="contrats"] .cx-clause-nav { display: none; }
+        [data-domaine="contrats"] .cx-clause-board.enhanced .cx-clause-nav { display: block; }
+        [data-domaine="contrats"] .cx-clause-nav button { width: 100%; text-align: left; display: flex; align-items: center; gap: 16px; padding: 23px 20px; min-height: 75px; background: transparent; border: 0; border-bottom: 1px solid rgba(255,255,255,0.25); color: #fff; font-family: var(--ff-body); font-size: 15px; transition: background 0.2s ease; cursor: pointer; }
+        [data-domaine="contrats"] .cx-clause-nav button span { font-family: var(--ff-mono); font-size: 13px; color: #c4c6d5; }
+        [data-domaine="contrats"] .cx-clause-nav button[aria-selected="true"] { background: var(--blue); }
+        [data-domaine="contrats"] .cx-clause-nav button[aria-selected="true"] span { color: #fff; }
+        [data-domaine="contrats"] .cx-clause-nav button:hover { background: rgba(255,255,255,0.08); }
+        [data-domaine="contrats"] .cx-clause-nav button[aria-selected="true"]:hover { background: var(--blue3); }
+        [data-domaine="contrats"] .cx-clause-panels { background: #fff; color: var(--ink); min-width: 0; }
+        [data-domaine="contrats"] .cx-clause-panel { padding: 33px; min-height: 440px; }
+        [data-domaine="contrats"] .cx-clause-panel[hidden] { display: none; }
+        [data-domaine="contrats"] .cx-clause-panel h3 { font-size: 28px; max-width: 620px; margin: 0; }
+        [data-domaine="contrats"] .cx-clause-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 30px; }
+        [data-domaine="contrats"] .cx-clause-columns > div { border-top: 2px solid var(--bd); padding-top: 17px; }
+        [data-domaine="contrats"] .cx-clause-columns > div:last-child { border-color: var(--blue); }
+        [data-domaine="contrats"] .cx-clause-columns h4 { font-family: var(--ff-body); font-weight: 500; font-size: 14px; line-height: 1.4; margin: 0 0 12px; }
+        [data-domaine="contrats"] .cx-clause-columns p { font-size: 15px; line-height: 1.65; color: var(--text-muted); margin: 0; }
+        [data-domaine="contrats"] .cx-clause-work { margin-top: 28px; border-top: 1px solid var(--bd); padding-top: 20px; font-size: 15px; }
+        [data-domaine="contrats"] .cx-clause-work strong { display: block; font-weight: 600; margin-bottom: 7px; }
+        [data-domaine="contrats"] .cx-clause-work p { color: var(--text-muted); margin: 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-clause-mobile-title { display: none; }
+        /* Sans JS : les panneaux s’empilent, séparés par un filet. */
+        @media (min-width: 761px) { [data-domaine="contrats"] .cx-clause-board:not(.enhanced) .cx-clause-panel + .cx-clause-panel { border-top: 1px solid var(--bd); } }
+        [data-domaine="contrats"] .cx-clauses-foot { display: flex; justify-content: space-between; gap: 25px; align-items: center; margin-top: 28px; font-size: 16px; }
+        [data-domaine="contrats"] .cx-clauses-foot p { max-width: 670px; color: #d0d2e2; margin: 0; }
+        [data-domaine="contrats"] .cx-clauses-foot .cx-link { color: #fff; white-space: nowrap; }
+        @media (max-width: 1050px) { [data-domaine="contrats"] .cx-clause-board { grid-template-columns: 230px 1fr; } [data-domaine="contrats"] .cx-clause-panel { padding: 26px; } [data-domaine="contrats"] .cx-clause-columns { gap: 15px; } }
+        @media (max-width: 760px) {
+          [data-domaine="contrats"] .cx-clause-board { display: block; border: 0; }
+          [data-domaine="contrats"] .cx-clause-board.enhanced .cx-clause-nav { display: none; }
+          [data-domaine="contrats"] .cx-clause-panels { background: transparent; color: #fff; }
+          [data-domaine="contrats"] .cx-clause-panel, [data-domaine="contrats"] .cx-clause-panel[hidden] { display: block; background: transparent; padding: 0; min-height: 0; border-top: 1px solid rgba(255,255,255,0.45); }
+          [data-domaine="contrats"] .cx-clause-mobile-title { display: flex; justify-content: space-between; gap: 16px; width: 100%; text-align: left; font-family: var(--ff-body); font-size: 18px; padding: 22px 0; color: #fff; background: transparent; border: 0; line-height: 1.35; min-height: 65px; cursor: pointer; }
+          [data-domaine="contrats"] .cx-clause-mobile-title span:last-child { font-size: 23px; }
+          [data-domaine="contrats"] .cx-clause-body { background: #fff; color: var(--ink); padding: 26px 23px; margin-bottom: 20px; }
+          [data-domaine="contrats"] .cx-clause-board.enhanced .cx-clause-panel:not(.mobile-open) .cx-clause-body { display: none; }
+          [data-domaine="contrats"] .cx-clause-panel h3 { font-size: 25px; }
+          [data-domaine="contrats"] .cx-clause-columns { grid-template-columns: 1fr; gap: 20px; margin-top: 22px; }
+          [data-domaine="contrats"] .cx-clause-columns p { font-size: 16px; }
+          [data-domaine="contrats"] .cx-clauses-foot { display: block; margin-top: 23px; }
+          [data-domaine="contrats"] .cx-clauses-foot .cx-link { margin-top: 13px; }
+        }
+
+        /* Bandeau contentieux (bleu électrique). */
+        [data-domaine="contrats"] .cx-litigation { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 50px; align-items: center; background: var(--blue); color: #fff; padding: 34px 40px; }
+        [data-domaine="contrats"] .cx-litigation .cx-label { color: #fff; margin-bottom: 10px; }
+        [data-domaine="contrats"] .cx-litigation h2 { font-size: 29px; }
+        [data-domaine="contrats"] .cx-litigation p { font-size: 16px; margin: 12px 0 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-litigation .cx-btn { justify-self: end; max-width: 340px; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-litigation { grid-template-columns: 1fr; gap: 24px; padding: 27px; } [data-domaine="contrats"] .cx-litigation .cx-btn { justify-self: start; max-width: none; } }
+
+        /* Équipe. */
+        [data-domaine="contrats"] .cx-team-quote { font-family: var(--ff-body); font-weight: 300; font-size: clamp(21px, 2.6vw, 28px); line-height: 1.35; color: var(--ink); max-width: 24ch; margin: 0 0 24px; padding-left: 22px; border-left: 3px solid var(--blue); }
+        [data-domaine="contrats"] .cx-team-intro { margin: 0 0 32px; color: var(--text-muted); font-size: 17px; line-height: 1.65; max-width: 72ch; }
+        [data-domaine="contrats"] .cx-lawyers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+        [data-domaine="contrats"] .cx-technical { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 12px; align-items: start; }
+        [data-domaine="contrats"] .cx-tech-note { font-size: 13px; color: var(--text-muted); margin: 12px 0 0; }
+        [data-domaine="contrats"] .cx-exam { background: #fff; border: 1px solid var(--bd); padding: 24px; }
+        [data-domaine="contrats"] .cx-exam h3 { font-size: 20px; margin: 0 0 16px; }
+        [data-domaine="contrats"] .cx-exam ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        [data-domaine="contrats"] .cx-exam li { display: flex; gap: 8px; font-size: 16px; color: var(--text-muted); line-height: 1.5; }
+        @media (max-width: 900px) { [data-domaine="contrats"] .cx-lawyers { grid-template-columns: 1fr; gap: 22px; } [data-domaine="contrats"] .cx-technical { grid-template-columns: 1fr; } }
+
+        /* FAQ + renvois. */
+        [data-domaine="contrats"] .cx-faq-layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.8fr); gap: 75px; }
+        [data-domaine="contrats"] .cx-faq-layout h2 { margin-bottom: 28px; }
+        [data-domaine="contrats"] .cx-faq { border-top: 1px solid var(--bd); }
+        [data-domaine="contrats"] .cx-faq:last-of-type { border-bottom: 1px solid var(--bd); }
+        [data-domaine="contrats"] .cx-faq summary { padding: 21px 32px 21px 0; font-weight: 500; list-style: none; position: relative; line-height: 1.45; cursor: pointer; }
+        [data-domaine="contrats"] .cx-faq summary::-webkit-details-marker { display: none; }
+        [data-domaine="contrats"] .cx-faq summary h3 { display: inline; font-size: 17px; font-weight: 500; margin: 0; }
+        [data-domaine="contrats"] .cx-faq summary::after { content: "+"; position: absolute; right: 3px; top: 18px; color: var(--blue); font-size: 24px; font-weight: 400; }
+        [data-domaine="contrats"] .cx-faq[open] summary::after { content: "−"; }
+        [data-domaine="contrats"] .cx-faq p { font-size: 16px; color: var(--text-muted); padding: 0 25px 23px 0; margin: 0; line-height: 1.6; }
+        [data-domaine="contrats"] .cx-related .cx-label { margin-bottom: 24px; }
+        [data-domaine="contrats"] .cx-related a { display: flex; gap: 20px; justify-content: space-between; text-decoration: none; padding: 17px 0; border-top: 1px solid var(--bd); font-size: 15px; color: inherit; align-items: center; }
+        [data-domaine="contrats"] .cx-related a:hover { color: var(--blue); }
+        [data-domaine="contrats"] .cx-related a .arrow { color: var(--blue); }
+        @media (max-width: 1050px) { [data-domaine="contrats"] .cx-faq-layout { grid-template-columns: 1fr; gap: 40px; } }
+
+        /* Contact final (bleu nuit). */
+        [data-domaine="contrats"] .cx-contact-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 70px; align-items: center; }
+        [data-domaine="contrats"] .cx-contact-layout h2 { font-size: clamp(32px, 3.6vw, 49px); max-width: 690px; color: #fff; }
+        [data-domaine="contrats"] .cx-contact-layout > div > p { margin: 22px 0 0; color: #d8dae7; max-width: 600px; font-size: 17px; line-height: 1.65; }
+        [data-domaine="contrats"] .cx-contact-action { border-left: 1px solid rgba(255,255,255,0.35); padding-left: 36px; }
+        [data-domaine="contrats"] .cx-contact-action .cx-btn { width: 100%; }
+        [data-domaine="contrats"] .cx-contact-action p { font-size: 14px; line-height: 1.6; margin: 16px 0 0; color: #d8dae7; }
+        [data-domaine="contrats"] .cx-contact-secondary { color: #fff; margin-top: 18px; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-contact-layout { grid-template-columns: 1fr; gap: 28px; } [data-domaine="contrats"] .cx-contact-action { border-left: 0; border-top: 1px solid rgba(255,255,255,0.35); padding: 26px 0 0; } }
+
+        /* Ligne « exécution » sous les 3 services. */
+        [data-domaine="contrats"] .cx-exec-line { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid var(--bd); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 78ch; }
+
+        /* « Ce qui engage les parties » — 3 colonnes sobres. */
+        [data-domaine="contrats"] .cx-engage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+        [data-domaine="contrats"] .cx-engage > div { border-top: 2px solid var(--blue); padding-top: 16px; }
+        [data-domaine="contrats"] .cx-engage h3 { font-size: 18px; margin: 0 0 10px; }
+        [data-domaine="contrats"] .cx-engage p { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-engage { grid-template-columns: 1fr; gap: 20px; } }
+
+        /* Trois cas compacts (situations-types). */
+        [data-domaine="contrats"] .cx-cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+        [data-domaine="contrats"] .cx-case { border: 1px solid var(--bd); border-top: 3px solid var(--ink); padding: 22px 20px; }
+        [data-domaine="contrats"] .cx-case-num { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--blue3); margin: 0 0 10px; }
+        [data-domaine="contrats"] .cx-case h3 { font-size: 17px; line-height: 1.35; margin: 0 0 14px; }
+        [data-domaine="contrats"] .cx-case dl { margin: 0; }
+        [data-domaine="contrats"] .cx-case dl > div + div { margin-top: 12px; }
+        [data-domaine="contrats"] .cx-case dt { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+        [data-domaine="contrats"] .cx-case dd { margin: 4px 0 0; font-size: 14px; line-height: 1.55; color: var(--ink); }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-cases { grid-template-columns: 1fr; } }
+
+        /* FAQ — séparateur « Autres questions ». */
+        [data-domaine="contrats"] .cx-faq-more-label { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue3); margin: 28px 0 0; padding-top: 18px; border-top: 1px solid var(--bd); }
+
+        /* Focus visible (§06). */
+        [data-domaine="contrats"] a:focus-visible, [data-domaine="contrats"] button:focus-visible, [data-domaine="contrats"] summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+        [data-domaine="contrats"] .cx-hero :focus-visible, [data-domaine="contrats"] .cx-clauses :focus-visible, [data-domaine="contrats"] .cx-contact :focus-visible { outline-color: #fff; }
+        [data-domaine="contrats"] .arrow { font-family: Arial, sans-serif; }
+        @media (prefers-reduced-motion: reduce) { [data-domaine="contrats"] * { transition: none !important; animation: none !important; } }
       `}</style>
 
-      {/* ===== 1. HÉRO ===== */}
-      <section style={{ background: DARK.bg, color: DARK.text, overflow: "hidden" }}>
-        <div className="cx-hero-grid" style={{ maxWidth: 960, margin: "0 auto", paddingLeft: 24, paddingRight: 24 }}>
-          <div className="cx-hero-photo">
-            <picture>
-              <source media="(max-width: 1023px)" type="image/webp" srcSet="/images/contrats-informatiques/hero-mobile.webp" />
-              <source media="(max-width: 1023px)" srcSet="/images/contrats-informatiques/hero-mobile.jpg" />
-              <source type="image/webp" srcSet="/images/contrats-informatiques/hero.webp" />
-              <img
-                className="cx-hero-img"
-                src="/images/contrats-informatiques/hero.jpg"
-                width={1200}
-                height={1500}
-                alt="Façade d'un immeuble de bureaux à la tombée du jour, un plateau encore éclairé"
-                // Chargement prioritaire : le héro est le premier écran.
-                fetchPriority="high"
-                decoding="async"
-                loading="eager"
-              />
-            </picture>
-          </div>
-
-          <div className="cx-hero-text">
-            <span
-              style={{
-                display: "inline-block",
-                alignSelf: "flex-start",
-                fontFamily: "var(--ff-mono)",
-                fontSize: 11,
-                fontWeight: 500,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "#7fa8ff",
-                background: "rgba(26,71,255,0.22)",
-                borderRadius: 8,
-                padding: "4px 12px",
-                marginBottom: 18,
-              }}
-            >
-              Contrats informatiques · Paris
-            </span>
-            <h1 style={{ ...TYPE.h1, color: "#fff", margin: "0 0 18px", overflowWrap: "break-word" }}>
-              Avocat en contrats informatiques et projets IT à Paris
-            </h1>
-            {/* Accroche en paragraphe, pas en titre. */}
-            <p style={{ fontSize: 19, fontWeight: 400, lineHeight: 1.4, color: "rgba(255,255,255,0.92)", margin: "0 0 16px", maxWidth: "34ch" }}>
-              Un contrat IT mal rédigé vous expose autant qu'un incident technique.
-            </p>
-            <p style={{ fontSize: 15, color: DARK.muted, lineHeight: 1.7, margin: "0 0 26px", maxWidth: "62ch" }}>
-              Lazarègue Avocats accompagne les PME, ETI, éditeurs, intégrateurs et ESN dans la
-              négociation, l'exécution et le contentieux de leurs contrats informatiques : logiciels,
-              SaaS, cloud, infogérance et projets de transformation numérique.
-            </p>
-            <div className="flex flex-col sm:flex-row" style={{ gap: 12, alignItems: "flex-start" }}>
-              <Link href={CONTACT} style={BTN_PRIMARY}>
-                Faire auditer un contrat <span aria-hidden>→</span>
-              </Link>
-              <a
-                href="#contentieux"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  fontFamily: "var(--ff-mono)",
-                  fontSize: 12,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: "#fff",
-                  borderBottom: "1px solid rgba(255,255,255,0.4)",
-                  padding: "0 0 5px",
-                  textDecoration: "none",
-                  minHeight: 44,
-                }}
-              >
-                Évaluer un projet en difficulté
-              </a>
-            </div>
-            <div style={{ marginTop: 26, display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {HERO_CHIPS.map((c) => (
-                <span
-                  key={c}
-                  style={{
-                    fontFamily: "var(--ff-mono)",
-                    fontSize: 10,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: "#C6CAE4",
-                    border: "1px solid rgba(255,255,255,0.28)",
-                    padding: "5px 11px",
-                    borderRadius: 6,
-                  }}
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 2. ROUTEUR ===== */}
-      <section style={{ background: LIGHT.panel2, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead label="Par où commencer" titre="Quelle est votre situation ?" />
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
-            {ROUTES.map((r) => (
-              <Link
-                key={r.q}
-                href={r.href}
-                style={{
-                  display: "block",
-                  background: LIGHT.panel,
-                  border: `1px solid ${LIGHT.border}`,
-                  borderRadius: 12,
-                  padding: "24px 22px",
-                  textDecoration: "none",
-                }}
-              >
-                <span style={{ display: "block", fontSize: 17, fontWeight: 600, color: LIGHT.text, marginBottom: 8 }}>
-                  {r.q}
-                </span>
-                <span style={{ display: "block", fontSize: 14, color: LIGHT.muted, lineHeight: 1.55, marginBottom: 14 }}>
-                  {r.d}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--ff-mono)",
-                    fontSize: 11,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: BLUE,
-                  }}
-                >
-                  {r.l} →
-                </span>
-              </Link>
-            ))}
-          </div>
-          <p style={{ margin: "20px 0 0" }}>
-            <Link
-              href={CONTACT}
-              style={{
-                fontFamily: "var(--ff-mono)",
-                fontSize: 12,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: BLUE,
-              }}
-            >
-              ou parlez-en directement à un avocat
-            </Link>
-          </p>
-        </div>
-      </section>
-
-      {/* ===== 3. QUELS CONTRATS — dix h3 ===== */}
-      <section id="contrats" style={{ background: LIGHT.bg, padding: SECTION_PAD, scrollMarginTop: 70 }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Périmètre d'intervention"
-            titre="Quels contrats informatiques le cabinet accompagne-t-il ?"
-            sub="La qualification du contrat commande le régime de responsabilité applicable. Une même opération associe fréquemment une licence, une prestation d'intégration, un contrat de maintenance et un financement, dont les régimes diffèrent et dont l'articulation détermine ce qu'il adviendra en cas de défaillance de l'un d'eux. Le cabinet intervient depuis Paris et sur l'ensemble du territoire, aux côtés des clients comme des prestataires."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: GRID_GAP }}>
-            {CONTRATS.map((c) => (
-              <ContratCard key={c.titre} tag={c.tag} titre={c.titre} texte={c.texte} />
-            ))}
-          </div>
-          {/* Cellule d'appel à l'action « audit » — son intitulé n'est pas un
-              h3 (la section compte dix h3, un par type de contrat). */}
-          <div
-            style={{
-              background: DARK.bg,
-              color: "#fff",
-              borderRadius: 12,
-              padding: "26px 24px",
-              marginTop: GRID_GAP,
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 18,
-            }}
-          >
-            <div style={{ maxWidth: "60ch" }}>
-              <span
-                style={{
-                  fontFamily: "var(--ff-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "#7fa8ff",
-                  display: "block",
-                  marginBottom: 8,
-                }}
-              >
-                Un doute sur un contrat
-              </span>
-              <p style={{ fontSize: 18, fontWeight: 600, color: "#fff", margin: "0 0 6px" }}>Audit d'un contrat en cours</p>
-              <p style={{ fontSize: 14.5, color: DARK.muted, lineHeight: 1.6, margin: 0 }}>
-                Le cabinet examine un contrat signé, en cours de négociation ou arrivant à échéance, et
-                remet une matrice des risques : sauvegarde, réversibilité, responsabilité, pénalités.
+      {/* ===== HÉRO (fil d’Ariane + étapes) ===== */}
+      <section className="cx-hero" id="haut">
+        <div className="cx-wrap">
+          <nav className="cx-crumb" aria-label="Fil d’Ariane" style={{ paddingTop: HEADER_H + 18, paddingBottom: 6 }}>
+            <ol>
+              <li><Link href="/">Accueil</Link></li>
+              <li aria-hidden style={{ color: "#5A639B" }}>/</li>
+              <li><Link href="/nos-domaines">Domaines d’intervention</Link></li>
+              <li aria-hidden style={{ color: "#5A639B" }}>/</li>
+              <li aria-current="page" style={{ color: "#fff" }}>Contrats informatiques et projets IT</li>
+            </ol>
+          </nav>
+          <div className="cx-hero-grid">
+            <div>
+              <Eyebrow light>Contrats informatiques · Paris</Eyebrow>
+              <h1>Avocat en contrats informatiques et projets IT à Paris</h1>
+              <p className="cx-hero-copy">
+                Lazarègue Avocats accompagne les <strong>PME, ETI, éditeurs, intégrateurs et ESN</strong> dans
+                l’audit, la rédaction, la négociation et l’exécution de leurs contrats informatiques : logiciels,
+                SaaS, cloud, infogérance et projets de transformation numérique.
               </p>
-            </div>
-            <Link href={CONTACT} style={BTN_PRIMARY}>
-              Faire auditer mon contrat
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 4. AUTODIAGNOSTIC ===== */}
-      <section style={{ background: LIGHT.panel2, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Points de vigilance"
-            titre="Votre situation présente-t-elle l'un de ces points de vigilance ?"
-            sub="Ces lacunes sont courantes et restent le plus souvent invisibles jusqu'au premier incident."
-          />
-          <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 12, padding: "24px 22px", maxWidth: 860 }}>
-            <div className="flex flex-col" style={{ gap: 4 }}>
-              {AUTODIAG.map((item, i) => {
-                const on = checked.includes(i);
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => toggle(i)}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 14,
-                      width: "100%",
-                      border: "none",
-                      background: "transparent",
-                      padding: "13px 0",
-                      borderBottom: i < AUTODIAG.length - 1 ? `1px solid ${LIGHT.border}` : "none",
-                      textAlign: "left",
-                      cursor: "pointer",
-                      minHeight: 44,
-                    }}
-                  >
-                    <span
-                      aria-hidden
-                      style={{
-                        width: 19,
-                        height: 19,
-                        borderRadius: 4,
-                        border: `1.5px solid ${on ? BLUE : "#B4B4CC"}`,
-                        background: on ? BLUE : "transparent",
-                        flexShrink: 0,
-                        marginTop: 2,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {on ? <i className="ti ti-check" style={{ fontSize: 12, color: "#fff", lineHeight: 1 }} /> : null}
-                    </span>
-                    <span style={{ fontSize: 15.5, color: on ? LIGHT.text : LIGHT.muted, lineHeight: 1.5, fontWeight: on ? 500 : 400 }}>
-                      {item}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            {/* Zone de résultat en live region : le message ET le bouton
-                conditionnel y vivent, si bien que l'apparition du bouton est
-                annoncée. Le bouton n'est présent dans le DOM que lorsqu'au
-                moins une case est cochée. Son entrée est animée, mais
-                l'animation est neutralisée sous prefers-reduced-motion par la
-                règle globale du bloc <style> ci-dessus. */}
-            <div aria-live="polite">
-              <p
-                style={{
-                  fontFamily: "var(--ff-mono)",
-                  fontSize: 12,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  color: n > 0 ? LIGHT.text : LIGHT.faint,
-                  margin: "20px 0 0",
-                }}
-              >
-                {n === 0 ? (
-                  "Aucun point de vigilance coché pour l'instant"
-                ) : (
-                  <>
-                    Votre situation présente{" "}
-                    <strong style={{ color: BLUE, fontWeight: 500 }}>
-                      {n} point{n > 1 ? "s" : ""} de vigilance
-                    </strong>
-                    . Un audit contractuel permet d'en déterminer les priorités.
-                  </>
-                )}
-              </p>
-              {n > 0 ? (
-                <Link href={CONTACT} className="cx-reveal" style={{ ...BTN_PRIMARY, marginTop: 16 }}>
-                  Examiner ces points avec le cabinet
+              <div className="cx-hero-actions">
+                <Link href={contactObjet("audit")} className="cx-btn">
+                  Faire auditer un contrat <span className="arrow" aria-hidden>↗</span>
                 </Link>
-              ) : null}
+                <a className="cx-link" href="#contentieux">Évaluer un projet en difficulté <span aria-hidden>↗</span></a>
+              </div>
             </div>
+            <aside className="cx-hero-art" aria-label="Les moments clés du contrat">
+              <p className="cx-overline">VOTRE CONTRAT, À CHAQUE ÉTAPE</p>
+              {HERO_STAGES.map((s) => (
+                <a key={s.n} className="cx-hero-stage" href={s.href}>
+                  <span className="n" aria-hidden>{s.n}</span>
+                  <div>
+                    <strong>{s.t}</strong>
+                    <small>{fr(s.s)}</small>
+                  </div>
+                  <span className="arrow" aria-hidden>↗</span>
+                </a>
+              ))}
+            </aside>
+          </div>
+          <div className="cx-hero-baseline">
+            {HERO_BASELINE.map((b) => (
+              <span key={b}>{b}</span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 5. OBLIGATIONS ET PREUVES — trois cartes ===== */}
-      <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Ce que dit le droit"
-            titre="Les obligations et les preuves qui déterminent la responsabilité"
-            sub="Les contrats informatiques relèvent du droit commun, mais les juridictions y ont construit des obligations propres, particulièrement exigeantes."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: GRID_GAP }}>
-            {REGIMES.map((r) => (
-              <article
-                key={r.label}
-                style={{
-                  background: LIGHT.panel,
-                  border: `1px solid ${LIGHT.border}`,
-                  borderTop: `3px solid ${BLUE}`,
-                  borderRadius: 10,
-                  padding: CARD_PAD,
-                }}
-              >
-                <Eyebrow>{r.label}</Eyebrow>
-                <h3 style={{ ...TYPE.h3, margin: "0 0 8px" }}>{r.titre}</h3>
-                <p style={{ fontSize: 14, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 14px" }}>{fr(r.texte)}</p>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                  {r.points.map((p) => (
-                    <li key={p} style={{ fontSize: 13.5, color: LIGHT.muted, lineHeight: 1.5, paddingLeft: 14, borderLeft: `1px solid ${LIGHT.border}` }}>
-                      {p}
-                    </li>
+      {/* ===== SITUATIONS ===== */}
+      <section className="cx-section" id="situations" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-split-head">
+            <div>
+              <Eyebrow>Votre point de départ</Eyebrow>
+              <h2>Quelle est votre situation&nbsp;?</h2>
+            </div>
+            <p>Un contrat à signer, à faire évoluer ou à quitter&nbsp;: accédez aux points qui vous concernent.</p>
+          </div>
+          <div className="cx-situations">
+            {SITUATIONS.map((r) => (
+              <Link key={r.q} href={r.href} className="cx-situation">
+                <h3>{fr(r.q)}</h3>
+                <p>{fr(r.d)}</p>
+                <span className="route">{fr(r.l)} <span className="arrow" aria-hidden>↗</span></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ACCOMPAGNEMENT : Auditer. Rédiger. Négocier. ===== */}
+      <section className="cx-section" id="accompagnement" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-split-head">
+            <div>
+              <Eyebrow>L’intervention du cabinet</Eyebrow>
+              <h2>Auditer. Rédiger. Négocier.</h2>
+            </div>
+            <p>Contrat reçu, projet à construire ou conditions à renégocier&nbsp;: une intervention adaptée à votre position.</p>
+          </div>
+          <div className="cx-services">
+            {SERVICES.map((s) => (
+              <article key={s.n} className={`cx-service${s.primary ? " primary" : ""}`}>
+                <span className="big" aria-hidden>{s.n}</span>
+                <h3>{fr(s.titre)}</h3>
+                <p>{fr(s.p)}</p>
+                <ul>
+                  {s.items.map((it) => (
+                    <li key={it}>{fr(it)}</li>
                   ))}
                 </ul>
+                <Link className="cx-link" href={contactObjet(s.situation)}>
+                  {fr(s.link)} <span className="arrow" aria-hidden>↗</span>
+                </Link>
+              </article>
+            ))}
+          </div>
+          <p className="cx-exec-line">
+            Pendant l’exécution, le cabinet sécurise également les recettes, réserves, changements de périmètre et preuves contractuelles.
+          </p>
+          <div className="cx-timing">
+            <span className="cx-label">Quand intervenir&nbsp;?</span>
+            <p>
+              Avant un appel d’offres, une signature ou un renouvellement&nbsp;; avant une migration ou un
+              changement de prestataire, pendant que les conditions de sortie peuvent encore être organisées.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FAMILLES DE CONTRATS ===== */}
+      <section className="cx-section" id="contrats" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-contract-intro">
+            <div>
+              <Eyebrow>Les contrats accompagnés</Eyebrow>
+              <h2>Quels contrats informatiques accompagnons-nous&nbsp;?</h2>
+            </div>
+            <p>
+              Une même opération associe fréquemment licence, intégration, maintenance et financement. Leur
+              qualification et leur articulation déterminent les responsabilités et les conséquences d’une
+              défaillance. Le cabinet intervient depuis Paris et sur l’ensemble du territoire, aux côtés des
+              clients comme des prestataires.
+            </p>
+          </div>
+          <div className="cx-family-grid">
+            {FAMILIES.map((f) => (
+              <details key={f.titre} className="cx-family">
+                <summary>
+                  <div>
+                    <h3>{fr(f.titre)}</h3>
+                    <span className="desc">{fr(f.desc)}</span>
+                  </div>
+                  <span className="plus" aria-hidden>+</span>
+                </summary>
+                <p>{fr(f.body)}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CE QUI ENGAGE LES PARTIES (différenciation droit + preuve) ===== */}
+      <section className="cx-section" id="engage" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-split-head">
+            <div>
+              <Eyebrow>Droit, exécution et preuve</Eyebrow>
+              <h2>Ce qui engage les parties&nbsp;— et ce qui permet de le prouver</h2>
+            </div>
+            <p>Un contrat ne se juge pas seulement à ses clauses. Son exécution, les réserves formulées et les preuves techniques déterminent aussi les responsabilités.</p>
+          </div>
+          <div className="cx-engage">
+            {ENGAGE.map((c) => (
+              <div key={c.titre}>
+                <h3>{fr(c.titre)}</h3>
+                <p>{fr(c.p)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CINQ CLAUSES DÉCISIVES (navy) ===== */}
+      <section className="cx-section cx-clauses" id="clauses" style={{ background: NAVY, color: ON_DARK, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-split-head">
+            <div>
+              <Eyebrow light>Les points qui changent le contrat</Eyebrow>
+              <h2 style={{ color: "#fff" }}>Cinq clauses décisives.</h2>
+            </div>
+            <p style={{ color: "#d0d2e2" }}>Ce qui peut poser difficulté, les questions à poser et les engagements à négocier.</p>
+          </div>
+          <ClauseBoard />
+          <div className="cx-clauses-foot">
+            <p>Les obligations et les procédures de validation doivent correspondre à la réalité du projet informatique.</p>
+            <Link href={CONTACT} className="cx-link">
+              Faire examiner mon contrat <span className="arrow" aria-hidden>↗</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TROIS CAS COMPACTS (situations-types, non des dossiers réels) ===== */}
+      <section className="cx-section" id="cas" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <div className="cx-split-head">
+            <div>
+              <Eyebrow>Quand le contrat rencontre la réalité du projet</Eyebrow>
+              <h2>Trois situations que nous rencontrons</h2>
+            </div>
+            <p>Des situations-types, sans donnée ni résultat de dossier réel&nbsp;: elles illustrent la méthode d’analyse.</p>
+          </div>
+          <div className="cx-cases">
+            {CAS.map((c, i) => (
+              <article key={i} className="cx-case">
+                <p className="cx-case-num" aria-hidden>{String(i + 1).padStart(2, "0")}</p>
+                <h3>{fr(c.situation)}</h3>
+                <dl>
+                  <div><dt>Ce que le cabinet examine</dt><dd>{fr(c.examine)}</dd></div>
+                  <div><dt>Enjeu de la décision</dt><dd>{fr(c.enjeu)}</dd></div>
+                </dl>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 6. CINQ CLAUSES — accordéon natif ===== */}
-      <section style={{ background: LIGHT.panel2, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Les clauses à risque"
-            titre="Cinq clauses fréquemment décisives dans un contentieux IT"
-            sub="Dans de nombreux litiges informatiques, la difficulté technique ne suffit pas : l'issue dépend de la manière dont les obligations et les procédures de validation ont été contractualisées. Cinq clauses sont souvent négligées au moment de la signature."
-          />
-          <div className="cx-acc" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
-            {CLAUSES.map((c) => (
-              <details key={c.num}>
-                <summary>
-                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 20, color: BLUE, minWidth: 34 }}>{c.num}</span>
-                  <span style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em" }}>{fr(c.titre)}</span>
-                  <span className="cx-plus" aria-hidden />
-                </summary>
-                <div className="cx-body" style={{ paddingLeft: 50 }}>
-                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(c.texte)}</p>
-                </div>
-              </details>
-            ))}
-          </div>
-          <p style={{ margin: "30px 0 0", fontSize: 18, fontWeight: 500, color: LIGHT.text, lineHeight: 1.45, maxWidth: "60ch" }}>
-            Avant de signer, la question n'est pas seulement de savoir ce que le prestataire va faire.
-            Elle est de savoir ce qui se passera lorsqu'il ne pourra plus le faire.
-          </p>
-        </div>
-      </section>
-
-      {/* ===== 7. CONTENTIEUX ===== */}
-      <section id="contentieux" style={{ background: LIGHT.bg, padding: SECTION_PAD, scrollMarginTop: 70 }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Contentieux"
-            titre="Contentieux des contrats informatiques"
-            sub="Ces litiges se gagnent sur la qualification des obligations, sur la chronologie documentée des alertes et des réserves, et sur la solidité des pièces produites."
-          />
-          <ul className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "0 40px", margin: 0, padding: 0, listStyle: "none", maxWidth: 900 }}>
-            {LITIGES.map((l) => (
-              <li
-                key={l}
-                style={{
-                  fontSize: 15.5,
-                  color: LIGHT.text,
-                  padding: "12px 0 12px 22px",
-                  borderBottom: `1px solid ${LIGHT.border}`,
-                  position: "relative",
-                }}
-              >
-                <span aria-hidden style={{ position: "absolute", left: 0, top: 20, width: 9, height: 1, background: BLUE }} />
-                {l}
-              </li>
-            ))}
-          </ul>
-          <p style={{ margin: "30px 0 0", fontSize: 15, color: LIGHT.muted, lineHeight: 1.7, maxWidth: "70ch" }}>
-            Les dommages directs peuvent être indemnisés lorsqu'ils sont établis et imputables au
-            manquement, sous réserve des plafonds contractuels opposables : perte d'exploitation,
-            coûts de remise en état du système, ressaisie des données, surcharge des équipes internes.
-            Les préjudices
-            indirects sont fréquemment écartés, soit par le jeu d'une clause d'exclusion, soit faute de
-            preuve suffisante. La construction du dossier probatoire commence donc avant la mise en
-            demeure, pas après l'assignation.
-          </p>
-          <div style={{ marginTop: 26 }}>
-            <Link href={CONTACT} style={BTN_PRIMARY}>
-              Évaluer un litige informatique
+      {/* ===== BANDEAU CONTENTIEUX (bleu) ===== */}
+      <section style={{ background: WH, padding: "42px 0" }} id="contentieux">
+        <div className="cx-wrap">
+          <div className="cx-litigation">
+            <div>
+              <Eyebrow light>Un différend est déjà engagé</Eyebrow>
+              <h2 style={{ color: "#fff" }}>Le projet est en difficulté&nbsp;?</h2>
+              <p>Retards répétés, logiciel non conforme, réserves contestées, perte de données, factures impayées ou rupture conflictuelle.</p>
+            </div>
+            <Link href={CONTENTIEUX} className="cx-btn outline">
+              Découvrir l’accompagnement en contentieux <span className="arrow" aria-hidden>↗</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ===== 8. DOSSIERS — derrière le drapeau DOSSIERS_ENABLED ===== */}
-      {DOSSIERS_ENABLED ? (
-        <section style={{ background: LIGHT.panel2, padding: SECTION_PAD }}>
-          <div style={INNER}>
-            <SectionHead
-              label="Situations dans lesquelles le cabinet intervient"
-              titre="Quand un contrat informatique devient un enjeu stratégique"
-              sub="Quatre situations illustrant la manière dont une analyse juridique, contractuelle et technique permet de reconstruire les responsabilités et de préparer la réponse de l'entreprise."
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: GRID_GAP }}>
-              {DOSSIERS.map((d) => (
-                <article
-                  key={d.num}
-                  style={{
-                    background: LIGHT.panel,
-                    border: `1px solid ${LIGHT.border}`,
-                    borderLeft: `3px solid ${BLUE}`,
-                    borderRadius: 10,
-                    padding: CARD_PAD,
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 12 }}>
-                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 18, color: BLUE }}>{d.num}</span>
-                    <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: LIGHT.faint }}>
-                      {d.type}
-                    </span>
-                  </div>
-                  <h3 style={{ ...TYPE.h3, margin: "0 0 12px" }}>{d.titre}</h3>
-                  {d.corps.map((p, i) => (
-                    <p key={i} style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: "0 0 12px" }}>
-                      {p}
-                    </p>
-                  ))}
-                  <p style={{ margin: "16px 0 0", paddingTop: 14, borderTop: `1px solid ${LIGHT.border}`, fontSize: 14 }}>
-                    <span style={{ display: "block", fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: BLUE, marginBottom: 5 }}>
-                      Enjeu
-                    </span>
-                    {d.enjeu}
-                  </p>
-                </article>
-              ))}
-            </div>
-            <p style={{ margin: "24px 0 0", fontSize: 13, color: LIGHT.faint, maxWidth: "70ch" }}>
-              Dossiers réels, dont les éléments d'identification ont été écartés. Certains sont en cours.
-            </p>
-          </div>
-        </section>
-      ) : null}
-
-      {/* ===== 9. MÉTHODE ===== */}
-      <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead
-            label="Méthode"
-            titre="De l'audit du contrat au contentieux"
-            sub="En conseil comme en contentieux, une démarche structurée et documentée."
-          />
-          <div>
-            {ETAPES.map((e, i) => (
-              <div
-                key={e.n}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "56px 1fr",
-                  gap: 20,
-                  padding: "22px 0",
-                  borderBottom: i < ETAPES.length - 1 ? `1px solid ${LIGHT.border}` : "none",
-                }}
-              >
-                <div style={{ fontFamily: "var(--ff-mono)", fontSize: 34, fontWeight: 500, color: BLUE, lineHeight: 1 }}>{e.n}</div>
-                <div>
-                  <h3 style={{ ...TYPE.h3, margin: "0 0 6px" }}>{e.titre}</h3>
-                  <p style={{ fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(e.texte)}</p>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      marginTop: 10,
-                      fontFamily: "var(--ff-mono)",
-                      fontSize: 11,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: LIGHT.faint,
-                    }}
-                  >
-                    {e.deliv}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 10. QUAND CONSULTER — fond navy ===== */}
-      <section style={{ background: DARK.bg, color: DARK.text, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead label="Calendrier" titre="Quand consulter un avocat en contrats informatiques ?" light />
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 1, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.14)" }}>
-            {QUAND.map((q) => (
-              <div key={q.b} style={{ background: "#0b1130", padding: "22px 24px" }}>
-                <b style={{ display: "block", fontWeight: 500, color: "#fff", marginBottom: 6 }}>{q.b}</b>
-                <span style={{ fontSize: 14.5, color: DARK.muted, lineHeight: 1.55 }}>{fr(q.d)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 11. NOTRE APPROCHE — trois avocats + consultant technique ===== */}
-      <section style={{ background: LIGHT.bg, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <Eyebrow>Notre approche</Eyebrow>
-          <p
-            style={{
-              fontWeight: 300,
-              fontSize: "clamp(22px, 3vw, 32px)",
-              lineHeight: 1.25,
-              color: LIGHT.text,
-              maxWidth: "24ch",
-              margin: "0 0 26px",
-              paddingLeft: 22,
-              borderLeft: `3px solid ${BLUE}`,
-            }}
-          >
-            L'analyse juridique d'un litige informatique ne vaut que ce que valent les faits sur lesquels elle repose.
+      {/* ===== ÉQUIPE ===== */}
+      <section className="cx-section" id="equipe" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap">
+          <Eyebrow>Les personnes qui interviennent</Eyebrow>
+          <p className="cx-team-quote">
+            Un engagement contractuel ne vaut que ce que vaut la réalité technique sur laquelle il repose.
           </p>
-          <h2 style={{ ...TYPE.h2, margin: "0 0 10px" }}>Un cabinet, et un consultant technique à ses côtés</h2>
-          <p style={{ ...TYPE.secondary, margin: "0 0 26px", maxWidth: "72ch" }}>
-            Journaux, configurations, état réel des sauvegardes, périmètre effectif des droits : ces
-            éléments ne peuvent être appréciés sur le seul fondement des déclarations des parties. Ils
-            doivent être constatés, documentés et confrontés aux engagements contractuels. Le cabinet
-            travaille pour cette raison en binôme, l'examen juridique et l'examen technique menés
-            ensemble plutôt que successivement.
+          <h2 style={{ maxWidth: "22ch", marginBottom: 16 }}>Le contrat, confronté à la réalité technique.</h2>
+          <p className="cx-team-intro">
+            L’analyse juridique peut être complétée, lorsque le dossier le nécessite, par l’examen des
+            architectures, des sauvegardes, des traces d’intervention ou des conditions de migration. L’examen
+            juridique et l’examen technique sont alors menés ensemble plutôt que successivement.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: GRID_GAP, alignItems: "stretch" }}>
+          <div className="cx-lawyers">
             {AVOCATS.map((a) => (
               <MembreCarte
                 key={a.slug}
                 membre={a}
-                couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
+                couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
               />
             ))}
           </div>
-
-          {/* Consultant technique — TODO (cabinet) : accord de Khalid Sookia
-              pour figurer sur le site, réalité d'une collaboration habituelle,
-              exactitude de sa fonction et de ses domaines d'intervention. */}
-          <div
-            className="grid grid-cols-1 md:grid-cols-2"
-            style={{ gap: GRID_GAP, marginTop: GRID_GAP, alignItems: "stretch" }}
-          >
-            <MembreCarte
-              membre={{ slug: "khalid", role: "Audit technique du système d'information", tags: ["Forensic", "Sauvegardes", "Journalisation"] }}
-              couleurs={{ panneau: LIGHT.panel2, carte: LIGHT.panel, bordure: LIGHT.border, texte: LIGHT.text, secondaire: LIGHT.muted, accent: BLUE }}
-            />
-            <div style={{ background: LIGHT.panel, border: `1px solid ${LIGHT.border}`, borderRadius: 12, padding: CARD_PAD }}>
-              <p
-                style={{
-                  fontFamily: "var(--ff-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: BLUE,
-                  margin: "0 0 14px",
+          <div className="cx-technical">
+            <div>
+              <MembreCarte
+                membre={{
+                  slug: "khalid",
+                  role: "Sauvegardes, traces techniques et faisabilité de la réversibilité.",
+                  tags: ["Sauvegardes", "Réversibilité", "Journalisation"],
                 }}
-              >
-                Ce qu'il examine
-              </p>
-              <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
+                couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
+              />
+              <p className="cx-tech-note">Intervient en appui technique. N’exerce pas la profession d’avocat.</p>
+            </div>
+            <div className="cx-exam">
+              <h3>Des engagements que l’on peut vérifier</h3>
+              <ul>
                 {KHALID_EXAMINE.map((k) => (
-                  <li key={k} style={{ display: "flex", gap: 10, fontSize: 14.5, color: LIGHT.muted, lineHeight: 1.55 }}>
-                    <span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span>
-                    <span>{k}</span>
-                  </li>
+                  <li key={k}><span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span><span>{fr(k)}</span></li>
                 ))}
               </ul>
             </div>
@@ -1177,100 +993,54 @@ export default function ContratsInformatiquesClient() {
         </div>
       </section>
 
-      {/* ===== 12. FAQ — huit questions (accordéon natif) ===== */}
-      <section style={{ background: LIGHT.panel2, padding: SECTION_PAD }}>
-        <div style={INNER}>
-          <SectionHead label="Questions fréquentes" titre="Ce que les clients demandent avant de commencer" />
-          <div className="cx-acc" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
-            {FAQ_ITEMS.map((item, i) => (
-              <details key={item.q}>
-                <summary>
-                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 18, color: BLUE, minWidth: 34 }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 style={{ fontSize: 18, fontWeight: 500, letterSpacing: "-0.01em", margin: 0 }}>{fr(item.q)}</h3>
-                  <span className="cx-plus" aria-hidden />
-                </summary>
-                <div className="cx-body" style={{ paddingLeft: 50 }}>
-                  <p style={{ fontSize: 15, color: LIGHT.muted, lineHeight: 1.6, margin: 0 }}>{fr(item.a)}</p>
-                </div>
+      {/* ===== FAQ + RENVOIS ===== */}
+      <section className="cx-section" id="questions" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+        <div className="cx-wrap cx-faq-layout">
+          <div>
+            <Eyebrow>Avant de vous engager</Eyebrow>
+            <h2>Vos questions sur les contrats informatiques.</h2>
+            {FAQ_ITEMS.map((item) => (
+              <details key={item.q} className="cx-faq">
+                <summary><h3>{fr(item.q)}</h3></summary>
+                <p>{fr(item.a)}</p>
+              </details>
+            ))}
+            <p className="cx-faq-more-label">Autres questions</p>
+            {AUTRES_FAQ.map((item) => (
+              <details key={item.q} className="cx-faq">
+                <summary><h3>{fr(item.q)}</h3></summary>
+                <p>{fr(item.a)}</p>
               </details>
             ))}
           </div>
+          <aside className="cx-related">
+            <Eyebrow>Selon les enjeux du projet</Eyebrow>
+            {RELATED.map((r) => (
+              <Link key={r.href} href={r.href}>
+                {fr(r.label)} <span className="arrow" aria-hidden>↗</span>
+              </Link>
+            ))}
+          </aside>
         </div>
       </section>
 
-      {/* ===== Maillage sortant (§5) ===== */}
-      <section style={{ background: LIGHT.bg, padding: "40px 0" }}>
-        <div style={INNER}>
-          <Eyebrow>Pour aller plus loin</Eyebrow>
-          <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: GRID_GAP }}>
-            {LIENS.map((lk) =>
-              lk.href ? (
-                <Link
-                  key={lk.ancre}
-                  href={lk.href}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: 12,
-                    background: LIGHT.panel,
-                    border: `1px solid ${LIGHT.border}`,
-                    borderRadius: 10,
-                    padding: "16px 18px",
-                    fontSize: 14.5,
-                    fontWeight: 500,
-                    color: LIGHT.text,
-                    textDecoration: "none",
-                  }}
-                >
-                  {lk.ancre}
-                  <span aria-hidden style={{ color: BLUE }}>→</span>
-                </Link>
-              ) : (
-                <div
-                  key={lk.ancre}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: 12,
-                    background: LIGHT.panel2,
-                    border: `1px dashed ${LIGHT.border}`,
-                    borderRadius: 10,
-                    padding: "16px 18px",
-                    fontSize: 14.5,
-                    color: LIGHT.faint,
-                  }}
-                >
-                  {lk.ancre}
-                  <span style={{ fontFamily: "var(--ff-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: LIGHT.faint }}>
-                    Page à venir
-                  </span>
-                </div>
-              )
-            )}
+      {/* ===== CONTACT FINAL (bleu nuit) ===== */}
+      <section className="cx-section cx-contact" id="contact" style={{ background: NAVY, color: ON_DARK }}>
+        <div className="cx-wrap cx-contact-layout">
+          <div>
+            <Eyebrow light>Passer à l’action</Eyebrow>
+            <h2>Faire auditer un contrat informatique</h2>
+            <p>
+              Transmettez le contrat et le contexte du projet. Le cabinet vous indique le périmètre de
+              l’analyse, les points prioritaires et les modalités d’intervention.
+            </p>
           </div>
-        </div>
-      </section>
-
-      {/* ===== 13. CTA PRINCIPAL ===== */}
-      <section style={{ background: BLUE, color: "#fff", padding: "72px 0", textAlign: "center" }}>
-        <div style={INNER}>
-          <h2 style={{ ...TYPE.h2, color: "#fff", margin: "0 auto 12px", maxWidth: "22ch" }}>
-            {fr("Un contrat à négocier ou un projet informatique en difficulté ?")}
-          </h2>
-          <p style={{ fontSize: 16, color: "#DDE2FF", margin: "0 auto 28px", maxWidth: "52ch", lineHeight: 1.6 }}>
-            Un premier échange pour examiner vos contrats, évaluer votre exposition ou apprécier un
-            litige en cours, sans engagement.
-          </p>
-          <div className="flex flex-col sm:flex-row" style={{ gap: 12, justifyContent: "center" }}>
-            <Link href={CONTACT} style={{ ...BTN_PRIMARY, background: "#fff", color: BLUE }}>
-              Faire auditer un contrat
+          <div className="cx-contact-action">
+            <Link href={contactObjet("audit")} className="cx-btn">
+              Faire auditer un contrat <span className="arrow" aria-hidden>↗</span>
             </Link>
-            <Link href={CONTACT} style={{ ...BTN_GHOST, color: "#fff", borderColor: "rgba(255,255,255,0.6)" }}>
-              Évaluer un litige
+            <Link href={CONTENTIEUX} className="cx-link cx-contact-secondary">
+              Projet en difficulté&nbsp;? Évaluer la situation <span className="arrow" aria-hidden>↗</span>
             </Link>
           </div>
         </div>

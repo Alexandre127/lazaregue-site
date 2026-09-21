@@ -3,15 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./ia.module.css";
 import { FAQ_IA } from "./faq-ia";
-import { LivrablesPreview } from "./_components/LivrablesPreview";
 import { FaqAccordion } from "./_components/FaqAccordion";
+import MatriceTabs from "./_components/MatriceTabs";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/nos-domaines/avocat-intelligence-artificielle";
 
-const TITLE = "Avocat IA à Paris – Conformité AI Act et gouvernance";
+const TITLE = "Avocat IA à Paris – Conformité AI Act et gouvernance | Lazarègue Avocats";
 const DESCRIPTION =
-  "Audit AI Act, registre des systèmes, charte IA, contrats, gouvernance et défense en cas de contrôle. Accompagnement des entreprises à Paris.";
+  "Audit AI Act, registre des systèmes, charte IA, contrats, gouvernance et défense en cas de contrôle. Accompagnement des entreprises à Paris et partout en France.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -39,7 +39,7 @@ const JSON_LD = {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
         { "@type": "ListItem", position: 2, name: "Nos domaines", item: `${URL_BASE}/nos-domaines` },
-        { "@type": "ListItem", position: 3, name: "Avocat en intelligence artificielle", item: `${URL_BASE}${PATH}` },
+        { "@type": "ListItem", position: 3, name: "Intelligence artificielle et AI Act", item: `${URL_BASE}${PATH}` },
       ],
     },
     {
@@ -51,376 +51,312 @@ const JSON_LD = {
   ],
 };
 
-const SITUATIONS: { n: string; theme: string; detail: string; examen: string }[] = [
-  { n: "01", theme: "Usages des salariés", detail: "Vos salariés utilisent des outils d’IA générative, avec ou sans autorisation.", examen: "Encadrement des usages, protection des données et des secrets, information et consultation du CSE" },
-  { n: "02", theme: "Recrutement et gestion des carrières", detail: "Un outil intervient dans le recrutement, l’évaluation ou la gestion des carrières.", examen: "Qualification possible en système à haut risque, supervision humaine, information des personnes" },
-  { n: "03", theme: "IA intégrée à un produit", detail: "Vous intégrez une fonction d’IA à un produit ou un service vendu à des tiers.", examen: "Rôle éventuel de fournisseur, documentation technique, transparence lorsqu’elle est applicable et clauses fournisseurs" },
-  { n: "04", theme: "Demande d’un client, d’un partenaire ou d’un donneur d’ordre", detail: "On vous demande de justifier la conformité de votre outil.", examen: "Constitution d’un dossier opposable : registre, documentation, chaîne contractuelle, preuves de contrôle" },
-  { n: "05", theme: "Décision concernant une personne", detail: "Un algorithme décide ou pré-décide du sort de personnes physiques.", examen: "Analyse d’impact, base légale, droits des personnes, articulation avec le RGPD" },
-  { n: "06", theme: "Incident, contrôle ou réclamation", detail: "Une difficulté est déjà survenue.", examen: "Reconstitution des faits, examen technique du système, stratégie de réponse et de défense" },
+const SITUATIONS = [
+  { n: "01", s: "Vos salariés utilisent des outils d’IA générative, avec ou sans autorisation", d: "Vous devez encadrer ces usages : fixer ce que les salariés peuvent saisir dans ces outils (données personnelles, secrets d’affaires) et informer puis consulter le CSE lorsque l’outil modifie les conditions de travail." },
+  { n: "02", s: "Un outil intervient dans le recrutement, l’évaluation ou la gestion des carrières", d: "L’outil peut être classé « à haut risque ». Une personne doit alors pouvoir contrôler ses résultats, et les candidats ou salariés doivent être informés de son utilisation." },
+  { n: "03", s: "Vous intégrez une fonction d’IA à un produit ou un service vendu à des tiers", d: "Vous devenez « fournisseur » au sens du règlement : il vous revient de documenter le système, d’informer ses utilisateurs et de prévoir les clauses adaptées avec vos propres fournisseurs." },
+  { n: "04", s: "Un client ou un fournisseur vous demande de justifier la conformité de votre outil", d: "Il vous faut un dossier présentable : la liste des systèmes utilisés, leur documentation, les contrats et la preuve des contrôles effectués." },
+  { n: "05", s: "Un algorithme décide ou pré-décide du sort de personnes physiques", d: "Une analyse d’impact est souvent nécessaire, le traitement doit reposer sur une base légale et les personnes doivent pouvoir exercer leurs droits, notamment au titre du RGPD." },
+  { n: "06", s: "Un incident, un contrôle ou une réclamation est déjà survenu", d: "Il faut reconstituer ce qui s’est passé, faire examiner techniquement le système et préparer la réponse à l’autorité, au client ou au juge." },
 ];
 
-const DUTIES: [string, string][] = [
-  ["Vous utilisez des outils d’IA dans vos activités", "Recenser les usages, vérifier l’absence de pratique interdite, assurer une maîtrise suffisante de l’IA et encadrer les données, les secrets et les usages internes selon les règles applicables"],
-  ["Vous déployez un système à haut risque", "Respecter la notice, organiser la supervision humaine, contrôler les données d’entrée, surveiller le fonctionnement, conserver les journaux et informer les personnes concernées"],
-  ["Vous développez ou commercialisez un système sous votre nom", "Organiser la gestion des risques, la gouvernance des données, la documentation technique, la traçabilité, la conformité du système et la surveillance après commercialisation"],
-  ["Votre système interagit avec le public ou génère des contenus", "Vérifier les obligations d’information, d’identification ou de signalement des contenus artificiels"],
-  ["Vous intégrez une solution tierce dans un produit ou un processus sensible", "Vérifier la répartition contractuelle des rôles, l’accès à la documentation, aux journaux et aux informations nécessaires en cas d’incident ou de contrôle"],
+const THREE = [
+  { t: "Ce que fait le système", p: "Assistant de rédaction, scoring, présélection de candidatures, génération de contenus, fonction intégrée à un produit vendu à des tiers." },
+  { t: "Le rôle de l’entreprise", p: "Déployeur, fournisseur, importateur ou distributeur. Un outil acheté puis adapté, ou diffusé sous votre marque, ne relève pas du même régime qu’un outil utilisé tel quel." },
+  { t: "Les personnes concernées", p: "Salariés, candidats, clients, assurés ou utilisateurs. La question décisive est de savoir si le système intervient dans une décision qui les concerne." },
 ];
 
-const TIMELINE: [string, string][] = [
-  ["depuis le 2 février 2025", "Pratiques interdites de l’article 5 et obligation de maîtrise de l’IA au sein des équipes."],
-  ["depuis le 2 août 2026", "Application générale du règlement. Cette date n’a pas été déplacée par le règlement modificatif. Les obligations de transparence de l’article 50 sont exigibles."],
-  ["2 décembre 2026", "Marquage lisible par machine des contenus produits ou modifiés par un système d’IA, et nouvelles pratiques interdites introduites par le règlement modificatif."],
-  ["2 décembre 2027", "Exigences applicables aux systèmes à haut risque relevant de l’annexe III — emploi, éducation, accès aux services essentiels, biométrie."],
-  ["2 août 2028", "Exigences applicables aux systèmes à haut risque liés aux produits de l’annexe I, déjà soumis à une législation d’harmonisation."],
-  ["à retenir", "Le report d’une échéance ne suspend ni le RGPD, ni le droit du travail, ni vos engagements contractuels : une obligation non encore exigible au titre du règlement peut être opposée devant un juge civil ou prud’homal sur un autre fondement."],
+type Obl = { titre: string; when: string; items: { b: string; span: string; em: string }[] };
+const OBLIGATIONS: Obl[] = [
+  {
+    titre: "Toute entreprise qui utilise l’IA",
+    when: "Déjà applicable",
+    items: [
+      { b: "Former les équipes", span: "Prendre des mesures pour assurer un niveau suffisant de maîtrise de l’IA des personnes qui utilisent les systèmes, et en garder la trace. Voir la mission 05.", em: "Art. 4" },
+      { b: "Écarter les pratiques interdites", span: "Vérifier qu’aucun outil utilisé ne relève des pratiques de l’article 5.", em: "Art. 5" },
+      { b: "Informer quand c’est requis", span: "Signaler l’agent conversationnel à ses interlocuteurs ; signaler les contenus hypertruqués diffusés.", em: "Art. 50" },
+      { b: "Encadrer les usages internes", span: "Données personnelles, secrets d’affaires, propriété des contenus produits : règles écrites, charte d’usage.", em: "RGPD · droit des contrats" },
+      { b: "Associer les représentants du personnel", span: "Informer et consulter le CSE lorsque l’outil modifie les conditions de travail.", em: "Code du travail" },
+      { b: "Tenir l’inventaire des outils", span: "Recenser les systèmes utilisés, leur fournisseur et leur usage. Ce n’est pas une obligation générale du règlement, mais sans lui aucune qualification n’est possible.", em: "Mesure recommandée" },
+    ],
+  },
+  {
+    titre: "Déployeur d’un système à haut risque",
+    when: "Annexe III : 2 décembre 2027",
+    items: [
+      { b: "Utiliser selon la notice", span: "Mesures techniques et organisationnelles pour respecter la notice d’utilisation du fournisseur.", em: "Art. 26" },
+      { b: "Confier le contrôle humain", span: "Désigner des personnes compétentes, formées et disposant de l’autorité nécessaire.", em: "Art. 26" },
+      { b: "Surveiller et conserver les journaux", span: "Surveiller le fonctionnement, signaler les incidents graves, conserver les journaux au moins six mois.", em: "Art. 26" },
+      { b: "Informer salariés et personnes concernées", span: "Informer les représentants du personnel et les salariés avant la mise en service au travail ; informer les personnes faisant l’objet d’une décision.", em: "Art. 26 · art. 86" },
+      { b: "Analyser l’impact", span: "Analyse d’impact sur les droits fondamentaux pour les organismes publics et certains usages (crédit, assurance) ; analyse d’impact RGPD le cas échéant.", em: "Art. 27 · RGPD art. 35" },
+    ],
+  },
+  {
+    titre: "Fournisseur d’un système à haut risque",
+    when: "Annexe III : 2 décembre 2027 · annexe I : 2 août 2028",
+    items: [
+      { b: "Gérer les risques et les données", span: "Système de gestion des risques sur tout le cycle de vie ; qualité et gouvernance des données d’entraînement.", em: "Art. 9 · 10" },
+      { b: "Documenter", span: "Documentation technique, journalisation automatique, notice d’utilisation claire pour les déployeurs.", em: "Art. 11 à 13" },
+      { b: "Garantir contrôle et robustesse", span: "Conception permettant le contrôle humain ; exactitude, robustesse et cybersécurité.", em: "Art. 14 · 15" },
+      { b: "Prouver la conformité", span: "Système de gestion de la qualité, évaluation de la conformité, déclaration UE, marquage CE, enregistrement.", em: "Art. 17 · 43 · 47 à 49" },
+      { b: "Suivre après la mise sur le marché", span: "Surveillance après commercialisation et signalement des incidents graves.", em: "Art. 72 · 73" },
+    ],
+  },
+];
+
+type Mission = { n: string; t: string; items: string[]; recv: string; link?: boolean };
+const MISSIONS: Mission[] = [
+  { n: "01", t: "Audit et diagnostic AI Act", items: ["Inventaire des systèmes et des usages réels", "Qualification : rôle tenu, niveau de risque, obligations applicables", "Écarts constatés et priorités"], recv: "Une cartographie des systèmes, une note de qualification par système et un plan d’action priorisé et daté." },
+  { n: "02", t: "Gouvernance, registre, charte et procédures", items: ["Encadrement des usages internes", "Procédure d’arrivée d’un nouvel outil", "Information et consultation des représentants du personnel"], recv: "Le registre des systèmes d’IA, une charte d’usage opposable et la trame d’information du CSE." },
+  { n: "03", t: "Conformité des systèmes à haut risque", items: ["Gestion des risques et supervision humaine", "Journalisation et information des personnes", "Répartition des responsabilités avec les fournisseurs"], recv: "La documentation technique, les clauses IA pour vos contrats fournisseurs et clients, et le dossier de preuve associé." },
+  { n: "04", t: "Contrôle, incident ou contentieux", items: ["Réponse aux demandes d’une autorité ou d’un client", "Reconstitution des faits et examen technique du système", "Défense devant les juridictions civiles, prud’homales ou pénales"], recv: "Une trame de réponse au contrôle ou à la réclamation, et la stratégie de défense correspondante." },
+  { n: "05", t: "Formation des équipes (article 4)", items: ["Usages de l’IA générative, vérification des résultats, protection des données et des secrets", "Programme adapté aux métiers : direction, RH, juridique, commercial, équipes techniques", "Traçabilité des sessions pour documenter la maîtrise de l’IA"], recv: "Les supports de formation et les justificatifs de participation, qui permettent de documenter les mesures prises au titre de l’article 4.", link: true },
+];
+
+const STEPS3 = [
+  { k: "Étape 01", t: "Premier échange", p: "Trente à quarante-cinq minutes, par téléphone ou en visioconférence, sur les outils utilisés, le produit et les contrats existants. Aucun document n’est exigé à ce stade." },
+  { k: "Étape 02", t: "Périmètre et proposition", p: "Définition du périmètre à examiner et des interlocuteurs à mobiliser côté entreprise — direction des systèmes d’information, métiers utilisateurs, ressources humaines lorsque des salariés sont concernés. Une convention d’honoraires chiffrée est signée avant tout travail d’analyse." },
+  { k: "Étape 03", t: "Inventaire et qualification", p: "Premier livrable : la cartographie des systèmes, la qualification des rôles et des niveaux de risque, et un plan d’action hiérarchisé entre ce qui est exigible immédiatement et ce qui peut attendre." },
+];
+
+const CASES = [
+  { pp: "Éditeur de logiciel — 90 salariés", ct: "Une fonction de scoring vendue sans dossier de conformité", situation: "Une fonction de scoring intégrée à la plateforme, vendue à des clients grands comptes exigeant des garanties de conformité.", difficulte: "Rôle de fournisseur non assumé dans les contrats, aucune documentation technique, réponses divergentes selon les interlocuteurs commerciaux.", intervention: "Qualification du système, constitution de la documentation, réécriture des clauses IA et d’un argumentaire de conformité unique.", res: "Dossier opposable transmis aux clients ; les appels d’offres bloqués ont pu être réengagés." },
+  { pp: "Groupe industriel — direction des ressources humaines", ct: "Un outil de présélection de candidatures contesté", situation: "Outil de présélection de candidatures déployé par un prestataire, contesté par un candidat écarté.", difficulte: "Aucune trace des critères utilisés, absence de supervision humaine documentée, contrat prestataire muet sur la responsabilité.", intervention: "Examen technique du paramétrage, reconstitution de la chaîne de décision, réponse au candidat et renégociation du contrat.", res: "Procédure de recrutement redocumentée et supervision humaine rétablie avant tout contentieux." },
+];
+
+const TIMELINE = [
+  { d: "2 févr. 2025", p: "Pratiques interdites et maîtrise de l’IA par les équipes (article 4)", cls: "done" },
+  { d: "2 août 2025", p: "Modèles d’IA à usage général et régime des sanctions", cls: "done" },
+  { d: "2 août 2026", p: "Application générale du règlement, dont les obligations de transparence (article 50)", cls: "done" },
+  { d: "2 déc. 2026", p: "Nouvelles interdictions ajoutées par le règlement (UE) 2026/1744 ; fin de la période transitoire pour le marquage des contenus générés", cls: "next" },
+  { d: "2 déc. 2027", p: "Systèmes à haut risque de l’annexe III — emploi, éducation, services essentiels", cls: "" },
+  { d: "2 août 2028", p: "Systèmes à haut risque de l’annexe I — produits déjà soumis à une législation d’harmonisation", cls: "" },
+];
+
+const REL = [
+  { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Données personnelles et RGPD" },
+  { href: "/nos-domaines/contrats-informatiques", label: "Contrats informatiques" },
+  { href: "/nos-domaines/contentieux-informatique-commercial", label: "Contentieux informatique et commercial" },
+  { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et NIS 2" },
+  { href: "/formations/intelligence-artificielle-entreprise", label: "Formation IA en entreprise" },
 ];
 
 export default function Page() {
   return (
-    <>
+    <main className={styles.ia}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <a className={styles.skipLink} href="#contenu">Aller au contenu principal</a>
 
-      <main id="contenu" className={styles.ia}>
-        {/* 1. HERO */}
-        <div className="hero">
-          <div className="wrap">
-            <nav className="breadcrumb" aria-label="Fil d’Ariane">
-              <ol>
-                <li><Link href="/">Accueil</Link></li>
-                <li><Link href="/nos-domaines">Nos domaines</Link></li>
-                <li><span aria-current="page">Avocat en intelligence artificielle</span></li>
-              </ol>
-            </nav>
-            <div className="hero-grid">
-              <div>
-                <p className="eyebrow">Avocat en intelligence artificielle à Paris</p>
-                <h1>Mise en conformité AI Act et gouvernance IA</h1>
-                <p className="hero-sub">Identifiez les obligations applicables à chaque système d’IA et constituez les preuves de votre conformité.</p>
-                <p className="hero-target">Le cabinet accompagne les entreprises qui utilisent, intègrent ou commercialisent des systèmes d’intelligence artificielle : qualification des usages, documentation, contrats et défense en cas de contrôle ou de contentieux.</p>
-                <div className="hero-actions">
-                  <Link className="btn" href="/contact">Parler de votre situation</Link>
-                  <a className="btn btn-ghost" href="#livrables">Voir les documents remis</a>
-                </div>
-              </div>
-              <div className="hero-visual">
-                <Image src="/images/ia-act-hero.jpg" alt="" fill sizes="(max-width:900px) 100vw, 33vw" priority style={{ objectFit: "cover" }} />
-              </div>
+      {/* ============================ 1. HERO ============================ */}
+      <section className="hero-i navy" aria-labelledby="h1">
+        <div className="ph-bg" aria-hidden>
+          <Image src="/images/ia-act-hero.jpg" alt="" fill priority sizes="(max-width:1100px) 100vw, 60vw" style={{ objectFit: "cover" }} />
+        </div>
+        <div className="wrap">
+          <nav className="crumb" aria-label="Fil d’Ariane">
+            <Link href="/">Accueil</Link> <span aria-hidden>/</span> <Link href="/nos-domaines">Domaines</Link> <span aria-hidden>/</span> <span aria-current="page">Intelligence artificielle et AI Act</span>
+          </nav>
+          <div className="hero-copy">
+            <p className="label">Avocat en intelligence artificielle · Paris et toute la France</p>
+            <h1 id="h1">AVOCAT IA : MISE EN CONFORMITÉ AI ACT ET GOUVERNANCE</h1>
+            <p className="acc">Une IA mal documentée devient un risque de responsabilité.</p>
+            <p className="lead">Le cabinet accompagne les entreprises qui utilisent, intègrent ou commercialisent des systèmes d’intelligence artificielle : qualification des usages, documentation, contrats, et défense en cas de contrôle ou de contentieux.</p>
+            <div className="hero-cta">
+              <a className="btn" href="/contact">Parler de votre situation →</a>
+              <a className="heroLink" href="#missions">Voir les cinq missions</a>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* 2. ÊTES-VOUS CONCERNÉ ? */}
-        <section id="concerne">
-          <div className="wrap">
-            <p className="label">situations</p>
-            <h2 className="wide">Êtes-vous concerné&nbsp;?</h2>
-            <p className="lede">Les obligations ne sont pas les mêmes pour toutes les entreprises. Elles dépendent du système utilisé, de sa finalité et du rôle tenu par l’entreprise. Voici les situations qui conduisent le plus souvent à consulter le cabinet.</p>
-            <table className="tbl situations">
-              <caption>Situations rencontrées et principales questions à examiner.</caption>
-              <thead><tr><th scope="col">Votre situation</th><th scope="col">Ce qu’il faut examiner</th></tr></thead>
-              <tbody>
-                {SITUATIONS.map((s) => (
-                  <tr key={s.n}>
-                    <td>
-                      <span className="num">{s.n}</span>
-                      <span className="theme">{s.theme}</span>
-                      <span className="detail">{s.detail}</span>
-                    </td>
-                    <td data-prefix="À examiner — ">{s.examen}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* ============================ 2. SITUATIONS ===================== */}
+      <section className="sec ghost" aria-labelledby="h-sit">
+        <div className="wrap">
+          <div className="head">
+            <p className="label">Situations</p>
+            <h2 className="h2" id="h-sit">Êtes-vous concerné&nbsp;?</h2>
+            <p className="lead">Le règlement ne s’applique pas à des entreprises en général, mais à des usages précis. Ces situations sont celles qui amènent le plus souvent une entreprise à consulter.</p>
           </div>
-        </section>
+          <ul className="sits" aria-label="Situations et obligations déclenchées">
+            {SITUATIONS.map((s) => (
+              <li key={s.n}>
+                <div className="s"><span className="sn">{s.n}</span><p>{s.s}</p></div>
+                <div className="d"><p className="dl">Ce que cela implique pour vous</p><p>{s.d}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-        {/* 3. QUEL RÉGIME S'APPLIQUE ? */}
-        <section className="bg-ghost tight">
-          <div className="wrap">
-            <p className="label">principe de lecture</p>
-            <h2 className="wide">Quel régime s’applique à votre système&nbsp;?</h2>
-            <p className="lede">Une entreprise n’est pas globalement « conforme » ou « non conforme » à l’AI Act. Chaque système doit être examiné selon son usage réel, le rôle tenu par l’entreprise et son niveau de risque. Un système, un usage, une fiche.</p>
-            <div className="criteria">
-              <div className="criterion">
-                <h3>L’usage réel et le niveau de risque</h3>
-                <p>Assistant de rédaction, outil de scoring, présélection de candidatures, génération de contenus ou fonction d’IA intégrée à un produit : le régime dépend principalement de l’usage réel du système. Celui-ci peut relever d’une pratique interdite, du haut risque, d’une obligation de transparence ou d’aucune obligation spécifique.</p>
-              </div>
-              <div className="criterion">
-                <h3>Le rôle de l’entreprise</h3>
-                <p className="role-def"><strong>Déployeur :</strong> l’entreprise utilise un système d’IA sous sa propre responsabilité.</p>
-                <p className="role-def"><strong>Fournisseur :</strong> elle développe un système, le fait développer ou le commercialise sous son nom ou sa marque.</p>
-                <p className="role-def">Elle peut également être importatrice ou distributrice lorsqu’elle met un système à disposition sur le marché européen.</p>
-                <p>Une adaptation importante du système ou un changement de sa destination peut modifier le rôle initial de l’entreprise.</p>
-              </div>
-              <div className="criterion">
-                <h3>Les règles déjà applicables</h3>
-                <p>Le RGPD, le droit du travail et les contrats conclus avec les fournisseurs s’appliquent indépendamment du calendrier européen. Les personnes concernées — salariés, candidats, clients, assurés, utilisateurs — et les données traitées s’apprécient à l’intérieur de ces trois régimes.</p>
-              </div>
-            </div>
-            <p className="criteria-note">La même entreprise peut être simple déployeur pour un assistant de rédaction, déployeur d’un système à haut risque pour le recrutement, et fournisseur pour une solution qu’elle commercialise sous sa marque. L’analyse se conduit système par système, et non entreprise par entreprise.</p>
+      {/* ==================== 3. PRINCIPE + MATRICE ===================== */}
+      <section className="sec" aria-labelledby="h-q">
+        <div className="wrap">
+          <div className="head">
+            <p className="label">Principe de lecture</p>
+            <h2 className="h2" id="h-q">Le règlement qualifie les systèmes, leurs usages et le rôle de chaque acteur</h2>
+            <p className="lead">Pour qualifier un système, trois éléments sont examinés en premier.</p>
           </div>
-        </section>
-
-        {/* 4. LES MESURES À METTRE EN PLACE */}
-        <section className="tight">
-          <div className="wrap">
-            <p className="label">obligations</p>
-            <h2 className="wide">Concrètement, que devez-vous mettre en place&nbsp;?</h2>
-            <p className="lede">La qualification n’est qu’une première étape. Elle permet de déterminer, système par système, les mesures que l’entreprise doit effectivement mettre en place. Ces obligations ne sont pas identiques pour un utilisateur, un fournisseur ou un distributeur, et elles varient selon le niveau de risque et l’usage concerné.</p>
-            <table className="tbl duties">
-              <caption>Principales mesures selon la situation de l’entreprise.</caption>
-              <thead><tr><th scope="col">Votre situation</th><th scope="col">Ce que l’entreprise doit notamment organiser</th></tr></thead>
-              <tbody>
-                {DUTIES.map(([sit, org]) => (
-                  <tr key={sit}><td>{sit}</td><td data-prefix="À organiser — ">{org}</td></tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="criteria-note">Ces mesures ne s’appliquent pas indistinctement. Leur contenu dépend de la qualification de chaque système, des conditions réelles de son utilisation, des contrats conclus et du calendrier applicable.</p>
+          <div className="three">
+            {THREE.map((t) => (
+              <article key={t.t}><h3 className="h3 three-h">{t.t}</h3><p className="tx">{t.p}</p></article>
+            ))}
           </div>
-        </section>
+          <p className="tx three-nuance">Ces trois éléments déterminent les vérifications à mener. Ils ne suffisent pas, à eux seuls, à qualifier juridiquement un système : la finalité réelle, les données traitées, les conditions effectives d’utilisation et les engagements contractuels pris entrent également en compte.</p>
+          <h3 className="h3">Quels usages relèvent de quel niveau de risque&nbsp;?</h3>
+          <p className="tx matrice-intro">Choisissez un niveau : le tableau montre d’abord les cas qui y conduisent, puis ce que chaque acteur doit faire.</p>
+          <MatriceTabs />
+        </div>
+      </section>
 
-        {/* 5. QUATRE MISSIONS + CTA INTERMÉDIAIRE */}
-        <section id="missions" className="bg-ghost">
-          <div className="wrap">
-            <p className="label">nos interventions</p>
-            <h2 className="wide">Audit, gouvernance et conformité IA</h2>
-            <p className="lede">Le cabinet transforme cette qualification réglementaire en un plan de conformité applicable dans l’entreprise, et en preuves pouvant être présentées à un client, une autorité ou un juge.</p>
+      {/* ==================== 4. OBLIGATIONS ============================ */}
+      <section className="sec ghost" aria-labelledby="h-obl">
+        <div className="wrap">
+          <div className="head">
+            <p className="label">Obligations</p>
+            <h2 className="h2" id="h-obl">Ce que l’entreprise doit mettre en place</h2>
+            <p className="lead">Les obligations dépendent du rôle tenu et du niveau de risque. Certaines s’appliquent déjà à toute entreprise qui utilise l’IA ; les plus lourdes visent les systèmes à haut risque.</p>
+          </div>
+          <div className="obls">
+            {OBLIGATIONS.map((o) => (
+              <article className="obl" key={o.titre}>
+                <div className="oh"><h3>{o.titre}</h3><p className="when">{o.when}</p></div>
+                <ul>
+                  {o.items.map((it) => (
+                    <li key={it.b}><b>{it.b}</b><span>{it.span}</span><em>{it.em}</em></li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+          <p className="ft2">Sanctions prévues par l’article 99 : jusqu’à 35 millions d’euros ou 7 % du chiffre d’affaires mondial pour les pratiques interdites, 15 millions ou 3 % pour les autres obligations. Synthèse à rapprocher du texte consolidé après le règlement (UE) 2026/1744.</p>
+        </div>
+      </section>
+
+      {/* ==================== 5. MISSIONS =============================== */}
+      <section id="missions" className="sec" aria-labelledby="h-mis">
+        <div className="wrap">
+          <div className="head"><p className="label">Nos interventions</p><h2 className="h2" id="h-mis">Audit, gouvernance et conformité IA</h2></div>
+          <div className="mis-scroll" role="region" aria-label="Les cinq missions" tabIndex={0}>
             <div className="missions">
-              <div className="mission">
-                <span className="n">01</span>
-                <h3>Audit et diagnostic AI Act</h3>
-                <ul>
-                  <li>Inventaire des systèmes et des usages réels</li>
-                  <li>Qualification des rôles et des niveaux de risque</li>
-                  <li>Établissement des obligations applicables à chaque système</li>
-                  <li>Identification des écarts, des mesures à prendre et des priorités</li>
-                </ul>
-              </div>
-              <div className="mission">
-                <span className="n">02</span>
-                <h3>Gouvernance et procédures internes</h3>
-                <ul>
-                  <li>Encadrement des usages internes</li>
-                  <li>Procédure d’arrivée d’un nouvel outil</li>
-                  <li>Registre des systèmes et charte IA</li>
-                  <li>Information et consultation des représentants du personnel</li>
-                </ul>
-                <p className="precision">La gouvernance précise quels outils peuvent être utilisés, quelles données peuvent y être versées, qui valide un nouvel usage et comment une erreur ou un incident doit être signalé.</p>
-              </div>
-              <div className="mission">
-                <span className="n">03</span>
-                <h3>Mise en conformité et documentation</h3>
-                <ul>
-                  <li>Mise en œuvre des obligations applicables</li>
-                  <li>Organisation de la supervision, de la traçabilité et de l’information</li>
-                  <li>Articulation avec le RGPD et le droit du travail</li>
-                  <li>Révision des contrats et de la répartition des responsabilités</li>
-                </ul>
-                <p className="precision">La qualification précède la documentation : tout outil utilisé dans un domaine sensible n’est pas automatiquement soumis au régime des systèmes à haut risque.</p>
-              </div>
-              <div className="mission">
-                <span className="n">04</span>
-                <h3>Contrôle, incident ou contentieux</h3>
-                <ul>
-                  <li>Réponse aux demandes d’une autorité ou d’un client</li>
-                  <li>Reconstitution des faits et examen technique du système</li>
-                  <li>Défense devant les juridictions civiles, prud’homales ou pénales</li>
-                </ul>
-              </div>
-            </div>
-            <p className="orientation-line">La plupart des missions commencent par un inventaire et une qualification des usages. Le premier échange permet ensuite d’identifier la combinaison d’interventions adaptée, sans que l’entreprise ait à déterminer seule la qualification juridique de ses systèmes.</p>
-            <div className="cta-mid">
-              <div>
-                <h3>Vous ne savez pas quelles obligations s’appliquent&nbsp;?</h3>
-                <p>Un premier échange permet de circonscrire les systèmes utilisés, les obligations à examiner et les premières mesures à engager.</p>
-              </div>
-              <Link className="btn" href="/contact">Parler de votre situation</Link>
-            </div>
-          </div>
-        </section>
-
-        {/* 7. COMMENT COMMENCE LA MISSION */}
-        <section className="bg-accent tight">
-          <div className="wrap">
-            <p className="label">déroulement</p>
-            <h2 className="wide">Comment commence la mission&nbsp;?</h2>
-            <p className="lede">Une prise de contact suffit. Aucun dossier technique complet n’est demandé avant le premier échange.</p>
-            <div className="steps">
-              <div className="step">
-                <h3>Premier échange</h3>
-                <p>Un premier échange d’orientation, par téléphone ou en visioconférence, permet de présenter les outils utilisés, le produit concerné, les contrats existants et l’échéance éventuelle.</p>
-              </div>
-              <div className="step">
-                <h3>Périmètre, livrables et honoraires</h3>
-                <p>Le cabinet précise les systèmes et les interlocuteurs à mobiliser, puis adresse une proposition fixant le périmètre, les livrables, le calendrier et les honoraires. La mission commence après validation de cette proposition.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 8. LES SEPT LIVRABLES */}
-        <section id="livrables">
-          <div className="wrap">
-            <p className="label">livrables</p>
-            <h2 className="wide">Les documents remis à l’entreprise</h2>
-            <p className="lede">À l’issue de l’intervention, l’entreprise ne reçoit pas une simple analyse. Elle dispose des documents nécessaires pour appliquer les mesures retenues, attribuer les responsabilités et justifier ses choix. Ils sont utilisables par les équipes, présentables à un client, un auditeur ou une autorité, et cohérents avec le fonctionnement réel des systèmes.</p>
-            <LivrablesPreview />
-          </div>
-        </section>
-
-        {/* 9. DEUX DOSSIERS */}
-        <section className="bg-ghost">
-          <div className="wrap">
-            <p className="label">dossiers traités</p>
-            <h2 className="wide">Deux interventions récentes</h2>
-            <p className="lede">Exemples anonymisés d’interventions réalisées par le cabinet.</p>
-            <div className="cases">
-              <div className="case">
-                <span className="tag">éditeur de logiciel</span>
-                <dl>
-                  <dt>situation</dt><dd>Une fonction de scoring intégrée à la plateforme, vendue à des clients qui demandent des garanties de conformité.</dd>
-                  <dt>difficulté</dt><dd>Rôle de fournisseur non assumé dans les contrats et absence de documentation technique.</dd>
-                  <dt>intervention</dt><dd>Qualification du système, constitution de la documentation et réécriture des clauses IA.</dd>
-                  <dt>livrables</dt><dd>Note de qualification, documentation technique, clauses fournisseurs et clients, dossier de réponse aux demandes de conformité.</dd>
-                </dl>
-              </div>
-              <div className="case">
-                <span className="tag">direction des ressources humaines</span>
-                <dl>
-                  <dt>situation</dt><dd>Outil de présélection de candidatures déployé par un prestataire.</dd>
-                  <dt>difficulté</dt><dd>Absence de trace des critères utilisés, supervision humaine non documentée, contrat prestataire muet sur la responsabilité.</dd>
-                  <dt>intervention</dt><dd>Examen technique du paramétrage, reconstitution de la chaîne de décision et renégociation du contrat.</dd>
-                  <dt>livrables</dt><dd>Note de qualification, procédure de supervision humaine documentée, clauses de responsabilité révisées.</dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. DEUX DÉCISIONS DE JUSTICE */}
-        <section className="tight">
-          <div className="wrap">
-            <p className="label">état du droit</p>
-            <h2 className="wide">Le risque existe déjà, indépendamment du calendrier de l’AI Act</h2>
-            <p className="lede">Le déploiement d’un système d’IA peut déjà être contesté sur le fondement du droit du travail, du RGPD ou des obligations contractuelles. Le report de certaines échéances européennes ne suspend pas ces règles.</p>
-            <p style={{ fontSize: "0.96rem", color: "var(--text-2)", maxWidth: "72ch" }}>Ces décisions ne sont pas des applications de l’AI Act. Elles montrent que le droit du travail encadre déjà le déploiement de l’IA en entreprise.</p>
-            <div className="rulings">
-              <div className="ruling">
-                <span className="ref">TJ Nanterre, ord. réf., 29 janvier 2026, n° 25/02856</span>
-                <p>Deux logiciels de gestion des ressources humaines intégrant des fonctionnalités d’IA.</p>
-                <p>Déploiement suspendu sous astreinte, y compris en phase pilote, faute de consultation préalable du CSE central.</p>
-                {/* TODO(URL) : ajouter le lien vers la décision ou l'analyse du cabinet lorsque l'URL existe. Aucune URL fournie → carte sans lien. */}
-              </div>
-              <div className="ruling">
-                <span className="ref">TJ Paris, ord. réf., 10 février 2026, n° 25/57412</span>
-                <p>Déploiement expérimental de Copilot 365 au sein d’une association.</p>
-                <p>Délibération du CSE désignant un expert annulée : expérimentation de quatre mois, fondée sur le volontariat, sans impact concret établi.</p>
-                {/* TODO(URL) : idem — aucune URL fournie → carte sans lien. */}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 11. BINÔME */}
-        <section className="bg-ghost tight">
-          <div className="wrap">
-            <p className="label">méthode</p>
-            <h2 className="wide">Une analyse juridique appuyée, lorsque nécessaire, par un examen technique</h2>
-            <p className="lede">La documentation commerciale ne permet pas toujours de comprendre ce que fait réellement un système. Lorsque la mission l’exige, l’analyse juridique est complétée par l’examen de son fonctionnement, de ses données et de ses mécanismes de supervision.</p>
-            <div className="duo">
-              <div className="person">
-                <div className="portrait">
-                  <Image src="/images/alexandre-pro.jpg" alt="Alexandre Lazarègue" width={118} height={148} loading="lazy" sizes="118px" style={{ objectFit: "cover" }} />
-                </div>
-                <div>
-                  <h3>Me Alexandre Lazarègue</h3>
-                  <p className="role">avocat au barreau de Paris</p>
-                  <p>Qualification juridique, contrats et défense.</p>
-                </div>
-              </div>
-              <div className="person">
-                <div className="portrait">
-                  <Image src="/images/nadia-pro.jpg" alt="Nadia Abchiche-Mimouni" width={118} height={148} loading="lazy" sizes="118px" style={{ objectFit: "cover" }} />
-                </div>
-                <div>
-                  <h3>Nadia Abchiche-Mimouni</h3>
-                  <p className="role">experte en intelligence artificielle</p>
-                  <p>Fonctionnement du système, données, tests et supervision humaine. Elle intervient de manière indépendante sur les dossiers qui nécessitent un examen technique.</p>
-                </div>
-              </div>
-            </div>
-            <div className="duo-result">
-              <h3>Résultat commun</h3>
-              <p>Une documentation juridique cohérente avec le fonctionnement réel du système.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 12. CALENDRIER */}
-        <section className="bg-navy tight">
-          <div className="wrap">
-            <p className="label">calendrier</p>
-            <h2 className="wide">Les échéances qui engagent votre entreprise</h2>
-            <p className="lede">Les principales échéances permettent de situer chaque système et les mesures à engager. Le calendrier complet, article par article, fait l’objet d’une ressource distincte tenue à jour.</p>
-            <div className="timeline">
-              {TIMELINE.map(([date, txt]) => (
-                <div className="tl-row" key={date}><div className="tl-date">{date}</div><p>{txt}</p></div>
+              {MISSIONS.map((m) => (
+                <article key={m.n}>
+                  <span className="n">{m.n}</span>
+                  <h3>{m.t}</h3>
+                  <ul>
+                    {m.items.map((it) => (
+                      <li key={it}>{it}</li>
+                    ))}
+                  </ul>
+                  <p className="recv">
+                    <b>Vous recevez</b>{m.recv}
+                    {m.link ? <> <Link href="/formations/intelligence-artificielle-entreprise">Voir la formation →</Link></> : null}
+                  </p>
+                </article>
               ))}
             </div>
-            <p style={{ marginTop: 22, fontSize: "0.88rem", color: "#b9bcd4", maxWidth: "72ch" }}>Règlement (UE) 2024/1689 du 13 juin 2024, modifié par le règlement (UE) 2026/1744 du 8 juillet 2026, publié au Journal officiel de l’Union européenne le 24 juillet 2026 et entré en vigueur le 27 juillet 2026.</p>
-            <p className="updated">mis à jour le <time dateTime="2026-09-11">11 septembre 2026</time></p>
-            <p style={{ marginTop: 22 }}><Link href="/analyses/calendrier-ai-act" style={{ color: "#fff" }}>Calendrier détaillé de l’AI Act, article par article</Link></p>
           </div>
-        </section>
+          <p className="meta mis-hint">Faites défiler horizontalement pour voir les cinq missions.</p>
+          <p className="tx missions-foot">La plupart des missions commencent par un inventaire et une qualification des usages. La gouvernance, la documentation ou la défense sont ensuite adaptées à la situation identifiée : il n’appartient pas au client de choisir seul entre ces cinq entrées.</p>
+        </div>
+      </section>
 
-        {/* 13. LIVRE BLANC */}
-        <section className="tight">
-          <div className="wrap">
-            <div className="wp">
-              <div>
-                <h3 style={{ marginBottom: 8 }}>Livre blanc — AI Act : qui doit faire quoi</h3>
-                <p>Répartition des obligations entre fournisseur, déployeur et importateur. Sans formulaire ni inscription.</p>
-              </div>
-              <Link className="btn btn-ghost" href="/ressources/livre-blanc-ai-act">Télécharger le livre blanc</Link>
-            </div>
+      {/* ==================== 6. DÉROULEMENT ============================ */}
+      <section className="sec ghost" aria-labelledby="h-st">
+        <div className="wrap">
+          <div className="head"><p className="label">Déroulement</p><h2 className="h2" id="h-st">Comment commence la mission</h2><p className="lead">Une prise de contact suffit. Aucun questionnaire technique n’est demandé en amont.</p></div>
+          <ol className="steps3">
+            {STEPS3.map((s) => (
+              <li key={s.k}><span className="k">{s.k}</span><h3 className="h3 step-h">{s.t}</h3><p className="tx">{s.p}</p></li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ==================== 7. DEUX INTERVENTIONS ==================== */}
+      <section className="sec" aria-labelledby="h-cas">
+        <div className="wrap">
+          <div className="head"><p className="label">Dossiers traités</p><h2 className="h2" id="h-cas">Deux interventions récentes</h2></div>
+          <div className="cases">
+            {CASES.map((c) => (
+              <article className="dcard" key={c.ct}>
+                <div className="top"><p className="pp">{c.pp}</p><h3 className="ct">{c.ct}</h3></div>
+                <dl>
+                  <dt>Situation</dt><dd>{c.situation}</dd>
+                  <dt>Difficulté</dt><dd>{c.difficulte}</dd>
+                  <dt>Intervention</dt><dd>{c.intervention}</dd>
+                </dl>
+                <div className="res"><b>Résultat</b><p>{c.res}</p></div>
+              </article>
+            ))}
           </div>
-        </section>
+          <div className="risk">
+            <h3 className="h3 risk-h">Le risque existe déjà, indépendamment du calendrier de l’AI Act</h3>
+            <p>Les juridictions contrôlent aujourd’hui l’information des salariés, la consultation du CSE, l’explicabilité des décisions individuelles et la documentation des traitements algorithmiques. Le report d’une échéance européenne ne suspend ni le droit du travail, ni le RGPD, ni les obligations contractuelles.</p>
+          </div>
+          {/* Deux références de jurisprudence : à réinsérer uniquement après vérification (juridiction, date, numéro). */}
+        </div>
+      </section>
 
-        {/* 14. FAQ + MAILLAGE */}
-        <section className="tight">
-          <div className="wrap">
-            <p className="label">avant d’engager une mission</p>
-            <h2 className="wide">Les questions que posent les entreprises</h2>
+      {/* ==================== 8. DU CONTRAT À L'ALGORITHME (navy) ====== */}
+      <section className="sec navy" aria-labelledby="h-duo">
+        <div className="wrap">
+          <div className="head"><p className="label">Méthode</p><h2 className="h2" id="h-duo">Du contrat à l’algorithme</h2><p className="lead">Une qualification juridique qui ne repose pas sur le fonctionnement réel du système ne résiste pas à un contrôle. Les dossiers techniques sont traités à deux.</p></div>
+          <div className="duo">
+            <article>
+              <span className="ph" role="img" aria-label="Portrait d’Alexandre Lazarègue"><Image src="/images/alexandre-pro.jpg" alt="" fill sizes="110px" style={{ objectFit: "cover" }} /></span>
+              <div><p className="label">Avocat au Barreau de Paris</p><h3 className="h3">Me Alexandre Lazarègue</h3><p>Qualification juridique, contrats et défense.</p></div>
+            </article>
+            <article>
+              <span className="ph" role="img" aria-label="Portrait de Nadia Abchiche-Mimouni"><Image src="/images/nadia-pro.jpg" alt="" fill sizes="110px" style={{ objectFit: "cover" }} /></span>
+              <div><p className="label">Experte en intelligence artificielle — intervenante indépendante</p><h3 className="h3">Nadia Abchiche-Mimouni</h3><p>Fonctionnement du système, données, tests et supervision. Elle intervient à la demande, sur les dossiers qui l’exigent.</p></div>
+            </article>
+          </div>
+          <p className="common"><strong>Résultat commun.</strong> Une documentation cohérente avec le fonctionnement réel du système. C’est cette correspondance qui est examinée en cas de contrôle, et c’est elle qui manque le plus souvent aux dossiers constitués sans examen technique.</p>
+        </div>
+      </section>
+
+      {/* ==================== 9. CALENDRIER ============================ */}
+      <section className="sec" aria-labelledby="h-cal">
+        <div className="wrap">
+          <div className="head"><p className="label">Calendrier</p><h2 className="h2" id="h-cal">Les échéances qui engagent votre entreprise</h2><p className="lead">Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 dit « omnibus numérique IA », entré en vigueur le 27 juillet 2026. Le calendrier complet, article par article, fait l’objet d’une ressource distincte tenue à jour.</p></div>
+          <ol className="tl">
+            {TIMELINE.map((t) => (
+              <li key={t.d} className={t.cls}><span className="d">{t.d}</span><p>{t.p}</p></li>
+            ))}
+          </ol>
+          <div className="keep">
+            <div className="ghost"><p className="label">À retenir</p><p className="keep-tx">Le report des systèmes à haut risque ne suspend ni les interdictions, ni les obligations de transparence, ni la maîtrise de l’IA par les équipes, déjà applicables.</p></div>
+            <div className="ghost"><p className="label">À retenir</p><p className="keep-tx">L’entrée en application d’une obligation et l’exigibilité des sanctions ne coïncident pas : une obligation applicable sans amende immédiate reste opposable devant un juge civil ou prud’homal.</p></div>
+          </div>
+          <p className="meta cal-maj">Mis à jour le 21 septembre 2026 · <span className="cal-ressource">Calendrier détaillé de l’AI Act, article par article (ressource à paraître)</span></p>
+          <div className="wp">
+            <div><p className="wp-t">Livre blanc — AI Act : qui doit faire quoi</p><p className="tx">Répartition des obligations entre fournisseur, déployeur et importateur. Sans formulaire ni inscription.</p></div>
+            <span className="btn-o btn-disabled" aria-disabled>Télécharger le livre blanc</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== 10. FAQ ================================== */}
+      <section className="sec ghost faq-sec" aria-labelledby="h-faq">
+        <div className="wrap faq-grid">
+          <div className="head faq-head"><p className="label">Avant d’engager une mission</p><h2 className="h2" id="h-faq">Les questions que posent les entreprises</h2></div>
+          <div>
             <FaqAccordion />
-            <div className="links-out">
-              <Link href="/nos-domaines/rgpd-donnees-personnelles">Données personnelles et RGPD</Link>
-              <Link href="/nos-domaines/contrats-informatiques">Contrats informatiques et projets IT</Link>
-              {/* TODO(page à créer) : /nos-domaines/contentieux-informatique n'existe pas encore. */}
-              <Link href="/nos-domaines/contentieux-informatique">Contentieux informatique et commercial</Link>
-              <Link href="/nos-domaines/cybersecurite">Cybersécurité et NIS 2</Link>
-              <Link href="/analyses/ai-act">Nos analyses sur l’AI Act</Link>
-            </div>
+            <p className="rel"><strong>Sujets liés :</strong>
+              {REL.map((r) => (
+                <Link key={r.href} href={r.href}>{r.label}</Link>
+              ))}
+            </p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 15. CONTACT FINAL */}
-        <section className="bg-navy final tight">
-          <div className="wrap">
-            <h2>Faire le point sur vos systèmes d’IA</h2>
-            <p>Que votre projet soit en préparation, déjà déployé ou contesté, un premier échange permet d’identifier les questions à traiter et la mission adaptée.</p>
-            <p style={{ marginTop: 26 }}><Link className="btn" href="/contact">Parler de votre situation</Link></p>
-            <div className="contact">
-              <a href="tel:+33181706200">01 81 70 62 00</a>
-              <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a>
-              <span>18 rue de Tilsitt, 75017 Paris</span>
-            </div>
-          </div>
-        </section>
-      </main>
-    </>
+      {/* ==================== 11. CTA FINAL (navy) ===================== */}
+      <section className="sec navy" aria-labelledby="h-cta">
+        <div className="wrap">
+          <div className="head cta-head"><h2 className="h2" id="h-cta">Faire le point sur vos systèmes d’IA</h2><p className="lead">Décrivez les outils développés ou utilisés : le cabinet identifie votre rôle et les premières obligations.</p></div>
+          <a className="btn" href="/contact">Faire le point sur vos systèmes d’IA →</a>
+        </div>
+      </section>
+    </main>
   );
 }

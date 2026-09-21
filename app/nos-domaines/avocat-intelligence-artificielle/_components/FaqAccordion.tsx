@@ -1,24 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { FAQ_IA } from "../faq-ia";
 
 /*
- * FAQ (maquette V9). Vrais <button>, aria-expanded / aria-controls, cible ≥44px,
+ * FAQ (maquette v4). Vrais <button>, aria-expanded / aria-controls, cible ≥44px,
  * indicateur d'état par icône +/− (pas seulement la couleur). LISIBLE SANS JS :
- * en rendu serveur tous les panneaux sont ouverts ; après hydratation, le script
- * referme les questions au-delà de la première.
+ * en rendu serveur tous les panneaux sont ouverts ; après hydratation, seule la
+ * première question reste ouverte. `mounted` via useSyncExternalStore (false au
+ * SSR, true côté client) — pas de setState dans un effet, pas de mismatch.
  */
-export function FaqAccordion() {
-  const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(FAQ_IA.map((f) => [f.id, true])),
-  );
+const subscribe = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-    setOpen(Object.fromEntries(FAQ_IA.map((f, i) => [f.id, i === 0])));
-  }, []);
+export function FaqAccordion() {
+  const mounted = useSyncExternalStore(
+    subscribe,
+    () => true, // client
+    () => false, // serveur
+  );
+  const [open, setOpen] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(FAQ_IA.map((f, i) => [f.id, i === 0])),
+  );
 
   return (
     <div className="faq">

@@ -46,19 +46,22 @@ const AVOCATS = [
   },
 ];
 
+const URL_BASE = "https://lazaregue-avocats.fr";
+const PATH = "/nos-domaines/contrats-informatiques";
+
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "LegalService",
-      name: "Avocat contrats informatiques & contentieux IT — Lazarègue Avocats",
+      name: "Avocat en contrats informatiques et projets IT — Lazarègue Avocats",
       description:
-        "Audit et rédaction de contrats IT, SaaS, cloud et infogérance : clause de sauvegarde, réversibilité, SLA, limitation de responsabilité, interdépendance des contrats. Défense en contentieux informatique.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/contrats-informatiques",
+        "Audit, rédaction et négociation de contrats IT, SaaS, cloud et infogérance : clause de sauvegarde, réversibilité, SLA, limitation de responsabilité, interdépendance des contrats.",
+      url: `${URL_BASE}${PATH}`,
       areaServed: { "@type": "Country", name: "France" },
       serviceType:
-        "Contrat informatique, contentieux IT, perte de données, réversibilité cloud, SLA, clause limitative de responsabilité, résiliation de contrat IT",
-      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
+        "Contrat informatique, SaaS et cloud, infogérance, réversibilité, SLA, clause limitative de responsabilité, audit et négociation de contrats IT",
+      provider: { "@id": `${URL_BASE}/#cabinet` },
     },
     ...AVOCATS.map((a) => ({
       "@type": "Person",
@@ -66,9 +69,17 @@ const JSON_LD = {
       honorificPrefix: "Maître",
       jobTitle: a.jobTitle,
       knowsAbout: a.knowsAbout,
-      worksFor: { "@type": "LegalService", name: "Lazarègue Avocats" },
-      url: "https://lazaregue-avocats.fr/le-cabinet",
+      worksFor: { "@id": `${URL_BASE}/#cabinet` },
+      url: `${URL_BASE}/le-cabinet`,
     })),
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Domaines d'intervention", item: `${URL_BASE}/nos-domaines` },
+        { "@type": "ListItem", position: 3, name: "Contrats informatiques et projets IT", item: `${URL_BASE}${PATH}` },
+      ],
+    },
     {
       "@type": "FAQPage",
       mainEntity: FAQ_ITEMS.map((f) => ({

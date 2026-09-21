@@ -1,0 +1,410 @@
+/* ==========================================================================
+   Page « Contentieux informatique et commercial » — maquette v2, charte v1.1.
+   Portée : descendants de `.contentieux` (hashé) ; :global pour le balisage
+   repris de la maquette. Le CSS de la maquette est déjà conforme à la charte
+   (radius 0, tokens partagés, focus #1A47FF / #FFFFFF sur fond sombre) : on le
+   réutilise scopé, on retire le chrome (header/menu/footer/fil d'Ariane, fournis
+   par le layout global) et on aliase les quelques variables locales de la
+   maquette (--sp-*, --maxw, --readw, --bd-dark) vers des valeurs de la charte.
+   ========================================================================== */
+.contentieux {
+  --sp-4: 4px;
+  --sp-8: 8px;
+  --sp-12: 12px;
+  --sp-16: 16px;
+  --sp-24: 24px;
+  --sp-36: 36px;
+  --sp-72: 72px;
+  --sp-96: 96px;
+  --maxw: 1200px;
+  --readw: 68ch;
+  --bd-dark: rgba(159, 178, 255, 0.22);
+  --header-h: 72px;
+
+  background: var(--wh);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 17px;
+  line-height: 1.65;
+  overflow-x: clip;
+}
+@media (max-width: 640px) { .contentieux { font-size: 16.5px; line-height: 1.6; } }
+
+/* Neutralise le défaut global (p blanc 82 %) sur fond clair. */
+.contentieux :global(p),
+.contentieux :global(li),
+.contentieux :global(dd) { color: var(--ink); }
+
+.contentieux :global(h1),
+.contentieux :global(h2),
+.contentieux :global(h3),
+.contentieux :global(h4) { margin: 0; font-family: var(--ff-body); font-weight: 500; line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); }
+.contentieux :global(p) { margin: 0 0 var(--sp-16); }
+.contentieux :global(p:last-child) { margin-bottom: 0; }
+.contentieux :global(ul) { margin: 0 0 var(--sp-16); padding-left: 1.15em; }
+.contentieux :global(li) { margin-bottom: var(--sp-8); }
+.contentieux :global(li:last-child) { margin-bottom: 0; }
+.contentieux :global(a) { color: var(--blue3); }
+.contentieux :global(:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.contentieux :global(.dark :focus-visible) { outline-color: #ffffff; }
+
+/* ---------- utilitaires ---------- */
+.contentieux :global(.wrap) { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--sp-36); }
+@media (max-width: 640px) { .contentieux :global(.wrap) { padding: 0 20px; } }
+.contentieux :global(.read) { max-width: var(--readw); }
+
+.contentieux :global(.eyebrow) { font-family: var(--ff-mono); font-size: 13px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue3); margin: 0 0 var(--sp-16); }
+.contentieux :global(.dark .eyebrow) { color: var(--muted-on-dark); }
+
+.contentieux :global(section) { padding: var(--sp-72) 0; }
+@media (max-width: 768px) { .contentieux :global(section) { padding: 52px 0; } }
+.contentieux :global(.sec-alt) { background: var(--off); }
+.contentieux :global(.dark) { background: var(--navy); color: #ffffff; }
+.contentieux :global(.dark p),
+.contentieux :global(.dark li) { color: #e6e8f5; }
+.contentieux :global(.dark h2),
+.contentieux :global(.dark h3) { color: #ffffff; }
+
+.contentieux :global(h2) { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin-bottom: var(--sp-16); }
+.contentieux :global(h3) { font-size: 1.2rem; margin-bottom: var(--sp-12); }
+.contentieux :global(.lede) { font-size: 1.07em; color: var(--text-muted); max-width: var(--readw); }
+.contentieux :global(.dark .lede) { color: #d7dcf2; }
+.contentieux :global(.sec-head) { margin-bottom: 28px; }
+.contentieux :global(.meta) { font-family: var(--ff-mono); font-size: 13.5px; letter-spacing: 0.06em; color: var(--text-muted); line-height: 1.5; }
+
+/* ---------- boutons ---------- */
+.contentieux :global(.btn) { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 24px; font-family: var(--ff-body); font-size: 16px; font-weight: 600; line-height: 1.2; text-decoration: none; border-radius: 0; border: 1px solid var(--blue); background: var(--blue); color: #fff; cursor: pointer; transition: background 0.17s ease, border-color 0.17s ease; }
+.contentieux :global(.btn:hover) { background: var(--blue3); border-color: var(--blue3); color: #fff; }
+.contentieux :global(.btn-sec) { background: transparent; border: 1px solid var(--text-muted); color: var(--ink); }
+.contentieux :global(.btn-sec:hover) { background: var(--off); border-color: var(--ink); }
+.contentieux :global(.dark .btn-sec) { border-color: rgba(255, 255, 255, 0.5); color: #fff; }
+.contentieux :global(.dark .btn-sec:hover) { background: rgba(255, 255, 255, 0.08); border-color: #fff; }
+.contentieux :global(.btn-block) { width: 100%; }
+@media (max-width: 640px) { .contentieux :global(.btn) { width: 100%; } }
+.contentieux :global(.link-arrow) { font-weight: 500; color: var(--blue3); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- fil d'Ariane (réserve la hauteur du header global) ---------- */
+.contentieux :global(.crumbs) { background: var(--navy); color: var(--muted-on-dark); }
+.contentieux :global(.crumbs ol) { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 0; padding: calc(var(--header-h) + 16px) 0 0; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.05em; }
+.contentieux :global(.crumbs li) { display: flex; align-items: center; gap: 8px; margin: 0; }
+.contentieux :global(.crumbs li + li)::before { content: "\203A"; color: var(--muted-on-dark); }
+.contentieux :global(.crumbs a) { color: var(--muted-on-dark); display: inline-flex; align-items: center; min-height: 44px; }
+.contentieux :global(.crumbs a:hover) { color: #fff; }
+.contentieux :global(.crumbs [aria-current]) { color: #fff; }
+
+/* ---------- lien d'évitement ---------- */
+.skipLink { position: absolute; left: -9999px; top: 0; z-index: 200; background: #fff; color: var(--ink); padding: 12px 20px; font-weight: 600; border: 1px solid var(--blue); }
+.skipLink:focus { left: var(--sp-16); top: var(--sp-16); }
+
+/* ---------- hero ---------- */
+.contentieux :global(.hero) { background-color: var(--navy); background-image: radial-gradient(rgba(26, 71, 255, 0.3) 1px, transparent 1px); background-size: 40px 40px; color: #fff; padding: var(--sp-72) 0 var(--sp-96); border-bottom: 1px solid var(--bd-dark); }
+@media (max-width: 768px) { .contentieux :global(.hero) { padding: 40px 0 52px; } }
+.contentieux :global(.hero-grid) { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--sp-36) var(--sp-72); align-items: start; }
+@media (max-width: 900px) { .contentieux :global(.hero-grid) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.hero h1) { font-family: var(--ff-body); font-weight: 500; font-size: clamp(2rem, 4.3vw, 3.15rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 var(--sp-24); max-width: 15ch; color: #fff; }
+.contentieux :global(.hero-promise) { font-size: 1.12em; line-height: 1.55; color: #fff; max-width: 56ch; }
+.contentieux :global(.hero-support) { color: #d7dcf2; max-width: 56ch; }
+.contentieux :global(.hero-cta) { margin-top: var(--sp-24); }
+.contentieux :global(.hero-reassure) { margin-top: var(--sp-24); padding-top: var(--sp-16); border-top: 1px solid var(--bd-dark); font-family: var(--ff-mono); font-size: 13.5px; letter-spacing: 0.06em; color: var(--muted-on-dark); }
+.contentieux :global(.hero-aside) { border-left: 1px solid var(--bd-dark); padding-left: var(--sp-24); }
+@media (max-width: 900px) { .contentieux :global(.hero-aside) { display: none; } }
+.contentieux :global(.marker + .marker) { margin-top: var(--sp-24); }
+.contentieux :global(.marker-label) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-on-dark); margin: 0 0 5px; line-height: 1.5; }
+.contentieux :global(.marker-value) { font-size: 15.8px; line-height: 1.45; color: #e6e8f5; margin: 0; }
+.contentieux :global(.mobile-markers) { display: none; }
+@media (max-width: 900px) {
+  .contentieux :global(.mobile-markers) { display: block; margin-top: var(--sp-24); border-top: 1px solid var(--bd); padding-top: var(--sp-16); }
+  .contentieux :global(.mobile-markers .marker + .marker) { margin-top: var(--sp-16); }
+  .contentieux :global(.mobile-markers .marker-label) { color: var(--blue3); }
+  .contentieux :global(.mobile-markers .marker-value) { color: var(--ink); }
+}
+
+/* ---------- situations ---------- */
+.contentieux :global(.sit-grid) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: var(--sp-24); }
+@media (max-width: 900px) { .contentieux :global(.sit-grid) { grid-template-columns: 1fr; gap: var(--sp-16); } }
+.contentieux :global(.sit) { border: 1px solid var(--bd); background: var(--wh); padding: var(--sp-24); }
+.contentieux :global(.sit h3) { font-size: 1.08rem; margin-bottom: var(--sp-12); padding-bottom: var(--sp-12); border-bottom: 1px solid var(--bd); }
+.contentieux :global(.sit ul) { margin: 0; padding-left: 1.05em; font-size: 15.8px; line-height: 1.5; }
+.contentieux :global(.sit li) { margin-bottom: 6px; }
+.contentieux :global(.note) { border-left: 2px solid var(--blue); padding: var(--sp-12) 0 var(--sp-12) var(--sp-24); max-width: var(--readw); color: var(--text-muted); }
+
+/* ---------- encadré mesures immédiates ---------- */
+.contentieux :global(.frame) { border: 1px solid var(--bd); background: var(--wh); padding: var(--sp-36); }
+@media (max-width: 640px) { .contentieux :global(.frame) { padding: var(--sp-24) 20px; } }
+.contentieux :global(.frame-grid) { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-36); }
+@media (max-width: 900px) { .contentieux :global(.frame-grid) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.frame-col h3) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue3); border-bottom: 1px solid var(--bd); padding-bottom: 10px; margin-bottom: var(--sp-16); }
+.contentieux :global(.frame-col ul) { padding-left: 1.05em; font-size: 16px; line-height: 1.5; margin: 0; }
+.contentieux :global(.rule) { margin-top: var(--sp-36); padding-top: var(--sp-24); border-top: 1px solid var(--bd); font-size: 1.05em; font-weight: 500; max-width: var(--readw); }
+.contentieux :global(.dark .rule) { border-top-color: var(--bd-dark); color: #fff; }
+
+/* ---------- cas (deux colonnes 45/55) ---------- */
+.contentieux :global(.cases) { display: block; }
+.contentieux :global(.case) { display: grid; grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); gap: var(--sp-36); border-top: 2px solid var(--blue); padding-top: var(--sp-24); }
+.contentieux :global(.case + .case) { margin-top: var(--sp-36); }
+@media (max-width: 900px) { .contentieux :global(.case) { grid-template-columns: 1fr; gap: var(--sp-16); } }
+.contentieux :global(.case-col) { min-width: 0; }
+.contentieux :global(.case h3) { font-size: 1.15rem; margin-bottom: var(--sp-16); }
+.contentieux :global(.case dl) { margin: 0; }
+.contentieux :global(.case dt) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue3); margin-bottom: 6px; }
+.contentieux :global(.case dd) { margin: 0 0 var(--sp-16); font-size: 16.2px; line-height: 1.55; }
+.contentieux :global(.case .disclaimer) { margin: 0; padding-top: var(--sp-12); border-top: 1px solid var(--bd); font-family: var(--ff-mono); font-size: 14px; line-height: 1.5; letter-spacing: 0.03em; color: var(--text-muted); }
+
+/* ---------- matrice ---------- */
+.contentieux :global(.matrix) { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-36); }
+.contentieux :global(.matrix caption) { text-align: left; color: var(--text-muted); font-size: 15px; padding-bottom: var(--sp-12); }
+.contentieux :global(.matrix th),
+.contentieux :global(.matrix td) { text-align: left; vertical-align: top; padding: 14px 16px; border: 1px solid var(--bd); font-size: 15.8px; line-height: 1.45; }
+.contentieux :global(.matrix thead th) { background: var(--navy); color: #fff; font-family: var(--ff-mono); font-weight: 400; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; border-color: var(--navy); }
+.contentieux :global(.matrix tbody th) { background: var(--off); font-weight: 500; }
+@media (max-width: 820px) {
+  .contentieux :global(.matrix),
+  .contentieux :global(.matrix tbody),
+  .contentieux :global(.matrix tr),
+  .contentieux :global(.matrix td),
+  .contentieux :global(.matrix th) { display: block; width: 100%; }
+  .contentieux :global(.matrix thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .contentieux :global(.matrix tr) { border: 1px solid var(--bd); margin-bottom: var(--sp-16); padding: var(--sp-16); }
+  .contentieux :global(.matrix th),
+  .contentieux :global(.matrix td) { border: 0; padding: 0 0 var(--sp-16); }
+  .contentieux :global(.matrix tbody th) { background: transparent; padding-bottom: var(--sp-16); }
+  .contentieux :global(.matrix td:last-child) { padding-bottom: 0; }
+  .contentieux :global(.matrix td)::before,
+  .contentieux :global(.matrix tbody th)::before { content: attr(data-label); display: block; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue3); margin-bottom: 5px; }
+}
+.contentieux :global(.dims) { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-16); border-top: 1px solid var(--bd); padding-top: var(--sp-24); }
+@media (max-width: 820px) { .contentieux :global(.dims) { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .contentieux :global(.dims) { grid-template-columns: 1fr; } }
+.contentieux :global(.dims div) { font-size: 15.5px; line-height: 1.45; }
+.contentieux :global(.dims .meta) { display: block; margin-bottom: 4px; }
+
+/* ---------- accordéons (details/summary natifs) ---------- */
+.contentieux :global(.acc) { border-top: 1px solid var(--bd); }
+.contentieux :global(.acc-item) { border-bottom: 1px solid var(--bd); }
+.contentieux :global(.acc-item > summary) { list-style: none; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-16); cursor: pointer; padding: 18px 0; min-height: 56px; }
+.contentieux :global(.acc-item > summary)::-webkit-details-marker { display: none; }
+.contentieux :global(.acc-q) { margin: 0; font-family: var(--ff-body); font-size: 1.05rem; font-weight: 500; line-height: 1.35; color: var(--ink); }
+.contentieux :global(.acc-item > summary:hover .acc-q) { color: var(--blue3); }
+.contentieux :global(.acc-sign) { flex: 0 0 auto; width: 22px; height: 22px; position: relative; margin-top: 4px; border: 1px solid var(--bd); }
+.contentieux :global(.acc-sign)::before,
+.contentieux :global(.acc-sign)::after { content: ""; position: absolute; background: var(--blue); }
+.contentieux :global(.acc-sign)::before { left: 4px; right: 4px; top: 50%; height: 2px; margin-top: -1px; }
+.contentieux :global(.acc-sign)::after { top: 4px; bottom: 4px; left: 50%; width: 2px; margin-left: -1px; }
+.contentieux :global(.acc-item[open] > summary .acc-sign)::after { opacity: 0; }
+.contentieux :global(.acc-panel) { padding: 0 0 var(--sp-24); max-width: var(--readw); }
+
+/* ---------- solutions (voies) ---------- */
+.contentieux :global(.ways) { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--bd); border-left: 1px solid var(--bd); }
+@media (max-width: 820px) { .contentieux :global(.ways) { grid-template-columns: 1fr; } }
+.contentieux :global(.way) { border-right: 1px solid var(--bd); border-bottom: 1px solid var(--bd); padding: var(--sp-24); }
+.contentieux :global(.way h3) { margin-bottom: var(--sp-8); }
+.contentieux :global(.way p) { font-size: 16px; color: var(--text-muted); margin: 0; }
+
+/* ---------- livrables (dark) ---------- */
+.contentieux :global(.deliver) { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-36); }
+@media (max-width: 900px) { .contentieux :global(.deliver) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.deliver h3) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-on-dark); border-bottom: 1px solid var(--bd-dark); padding-bottom: 10px; margin-bottom: var(--sp-16); }
+.contentieux :global(.deliver ul) { padding-left: 1.05em; margin: 0; font-size: 16px; line-height: 1.5; }
+
+/* ---------- étapes ---------- */
+.contentieux :global(.steps) { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-24); }
+@media (max-width: 1000px) { .contentieux :global(.steps) { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .contentieux :global(.steps) { grid-template-columns: 1fr; gap: 0; border-left: 1px solid var(--bd); padding-left: var(--sp-16); }
+  .contentieux :global(.steps li) { border-top: 0; padding-top: 0; padding-bottom: var(--sp-16); }
+  .contentieux :global(.steps li:last-child) { padding-bottom: 0; }
+  .contentieux :global(.steps .num) { font-size: 24px; margin-bottom: 2px; }
+}
+.contentieux :global(.steps li) { border-top: 1px solid var(--bd); padding-top: var(--sp-12); margin: 0; }
+.contentieux :global(.steps .num) { font-family: var(--ff-display); font-size: 34px; line-height: 1; color: var(--blue); display: block; margin-bottom: 8px; }
+.contentieux :global(.steps h3) { font-size: 1.02rem; margin-bottom: 6px; }
+.contentieux :global(.steps p) { font-size: 15.5px; color: var(--text-muted); margin: 0; line-height: 1.45; }
+
+/* ---------- équipe ---------- */
+.contentieux :global(.team) { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-36); list-style: none; padding: 0; margin: 0; }
+@media (max-width: 900px) { .contentieux :global(.team) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.member) { display: grid; grid-template-columns: 96px 1fr; gap: var(--sp-16); align-items: start; margin: 0; }
+@media (max-width: 900px) { .contentieux :global(.member) { grid-template-columns: 80px 1fr; } }
+.contentieux :global(.portrait) { position: relative; width: 96px; height: 120px; background: var(--off); border: 1px solid var(--bd); overflow: hidden; }
+@media (max-width: 900px) { .contentieux :global(.portrait) { width: 80px; height: 100px; } }
+.contentieux :global(.member h3) { font-size: 1.05rem; margin-bottom: 4px; }
+.contentieux :global(.member .role) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.05em; color: var(--blue3); margin-bottom: var(--sp-12); line-height: 1.5; }
+.contentieux :global(.member p) { font-size: 15.8px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+
+/* ---------- honoraires ---------- */
+.contentieux :global(.fees) { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-36); }
+@media (max-width: 900px) { .contentieux :global(.fees) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.fees h3) { font-size: 1.05rem; }
+.contentieux :global(.highlight) { border: 1px solid var(--bd); background: var(--wh); padding: var(--sp-24); margin-top: var(--sp-24); }
+.contentieux :global(.highlight p) { font-size: 1.03em; font-weight: 500; margin-bottom: var(--sp-16); }
+
+/* ---------- sujets liés ---------- */
+.contentieux :global(.related) { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-24); }
+@media (max-width: 820px) { .contentieux :global(.related) { grid-template-columns: 1fr; gap: var(--sp-16); } }
+.contentieux :global(.related > div) { border-top: 1px solid var(--bd); padding-top: var(--sp-16); }
+.contentieux :global(.related p) { font-size: 15.8px; color: var(--text-muted); margin: 6px 0 0; line-height: 1.5; }
+
+/* ---------- contact ---------- */
+.contentieux :global(.contact-grid) { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--sp-72); }
+@media (max-width: 900px) { .contentieux :global(.contact-grid) { grid-template-columns: 1fr; gap: var(--sp-36); } }
+.contentieux :global(.contact-cta) { display: flex; flex-wrap: wrap; gap: var(--sp-12); margin: var(--sp-24) 0; }
+@media (min-width: 901px) { .contentieux :global(.cta-jump) { display: none; } }
+.contentieux :global(.addr) { margin-top: var(--sp-24); padding-top: var(--sp-16); border-top: 1px solid var(--bd-dark); font-size: 15.8px; line-height: 1.6; color: #e6e8f5; font-style: normal; }
+.contentieux :global(.addr a) { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- formulaire ---------- */
+.contentieux :global(.form) { background: #fff; color: var(--ink); padding: var(--sp-36); border: 1px solid var(--bd); }
+@media (max-width: 640px) { .contentieux :global(.form) { padding: var(--sp-24) 20px; } }
+.contentieux :global(.form h3) { font-size: 1.25rem; margin-bottom: var(--sp-8); }
+.contentieux :global(.form-intro) { font-size: 15.5px; color: var(--text-muted); margin-bottom: var(--sp-24); }
+.contentieux :global(.field) { margin-bottom: var(--sp-16); }
+.contentieux :global(.field label) { display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--ink); }
+.contentieux :global(.field .opt) { font-weight: 400; color: var(--text-muted); font-size: 14px; }
+.contentieux :global(.field input),
+.contentieux :global(.field select),
+.contentieux :global(.field textarea) { width: 100%; min-height: 48px; padding: 11px 12px; border: 1px solid var(--text-muted); border-radius: 0; font-family: var(--ff-body); font-size: 16px; color: var(--ink); background: #fff; }
+.contentieux :global(.field textarea) { min-height: 130px; line-height: 1.5; resize: vertical; }
+.contentieux :global(.field .hint) { font-size: 14px; color: var(--text-muted); margin: 5px 0 0; }
+.contentieux :global(.field .err) { font-size: 14px; font-weight: 500; color: #a30012; margin: 6px 0 0; }
+.contentieux :global(.field.invalid input),
+.contentieux :global(.field.invalid select),
+.contentieux :global(.field.invalid textarea) { border: 2px solid #a30012; }
+.contentieux :global(.row2) { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-16); }
+@media (max-width: 640px) { .contentieux :global(.row2) { grid-template-columns: 1fr; gap: 0; } }
+.contentieux :global(.form-errors) { border: 2px solid #a30012; padding: var(--sp-16); margin-bottom: var(--sp-24); font-size: 15px; }
+.contentieux :global(.form-errors ul) { margin: 8px 0 0; padding-left: 1.1em; }
+.contentieux :global(.form-note) { border: 1px dashed var(--text-muted); background: var(--off); padding: var(--sp-16); }
+.contentieux :global(.form-note p) { font-size: 14.5px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+.contentieux :global(.success) { border: 1px solid var(--blue); background: #eef1ff; padding: var(--sp-24); }
+.contentieux :global(.success h3) { margin-bottom: var(--sp-8); }
+.contentieux :global(.legal) { font-size: 14px; color: var(--text-muted); margin-top: var(--sp-16); line-height: 1.5; }
+
+/* ==========================================================================
+   Refonte UX v2 — ajouts et surcharges (chargés après les règles ci-dessus,
+   donc prioritaires à spécificité égale).
+   ========================================================================== */
+
+/* Charte : aucun bleu ciel #9FB2FF. On surcharge LOCALEMENT le token global
+   (--muted-on-dark valait #9fb2ff) et le liseré sombre par du blanc atténué. */
+.contentieux {
+  --muted-on-dark: rgba(255, 255, 255, 0.72);
+  --bd-dark: rgba(255, 255, 255, 0.16);
+}
+
+/* Fonds de section (rythme clair / ghost / warm) */
+.contentieux :global(.ghost) { background: var(--off); }
+.contentieux :global(.warm) { background: #f7f6f2; }
+
+/* H1 en Bebas Neue (charte : H1 et grands mots). Repli sans débordement. */
+.contentieux :global(.hero h1) {
+  font-family: var(--ff-display), "Arial Narrow", Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  max-width: 18ch;
+  margin: 0 0 var(--sp-24);
+  color: #fff;
+}
+
+/* Hero : bouton + lien secondaire « Voir les voies possibles ↓ » */
+.contentieux :global(.hero-cta) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-16); margin-top: var(--sp-24); }
+.contentieux :global(.hero-link) { color: #fff; font-weight: 600; font-size: 15px; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; }
+.contentieux :global(.hero-link:hover) { color: #fff; }
+
+/* Situations : colonnes à filets fins (pas de cartes), 3e colonne en bleu */
+.contentieux :global(.sit) { border: 0; border-top: 4px solid var(--ink); background: transparent; padding: 18px 24px 0 0; }
+.contentieux :global(.sit-hot) { border-top-color: var(--blue); }
+.contentieux :global(.sit h3) { border-bottom: 0; padding-bottom: 0; margin-bottom: var(--sp-12); font-size: 1.08rem; }
+.contentieux :global(.sit ul) { padding: 0; list-style: none; margin: 0; }
+.contentieux :global(.sit li) { padding: 9px 0; border-bottom: 1px solid var(--bd); margin: 0; font-size: 15.8px; line-height: 1.5; }
+@media (max-width: 900px) { .contentieux :global(.sit) { padding-right: 0; } }
+
+/* Premiers réflexes : Préserver / Vérifier / Décider en grands mots */
+.contentieux :global(.pvd) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-36); }
+@media (max-width: 767px) { .contentieux :global(.pvd) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.pvd > section) { display: flex; flex-direction: column; gap: var(--sp-12); }
+.contentieux :global(.pvd-big) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: clamp(40px, 5vw, 60px); line-height: 0.85; letter-spacing: 0.01em; text-transform: uppercase; border-top: 4px solid var(--ink); padding-top: 14px; }
+.contentieux :global(.pvd-last .pvd-big) { color: var(--blue); border-top-color: var(--blue); }
+.contentieux :global(.pvd ul) { padding: 0; list-style: none; margin: 0; }
+.contentieux :global(.pvd li) { font-size: 15.5px; line-height: 1.5; padding: 8px 0; border-bottom: 1px solid var(--bd); margin: 0; }
+
+/* Encadré d'alerte (remplace .rule dans plusieurs sections) */
+.contentieux :global(.warn) { margin-top: var(--sp-36); background: var(--wh); border: 1px solid var(--bd); border-left: 6px solid var(--blue); padding: 18px 22px; font-size: 1.05em; line-height: 1.5; font-weight: 500; max-width: none; }
+
+/* Ce qu'il faut établir : frise numérotée des cinq éléments */
+.contentieux :global(.five) { list-style: none; padding: 0; margin: 0 0 var(--sp-36); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+@media (max-width: 1000px) { .contentieux :global(.five) { grid-template-columns: repeat(3, 1fr); row-gap: var(--sp-24); } }
+@media (max-width: 640px) { .contentieux :global(.five) { grid-template-columns: 1fr; } }
+.contentieux :global(.five li) { padding: 16px 16px 0 0; display: flex; flex-direction: column; gap: 6px; font-size: 16px; font-weight: 500; line-height: 1.35; margin: 0; }
+.contentieux :global(.five li span) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: 34px; line-height: 0.9; color: var(--blue); }
+.contentieux :global(.matrix-intro) { margin-bottom: var(--sp-12); }
+.contentieux :global(.matrix caption) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; }
+.contentieux :global(.note-box) { background: var(--off); padding: 18px 20px; font-size: 15px; line-height: 1.55; color: var(--text-muted); margin-top: var(--sp-24); max-width: var(--readw); }
+
+/* Section à deux colonnes (intro + accordéons) */
+.contentieux :global(.split) { display: grid; grid-template-columns: 5fr 7fr; gap: var(--sp-72); align-items: start; }
+@media (max-width: 900px) { .contentieux :global(.split) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.split-head) { margin-bottom: 0; }
+
+/* Voies possibles — composant à onglets (navy) */
+.contentieux :global(.demo2) { position: relative; overflow: hidden; }
+.contentieux :global(.demo2)::before { content: ""; position: absolute; right: -160px; top: -160px; width: 520px; height: 520px; background: var(--blue); transform: rotate(45deg); opacity: 0.18; pointer-events: none; }
+.contentieux :global(.demo2 .wrap) { position: relative; }
+.contentieux :global(.v-intro) { display: grid; grid-template-columns: 7fr 5fr; gap: var(--sp-36); align-items: end; margin-bottom: 28px; }
+@media (max-width: 767px) { .contentieux :global(.v-intro) { grid-template-columns: 1fr; gap: var(--sp-16); } }
+.contentieux :global(.v-strong) { font-size: 1.25rem; line-height: 1.35; font-weight: 500; border-left: 3px solid #fff; padding-left: 18px; color: #fff; margin: 0; }
+.contentieux :global(.d-top) { display: flex; justify-content: space-between; gap: var(--sp-16); margin-bottom: 14px; }
+.contentieux :global(.d-top-hint) { color: var(--muted-on-dark); margin: 0; }
+.contentieux :global(.d-count) { color: #fff; margin: 0; }
+.contentieux :global(.dtabs) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--bd-dark); }
+@media (max-width: 767px) { .contentieux :global(.dtabs) { grid-template-columns: 1fr 1fr; } }
+.contentieux :global(.dtabs button) { min-height: 56px; padding: 10px 18px; background: transparent; border: 0; border-bottom: 4px solid transparent; color: var(--muted-on-dark); font-family: var(--ff-body); font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px; text-align: left; }
+.contentieux :global(.dtabs button span) { font-family: var(--ff-mono); font-size: 12px; }
+.contentieux :global(.dtabs button[aria-selected="true"]) { color: #fff; border-bottom-color: var(--blue); background: rgba(26, 71, 255, 0.16); }
+.contentieux :global(.dtabs button:hover) { color: #fff; }
+.contentieux :global(.dstage) { margin-top: 32px; }
+.contentieux :global(.v-panel) { display: grid; grid-template-columns: 5fr 7fr; gap: 0; animation: cx-din 0.35s ease-out; }
+.contentieux :global(.v-panel[hidden]) { display: none; }
+@media (max-width: 767px) { .contentieux :global(.v-panel) { grid-template-columns: 1fr; } }
+@keyframes cx-din { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .contentieux :global(.v-panel) { animation: none; } }
+.contentieux :global(.v-name) { border: 1px dashed var(--bd-dark); padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+.contentieux :global(.v-n) { font-family: var(--ff-mono); font-size: 13px; color: var(--muted-on-dark); }
+.contentieux :global(.v-big) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: clamp(34px, 4vw, 54px); line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; color: #fff; }
+.contentieux :global(.v-body) { background: var(--blue); color: #fff; padding: 28px; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.contentieux :global(.v-body p) { font-size: 1.15rem; line-height: 1.45; font-weight: 500; color: #fff; margin: 0; }
+.contentieux :global(.v-stamp) { align-self: flex-start; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; border: 1px solid #fff; }
+.contentieux :global(.v-clear) { grid-column: 1 / -1; background: #fff; color: var(--ink); padding: 20px 28px; margin-top: 12px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: center; border-left: 8px solid var(--blue); }
+@media (max-width: 767px) { .contentieux :global(.v-clear) { grid-template-columns: 1fr; gap: 8px; } }
+.contentieux :global(.v-tag) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--blue); color: var(--blue); justify-self: start; }
+.contentieux :global(.v-clear p) { font-size: 1.05rem; line-height: 1.5; color: var(--ink); margin: 0; }
+.contentieux :global(.d-nav) { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+.contentieux :global(.d-nav button) { min-width: 48px; min-height: 48px; background: transparent; border: 1px solid var(--bd-dark); color: #fff; font-size: 20px; cursor: pointer; }
+.contentieux :global(.d-nav button:hover) { background: var(--blue); border-color: var(--blue); }
+
+/* Expertise judiciaire : quatre étapes */
+.contentieux :global(.steps4) { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
+@media (max-width: 1000px) { .contentieux :global(.steps4) { grid-template-columns: 1fr 1fr; row-gap: var(--sp-24); } }
+@media (max-width: 640px) { .contentieux :global(.steps4) { grid-template-columns: 1fr; } }
+.contentieux :global(.steps4 li) { border-top: 4px solid var(--ink); padding: 20px 24px 0 0; display: flex; flex-direction: column; gap: 10px; margin: 0; }
+.contentieux :global(.steps4 li + li) { padding-left: 24px; border-left: 1px solid var(--bd); }
+@media (max-width: 1000px) { .contentieux :global(.steps4 li + li) { border-left: 0; padding-left: 0; } }
+.contentieux :global(.steps4 .k) { font-family: var(--ff-mono); font-size: 12px; color: var(--blue3); letter-spacing: 0.08em; text-transform: uppercase; }
+.contentieux :global(.steps4 h3) { font-size: 1.1rem; margin: 0; }
+.contentieux :global(.steps4 p) { font-size: 15.5px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+.contentieux :global(.expertise-cta) { margin-top: var(--sp-24); }
+
+/* Cas clients : étiquette « Cas client 01 / 02 » */
+.contentieux :global(.case-tag) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue3); margin: 0 0 8px; }
+
+/* Ce que le cabinet prépare : trois groupes, titres Bebas alignés */
+.contentieux :global(.prod) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-36); }
+@media (max-width: 900px) { .contentieux :global(.prod) { grid-template-columns: 1fr; gap: var(--sp-24); } }
+.contentieux :global(.prod section h3) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: 30px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: var(--sp-16); }
+.contentieux :global(.prod ul) { padding-left: 1.05em; margin: 0; font-size: 16px; line-height: 1.5; }
+
+/* La barre de contact mobile est celle du layout global (`site-header`
+   bottomBar) : elle gère déjà son affichage, ses deux actions et la zone sûre
+   iOS, et réserve sa propre hauteur. La page n'en ajoute pas (§6). */

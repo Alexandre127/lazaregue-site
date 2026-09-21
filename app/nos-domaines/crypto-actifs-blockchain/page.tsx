@@ -369,8 +369,7 @@ export default function Page() {
               <h2 id="h-lies">Sujets liés</h2>
               <ul className="related">
                 <li><Link href="/nos-domaines/contrats-informatiques"><span className="t">Contrats informatiques</span><span className="d">Contrats SaaS, maintenance, infogérance et réversibilité.</span></Link></li>
-                {/* Route inexistante → texte non cliquable + « bientôt » (convention du footer). */}
-                <li><div className="soon-cell"><span className="t">Contentieux informatique et commercial</span><span className="d">Échec de projet, rupture et responsabilité des prestataires.</span><span className="soon">bientôt</span></div></li>
+                <li><Link href="/nos-domaines/contentieux-informatique-commercial"><span className="t">Contentieux informatique et commercial</span><span className="d">Échec de projet, rupture et responsabilité des prestataires.</span></Link></li>
                 <li><Link href="/nos-domaines/escroquerie-fraude-bancaire"><span className="t">Escroquerie et fraude bancaire</span><span className="d">Recours des victimes contre l’établissement teneur du compte.</span></Link></li>
                 <li><Link href="/nos-domaines/ma-tech"><span className="t">M&amp;A Tech</span><span className="d">Due diligence des actifs numériques et opérations.</span></Link></li>
               </ul>

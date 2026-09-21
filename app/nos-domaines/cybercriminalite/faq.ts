@@ -1,52 +1,33 @@
 /**
- * Source unique des questions directes (FAQ).
- *
- * Module neutre : un composant `"use client"` ne peut pas exporter de données
- * vers un composant serveur. La page en a besoin pour produire le balisage
- * FAQPage, qui doit rester rigoureusement identique au texte affiché.
- *
- * §7 de l'amendement — sept questions. « Notre banque refuse de rembourser le
- * phishing » a été retirée (pôle escroquerie). Les questions 1 (rôle de
- * l'avocat), 2 (dépôt de plainte) et 7 (payer la rançon) viennent du pilier
- * cybersécurité, où elles avaient été supprimées — réponses reprises telles
- * quelles, non réécrites.
+ * Questions fréquentes — page « Cybercriminalité » (maquette v4).
+ * Texte repris à l'identique. Six questions, la première ouverte au chargement.
+ * Rendues en <details>/<summary> natifs (réponses dans le HTML initial, clavier
+ * natif, aucun script requis).
  */
-export const FAQ_ITEMS: {
-  q: string;
-  a: string;
-  lien?: { href: string; label: string };
-}[] = [
+export const FAQ_ITEMS: { q: string; a: string; open?: boolean }[] = [
   {
-    q: "Quel est le rôle de l'avocat dans les premières heures ?",
-    a: "Qualifier l'incident au regard des régimes applicables, arbitrer ce qui doit être notifié et à qui, protéger la position de l'entreprise dans les écrits qui seront relus plus tard, et préserver ce qui pourra être établi ensuite. L'avocat n'intervient pas après la technique : il intervient en même temps.",
+    q: "Quel est le rôle d'un avocat en cas de cyberattaque ?",
+    a: "Il sécurise d'abord ce qui deviendra la preuve : quoi conserver, sous quelle forme, avec quelle traçabilité, avant que la remise en service n'efface les traces. Il détermine ensuite la qualification pénale, qui oriente l'enquête et les actes pouvant être demandés. Il devient enfin l'interlocuteur unique face au parquet, à l'assureur et au prestataire technique.",
+    open: true,
   },
   {
     q: "Faut-il déposer plainte après une cyberattaque ?",
-    a: "Le dépôt de plainte n'est pas une obligation générale, mais il conditionne fréquemment l'indemnisation par l'assureur cyber, et il fixe une date certaine dans la chronologie de l'incident. La question se pose donc dans les premières vingt-quatre heures, pas après.",
+    a: "Le dépôt de plainte n'est pas obligatoire, mais il est souvent exigé par l'assureur et il conditionne l'ouverture d'une procédure pénale. Une plainte sommaire ne permet pas aux enquêteurs d'identifier les faits, les qualifications envisageables et les investigations utiles. L'enjeu n'est pas de déposer plainte, mais de déposer une plainte documentée.",
   },
   {
-    q: "Un ex-salarié est parti avec notre base clients.",
-    a: "Cela peut relever du droit pénal. L'accès ou le maintien sans droit dans un système, ainsi que l'extraction frauduleuse de données, peuvent notamment relever des articles 323-1 et suivants du code pénal. La qualification dépend des conditions concrètes d'accès, des habilitations résiduelles et de l'usage fait des données. Une plainte peut être accompagnée d'un référé pour faire cesser l'utilisation.",
-    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Le volet RGPD : fichier clients détourné et obligations envers les personnes" },
+    q: "Un ancien salarié est parti avec notre base clients.",
+    a: "Plusieurs qualifications peuvent être envisagées selon les circonstances : maintien frauduleux dans le système si les accès ont été conservés après le départ, extraction frauduleuse de données, vol ou abus de confiance. S'y ajoute le volet civil du secret des affaires. Le choix dépend de ce que les journaux permettent d'établir, ce qui suppose de les conserver avant toute réattribution du poste.",
   },
   {
     q: "On nous accuse d'une intrusion. Une adresse IP nous désigne.",
-    a: "Une adresse IP n'est pas une identité. Elle peut être usurpée, partagée, mal interprétée. Chaque élément constitutif de l'infraction doit être établi par l'accusation. Nous examinons le dossier technique et soulevons les failles de la démonstration.",
-  },
-  {
-    q: "On a subi une attaque. La CNIL enquête sur nous.",
-    a: "Être victime n'exclut pas d'être mis en cause pour insuffisance de sécurité. La défense repose sur trois démonstrations : les mesures prises, la réaction documentée à l'incident, et la responsabilité du prestataire si une vulnérabilité n'a pas été corrigée.",
-    lien: { href: "/nos-domaines/rgpd-donnees-personnelles", label: "Notification de violation et contrôle CNIL : voir RGPD & données" },
+    a: "Une adresse IP identifie un abonnement à un instant donné, pas une personne ni une intention. Partage de connexion, relais, machine compromise, adresse usurpée : les hypothèses alternatives se discutent sur pièces. Le travail consiste à obtenir l'intégralité des éléments techniques, à vérifier leurs conditions de collecte et à confronter la chronologie retenue par l'enquête à celle des journaux.",
   },
   {
     q: "Les serveurs sont à l'étranger, peut-on agir ?",
-    a: "Une infrastructure hébergée hors de France ne fait pas obstacle par principe à la poursuite. La compétence dépend du rattachement territorial et de l'entraide obtenue. Ce qui compte est la localisation du dommage et les canaux d'entraide disponibles. Serveurs distants, adresses IP et flux en cryptomonnaies sont des pièces de procédure comme les autres.",
+    a: "La localisation d'un serveur ne fait pas obstacle à la compétence des juridictions françaises dès lors que les faits ou leurs effets se situent en France. L'entraide pénale internationale et les réquisitions adressées aux opérateurs et aux plateformes permettent d'atteindre des éléments hébergés hors du territoire. Les délais s'allongent, la voie ne se ferme pas.",
   },
   {
-    // TODO (cabinet) : la subordination de l'indemnisation d'une rançon au dépôt
-    // d'une plainte dans un délai bref reste à vérifier au code des assurances
-    // avant mise en ligne. Réponse reprise telle quelle du pilier cybersécurité.
-    q: "Faut-il payer la rançon ?",
-    a: "Le versement n'est pas en soi pénalement réprimé, mais il engage plusieurs terrains à la fois : conformité aux régimes de sanctions internationales, couverture par l'assurance cyber — l'indemnisation d'un tel versement étant subordonnée au dépôt d'une plainte dans un délai bref —, et cohérence avec ce qui a été déclaré aux autorités. Cette décision ne se prend pas dans l'urgence sans analyse.",
+    q: "Notre assureur impose son prestataire. Pouvons-nous choisir notre avocat ?",
+    a: "Le libre choix de l'avocat est une règle d'ordre public en matière de protection juridique. L'assureur peut proposer un intervenant, il ne peut pas l'imposer. La distinction est utile : le prestataire de réponse à incident travaille à restaurer le service, l'avocat à construire un dossier. Les deux objectifs sont légitimes et ne commandent pas les mêmes gestes dans les premières heures.",
   },
 ];

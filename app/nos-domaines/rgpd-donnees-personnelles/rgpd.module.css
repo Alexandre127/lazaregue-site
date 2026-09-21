@@ -112,17 +112,19 @@
   color: var(--blue-dark);
   margin: 0 0 14px;
 }
-.rgpd :global(.dark) :global(.label) { color: var(--on-dark-2); }
+/* Sur fond sombre : blanc pur (retrait du bleu clair d'interface sur cette page). */
+.rgpd :global(.dark) :global(.label) { color: #fff; }
 .rgpd :global(.lead) { font-size: 1.06em; color: var(--text-2); }
-.rgpd :global(.dark) :global(.lead) { color: var(--on-dark-2); }
+.rgpd :global(.dark) :global(.lead) { color: #fff; }
 .rgpd :global(.sec-head) { margin-bottom: clamp(28px, 4vw, 44px); }
 .rgpd :global(.mention) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--text-2); }
 .rgpd :global(.sr-only) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .rgpd :global(a) { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .rgpd :global(a:hover) { color: var(--blue-dark); }
-/* liens de texte sur sombre — sauf les boutons, qui gardent leur couleur */
-.rgpd :global(.dark) :global(a:not(.btn)) { color: #cdd7ff; }
+/* liens de texte sur sombre — blanc souligné (retrait du bleu clair d'interface),
+   sauf les boutons, qui gardent leur couleur. */
+.rgpd :global(.dark) :global(a:not(.btn)) { color: #fff; }
 
 /* --- lien d'évitement (UX-159) --- */
 .skipLink {
@@ -152,10 +154,10 @@
 /* --- fil d'Ariane (UX-035/036) --- */
 .rgpd :global(.breadcrumb) { padding: 16px 0 0; }
 .rgpd :global(.breadcrumb ol) { list-style: none; margin: 0; padding: 0; max-width: none; display: flex; flex-wrap: wrap; gap: 6px 8px; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; }
-.rgpd :global(.breadcrumb li) { margin: 0; color: var(--on-dark-2); display: flex; align-items: center; gap: 8px; }
-.rgpd :global(.breadcrumb li + li)::before { content: "›"; color: var(--on-dark-2); }
-.rgpd :global(.breadcrumb a) { color: var(--on-dark-2); text-decoration: none; }
-.rgpd :global(.breadcrumb a:hover) { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.rgpd :global(.breadcrumb li) { margin: 0; color: #e7eaf6; display: flex; align-items: center; gap: 8px; }
+.rgpd :global(.breadcrumb li + li)::before { content: "›"; color: rgba(255, 255, 255, 0.6); }
+.rgpd :global(.breadcrumb a) { color: #fff; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255, 255, 255, 0.45); }
+.rgpd :global(.breadcrumb a:hover) { color: #fff; text-decoration-color: #fff; }
 .rgpd :global(.breadcrumb [aria-current="page"]) { color: #fff; }
 
 /* ==========================================================================
@@ -193,7 +195,7 @@
 .rgpd :global(.hero-grid) { display: grid; gap: 26px; }
 @media (min-width: 960px) { .rgpd :global(.hero-grid) { grid-template-columns: 58fr 42fr; gap: 48px; align-items: center; } }
 .rgpd :global(.hero h1) { max-width: 18ch; color: #fff; }
-.rgpd :global(.badge) { display: inline-block; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.16em; color: var(--on-dark-2); border: 1px solid rgba(159, 178, 255, 0.45); padding: 5px 12px; margin-bottom: 20px; }
+.rgpd :global(.badge) { display: inline-block; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.16em; color: #fff; border: 1px solid rgba(255, 255, 255, 0.5); padding: 5px 12px; margin-bottom: 20px; }
 .rgpd :global(.hero p) { max-width: 58ch; color: var(--on-dark); }
 .rgpd :global(.hero .btn) { margin-top: 4px; }
 
@@ -452,3 +454,116 @@
   .rgpd :global(*) { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .skipLink { transition: none !important; }
 }
+
+/* ============================================================
+   V4 — hero à VIDÉO DE FOND (fondue, sans cadre), duo équipe,
+   CTA de situations/méthode. Ces règles priment (fin de fichier).
+   ============================================================ */
+.rgpd :global(.hero) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: clamp(420px, 52vh, 560px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.rgpd :global(.hero) > :global(.wrap) { position: relative; z-index: 1; width: 100%; }
+
+.rgpd :global(.hero-media) { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--navy); }
+.rgpd :global(.hero-media video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: grayscale(1) contrast(1.05); }
+.rgpd :global(.hero-media .media-color) { position: absolute; inset: 0; background: var(--navy); mix-blend-mode: color; pointer-events: none; }
+.rgpd :global(.hero-media .media-lift) { position: absolute; inset: 0; background: #4d6fff; mix-blend-mode: screen; opacity: 0.12; pointer-events: none; }
+/* Dégradé de lisibilité : socle presque noir côté texte (gauche) pour tenir le
+   contraste du titre en bleu électrique quelle que soit l'image de la vidéo,
+   fondu vers la droite où la vidéo reste visible. */
+.rgpd :global(.hero-media)::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(4, 5, 14, 0.97) 0%, rgba(5, 7, 18, 0.9) 38%, rgba(10, 15, 46, 0.5) 100%); }
+@media (max-width: 759px) { .rgpd :global(.hero-media)::after { background: linear-gradient(180deg, rgba(4, 5, 14, 0.9) 0%, rgba(5, 7, 18, 0.94) 100%); } }
+
+.rgpd :global(.hero-main) { max-width: 640px; }
+/* Accent du grand titre : bleu électrique de la charte (et non le bleu lavande). */
+.rgpd :global(.hero-main h1 span) { color: var(--blue); }
+/* Paragraphe courant du hero : gris très clair, contraste plein sur le socle. */
+.rgpd :global(.hero-main .lead) { color: var(--on-dark); }
+.rgpd :global(.hero-actions) { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 26px; }
+.rgpd :global(.hero-actions .link-nav) { color: #fff; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.rgpd :global(.hero-actions .link-nav:hover) { text-decoration: underline; text-underline-offset: 4px; }
+
+/* CTA des cartes de situation (fond clair) */
+.rgpd :global(.situations li) { display: flex; flex-direction: column; }
+.rgpd :global(.situations .link-nav) { margin-top: auto; padding-top: 16px; color: var(--blue); display: inline-flex; align-items: center; gap: 8px; min-height: 44px; align-self: flex-start; }
+.rgpd :global(.situations .link-nav:hover) { text-decoration: underline; text-underline-offset: 4px; }
+
+/* CTA de la méthode (section sombre) */
+.rgpd :global(.methode) + :global(.link-nav),
+.rgpd :global(#methode .sec-head .link-nav) { color: #fff; }
+.rgpd :global(#methode .sec-head .link-nav) { display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; }
+.rgpd :global(#methode .sec-head .link-nav:hover) { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Duo équipe (avocat + appui technique) — remplace le portrait unique. */
+.rgpd :global(.team-duo) { display: grid; gap: 20px; }
+@media (min-width: 520px) and (max-width: 899px) { .rgpd :global(.team-duo) { grid-template-columns: 1fr 1fr; } }
+.rgpd :global(.team-duo .person) { margin: 0; background: var(--ghost); border: 1px solid var(--border); padding: 18px; display: flex; flex-direction: column; }
+.rgpd :global(.team-duo .person.technical-person) { border-left: 3px solid var(--blue); }
+.rgpd :global(.team-duo .shot) { position: relative; aspect-ratio: 1 / 1; overflow: hidden; margin-bottom: 14px; background: var(--navy); }
+.rgpd :global(.team-duo .shot img) { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.rgpd :global(.team-duo figcaption) { display: flex; flex-direction: column; gap: 4px; }
+.rgpd :global(.team-duo .role-eyebrow) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+.rgpd :global(.team-duo b) { font-weight: 500; font-size: 1.05rem; }
+.rgpd :global(.team-duo .role) { font-size: 0.9rem; line-height: 1.5; color: var(--text-2); }
+.rgpd :global(.team-duo .role-note) { font-size: 0.8rem; color: var(--text-2); margin-top: 4px; font-style: italic; }
+
+/* ============================================================
+   Restauration de contenu (sept. 2026) :
+   · méthode « cartographier / organiser / encadrer / documenter » (4 blocs) ;
+   · « Ce que nous voyons le plus souvent » (6 situations dépliables) ;
+   · rangée de trois intervenants (Sarah, Alexandre, Khalid).
+   ============================================================ */
+
+/* --- Méthode : 4 blocs --- */
+.rgpd :global(.mc-blocks) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 24px; }
+@media (min-width: 620px) { .rgpd :global(.mc-blocks) { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
+@media (min-width: 980px) { .rgpd :global(.mc-blocks) { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+.rgpd :global(.mc-blocks li) { margin: 0; border-top: 2px solid var(--blue); padding-top: 14px; }
+.rgpd :global(.mc-num) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--blue); display: block; margin-bottom: 8px; }
+.rgpd :global(.mc-blocks h3) { font-size: 1.05rem; margin: 0 0 6px; }
+.rgpd :global(.mc-resume) { font-size: 0.95rem; line-height: 1.5; color: var(--text); margin: 0 0 8px; max-width: none; font-weight: 500; }
+.rgpd :global(.mc-detail) { font-size: 0.9rem; line-height: 1.6; color: var(--text-2); margin: 0 0 10px; max-width: none; }
+.rgpd :global(.mc-livrable) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--risk-b-tx); margin: 0; max-width: none; }
+
+/* --- « Ce que nous voyons le plus souvent » --- */
+.rgpd :global(.terrain) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 16px; align-items: start; }
+@media (min-width: 680px) { .rgpd :global(.terrain) { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .rgpd :global(.terrain) { grid-template-columns: repeat(3, 1fr); } }
+.rgpd :global(.terrain-card) { margin: 0; align-self: start; background: var(--white); border: 1px solid var(--border); }
+.rgpd :global(.terrain-card.is-open) { border-color: rgba(26, 71, 255, 0.35); }
+.rgpd :global(.terrain-btn) { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; padding: 14px 16px; }
+.rgpd :global(.terrain-btn:focus-visible) { outline: 3px solid var(--blue); outline-offset: -3px; }
+.rgpd :global(.terrain-top) { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.rgpd :global(.terrain-num) { font-family: var(--ff-mono); font-size: 12px; color: var(--blue); }
+.rgpd :global(.terrain-sign) { font-size: 18px; line-height: 1; color: var(--text-2); flex-shrink: 0; }
+.rgpd :global(.terrain-title) { display: block; margin-top: 8px; font-size: 1rem; font-weight: 600; line-height: 1.4; color: var(--text); }
+.rgpd :global(.terrain-sub) { display: block; margin-top: 6px; font-size: 0.88rem; line-height: 1.5; color: var(--text-2); }
+.rgpd :global(.terrain-panel) { border-top: 1px solid var(--border); padding: 12px 16px 16px; }
+.rgpd :global(.terrain-panel-inner) { border-left: 2px solid rgba(26, 71, 255, 0.35); background: rgba(26, 71, 255, 0.05); padding: 12px 14px; }
+.rgpd :global(.terrain-flag) { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--risk-b-tx); margin: 0 0 6px; }
+.rgpd :global(.terrain-expand) { font-size: 0.9rem; line-height: 1.6; color: var(--text); margin: 0; max-width: none; }
+.rgpd :global(.terrain-link) { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; min-height: 44px; color: var(--blue); font-size: 0.9rem; }
+.rgpd :global(.terrain-link:hover) { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Arguments du cabinet en 2 colonnes (pleine largeur), la rangée d'intervenants
+   prenant place dessous. */
+@media (min-width: 760px) { .rgpd :global(.pourquoi-args) { grid-template-columns: repeat(2, 1fr); gap: 24px 44px; } }
+
+/* --- Rangée de trois intervenants (sous la présentation du cabinet) --- */
+.rgpd :global(.team-row) { display: grid; gap: 22px; margin-top: clamp(28px, 4vw, 40px); }
+@media (min-width: 720px) { .rgpd :global(.team-row) { grid-template-columns: repeat(3, 1fr); } }
+.rgpd :global(.team-row .person) { margin: 0; background: var(--ghost); border: 1px solid var(--border); padding: 18px; display: flex; flex-direction: column; }
+.rgpd :global(.team-row .person.technical-person) { border-left: 3px solid var(--blue); }
+.rgpd :global(.team-row .shot) { position: relative; aspect-ratio: 1 / 1; overflow: hidden; margin-bottom: 14px; background: var(--navy); }
+.rgpd :global(.team-row .shot img) { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.rgpd :global(.team-row figcaption) { display: flex; flex-direction: column; gap: 4px; }
+.rgpd :global(.team-row .role-eyebrow) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+.rgpd :global(.team-row b) { font-weight: 500; font-size: 1.05rem; }
+.rgpd :global(.team-row .role) { font-size: 0.9rem; line-height: 1.5; color: var(--text-2); }
+.rgpd :global(.team-row .role-note) { font-size: 0.8rem; color: var(--text-2); margin-top: 4px; font-style: italic; }

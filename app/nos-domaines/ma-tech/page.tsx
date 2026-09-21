@@ -1,437 +1,462 @@
 import type { Metadata } from "next";
-import styles from "./ma-tech.module.css";
+import Link from "next/link";
 import { fr } from "@/lib/typo";
+import { MembreCarte } from "@/components/equipe-dossier";
+import styles from "./ma-tech.module.css";
+import DemoTabs from "./_components/DemoTabs";
+import ConseqReveal from "./_components/ConseqReveal";
+import LivrablesGrid from "./_components/LivrablesGrid";
 import {
-  BASCULE,
+  AUDIT,
+  AUDITER,
+  CONSEQ,
+  CONTACT,
+  CONTACT_SECTION,
   DEFINITION,
-  DOMAINES_AUDIT,
-  ETAPES,
-  EQUIPE_POINT,
   FAQ,
-  FIN,
   HERO,
   LIVRABLES,
-  MATRICE,
-  OPERATIONS,
+  METHODE,
+  MID,
   POUR_QUI,
-  SCOPE,
+  REMEDIER,
+  SITUATIONS,
   TEAM,
+  TRADUIRE,
 } from "./data/ma-tech";
-import Rail from "./_components/Rail";
-import Bascule from "./_components/Bascule";
-import EquipeDossier from "@/components/equipe-dossier";
 
-/** Échelle de sévérité partagée avec la bascule (b/h/m/l). */
-const SEV: Record<"b" | "h" | "m" | "l", string> = {
-  b: styles.sevB,
-  h: styles.sevH,
-  m: styles.sevM,
-  l: styles.sevL,
-};
+const URL_BASE = "https://lazaregue-avocats.fr";
+const PATH = "/nos-domaines/ma-tech";
 
-/**
- * Le title vise la requête réellement tapée par les acquéreurs et leurs
- * conseils ; la description reprend celle de la maquette.
- */
-const TITLE =
-  "Avocat M&A Tech à Paris — due diligence technologique | Lazarègue Avocats";
+/* Title et meta description CONSERVÉS (brief §3). */
+const TITLE = "Avocat due diligence technologique — audit juridique des actifs numériques";
 const DESCRIPTION =
-  "Avocat du volet technologique des opérations de fusion-acquisition : due diligence juridique des logiciels, données, contrats IT et systèmes d'IA, garanties du SPA et remédiation. Paris, toute la France.";
+  "Due diligence juridique des logiciels, données, contrats IT, systèmes d'IA et risques cyber lors d'une acquisition ou d'une cession. Intervention en co-conseil.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/nos-domaines/ma-tech" },
-  openGraph: {
-    title: TITLE,
-    description: DESCRIPTION,
-    url: "/nos-domaines/ma-tech",
-    siteName: "Lazarègue Avocats",
-    locale: "fr_FR",
-    type: "website",
-  },
+  alternates: { canonical: PATH },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", locale: "fr_FR", type: "website" },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-/* JSON-LD : LegalService (le site utilise déjà ce type) + FAQPage (les sept
-   questions de la page). Pas de HowTo (non demandé, plus de résultat enrichi
-   depuis 2023, et il décrirait une prestation d'avocat comme un mode d'emploi) ;
-   pas d'Organization (déjà dans le layout) ; PAS d'AggregateRating (un balisage
-   de notation auto-déclaré n'est pas éligible aux résultats enrichis et expose
-   à une action manuelle). */
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "LegalService",
-      name: "Avocat M&A Tech — Lazarègue Avocats",
-      description:
-        "Due diligence juridique des actifs numériques et technologiques lors d'une acquisition, d'une cession ou d'une prise de participation.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/ma-tech",
+      "@id": `${URL_BASE}${PATH}#service`,
+      name: "Due diligence juridique des actifs technologiques",
+      url: `${URL_BASE}${PATH}`,
+      provider: { "@id": `${URL_BASE}/#cabinet` },
       areaServed: { "@type": "Country", name: "France" },
-      serviceType:
-        "Due diligence technologique, audit juridique logiciel, acquisition entreprise tech, garanties SPA",
-      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
+      serviceType: "Due diligence technologique",
     },
     {
-      "@type": "FAQPage",
-      mainEntity: FAQ.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Nos domaines", item: `${URL_BASE}/nos-domaines` },
+        { "@type": "ListItem", position: 3, name: "M&A Tech", item: `${URL_BASE}${PATH}` },
+      ],
     },
   ],
 };
 
-/** Bouton d'action — pointe systématiquement vers la page contact. */
-function Cta({ tag, label, primary }: { tag: string; label: string; primary?: boolean }) {
-  return (
-    <a className={`${styles.cta} ${primary ? styles.ctaPrimary : ""}`.trim()} href="/contact">
-      <span className={styles.tag}>{tag}</span>
-      <span className={styles.lbl}>{fr(label)}</span>
-    </a>
-  );
-}
+const TEAM_COLORS = {
+  panneau: "var(--off)",
+  carte: "var(--wh)",
+  bordure: "var(--bd)",
+  texte: "var(--ink)",
+  secondaire: "var(--text-muted)",
+  accent: "var(--blue)",
+};
 
 export default function Page() {
   return (
-    <main className={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <a className={styles.skipLink} href="#contenu">Aller au contenu</a>
 
-      {/* Préchargement priorisé de l'image du héros (LCP), conditionné par media
-          pour ne PAS précharger sous 940 px où l'image est masquée. */}
-      <link
-        rel="preload"
-        as="image"
-        imageSrcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
-        imageSizes="(min-width: 1244px) 460px, 40vw"
-        type="image/webp"
-        media="(min-width: 940px)"
-      />
+      <div className={styles.mt}>
+        <nav className="crumb" aria-label="Fil d’Ariane">
+          <div className="shell">
+            <ol>
+              <li><Link href="/">Accueil</Link></li>
+              <li><Link href="/nos-domaines">Nos domaines</Link></li>
+              <li aria-current="page">M&amp;A Tech</li>
+            </ol>
+          </div>
+        </nav>
 
-      {/* ===== Héro — bande pleine largeur sur navy (gabarit des héros du site).
-           Grille DEUX COLONNES au-dessus de 940 px (texte à gauche, image à
-           droite ~40 %) ; UNE SEULE colonne en dessous, image masquée ET non
-           téléchargée.
-           L'image est servie en statique (WebP + repli JPEG, 1200/800 px),
-           recadrée 4:5 avec le bureau réduit ; le raccord au fond navy (dégradés
-           bord gauche + bas) est fait en CSS, pas dans le fichier.
-           next/image n'est PAS employé ici : son <img> serait téléchargé même
-           masqué en display:none sous 940 px, ce que la consigne de performance
-           proscrit. Un <picture> dont les <source> sont conditionnées par
-           `media:(min-width:940px)` n'émet aucune requête sous le seuil ; la
-           priorité (LCP) est portée par le <link rel="preload"> ci-dessus. ===== */}
-      <section className={styles.hero}>
-        <div className={styles.wrap}>
-          <div className={styles.heroInner}>
-            <div className={styles.heroCopy}>
-              <span className={styles.heroPastille}>Fusions-acquisitions tech · Paris</span>
-              <h1>
-                {fr(HERO.h1)}
-                <span className={styles.h1tail}>{fr(HERO.h1tail)}</span>
-              </h1>
-              <p className={styles.heroSub}>{fr(HERO.sub)}</p>
-              <p className={styles.heroIntro}>{fr(HERO.intro)}</p>
-
-              <div className={styles.ctaRow}>
-                <Cta tag="buy-side" label="Faire auditer une cible" primary />
-                <Cta tag="sell-side" label="Préparer une cession tech" />
-              </div>
-            </div>
-
-            <figure className={styles.heroMedia}>
+        <main id="contenu">
+          {/* 1 · HERO — photographie fondue en fond de section */}
+          <section className="hero on-dark">
+            <div className="hero__bg" aria-hidden="true">
               <picture>
-                <source
-                  type="image/webp"
-                  media="(min-width: 940px)"
-                  srcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w"
-                  sizes="(min-width: 1244px) 460px, 40vw"
-                />
-                <source
-                  type="image/jpeg"
-                  media="(min-width: 940px)"
-                  srcSet="/images/ma-tech/ma-tech-800.jpg 800w, /images/ma-tech/ma-tech-1200.jpg 1200w"
-                  sizes="(min-width: 1244px) 460px, 40vw"
-                />
-                {/* Repli 1×1 transparent : sous 940 px aucune <source> ne
-                    s'applique, l'image n'est donc jamais téléchargée là où elle
-                    est masquée (un display:none ne suffirait pas). */}
+                <source type="image/webp" srcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w" sizes="(max-width:1040px) 100vw, 60vw" />
                 <img
-                  className={styles.heroImg}
-                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  src="/images/ma-tech/ma-tech-1200.jpg"
+                  srcSet="/images/ma-tech/ma-tech-800.jpg 800w, /images/ma-tech/ma-tech-1200.jpg 1200w"
+                  sizes="(max-width:1040px) 100vw, 60vw"
+                  alt=""
                   width={1200}
                   height={1500}
-                  alt="Liasse de documents contractuels reliée, avec onglets de repérage"
-                  fetchPriority="high"
                   decoding="async"
                 />
               </picture>
-            </figure>
-          </div>
-
-          <div className={styles.assert}>
-            {HERO.assertions.map((a, i) => (
-              <div key={a}>
-                <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
-                <p>{fr(a)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Définition ===== */}
-      <section className={styles.definition}>
-        <div className={`${styles.wrap} ${styles.defGrid}`}>
-          <div>
-            <h2>{fr(DEFINITION.h2)}</h2>
-          </div>
-          <div className={styles.defBody}>
-            <p>{fr(DEFINITION.p1)}</p>
-            <p className={styles.small}>
-              On la rencontre aussi sous les appellations <strong>due diligence IT</strong>,{" "}
-              <em>tech due diligence</em> ou <em>technology due diligence</em>. Côté vendeur,
-              l&apos;exercice symétrique est la <strong>vendor due diligence</strong> : le cédant fait
-              auditer sa propre technologie avant d&apos;ouvrir la data room.
-            </p>
-            <div className={styles.defTags}>
-              {DEFINITION.tags.map((t) => (
-                <span key={t} className={styles.tagChip}>
-                  {t}
-                </span>
-              ))}
+              <span className="hero__veil" />
             </div>
-          </div>
-        </div>
-      </section>
+            <div className="shell">
+              <div className="hero__inner">
+                <span className="eyebrow">{HERO.eyebrow}</span>
+                <h1>{fr(HERO.h1)}</h1>
+                <p className="hero__what">{fr(HERO.what)}</p>
+                <p className="hero__why">{fr(HERO.why)}</p>
+                <div className="btn-row">
+                  <Link className="btn btn--primary" href={CONTACT}>{HERO.cta1} →</Link>
+                  <Link className="btn btn--ghost" href={CONTACT}>{HERO.cta2}</Link>
+                </div>
+              </div>
+            </div>
+          </section>
 
-      {/* ===== Audit juridique / audit technique ===== */}
-      <section>
-        <div className={styles.wrap}>
-          <div className={styles.scope}>
-            <span className={`${styles.eyebrow} ${styles.eyebrowBlue}`}>{SCOPE.label}</span>
-            <h3 className={styles.scopeH}>{fr(SCOPE.h3)}</h3>
-            <p className={styles.measure}>{fr(SCOPE.measure)}</p>
-            <table className={styles.compare}>
-              <thead>
-                <tr>
-                  <th scope="col">{SCOPE.headA}</th>
-                  <th scope="col">{SCOPE.headB}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {SCOPE.rows.map(([a, b]) => (
-                  <tr key={a}>
-                    <td>{fr(a)}</td>
-                    <td data-lbl={SCOPE.lblB}>{fr(b)}</td>
-                  </tr>
+          {/* 2 · CE QUE L'AUDIT PEUT CHANGER (remonté) */}
+          <section className="section" id="consequences" aria-labelledby="h-conseq">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{CONSEQ.eyebrow}</span>
+                  <h2 id="h-conseq">{fr(CONSEQ.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 34 }}>{fr(CONSEQ.lede)}</p>
+              <ConseqReveal />
+            </div>
+          </section>
+
+          {/* 3 · À QUI NOUS NOUS ADRESSONS */}
+          <section className="section section--ghost" id="publics" aria-labelledby="h-pub">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{POUR_QUI.eyebrow}</span>
+                  <h2 id="h-pub">{fr(POUR_QUI.h2)}</h2>
+                </div>
+              </div>
+              <div className="cards">
+                {POUR_QUI.cards.map((c) => (
+                  <article className="card" key={c.tag}>
+                    <span className="card__tag">{c.tag}</span>
+                    <h3>{fr(c.h3)}</h3>
+                    <p>{fr(c.p)}</p>
+                  </article>
                 ))}
-              </tbody>
-            </table>
-            <p className={styles.scopeNote}>{fr(SCOPE.note)}</p>
-          </div>
-        </div>
-      </section>
+              </div>
+            </div>
+          </section>
 
-      {/* ===== Pour qui ===== */}
-      <section>
-        <div className={styles.wrap}>
-          <span className={styles.eyebrow}>pour qui</span>
-          <h2 className={styles.pourQuiTitre}>{fr(POUR_QUI.titre)}</h2>
-          <p className={styles.lead}>{fr(POUR_QUI.texte)}</p>
-          <div className={styles.whoGrid}>
-            {POUR_QUI.points.map((p) => (
-              <article key={p.k}>
-                <h4>{fr(p.k)}</h4>
-                <p>{fr(p.v)}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* 4 · DÉFINITION */}
+          <section className="section" id="definition" aria-labelledby="h-def">
+            <div className="shell split">
+              <div className="shead split-head">
+                <div>
+                  <span className="eyebrow">{DEFINITION.eyebrow}</span>
+                  <h2 id="h-def">{fr(DEFINITION.h2)}</h2>
+                </div>
+              </div>
+              <div className="measure">
+                <p style={{ fontSize: "1.12rem", lineHeight: 1.6 }}>{fr(DEFINITION.para1)}</p>
+                <blockquote className="pull">{fr(DEFINITION.pull)}</blockquote>
+                <details className="more">
+                  <summary>{fr(DEFINITION.moreSummary)}</summary>
+                  <div>
+                    {DEFINITION.more.map((p) => (
+                      <p key={p}>{fr(p)}</p>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
 
-      {/* ===== 01 / 02 / 03 — rail + contenu ===== */}
-      <section>
-        <div className={`${styles.wrap} ${styles.bodyGrid}`}>
-          <Rail />
-
-          <div className={styles.col}>
-            {ETAPES.map((e) => (
-              <section key={e.id} id={e.id} className={styles.step}>
-                <span className={styles.eyebrow}>
-                  {e.n} — {e.court}
-                </span>
-                <h2>{fr(e.h2)}</h2>
-                <p className={styles.these}>{fr(e.these)}</p>
-
-                {/* Étape 01 : bloc bascule, accordéon des domaines, livrables,
-                    matrice. */}
-                {e.id === "auditer" ? (
-                  <>
-                    <Bascule />
-
-                    <h3 className={styles.domTitre}>Audit juridique du logiciel et des données</h3>
-                    <div className={styles.dom}>
-                      {DOMAINES_AUDIT.map((d) => (
-                        <details key={d.h3}>
-                          <summary>{fr(d.h3)}</summary>
-                          <div className={styles.domBody}>
-                            <p>{fr(d.p)}</p>
-                            {d.lien ? (
-                              <a className={styles.domLien} href={d.lien.href}>
-                                {d.lien.label} →
-                              </a>
-                            ) : null}
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-
-                    <div className={styles.deliver}>
-                      <span className={`${styles.k} ${styles.kBlue}`}>nos livrables</span>
-                      <ol>
-                        {LIVRABLES.map((l) => (
-                          <li key={l}>{fr(l)}</li>
-                        ))}
-                      </ol>
-                    </div>
-
-                    <div className={styles.matrix}>
-                      <div className={styles.matrixHead}>
-                        <h3>{fr(MATRICE.titre)}</h3>
-                        <span className={styles.k}>{MATRICE.mention}</span>
-                      </div>
-                      <table className={styles.mx}>
+          {/* 5 · AUDIT JURIDIQUE / TECHNIQUE */}
+          <section className="section section--ghost" id="audit" aria-labelledby="h-aud">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">Périmètre</span>
+                  <h2 id="h-aud">{fr(AUDIT.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 28 }}>{fr(AUDIT.lede)}</p>
+              <div className="cmp">
+                {AUDIT.synth.map((s) => (
+                  <div className={s.accent ? "cmp__col cmp__col--accent" : "cmp__col"} key={s.label}>
+                    <span className="cmp__label">{s.label}</span>
+                    <p className="cmp__q">{fr(s.q)}</p>
+                    <p className="cmp__eff">{fr(s.eff)}</p>
+                  </div>
+                ))}
+              </div>
+              <details className="more">
+                <summary>{fr(AUDIT.moreSummary)}</summary>
+                <div>
+                  <div className="resp">
+                    <div className="tablewrap" tabIndex={0} role="region" aria-label="Comparaison entre audit technique et audit juridique">
+                      <table>
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">constat</th>
-                            <th scope="col">gravité</th>
-                            <th scope="col">traitement retenu</th>
-                          </tr>
+                          <tr>{AUDIT.cols.map((c) => <th scope="col" key={c}>{fr(c)}</th>)}</tr>
                         </thead>
                         <tbody>
-                          {MATRICE.lignes.map((l) => (
-                            <tr key={l.n}>
-                              <td className={styles.c}>{l.n}</td>
-                              <td className={styles.f}>{fr(l.constat)}</td>
-                              <td>
-                                <span className={`${styles.sev} ${SEV[l.ton]}`}>{l.gravite}</span>
-                              </td>
-                              <td data-lbl={MATRICE.lblTraitement}>{fr(l.traitement)}</td>
+                          {AUDIT.rows.map((row) => (
+                            <tr key={row.k}>
+                              <th scope="row">{fr(row.k)}</th>
+                              <td data-label="Audit technique">{fr(row.tech)}</td>
+                              <td data-label="Audit juridique">{fr(row.jur)}</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
-                  </>
-                ) : null}
+                  </div>
+                </div>
+              </details>
+            </div>
+          </section>
 
-                {e.paragraphes?.map((p) => (
-                  <p key={p} className={styles.measure}>
-                    {fr(p)}
-                  </p>
+          {/* 6 · MÉTHODE (rail, navy) */}
+          <section className="section section--navy on-dark" id="methode" aria-labelledby="h-meth">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{METHODE.eyebrow}</span>
+                  <h2 id="h-meth">{fr(METHODE.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 34 }}>{fr(METHODE.lede)}</p>
+              <ol className="rail">
+                {METHODE.steps.map((s, i) => (
+                  <li className={i === METHODE.steps.length - 1 ? "rail-step rail-step--last" : "rail-step"} key={s.big}>
+                    <span className="rail-meta">{fr(s.meta)}</span>
+                    <span className="rail-big">{s.big}</span>
+                    <p>{fr(s.p)}</p>
+                  </li>
                 ))}
+              </ol>
+            </div>
+          </section>
 
-                {e.sousTitres?.map((d) => (
-                  <div key={d.h3}>
-                    <h3 className={styles.sousTitre}>{fr(d.h3)}</h3>
-                    <p className={styles.measure}>{fr(d.p)}</p>
+          {/* 7 · LES ACTIFS ET DROITS EXAMINÉS (accordéons) */}
+          <section className="section section--sub" id="auditer" aria-labelledby="h-auditer">
+            <div className="shell split">
+              <div className="shead split-head">
+                <div>
+                  <span className="eyebrow">{AUDITER.eyebrow}</span>
+                  <h2 id="h-auditer">{fr(AUDITER.h2)}</h2>
+                  <p className="lede" style={{ marginTop: 14 }}>{fr(AUDITER.lede)}</p>
+                </div>
+              </div>
+              <div className="acc">
+                {AUDITER.items.map((it) => (
+                  <details key={it.k}>
+                    <summary><span className="acc__k">{it.k}</span> {fr(it.titre)}</summary>
+                    <div className="acc__body">
+                      <p>
+                        {fr(it.before)}
+                        <Link href={it.href}>{fr(it.lien)}</Link>
+                        {it.after}
+                      </p>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 8 · DÉMONSTRATION (onglets, navy) */}
+          <section className="section section--navy on-dark demo-sec" id="demonstration" aria-labelledby="h-demo">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">Démonstration</span>
+                  <h2 id="h-demo">Ce que l’audit fait apparaître</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 28 }}>L’écart entre ce qu’une data room déclare et ce que les pièces établissent constitue l’essentiel du travail.</p>
+              <DemoTabs />
+            </div>
+          </section>
+
+          {/* 9 · TRADUIRE (groupes + lexique) */}
+          <section className="section" id="traduire" aria-labelledby="h-trad">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{TRADUIRE.eyebrow}</span>
+                  <h2 id="h-trad">{fr(TRADUIRE.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 30 }}>{fr(TRADUIRE.lede)}</p>
+              <div className="groups">
+                {TRADUIRE.groups.map((g) => (
+                  <section className="group" key={g.h3}>
+                    <h3>{fr(g.h3)}</h3>
+                    <ul>
+                      {g.items.map((it) => <li key={it}>{fr(it)}</li>)}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+              <h3 className="gloss-title">{fr(TRADUIRE.glossTitle)}</h3>
+              <dl className="gloss">
+                {TRADUIRE.gloss.map((g) => (
+                  <div key={g.dt}>
+                    <dt>{fr(g.dt)}</dt>
+                    <dd>{fr(g.dd)}</dd>
                   </div>
                 ))}
-
-                <div className={styles.legal}>
-                  <span className={`${styles.k} ${styles.kBlue}`}>le point juridique</span>
-                  <p>{fr(e.point)}</p>
-                </div>
-
-                <Cta tag={`${e.court} ${e.n}`} label={e.cta} primary={e.id === "auditer"} />
-              </section>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Opérations ===== */}
-      <section id="operations">
-        <div className={styles.wrap}>
-          <h2>Acquisition SaaS, carve-out, asset deal : nos interventions</h2>
-          <div className={styles.ops}>
-            {OPERATIONS.map((o) => (
-              <article key={o.h3}>
-                <span className={`${styles.k} ${styles.kPeri}`}>{o.k}</span>
-                <h4>{fr(o.h3)}</h4>
-                <p>{fr(o.p)}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Équipe ===== */}
-      <section>
-        <div className={styles.wrap}>
-          <EquipeDossier
-            eyebrow="l'équipe"
-            titre="Qui tient le stream technologique"
-            chapeau="Le volet technologique d'une opération se joue entre la revue des actifs numériques, la conformité des données et la rédaction des garanties du contrat d'acquisition. Ces trois travaux sont menés par la même équipe."
-            membres={TEAM}
-          />
-          <div className={styles.legal} style={{ marginTop: 24 }}>
-            <span className={`${styles.k} ${styles.kBlue}`}>une pratique quotidienne</span>
-            <p>{fr(EQUIPE_POINT)}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FAQ ===== */}
-      <section>
-        <div className={styles.wrap}>
-          <h2>Questions fréquentes</h2>
-          <div className={styles.faq}>
-            {FAQ.map((f) => (
-              <details key={f.q}>
-                <summary>{fr(f.q)}</summary>
-                <div className={styles.a}>{fr(f.a)}</div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Contact ===== */}
-      <section className={styles.contact} id="contact">
-        <div className={`${styles.wrap} ${styles.contactGrid}`}>
-          <div>
-            <h2 className={styles.contactH}>{fr(FIN.h2)}</h2>
-            <p className={styles.lead}>{fr(FIN.p)}</p>
-            <div className={styles.ctaRow}>
-              <Cta tag="buy-side" label="Faire auditer une cible" primary />
-              <Cta tag="sell-side" label="Préparer une cession tech" />
+              </dl>
             </div>
-          </div>
-          <div>
-            <span className={styles.eyebrow}>notre intervention</span>
-            <div className={styles.steps}>
-              {FIN.steps.map((s, i) => (
-                <div key={s}>
-                  <b>{String(i + 1).padStart(2, "0")}</b>
-                  <span>{fr(s)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Contact toujours à portée sur mobile */}
-      <a href="/contact" className={styles.sticky}>
-        Auditer ma cible →
-      </a>
-    </main>
+          {/* 10 · CTA INTERMÉDIAIRE (unique, navy) */}
+          <section className="section--navy on-dark mid-sec" aria-label="Prendre contact">
+            <div className="shell mid">
+              <p className="mid__phrase">{fr(MID.phrase)}</p>
+              <div className="btn-row" style={{ margin: 0 }}>
+                <Link className="btn btn--primary" href={CONTACT}>{HERO.cta1} →</Link>
+                <Link className="btn btn--ghost" href={CONTACT}>{HERO.cta2}</Link>
+              </div>
+            </div>
+          </section>
+
+          {/* 11 · REMÉDIER */}
+          <section className="section section--ghost" id="remedier" aria-labelledby="h-rem">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{REMEDIER.eyebrow}</span>
+                  <h2 id="h-rem">{fr(REMEDIER.h2)}</h2>
+                </div>
+              </div>
+              <div className="cols2">
+                <div className="colbox">
+                  <h3>{REMEDIER.avantT}</h3>
+                  <ul>{REMEDIER.avant.map((it) => <li key={it}>{fr(it)}</li>)}</ul>
+                </div>
+                <div className="colbox">
+                  <h3>{REMEDIER.apresT}</h3>
+                  <ul>{REMEDIER.apres.map((it) => <li key={it}>{fr(it)}</li>)}</ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 12 · LIVRABLES (trois exemples, un par étape) */}
+          <section className="section" id="livrables" aria-labelledby="h-liv">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{LIVRABLES.eyebrow}</span>
+                  <h2 id="h-liv">{fr(LIVRABLES.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 34 }}>{fr(LIVRABLES.lede)}</p>
+              <LivrablesGrid />
+            </div>
+          </section>
+
+          {/* 13 · STRUCTURES D'OPÉRATION */}
+          <section className="section section--warm" id="situations" aria-labelledby="h-str">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{SITUATIONS.eyebrow}</span>
+                  <h2 id="h-str">{fr(SITUATIONS.h2)}</h2>
+                </div>
+              </div>
+              <div className="struct">
+                {SITUATIONS.cards.map((c) => (
+                  <article key={c.h3}>
+                    <h3>{fr(c.h3)}</h3>
+                    <p>{fr(c.p)}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 14 · LE CABINET */}
+          <section className="section" id="equipe" aria-labelledby="h-cab">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{TEAM.eyebrow}</span>
+                  <h2 id="h-cab">{fr(TEAM.h2)}</h2>
+                </div>
+              </div>
+              <div className="team-grid">
+                {TEAM.membres.map((m) => (
+                  <MembreCarte key={m.slug} membre={m} couleurs={TEAM_COLORS} />
+                ))}
+              </div>
+              <p className="measure" style={{ marginTop: 34 }}>{fr(TEAM.closing)}</p>
+              <p className="measure" style={{ marginTop: 12 }}>
+                {TEAM.liensIntro}
+                {TEAM.liens.map((l, i) => (
+                  <span key={l.href}>
+                    <Link href={l.href}>{fr(l.label)}</Link>
+                    {i < TEAM.liens.length - 1 ? " · " : "."}
+                  </span>
+                ))}
+              </p>
+            </div>
+          </section>
+
+          {/* 15 · FAQ */}
+          <section className="section section--ghost" id="faq" aria-labelledby="h-faq">
+            <div className="shell faq-grid">
+              <div className="shead" style={{ marginBottom: 0 }}>
+                <div>
+                  <span className="eyebrow">Questions fréquentes</span>
+                  <h2 id="h-faq">Ce que les acquéreurs et les cédants demandent</h2>
+                </div>
+              </div>
+              <div className="faq">
+                {FAQ.map((f) => (
+                  <details key={f.q}>
+                    <summary>{fr(f.q)}</summary>
+                    <div className="faq__body"><p>{fr(f.a)}</p></div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 16 · CONTACT */}
+          <section className="section section--navy on-dark" id="contact" aria-labelledby="h-contact">
+            <div className="shell">
+              <div className="shead">
+                <div>
+                  <span className="eyebrow">{CONTACT_SECTION.eyebrow}</span>
+                  <h2 id="h-contact">{fr(CONTACT_SECTION.h2)}</h2>
+                </div>
+              </div>
+              <p className="lede" style={{ marginBottom: 26 }}>{fr(CONTACT_SECTION.lede)}</p>
+              <div className="btn-row" style={{ marginTop: 0 }}>
+                <Link className="btn btn--primary" href={CONTACT}>{CONTACT_SECTION.cta1} →</Link>
+                <Link className="btn btn--ghost" href={CONTACT}>{CONTACT_SECTION.cta2}</Link>
+              </div>
+              <p className="contact__coord">
+                {CONTACT_SECTION.coord}<br />
+                <a href="tel:+33181706200">{CONTACT_SECTION.tel}</a> · <a href={`mailto:${CONTACT_SECTION.email}`}>{CONTACT_SECTION.email}</a>
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </>
   );
 }

@@ -4,9 +4,10 @@ import Link from "next/link";
 import styles from "./rgpd.module.css";
 import { FAQ_ITEMS } from "./faq";
 import { HeroVideo } from "./_components/HeroVideo";
-import { SpecimenViewer } from "./_components/SpecimenViewer";
 import { FaqAccordion } from "./_components/FaqAccordion";
 import { TrackedLink } from "./_components/TrackedLink";
+import { SpecimensRecus } from "./_components/SpecimensRecus";
+import { TerrainCards } from "./_components/TerrainCards";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/nos-domaines/rgpd-donnees-personnelles";
@@ -68,29 +69,45 @@ const FAQ_LD = {
   })),
 };
 
-const SITUATIONS: { t: string; p: string }[] = [
-  { t: "Vous devez vous mettre en conformité", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer." },
-  { t: "Vos prestataires ne sont pas encadrés", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties." },
-  { t: "Vous lancez un produit ou un outil d’IA", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont en cours d’arbitrage." },
-  { t: "Vous subissez une violation de données", p: "Fuite, rançongiciel ou envoi erroné : vous devez décider vite s’il faut notifier la CNIL et informer les personnes concernées." },
-  { t: "Vous êtes contrôlé par la CNIL", p: "Vous avez reçu un questionnaire, un avis de contrôle ou une demande d’information. Vos réponses engagent la suite de la procédure." },
-  { t: "Vous préparez une acquisition ou une levée", p: "L’acquéreur ou l’investisseur audite votre conformité. Les écarts identifiés peuvent affecter l’évaluation du risque, les garanties ou les conditions de l’opération." },
-  { t: "Vous voulez un appui régulier", p: "Vous n’avez pas de juriste dédié à ces sujets. Vous cherchez un interlocuteur disponible au fil de vos projets." },
+const SITUATIONS: { t: string; p: string; cta: string }[] = [
+  { t: "Vous devez vous mettre en conformité", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer.", cta: "Faire le point sur la conformité" },
+  { t: "Vos prestataires ne sont pas encadrés", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties.", cta: "Encadrer les contrats" },
+  { t: "Vous lancez un produit ou un outil d’IA", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont en cours d’arbitrage.", cta: "Intégrer la protection des données" },
+  { t: "Vous subissez une violation de données", p: "Fuite, rançongiciel ou envoi erroné : vous devez décider vite s’il faut notifier la CNIL et informer les personnes concernées.", cta: "Être accompagné après une violation" },
+  { t: "Vous êtes contrôlé par la CNIL", p: "Vous avez reçu un questionnaire, un avis de contrôle ou une demande d’information. Vos réponses engagent la suite de la procédure.", cta: "Préparer la réponse à la CNIL" },
+  { t: "Vous préparez une acquisition ou une levée", p: "L’acquéreur ou l’investisseur audite votre conformité. Les écarts identifiés peuvent affecter l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
+  { t: "Un suivi RGPD dans la durée", p: "Un interlocuteur pour vos questions RGPD, vos contrats et l’évolution de vos projets, en lien avec vos équipes.", cta: "Échanger sur votre suivi RGPD" },
 ];
 
-const MISSIONS: { t: string; p: string }[] = [
-  { t: "Auditer", p: "Le cabinet examine vos traitements, vos outils, vos contrats et vos pratiques réelles, au-delà des documents déjà rédigés, et hiérarchise les écarts par niveau de risque." },
-  { t: "Mettre en conformité", p: "Le cabinet rédige et met à jour la documentation exigée par le règlement, en la rattachant à votre activité réelle plutôt qu’à un modèle générique." },
-  { t: "Sécuriser les contrats et les prestataires", p: "Le cabinet négocie et rédige les clauses de sous-traitance, arbitre les responsabilités entre les parties et encadre les transferts hors Union européenne." },
-  { t: "Accompagner les projets dès leur conception", p: "Le cabinet intervient au moment des choix techniques, avant la mise en production, et non pour constater ensuite des écarts devenus coûteux à corriger." },
-];
-
-const METHODE: { t: string; p: string }[] = [
-  { t: "Premier échange", p: "Votre activité, vos outils, le degré d’urgence et le périmètre à traiter." },
-  { t: "Audit", p: "Entretiens, examen des contrats et des traitements, constat des écarts." },
-  { t: "Plan d’action", p: "Priorisation par risque, par coût et par délai, validée avec la direction." },
-  { t: "Mise en œuvre", p: "Rédaction des documents, négociation des contrats, appui aux équipes." },
-  { t: "Suivi", p: "Mise à jour de la documentation et point périodique sur les nouveaux projets." },
+/* Quatre temps de la mise en conformité — contenu restauré de l'ancienne page
+   (registre Art. 30, AIPD, DPO, procédures des droits, contrats Art. 28,
+   transferts hors UE, sécurité Art. 32, privacy by design Art. 25, violations
+   et notification CNIL, documentation d'accountability). */
+const MC_BLOCKS: { titre: string; resume: string; detail: string; livrable: string }[] = [
+  {
+    titre: "Cartographier",
+    resume: "Savoir ce que vous traitez — et pourquoi",
+    detail: "Cartographie des traitements, registre Art. 30 avec base légale documentée, identification des AIPD nécessaires.",
+    livrable: "Registre des traitements",
+  },
+  {
+    titre: "Organiser",
+    resume: "Répartir les rôles et les responsabilités",
+    detail: "DPO interne ou externe, politiques internes, procédures de réponse aux droits des personnes, comités de suivi.",
+    livrable: "Politiques et procédures internes",
+  },
+  {
+    titre: "Encadrer",
+    resume: "Maîtriser votre exposition contractuelle et technique",
+    detail: "Contrats sous-traitants Art. 28, clauses négociées, transferts hors UE (CCT, BCR), mesures de sécurité Art. 32 et protection des données dès la conception (privacy by design, Art. 25).",
+    livrable: "Contrats sous-traitants Art. 28",
+  },
+  {
+    titre: "Documenter",
+    resume: "Être prêt à démontrer, à tout moment",
+    detail: "Procédures de violation et de notification CNIL, traçabilité des décisions, documentation tenue à jour en vue d’un contrôle.",
+    livrable: "Dossier de conformité",
+  },
 ];
 
 const ARGUMENTS: { t: string; p: string }[] = [
@@ -107,9 +124,9 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SERVICE_LD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_LD) }} />
 
-      {/* Contenu essentiel visible sans JS : révèle les panneaux masqués. */}
+      {/* Contenu essentiel visible sans JS : révèle les panneaux FAQ masqués. */}
       <noscript>
-        <style>{`.spec-panel[hidden],.faq-panel[hidden]{display:block!important}.spec-panel{position:static!important}`}</style>
+        <style>{`.faq-panel[hidden]{display:block!important}`}</style>
       </noscript>
 
       {/* Lien d'évitement (UX-159) — première cible utile de la page. */}
@@ -118,6 +135,8 @@ export default function Page() {
       <main id="contenu-principal" className={styles.rgpd}>
         {/* ============ 1. HERO ============ */}
         <div className="hero dark">
+          {/* Vidéo de fond, fondue dans la section (aucun cadre) — cf. HeroVideo. */}
+          <HeroVideo />
           <div className="wrap">
             <nav className="breadcrumb" aria-label="Fil d’Ariane">
               <ol>
@@ -126,20 +145,15 @@ export default function Page() {
                 <li><span aria-current="page">Avocat RGPD</span></li>
               </ol>
             </nav>
-            <div className="hero-grid">
-              <div>
-                <p className="badge">RGPD &amp; DONNÉES · PARIS</p>
-                <h1>Avocat RGPD pour les entreprises</h1>
-                <p className="lead">Le cabinet accompagne les PME et les ETI pour auditer leurs pratiques, corriger les risques et rendre leur conformité démontrable. Vous disposez d’un plan d’action et de documents adaptés à votre activité.</p>
-                <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat</TrackedLink>
+            <div className="hero-main">
+              <p className="badge">RGPD &amp; DONNÉES · PARIS</p>
+              <h1>Avocat RGPD <span>pour les entreprises</span></h1>
+              <p className="lead">Le cabinet accompagne les PME et les ETI pour auditer leurs pratiques, corriger les écarts et rendre leur conformité démontrable. Selon votre besoin, le cabinet établit un plan d’action et prépare les documents adaptés à votre activité.</p>
+              <div className="hero-actions">
+                <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat <span aria-hidden="true">→</span></TrackedLink>
+                <a className="link-nav" href="#urgences">Une violation ou un contrôle CNIL ? <span aria-hidden="true">→</span></a>
               </div>
-              <HeroVideo />
             </div>
-            <ul className="reperes">
-              <li><b>Audit</b><span>Cartographie des traitements, registre, plan d’action priorisé.</span></li>
-              <li><b>Documents et contrats</b><span>Politiques, mentions d’information, contrats de sous-traitance.</span></li>
-              <li><b>Violations et CNIL</b><span>Notification dans les délais, réponse aux contrôles et aux procédures.</span></li>
-            </ul>
           </div>
         </div>
 
@@ -149,69 +163,53 @@ export default function Page() {
             <div className="sec-head">
               <p className="label">votre situation</p>
               <h2>Dans quelle situation êtes-vous&nbsp;?</h2>
+              <p className="lead">Un projet à sécuriser, un écart à corriger ou une procédure en cours&nbsp;: accédez à l’accompagnement qui vous concerne.</p>
             </div>
             <ul className="situations">
               {SITUATIONS.map((s) => (
-                <li key={s.t}><h3>{s.t}</h3><p>{s.p}</p></li>
+                <li key={s.t}>
+                  <h3>{s.t}</h3>
+                  <p>{s.p}</p>
+                  <Link className="link-nav" href="/contact">{s.cta} <span aria-hidden="true">→</span></Link>
+                </li>
               ))}
             </ul>
           </div>
         </section>
 
-        {/* ============ 3. MISSIONS ============ */}
+        {/* ============ 3. MÉTHODE — QUATRE TEMPS ============ */}
         <section className="tint" id="missions">
           <div className="wrap">
             <div className="sec-head">
-              <p className="label">nos interventions</p>
-              <h2>Les quatre missions du cabinet</h2>
+              <p className="label">notre méthode</p>
+              <h2>Mise en conformité RGPD&nbsp;: cartographier, organiser, encadrer, documenter</h2>
+              <p className="lead">Le cabinet part de vos pratiques réelles, hiérarchise les écarts par niveau de risque, puis structure la conformité en quatre temps&nbsp;— jusqu’à une documentation prête à être démontrée.</p>
             </div>
-            <ul className="missions">
-              {MISSIONS.map((m) => (
-                <li key={m.t}><h3>{m.t}</h3><p>{m.p}</p></li>
+            <ol className="mc-blocks">
+              {MC_BLOCKS.map((b, i) => (
+                <li key={b.titre}>
+                  <span className="mc-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  <h3>{b.titre}</h3>
+                  <p className="mc-resume">{b.resume}</p>
+                  <p className="mc-detail">{b.detail}</p>
+                  <p className="mc-livrable">Livrable · {b.livrable}</p>
+                </li>
               ))}
-            </ul>
+            </ol>
           </div>
         </section>
 
-        {/* ============ 4. LIVRABLES + SPÉCIMENS ============ */}
+        {/* ============ 4. LIVRABLES ============ */}
+        {/* « Ce que vous recevez » : menu des cinq livrables + document spécimen
+            (aperçu + « Agrandir le document »). Extraits illustratifs anonymisés. */}
         <section id="livrables">
           <div className="wrap">
             <div className="sec-head">
               <p className="label">livrables</p>
-              <h2>Ce que le cabinet vous remet</h2>
-              <p className="lead">Selon la mission, le cabinet peut remettre les documents suivants. Quatre exemples sont présentés ci-dessous.</p>
+              <h2>Ce que vous recevez</h2>
+              <p className="lead">À chaque mission correspondent des documents précis, rattachés à votre activité. En voici des exemples illustratifs, sans aucune donnée réelle.</p>
             </div>
-
-            <div className="livrables-groupes">
-              <div>
-                <h3>Diagnostic</h3>
-                <ul className="livrables">
-                  <li>Cartographie des traitements et des flux de données</li>
-                  <li>Registre des activités de traitement</li>
-                  <li>Rapport d’audit et plan d’action priorisé</li>
-                </ul>
-              </div>
-              <div>
-                <h3>Documents et contrats</h3>
-                <ul className="livrables">
-                  <li>Politique de confidentialité et mentions d’information</li>
-                  <li>Politique cookies et paramétrage du bandeau</li>
-                  <li>Contrats et clauses de sous-traitance, article&nbsp;28</li>
-                  <li>Encadrement des transferts hors Union européenne</li>
-                </ul>
-              </div>
-              <div>
-                <h3>Procédures internes</h3>
-                <ul className="livrables">
-                  <li>Procédure de réponse aux demandes d’exercice des droits</li>
-                  <li>Procédure de gestion et de notification des violations</li>
-                  <li>Charte informatique et politique interne de protection des données</li>
-                </ul>
-              </div>
-            </div>
-
-            <h3>Quatre extraits</h3>
-            <SpecimenViewer />
+            <SpecimensRecus />
           </div>
         </section>
 
@@ -228,7 +226,7 @@ export default function Page() {
                 <h3>Violation de données</h3>
                 <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement dispose d’un délai très court pour notifier la CNIL lorsque la violation présente un risque pour les personnes.</p>
                 <p>Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision, en lien avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
-                <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Signaler une violation</TrackedLink>
+                <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Contacter un avocat après une violation</TrackedLink>
               </div>
               <div className="urg">
                 <p className="delai">procédure en cours</p>
@@ -241,46 +239,15 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 6. ACCOMPAGNEMENTS SPÉCIALISÉS ============ */}
-        <section id="specialises">
+        {/* ============ 6. SUR LE TERRAIN ============ */}
+        <section id="terrain">
           <div className="wrap">
             <div className="sec-head">
-              <p className="label">accompagnements spécialisés</p>
-              <h2>Prolongements de la mission</h2>
+              <p className="label">sur le terrain</p>
+              <h2>Ce que nous voyons le plus souvent</h2>
+              <p className="lead">Les situations les plus fréquentes&nbsp;— et ce qui se passe concrètement quand elles ne sont pas anticipées.</p>
             </div>
-            <ul className="renvois">
-              <li>
-                <h3>DPO externalisé</h3>
-                <p>Une fonction de délégué à la protection des données assurée par le cabinet, au forfait et dans la durée.</p>
-                {/* TODO(page à créer) : /nos-domaines/dpo-externalise n'existe pas encore. */}
-                <Link className="link-nav" href="/nos-domaines/dpo-externalise">Découvrir le DPO externalisé</Link>
-              </li>
-              <li>
-                <h3>M&amp;A Tech et due diligence</h3>
-                <p>L’examen de la conformité dans les opérations d’acquisition, de cession et de levée de fonds.</p>
-                <Link className="link-nav" href="/nos-domaines/ma-tech">Découvrir le M&amp;A Tech</Link>
-              </li>
-              <li>
-                <h3>AI Act et projets d’intelligence artificielle</h3>
-                <p>L’articulation entre le règlement sur l’intelligence artificielle et la protection des données.</p>
-                <Link className="link-nav" href="/nos-domaines/avocat-intelligence-artificielle">Découvrir l’AI Act</Link>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        {/* ============ 7. MÉTHODE ============ */}
-        <section className="dark" id="methode">
-          <div className="wrap">
-            <div className="sec-head">
-              <p className="label">méthode</p>
-              <h2>Comment se déroule une mission RGPD&nbsp;?</h2>
-            </div>
-            <ol className="methode">
-              {METHODE.map((m) => (
-                <li key={m.t}><h3>{m.t}</h3><p>{m.p}</p></li>
-              ))}
-            </ol>
+            <TerrainCards />
           </div>
         </section>
 
@@ -291,31 +258,67 @@ export default function Page() {
               <p className="label">le cabinet</p>
               <h2>Pourquoi Lazarègue Avocats</h2>
             </div>
-            <div className="pourquoi">
-              <ul className="arguments">
-                {ARGUMENTS.map((a) => (
-                  <li key={a.t}><h3>{a.t}</h3><p>{a.p}</p></li>
-                ))}
-              </ul>
-              <div>
-                <div className="portrait">
-                  <div className="shot">
-                    <Image
-                      src="/images/equipe/sarah-hinderer.webp"
-                      alt="Me Sarah Hinderer, avocate en droit des données personnelles"
-                      fill
-                      sizes="(min-width:900px) 380px, (min-width:640px) 45vw, 100vw"
-                      loading="lazy"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-                  <b>Me Sarah Hinderer</b>
-                  <span className="role">Avocate aux barreaux de Paris et de Montréal. Intervient sur les audits, la documentation de conformité et les procédures CNIL.</span>
+            <ul className="arguments pourquoi-args">
+              {ARGUMENTS.map((a) => (
+                <li key={a.t}><h3>{a.t}</h3><p>{a.p}</p></li>
+              ))}
+            </ul>
+            <div className="team-row" aria-label="Les intervenants sur vos dossiers RGPD">
+              <figure className="person">
+                <div className="shot">
+                  <Image
+                    src="/images/equipe/sarah-hinderer.webp"
+                    alt="Sarah Hinderer, avocate aux barreaux de Paris et de Montréal"
+                    fill
+                    sizes="(min-width:720px) 33vw, 100vw"
+                    loading="lazy"
+                    style={{ objectFit: "cover", objectPosition: "center top" }}
+                  />
                 </div>
-                {/* À intégrer ultérieurement : deux dossiers anonymisés réels et une
-                    publication ou intervention pertinente. Ne rien afficher tant que
-                    cette matière n’est pas fournie. */}
-              </div>
+                <figcaption>
+                  <span className="role-eyebrow">Avocate</span>
+                  <b>Sarah Hinderer</b>
+                  <span className="role">Avocate aux barreaux de Paris et de Montréal.</span>
+                  <span className="role">Données personnelles et intelligence artificielle.</span>
+                </figcaption>
+              </figure>
+              <figure className="person">
+                <div className="shot">
+                  <Image
+                    src="/images/alexandre-pro.jpg"
+                    alt="Alexandre Lazarègue, avocat au barreau de Paris"
+                    fill
+                    sizes="(min-width:720px) 33vw, 100vw"
+                    loading="lazy"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <figcaption>
+                  <span className="role-eyebrow">Avocat</span>
+                  <b>Alexandre Lazarègue</b>
+                  <span className="role">Avocat au barreau de Paris.</span>
+                  <span className="role">Analyse juridique et conduite de la mission.</span>
+                </figcaption>
+              </figure>
+              <figure className="person technical-person">
+                <div className="shot">
+                  <Image
+                    src="/images/khalid-pro.jpg"
+                    alt="Khalid Sookia, appui technique en cybersécurité"
+                    fill
+                    sizes="(min-width:720px) 33vw, 100vw"
+                    loading="lazy"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <figcaption>
+                  <span className="role-eyebrow">Appui technique</span>
+                  <b>Khalid Sookia</b>
+                  <span className="role">Consultant en cybersécurité.</span>
+                  <span className="role">Examen des faits techniques, des outils et des mesures de sécurité.</span>
+                  <span className="role-note">N’exerce pas la profession d’avocat.</span>
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>
@@ -329,9 +332,9 @@ export default function Page() {
             </div>
             <div className="honoraires">
               <div>
-                <p>Le périmètre est arrêté par écrit avant tout démarrage. Lorsqu’il peut être précisément délimité — audit, documentation de conformité ou ensemble de contrats — le cabinet propose un forfait.</p>
+                <p>Le premier échange permet de comprendre votre activité, votre besoin et son urgence. Avant de commencer, nous convenons par écrit de la mission, des documents à préparer et des honoraires.</p>
+                <p>Lorsque le périmètre peut être précisément délimité — audit, documentation de conformité ou ensemble de contrats — le cabinet propose un forfait.</p>
                 <p>Lorsqu’une mission dépend d’événements extérieurs, notamment en cas de violation de données ou de procédure devant la CNIL, elle peut être facturée au temps passé sur la base d’un taux horaire annoncé à l’avance.</p>
-                <p>Aucune prestation n’est engagée sans accord préalable sur son étendue et sur son coût.</p>
               </div>
               <div>
                 <h3>Ce qui fait varier le prix</h3>
@@ -344,6 +347,34 @@ export default function Page() {
                 </ul>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ============ ACCOMPAGNEMENTS SPÉCIALISÉS (après honoraires, cf. maquette) ============ */}
+        <section id="specialises">
+          <div className="wrap">
+            <div className="sec-head">
+              <p className="label">accompagnements spécialisés</p>
+              <h2>Prolongements de la mission</h2>
+            </div>
+            <ul className="renvois">
+              <li>
+                <h3>DPO externalisé</h3>
+                <p>Une fonction de délégué à la protection des données assurée par le cabinet, au forfait et dans la durée.</p>
+                {/* Page DPO dédiée à créer : on renvoie au parcours de contact réel plutôt qu'à une route inexistante. */}
+                <Link className="link-nav" href="/contact">Échanger sur le DPO externalisé</Link>
+              </li>
+              <li>
+                <h3>M&amp;A Tech et due diligence</h3>
+                <p>L’examen de la conformité dans les opérations d’acquisition, de cession et de levée de fonds.</p>
+                <Link className="link-nav" href="/nos-domaines/ma-tech">Découvrir le M&amp;A Tech</Link>
+              </li>
+              <li>
+                <h3>AI Act et projets d’intelligence artificielle</h3>
+                <p>L’articulation entre le règlement sur l’intelligence artificielle et la protection des données.</p>
+                <Link className="link-nav" href="/nos-domaines/avocat-intelligence-artificielle">Découvrir l’AI Act</Link>
+              </li>
+            </ul>
           </div>
         </section>
 

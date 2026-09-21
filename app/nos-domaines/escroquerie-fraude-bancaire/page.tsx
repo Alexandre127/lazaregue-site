@@ -4,433 +4,472 @@ import Link from "next/link";
 import { fr } from "@/lib/typo";
 import styles from "./escroquerie.module.css";
 import { FAQ_ITEMS } from "./faq";
-import DiagnosticModule from "./_components/DiagnosticModule";
-import Triangle from "./_components/Triangle";
+import { MobileActionBar } from "./MobileActionBar";
 
-const TITLE = "Avocat escroquerie à Paris | Fraudes et recours bancaires";
-const DESCRIPTION =
-  "Victime d'une escroquerie ou d'une fraude bancaire ? Lazarègue Avocats engage les recours contre les banques et les intermédiaires financiers.";
+const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/nos-domaines/escroquerie-fraude-bancaire";
-const ABS = "https://lazaregue-avocats.fr" + PATH;
+const TEL = "tel:+33181706200";
+
+const TITLE = "Avocat fraude bancaire — remboursement et recours | Lazarègue Avocats";
+const DESCRIPTION =
+  "Victime de phishing, spoofing, faux conseiller ou virement frauduleux ? Le cabinet examine les recours et le remboursement pouvant être demandé.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
-  openGraph: {
-    title: TITLE,
-    description: DESCRIPTION,
-    url: PATH,
-    siteName: "Lazarègue Avocats",
-    locale: "fr_FR",
-    type: "website",
-  },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", locale: "fr_FR", type: "website" },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
+/* JSON-LD : LegalService (provider = nœud global #cabinet — le layout ne déclare
+   pas #organization) + BreadcrumbList. Aucun FAQPage. */
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "LegalService",
-      "@id": ABS + "#service",
-      name: "Lazarègue Avocats — escroquerie et fraude",
-      url: ABS,
-      description: DESCRIPTION,
-      areaServed: "FR",
-      telephone: "+33181706200",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "18 rue de Tilsitt",
-        postalCode: "75017",
-        addressLocality: "Paris",
-        addressCountry: "FR",
-      },
+      "@id": `${URL_BASE}${PATH}#service`,
+      name: "Avocat en fraude bancaire et escroquerie en ligne",
+      url: `${URL_BASE}${PATH}`,
+      provider: { "@id": `${URL_BASE}/#cabinet` },
+      areaServed: { "@type": "Country", name: "France" },
+      serviceType: ["Fraude bancaire", "Virement frauduleux", "Escroquerie en ligne", "Recours contre les établissements de paiement"],
     },
     {
-      "@type": "FAQPage",
-      "@id": ABS + "#faq",
-      mainEntity: FAQ_ITEMS.map((it) => ({
-        "@type": "Question",
-        name: it.q,
-        acceptedAnswer: { "@type": "Answer", text: it.a },
-      })),
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Domaines", item: `${URL_BASE}/nos-domaines` },
+        { "@type": "ListItem", position: 3, name: "Fraude bancaire et escroquerie", item: `${URL_BASE}${PATH}` },
+      ],
     },
   ],
 };
 
+/* Titres des quatre premières mesures — réutilisés tels quels dans l'encadré
+   d'urgence du hero (§3.1 : aucun texte nouveau hormis l'intitulé de l'encadré). */
+const MESURES = [
+  {
+    t: "Alerter l'établissement et demander le rappel des fonds",
+    p: "Faire opposition lorsqu'elle est utile, notifier immédiatement les opérations contestées et demander le rappel des fonds. La notification fait courir les obligations de la banque.",
+  },
+  {
+    t: "Conserver les échanges et traces disponibles",
+    p: "Relevés, messages, courriels et historique des appels. Les preuves non conservées rapidement peuvent devenir difficiles, voire impossibles, à reconstituer.",
+  },
+  {
+    t: "Contester les opérations par écrit",
+    p: "Une contestation adressée à l'établissement, et non une simple réclamation en ligne : sa réponse devient une pièce du dossier.",
+  },
+  {
+    t: "Ne pas attendre la fin de l'enquête pour faire examiner les recours",
+    p: "L'action contre les établissements ne dépend pas de l'avancement de la procédure pénale, et certains délais courent en parallèle.",
+  },
+];
+
+/* Six procédés (situations traitées). `cf` = configuration de rattachement
+   (§3.2, proposition de lecture à valider juridiquement). */
+const SITUATIONS = [
+  { t: "Spoofing et faux conseiller", d: "Appel affichant le numéro de la banque", cf: "Configuration B" },
+  { t: "Phishing et hameçonnage", d: "Courriel ou SMS usurpant un service connu", cf: "Configuration A ou B" },
+  { t: "Fraude au président", d: "Ordre urgent attribué au dirigeant", cf: "Configuration C" },
+  { t: "Faux RIB fournisseur", d: "Facture réglée au mauvais destinataire", cf: "Configuration C" },
+  { t: "Placement fictif", d: "Rendements simulés, retraits impossibles", cf: "Configuration C" },
+  { t: "Fausse vente en ligne", d: "Virement vers un compte de tiers", cf: "Configuration C" },
+];
+
+/* Trajet des fonds. `hit` = les deux banques (accent bleu électrique). */
+const FLOW = [
+  { n: "01", b: "Victime", s: "Point de départ des fonds", hit: false },
+  { n: "02", b: "Banque émettrice", s: "Exécution et vigilance", hit: true },
+  { n: "03", b: "Plateforme ou PSP", s: "Obligations sectorielles", hit: false },
+  { n: "04", b: "Banque réceptrice", s: "Ouverture et fonctionnement du compte", hit: true },
+  { n: "05", b: "Auteur", s: "Solvabilité à vérifier", hit: false },
+];
+
+const INTERVENANTS = [
+  {
+    n: "02",
+    t: "La banque du donneur d'ordre",
+    p: "Remboursement de l'opération non autorisée, lorsque la qualification est acquise — y compris, sous réserve de cette qualification, quand la validation a été obtenue par manœuvre. Si l'ordre est qualifié d'autorisé, un autre manquement doit être précisément caractérisé, notamment au regard des anomalies apparentes lors de son exécution.",
+    refs: ["art. L. 133-18 CMF", "anomalie apparente", "art. 1231-1 C. civ."],
+  },
+  {
+    n: "03",
+    t: "La plateforme ou le prestataire de paiement",
+    p: "Marketplace, plateforme ou prestataire de paiement : le rôle de chaque intervenant dépend de son statut, des services effectivement fournis et de son intervention dans la réception ou le transfert des fonds.",
+    refs: ["statut de l'intervenant", "services effectivement fournis", "réception et transfert des fonds"],
+  },
+  {
+    n: "04",
+    t: "La banque qui a reçu les fonds",
+    p: "Le compte de réception peut être ouvert au nom d'un tiers ou d'un intermédiaire utilisé pour recevoir et transférer les fonds. La responsabilité de l'établissement suppose une faute civile propre dans l'ouverture ou le fonctionnement du compte : les éléments de vigilance y contribuent sans y suffire, la faute, le préjudice et le lien de causalité restant à établir.",
+    refs: ["faute civile propre", "art. 1240 C. civ."],
+  },
+  {
+    n: "05",
+    t: "L'auteur et ses complices",
+    p: "Une action pénale ou civile peut être engagée contre l'auteur et ses complices lorsqu'ils sont identifiés et que cette voie présente un intérêt pour la victime. La restitution dépend notamment des saisies réalisées et de leur solvabilité.",
+    refs: ["art. 313-1 C. pén.", "saisies pénales"],
+  },
+];
+
+const ACTES = [
+  { t: "Note d'analyse du recours", p: "Fondement applicable, délais à vérifier, établissements susceptibles d'être mis en cause, montant susceptible d'être réclamé au regard des opérations et des préjudices justifiés, coût de l'action." },
+  { t: "Contestation bancaire motivée", p: "Adressée à l'établissement sur le fondement exact, pièces à l'appui, pour obtenir le remboursement ou une position écrite utilisable." },
+  { t: "Mise en demeure", p: "Une fois la position de l'établissement arrêtée, elle fixe les manquements invoqués et la demande chiffrée avant toute saisine d'une juridiction." },
+  { t: "Mesure d'instruction ou requête adaptée", p: "Sur le fondement de l'article 145 du code de procédure civile, pour rechercher l'identité du titulaire du compte de réception : motif légitime, nécessité, proportionnalité et secret bancaire s'y discutent." },
+  { t: "Plainte ou constitution de partie civile", p: "Rédigée avec les qualifications retenues, la chronologie et l'inventaire des pièces, puis suivie auprès du service saisi." },
+  { t: "Procédure et voies de recours", p: "Assignation de la banque émettrice, de la banque réceptrice ou des deux, selon les manquements caractérisés. Saisine du médiateur ou signalement à l'ACPR : leur intérêt et leur articulation avec l'action judiciaire s'apprécient selon le dossier et les délais applicables." },
+];
+
+/* Cas clients — bandeau + titre explicite (§3.4), aucune lettre A/B/C. */
+const CASES = [
+  {
+    cnum: "Cas client 01",
+    titre: "Virements professionnels après un faux message de la banque",
+    situation: "Dirigeante d'une société de services. Après un message reproduisant l'interface de sa banque, des virements sont exécutés depuis le compte professionnel vers des comptes de tiers.",
+    diff: "L'établissement oppose une négligence grave de sa cliente.",
+    interv: "Contestation de l'autorisation des opérations et de la négligence grave invoquée par l'établissement.",
+    res: "Remboursement intégral des virements contestés, obtenu avant audience.",
+  },
+  {
+    cnum: "Cas client 02",
+    titre: "Faux placement garanti : deux banques mises en cause",
+    situation: "Particulier retraité, sollicité sur plusieurs mois pour un placement présenté comme garanti. Les fonds partent vers des comptes ouverts dans deux établissements distincts, dont un hors métropole.",
+    diff: "Les ordres ont été donnés par la victime elle-même, et les comptes de réception relèvent de deux établissements différents.",
+    interv: "Mises en demeure, puis assignation des deux banques.",
+    res: "Indemnisation au titre de la perte de chance de conserver les fonds.",
+  },
+  {
+    cnum: "Cas client 03",
+    titre: "Fausse vente de véhicule : la banque réceptrice mise en cause",
+    situation: "Acheteur d'un véhicule annoncé sur une plateforme de petites annonces. Le virement est exécuté vers un compte ouvert au nom d'un tiers, dans un établissement en ligne.",
+    diff: "Le virement a été voulu par l'acheteur, et le compte destinataire n'était pas celui du vendeur annoncé.",
+    interv: "Assignation de la banque émettrice et de la banque réceptrice.",
+    res: "Accord transactionnel avec la banque réceptrice.",
+  },
+];
+
+const TEAM = [
+  { photo: "/images/alexandre-pro.jpg", alt: "Portrait d'Alexandre Lazarègue", nom: "Alexandre Lazarègue", bar: "avocat au barreau de Paris", p: "Droit du numérique. Conduit les recours contre les établissements financiers, l'action pénale et les mesures d'instruction destinées à identifier les comptes de réception.", pos: "center 25%" },
+  { photo: "/images/amir-pro.jpg", alt: "Portrait d'Amir Ben Majed", nom: "Amir Ben Majed", bar: "avocat au barreau d'Évry", p: "Contentieux et procédure. Intervient sur les écritures, les mesures d'urgence et la conduite des instances devant les juridictions saisies.", pos: "center 25%" },
+  { photo: "/images/equipe/sarah-hinderer.webp", alt: "Portrait de Sarah Hinderer", nom: "Sarah Hinderer", bar: "avocate aux barreaux de Paris et de Montréal", p: "Suit les dossiers de fraude bancaire et d'escroquerie, de la constitution du dossier de preuve au suivi des plaintes et du lien avec les services d'enquête.", pos: "center top" },
+];
+
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <a className={styles.skipLink} href="#main">Aller au contenu</a>
 
-      <div className={styles.page}>
-        {/* ===== Héro ===== */}
-        <div className={styles.hero}>
-          {/* Fond : la passerelle sur le périphérique de nuit (image unique de la
-              page). Couverture, object-position center, voile navy uniforme 72 %
-              par-dessus (.heroVeil) pour le contraste. priority (au-dessus de la
-              ligne de flottaison). Le texte reste inchangé, au-dessus (z-index). */}
-          <Image
-            className={styles.heroBg}
-            src="/images/escroquerie-passerelle.jpg"
-            alt="Une passante regarde la circulation nocturne depuis une passerelle, face aux tours d'un quartier d'affaires."
-            fill
-            priority
-            sizes="100vw"
-          />
-          <div className={styles.heroVeil} aria-hidden />
-          <div className={styles.wrap}>
-            {/* Pastille œil-de-bœuf, au format des pages de domaine (cf.
-                cybersécurité). Simple œil-de-bœuf : le <h1> reste le grand titre
-                ci-dessous. Inline comme les autres pages de domaine sur main. */}
-            <span
-              style={{
-                display: "inline-block",
-                fontFamily: "var(--ff-mono)",
-                fontSize: 11,
-                fontWeight: 500,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "#7fa8ff",
-                background: "rgba(26,71,255,0.25)",
-                borderRadius: 8,
-                padding: "4px 12px",
-                marginBottom: 18,
-              }}
-            >
-              Escroquerie et fraude · Paris
-            </span>
-            <h1>Avocat<br />escroquerie<br />et fraude</h1>
-            <p className={styles.claim}>{fr("L'escroc a disparu. Les établissements qui ont laissé circuler les fonds, non.")}</p>
-            <p className={styles.sub}>{fr("Escroquerie bancaire, phishing, spoofing, faux conseiller, fraude au président, faux RIB, placement fictif, escroquerie hors ligne. Le cabinet intervient pour les victimes : il conduit l'action pénale et, surtout, recherche le remboursement ou l'indemnisation auprès des établissements et intermédiaires financiers.")}</p>
-            <div className={styles.heroline}>
-              <div><strong>13 mois</strong><span>délai de contestation des opérations non autorisées — art. L. 133-24 CMF</span></div>
-              <div><strong>5</strong><span>voies de recours à examiner, dont deux établissements bancaires</span></div>
-              <div><strong>313-1</strong><span>l'escroquerie, distincte des atteintes aux systèmes (323-1 et s.)</span></div>
-            </div>
-          </div>
-        </div>
-
-        {/* ===== Module de qualification (îlot client) ===== */}
-        <DiagnosticModule />
-
-        {/* ===== Les trois configurations ===== */}
-        <section id="test">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>le test du consentement</span>
-            <h2>Trois configurations, pas deux</h2>
-            <p className={styles.lede}>{fr("La question décisive n'est pas de savoir si vous avez appuyé sur un bouton, mais sur quelle opération de paiement a porté votre consentement. C'est de cette qualification que dépend le fondement, et elle se discute au vu des écrans, des messages et des informations affichées au moment de la validation.")}</p>
-            <div className={styles.gates}>
-              <div>
-                <p className={styles.q}>A — aucun acte de votre part</p>
-                <h3>L'ordre a été passé sans vous</h3>
-                <p>Débit par carte, virement exécuté après captation de vos données, bénéficiaire enregistré à votre insu.</p>
-                <ul>
-                  <li>Remboursement de principe, au plus tard à la fin du premier jour ouvrable suivant la notification</li>
-                  <li>Exception si l'établissement a de bonnes raisons de soupçonner une fraude de l'utilisateur, communiquées par écrit à la Banque de France</li>
-                  <li>La preuve de l'autorisation, comme celle de la négligence grave, lui incombe</li>
-                </ul>
-                <p className={styles.base}>art. L. 133-18, L. 133-19 et L. 133-23 CMF<br />régime aménageable pour les non-consommateurs</p>
-              </div>
-              <div>
-                <p className={styles.q}>B — validation obtenue par manœuvre</p>
-                <h3>{fr("Vous avez validé, mais sur quoi ?")}</h3>
-                <p>Faux conseiller, spoofing : la validation est présentée comme le blocage d'une fraude, l'enregistrement d'un bénéficiaire ou une mise en sécurité du compte.</p>
-                <ul>
-                  <li><strong>Première voie</strong> — établir que le consentement n'a pas porté sur le paiement exécuté, et contester l'opération comme non autorisée</li>
-                  <li><strong>Seconde voie</strong> — à défaut, rechercher la responsabilité sur le devoir de vigilance</li>
-                </ul>
-                <p className={styles.base}>art. L. 133-6, L. 133-7 et L. 133-18 CMF<br />à défaut — devoir de vigilance</p>
-              </div>
-              <div>
-                <p className={styles.q}>C — ordre voulu, mobile vicié</p>
-                <h3>Vous avez voulu ce virement</h3>
-                <p>Faux RIB fournisseur, ordre attribué au dirigeant, plateforme d'investissement fictive : le bénéficiaire était cru légitime.</p>
-                <ul>
-                  <li>Le consentement à l'opération existe : elle est autorisée</li>
-                  <li>Le recours porte sur la vigilance et l'anomalie apparente</li>
-                  <li>Les délais applicables ne sont pas ceux de la contestation des opérations non autorisées</li>
-                </ul>
-                <p className={styles.base}>devoir de vigilance · anomalie apparente<br />art. 1231-1 et 1240 C. civ.</p>
-              </div>
-            </div>
-            <p className={styles.refs}>{fr("La ligne de partage entre B et C est l'enjeu principal de ces dossiers. L'établissement soutiendra que l'authentification forte a été validée, donc que l'opération était autorisée et que seule la vigilance reste discutable. La discussion se noue alors sur un point précis : à quelle opération le consentement a-t-il porté, au vu de ce qui était affiché au moment de la validation. L'article L. 133-23 du code monétaire et financier fournit le point d'appui, en énonçant que l'utilisation de l'instrument de paiement enregistrée par le prestataire ne suffit pas nécessairement à prouver que l'opération a été autorisée.")}</p>
-          </div>
-        </section>
-
-        {/* ===== Ce que la plainte ne fait pas ===== */}
-        <section id="plainte">
-          <div className={`${styles.wrap} ${styles.narrow}`}>
-            <span className={styles.lbl}>un préalable</span>
-            <h2>Ce que la plainte ne fait pas</h2>
-            <p>L'auteur est rarement identifié, rarement solvable, rarement en France. La procédure pénale établit la matérialité des faits, ouvre la voie des saisies et documente le dossier civil. Elle ne restitue presque jamais les fonds à elle seule.</p>
-            <p>C'est pourquoi la plainte, lorsqu'elle est déposée, n'est jamais l'unique action. Elle est conduite en parallèle du recours contre les établissements, pas avant lui, et surtout pas à sa place.</p>
-          </div>
-        </section>
-
-        {/* ===== Contre qui le recours peut être engagé ===== */}
-        <section className={styles.navy} id="qui-paie">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>l'architecture du recours</span>
-            <h2>Contre qui le recours peut-il être engagé</h2>
-            <p className={styles.lede}>{fr("Une escroquerie bancaire fait intervenir au moins deux établissements, auxquels peuvent s'ajouter des prestataires de paiement, des plateformes ou d'autres intermédiaires. Chacun a des obligations propres, et le manquement de l'un n'exclut pas celui de l'autre.")}</p>
-
-            <Triangle />
-            <p className={styles.triNote}>Cinq voies, numérotées comme les fiches ci-dessous. La cinquième est celle que tout le monde tente d'abord.</p>
-
-            <div className={styles.debtors}>
-              <div className={styles.debtor}>
-                <span className={styles.n}>01</span>
-                <div><h3>La banque du donneur d'ordre</h3><p>Remboursement de l'opération non autorisée, lorsque la qualification est acquise — y compris, sous réserve de cette qualification, quand la validation a été obtenue par manœuvre. À défaut, manquement au devoir de vigilance, qui devient le fondement principal lorsque l'ordre a réellement été voulu.</p></div>
-                <p className={styles.base}>L. 133-18 CMF<br />devoir de vigilance</p>
-              </div>
-              <div className={styles.debtor}>
-                <span className={styles.n}>02</span>
-                <div><h3>La banque du bénéficiaire</h3><p>Le compte de réception est presque toujours ouvert au nom d'un intermédiaire. Sa responsabilité peut être recherchée lorsqu'une faute civile propre est caractérisée dans l'ouverture ou le fonctionnement du compte. Les éléments issus du dispositif de vigilance contribuent à la démonstration, sans ouvrir par eux-mêmes un droit à indemnisation : la faute, le préjudice et le lien de causalité restent à établir. C'est l'angle le moins exploité du contentieux, et le plus exigeant.</p></div>
-                <p className={styles.base}>faute civile propre<br />art. 1240 C. civ.</p>
-              </div>
-              <div className={styles.debtor}>
-                <span className={styles.n}>03</span>
-                <div><h3>La plateforme ou le prestataire</h3><p>Marketplace, prestataire de services sur actifs numériques, opérateur de paiement : leurs obligations propres, et depuis le 1<sup>er</sup> octobre 2024 l'obligation faite aux opérateurs téléphoniques de bloquer les appels dont le numéro n'a pu être authentifié.</p></div>
-                <p className={styles.base}>obligations sectorielles<br />authentification des appels</p>
-              </div>
-              <div className={styles.debtor}>
-                <span className={styles.n}>04</span>
-                <div><h3>L'assureur</h3><p>Garantie fraude ou cyber du contrat de l'entreprise, dont la mobilisation suppose une déclaration correctement qualifiée dès les premiers jours.</p></div>
-                <p className={styles.base}>police fraude<br />police cyber</p>
-              </div>
-              <div className={styles.debtor}>
-                <span className={styles.n}>05</span>
-                <div><h3>L'auteur et ses complices</h3><p>Poursuivi, saisi, parfois condamné. L'aide apportée en connaissance de cause, même par l'intermédiaire d'un autre complice, tombe sous l'article 121-7 du code pénal. Mais la solvabilité manque presque toujours.</p></div>
-                <p className={styles.base}>art. 313-1, 313-2<br />art. 121-7 C. pén.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Les procédés traités ===== */}
-        <section id="procedes">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>le vecteur, pas le domaine</span>
-            <h2>Les procédés traités</h2>
-            <p className={styles.lede}>{fr("Le phishing et le spoofing ne sont pas des infractions : ce sont des manœuvres frauduleuses au sens de l'article 313-1 du code pénal. Le numérique est le canal, l'escroquerie est la qualification.")}</p>
-            <div className={styles.grid}>
-              <article><h3>Spoofing et faux conseiller</h3><p>Le numéro réel de l'établissement s'affiche sur le téléphone. Sous couvert de sécuriser le compte, la victime valide l'ajout d'un bénéficiaire.</p><p className={styles.txt}>313-1 · 226-4-1 · L. 133-19</p></article>
-              <article><h3>Phishing et hameçonnage</h3><p>Courriel ou SMS usurpant une banque, une administration, un fournisseur. Les identifiants captés servent ensuite au détournement.</p><p className={styles.txt}>313-1 · 226-18 · 323-3</p></article>
-              <article><h3>Fraude au président</h3><p>Ordre urgent et confidentiel attribué au dirigeant. Le comptable exécute. L'opération est régulière en la forme.</p><p className={styles.txt}>313-1 · vigilance bancaire</p></article>
-              <article><h3>Faux fournisseur, faux RIB</h3><p>Changement de coordonnées bancaires annoncé par courriel falsifié. La facture est réglée au bon montant, au mauvais destinataire.</p><p className={styles.txt}>313-1 · 441-1</p></article>
-              <article><h3>Investissement et actifs numériques</h3><p>Plateforme fictive, rendements simulés, retraits impossibles. Les fonds transitent par des comptes ouverts au nom de tiers.</p><p className={styles.txt}>313-1 · traçage des flux</p></article>
-              <article><h3>Escroquerie sentimentale</h3><p>Relation entretenue sur plusieurs mois, demandes graduées, rupture d'épargne. Les montants sont souvent les plus élevés.</p><p className={styles.txt}>313-1 · 313-2 (vulnérabilité)</p></article>
-              <article><h3>Usurpation d'identité</h3><p>Crédit souscrit, compte ouvert, documents falsifiés au nom de la victime, qui découvre la dette avant la fraude.</p><p className={styles.txt}>226-4-1 · 441-1</p></article>
-              <article><h3>Escroquerie hors ligne</h3><p>Fausse qualité, abus d'une qualité vraie, faux certificateurs, mise en scène avec intervention de tiers. Le numérique n'y joue aucun rôle.</p><p className={styles.txt}>313-1 · 313-2 · 313-7 à 313-9</p></article>
-              <article><h3>Détournement interne</h3><p>Fournisseur fictif, double facturation, virements sortants d'un salarié ou d'un mandataire. Le volet pénal croise le volet social.</p><p className={styles.txt}>314-1 · 313-1 · 121-7</p></article>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Escroqueries au placement ===== */}
-        <section id="investissement">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>hors régime des paiements</span>
-            <h2>Escroqueries au placement et aux actifs numériques</h2>
-            <p className={styles.lede}>{fr("Aucun régime de remboursement ne s'applique lorsque les fonds ont été virés volontairement vers un prétendu courtier. Le dossier ne s'arrête pas là : il change simplement de leviers, et ceux-ci sont au nombre de quatre.")}</p>
-
-            <div className={styles.levers}>
-              <div className={styles.lever}>
-                <p className={styles.k}>01 — l'absence de titre</p>
-                <div><h3>Le prestataire n'avait pas le droit d'exercer</h3><p>Inscription sur la liste noire de l'AMF ou de l'ACPR, absence d'agrément, défaut d'enregistrement pour les prestataires sur actifs numériques, aujourd'hui relayé par le régime européen. À quoi s'ajoutent, très souvent, un démarchage prohibé et une publicité interdite pour des contrats hautement spéculatifs. Cette irrégularité n'est pas un détail de conformité : elle nourrit la manœuvre frauduleuse et fonde la faute des intermédiaires qui ont laissé passer les flux.</p></div>
-                <p className={styles.base}>art. 313-1 C. pén.<br />L. 341-1 et s. CMF<br />régime PSAN et MiCA</p>
-              </div>
-              <div className={styles.lever}>
-                <p className={styles.k}>02 — la banque qui a exécuté</p>
-                <div><h3>Le devoir de vigilance ne dépend pas du régime applicable</h3><p>Virements répétés vers un établissement de paiement étranger, rupture d'un contrat d'assurance-vie ou d'un plan d'épargne, crédit souscrit pour alimenter le compte, montants sans rapport avec l'historique, âge du titulaire. L'anomalie apparente s'apprécie sur la série, pas sur l'ordre isolé.</p></div>
-                <p className={styles.base}>devoir de vigilance<br />anomalie apparente<br />art. 1231-1 C. civ.</p>
-              </div>
-              <div className={styles.lever}>
-                <p className={styles.k}>03 — les intermédiaires de réception</p>
-                <div><h3>Ceux qui ont ouvert les comptes d'arrivée</h3><p>Établissements de paiement, prestataires sur actifs numériques et comptes ouverts au nom de tiers. Leur responsabilité suppose une faute civile propre dans l'ouverture ou le fonctionnement du compte, que les éléments de vigilance aident à établir sans y suffire. C'est le levier le moins exploité, et souvent le seul solvable.</p></div>
-                <p className={styles.base}>faute civile propre<br />art. 1240 C. civ.</p>
-              </div>
-              <div className={styles.lever}>
-                <p className={styles.k}>04 — le traçage et la saisie</p>
-                <div><h3>Suivre les fonds avant de discuter du droit</h3><p>Reconstitution des flux bancaires et, pour les actifs numériques, suivi des transferts jusqu'aux points de conversion. Ce travail conditionne l'identification des comptes assignables, la demande de gel et la saisie pénale. Il est conduit avec un intervenant technique aux côtés du cabinet.</p></div>
-                <p className={styles.base}>art. 145 CPC<br />saisies pénales</p>
-              </div>
-            </div>
-            {/* /ressources/escroquerie n'existe pas encore : texte rendu sans lien. */}
-            <p className={styles.refs}>{fr("Lorsque le placement a été financé par un crédit souscrit à cette occasion, l'action contre le prêteur se conduit en parallèle et obéit à ses propres règles. C'est fréquemment la voie la plus rapide vers un résultat. Pour une présentation générale de l'infraction et de ses éléments constitutifs, voir la note escroquerie : définition, éléments constitutifs et peines.")}</p>
-          </div>
-        </section>
-
-        {/* ===== Escroquerie ou atteinte au système ===== */}
-        <section id="frontiere">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>la ligne de partage</span>
-            <h2>Escroquerie ou atteinte au système</h2>
-            <p className={styles.lede}>{fr("Une même affaire peut cumuler les deux qualifications, mais elles ne se plaident pas de la même façon et ne visent pas les mêmes défendeurs. Dans la première, la victime agit sous l'empire d'une tromperie. Dans la seconde, elle subit.")}</p>
-            <table>
-              <thead><tr><th></th><th>Escroquerie et fraude</th><th>Atteinte aux systèmes (STAD)</th></tr></thead>
-              <tbody>
-                <tr><td>textes</td><td>Art. 313-1 et 313-2 C. pén.</td><td>Art. 323-1 à 323-4 C. pén.</td></tr>
-                <tr><td>objet</td><td>Le consentement de la victime</td><td>Le système et les données</td></tr>
-                <tr><td>rôle de la victime</td><td>Elle accomplit elle-même l'acte préjudiciable</td><td>Elle n'y participe pas</td></tr>
-                <tr><td>ce qui se démontre</td><td>La manœuvre, la remise, le lien entre les deux</td><td>Le contrôle d'accès, la conscience du maintien irrégulier</td></tr>
-                <tr><td>le préjudice</td><td>Patrimonial, immédiat</td><td>Extraction et usage des données, sans mouvement de fonds nécessaire</td></tr>
-                <tr><td>le recours utile</td><td>Action contre les établissements financiers</td><td>Notification, assurance, action contre l'auteur ou le prestataire</td></tr>
-              </tbody>
-            </table>
-            <p className={styles.refs}>La chambre criminelle a retenu le maintien frauduleux dans un système de traitement automatisé de données et le vol de fichiers informatiques à l'encontre d'un prévenu qui, parvenu par une défaillance technique au cœur d'un extranet, s'y était maintenu après avoir constaté l'existence de contrôles d'accès, avait téléchargé des données inaccessibles au public, les avait fixées sur différents supports puis diffusées à des tiers (Crim. 20 mai 2015, n° 14-81.336, publié). Aucun de ces éléments n'est requis en matière d'escroquerie, où c'est la remise obtenue par tromperie qui fonde la poursuite. La compétence du cabinet en matière d'atteintes aux systèmes est traitée sur la page <Link href="/nos-domaines/cybercriminalite">cybercriminalité</Link>.</p>
-          </div>
-        </section>
-
-        {/* ===== La séquence des premiers jours ===== */}
-        <section id="urgence" className={styles.navy}>
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>la séquence</span>
-            <h2>Les premiers jours décident du dossier</h2>
-            <p className={styles.lede}>Les fonds circulent en quelques heures, les preuves techniques s'effacent en quelques semaines, et la contestation se forclôt à treize mois.</p>
-            <ol className={styles.steps}>
-              <li><div><h3>Geler ce qui peut l'être</h3><p>Opposition, notification écrite à l'établissement, demande de rappel de fonds. La notification fait courir les obligations de la banque.</p></div></li>
-              <li><div><h3>Figer la preuve</h3><p>Relevés, journaux d'authentification, messages, en-têtes de courriels, historique des appels. Ce qui n'est pas conservé dans les premières semaines ne sera pas reconstitué.</p></div></li>
-              <li><div><h3>Contester par écrit, en droit</h3><p>Une contestation motivée sur le fondement applicable, et non une réclamation en ligne. Le refus de l'établissement devient alors une pièce du dossier.</p></div></li>
-              <li><div><h3>Identifier le compte destinataire</h3><p>Une mesure d'instruction peut être sollicitée sur le fondement de l'article 145 du code de procédure civile, avant tout procès au fond. Son obtention se discute : motif légitime, nécessité, proportionnalité et secret bancaire.</p></div></li>
-              <li><div><h3>Déposer une plainte documentée</h3><p>Un signalement en ligne n'est pas une plainte. La plainte est rédigée avec les pièces, la chronologie et les qualifications, et suivie jusqu'à sa réponse.</p></div></li>
-              <li><div><h3>Engager l'action</h3><p>Mise en demeure motivée, puis assignation de l'établissement ou des établissements en cause, et constitution de partie civile lorsque l'enquête progresse.</p></div></li>
-            </ol>
-            <p className={styles.clock}>{fr("Treize mois à compter du débit : c'est le délai de l'article L. 133-24 du code monétaire et financier pour contester une opération non autorisée ou mal exécutée. Il ne régit pas les autres actions contre un établissement, mais c'est la première échéance à vérifier, et la seule qui se ferme aussi vite.")}</p>
-          </div>
-        </section>
-
-        {/* ===== Ce que le cabinet produit ===== */}
-        <section id="livrables">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>ce que le cabinet produit</span>
-            <h2>Des actes, pas des étapes</h2>
-            <div className={styles.deliv}>
-              <div><h3>Note de recevabilité et de chiffrage</h3><p>Fondement applicable, délais restants, établissements assignables, ordre de grandeur du recouvrable et coût de l'action.</p></div>
-              <div><h3>Contestation motivée en droit bancaire</h3><p>Adressée à l'établissement sur le fondement exact, avec les pièces, pour provoquer soit le remboursement, soit un refus utilisable.</p></div>
-              <div><h3>Requête aux fins d'identification</h3><p>Sollicitée sur le fondement de l'article 145 du code de procédure civile, pour rechercher l'identité du titulaire du compte de réception avant l'action au fond.</p></div>
-              <div><h3>Plainte et constitution de partie civile</h3><p>Rédigée avec les qualifications retenues, la chronologie et l'inventaire des pièces, puis suivie auprès du service saisi.</p></div>
-              <div><h3>Assignation des établissements</h3><p>Contre la banque émettrice, la banque réceptrice, ou les deux, selon les manquements caractérisés.</p></div>
-              <div><h3>Médiation bancaire et signalement au régulateur</h3><p>Saisine du médiateur lorsque cette voie présente un intérêt de calendrier ou de preuve, et signalement à l'ACPR si les pratiques constatées le justifient. Le régulateur ne tranche pas le litige et n'ordonne aucun remboursement : ces démarches ne retardent jamais l'action judiciaire.</p></div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Dossiers ===== */}
-        <section id="dossiers">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>situations dans lesquelles le cabinet est intervenu</span>
-            <h2>Trois dossiers, trois fondements</h2>
-            <div className={styles.cases}>
-              <div className={styles.case}>
-                <p className={styles.meta}>hameçonnage · opération non autorisée</p>
-                <p>Dirigeante d'une société de services. Après un message reproduisant l'interface de sa banque, des virements sont exécutés depuis le compte professionnel vers des comptes de tiers. L'établissement oppose une négligence grave.</p>
-                <p className={styles.stade}>Contestation fondée sur la charge de la preuve — procédure en cours</p>
-              </div>
-              <div className={styles.case}>
-                <p className={styles.meta}>escroquerie à l'investissement · deux établissements</p>
-                <p>Particulier retraité, sollicité sur plusieurs mois pour un placement présenté comme garanti. Les fonds partent vers des comptes ouverts dans deux établissements distincts, dont un hors métropole.</p>
-                <p className={styles.stade}>Mises en demeure puis assignation des deux banques — procédure en cours</p>
-              </div>
-              <div className={styles.case}>
-                <p className={styles.meta}>fausse vente en ligne · virement frauduleux</p>
-                <p>Acheteur d'un véhicule annoncé sur une plateforme de petites annonces. Le virement est exécuté vers un compte ouvert au nom d'un tiers, dans un établissement en ligne.</p>
-                <p className={styles.stade}>Assignation de la banque émettrice et de la banque réceptrice — procédure en cours</p>
-              </div>
-            </div>
-            <p className={styles.refs}>Aucun résultat n'est annoncé tant qu'il n'est pas acquis. Les faits sont modifiés dans la mesure nécessaire à l'anonymat des parties.</p>
-          </div>
-        </section>
-
-        {/* ===== FAQ (source unique = faq.ts, identique au JSON-LD) ===== */}
-        <section id="faq">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>questions fréquentes</span>
-            <h2>Ce qui est demandé le plus souvent</h2>
-            <div className={styles.faqList}>
-              {FAQ_ITEMS.map((it, i) => (
-                <details key={it.q} open={i === 0}>
-                  <summary>{it.q}</summary>
-                  <p>{it.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Personnes mises en cause ===== */}
-        <section id="defense">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>autre situation</span>
-            <h2>Personnes mises en cause</h2>
-            <div className={styles.aside}>
-              <h3>La défense pénale est traitée séparément</h3>
-              {/* La page /defense-penale n'existe pas encore : plutôt qu'un lien
-                  mort, on renvoie vers le contact. */}
-              <p>Audition libre, garde à vue, compte ayant servi de passage, complicité, recel, blanchiment, saisies pénales et confiscation : la défense d'une personne poursuivie pour escroquerie relève d'une autre page et d'un autre traitement. Elle n'est pas conduite depuis le point de vue exposé ici. <Link href="/contact">Décrire la situation</Link>.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Équipe ===== */}
-        <section id="equipe">
-          <div className={styles.wrap}>
-            <span className={styles.lbl}>qui traite le dossier</span>
-            <h2>Le dossier est suivi par un avocat, pas par un service</h2>
-            <p className={styles.lede}>{fr("Ces dossiers se jouent sur des pièces et une chronologie. Trois avocats les suivent, et le même interlocuteur tient le dossier d'un bout à l'autre, de la première contestation écrite jusqu'à l'audience.")}</p>
-            <div className={styles.team}>
-              <div>
-                <figure>
-                  <Image src="/images/alexandre-pro.jpg" alt="Alexandre Lazarègue, avocat au barreau de Paris" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
-                </figure>
-                <div className={styles.teamBody}>
-                  <p className={styles.role}>avocat au barreau de paris<br />fondateur</p>
-                  <h3>Alexandre Lazarègue</h3>
-                  <p>Droit du numérique. Conduit les recours contre les établissements financiers, l'action pénale et les mesures d'instruction destinées à identifier les comptes de réception.</p>
+      <div className={styles.esc}>
+        <main id="main">
+          {/* ===== 1. HERO (clair) ===== */}
+          <section className="hero" aria-labelledby="h1">
+            <div className="wrap">
+              <nav className="crumb" aria-label="Fil d’Ariane">
+                <Link href="/">Accueil</Link> <span aria-hidden>/</span> <Link href="/nos-domaines">Domaines</Link> <span aria-hidden>/</span> <span aria-current="page">Fraude bancaire et escroquerie</span>
+              </nav>
+              <div className="hero-grid">
+                <div className="hero-main">
+                  <span className="lbl">fraude bancaire · escroquerie en ligne · toute la France</span>
+                  <h1 id="h1">Avocat en fraude bancaire et escroquerie en ligne</h1>
+                  <p className="say">{fr("Le cabinet défend les victimes de virements frauduleux, de faux conseillers bancaires, de phishing, de faux RIB et de placements fictifs. Il examine la qualification de chaque opération et les recours susceptibles d'être engagés contre les établissements et intermédiaires concernés.")}</p>
+                  <p className="claim">{fr("L'escroc a disparu. Les établissements par lesquels les fonds ont circulé, non.")}</p>
+                  <div className="actions">
+                    <a className="btn btn-primary" href={TEL}>Appeler le cabinet — 01 81 70 62 00</a>
+                    <Link className="btn btn-line" href="/contact">Demander à être contacté</Link>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <figure>
-                  <Image src="/images/amir-pro.jpg" alt="Amir Ben Majed, avocat au barreau de l'Essonne" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center 25%" }} />
-                </figure>
-                <div className={styles.teamBody}>
-                  <p className={styles.role}>avocat au barreau de l&apos;essonne</p>
-                  <h3>Amir Ben Majed</h3>
-                  <p>Contentieux et procédure. Intervient sur les écritures, les mesures d'urgence et la conduite des instances devant les juridictions saisies.</p>
-                </div>
-              </div>
-              <div>
-                <figure>
-                  <Image src="/images/equipe/sarah-hinderer.webp" alt="Portrait de Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal" fill sizes="(max-width: 820px) 100vw, 33vw" style={{ objectFit: "cover", objectPosition: "center top" }} />
-                </figure>
-                <div className={styles.teamBody}>
-                  <p className={styles.role}>avocate aux barreaux de paris et de montréal</p>
-                  <h3>Sarah Hinderer</h3>
-                  <p>Suit les dossiers de fraude bancaire et d'escroquerie, de la constitution du dossier de preuve au suivi des plaintes et du lien avec les services d'enquête.</p>
-                </div>
+                <aside className="urgent" aria-label="Opération récente : premières démarches">
+                  <p className="ul">Opération récente ? À faire maintenant</p>
+                  <ol>
+                    {MESURES.map((m) => (
+                      <li key={m.t}>{fr(m.t)}</li>
+                    ))}
+                  </ol>
+                  <a className="link" href="#premiers">Détail des premières mesures ↓</a>
+                </aside>
               </div>
             </div>
-            <p className={styles.refs}>Sur les dossiers où la reconstitution des flux ou l'analyse des journaux d'authentification est déterminante, le cabinet travaille avec un intervenant technique.</p>
-          </div>
-        </section>
+          </section>
 
-        {/* ===== Contact ===== */}
-        <section className={styles.cta} id="contact">
-          <div className={styles.wrap}>
-            <h2>Un dossier commence par une question de délai</h2>
-            <p>La première chose à vérifier n'est pas le montant, mais la date du débit et la nature de l'ordre. Un premier échange suffit à savoir si un recours reste ouvert.</p>
-            <Link className={styles.btn} href="/contact">décrire la situation</Link>
-            <p className={styles.contact}>
-              Lazarègue Avocats — 18 rue de Tilsitt, 75017 Paris<br />
-              <a href="tel:+33181706200">01 81 70 62 00</a> · <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a>
-            </p>
-          </div>
-        </section>
+          {/* ===== 2. UN RECOURS RESTE-T-IL POSSIBLE ? ===== */}
+          <section aria-labelledby="recours-h">
+            <div className="wrap qc">
+              <div className="sec-head">
+                <span className="lbl">la première question</span>
+                <h2 id="recours-h">Un recours reste-t-il possible&nbsp;?</h2>
+              </div>
+              <div className="answer">
+                <p>{fr("Un refus de la banque ne suffit pas à répondre à cette question. Le recours dépend notamment de l'opération réellement autorisée, des informations présentées au moment de la validation, des preuves produites par l'établissement, des anomalies éventuellement apparentes et du rôle des comptes ayant reçu les fonds.")}</p>
+                <p>{fr("Le cabinet reprend chaque opération séparément et détermine le régime applicable, les délais à vérifier et les établissements dont la responsabilité peut être recherchée.")}</p>
+                <p className="delay"><b>Délai.</b> {fr("Une opération non autorisée ou mal exécutée doit en principe être signalée dans les treize mois du débit. Ce délai ne régit pas tous les recours et certaines règles peuvent être aménagées pour les clients professionnels. La qualification du paiement et le contrat applicable doivent être vérifiés.")}</p>
+                <p className="answer-cta"><a className="link" href={TEL}>Parler à un avocat — 01 81 70 62 00</a></p>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 3. TROIS CONFIGURATIONS ===== */}
+          <section className="tint" aria-labelledby="conf-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">{fr("qualification de l'opération")}</span>
+                <h2 id="conf-h">Trois configurations, trois analyses différentes</h2>
+                <p className="lede">{fr("La question décisive n'est pas de savoir si vous avez appuyé sur un bouton, mais sur quelle opération de paiement a porté votre consentement. De cette qualification dépend le fondement du recours, et elle se discute au vu des écrans, des messages et des informations affichées au moment de la validation.")}</p>
+              </div>
+              <div className="conf">
+                <article className="conf-a">
+                  <span className="L" aria-hidden>A</span>
+                  <h3><span className="sr">Configuration A — </span>{fr("L'ordre a été passé sans vous")}</h3>
+                  <p className="sit">{fr("Débit par carte, virement exécuté après captation de vos données, bénéficiaire enregistré à votre insu.")}</p>
+                  <p className="k">Ce qui se discute</p>
+                  <ul className="pts">
+                    <li>{fr("Remboursement de principe, au plus tard à la fin du premier jour ouvrable suivant la notification.")}</li>
+                    <li>{fr("Exception lorsque l'établissement a de bonnes raisons de soupçonner une fraude de l'utilisateur et les communique par écrit à la Banque de France.")}</li>
+                    <li>{fr("La preuve de l'autorisation, comme celle de la négligence grave, lui incombe.")}</li>
+                  </ul>
+                  <p className="refs">art. L. 133-18 · L. 133-19 · L. 133-23 CMF</p>
+                </article>
+                <article className="conf-b">
+                  <span className="L" aria-hidden>B</span>
+                  <h3><span className="sr">Configuration B — </span>{fr("Vous avez validé, mais sur quoi ?")}</h3>
+                  <p className="sit">{fr("Faux conseiller, spoofing : la validation est présentée comme le blocage d'une fraude, l'enregistrement d'un bénéficiaire ou une mise en sécurité du compte.")}</p>
+                  <p className="k">Ce qui se discute</p>
+                  <ul className="pts">
+                    <li>{fr("Établir que le consentement n'a pas porté sur le paiement exécuté, et contester l'opération comme non autorisée.")}</li>
+                    <li>{fr("Si elle est finalement qualifiée d'autorisée, rechercher si un autre manquement peut être caractérisé, notamment une anomalie apparente.")}</li>
+                    <li>{fr("Question distincte : la négligence grave opposée au client, dont la preuve pèse sur l'établissement.")}</li>
+                  </ul>
+                  <p className="refs">art. L. 133-18 · L. 133-23 CMF · art. 1231-1 C. civ.</p>
+                </article>
+                <article className="conf-c">
+                  <span className="L" aria-hidden>C</span>
+                  <h3><span className="sr">Configuration C — </span>{fr("Vous avez voulu le virement")}</h3>
+                  <p className="sit">{fr("Vous avez volontairement donné l'ordre, mais au profit d'un bénéficiaire que vous croyiez légitime : faux RIB fournisseur, ordre attribué au dirigeant, plateforme d'investissement fictive.")}</p>
+                  <p className="k">Ce qui se discute</p>
+                  <ul className="pts">
+                    <li>{fr("Le consentement à l'opération existe : elle est autorisée.")}</li>
+                    <li>{fr("Un autre manquement doit alors être précisément caractérisé, notamment au regard des anomalies apparentes lors de l'exécution.")}</li>
+                    <li>{fr("Les délais applicables ne sont pas ceux de la contestation des opérations non autorisées.")}</li>
+                  </ul>
+                  <p className="refs">anomalie apparente · art. 1231-1 C. civ.</p>
+                </article>
+              </div>
+              <div className="bc">
+                <span className="tag" aria-hidden>B / C</span>
+                <p><span className="sr">Configurations B et C. </span>{fr("Ce qui se discute entre B et C est l'enjeu principal de ces dossiers. L'établissement soutiendra que l'authentification forte a été validée, donc que l'opération était autorisée. L'article L. 133-23 du code monétaire et financier fournit le point d'appui de la discussion : l'utilisation de l'instrument de paiement enregistrée par le prestataire ne suffit pas nécessairement à prouver que l'opération a été autorisée.")}</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 4. SITUATIONS TRAITÉES ===== */}
+          <section aria-labelledby="proc-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">situations traitées</span>
+                <h2 id="proc-h">Faux conseiller, phishing, faux RIB et placements fictifs</h2>
+                <p className="lede">{fr("Le cabinet intervient lorsque la fraude a conduit à un paiement, à un virement ou à l'ouverture d'un compte ou d'un crédit au nom de la victime. Le procédé employé doit être distingué de la qualification juridique des opérations réalisées.")}</p>
+              </div>
+              <div className="typo">
+                {SITUATIONS.map((s) => (
+                  <article key={s.t}>
+                    <h3>{fr(s.t)}</h3>
+                    <p className="d">{fr(s.d)}</p>
+                    <p className="cf">{s.cf}</p>
+                  </article>
+                ))}
+              </div>
+              <p className="after-band">{fr("Le cabinet intervient également dans les dossiers d'usurpation d'identité, de détournement interne ou d'escroquerie sentimentale lorsqu'ils impliquent des flux bancaires ou des intermédiaires susceptibles d'être mis en cause.")}</p>
+              <div className="crypto">
+                <h3>Placements fictifs et conversion en crypto-actifs</h3>
+                <p>{fr("Lorsqu'une victime a elle-même ordonné les virements vers un faux courtier, le régime des opérations non autorisées ne s'applique pas automatiquement. Le cabinet examine alors le rôle des banques et intermédiaires ayant exécuté ou reçu les fonds. Lorsque les sommes ont été converties en crypto-actifs, une analyse technique peut compléter la reconstitution des flux.")}</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 5. CE QU'IL FAUT FAIRE IMMÉDIATEMENT ===== */}
+          <section id="premiers" className="tint" aria-labelledby="urg-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">les premiers jours</span>
+                <h2 id="urg-h">{fr("Ce qu'il faut faire immédiatement")}</h2>
+                <p className="lede">{fr("Certaines démarches doivent être entreprises rapidement, sans attendre que l'ensemble du dossier soit constitué.")}</p>
+              </div>
+              <ol className="steps">
+                {MESURES.map((m, i) => (
+                  <li key={m.t}>
+                    <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                    <div><h3>{fr(m.t)}</h3><p>{fr(m.p)}</p></div>
+                  </li>
+                ))}
+              </ol>
+              <p className="after-steps">{fr("En cas de doute, le cabinet indique dès le premier échange les démarches prioritaires et les éléments à conserver.")}</p>
+            </div>
+          </section>
+
+          {/* ===== 6. CONTRE QUELS INTERVENANTS AGIR ? (navy) ===== */}
+          <section className="dark" aria-labelledby="def-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">le trajet des fonds</span>
+                <h2 id="def-h">Contre quels intervenants agir&nbsp;?</h2>
+                <p className="lede">{fr("Une escroquerie bancaire peut faire intervenir la banque du payeur, l'établissement qui reçoit les fonds, ainsi que des prestataires de paiement, plateformes ou autres intermédiaires. Chacun a des obligations propres, et le manquement de l'un n'exclut pas celui de l'autre.")}</p>
+              </div>
+              <ol className="flowf" aria-label="Trajet des fonds, de la victime à l’auteur">
+                {FLOW.map((f) => (
+                  <li key={f.n} className={f.hit ? "hit" : undefined}>
+                    <span className="num">{f.n}</span>
+                    <b>{f.b}</b>
+                    <span className="s">{fr(f.s)}</span>
+                  </li>
+                ))}
+              </ol>
+              <p className="para"><b>{fr("Voie parallèle — l'assureur.")}</b> {fr("La garantie fraude ou cyber du contrat de l'entreprise ne se situe pas sur le trajet des fonds : elle se mobilise en parallèle, à condition d'une déclaration correctement qualifiée dès les premiers jours.")}</p>
+              <div className="who">
+                {INTERVENANTS.map((it) => (
+                  <article key={it.n}>
+                    <span className="num">{it.n}</span>
+                    <div>
+                      <h3>{fr(it.t)}</h3>
+                      <p>{fr(it.p)}</p>
+                    </div>
+                    <p className="refs">
+                      {it.refs.map((r, i) => (
+                        <span key={r}>{fr(r)}{i < it.refs.length - 1 ? <br /> : null}</span>
+                      ))}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 7. LES ACTES PRÉPARÉS ===== */}
+          <section aria-labelledby="actes-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">la prestation</span>
+                <h2 id="actes-h">Les actes préparés par le cabinet</h2>
+                <p className="lede">{fr("Selon la qualification retenue et l'état du dossier, l'intervention se traduit par des actes identifiés.")}</p>
+              </div>
+              <div className="acts">
+                {ACTES.map((a, i) => (
+                  <article key={a.t}>
+                    <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                    <div><h3>{fr(a.t)}</h3><p>{fr(a.p)}</p></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 8. CAS CLIENTS (navy) ===== */}
+          <section className="dark" aria-labelledby="cas-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">cas clients</span>
+                <h2 id="cas-h">Trois dossiers, trois stratégies de recours</h2>
+                <p className="lede">{fr("Trois exemples parmi les dossiers dans lesquels le cabinet est intervenu.")}</p>
+              </div>
+              <div className="dos">
+                {CASES.map((c) => (
+                  <article className="dcard" key={c.cnum}>
+                    <div className="top">
+                      <p className="cnum">{c.cnum}</p>
+                      <h3 className="ctitle">{fr(c.titre)}</h3>
+                    </div>
+                    <dl>
+                      <dt>Situation</dt>
+                      <dd>{fr(c.situation)}</dd>
+                      <dt>Difficulté juridique</dt>
+                      <dd>{fr(c.diff)}</dd>
+                      <dt>Intervention</dt>
+                      <dd>{fr(c.interv)}</dd>
+                    </dl>
+                    <div className="res">
+                      <b>Résultat</b>
+                      <p>{fr(c.res)}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <p className="note-line">{fr("Les résultats mentionnés correspondent à des décisions ou à des accords effectivement obtenus. Ils ne préjugent pas de l'issue d'un autre dossier, chaque situation dépendant de ses propres faits et pièces. Les faits sont modifiés dans la mesure nécessaire à l'anonymat des parties.")}</p>
+            </div>
+          </section>
+
+          {/* ===== 9. FAQ ===== */}
+          <section aria-labelledby="faq-h">
+            <div className="wrap faq-grid">
+              <div className="sec-head">
+                <span className="lbl">questions fréquentes</span>
+                <h2 id="faq-h">Ce qui est demandé le plus souvent</h2>
+              </div>
+              <div>
+                <div className="faq">
+                  {FAQ_ITEMS.map((item) => (
+                    <details key={item.q} open={item.open}>
+                      <summary>{fr(item.q)}</summary>
+                      <div className="a"><p>{fr(item.a)}</p></div>
+                    </details>
+                  ))}
+                </div>
+                <p className="after-faq">
+                  {fr("Pour les atteintes aux systèmes de traitement automatisé de données, voir la page ")}
+                  <Link href="/nos-domaines/cybercriminalite">cybercriminalité</Link>
+                  {fr(". Lorsque le litige porte sur le fonctionnement propre d'une plateforme, la conservation des clés, un smart contract ou le blocage contractuel d'actifs, consultez la compétence ")}
+                  <Link href="/nos-domaines/crypto-actifs-blockchain">Crypto-actifs, blockchain et Web3</Link>.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== 10. ÉQUIPE ===== */}
+          <section className="tint" aria-labelledby="team-h">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="lbl">qui traite le dossier</span>
+                <h2 id="team-h">Le dossier est suivi par un avocat, pas par un service</h2>
+                <p className="lede">{fr("Ces dossiers se jouent sur des pièces et une chronologie. Chaque dossier est placé sous la responsabilité d'un avocat identifié, qui en coordonne le suivi jusqu'à son terme.")}</p>
+              </div>
+              <div className="team">
+                {TEAM.map((m) => (
+                  <figure key={m.nom}>
+                    <div className="portrait">
+                      <Image src={m.photo} alt={m.alt} fill sizes="(max-width: 940px) 100vw, 33vw" loading="lazy" style={{ objectFit: "cover", objectPosition: m.pos }} />
+                    </div>
+                    <figcaption>
+                      <h3>{m.nom}</h3>
+                      <p className="bar">{m.bar}</p>
+                      <p>{fr(m.p)}</p>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="after-team">{fr("Sur les dossiers où la reconstitution des flux ou l'analyse des journaux d'authentification est déterminante, le cabinet travaille avec un intervenant technique.")}</p>
+            </div>
+          </section>
+
+          {/* ===== 11. CONTACT (bleu) ===== */}
+          <section className="contact" id="contact" aria-labelledby="ct-h">
+            <div className="wrap">
+              <span className="lbl">prendre contact</span>
+              <h2 id="ct-h">Faire évaluer mon recours par un avocat</h2>
+              <p className="lede">{fr("Un premier échange permet de comprendre la fraude, la position de la banque et les recours qui méritent d'être examinés. Le cabinet vous indiquera ensuite les informations et pièces nécessaires.")}</p>
+              <div className="actions">
+                <a className="btn btn-white" href={TEL}>Appeler — 01 81 70 62 00</a>
+                <Link className="btn btn-ow" href="/contact">Demander à être contacté</Link>
+              </div>
+              <p className="coord">
+                <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a> · 18 rue de Tilsitt, 75017 Paris — le cabinet intervient dans toute la France.
+              </p>
+            </div>
+          </section>
+        </main>
+
+        <MobileActionBar />
       </div>
     </>
   );

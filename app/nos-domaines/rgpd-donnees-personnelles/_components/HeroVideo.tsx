@@ -3,12 +3,13 @@
 import { useEffect, useRef } from "react";
 
 /*
- * Vidéo décorative du hero. aria-hidden, tabindex=-1, muted, playsinline,
+ * Vidéo de FOND du hero, fondue dans la section (aucun cadre) : `.hero-media`
+ * en position absolue derrière le contenu, duoton bleu nuit + assombrissement
+ * pour la lisibilité du texte. aria-hidden, tabindex=-1, muted, playsinline,
  * preload="none", poster fourni. Jamais LCP : sollicitée seulement après le
- * chargement du contenu essentiel (window load). Absente du flux sous 760px
- * (CSS : .media { display:none }). Désactivée sous prefers-reduced-motion et en
- * saveData / 2G. Mise en pause sur visibilitychange. Correcte si la vidéo ou le
- * poster manquent (le poster, puis le fond, restent affichés).
+ * chargement du contenu essentiel (window load). Désactivée sous
+ * prefers-reduced-motion et en saveData / 2G (le poster reste comme fond). Mise
+ * en pause sur visibilitychange. Correcte si la vidéo ou le poster manquent.
  */
 export function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null);
@@ -22,13 +23,12 @@ export function HeroVideo() {
         ? window.matchMedia(q)
         : ({ matches: false, addEventListener: undefined } as unknown as MediaQueryList);
     const reduce = mq("(prefers-reduced-motion: reduce)");
-    const small = mq("(max-width: 759px)");
 
     const reseauLent = () => {
       const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
       return !!(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || "")));
     };
-    const autorisee = () => !reduce.matches && !small.matches && !reseauLent();
+    const autorisee = () => !reduce.matches && !reseauLent();
 
     const init = () => {
       if (!autorisee()) {
@@ -54,18 +54,16 @@ export function HeroVideo() {
     };
     document.addEventListener("visibilitychange", onVis);
     reduce.addEventListener?.("change", init);
-    small.addEventListener?.("change", init);
 
     return () => {
       window.removeEventListener("load", init);
       document.removeEventListener("visibilitychange", onVis);
       reduce.removeEventListener?.("change", init);
-      small.removeEventListener?.("change", init);
     };
   }, []);
 
   return (
-    <div className="media">
+    <div className="hero-media" aria-hidden="true">
       <video
         ref={ref}
         muted
@@ -80,7 +78,8 @@ export function HeroVideo() {
         <source src="/videos/rgpd-hero.webm" type="video/webm" />
         <source src="/videos/rgpd-hero.mp4" type="video/mp4" />
       </video>
-      {/* Couches du duoton bleu — décoratives. */}
+      {/* Couches décoratives : duoton bleu nuit + assombrissement pour la
+          lisibilité du texte du hero. */}
       <div className="media-color" aria-hidden="true" />
       <div className="media-lift" aria-hidden="true" />
     </div>

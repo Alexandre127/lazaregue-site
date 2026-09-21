@@ -1,25 +1,18 @@
 import type { Metadata } from "next";
-import PilierClient from "./PilierClient";
-import { FAQ_ITEMS } from "./faq";
+import { CyberV4 } from "./CyberV4";
+
+const URL_BASE = "https://lazaregue-avocats.fr";
+const PATH = "/nos-domaines/cybersecurite";
 
 const TITLE = "Avocat en cybersécurité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Cyberattaque, violation de données, conformité NIS 2, responsabilité du prestataire informatique : cabinet d'avocats en cybersécurité à Paris.";
+  "Avocat en cybersécurité à Paris pour les PME et ETI : prévention, cyberattaque, contrats, assurance et recours. Échangez avec Lazarègue Avocats.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  // Canonical relatif : résolu contre `metadataBase` (NEXT_PUBLIC_SITE_URL,
-  // défini dans app/layout.tsx). Jamais de domaine écrit en dur ici.
-  alternates: { canonical: "/nos-domaines/cybersecurite" },
-  openGraph: {
-    title: TITLE,
-    description: DESCRIPTION,
-    url: "/nos-domaines/cybersecurite",
-    siteName: "Lazarègue Avocats",
-    locale: "fr_FR",
-    type: "website",
-  },
+  alternates: { canonical: PATH },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", locale: "fr_FR", type: "website" },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
@@ -30,28 +23,19 @@ const JSON_LD = {
       "@type": "LegalService",
       name: "Avocat en cybersécurité — Lazarègue Avocats",
       description:
-        "Cabinet d'avocats en cybersécurité à Paris : réponse à cyberattaque, violation de données, conformité NIS 2, responsabilité du prestataire informatique. Analyse juridique et audit technique menés ensemble.",
-      url: "https://lazaregue-avocats.fr/nos-domaines/cybersecurite",
-      telephone: "+33181706200",
+        "Obligations de sécurité, contrats informatiques, gestion juridique d'incident, notifications, NIS 2 et contentieux. Intervention avec un expert en cybersécurité.",
+      url: `${URL_BASE}${PATH}`,
       areaServed: { "@type": "Country", name: "France" },
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "18 rue de Tilsitt",
-        addressLocality: "Paris",
-        postalCode: "75017",
-        addressCountry: "FR",
-      },
-      serviceType:
-        "Réponse à incident cyber, violation de données personnelles, conformité NIS 2, responsabilité du prestataire informatique",
-      provider: { "@type": "LegalService", name: "Lazarègue Avocats" },
+      serviceType: "Cybersécurité, gestion d'incident, NIS 2, contrats de sécurité informatique, contentieux",
+      provider: { "@id": `${URL_BASE}/#cabinet` },
     },
     {
-      "@type": "FAQPage",
-      mainEntity: FAQ_ITEMS.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Nos domaines", item: `${URL_BASE}/nos-domaines` },
+        { "@type": "ListItem", position: 3, name: "Cybersécurité", item: `${URL_BASE}${PATH}` },
+      ],
     },
   ],
 };
@@ -59,11 +43,8 @@ const JSON_LD = {
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
-      />
-      <PilierClient />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <CyberV4 />
     </>
   );
 }
