@@ -75,6 +75,26 @@ const ACCUEIL_V4_OVERRIDES = `
       entières + petite marge au-dessus des cheveux, épaules visibles ; seul le
       bas des bustes est recadré. Image non déformée, alignée sur la grille. */
 @media(min-width:640px){.accueilV4 .team-panorama img{aspect-ratio:3;object-fit:cover;object-position:center top}}
+
+/* --- Ajustements (23 sept. 2026) --- */
+/* Dossiers : chaque carte pointe vers la page du cas réel (plus de fenêtre
+   interne). Le titre porte le lien ; son ::after rend toute la carte cliquable.
+   « Lire le cas → » redevient un repère visuel (span, non focusable). */
+.accueilV4 .case-card{position:relative}
+.accueilV4 .case-card-link{color:inherit;text-decoration:none}
+.accueilV4 .case-card-link::after{content:"";position:absolute;inset:0;z-index:1}
+.accueilV4 .case-card:hover .case-card-link,.accueilV4 .case-card-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
+.accueilV4 .case-card .case-detail-link{pointer-events:none}
+/* Commande d'animation (WCAG 2.2.2) — option B : icône seule, sans libellé.
+   Toujours focusable ; sur écran tactile elle reste visible ; là où le survol
+   existe (ordinateur) elle apparaît au survol du hero ou au focus clavier.
+   prefers-reduced-motion la masque toujours (rien ne s'anime). */
+.accueilV4 .motion-control{gap:0;min-width:44px}
+.accueilV4 .motion-control .motion-icon{font-size:1.125rem;line-height:1}
+@media(hover:hover){
+  .accueilV4 .motion-control{opacity:0;transition:opacity .18s ease}
+  .accueilV4 .hero:hover .motion-control,.accueilV4 .motion-control:focus-visible{opacity:1}
+}
 `;
 
 const ROTATING = [
@@ -98,9 +118,9 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     nom: "Conformité et gouvernance",
     but: "Organiser vos obligations.",
     domaines: [
-      { titre: "RGPD et données personnelles", desc: "Mettre les traitements de données en conformité et répondre à un contrôle ou à une violation de données.", href: "/nos-domaines/rgpd-donnees-personnelles" },
-      { titre: "Intelligence artificielle et AI Act", desc: "Encadrer les outils d’IA utilisés ou développés par l’entreprise et préparer la conformité à l’AI Act.", href: "/nos-domaines/avocat-intelligence-artificielle" },
-      { titre: "Cybersécurité et NIS 2", desc: "Organiser la prévention des incidents et respecter les obligations de sécurité, notamment celles de NIS 2.", href: "/nos-domaines/cybersecurite" },
+      { titre: "RGPD et données personnelles", desc: "Mettre l’entreprise en conformité avec les règles encadrant le traitement des données personnelles et réagir à un contrôle de la CNIL ou à une violation de données.", href: "/nos-domaines/rgpd-donnees-personnelles" },
+      { titre: "Intelligence artificielle et AI Act", desc: "Encadrer l’utilisation ou le développement d’outils d’IA par l’entreprise et organiser sa conformité à l’AI Act.", href: "/nos-domaines/avocat-intelligence-artificielle" },
+      { titre: "Cybersécurité et NIS 2", desc: "Assurer la gestion des risques d’incidents et respecter les exigences de sécurité, y compris les dispositions de NIS 2.", href: "/nos-domaines/cybersecurite" },
     ],
   },
   {
@@ -109,74 +129,50 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     but: "Sécuriser vos projets et vos engagements.",
     domaines: [
       { titre: "Contrats informatiques", desc: "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d’infogérance.", href: "/nos-domaines/contrats-informatiques" },
-      { titre: "M&A Tech et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
-      { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues de MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
+      { titre: "Fusions-acquisitions technologiques et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
+      { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
     ],
   },
   {
     num: "03",
     nom: "Contentieux et atteintes numériques",
-    but: "Agir face à un litige ou à une atteinte.",
+    but: "Réagir en cas de litige ou d’infraction numérique.",
     domaines: [
-      { titre: "Contentieux informatique et commercial", desc: "Agir lorsqu’un projet IT échoue, qu’un prestataire manque à ses obligations ou qu’une expertise devient nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
-      { titre: "Cybercriminalité et atteintes aux systèmes", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une atteinte au système informatique.", href: "/nos-domaines/cybercriminalite" },
-      { titre: "Escroquerie et fraude bancaire", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
-      { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre l’entreprise contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
+      { titre: "Contentieux informatique et commercial", desc: "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
+      { titre: "Cyberattaques et cybercriminalité", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.", href: "/nos-domaines/cybercriminalite" },
+      { titre: "Fraude bancaire et escroquerie en ligne", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
+      { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
     ],
   },
 ];
 
 const CASES = [
   {
-    id: "cas-pratique-1",
-    kicker: "01 / CYBERATTAQUE",
-    titre: "Une industrie paralysée par un piratage",
-    situation: "Messagerie piratée, production arrêtée, données clients et RH volées.",
-    intervention: "Coordination de la réponse à l’incident avec les experts techniques et notifications à la CNIL.",
-    issue: "Reprise progressive de la production et mise en cause du prestataire.",
+    id: "cas-accueil-1",
+    href: "/cas-clients/cyberattaque-responsabilite-prestataire-informatique",
+    kicker: "01 / CYBERSÉCURITÉ",
+    titre: "Une entreprise paralysée met en cause son prestataire informatique",
+    situation: "Après une intrusion, l’entreprise ne pouvait plus accéder à plusieurs outils métiers ; son infogérant contestait toute responsabilité et les journaux techniques risquaient d’être perdus.",
+    intervention: "Analyse des contrats et des éléments techniques, préservation des preuves et mise en place d’une expertise pour confronter les versions.",
+    issue: "Une expertise judiciaire a été ordonnée pour établir les causes et les responsabilités. Dossier clos, issue favorable.",
   },
   {
-    id: "cas-pratique-2",
-    kicker: "02 / INTELLIGENCE ARTIFICIELLE",
-    titre: "Une entreprise IA prépare une levée de fonds",
-    situation: "Les investisseurs demandent la mise en conformité de logiciels d’IA pour les ressources humaines.",
-    intervention: "Documentation de la gouvernance et adaptation des contrats avec les fournisseurs cloud.",
-    issue: "Gouvernance documentée ; levée de fonds conclue dans les délais.",
+    id: "cas-accueil-2",
+    href: "/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque",
+    kicker: "02 / FRAUDE BANCAIRE",
+    titre: "Virements frauduleux vers des plateformes crypto : recours contre la banque",
+    situation: "Un particulier constatait une série de virements vers différents prestataires de paiement et plateformes de crypto-actifs, étalés sur plusieurs mois.",
+    intervention: "Reconstitution de la chronologie, analyse des mécanismes d’authentification et action fondée sur les règles du Code monétaire et financier.",
+    issue: "L’action a été menée contre l’établissement bancaire. Dossier clos, issue favorable.",
   },
   {
-    id: "cas-pratique-3",
-    kicker: "03 / DONNÉES PERSONNELLES",
-    titre: "Des données clients volées chez un sous-traitant",
-    situation: "Des données personnelles sont revendues sur des forums ; la CNIL ouvre une enquête.",
-    intervention: "Notifications, information des personnes et examen de la responsabilité du sous-traitant.",
-    issue: "Responsabilité du sous-traitant documentée.",
-  },
-];
-
-const CASE_DETAILS = [
-  {
-    id: "cas-pratique-1",
-    kicker: "01 / CYBERATTAQUE",
-    titre: "Une industrie paralysée après un piratage",
-    situation: "Une industrie a vu sa messagerie piratée : production arrêtée, données clients et fiches RH volées.",
-    intervention: "Nous avons coordonné la réponse à l’incident avec les experts techniques et respecté les obligations de notification auprès de la CNIL dans les délais.",
-    issue: "Reprise progressive de la production, préservation des preuves et mise en cause du prestataire d’infogérance.",
-  },
-  {
-    id: "cas-pratique-2",
-    kicker: "02 / INTELLIGENCE ARTIFICIELLE",
-    titre: "Mise en conformité d’une entreprise IA avant une levée de fonds",
-    situation: "Une entreprise développait des logiciels d’IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec la réglementation européenne sur l’IA.",
-    intervention: "Nous avons documenté la gouvernance juridique des systèmes d’IA et mis à niveau les contrats avec les fournisseurs cloud.",
-    issue: "Gouvernance et documentation de conformité mises en place ; levée de fonds conclue dans les délais.",
-  },
-  {
-    id: "cas-pratique-3",
-    kicker: "03 / DONNÉES PERSONNELLES",
-    titre: "Fuite massive de données clients chez un site de vente en ligne",
-    situation: "Un site de vente en ligne a découvert le vol des données personnelles de plusieurs centaines de milliers de clients chez un sous-traitant, revendues sur des forums illicites ; la CNIL a ouvert une enquête.",
-    intervention: "Nous avons mis en cause la responsabilité du sous-traitant et anticipé les risques d’action collective.",
-    issue: "Notification réalisée dans les délais, personnes concernées informées et responsabilité du sous-traitant documentée.",
+    id: "cas-accueil-3",
+    href: "/cas-clients/dereferencement-google-procedure-judiciaire",
+    kicker: "03 / DIFFAMATION ET CONTENUS",
+    titre: "Déréférencement Google : une entreprise saisit le juge",
+    situation: "Une entreprise et ses dirigeants souhaitaient limiter l’accès, depuis le moteur de recherche, à des contenus liés à une procédure et nuisibles à leur réputation.",
+    intervention: "Analyse des contenus et des intérêts en présence, puis engagement d’une procédure pour soumettre la demande de déréférencement au juge.",
+    issue: "La demande de déréférencement a été soumise à l’examen du juge. Dossier clos, issue favorable.",
   },
 ];
 
@@ -248,8 +244,7 @@ export function AccueilV4() {
       const reflect = () => {
         pauseBtn.setAttribute("data-paused", String(paused));
         pauseBtn.querySelector(".motion-icon")!.textContent = paused ? "▷" : "Ⅱ";
-        pauseBtn.querySelector(".motion-label")!.textContent = paused ? "Reprendre" : "Pause";
-        pauseBtn.setAttribute("aria-label", paused ? "Reprendre les animations du hero" : "Mettre en pause les animations du hero");
+        pauseBtn.setAttribute("aria-label", paused ? "Reprendre l’animation" : "Mettre l’animation en pause");
         // La pause gèle aussi la rotation du globe (le composant THREE écoute cet
         // événement) : « Pause » arrête effectivement les animations du hero.
         document.dispatchEvent(new CustomEvent("accueilv4:motion", { detail: { paused } }));
@@ -409,61 +404,6 @@ export function AccueilV4() {
       }
     }
 
-    /* ---- Aperçu des cas pratiques (dialog) ---- */
-    const library = root.querySelector<HTMLElement>(".case-library#cas-pratiques");
-    const dialog = root.querySelector<HTMLDialogElement>("#cases-dialog");
-    const container = dialog?.querySelector<HTMLElement>(".cases-dialog-content");
-    const closeBtn = dialog?.querySelector<HTMLButtonElement>(".close");
-    if (library && dialog && container && closeBtn && typeof dialog.showModal === "function") {
-      const articles = [...library.querySelectorAll<HTMLElement>(".case-library-items > article[id]")];
-      const links = [...root.querySelectorAll<HTMLAnchorElement>("a.case-detail-link[data-case-target], a.case-library-link")];
-      let opener: HTMLElement | null = null;
-      let prevOverflow: string | null = null;
-      if (library.parentElement !== container) container.appendChild(library);
-      const targetFor = (l: HTMLAnchorElement) => l.dataset.caseTarget || "cas-pratiques";
-      const openCases = (target: string, link: HTMLAnchorElement | null) => {
-        if (target !== "cas-pratiques" && !articles.some((a) => a.id === target)) return;
-        opener = link;
-        articles.forEach((a) => { a.hidden = target !== "cas-pratiques" && a.id !== target; });
-        if (!dialog.open) { prevOverflow = document.body.style.overflow; dialog.showModal(); document.body.style.overflow = "hidden"; }
-        dialog.scrollTop = 0; container.scrollTop = 0;
-      };
-      const onLinkClick = (e: MouseEvent, link: HTMLAnchorElement) => {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        const target = targetFor(link);
-        if (target !== "cas-pratiques" && !articles.some((a) => a.id === target)) return;
-        e.preventDefault(); openCases(target, link);
-      };
-      const linkHandlers = links.map((link) => {
-        const h = (e: MouseEvent) => onLinkClick(e, link);
-        link.addEventListener("click", h);
-        return { link, h };
-      });
-      const onClose = () => { dialog.close(); };
-      closeBtn.addEventListener("click", onClose);
-      const onDialogClick = (e: MouseEvent) => {
-        if (e.target !== dialog) return;
-        const r = dialog.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
-      };
-      dialog.addEventListener("click", onDialogClick);
-      const onDialogClose = () => {
-        articles.forEach((a) => { a.hidden = false; });
-        if (prevOverflow !== null) document.body.style.overflow = prevOverflow;
-        prevOverflow = null;
-        const returnTo = opener; opener = null;
-        if (returnTo?.isConnected) returnTo.focus({ preventScroll: true });
-      };
-      dialog.addEventListener("close", onDialogClose);
-      cleanups.push(() => {
-        linkHandlers.forEach(({ link, h }) => link.removeEventListener("click", h));
-        closeBtn.removeEventListener("click", onClose);
-        dialog.removeEventListener("click", onDialogClick);
-        dialog.removeEventListener("close", onDialogClose);
-        if (dialog.open) dialog.close();
-      });
-    }
-
     return () => cleanups.forEach((c) => c());
   }, []);
 
@@ -489,15 +429,14 @@ export function AccueilV4() {
                 </span>
               </h1>
               <p className="hero-copy">
-                <strong>Conseil juridique et défense des entreprises</strong> confrontées aux risques, projets et contentieux numériques.
+                <strong>Conseil juridique et représentation des entreprises</strong> confrontées aux risques, aux projets et aux litiges liés au monde numérique.
               </p>
               <div className="hero-actions">
                 <a className="btn" href="#contact">Exposer votre situation à un avocat <span className="arrow" aria-hidden="true">→</span></a>
                 <a className="text-link" href="#domaines">Voir nos domaines</a>
               </div>
-              <button id="motion-control" className="motion-control" type="button" aria-label="Mettre les mots en pause">
+              <button id="motion-control" className="motion-control" type="button" aria-label="Mettre l’animation en pause">
                 <span className="motion-icon" aria-hidden="true">&#x2161;</span>
-                <span className="motion-label">Pause</span>
               </button>
             </div>
             <div className="hero-art" aria-hidden="true">
@@ -520,10 +459,10 @@ export function AccueilV4() {
           <div className="intro-body">
             <div>
               <span className="eyebrow">Le cabinet</span>
-              <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences sur les enjeux du numérique.</h2>
+              <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences pour traiter les dossiers de droit du numérique.</h2>
             </div>
             <div>
-              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats en droit du numérique et en nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons et défendons les entreprises en droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
+              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats exclusivement dédié au droit du numérique et des nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons et représentons les entreprises en matière de droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
               <a className="text-link" href="#equipe">Rencontrer l&rsquo;équipe <span className="arrow" aria-hidden="true">↓</span></a>
             </div>
           </div>
@@ -538,7 +477,7 @@ export function AccueilV4() {
               <span className="eyebrow">Domaines d&rsquo;intervention</span>
               <h2 id="titre-domaines">Dix domaines, trois familles.</h2>
             </div>
-            <p>Retrouvez le domaine qui correspond à votre situation.</p>
+            <p>Trouvez le domaine qui correspond à votre situation.</p>
           </div>
           <div className="domain-groups">
             {FAMILLES.map((fam, fi) => (
@@ -574,17 +513,17 @@ export function AccueilV4() {
             <div>
               <span className="eyebrow">Pourquoi le cabinet</span>
               <h2 id="titre-pourquoi">Le droit du numérique,<br />notre seul métier.</h2>
-              <p className="why-intro">Comprendre les faits techniques, mesurer les enjeux juridiques et construire la stratégie avec vous.</p>
+              <p className="why-intro">Analyser les aspects techniques, évaluer les implications juridiques et concevoir avec vous une stratégie sur mesure.</p>
             </div>
             <ul className="why-list">
               <li className="why-row">
                 <div><h3>Un cabinet dédié au <span className="why-emphasis">numérique</span></h3><p>Le droit du numérique est la seule matière du cabinet, du contrat informatique au contentieux pénal des systèmes d&rsquo;information.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Avocats et experts en cybersécurité confrontent l&rsquo;analyse juridique aux réalités techniques du dossier. Une double inscription aux barreaux de Paris et de Montréal complète cette approche sur les dossiers transatlantiques.</p></div>
+                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Une équipe juridique et technique (avocats et experts en cybersécurité) confronte l&rsquo;analyse juridique aux réalités techniques du dossier.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
+                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient depuis 2016 sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
               </li>
             </ul>
           </div>
@@ -609,18 +548,17 @@ export function AccueilV4() {
               <span className="eyebrow">Dossiers traités</span>
               <h2 id="titre-dossiers">Trois dossiers, trois stratégies.</h2>
             </div>
-            <a className="btn secondary case-library-link" href="#cas-pratiques">Voir les cas pratiques <span className="arrow" aria-hidden="true">→</span></a>
           </div>
           <div className="case-grid">
             {CASES.map((c) => (
-              <article className="case-card" tabIndex={0} key={c.id}>
-                <div><p className="case-kicker">{c.kicker}</p><h3>{c.titre}</h3></div>
+              <article className="case-card" key={c.id}>
+                <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href}>{c.titre}</Link></h3></div>
                 <dl>
                   <div><dt>La situation</dt><dd>{c.situation}</dd></div>
                   <div><dt>Notre intervention</dt><dd>{c.intervention}</dd></div>
                   <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
                 </dl>
-                <a className="case-detail-link" href={`#${c.id}`} data-case-target={c.id}>Lire le cas <span className="arrow" aria-hidden="true">→</span></a>
+                <span className="case-detail-link" aria-hidden="true">Lire le cas <span className="arrow">→</span></span>
               </article>
             ))}
           </div>
@@ -652,7 +590,7 @@ export function AccueilV4() {
               {TECHNICAL.map((p) => <PersonCard key={p.nom} p={p} />)}
             </div>
           </div>
-          <p className="technical-note">Les intervenants techniques apportent leur expertise aux côtés des avocats. Ils n&rsquo;exercent pas la profession d&rsquo;avocat.</p>
+          <p className="technical-note">Les intervenants techniques apportent leur expertise aux côtés des avocats.</p>
         </div>
       </section>
 
@@ -717,29 +655,6 @@ export function AccueilV4() {
           </div>
         </div>
       </section>
-
-      {/* ============ APERÇU CAS PRATIQUES (dialog) ============ */}
-      <dialog id="cases-dialog" aria-labelledby="cases-title">
-        <div className="cases-dialog-content">
-          <button className="close" type="button" aria-label={"Fermer l’aperçu des cas pratiques"}>Fermer <span aria-hidden="true">✕</span></button>
-          <section className="case-library" id="cas-pratiques" aria-labelledby="cases-title">
-            <h2 id="cases-title">Cas pratiques</h2>
-            <p className="case-library-intro">Trois dossiers anonymisés : les situations, les interventions du cabinet et leurs issues.</p>
-            <div className="case-library-items">
-              {CASE_DETAILS.map((c) => (
-                <article className="case-detail-article" id={c.id} key={c.id}>
-                  <div><p className="case-kicker">{c.kicker}</p><h3>{c.titre}</h3></div>
-                  <dl>
-                    <div><dt>La situation</dt><dd>{c.situation}</dd></div>
-                    <div><dt>Notre intervention</dt><dd>{c.intervention}</dd></div>
-                    <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
-                  </dl>
-                </article>
-              ))}
-            </div>
-          </section>
-        </div>
-      </dialog>
     </div>
   );
 }
