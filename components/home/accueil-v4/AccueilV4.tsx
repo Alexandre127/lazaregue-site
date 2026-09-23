@@ -129,7 +129,7 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     but: "Sécuriser vos projets et vos engagements.",
     domaines: [
       { titre: "Contrats informatiques", desc: "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d’infogérance.", href: "/nos-domaines/contrats-informatiques" },
-      { titre: "M&A Tech et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
+      { titre: "Fusions-acquisitions technologiques et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
       { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
     ],
   },
@@ -139,8 +139,8 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     but: "Réagir en cas de litige ou d’infraction numérique.",
     domaines: [
       { titre: "Contentieux informatique et commercial", desc: "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
-      { titre: "Cybercriminalité et atteintes aux systèmes", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.", href: "/nos-domaines/cybercriminalite" },
-      { titre: "Escroquerie et fraude bancaire", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
+      { titre: "Cyberattaques et cybercriminalité", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.", href: "/nos-domaines/cybercriminalite" },
+      { titre: "Fraude bancaire et escroquerie en ligne", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
       { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
     ],
   },
@@ -590,7 +590,7 @@ export function AccueilV4() {
               {TECHNICAL.map((p) => <PersonCard key={p.nom} p={p} />)}
             </div>
           </div>
-          <p className="technical-note">Les intervenants techniques apportent leur expertise aux côtés des avocats. Ils n&rsquo;exercent pas la profession d&rsquo;avocat.</p>
+          <p className="technical-note">Les intervenants techniques apportent leur expertise aux côtés des avocats.</p>
         </div>
       </section>
 
