@@ -143,7 +143,7 @@ export function CyberV4() {
           <nav className="cw-crumb" aria-label="Fil d’Ariane">
             <Link href="/">Accueil</Link> / <Link href="/nos-domaines">Domaines</Link> / <span aria-current="page">Cybersécurité</span>
           </nav>
-          <p className="cw-label"><span className="cw-only-d">Paris · PME et ETI · intervention partout en France</span><span className="cw-only-m">Paris · partout en France</span></p>
+          <p className="cw-label"><span className="cw-only-d">Paris · entreprises · intervention partout en France</span><span className="cw-only-m">Paris · partout en France</span></p>
           <h1 className="cw-h1">AVOCAT EN CYBERSÉCURITÉ POUR LES ENTREPRISES</h1>
           <p className="cw-hero-lead">{fr("Le cabinet accompagne les entreprises dans la prévention des risques informatiques, la réponse en cas de cyberattaque et la défense de leurs intérêts à l’encontre des auteurs d’intrusions ou de tout acteur dont la responsabilité est engagée. Il les conseille également dans la mise en conformité avec leurs obligations de cybersécurité : RGPD et NIS 2, en documentant cette conformité et en l’intégrant à leur dispositif général de conformité.")}</p>
           <div className="cw-hero-cta">
@@ -332,7 +332,7 @@ export function CyberV4() {
           <p className="cw-label">Si un incident est en cours</p>
           <h2 className="cw-h2 cw-h2-sm">Coordonner les premières décisions</h2>
           <p className="cw-tx">Le confinement, la poursuite des activités et la conservation des preuves doivent être coordonnés avec les intervenants techniques. Avant toute suppression, réinstallation ou reconstruction, il est essentiel de déterminer les éléments à conserver : journaux, messages et horodatages.</p>
-          <p className="cw-tx">Identifier les destinataires à informer, vérifier la portée des communications et tracer les décisions. Le cabinet qualifie ensuite l’incident, prépare les notifications dues et les échanges nécessaires.</p>
+          <p className="cw-tx">Déterminer qui doit être informé, évaluer la portée des communications et tracer les décisions. Le cabinet qualifie ensuite l’incident, prépare les notifications dues et les échanges nécessaires.</p>
           <div><a href={TEL} className="cw-btn">Appeler : 01 81 70 62 00 →</a></div>
         </div>
         <div className="cw-parc cw-parc-light">
