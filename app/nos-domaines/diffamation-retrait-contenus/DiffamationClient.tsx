@@ -65,9 +65,10 @@ const CASES = [
   },
 ];
 
-/* Hero — vidéo fondue en fond. Sans fichier vidéo fourni, l'aplat en dégradé
-   reste seul (comme la maquette). Le bouton pause contrôle la vidéo si elle
-   existe ; image fixe si prefers-reduced-motion. */
+/* Hero — vidéo fondue en fond (mains sur smartphone, fil social). Chargée en
+   différé (data-src) ; poster affiché avant lecture, sur connexion lente et si
+   prefers-reduced-motion (auquel cas la vidéo ne démarre pas). Décorative
+   (aria-hidden). Commande d'arrêt : icône seule, discrète (voir CSS .vid-pause). */
 function HeroMedia() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [paused, setPaused] = useState(false);
@@ -98,12 +99,18 @@ function HeroMedia() {
 
   return (
     <div className="vid-bg" aria-hidden="true">
-      <video ref={videoRef} muted playsInline loop preload="none" tabIndex={-1} poster="/assets/video/diffamation-poster.webp">
-        <source data-src="/assets/video/diffamation-vertical.webm" type="video/webm" />
-        <source data-src="/assets/video/diffamation-vertical.mp4" type="video/mp4" />
+      <video ref={videoRef} muted playsInline loop preload="metadata" tabIndex={-1} poster="/assets/video/diffamation-poster.webp">
+        <source data-src="/assets/video/diffamation-hero.webm" type="video/webm" />
+        <source data-src="/assets/video/diffamation-hero.mp4" type="video/mp4" />
       </video>
-      <button type="button" className="vid-pause" aria-pressed={paused} onClick={toggle}>
-        {paused ? "► Lecture" : "❚❚ Pause"}
+      <button
+        type="button"
+        className="vid-pause"
+        aria-pressed={paused}
+        aria-label={paused ? "Reprendre la vidéo" : "Mettre la vidéo en pause"}
+        onClick={toggle}
+      >
+        <span className="vid-pause-icon" aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>
       </button>
     </div>
   );

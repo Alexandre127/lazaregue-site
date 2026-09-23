@@ -84,8 +84,22 @@
 .diff :global(.hero-d h1) { max-width: 20ch; margin: 8px 0 0; }
 .diff :global(.vid-bg) { position: absolute; inset: 0 0 0 38%; z-index: 0; background: radial-gradient(ellipse at 62% 38%, #3a4c9a 0%, #1a2250 45%, #0a0f2e 82%); }
 .diff :global(.vid-bg video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.diff :global(.vid-bg)::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--navy) 0%, rgba(10, 15, 46, 0.82) 30%, rgba(10, 15, 46, 0.25) 100%); }
-.diff :global(.vid-pause) { position: absolute; right: 20px; bottom: 20px; z-index: 2; min-height: 44px; padding: 0 14px; background: rgba(10, 10, 20, 0.78); color: #fff; border: 1px solid rgba(255, 255, 255, 0.4); font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.04em; cursor: pointer; }
+.diff :global(.vid-bg)::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--navy) 0%, rgba(10, 15, 46, 0.9) 34%, rgba(10, 15, 46, 0.5) 72%, rgba(10, 15, 46, 0.2) 100%); }
+/* Commande d'arrêt — icône seule, discrète (même solution que la page d'accueil) :
+   toujours focusable ; sur écran tactile elle reste visible ; là où le survol
+   existe elle apparaît au survol du hero ou au focus clavier ; masquée sous
+   prefers-reduced-motion (la vidéo ne démarre pas). */
+.diff :global(.vid-pause) { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 40px; height: 40px; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; padding: 0; background: rgba(10, 10, 20, 0.55); color: #fff; border: 1px solid rgba(255, 255, 255, 0.55); cursor: pointer; }
+.diff :global(.vid-pause:hover) { background: rgba(10, 10, 20, 0.82); }
+.diff :global(.vid-pause-icon) { font-family: Arial, "Helvetica Neue", sans-serif; font-size: 16px; line-height: 1; }
+@media (hover: hover) {
+  .diff :global(.vid-pause) { opacity: 0; transition: opacity 0.18s ease; }
+  .diff :global(.hero-d:hover .vid-pause),
+  .diff :global(.vid-pause:focus-visible) { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .diff :global(.vid-pause) { display: none; }
+}
 .diff :global(.accroche) { font-style: italic; font-weight: 500; font-size: clamp(20px, 2vw, 24px); line-height: 1.4; color: #fff; border-left: 4px solid var(--blue); padding: 4px 0 4px 20px; margin: 24px 0 18px; max-width: 34ch; }
 .diff :global(.hero-d .intro) { color: var(--muted-on-dark); max-width: 60ch; }
 .diff :global(.link-hero) { display: inline-flex; align-items: center; min-height: 44px; color: #fff; text-decoration: underline; text-underline-offset: 4px; font-weight: 600; font-size: 15px; }
