@@ -75,8 +75,8 @@ const SITUATIONS: { t: string; p: string; cta: string }[] = [
   { t: "Vous lancez un produit ou un outil d’intelligence artificielle", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont actuellement en cours d’arbitrage.", cta: "Intégrer la protection des données" },
   { t: "Vous êtes victime d’une violation de données", p: "Vous devez décider rapidement s’il faut signaler l’incident à la CNIL et informer les personnes concernées (fuite, rançongiciel ou envoi erroné).", cta: "Être accompagné après une violation" },
   { t: "Vous êtes contrôlé par la CNIL", p: "La Commission nationale de l’informatique et des libertés (CNIL) vous a adressé un questionnaire, un avis de contrôle ou une demande d’information. Les réponses que vous fournirez détermineront la suite de la procédure.", cta: "Préparer la réponse à la CNIL" },
-  { t: "Vous préparez une acquisition ou une levée", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
-  { t: "Un suivi RGPD dans la durée", p: "Un interlocuteur pour vos questions RGPD, vos contrats et l’évolution de vos projets, en lien avec vos équipes.", cta: "Échanger sur votre suivi RGPD" },
+  { t: "Vous préparez une acquisition ou une levée de fonds", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
+  { t: "Un accompagnement RGPD dans la durée", p: "Un avocat identifié suit vos questions, vos contrats et l’évolution de vos projets, en lien avec vos équipes. Lorsque les conditions sont réunies, la fonction de délégué à la protection des données peut être assurée par le cabinet.", cta: "Échanger sur votre suivi RGPD" },
 ];
 
 /* Quatre temps de la mise en conformité — contenu restauré de l'ancienne page
