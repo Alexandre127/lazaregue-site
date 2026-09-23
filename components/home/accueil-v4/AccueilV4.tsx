@@ -85,6 +85,16 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .case-card-link::after{content:"";position:absolute;inset:0;z-index:1}
 .accueilV4 .case-card:hover .case-card-link,.accueilV4 .case-card-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
 .accueilV4 .case-card .case-detail-link{pointer-events:none}
+/* Commande d'animation (WCAG 2.2.2) — option B : icône seule, sans libellé.
+   Toujours focusable ; sur écran tactile elle reste visible ; là où le survol
+   existe (ordinateur) elle apparaît au survol du hero ou au focus clavier.
+   prefers-reduced-motion la masque toujours (rien ne s'anime). */
+.accueilV4 .motion-control{gap:0;min-width:44px}
+.accueilV4 .motion-control .motion-icon{font-size:1.125rem;line-height:1}
+@media(hover:hover){
+  .accueilV4 .motion-control{opacity:0;transition:opacity .18s ease}
+  .accueilV4 .hero:hover .motion-control,.accueilV4 .motion-control:focus-visible{opacity:1}
+}
 `;
 
 const ROTATING = [
@@ -234,8 +244,7 @@ export function AccueilV4() {
       const reflect = () => {
         pauseBtn.setAttribute("data-paused", String(paused));
         pauseBtn.querySelector(".motion-icon")!.textContent = paused ? "▷" : "Ⅱ";
-        pauseBtn.querySelector(".motion-label")!.textContent = paused ? "Reprendre" : "Pause";
-        pauseBtn.setAttribute("aria-label", paused ? "Reprendre les animations du hero" : "Mettre en pause les animations du hero");
+        pauseBtn.setAttribute("aria-label", paused ? "Reprendre l’animation" : "Mettre l’animation en pause");
         // La pause gèle aussi la rotation du globe (le composant THREE écoute cet
         // événement) : « Pause » arrête effectivement les animations du hero.
         document.dispatchEvent(new CustomEvent("accueilv4:motion", { detail: { paused } }));
@@ -426,9 +435,8 @@ export function AccueilV4() {
                 <a className="btn" href="#contact">Exposer votre situation à un avocat <span className="arrow" aria-hidden="true">→</span></a>
                 <a className="text-link" href="#domaines">Voir nos domaines</a>
               </div>
-              <button id="motion-control" className="motion-control" type="button" aria-label="Mettre les mots en pause">
+              <button id="motion-control" className="motion-control" type="button" aria-label="Mettre l’animation en pause">
                 <span className="motion-icon" aria-hidden="true">&#x2161;</span>
-                <span className="motion-label">Pause</span>
               </button>
             </div>
             <div className="hero-art" aria-hidden="true">
