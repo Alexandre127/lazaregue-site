@@ -8,18 +8,18 @@ export type FaqItem = { id: string; q: string; a: string };
 export const FAQ_ITEMS: FaqItem[] = [
   {
     id: "faq-1",
-    q: "Une PME de moins de 250 salariés doit-elle tenir un registre ?",
-    a: "L’exemption prévue pour certaines structures de moins de 250 salariés est limitée. Elle ne s’applique notamment pas lorsque les traitements ne sont pas occasionnels, présentent un risque pour les personnes ou portent sur certaines catégories de données. Les traitements réguliers liés aux salariés, aux clients ou aux prospects rendent donc généralement cette exemption inapplicable.",
+    q: "Une entreprise de moins de 250 salariés doit-elle tenir un registre ?",
+    a: "L’exemption prévue pour certaines structures de moins de 250 salariés est limitée. Elle ne s’applique notamment pas dans les cas suivants : les traitements ne sont pas occasionnels ; ils présentent un risque pour les personnes ; ils portent sur certaines catégories de données ; ou ils sont réguliers et concernent les salariés, les clients ou les prospects.",
   },
   {
     id: "faq-2",
-    q: "Quelle différence entre un avocat RGPD et un consultant ?",
-    a: "Les deux peuvent contribuer à une démarche de conformité. L’avocat ajoute à l’accompagnement opérationnel le secret professionnel attaché à sa mission, l’analyse du risque juridique, la négociation contractuelle et la défense de l’entreprise en cas de contrôle ou de contentieux. Le choix dépend du périmètre de la mission et du niveau de risque.",
+    q: "Quelle est la différence entre un avocat RGPD et un consultant ?",
+    a: "Les deux peuvent contribuer à une démarche de conformité. L’avocat ajoute à l’accompagnement opérationnel le secret professionnel attaché à sa mission, l’évaluation du risque juridique, la négociation contractuelle et la représentation de l’entreprise en cas de contrôle ou de contentieux. Le choix dépend du périmètre de la mission et du niveau de risque.",
   },
   {
     id: "faq-3",
-    q: "Combien de temps dure un audit ou une mise en conformité ?",
-    a: "La durée dépend du nombre de traitements, du nombre de prestataires et de la documentation déjà existante. Elle est arrêtée avec vous lors du cadrage, puis rythmée par le plan d’action : les écarts les plus exposés sont traités en premier, sans attendre l’achèvement de l’ensemble.",
+    q: "Quelle est la durée d’un audit ou d’une mise en conformité ?",
+    a: "La durée est déterminée par le nombre de traitements, le nombre de prestataires et la documentation existante. Elle est établie avec vous lors du cadrage, puis rythmée par le plan d’action : les écarts les plus exposés sont traités en premier, sans attendre l’achèvement de l’ensemble.",
   },
   {
     id: "faq-4",

@@ -72,10 +72,10 @@ const FAQ_LD = {
 const SITUATIONS: { t: string; p: string; cta: string }[] = [
   { t: "Vous devez vous mettre en conformité", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer.", cta: "Faire le point sur la conformité" },
   { t: "Vos prestataires ne sont pas encadrés", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties.", cta: "Encadrer les contrats" },
-  { t: "Vous lancez un produit ou un outil d’IA", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont en cours d’arbitrage.", cta: "Intégrer la protection des données" },
-  { t: "Vous subissez une violation de données", p: "Fuite, rançongiciel ou envoi erroné : vous devez décider vite s’il faut notifier la CNIL et informer les personnes concernées.", cta: "Être accompagné après une violation" },
-  { t: "Vous êtes contrôlé par la CNIL", p: "Vous avez reçu un questionnaire, un avis de contrôle ou une demande d’information. Vos réponses engagent la suite de la procédure.", cta: "Préparer la réponse à la CNIL" },
-  { t: "Vous préparez une acquisition ou une levée", p: "L’acquéreur ou l’investisseur audite votre conformité. Les écarts identifiés peuvent affecter l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
+  { t: "Vous lancez un produit ou un outil d’intelligence artificielle", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont actuellement en cours d’arbitrage.", cta: "Intégrer la protection des données" },
+  { t: "Vous êtes victime d’une violation de données", p: "Vous devez décider rapidement s’il faut signaler l’incident à la CNIL et informer les personnes concernées (fuite, rançongiciel ou envoi erroné).", cta: "Être accompagné après une violation" },
+  { t: "Vous êtes contrôlé par la CNIL", p: "La Commission nationale de l’informatique et des libertés (CNIL) vous a adressé un questionnaire, un avis de contrôle ou une demande d’information. Les réponses que vous fournirez détermineront la suite de la procédure.", cta: "Préparer la réponse à la CNIL" },
+  { t: "Vous préparez une acquisition ou une levée", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
   { t: "Un suivi RGPD dans la durée", p: "Un interlocuteur pour vos questions RGPD, vos contrats et l’évolution de vos projets, en lien avec vos équipes.", cta: "Échanger sur votre suivi RGPD" },
 ];
 
@@ -111,10 +111,10 @@ const MC_BLOCKS: { titre: string; resume: string; detail: string; livrable: stri
 ];
 
 const ARGUMENTS: { t: string; p: string }[] = [
-  { t: "Une approche juridique, contractuelle et contentieuse", p: "La conformité est traitée comme un dossier susceptible d’être discuté : devant la CNIL, face à un client, à un assureur ou à un juge." },
-  { t: "Un accompagnement calibré pour les PME et les ETI", p: "Le cabinet travaille avec des entreprises qui n’ont pas de direction juridique dédiée à ces sujets, et adapte la documentation à leurs moyens réels." },
+  { t: "Une approche juridique, contractuelle et contentieuse", p: "La conformité est traitée comme un dossier susceptible d’être examiné par la CNIL, un client, un assureur ou un tribunal." },
+  { t: "Un accompagnement adapté aux PME et aux ETI", p: "Le cabinet travaille avec des entreprises qui ne disposent pas d’une direction juridique dédiée à ces sujets. Il adapte la documentation à leurs moyens réels." },
   { t: "Un cabinet de droit du numérique depuis 2016", p: "Le cabinet exerce en droit du numérique depuis 2016 et intervient sur l’ensemble du territoire." },
-  { t: "Des interlocuteurs identifiés", p: "Un avocat identifié conduit la mission, suit les échanges et reste votre interlocuteur tout au long du dossier." },
+  { t: "Des interlocuteurs identifiés", p: "Un avocat désigné conduit la mission, supervise les échanges et demeure votre interlocuteur tout au long du dossier." },
 ];
 
 export default function Page() {
@@ -182,8 +182,8 @@ export default function Page() {
           <div className="wrap">
             <div className="sec-head">
               <p className="label">notre méthode</p>
-              <h2>Mise en conformité RGPD&nbsp;: cartographier, organiser, encadrer, documenter</h2>
-              <p className="lead">Le cabinet part de vos pratiques réelles, hiérarchise les écarts par niveau de risque, puis structure la conformité en quatre temps&nbsp;— jusqu’à une documentation prête à être démontrée.</p>
+              <h2>Mise en conformité avec le RGPD&nbsp;: cartographier, organiser, encadrer et documenter</h2>
+              <p className="lead">Le cabinet s’appuie sur vos pratiques réelles, hiérarchise les écarts selon le niveau de risque, puis structure la conformité en quatre étapes&nbsp;— jusqu’à une documentation prête à être démontrée.</p>
             </div>
             <ol className="mc-blocks">
               {MC_BLOCKS.map((b, i) => (
@@ -224,15 +224,15 @@ export default function Page() {
               <div className="urg">
                 <p className="delai">72 heures</p>
                 <h3>Violation de données</h3>
-                <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement dispose d’un délai très court pour notifier la CNIL lorsque la violation présente un risque pour les personnes.</p>
-                <p>Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision, en lien avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
+                <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement doit informer la CNIL dans un délai très court lorsque l’incident présente un risque pour les personnes concernées.</p>
+                <p>Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision. Il travaille en étroite collaboration avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
                 <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Contacter un avocat après une violation</TrackedLink>
               </div>
               <div className="urg">
                 <p className="delai">procédure en cours</p>
                 <h3>Contrôle ou procédure CNIL</h3>
-                <p>Questionnaire écrit, contrôle sur place, contrôle en ligne ou mise en demeure&nbsp;: chaque réponse écrite devient une pièce du dossier et détermine la suite de la procédure.</p>
-                <p>Le cabinet prépare les réponses, encadre les échanges et assure la défense de l’entreprise devant la formation restreinte si la procédure se poursuit.</p>
+                <p>Questionnaire écrit, contrôle sur place, contrôle sur pièces ou mise en demeure&nbsp;: chaque réponse écrite devient une pièce du dossier et détermine la suite de la procédure.</p>
+                <p>Le cabinet élabore les réponses, encadre les échanges et assure la défense de l’entreprise devant la formation restreinte de la CNIL si la procédure se poursuit.</p>
                 <TrackedLink href="/contact" event="cta_cnil" className="btn btn-urgent">Être assisté face à la CNIL</TrackedLink>
               </div>
             </div>
@@ -402,7 +402,7 @@ export default function Page() {
           <div className="wrap">
             <p className="label">contact</p>
             <h2>Parlons de votre situation</h2>
-            <p className="lead">Le cabinet intervient pour un audit, pour un projet en cours, pour une violation de données ou pour un contrôle de la CNIL. Le premier échange permet de situer l’urgence et de définir le périmètre.</p>
+            <p className="lead">Le cabinet intervient pour un audit, pour un projet en cours, pour une violation de données ou pour un contrôle de la CNIL. Le premier échange permet d’évaluer l’urgence de la situation et de définir le périmètre.</p>
             <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat</TrackedLink>
           </div>
         </section>

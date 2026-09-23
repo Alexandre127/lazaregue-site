@@ -24,39 +24,39 @@ type Terrain = {
 const TERRAIN: Terrain[] = [
   {
     title: "Outils SaaS américains utilisés sans encadrement",
-    sub: "Des outils SaaS empilés — sans encadrement contractuel suffisant ni documentation des traitements et des transferts",
+    sub: "Des outils SaaS empilés, sans contrat adéquat ni documentation des traitements et des transferts de données",
     expand:
       "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation.",
     link: { href: "/nos-domaines/contrats-informatiques", label: "Encadrer vos contrats IT" },
   },
   {
-    title: "Registre des traitements inexistant ou obsolète",
+    title: "Registre des traitements manquant ou obsolète",
     sub: "La base légale de chaque traitement n'est pas documentée",
     expand:
       "La CNIL peut sanctionner même sans violation effective. Sans registre à jour, impossible de démontrer la conformité lors d'un contrôle ou d'une due diligence investisseur.",
   },
   {
-    title: "DRH qui utilise une IA générative avec des données RH",
-    sub: "CV, évaluations, données salariés — sans encadrement IA",
+    title: "DRH qui s’appuie sur une intelligence artificielle générative en utilisant des données RH",
+    sub: "CV, évaluations, informations sur les salariés, sans aucune supervision en matière d’IA",
     expand:
       "Double exposition : RGPD et AI Act (système IA à risque élevé). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
     link: { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Conformité AI Act" },
   },
   {
-    title: "Lancement d'appli mobile sans mise en conformité",
-    sub: "Géolocalisation, cookies, données utilisateurs non encadrés",
+    title: "Lancement d’une application mobile sans mise en conformité",
+    sub: "Géolocalisation, cookies et données utilisateurs non encadrés",
     expand:
       "La CNIL surveille activement les applis mobiles. Une plainte utilisateur suffit à déclencher un contrôle. Les données de géolocalisation sont sensibles — leur collecte sans consentement valide expose à une sanction immédiate.",
   },
   {
-    title: "Salarié qui demande l'accès à tous ses emails",
-    sub: "Droit d'accès exercé en contexte de conflit RH",
+    title: "Salarié qui réclame l’accès à l’ensemble de ses courriels",
+    sub: "Droit d’accès exercé dans un contexte de contentieux en ressources humaines",
     expand:
       "Sans procédure documentée, l'entreprise doit répondre sous un mois. Un refus ou retard expose à une réclamation CNIL. Nous structurons la réponse juridique tout en protégeant les intérêts de l'entreprise.",
   },
   {
-    title: "Levée de fonds qui révèle des non-conformités",
-    sub: "Due diligence investisseur — le RGPD devient un enjeu de valorisation",
+    title: "Opération de financement qui met en évidence des écarts de conformité",
+    sub: "Lors de la due diligence, la protection des données devient un facteur de valorisation",
     expand:
       "Un fichier prospects sans consentement valide peut être qualifié d'actif illicite — impact direct sur la valorisation. Nous accompagnons les fondateurs dans la régularisation pré-closing.",
   },
