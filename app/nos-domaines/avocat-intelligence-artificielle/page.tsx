@@ -52,9 +52,9 @@ const JSON_LD = {
 };
 
 const SITUATIONS = [
-  { n: "01", s: "Vos salariés utilisent des outils d’IA générative, avec ou sans autorisation", d: "Vous devez encadrer ces usages : fixer ce que les salariés peuvent saisir dans ces outils (données personnelles, secrets d’affaires) et informer puis consulter le CSE lorsque l’outil modifie les conditions de travail." },
+  { n: "01", s: "Vos salariés utilisent des outils d’IA générative, avec ou sans autorisation", d: "Vous devez encadrer ces pratiques en définissant ce que les salariés peuvent saisir dans ces outils — notamment s’agissant des données personnelles et des informations confidentielles — puis informer et consulter le comité social et économique (CSE) lorsque l’outil modifie les conditions de travail." },
   { n: "02", s: "Un outil intervient dans le recrutement, l’évaluation ou la gestion des carrières", d: "L’outil peut être classé « à haut risque ». Une personne doit alors pouvoir contrôler ses résultats, et les candidats ou salariés doivent être informés de son utilisation." },
-  { n: "03", s: "Vous intégrez une fonction d’IA à un produit ou un service vendu à des tiers", d: "Vous devenez « fournisseur » au sens du règlement : il vous revient de documenter le système, d’informer ses utilisateurs et de prévoir les clauses adaptées avec vos propres fournisseurs." },
+  { n: "03", s: "Vous intégrez une fonction d’IA à un produit ou à un service que vous vendez à des tiers", d: "Vous devenez « fournisseur » au sens du règlement : il vous revient de documenter le système, d’informer ses utilisateurs et de prévoir les clauses adaptées avec vos propres fournisseurs." },
   { n: "04", s: "Un client ou un fournisseur vous demande de justifier la conformité de votre outil", d: "Il vous faut un dossier présentable : la liste des systèmes utilisés, leur documentation, les contrats et la preuve des contrôles effectués." },
   { n: "05", s: "Un algorithme décide ou pré-décide du sort de personnes physiques", d: "Une analyse d’impact est souvent nécessaire, le traitement doit reposer sur une base légale et les personnes doivent pouvoir exercer leurs droits, notamment au titre du RGPD." },
   { n: "06", s: "Un incident, un contrôle ou une réclamation est déjà survenu", d: "Il faut reconstituer ce qui s’est passé, faire examiner techniquement le système et préparer la réponse à l’autorité, au client ou au juge." },
@@ -159,7 +159,7 @@ export default function Page() {
             <p className="label">Avocat en intelligence artificielle · Paris et toute la France</p>
             <h1 id="h1">AVOCAT IA : MISE EN CONFORMITÉ AI ACT ET GOUVERNANCE</h1>
             <p className="acc">Une IA mal documentée devient un risque de responsabilité.</p>
-            <p className="lead">Le cabinet accompagne les entreprises qui utilisent, intègrent ou commercialisent des systèmes d’intelligence artificielle : qualification des usages, documentation, contrats, et défense en cas de contrôle ou de contentieux.</p>
+            <p className="lead">Le cabinet assiste les entreprises qui utilisent, déploient ou commercialisent des systèmes d’intelligence artificielle, depuis la qualification des usages et la mise en conformité documentaire et contractuelle jusqu’à leur défense en cas de contrôle ou de contentieux.</p>
             <div className="hero-cta">
               <a className="btn" href="/contact">Parler de votre situation →</a>
               <a className="heroLink" href="#missions">Voir les cinq missions</a>
