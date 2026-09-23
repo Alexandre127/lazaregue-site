@@ -166,8 +166,19 @@ export default function Page() {
 
       <div className={styles.esc}>
         <main id="main">
-          {/* ===== 1. HERO (clair) ===== */}
-          <section className="hero" aria-labelledby="h1">
+          {/* ===== 1. HERO (photo La Défense + dégradé bleu nuit) ===== */}
+          <section className="hero hero-photo" aria-labelledby="h1">
+            <div className="hero-bg" aria-hidden="true">
+              <Image
+                src="/images/fraude-bancaire-hero.webp"
+                alt=""
+                aria-hidden="true"
+                fill
+                priority
+                sizes="100vw"
+                className="hero-bg-img"
+              />
+            </div>
             <div className="wrap">
               <nav className="crumb" aria-label="Fil d’Ariane">
                 <Link href="/">Accueil</Link> <span aria-hidden>/</span> <Link href="/nos-domaines">Domaines</Link> <span aria-hidden>/</span> <span aria-current="page">Fraude bancaire et escroquerie</span>
@@ -183,16 +194,20 @@ export default function Page() {
                     <Link className="btn btn-line" href="/contact">Demander à être contacté</Link>
                   </div>
                 </div>
-                <aside className="urgent" aria-label="Opération récente : premières démarches">
-                  <p className="ul">Opération récente ? À faire maintenant</p>
-                  <ol>
-                    {MESURES.map((m) => (
-                      <li key={m.t}>{fr(m.t)}</li>
-                    ))}
-                  </ol>
-                  <a className="link" href="#premiers">Détail des premières mesures ↓</a>
-                </aside>
               </div>
+            </div>
+          </section>
+
+          {/* Bande d'urgence — rappel court, pleine largeur, sous le hero */}
+          <section className="urgband" aria-label="Opération récente : premières démarches">
+            <div className="wrap urgband-inner">
+              <p className="urgband-title">Opération récente ? À faire maintenant</p>
+              <ol className="urgband-list">
+                {MESURES.map((m) => (
+                  <li key={m.t}>{fr(m.t)}</li>
+                ))}
+              </ol>
+              <a className="urgband-link" href="#premiers">Détail des premières mesures ↓</a>
             </div>
           </section>
 

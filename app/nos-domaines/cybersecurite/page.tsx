@@ -6,7 +6,7 @@ const PATH = "/nos-domaines/cybersecurite";
 
 const TITLE = "Avocat en cybersécurité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Avocat en cybersécurité à Paris pour les PME et ETI : prévention, cyberattaque, contrats, assurance et recours. Échangez avec Lazarègue Avocats.";
+  "Avocat en cybersécurité à Paris pour les entreprises : prévention, cyberattaque, contrats, assurance et recours. Échangez avec Lazarègue Avocats.";
 
 export const metadata: Metadata = {
   title: TITLE,

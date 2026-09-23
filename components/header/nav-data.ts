@@ -159,13 +159,13 @@ export const ROUTES_HERO_SOMBRE = [
 ] as const;
 
 /**
- * Exceptions à hero CLAIR sous un préfixe sombre. La page Fraude bancaire
- * (refonte UX sept. 2026) a un hero clair : le header transparent à texte blanc
- * y serait invisible, alors que `/nos-domaines` reste sombre par défaut.
+ * Exceptions à hero CLAIR sous un préfixe sombre : routes de `/nos-domaines`
+ * dont le hero reste clair et où le header transparent à texte blanc serait
+ * invisible. La page Fraude bancaire est passée en hero sombre (photo La Défense
+ * + dégradé, sept. 2026) : elle a rejoint le comportement sombre par défaut de
+ * `/nos-domaines` et n'est donc plus une exception. Liste vide pour l'instant.
  */
-export const ROUTES_HERO_CLAIR = [
-  "/nos-domaines/escroquerie-fraude-bancaire",
-] as const;
+export const ROUTES_HERO_CLAIR: readonly string[] = [] as const;
 
 /** Le header doit-il être transparent au repos sur cette route ? */
 export function aHeroSombre(pathname: string): boolean {
