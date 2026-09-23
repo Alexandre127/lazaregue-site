@@ -75,6 +75,16 @@ const ACCUEIL_V4_OVERRIDES = `
       entières + petite marge au-dessus des cheveux, épaules visibles ; seul le
       bas des bustes est recadré. Image non déformée, alignée sur la grille. */
 @media(min-width:640px){.accueilV4 .team-panorama img{aspect-ratio:3;object-fit:cover;object-position:center top}}
+
+/* --- Ajustements (23 sept. 2026) --- */
+/* Dossiers : chaque carte pointe vers la page du cas réel (plus de fenêtre
+   interne). Le titre porte le lien ; son ::after rend toute la carte cliquable.
+   « Lire le cas → » redevient un repère visuel (span, non focusable). */
+.accueilV4 .case-card{position:relative}
+.accueilV4 .case-card-link{color:inherit;text-decoration:none}
+.accueilV4 .case-card-link::after{content:"";position:absolute;inset:0;z-index:1}
+.accueilV4 .case-card:hover .case-card-link,.accueilV4 .case-card-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
+.accueilV4 .case-card .case-detail-link{pointer-events:none}
 `;
 
 const ROTATING = [
@@ -128,55 +138,31 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
 
 const CASES = [
   {
-    id: "cas-pratique-1",
-    kicker: "01 / CYBERATTAQUE",
-    titre: "Une industrie paralysée par un piratage",
-    situation: "Messagerie piratée, production arrêtée, données clients et RH volées.",
-    intervention: "Coordination de la réponse à l’incident avec les experts techniques et notifications à la CNIL.",
-    issue: "Reprise progressive de la production et mise en cause du prestataire.",
+    id: "cas-accueil-1",
+    href: "/cas-clients/cyberattaque-responsabilite-prestataire-informatique",
+    kicker: "01 / CYBERSÉCURITÉ",
+    titre: "Une entreprise paralysée met en cause son prestataire informatique",
+    situation: "Après une intrusion, l’entreprise ne pouvait plus accéder à plusieurs outils métiers ; son infogérant contestait toute responsabilité et les journaux techniques risquaient d’être perdus.",
+    intervention: "Analyse des contrats et des éléments techniques, préservation des preuves et mise en place d’une expertise pour confronter les versions.",
+    issue: "Une expertise judiciaire a été ordonnée pour établir les causes et les responsabilités. Dossier clos, issue favorable.",
   },
   {
-    id: "cas-pratique-2",
-    kicker: "02 / INTELLIGENCE ARTIFICIELLE",
-    titre: "Une entreprise IA prépare une levée de fonds",
-    situation: "Les investisseurs demandent la mise en conformité de logiciels d’IA pour les ressources humaines.",
-    intervention: "Documentation de la gouvernance et adaptation des contrats avec les fournisseurs cloud.",
-    issue: "Gouvernance documentée ; levée de fonds conclue dans les délais.",
+    id: "cas-accueil-2",
+    href: "/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque",
+    kicker: "02 / FRAUDE BANCAIRE",
+    titre: "Virements frauduleux vers des plateformes crypto : recours contre la banque",
+    situation: "Un particulier constatait une série de virements vers différents prestataires de paiement et plateformes de crypto-actifs, étalés sur plusieurs mois.",
+    intervention: "Reconstitution de la chronologie, analyse des mécanismes d’authentification et action fondée sur les règles du Code monétaire et financier.",
+    issue: "L’action a été menée contre l’établissement bancaire. Dossier clos, issue favorable.",
   },
   {
-    id: "cas-pratique-3",
-    kicker: "03 / DONNÉES PERSONNELLES",
-    titre: "Des données clients volées chez un sous-traitant",
-    situation: "Des données personnelles sont revendues sur des forums ; la CNIL ouvre une enquête.",
-    intervention: "Notifications, information des personnes et examen de la responsabilité du sous-traitant.",
-    issue: "Responsabilité du sous-traitant documentée.",
-  },
-];
-
-const CASE_DETAILS = [
-  {
-    id: "cas-pratique-1",
-    kicker: "01 / CYBERATTAQUE",
-    titre: "Une industrie paralysée après un piratage",
-    situation: "Une industrie a vu sa messagerie piratée : production arrêtée, données clients et fiches RH volées.",
-    intervention: "Nous avons coordonné la réponse à l’incident avec les experts techniques et respecté les obligations de notification auprès de la CNIL dans les délais.",
-    issue: "Reprise progressive de la production, préservation des preuves et mise en cause du prestataire d’infogérance.",
-  },
-  {
-    id: "cas-pratique-2",
-    kicker: "02 / INTELLIGENCE ARTIFICIELLE",
-    titre: "Mise en conformité d’une entreprise IA avant une levée de fonds",
-    situation: "Une entreprise développait des logiciels d’IA pour les ressources humaines. Avant une levée de fonds, ses investisseurs ont exigé une mise en conformité complète avec la réglementation européenne sur l’IA.",
-    intervention: "Nous avons documenté la gouvernance juridique des systèmes d’IA et mis à niveau les contrats avec les fournisseurs cloud.",
-    issue: "Gouvernance et documentation de conformité mises en place ; levée de fonds conclue dans les délais.",
-  },
-  {
-    id: "cas-pratique-3",
-    kicker: "03 / DONNÉES PERSONNELLES",
-    titre: "Fuite massive de données clients chez un site de vente en ligne",
-    situation: "Un site de vente en ligne a découvert le vol des données personnelles de plusieurs centaines de milliers de clients chez un sous-traitant, revendues sur des forums illicites ; la CNIL a ouvert une enquête.",
-    intervention: "Nous avons mis en cause la responsabilité du sous-traitant et anticipé les risques d’action collective.",
-    issue: "Notification réalisée dans les délais, personnes concernées informées et responsabilité du sous-traitant documentée.",
+    id: "cas-accueil-3",
+    href: "/cas-clients/dereferencement-google-procedure-judiciaire",
+    kicker: "03 / DIFFAMATION ET CONTENUS",
+    titre: "Déréférencement Google : une entreprise saisit le juge",
+    situation: "Une entreprise et ses dirigeants souhaitaient limiter l’accès, depuis le moteur de recherche, à des contenus liés à une procédure et nuisibles à leur réputation.",
+    intervention: "Analyse des contenus et des intérêts en présence, puis engagement d’une procédure pour soumettre la demande de déréférencement au juge.",
+    issue: "La demande de déréférencement a été soumise à l’examen du juge. Dossier clos, issue favorable.",
   },
 ];
 
@@ -409,61 +395,6 @@ export function AccueilV4() {
       }
     }
 
-    /* ---- Aperçu des cas pratiques (dialog) ---- */
-    const library = root.querySelector<HTMLElement>(".case-library#cas-pratiques");
-    const dialog = root.querySelector<HTMLDialogElement>("#cases-dialog");
-    const container = dialog?.querySelector<HTMLElement>(".cases-dialog-content");
-    const closeBtn = dialog?.querySelector<HTMLButtonElement>(".close");
-    if (library && dialog && container && closeBtn && typeof dialog.showModal === "function") {
-      const articles = [...library.querySelectorAll<HTMLElement>(".case-library-items > article[id]")];
-      const links = [...root.querySelectorAll<HTMLAnchorElement>("a.case-detail-link[data-case-target], a.case-library-link")];
-      let opener: HTMLElement | null = null;
-      let prevOverflow: string | null = null;
-      if (library.parentElement !== container) container.appendChild(library);
-      const targetFor = (l: HTMLAnchorElement) => l.dataset.caseTarget || "cas-pratiques";
-      const openCases = (target: string, link: HTMLAnchorElement | null) => {
-        if (target !== "cas-pratiques" && !articles.some((a) => a.id === target)) return;
-        opener = link;
-        articles.forEach((a) => { a.hidden = target !== "cas-pratiques" && a.id !== target; });
-        if (!dialog.open) { prevOverflow = document.body.style.overflow; dialog.showModal(); document.body.style.overflow = "hidden"; }
-        dialog.scrollTop = 0; container.scrollTop = 0;
-      };
-      const onLinkClick = (e: MouseEvent, link: HTMLAnchorElement) => {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        const target = targetFor(link);
-        if (target !== "cas-pratiques" && !articles.some((a) => a.id === target)) return;
-        e.preventDefault(); openCases(target, link);
-      };
-      const linkHandlers = links.map((link) => {
-        const h = (e: MouseEvent) => onLinkClick(e, link);
-        link.addEventListener("click", h);
-        return { link, h };
-      });
-      const onClose = () => { dialog.close(); };
-      closeBtn.addEventListener("click", onClose);
-      const onDialogClick = (e: MouseEvent) => {
-        if (e.target !== dialog) return;
-        const r = dialog.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
-      };
-      dialog.addEventListener("click", onDialogClick);
-      const onDialogClose = () => {
-        articles.forEach((a) => { a.hidden = false; });
-        if (prevOverflow !== null) document.body.style.overflow = prevOverflow;
-        prevOverflow = null;
-        const returnTo = opener; opener = null;
-        if (returnTo?.isConnected) returnTo.focus({ preventScroll: true });
-      };
-      dialog.addEventListener("close", onDialogClose);
-      cleanups.push(() => {
-        linkHandlers.forEach(({ link, h }) => link.removeEventListener("click", h));
-        closeBtn.removeEventListener("click", onClose);
-        dialog.removeEventListener("click", onDialogClick);
-        dialog.removeEventListener("close", onDialogClose);
-        if (dialog.open) dialog.close();
-      });
-    }
-
     return () => cleanups.forEach((c) => c());
   }, []);
 
@@ -609,18 +540,17 @@ export function AccueilV4() {
               <span className="eyebrow">Dossiers traités</span>
               <h2 id="titre-dossiers">Trois dossiers, trois stratégies.</h2>
             </div>
-            <a className="btn secondary case-library-link" href="#cas-pratiques">Voir les cas pratiques <span className="arrow" aria-hidden="true">→</span></a>
           </div>
           <div className="case-grid">
             {CASES.map((c) => (
-              <article className="case-card" tabIndex={0} key={c.id}>
-                <div><p className="case-kicker">{c.kicker}</p><h3>{c.titre}</h3></div>
+              <article className="case-card" key={c.id}>
+                <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href}>{c.titre}</Link></h3></div>
                 <dl>
                   <div><dt>La situation</dt><dd>{c.situation}</dd></div>
                   <div><dt>Notre intervention</dt><dd>{c.intervention}</dd></div>
                   <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
                 </dl>
-                <a className="case-detail-link" href={`#${c.id}`} data-case-target={c.id}>Lire le cas <span className="arrow" aria-hidden="true">→</span></a>
+                <span className="case-detail-link" aria-hidden="true">Lire le cas <span className="arrow">→</span></span>
               </article>
             ))}
           </div>
@@ -717,29 +647,6 @@ export function AccueilV4() {
           </div>
         </div>
       </section>
-
-      {/* ============ APERÇU CAS PRATIQUES (dialog) ============ */}
-      <dialog id="cases-dialog" aria-labelledby="cases-title">
-        <div className="cases-dialog-content">
-          <button className="close" type="button" aria-label={"Fermer l’aperçu des cas pratiques"}>Fermer <span aria-hidden="true">✕</span></button>
-          <section className="case-library" id="cas-pratiques" aria-labelledby="cases-title">
-            <h2 id="cases-title">Cas pratiques</h2>
-            <p className="case-library-intro">Trois dossiers anonymisés : les situations, les interventions du cabinet et leurs issues.</p>
-            <div className="case-library-items">
-              {CASE_DETAILS.map((c) => (
-                <article className="case-detail-article" id={c.id} key={c.id}>
-                  <div><p className="case-kicker">{c.kicker}</p><h3>{c.titre}</h3></div>
-                  <dl>
-                    <div><dt>La situation</dt><dd>{c.situation}</dd></div>
-                    <div><dt>Notre intervention</dt><dd>{c.intervention}</dd></div>
-                    <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
-                  </dl>
-                </article>
-              ))}
-            </div>
-          </section>
-        </div>
-      </dialog>
     </div>
   );
 }
