@@ -95,13 +95,70 @@
 .esc :global(.hero .claim) { font-size: clamp(19px, 2vw, 24px); font-weight: 500; line-height: 1.35; border-left: 4px solid var(--blue); padding-left: 18px; margin: 22px 0 0; max-width: 42ch; color: var(--ink); }
 
 /* Encadré d'urgence (SEUL rouge, avec les numéros des premières mesures) */
-.esc :global(.urgent) { border: 2px solid var(--red); background: #fff; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-.esc :global(.urgent .ul) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); display: flex; gap: 8px; align-items: center; margin: 0; }
-.esc :global(.urgent .ul)::before { content: ""; width: 10px; height: 10px; background: var(--red); border-radius: 50%; flex: none; }
-.esc :global(.urgent ol) { list-style: decimal; margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.45; }
-.esc :global(.urgent li) { color: var(--ink); }
-.esc :global(.urgent li)::marker { color: var(--red); font-family: var(--ff-mono); }
-.esc :global(.urgent .link) { color: var(--blue3); }
+/* ---- Bande d'urgence : rappel court, pleine largeur, sous le hero (23 sept. 2026).
+   Remplace l'encadré blanc du hero. Fond blanc, filet rouge 3px en haut, texte noir ;
+   titre DM Mono rouge à gauche, quatre mesures numérotées au centre, lien à droite. */
+.esc :global(.urgband) { background: #fff; border-top: 3px solid var(--red); padding-block: clamp(16px, 2vw, 24px); }
+.esc :global(.urgband-inner) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 32px; row-gap: 10px; align-items: start; }
+.esc :global(.urgband-title) { grid-column: 1; grid-row: 1; margin: 0; padding-top: 2px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.esc :global(.urgband-title)::before { content: ""; width: 10px; height: 10px; background: var(--red); border-radius: 50%; flex: none; }
+.esc :global(.urgband-list) { grid-column: 2; grid-row: 1; list-style: none; margin: 0; padding: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px 26px; counter-reset: mesure; }
+.esc :global(.urgband-list li) { counter-increment: mesure; color: var(--ink); font-size: 14px; line-height: 1.45; display: flex; gap: 7px; }
+.esc :global(.urgband-list li)::before { content: counter(mesure) "."; color: var(--red); font-family: var(--ff-mono); font-weight: 500; flex: none; }
+.esc :global(.urgband-link) { grid-column: 2; grid-row: 2; justify-self: end; color: var(--blue3); font-weight: 600; white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; }
+@media (max-width: 1100px) {
+  .esc :global(.urgband-inner) { grid-template-columns: 1fr; row-gap: 14px; }
+  .esc :global(.urgband-title) { grid-column: 1; grid-row: 1; }
+  .esc :global(.urgband-list) { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .esc :global(.urgband-link) { grid-column: 1; grid-row: 3; justify-self: start; }
+}
+@media (max-width: 640px) {
+  .esc :global(.urgband-title) { white-space: normal; }
+  .esc :global(.urgband-list) { grid-template-columns: 1fr; }
+}
+
+/* ---- Hero photo (La Défense au crépuscule) : version sombre (23 sept. 2026) ---
+   Photo décorative plein cadre + dégradé bleu nuit : opaque à gauche sous le
+   texte, plus transparent à droite pour révéler la silhouette et les tours.
+   Seules les COULEURS changent (police, tailles, hiérarchie inchangées). */
+.esc :global(.hero-photo) { background: var(--navy); color: #fff; }
+.esc :global(.hero-photo .hero-bg) { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.esc :global(.hero-photo .hero-bg-img) { object-fit: cover; object-position: 72% 50%; }
+.esc :global(.hero-photo .hero-bg)::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(102deg, rgba(6, 9, 25, 0.94) 0%, rgba(6, 9, 25, 0.88) 32%, rgba(8, 12, 38, 0.62) 58%, rgba(8, 12, 38, 0.34) 100%),
+    linear-gradient(0deg, rgba(6, 9, 25, 0.55) 0%, rgba(6, 9, 25, 0) 42%);
+}
+.esc :global(.hero-photo .wrap) { position: relative; z-index: 1; }
+/* Textes en blanc : fil d'Ariane, label, H1, chapô, accroche. */
+.esc :global(.hero-photo .crumb),
+.esc :global(.hero-photo .crumb a) { color: rgba(255, 255, 255, 0.75); }
+.esc :global(.hero-photo .crumb a:hover),
+.esc :global(.hero-photo .crumb [aria-current]) { color: #fff; }
+.esc :global(.hero-photo .lbl) { color: rgba(255, 255, 255, 0.92); }
+.esc :global(.hero-photo h1) { color: #fff; }
+.esc :global(.hero-photo .say) { color: rgba(255, 255, 255, 0.90); }
+.esc :global(.hero-photo .claim) { color: #fff; }
+/* Bouton secondaire → contour blanc ; le principal reste bleu #1A47FF. */
+.esc :global(.hero-photo .btn-line) { background: transparent; color: #fff; border-color: #fff; }
+.esc :global(.hero-photo .btn-line:hover) { background: rgba(255, 255, 255, 0.14); color: #fff; border-color: #fff; }
+/* L'encadré rouge garde fond blanc, bordure rouge, textes noirs (classe dédiée
+   .hero-photo : aucune règle .dark ne s'applique à ses paragraphes). */
+
+/* Cadrage responsive de la photo : garder la silhouette (à droite) visible. */
+@media (max-width: 900px) {
+  .esc :global(.hero-photo .hero-bg-img) { object-position: 82% 50%; }
+}
+@media (max-width: 640px) {
+  /* Mobile : texte pleine largeur → voile vertical renforcé et cadrage descendu
+     pour conserver la silhouette sous le texte, sans recouvrement. */
+  .esc :global(.hero-photo .hero-bg)::after {
+    background: linear-gradient(180deg, rgba(6, 9, 25, 0.92) 0%, rgba(6, 9, 25, 0.80) 44%, rgba(8, 12, 38, 0.52) 100%);
+  }
+  .esc :global(.hero-photo .hero-bg-img) { object-position: 78% 36%; }
+}
 
 /* ==================== 2. UN RECOURS RESTE-T-IL POSSIBLE ================= */
 .esc :global(.qc) { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
