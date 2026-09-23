@@ -29,9 +29,9 @@ const TEL = "tel:+33181706200";
 
 const EXPOSITIONS = [
   { n: "01", l: "Réglementaire", p: "L’entreprise doit déterminer si l’incident doit être déclaré à la CNIL, à l’ANSSI, à un client ou à une autre autorité, et dans quel délai." },
-  { n: "02", l: "Contractuel", p: "Il faut vérifier ce que prévoient les contrats avec les clients, l’hébergeur, l’infogérant et l’assureur, puis identifier les responsabilités et les garanties mobilisables." },
+  { n: "02", l: "Contractuel", p: "Il est essentiel d’examiner les termes des contrats signés avec les clients, l’hébergeur, l’infogérant et l’assureur, puis d’identifier les responsabilités et de déterminer les garanties mobilisables." },
   { n: "03", l: "Pénal et preuve", p: "Les journaux de connexion, messages et chronologies doivent être conservés sans altération afin d’établir les faits et, si nécessaire, de préparer une plainte ou une défense." },
-  { n: "04", l: "Gouvernance", p: "La direction, le service juridique et les équipes techniques doivent savoir qui décide, sur quelles informations et comment ces décisions sont consignées." },
+  { n: "04", l: "Gouvernance", p: "La direction, le service juridique et les équipes techniques doivent savoir qui prend les décisions, quelles informations sont utilisées et comment ces décisions sont consignées." },
 ];
 
 /* Développements — repris VERBATIM de la V7 (maquette-cybersecurite-v7, §« Ce
@@ -40,13 +40,13 @@ const DEPLIABLES = [
   {
     s: "Qui faut-il informer après un incident ?",
     paras: [
-      "Une cyberattaque ne déclenche pas automatiquement les mêmes déclarations. Le cabinet commence par établir ce qui s’est produit : simple indisponibilité, accès non autorisé, vol de fichiers, données personnelles concernées ou service essentiel perturbé. À partir de ces faits, il détermine si l’entreprise doit informer la CNIL, l’ANSSI, ses clients, son assureur ou une autre autorité, puis dans quels délais. La décision de notifier — ou de ne pas notifier — est motivée et conservée.",
+      "Les cyberattaques ne déclenchent pas automatiquement les mêmes déclarations. Le cabinet commence par établir les faits : est-ce une simple indisponibilité, un accès non autorisé, un vol de fichiers, des données personnelles concernées ou un service essentiel perturbé ? À partir de ces éléments, il détermine si l’entreprise doit informer la CNIL, l’ANSSI, ses clients, son assureur ou une autre autorité, et dans quel délai. La décision de notifier, ou non, est motivée et conservée.",
     ],
   },
   {
     s: "Pourquoi faut-il préserver les preuves immédiatement ?",
     paras: [
-      "Les journaux de connexion, messages, fichiers et configurations peuvent disparaître lors d’une réinstallation ou d’une remise en service. Avant toute suppression, il faut donc identifier et conserver ce qui permettra de reconstituer l’incident. Ces éléments serviront à répondre aux autorités, établir un éventuel manquement du prestataire et mobiliser la garantie de l’assureur. Le cabinet encadre leur collecte avec l’expert technique afin qu’ils restent datés, compréhensibles et exploitables.",
+      "Les journaux de connexion, les messages, les fichiers et les configurations peuvent être perdus lors d’une réinstallation ou d’un redémarrage. Il faut donc identifier et conserver les éléments qui permettront de reconstituer l’incident avant toute suppression. Ces éléments serviront à répondre aux autorités, à établir un éventuel manquement du prestataire et à mobiliser la garantie de l’assureur. Le cabinet encadre leur collecte avec l’expert technique afin qu’ils restent datés, compréhensibles et exploitables.",
     ],
   },
 ];
@@ -145,7 +145,7 @@ export function CyberV4() {
           </nav>
           <p className="cw-label"><span className="cw-only-d">Paris · PME et ETI · intervention partout en France</span><span className="cw-only-m">Paris · partout en France</span></p>
           <h1 className="cw-h1">AVOCAT EN CYBERSÉCURITÉ POUR LES ENTREPRISES</h1>
-          <p className="cw-hero-lead">{fr("Le cabinet accompagne les PME et les ETI pour prévenir les risques, répondre à une cyberattaque et défendre leurs intérêts. Il traite les obligations de sécurité, NIS 2, les contrats, les notifications et les recours, avec un appui technique lorsque les faits doivent être vérifiés.")}</p>
+          <p className="cw-hero-lead">{fr("Le cabinet accompagne les entreprises dans la prévention des risques informatiques, la réponse en cas de cyberattaque et la défense de leurs intérêts à l’encontre des auteurs d’intrusions ou de tout acteur dont la responsabilité est engagée. Il les conseille également dans la mise en conformité avec leurs obligations de cybersécurité : RGPD et NIS 2, en documentant cette conformité et en l’intégrant à leur dispositif général de conformité.")}</p>
           <div className="cw-hero-cta">
             <Link href={CONTACT} className="cw-btn">Échanger avec un avocat →</Link>
             <a href="#interventions" className="cw-link cw-hero-link">Voir nos interventions ↓</a>
@@ -200,7 +200,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Ce qui est en jeu</p>
           <h2 className="cw-h2">Un incident, quatre expositions simultanées</h2>
-          <p className="cw-lead">Les décisions techniques, les obligations réglementaires et les engagements contractuels se croisent. Le cabinet les examine ensemble avec la direction et les équipes concernées.</p>
+          <p className="cw-lead">Les décisions techniques, les exigences réglementaires et les engagements contractuels interagissent. Le cabinet les évalue ensemble avec la direction et les équipes concernées.</p>
         </div>
         <div className="cw-expo">
           {EXPOSITIONS.map((e) => (
@@ -227,7 +227,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Protéger les données et les systèmes</p>
           <h2 className="cw-h2">Comment vérifier si les mesures de sécurité sont suffisantes ?</h2>
-          <p className="cw-lead">Il ne suffit pas d’affirmer qu’un système est sécurisé. L’entreprise doit pouvoir montrer qui accède aux données, comment elles sont sauvegardées et si un incident peut être retracé. Lorsque des données personnelles sont concernées, l’article 32 du RGPD impose des mesures adaptées au niveau de risque.</p>
+          <p className="cw-lead">Il ne suffit pas d’affirmer qu’un système est sécurisé. L’entreprise doit pouvoir démontrer qui peut consulter les données, comment elles sont sauvegardées et si un incident peut être retracé. Lorsque des données personnelles sont concernées, l’article 32 du RGPD exige des mesures appropriées au niveau de risque.</p>
         </div>
         <div className="cw-kv-wrap">
           {REGLES.map((r) => (
@@ -244,7 +244,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">NIS 2 : la sécurité des entreprises concernées</p>
           <h2 className="cw-h2">NIS 2 : êtes-vous directement ou indirectement concerné ?</h2>
-          <p className="cw-lead">NIS 2 renforce les obligations de cybersécurité d’entreprises appartenant à des secteurs essentiels ou importants. Même lorsqu’une PME n’entre pas directement dans son champ, elle peut être concernée comme fournisseur ou sous-traitant d’un client régulé, qui doit aussi maîtriser les risques liés à sa chaîne de prestataires.</p>
+          <p className="cw-lead">NIS 2 renforce les obligations de cybersécurité des entreprises appartenant à des secteurs essentiels ou importants. Même lorsqu’une entreprise ne relève pas directement de son champ d’application, elle peut être concernée en tant que fournisseur ou sous-traitant d’un client régulé, qui doit également maîtriser les risques liés à sa chaîne d’approvisionnement.</p>
         </div>
         <ol className="cw-nis">
           {NIS_Q.map((q) => (
@@ -267,7 +267,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Vos interlocuteurs</p>
           <h2 className="cw-h2">Un avocat et un expert technique sur votre dossier</h2>
-          <p className="cw-lead">Journaux d’accès, état des sauvegardes, comptes actifs : les faits techniques alimentent l’analyse juridique. L’appui technique est mobilisé selon les besoins de la mission.</p>
+          <p className="cw-lead">Les données techniques — journaux d’accès, état des sauvegardes, comptes actifs — servent de base à l’analyse juridique. L’appui technique est mobilisé selon les besoins de la mission.</p>
         </div>
         <div className="cw-team">
           <article className="cw-person">
@@ -331,7 +331,7 @@ export function CyberV4() {
         <div className="cw-parc cw-dark">
           <p className="cw-label">Si un incident est en cours</p>
           <h2 className="cw-h2 cw-h2-sm">Coordonner les premières décisions</h2>
-          <p className="cw-tx">Confinement, continuité d’activité et conservation des preuves doivent être coordonnés avec les intervenants techniques. Avant suppression, réinstallation ou reconstruction, identifier les éléments à préserver : journaux, messages et horodatages.</p>
+          <p className="cw-tx">Le confinement, la poursuite des activités et la conservation des preuves doivent être coordonnés avec les intervenants techniques. Avant toute suppression, réinstallation ou reconstruction, il est essentiel de déterminer les éléments à conserver : journaux, messages et horodatages.</p>
           <p className="cw-tx">Identifier les destinataires à informer, vérifier la portée des communications et tracer les décisions. Le cabinet qualifie ensuite l’incident, prépare les notifications dues et les échanges nécessaires.</p>
           <div><a href={TEL} className="cw-btn">Appeler : 01 81 70 62 00 →</a></div>
         </div>
