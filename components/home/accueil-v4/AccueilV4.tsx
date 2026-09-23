@@ -98,9 +98,9 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     nom: "Conformité et gouvernance",
     but: "Organiser vos obligations.",
     domaines: [
-      { titre: "RGPD et données personnelles", desc: "Mettre les traitements de données en conformité et répondre à un contrôle ou à une violation de données.", href: "/nos-domaines/rgpd-donnees-personnelles" },
-      { titre: "Intelligence artificielle et AI Act", desc: "Encadrer les outils d’IA utilisés ou développés par l’entreprise et préparer la conformité à l’AI Act.", href: "/nos-domaines/avocat-intelligence-artificielle" },
-      { titre: "Cybersécurité et NIS 2", desc: "Organiser la prévention des incidents et respecter les obligations de sécurité, notamment celles de NIS 2.", href: "/nos-domaines/cybersecurite" },
+      { titre: "RGPD et données personnelles", desc: "Mettre l’entreprise en conformité avec les règles encadrant le traitement des données personnelles et réagir à un contrôle de la CNIL ou à une violation de données.", href: "/nos-domaines/rgpd-donnees-personnelles" },
+      { titre: "Intelligence artificielle et AI Act", desc: "Encadrer l’utilisation ou le développement d’outils d’IA par l’entreprise et organiser sa conformité à l’AI Act.", href: "/nos-domaines/avocat-intelligence-artificielle" },
+      { titre: "Cybersécurité et NIS 2", desc: "Assurer la gestion des risques d’incidents et respecter les exigences de sécurité, y compris les dispositions de NIS 2.", href: "/nos-domaines/cybersecurite" },
     ],
   },
   {
@@ -110,18 +110,18 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     domaines: [
       { titre: "Contrats informatiques", desc: "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d’infogérance.", href: "/nos-domaines/contrats-informatiques" },
       { titre: "M&A Tech et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
-      { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues de MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
+      { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
     ],
   },
   {
     num: "03",
     nom: "Contentieux et atteintes numériques",
-    but: "Agir face à un litige ou à une atteinte.",
+    but: "Réagir en cas de litige ou d’infraction numérique.",
     domaines: [
-      { titre: "Contentieux informatique et commercial", desc: "Agir lorsqu’un projet IT échoue, qu’un prestataire manque à ses obligations ou qu’une expertise devient nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
-      { titre: "Cybercriminalité et atteintes aux systèmes", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une atteinte au système informatique.", href: "/nos-domaines/cybercriminalite" },
+      { titre: "Contentieux informatique et commercial", desc: "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
+      { titre: "Cybercriminalité et atteintes aux systèmes", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.", href: "/nos-domaines/cybercriminalite" },
       { titre: "Escroquerie et fraude bancaire", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
-      { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre l’entreprise contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
+      { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
     ],
   },
 ];
@@ -489,7 +489,7 @@ export function AccueilV4() {
                 </span>
               </h1>
               <p className="hero-copy">
-                <strong>Conseil juridique et défense des entreprises</strong> confrontées aux risques, projets et contentieux numériques.
+                <strong>Conseil juridique et représentation des entreprises</strong> confrontées aux risques, aux projets et aux litiges liés au monde numérique.
               </p>
               <div className="hero-actions">
                 <a className="btn" href="#contact">Exposer votre situation à un avocat <span className="arrow" aria-hidden="true">→</span></a>
@@ -520,10 +520,10 @@ export function AccueilV4() {
           <div className="intro-body">
             <div>
               <span className="eyebrow">Le cabinet</span>
-              <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences sur les enjeux du numérique.</h2>
+              <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences pour traiter les dossiers de droit du numérique.</h2>
             </div>
             <div>
-              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats en droit du numérique et en nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons et défendons les entreprises en droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
+              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats exclusivement dédié au droit du numérique et des nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons et représentons les entreprises en matière de droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
               <a className="text-link" href="#equipe">Rencontrer l&rsquo;équipe <span className="arrow" aria-hidden="true">↓</span></a>
             </div>
           </div>
@@ -538,7 +538,7 @@ export function AccueilV4() {
               <span className="eyebrow">Domaines d&rsquo;intervention</span>
               <h2 id="titre-domaines">Dix domaines, trois familles.</h2>
             </div>
-            <p>Retrouvez le domaine qui correspond à votre situation.</p>
+            <p>Trouvez le domaine qui correspond à votre situation.</p>
           </div>
           <div className="domain-groups">
             {FAMILLES.map((fam, fi) => (
@@ -574,17 +574,17 @@ export function AccueilV4() {
             <div>
               <span className="eyebrow">Pourquoi le cabinet</span>
               <h2 id="titre-pourquoi">Le droit du numérique,<br />notre seul métier.</h2>
-              <p className="why-intro">Comprendre les faits techniques, mesurer les enjeux juridiques et construire la stratégie avec vous.</p>
+              <p className="why-intro">Analyser les aspects techniques, évaluer les implications juridiques et concevoir avec vous une stratégie sur mesure.</p>
             </div>
             <ul className="why-list">
               <li className="why-row">
                 <div><h3>Un cabinet dédié au <span className="why-emphasis">numérique</span></h3><p>Le droit du numérique est la seule matière du cabinet, du contrat informatique au contentieux pénal des systèmes d&rsquo;information.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Avocats et experts en cybersécurité confrontent l&rsquo;analyse juridique aux réalités techniques du dossier. Une double inscription aux barreaux de Paris et de Montréal complète cette approche sur les dossiers transatlantiques.</p></div>
+                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Une équipe juridique et technique (avocats et experts en cybersécurité) confronte l&rsquo;analyse juridique aux réalités techniques du dossier.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
+                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient depuis 2016 sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
               </li>
             </ul>
           </div>
