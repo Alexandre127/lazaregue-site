@@ -1,23 +1,53 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site-url";
 
 /**
- * VERROU PRÉ-PROD — le site n'est pas encore public.
+ * PRÉPROD — accessible aux AGENTS DE LECTURE IA « à la demande », NON indexable.
  *
- * Tant que des contenus sont en placeholder (ex. {{CHAPO_A_REDIGER}}) et que la
- * mise en ligne n'est pas décidée, on interdit toute exploration : `Disallow: /`
- * pour tous les robots. Le `noindex, nofollow` posé dans app/layout.tsx couvre
- * en plus le cas où une URL serait tout de même atteinte.
+ * Objectif (23 sept. 2026) : permettre à Claude, ChatGPT et Perplexity d'OUVRIR
+ * les pages lorsqu'un utilisateur le demande, tout en interdisant l'indexation
+ * par les moteurs et l'aspiration par les robots d'entraînement.
+ *   · Agents de lecture à la demande        → Allow: /
+ *   · Robots d'entraînement / d'aspiration   → Disallow: /
+ *   · Tous les autres robots (`*`)           → Disallow: /  (préprod verrouillée)
  *
- * Le site n'a pas encore de backlinks, donc aucun risque d'« indexation sans
- * snippet » malgré le blocage. Pas de sitemap déclaré tant que c'est verrouillé.
+ * L'INDEXATION reste bloquée indépendamment de ce fichier : balise
+ * `robots: { index:false, follow:false }` (app/layout.tsx) + en-tête
+ * `X-Robots-Tag: noindex, nofollow` (proxy.ts). Un `Allow` dans robots.txt
+ * n'autorise que l'exploration/lecture, jamais l'indexation.
  *
- * À RÉTABLIR le jour de la mise en ligne publique : rouvrir `allow: "/"`,
- * exclure seulement /_next/ et /api/, redéclarer le sitemap, et retirer le
- * `robots` de app/layout.tsx. (Ancienne config ouverte conservée en historique
- * git.)
+ * Le `sitemap.xml` est déclaré (les agents de lecture peuvent s'y référer).
+ *
+ * À la mise en ligne publique : rouvrir `Allow: /` pour `*` (en excluant
+ * /api/ et /_next/), et retirer le `noindex` (layout.tsx + proxy.ts).
  */
+
+// Agents de LECTURE à la demande (fetch déclenché par un utilisateur) : autorisés.
+const LECTEURS = [
+  "ChatGPT-User",
+  "OAI-SearchBot",
+  "Claude-User",
+  "Claude-SearchBot",
+  "PerplexityBot",
+];
+
+// Robots d'ENTRAÎNEMENT / d'aspiration / d'indexation de corpus : interdits.
+const ENTRAINEMENT = [
+  "GPTBot",
+  "ClaudeBot",
+  "CCBot",
+  "Google-Extended",
+  "Bytespider",
+  "Applebot-Extended",
+];
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", disallow: "/" }],
+    rules: [
+      { userAgent: LECTEURS, allow: "/" },
+      { userAgent: ENTRAINEMENT, disallow: "/" },
+      { userAgent: "*", disallow: "/" },
+    ],
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
