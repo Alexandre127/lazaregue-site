@@ -642,23 +642,76 @@ export function PortailDemo() {
   // L'animation ne tourne que lorsque l'aperçu est visible à l'écran ; elle
   // reprend là où elle s'était arrêtée (l'index `i` n'avance pas hors écran).
   const onScreenRef = useRef(true);
+  // Sous 639px, la commande de pause est retirée ; pour rester conforme
+  // (WCAG 2.2.2 — un mouvement automatique de plus de 5 s doit pouvoir être
+  // arrêté), l'animation mobile est COURTE et FINIE : « Dossiers » puis
+  // « Avocat » (≈2,5 s chacun), arrêt définitif sur « Avocat », durée < 5 s.
+  const [isMobile, setIsMobile] = useState(false);
+  const isMobileRef = useRef(false);
+  const mobilePlayedRef = useRef(false);
+  const mobileTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const prefersReduced = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Lance l'animation mobile finie, une seule fois. Le minuteur n'est PAS
+  // rattaché au cycle de vie d'un effet : une fois « Dossiers » affiché, la
+  // bascule vers « Avocat » a lieu quoi qu'il arrive (aucune annulation par un
+  // changement de visibilité). Sous mouvement réduit : « Avocat » d'emblée.
+  const playMobileOnce = () => {
+    if (mobilePlayedRef.current) return;
+    mobilePlayedRef.current = true;
+    if (prefersReduced()) {
+      setActiveTab("avocat");
+      return;
+    }
+    setActiveTab("dossiers");
+    mobileTimerRef.current = setTimeout(() => setActiveTab("avocat"), 2500);
+  };
 
   useEffect(() => {
     const el = rootRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
+    if (typeof IntersectionObserver === "undefined") {
+      onScreenRef.current = true;
+      if (isMobileRef.current) playMobileOnce(); // pas d'IO : démarre d'emblée
+      return;
+    }
+    if (!el) return;
     const io = new IntersectionObserver(
       ([e]) => {
         onScreenRef.current = e.isIntersecting;
+        // Mobile : l'animation finie démarre à la première entrée à l'écran.
+        if (e.isIntersecting && isMobileRef.current) playMobileOnce();
       },
       { threshold: 0.01 },
     );
     io.observe(el);
     return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // Aperçu décoratif : figé si l'utilisateur réduit les animations OU s'il a
-    // activé la commande de pause.
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => {
+      isMobileRef.current = mq.matches;
+      setIsMobile(mq.matches);
+      // Mouvement réduit : « Avocat » d'emblée, sans attendre le défilement.
+      if (mq.matches && prefersReduced()) playMobileOnce();
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Nettoyage du minuteur mobile au démontage uniquement.
+  useEffect(() => () => { if (mobileTimerRef.current) clearTimeout(mobileTimerRef.current); }, []);
+
+  // Animation ORDINATEUR/TABLETTE (≥640px) : cycle continu inchangé, figé si
+  // l'utilisateur réduit les animations OU active la commande de pause.
+  useEffect(() => {
+    if (isMobile) return;
     if (
       paused ||
       (typeof window !== "undefined" &&
@@ -684,7 +737,7 @@ export function PortailDemo() {
       i++;
     }, 1500);
     return () => clearInterval(interval);
-  }, [paused]);
+  }, [paused, isMobile]);
 
   return (
     <div

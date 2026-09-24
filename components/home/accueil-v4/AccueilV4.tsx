@@ -112,7 +112,7 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .domain-family{display:block;background:transparent;border:0;border-top:2px solid var(--ink);padding:0}
   /* En-tête de famille sur UNE ligne : numéro (Bebas 26px, bleu) + titre (Space Grotesk 500, 17px). Accroche masquée. */
   .accueilV4 .family-heading{display:flex;align-items:baseline;gap:12px;padding:14px 0 6px;min-height:0;grid-template-columns:none}
-  .accueilV4 .family-number{font:400 26px/1 var(--ff-display);color:var(--blue);margin:0;grid-row:auto}
+  .accueilV4 .family-number{font:400 26px/1 var(--ff-display);color:var(--ink);margin:0;grid-row:auto}
   .accueilV4 .family-heading h3{font-family:var(--ff-body);font-weight:500;font-size:17px;line-height:1.25;margin:0;min-height:0}
   .accueilV4 .family-purpose{display:none}
   /* Domaines : lien natif pleine ligne, ≥44px, padding vertical 12px, filet inférieur 1px. */
@@ -177,7 +177,7 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 #pourquoi .why-row{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:18px 0;margin:0;color:var(--ink);grid-column:auto}
   .accueilV4 #pourquoi .why-row:first-child{border-top:2px solid var(--ink)}
   .accueilV4 #pourquoi .why-row h3{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.35;color:var(--muted);margin:0}
-  .accueilV4 #pourquoi .why-emphasis{display:block;font-family:var(--ff-display);font-weight:400;font-size:32px;line-height:1.05;color:var(--blue);margin-top:2px}
+  .accueilV4 #pourquoi .why-emphasis{display:block;font-family:var(--ff-display);font-weight:400;font-size:32px;line-height:1.05;color:var(--ink);margin-top:2px}
   .accueilV4 #pourquoi .why-row p{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.5;color:var(--ink);margin-top:8px}
 
   /* --- Portail : lisibilité (aucun texte < 13px ; contenus d'onglet ≥ 14px)
@@ -237,6 +237,80 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .rotating{display:block;position:relative;min-height:0}
 .accueilV4 .rotating>span{grid-area:auto}
 .accueilV4 .rotating>span:not(:first-child){position:absolute;top:0;left:0;right:0}
+
+/* ===================== COHÉRENCE VISUELLE (24 sept. 2026) ===================== */
+
+/* --- Lot 1 : l'Electric Blue #1A47FF réservé à ce qui se clique ---
+   Les repères NON cliquables quittent le bleu d'action. Les SURTITRES de
+   section restent en l'état : la charte v1.1 (« Label de section ») leur
+   attribue un bleu — Deep Blue #0A2ACC sur clair, Light Blue #9FB2FF sur
+   sombre —, distinct de l'Electric Blue d'action ; ils ne sont donc pas
+   passés en gris (voir rapport pour la nuance de teinte). */
+/* Mots-clés Bebas de « Pourquoi le cabinet » → encre sur fond clair ;
+   blanc sur la deuxième carte (fond navy). */
+.accueilV4 .why-emphasis{color:var(--ink)}
+.accueilV4 .why-list .why-row:nth-child(2) .why-emphasis{color:#fff}
+/* Numéros de famille « 01 » « 02 » « 03 » → encre. */
+.accueilV4 .family-number{color:var(--ink)}
+/* Libellés des cas (« 01 / CYBERATTAQUE »…) → gris d'accompagnement ;
+   blanc sur carte active (fond navy). */
+.accueilV4 .case-kicker{color:var(--muted)}
+.accueilV4 #dossiers .case-card.is-active .case-kicker{color:#fff}
+
+/* --- Lot 3 : rythme des fonds (alternance blanc / gris-bleu #F4F4F8) ---
+   Suite rétablie : cabinet(blanc) · domaines(gris) · pourquoi(blanc) ·
+   dossiers(gris) · équipe(blanc) · contributions(gris) · contact(sombre).
+   « Dossiers traités » passe sur le gris-bleu (cartes maintenues blanches) ;
+   pour qu'aucune paire consécutive ne partage le même fond, « L'équipe »
+   repasse en blanc et « Contributions » sur le gris-bleu. */
+.accueilV4 #dossiers{background:var(--off)}
+.accueilV4 #dossiers .case-grid{background:#fff}
+.accueilV4 #equipe{background:#fff}
+.accueilV4 #contributions{background:var(--off)}
+
+/* --- Lot 4 : aperçu du portail sur mobile, SANS commande de pause ---
+   Sous 639px la commande de pause est retirée ; l'animation mobile devient
+   courte et finie (< 5 s), gérée dans PortailDemo. */
+@media(max-width:639px){
+  /* !important : le bouton porte un display inline (style React). */
+  .accueilV4 .pdemo-pause{display:none !important}
+}
+
+/* --- Lot 2 : bande horizontale unique des contributions (≤639px), sur le
+   modèle de la bande de l'équipe --- */
+.accueilV4 #contributions .press-eyebrow-short{display:none}
+.accueilV4 #contributions .press-dots{display:none}
+@media(max-width:639px){
+  /* Flèches et compteur « 1 / 8 » masqués : la position est donnée par les
+     repères (un par tribune), identiques à ceux de l'équipe. */
+  .accueilV4 #contributions .carousel-controls{display:none}
+  .accueilV4 #contributions .press-counter{display:none}
+  /* Défilement natif aimanté, barre de défilement masquée, focus visible. */
+  .accueilV4 #contributions .press-track{scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+  .accueilV4 #contributions .press-track::-webkit-scrollbar{display:none}
+  .accueilV4 #contributions .press-track:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  /* Repères de position (décoratifs), reflétant le défilement réel. */
+  .accueilV4 #contributions .press-dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .accueilV4 #contributions .press-dot{width:6px;height:3px;background:#C9CBDA}
+  .accueilV4 #contributions .press-dot.active{width:18px;background:var(--blue)}
+  /* Libellé raccourci : « CONTRIBUTIONS ». */
+  .accueilV4 #contributions .press-eyebrow-full{display:none}
+  .accueilV4 #contributions .press-eyebrow-short{display:inline}
+}
+
+/* --- Lot 5 : vide du hero réduit de moitié sous 639px ---
+   L'essentiel du vide entre « Voir nos domaines » et « Intervention partout en
+   France » était occupé par la commande d'animation (bloc de 44px avec une
+   petite icône). Sur ordinateur elle est déjà masquée au repos (révélée au
+   survol) ; sur mobile l'animation du hero est courte et finie (le mot tournant
+   s'arrête, le globe est masqué), donc aucune commande n'est requise
+   (WCAG 2.2.2 — même logique que le lot 4 pour le portail). Elle est donc
+   retirée sous 639px, et l'espace restant est calé à ~32px (moitié des ~64px
+   d'origine). Aucun autre élément du hero (titre, accroche, boutons) ne bouge. */
+@media(max-width:639px){
+  .accueilV4 .motion-control{display:none}
+  .accueilV4 .hero-baseline{margin-top:32px}
+}
 `;
 
 /* Mot tournant du hero. Index 0 = état FINAL « droit du numérique » : c'est lui
@@ -416,6 +490,54 @@ export function AccueilV4() {
     const cards = Array.from(grid.querySelectorAll<HTMLElement>(".person-card"));
     const delta = e.key === "ArrowRight" ? 1 : -1;
     const next = Math.min(Math.max(teamActive + delta, 0), cards.length - 1);
+    cards[next]?.scrollIntoView({ inline: "start", block: "nearest" });
+  };
+
+  /* ---- Contributions en bande horizontale (≤639px uniquement) ----
+     Même modèle que la bande de l'équipe : un seul conteneur de défilement
+     natif aimanté, repères de position reflétant le défilement réel
+     (IntersectionObserver), région au clavier avec nom accessible. Au-dessus de
+     639px, les flèches existantes du carrousel restent seules (rien ici). */
+  const [pressMobile, setPressMobile] = useState(false);
+  const [pressActive, setPressActive] = useState(0);
+  const pressTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setPressMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!pressMobile) return;
+    const track = pressTrackRef.current;
+    if (!track) return;
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(".press-card"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+            const idx = cards.indexOf(e.target as HTMLElement);
+            if (idx >= 0) setPressActive(idx);
+          }
+        });
+      },
+      { root: track, threshold: [0.6] },
+    );
+    cards.forEach((c) => io.observe(c));
+    return () => io.disconnect();
+  }, [pressMobile]);
+
+  const onPressKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const track = pressTrackRef.current;
+    if (!track) return;
+    e.preventDefault();
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(".press-card"));
+    const delta = e.key === "ArrowRight" ? 1 : -1;
+    const next = Math.min(Math.max(pressActive + delta, 0), cards.length - 1);
     cards[next]?.scrollIntoView({ inline: "start", block: "nearest" });
   };
 
@@ -834,7 +956,10 @@ export function AccueilV4() {
         <div className="wrap">
           <div className="section-heading press-heading">
             <div>
-              <span className="eyebrow">Contributions et prises de position</span>
+              <span className="eyebrow">
+                <span className="press-eyebrow-full">Contributions et prises de position</span>
+                <span className="press-eyebrow-short">Contributions</span>
+              </span>
               <h2 id="titre-contributions">Dans le débat public.</h2>
             </div>
             <div className="carousel-controls">
@@ -842,7 +967,19 @@ export function AccueilV4() {
               <button id="press-next" className="round-button" type="button" aria-label="Contributions suivantes">→</button>
             </div>
           </div>
-          <div id="press-track" className="press-track">
+          <div
+            id="press-track"
+            className="press-track"
+            ref={pressTrackRef}
+            {...(pressMobile
+              ? {
+                  role: "region",
+                  tabIndex: 0,
+                  "aria-label": "Contributions et prises de position",
+                  onKeyDown: onPressKeyDown,
+                }
+              : {})}
+          >
             {CONTRIBUTIONS.map((c) => (
               <article className="press-card" data-media={c.media} key={c.url}>
                 <p className="press-media">{c.media}</p>
@@ -854,6 +991,13 @@ export function AccueilV4() {
               </article>
             ))}
           </div>
+          {pressMobile && (
+            <div className="press-dots" aria-hidden="true">
+              {CONTRIBUTIONS.map((_, i) => (
+                <span key={i} className={`press-dot${i === pressActive ? " active" : ""}`} />
+              ))}
+            </div>
+          )}
           <div className="press-bottom">
             <span id="press-counter" className="press-counter">1 / {CONTRIBUTIONS.length}</span>
             <button id="archive-toggle" className="text-link" type="button" aria-expanded="false" aria-controls="press-archive">
