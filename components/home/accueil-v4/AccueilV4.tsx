@@ -311,6 +311,35 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .motion-control{display:none}
   .accueilV4 .hero-baseline{margin-top:32px}
 }
+
+/* ===================== ALIGNEMENTS DESKTOP (24 sept. 2026) ===================== */
+
+/* --- Lot 1 : Dossiers traités — cartes alignées (subgrid) ---
+   La rangée des 3 cartes existe à partir de 851px. Chaque carte partage les
+   lignes de grille de la rangée (grid-template-rows: subgrid) : ligne 1 = tête
+   (libellé + titre), ligne 2 = paragraphe (1fr, s'étire), ligne 3 = lien.
+   → libellé/titre/paragraphe démarrent à la même hauteur et le lien
+   « Découvrir le cas → » est calé EN BAS des trois cartes, à la même hauteur,
+   quelle que soit la longueur du paragraphe. Hauteurs égales, aucun texte
+   tronqué (aucune hauteur fixe en pixels). */
+@media(min-width:851px){
+  .accueilV4 #dossiers .case-grid{grid-template-rows:auto 1fr auto}
+  .accueilV4 #dossiers .case-card{display:grid;grid-template-rows:subgrid;grid-row:span 3}
+}
+
+/* --- Lot 2 : Équipe — biographies alignées ---
+   Les 5 cartes sont réparties dans DEUX groupes imbriqués (avocats / appui
+   technique) surmontés d'un intitulé de groupe, avec un filet vertical de
+   séparation conservé : une grille (subgrid) unique partagée par les 5 cartes
+   à travers ces deux groupes n'est pas praticable. On applique donc le repli
+   prévu (hauteurs minimales, plancher — jamais de troncature) : le nom réserve
+   déjà 2 lignes (« Nadia Abchiche-Mimouni ») ; le rôle réserve la hauteur du
+   plus long (« Maîtresse de conférences en informatique à l'Université Côte
+   d'Azur » = 3 lignes). Le filet (bord supérieur de la spécialité) et le
+   domaine se retrouvent alors au même niveau dans les cinq cartes. */
+@media(min-width:1101px){
+  .accueilV4 #equipe .team-grid .person-role{min-height:4.5em}
+}
 `;
 
 /* Mot tournant du hero. Index 0 = état FINAL « droit du numérique » : c'est lui
@@ -401,14 +430,14 @@ const TECHNICAL = [
 ];
 
 const CONTRIBUTIONS = [
-  { media: "Le Monde", role: "Tribune", date: "21 juin 2026", titre: "IA : « L’Europe doit transformer les discours sur la souveraineté numérique en une véritable stratégie industrielle »", topic: "IA et souveraineté numérique", url: "https://www.lemonde.fr/idees/article/2026/06/21/ia-l-europe-doit-transformer-les-discours-sur-la-souverainete-numerique-en-une-veritable-strategie-industrielle_6706105_3232.html", access: "Accès abonnés sur Le Monde" },
-  { media: "Capital", role: "Interview", date: "2 septembre 2026", titre: "Piratage bancaire : votre banque doit-elle vraiment vous rembourser ?", topic: "Cyberfraude bancaire et contestation des paiements", url: "https://www.capital.fr/votre-argent/piratage-bancaire-dans-quels-cas-votre-banque-doit-elle-obligatoirement-vous-rembourser-1529747", access: "" },
-  { media: "Le Revenu", role: "Tribune", date: "23 octobre 2024", titre: "Fraude bancaire en ligne : les banques se dérobent, les épargnants paient le prix", topic: "Fraude bancaire, phishing et spoofing", url: "https://www.lerevenu.com/diversifier-placements/placements-divers/fraude-bancaire-en-ligne-les-banques-se-derobent-les-epargnants-paient-le-prix/", access: "" },
-  { media: "The Media Leader", role: "Tribune", date: "21 mars 2024", titre: "L’European Freedom Act : un pas en avant ou une entrave à la liberté de presse ? – par Alexandre Lazarègue", topic: "Régulation des médias, plateformes et libertés", url: "https://fr.themedialeader.com/leuropean-freedom-act-un-pas-en-avant-ou-une-entrave-a-la-liberte-de-presse-par-alexandre-lazaregue/", access: "" },
-  { media: "Le Monde", role: "Tribune", date: "22 décembre 2025", titre: "Piratage du ministère de l’intérieur : « La numérisation de nos données administratives est un défi à l’Etat de droit »", topic: "Cyberattaque, données publiques et libertés", url: "https://www.lemonde.fr/idees/article/2025/12/22/piratage-du-ministere-de-l-interieur-la-numerisation-de-nos-donnees-administratives-est-un-defi-a-l-etat-de-droit_6659106_3232.html", access: "Accès abonnés sur Le Monde" },
-  { media: "DirectIndustry", role: "Tribune · En anglais", date: "3 août 2026", titre: "OP-ED. On August 2, 2026, Business Leaders Have Become Accountable for Artificial Intelligence", topic: "IA en entreprise et gouvernance", url: "https://emag.directindustry.com/2026/08/03/op-ed-on-august-2-2026-business-leaders-have-become-accountable-for-artificial-intelligence/", access: "" },
-  { media: "Le Monde", role: "Tribune", date: "4 septembre 2024", titre: "Affaire Pavel Durov : « La justice française se fait une conception curieuse et extensive de la complicité »", topic: "Plateformes numériques et responsabilité pénale", url: "https://www.lemonde.fr/idees/article/2024/09/04/affaire-pavel-durov-la-justice-francaise-se-fait-une-conception-curieuse-et-extensive-de-la-complicite_6304037_3232.html", access: "Accès abonnés sur Le Monde" },
-  { media: "Le Monde", role: "Tribune", date: "16 novembre 2022", titre: "Clearview AI : « On mesure à la lecture du raisonnement de la CNIL l’insécurité juridique qui pèse sur nos données personnelles »", topic: "Données personnelles et reconnaissance faciale", url: "https://www.lemonde.fr/idees/article/2022/11/16/clearview-ai-on-mesure-a-la-lecture-du-raisonnement-de-la-cnil-l-insecurite-juridique-qui-pese-sur-nos-donnees-personnelles_6150158_3232.html", access: "Accès abonnés sur Le Monde" },
+  { media: "Le Monde", role: "Tribune", date: "21 juin 2026", titre: "IA : « L’Europe doit transformer les discours sur la souveraineté numérique en une véritable stratégie industrielle »", topic: "IA et souveraineté numérique", url: "https://www.lemonde.fr/idees/article/2026/06/21/ia-l-europe-doit-transformer-les-discours-sur-la-souverainete-numerique-en-une-veritable-strategie-industrielle_6706105_3232.html" },
+  { media: "Capital", role: "Interview", date: "2 septembre 2026", titre: "Piratage bancaire : votre banque doit-elle vraiment vous rembourser ?", topic: "Cyberfraude bancaire et contestation des paiements", url: "https://www.capital.fr/votre-argent/piratage-bancaire-dans-quels-cas-votre-banque-doit-elle-obligatoirement-vous-rembourser-1529747" },
+  { media: "Le Revenu", role: "Tribune", date: "23 octobre 2024", titre: "Fraude bancaire en ligne : les banques se dérobent, les épargnants paient le prix", topic: "Fraude bancaire, phishing et spoofing", url: "https://www.lerevenu.com/diversifier-placements/placements-divers/fraude-bancaire-en-ligne-les-banques-se-derobent-les-epargnants-paient-le-prix/" },
+  { media: "The Media Leader", role: "Tribune", date: "21 mars 2024", titre: "L’European Freedom Act : un pas en avant ou une entrave à la liberté de presse ? – par Alexandre Lazarègue", topic: "Régulation des médias, plateformes et libertés", url: "https://fr.themedialeader.com/leuropean-freedom-act-un-pas-en-avant-ou-une-entrave-a-la-liberte-de-presse-par-alexandre-lazaregue/" },
+  { media: "Le Monde", role: "Tribune", date: "22 décembre 2025", titre: "Piratage du ministère de l’intérieur : « La numérisation de nos données administratives est un défi à l’Etat de droit »", topic: "Cyberattaque, données publiques et libertés", url: "https://www.lemonde.fr/idees/article/2025/12/22/piratage-du-ministere-de-l-interieur-la-numerisation-de-nos-donnees-administratives-est-un-defi-a-l-etat-de-droit_6659106_3232.html" },
+  { media: "DirectIndustry", role: "Tribune · En anglais", date: "3 août 2026", titre: "OP-ED. On August 2, 2026, Business Leaders Have Become Accountable for Artificial Intelligence", topic: "IA en entreprise et gouvernance", url: "https://emag.directindustry.com/2026/08/03/op-ed-on-august-2-2026-business-leaders-have-become-accountable-for-artificial-intelligence/" },
+  { media: "Le Monde", role: "Tribune", date: "4 septembre 2024", titre: "Affaire Pavel Durov : « La justice française se fait une conception curieuse et extensive de la complicité »", topic: "Plateformes numériques et responsabilité pénale", url: "https://www.lemonde.fr/idees/article/2024/09/04/affaire-pavel-durov-la-justice-francaise-se-fait-une-conception-curieuse-et-extensive-de-la-complicite_6304037_3232.html" },
+  { media: "Le Monde", role: "Tribune", date: "16 novembre 2022", titre: "Clearview AI : « On mesure à la lecture du raisonnement de la CNIL l’insécurité juridique qui pèse sur nos données personnelles »", topic: "Données personnelles et reconnaissance faciale", url: "https://www.lemonde.fr/idees/article/2022/11/16/clearview-ai-on-mesure-a-la-lecture-du-raisonnement-de-la-cnil-l-insecurite-juridique-qui-pese-sur-nos-donnees-personnelles_6150158_3232.html" },
 ];
 
 function PersonCard({ p }: { p: (typeof LAWYERS)[number] }) {
@@ -987,7 +1016,6 @@ export function AccueilV4() {
                 <h3>{c.titre}</h3>
                 <p className="topic">{c.topic}</p>
                 <a className="text-link" href={c.url} target="_blank" rel="noopener noreferrer">Lire sur {c.media} <span className="arrow" aria-hidden="true">↗</span></a>
-                {c.access ? <p className="access">{c.access}</p> : null}
               </article>
             ))}
           </div>
