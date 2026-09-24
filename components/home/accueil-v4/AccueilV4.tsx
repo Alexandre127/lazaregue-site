@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { PortailDemo } from "@/components/home/section-differenciateurs";
 import { ACCUEIL_V4_CSS } from "@/components/home/accueil-v4-css";
+import { FAMILLES as MENU_FAMILLES } from "@/components/header/nav-data";
 
 /**
  * Accueil — intégration fidèle de la maquette V4 validée (18 sept. 2026).
@@ -95,6 +96,40 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .motion-control{opacity:0;transition:opacity .18s ease}
   .accueilV4 .hero:hover .motion-control,.accueilV4 .motion-control:focus-visible{opacity:1}
 }
+
+/* === Section « Domaines d'intervention » — version compacte MOBILE (≤639px) ===
+   Au-dessus de 640px : AUCUN changement (desktop + tablette identiques). Les
+   deux éléments ci-dessous restent display:none — donc hors de l'arbre
+   d'accessibilité — et ne sont montés qu'en dessous de 640px, en remplacement
+   des descriptions longues (une seule description exposée par domaine à chaque
+   largeur). Jetons de la charte uniquement (--ink #0A0A14, --blue #1A47FF,
+   --muted #4A4A63, --line #E0E0EE). */
+.accueilV4 .domain-description-short{display:none}
+.accueilV4 .domains-all-mobile{display:none}
+@media(max-width:639px){
+  /* Liste à filets, sans carte encadrée ni fond blanc. Familles espacées de 28px. */
+  .accueilV4 .domain-groups{gap:28px}
+  .accueilV4 .domain-family{display:block;background:transparent;border:0;border-top:2px solid var(--ink);padding:0}
+  /* En-tête de famille sur UNE ligne : numéro (Bebas 26px, bleu) + titre (Space Grotesk 500, 17px). Accroche masquée. */
+  .accueilV4 .family-heading{display:flex;align-items:baseline;gap:10px;padding:14px 0 6px;min-height:0;grid-template-columns:none;column-gap:0}
+  .accueilV4 .family-number{font:400 26px/1 var(--ff-display);color:var(--blue);margin:0;grid-row:auto}
+  .accueilV4 .family-heading h3{font-family:var(--ff-body);font-weight:500;font-size:17px;line-height:1.25;margin:0;min-height:0}
+  .accueilV4 .family-purpose{display:none}
+  /* Domaines : lien natif pleine ligne, ≥44px, padding vertical 12px, filet inférieur 1px. */
+  .accueilV4 .domain-list{padding:0}
+  .accueilV4 .domain-item,.accueilV4 .domain-item:first-child{border-top:0;border-bottom:1px solid var(--line);padding:0}
+  .accueilV4 .domain-item a.domain-entry{display:block;padding:12px 0;min-height:44px}
+  .accueilV4 .domain-entry-head{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .accueilV4 .domain-title{font-family:var(--ff-body);font-weight:600;font-size:16px;line-height:1.3;color:var(--ink)}
+  .accueilV4 .domain-entry .arrow{color:var(--blue);font-size:1.25rem;line-height:1.2;flex-shrink:0}
+  /* Bascule description longue -> courte (méga-menu), une seule dans l'arbre d'accessibilité. */
+  .accueilV4 .domain-description{display:none}
+  .accueilV4 .domain-description-short{display:block;font-family:var(--ff-body);font-weight:400;font-size:14px;line-height:1.4;color:var(--muted);margin-top:4px}
+  /* Lien final. */
+  .accueilV4 .domains-all-mobile{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:8px;color:var(--ink);font-family:var(--ff-body);font-weight:600;font-size:16px;text-decoration:none}
+  .accueilV4 .domains-all-mobile .arrow{color:var(--blue)}
+  .accueilV4 .domains-all-mobile:hover{text-decoration:underline;text-underline-offset:4px}
+}
 `;
 
 const ROTATING = [
@@ -145,6 +180,16 @@ const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[]
     ],
   },
 ];
+
+/**
+ * Descriptions COURTES (une ligne) — source unique réutilisée : le méga-menu
+ * DOMAINES (`nav-data.ts` → `contexte`), rattachées par `href`. Affichées à la
+ * place des descriptions longues UNIQUEMENT sous 640px (version mobile
+ * compacte) ; aucun texte n'est recopié en dur ici.
+ */
+const SHORT_DESC: Record<string, string> = Object.fromEntries(
+  MENU_FAMILLES.flatMap((f) => f.domaines.map((d) => [d.href, d.contexte])),
+);
 
 const CASES = [
   {
@@ -462,7 +507,7 @@ export function AccueilV4() {
               <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences pour traiter les dossiers de droit du numérique.</h2>
             </div>
             <div>
-              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats exclusivement dédié au droit du numérique et des nouvelles technologies, établi à Paris. Depuis 2016, nous conseillons et représentons les entreprises en matière de droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
+              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats exclusivement dédié au droit du numérique et des nouvelles technologies, établi à Paris. Nous conseillons et représentons les entreprises en matière de droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
               <a className="text-link" href="#equipe">Rencontrer l&rsquo;équipe <span className="arrow" aria-hidden="true">↓</span></a>
             </div>
           </div>
@@ -496,6 +541,9 @@ export function AccueilV4() {
                           <span className="arrow" aria-hidden="true">→</span>
                         </span>
                         <span className="domain-description">{d.desc}</span>
+                        {SHORT_DESC[d.href] ? (
+                          <span className="domain-description-short">{SHORT_DESC[d.href]}</span>
+                        ) : null}
                       </Link>
                     </li>
                   ))}
@@ -503,6 +551,10 @@ export function AccueilV4() {
               </section>
             ))}
           </div>
+          {/* Lien final — visible uniquement en version mobile compacte (≤639px). */}
+          <Link className="domains-all-mobile" href="/nos-domaines">
+            Voir tous les domaines <span className="arrow" aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
 
@@ -523,7 +575,7 @@ export function AccueilV4() {
                 <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Une équipe juridique et technique (avocats et experts en cybersécurité) confronte l&rsquo;analyse juridique aux réalités techniques du dossier.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient depuis 2016 sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
+                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
               </li>
             </ul>
           </div>
