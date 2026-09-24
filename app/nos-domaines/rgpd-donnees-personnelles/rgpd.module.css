@@ -15,6 +15,7 @@
   --ghost: #f4f4f8;
   --white: #ffffff;
   --border: #e0e0ee;
+  --line-strong: #c9cbda; /* filet de séparation renforcé sur fond gris-bleu #F4F4F8 (invisible en #E0E0EE). Absent de la charte v1.1 — signalé. */
   --text: #14141f; /* corps sur clair (jamais #8888A0) */
   --text-2: #4a4a63; /* secondaire sur clair (charte) */
   --on-dark: #f2f3fa; /* corps sur sombre */
@@ -59,6 +60,15 @@
   padding: clamp(48px, 7vw, 96px) 0; /* jetons 48 / 72 / 96 */
 }
 .rgpd :global(.tint) { background: var(--ghost); }
+/* Lot 4 — sur fond gris-bleu, les filets de séparation #E0E0EE sont invisibles :
+   on redéfinit --border en --line-strong (#C9CBDA) pour toute la section teintée.
+   Le filet supérieur Ink de 2px des listes n'utilise pas --border : il ne change
+   pas. Les sections à fond blanc gardent --border #E0E0EE. */
+.rgpd :global(.tint) { --border: var(--line-strong); }
+/* Ancres internes (liens des situations vers #missions / #etape-encadrer /
+   #etape-documenter / #honoraires) : dégagement sous l'en-tête fixe (72px au
+   repos) + zone sûre iOS, pour que la cible ne soit pas recouverte au saut. */
+.rgpd :global([id]) { scroll-margin-top: calc(72px + env(safe-area-inset-top, 0px) + 16px); }
 .rgpd :global(.dark) { background: var(--navy); color: var(--on-dark); }
 .rgpd :global(.dark) :global(p),
 .rgpd :global(.dark) :global(li) { color: var(--on-dark); }
@@ -233,6 +243,9 @@
 .rgpd :global(.situations li) { margin: 0; background: var(--white); border: 1px solid var(--border); border-left: 3px solid var(--blue); padding: 24px; }
 .rgpd :global(.situations h3) { margin-bottom: 0.35em; }
 .rgpd :global(.situations p) { font-size: 0.95rem; line-height: 1.5; color: var(--text-2); margin: 0; max-width: none; }
+/* Lot 6 : phrase courte affichée (toutes largeurs) ; texte long conservé mais masqué. */
+.rgpd :global(.situation-full) { display: none; }
+.rgpd :global(.situations .situation-short) { color: var(--text-2); }
 
 /* ==========================================================================
    3. MISSIONS
@@ -397,6 +410,14 @@
 @media (min-width: 860px) { .rgpd :global(.honoraires) { grid-template-columns: 1fr 1fr; gap: 48px; } }
 .rgpd :global(.facteurs) { list-style: none; padding: 0; margin: 0; max-width: none; }
 .rgpd :global(.facteurs li) { border-bottom: 1px solid var(--border); padding: 11px 0; font-size: 0.97rem; line-height: 1.5; margin: 0; }
+/* Deux modes d'honoraires (Forfait / Abonnement) — deux cases côte à côte,
+   même information à toutes les largeurs. Repère (label) en gris (charte), filet
+   supérieur Ink : aucun bleu (non cliquable, lot 6). */
+.rgpd :global(.honoraires-offres) { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.rgpd :global(.offre) { background: var(--white); border: 1px solid var(--border); border-top: 2px solid var(--ink); padding: 16px 16px 18px; }
+.rgpd :global(.offre-label) { display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--text-2); margin-bottom: 10px; }
+.rgpd :global(.offre h3) { margin: 0 0 6px; font-size: 1.1rem; }
+.rgpd :global(.offre p) { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--text-2); max-width: none; }
 
 /* ==========================================================================
    10. FAQ
@@ -578,9 +599,15 @@
    masqués par display:none — jamais retirés du HTML.
    ========================================================================== */
 @media (max-width: 639px) {
-  /* Hero : seule la première phrase du paragraphe ; fil d'Ariane espacé du logo. */
+  /* Hero (lot 2) : le contenu commence SOUS l'en-tête fixe (hauteur réelle 72px
+     + zone sûre iOS), avec 12px au moins jusqu'au fil d'Ariane et 16px du fil
+     d'Ariane au cadre « RGPD & DONNÉES ». Fil d'Ariane : cible tactile ≥ 24px. */
   .rgpd :global(.hero-main .lead-s2) { display: none; }
-  .rgpd :global(.breadcrumb) { padding-top: 14px; }
+  .rgpd :global(.hero) { padding-top: calc(72px + env(safe-area-inset-top, 0px) + 12px); justify-content: flex-start; }
+  .rgpd :global(.hero) > :global(.wrap) > :global(.breadcrumb) { padding-top: 0; }
+  .rgpd :global(.hero-main) { margin-top: 16px; }
+  .rgpd :global(.breadcrumb a),
+  .rgpd :global(.breadcrumb [aria-current="page"]) { display: inline-flex; align-items: center; min-height: 24px; }
 
   /* Urgences : cartes courtes — première phrase seulement (le reste masqué). */
   .rgpd :global(.urg .urg-more) { display: none; }
@@ -589,14 +616,15 @@
   .rgpd :global(.situations) { display: block; }
   .rgpd :global(.situations li) { background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: 14px 0; display: block; }
   .rgpd :global(.situations li:first-child) { border-top: 2px solid var(--ink); }
-  .rgpd :global(.situations li > p) { display: none; }
   .rgpd :global(.situations h3) { margin: 0; }
+  .rgpd :global(.situations .situation-short) { margin-top: 6px; }
   .rgpd :global(.situations .link-nav) { margin-top: 6px; padding-top: 0; min-height: 44px; }
 
-  /* Méthode : liste — numéro, verbe, sous-titre ; le paragraphe masqué. */
+  /* Méthode : liste — numéro, verbe, sous-titre ; le paragraphe masqué. Section
+     teintée → filets renforcés (var(--border) = #C9CBDA ici) ; tête 2px Ink. */
   .rgpd :global(.mc-blocks) { display: block; }
-  .rgpd :global(.mc-blocks li) { border-top: 1px solid rgba(255, 255, 255, 0.18); padding: 14px 0; }
-  .rgpd :global(.mc-blocks li:first-child) { border-top: 2px solid rgba(255, 255, 255, 0.5); }
+  .rgpd :global(.mc-blocks li) { border-top: 1px solid var(--border); padding: 14px 0; }
+  .rgpd :global(.mc-blocks li:first-child) { border-top: 2px solid var(--ink); }
   .rgpd :global(.mc-detail) { display: none; }
 
   /* Sur le terrain : liste — numéro, titre, explication, « + » à droite ; le
@@ -627,8 +655,61 @@
   .rgpd :global(.renvois p) { display: none; }
   .rgpd :global(.renvois .link-nav) { min-height: 44px; }
 
-  /* Honoraires : premier paragraphe + critères en liste (stack). Les deux cases
-     Forfait/Abonnement demandent une copie absente de la page — non fabriquées
-     (voir rapport). */
+  /* Honoraires : premier paragraphe, paragraphe urgence, les deux cases
+     (Forfait / Abonnement), puis les cinq critères en liste. */
   .rgpd :global(.honoraires) { display: block; gap: 0; }
+  .rgpd :global(.honoraires-offres) { margin-top: 18px; gap: 10px; }
+}
+
+/* ==========================================================================
+   POURQUOI — refonte compacte (lot 7.1) + CAS CLIENTS (lot 7.2)
+   ========================================================================== */
+/* Pourquoi : trois arguments compacts — titre Bebas encre, filet Ink 2px, une phrase. */
+.rgpd :global(.pourquoi-grid) { list-style: none; padding: 0; margin: 0; max-width: none; display: grid; gap: 28px; }
+@media (min-width: 760px) { .rgpd :global(.pourquoi-grid) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } }
+.rgpd :global(.pourquoi-grid li) { margin: 0; border-top: 2px solid var(--ink); padding-top: 16px; }
+.rgpd :global(.pourquoi-grid h3) { font-family: var(--ff-display); font-weight: 400; font-size: 1.6rem; line-height: 1.05; letter-spacing: 0.01em; color: var(--ink); margin: 0 0 12px; }
+.rgpd :global(.pourquoi-grid p) { font-size: 0.97rem; line-height: 1.55; color: var(--text-2); margin: 0; max-width: none; }
+
+/* Secteurs accompagnés : ligne DM Mono + valeurs séparées de filets verticaux
+   (--line-strong), retour à la ligne naturel sur mobile. Texte non cliquable. */
+.rgpd :global(.secteurs) { margin-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--border); padding-top: 20px; }
+.rgpd :global(.secteurs-label) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-2); margin: 0 0 12px; }
+.rgpd :global(.secteurs-list) { list-style: none; padding: 0; margin: 0; max-width: none; display: flex; flex-wrap: wrap; align-items: center; }
+.rgpd :global(.secteurs-list li) { margin: 0; font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+.rgpd :global(.secteurs-list li:not(:last-child))::after { content: ""; display: inline-block; width: 1px; height: 0.95em; background: var(--line-strong); margin: 0 14px; vertical-align: -0.1em; }
+
+/* Cas clients (fond Deep Navy) : grille 2×2 desktop ; bande horizontale mobile. */
+.rgpd :global(.cas-grid) { display: grid; gap: 30px; }
+@media (min-width: 760px) { .rgpd :global(.cas-grid) { grid-template-columns: 1fr 1fr; gap: 44px 48px; } }
+.rgpd :global(.cas-card) { margin: 0; border-top: 2px solid #fff; padding-top: 18px; }
+.rgpd :global(.cas-label) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; margin: 0 0 14px; }
+.rgpd :global(.cas-card h3) { color: #fff; font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.25; margin: 0 0 16px; max-width: 26ch; }
+/* intitulés discrets « LA DIFFICULTÉ » / « LA SOLUTION » (DM Mono, blanc 82%). */
+.rgpd :global(.cas-sub) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); margin: 16px 0 5px; }
+.rgpd :global(.cas-text) { color: rgba(255, 255, 255, 0.82); font-size: 0.97rem; line-height: 1.6; margin: 0; max-width: 54ch; }
+.rgpd :global(.cas-issue) { color: #fff; font-weight: 600; font-size: 0.97rem; line-height: 1.5; margin: 16px 0 0; max-width: none; }
+/* Deux versions : longue ≥640px, courte <639px (l'autre reste dans le code). */
+.rgpd :global(.cas-long) { display: block; }
+.rgpd :global(.cas-short) { display: none; }
+.rgpd :global(.cas-dots) { display: none; }
+
+@media (max-width: 639px) {
+  /* La bande démarre à var(--gut) (20px) du bord gauche, comme les autres bandes
+     de la page (pas de débordement à gauche → le libellé n'est plus coupé) ;
+     elle déborde à droite pour laisser apparaître la carte suivante. */
+  .rgpd :global(.cas-grid) { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(-1 * var(--gut)) 0 0; padding: 2px var(--gut) 6px 0; scrollbar-width: none; -ms-overflow-style: none; }
+  .rgpd :global(.cas-grid)::-webkit-scrollbar { display: none; }
+  .rgpd :global(.cas-grid:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .rgpd :global(.cas-card) { flex: 0 0 300px; max-width: 84vw; scroll-snap-align: start; }
+  .rgpd :global(.cas-long) { display: none; }
+  .rgpd :global(.cas-short) { display: block; }
+  /* Version courte : titre (blanc, 17px/500), solution (blanc 82%), résultat
+     (blanc, gras). 8px titre→solution, 12px→résultat. */
+  .rgpd :global(.cas-card) :global(.cas-short-titre) { font-size: 17px; font-weight: 500; line-height: 1.3; color: #fff; margin: 0; max-width: none; }
+  .rgpd :global(.cas-short .cas-text) { margin-top: 8px; }
+  .rgpd :global(.cas-short .cas-issue) { margin-top: 12px; }
+  .rgpd :global(.cas-dots) { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
+  .rgpd :global(.cas-dot) { width: 6px; height: 3px; background: rgba(255, 255, 255, 0.35); }
+  .rgpd :global(.cas-dot.active) { width: 18px; background: #fff; }
 }

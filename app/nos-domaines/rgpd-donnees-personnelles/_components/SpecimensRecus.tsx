@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
  * « Ce que vous recevez » — aperçu des cinq livrables (menu à gauche, document
@@ -20,6 +20,29 @@ const LIGHT = {
 export function SpecimensRecus() {
   const [cur, setCur] = useState(0);
   const [zoomed, setZoomed] = useState(false);
+  // Bande de vignettes (mobile) : indicateur de position (un repère par
+  // spécimen), reflétant le défilement réel.
+  const [bandActive, setBandActive] = useState(0);
+  const bandRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const band = bandRef.current;
+    if (!band || typeof IntersectionObserver === "undefined") return;
+    const thumbs = Array.from(band.querySelectorAll<HTMLElement>(".livr-thumb"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+            const idx = thumbs.indexOf(e.target as HTMLElement);
+            if (idx >= 0) setBandActive(idx);
+          }
+        });
+      },
+      { root: band, threshold: [0.6] },
+    );
+    thumbs.forEach((t) => io.observe(t));
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!zoomed) return;
@@ -30,14 +53,14 @@ export function SpecimensRecus() {
     return () => window.removeEventListener("keydown", onKey);
   }, [zoomed]);
 
-  // Spécimens réellement disponibles parmi les quatre livrables de la section
-  // (arbitrage sept. 2026). « Rapport d'audit et plan d'action » et « Procédure
-  // de gestion d'une violation » n'ont pas encore de document spécimen : ils ne
-  // sont PAS fabriqués ici (signalés dans le rapport). Retirés : due diligence,
-  // politique de confidentialité, grille d'évaluation du risque.
+  // Quatre spécimens (arbitrage sept. 2026) : registre, DPA art. 28, grille
+  // d'évaluation du risque, politique de confidentialité. Le rapport de due
+  // diligence reste retiré (relève de la page M&A tech).
   const items = [
     { num: "01", name: "Registre des traitements", sub: "La base légale documentée, traitement par traitement" },
     { num: "02", name: "DPA sous-traitant — art. 28", sub: "Les clauses que les éditeurs refusent — et comment elles se rédigent" },
+    { num: "03", name: "Grille d'évaluation du risque", sub: "Notifier ou non : les critères de la décision" },
+    { num: "04", name: "Politique de confidentialité", sub: "Droit du travail, cookies et régime sectoriel articulés" },
   ];
 
   const docs: ReactNode[] = [
@@ -63,7 +86,7 @@ export function SpecimensRecus() {
         </div>
       ))}
       <div style={{ background: "#fffbf0", borderLeft: "2px solid #e6a817", padding: "6px 8px", margin: "8px 0", fontSize: "8.5px", color: "#555", lineHeight: 1.6 }}>
-        <strong style={{ color: "#b8860b" }}>⚠ Point critique :</strong> Le traitement analytics web est dépourvu de base légale valide. Exposition à une sanction CNIL immédiate (réf. SAN-2021-023).
+        <strong style={{ color: "#b8860b" }}>⚠ Point critique :</strong> Le traitement analytics web est dépourvu de base légale valide. Écart exposant l’entreprise à une procédure de la CNIL (réf. SAN-2021-023).
       </div>
     </div>,
 
@@ -80,8 +103,8 @@ export function SpecimensRecus() {
         ))}
       </div>
       <div style={{ background: "#fff5f5", borderLeft: "2px solid #c0392b", padding: "6px 8px", margin: "6px 0", fontSize: "8.5px", color: "#555", lineHeight: 1.6 }}>
-        <strong style={{ color: "#c0392b" }}>Notification CNIL obligatoire sous 72h</strong><br />
-        Score ≥ 3/5 sur données sensibles (santé) + volume &gt; 10 000 personnes.
+        <strong style={{ color: "#c0392b" }}>Notification CNIL à envisager — dans les 72&nbsp;h, sauf absence de risque pour les personnes (art.&nbsp;33)</strong><br />
+        Données de santé, plus de 10&nbsp;000 personnes&nbsp;: risque élevé probable, information des personnes à examiner (art.&nbsp;34).
       </div>
       <div style={{ background: "#f0faf5", borderLeft: "2px solid #1a7a50", padding: "6px 8px", margin: "6px 0", fontSize: "8.5px", color: "#555", lineHeight: 1.6 }}>
         <strong style={{ color: "#1a7a50" }}>Action immédiate :</strong> Conserver les logs système. Mandater expert forensic avant toute intervention IT. Délai critique : J+4h.
@@ -152,10 +175,10 @@ export function SpecimensRecus() {
     </div>,
   ];
 
-  // `order` mappe l'index du menu vers le bloc `docs` et son bandeau : menu 01
-  // (registre) → doc 0 ; menu 02 (DPA art. 28) → doc 2. Les autres blocs `docs`
-  // (grille, politique, due diligence) restent définis mais ne sont plus mappés.
-  const order = [0, 2];
+  // `order` mappe l'index du menu vers le bloc `docs` et son bandeau : registre
+  // → doc 0 ; DPA art. 28 → doc 2 ; grille → doc 1 ; politique → doc 3. Le bloc
+  // due diligence (doc 4) reste défini mais n'est plus mappé.
+  const order = [0, 2, 1, 3];
   const docBadges = ["Registre Art.30", "Procédure Art.33", "DPA Art.28", "Politique RGPD", "Due Diligence M&A"];
 
   return (
@@ -179,6 +202,7 @@ export function SpecimensRecus() {
            (lisible, zoomable). Plus d'aperçu de document en petit corps dans la
            page : le viewer 340px est masqué. */
         .livr-band { display: none; }
+        .livr-dots { display: none; }
         @media (max-width: 639px) {
           .livr-grid { display: none; }
           .livr-band {
@@ -200,6 +224,9 @@ export function SpecimensRecus() {
           .livr-thumb-cap { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px 0; min-height: 44px; }
           .livr-thumb-name { font-size: 13px; font-weight: 500; color: #14141f; line-height: 1.35; }
           .livr-thumb-open { flex: none; font-size: 12px; color: #1A47FF; white-space: nowrap; }
+          .livr-dots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; }
+          .livr-dot { width: 6px; height: 3px; background: #c9cbda; }
+          .livr-dot.active { width: 18px; background: #1A47FF; }
         }
       `}</style>
 
@@ -279,7 +306,7 @@ export function SpecimensRecus() {
 
       {/* Bande de vignettes — mobile (lot 5). Chaque vignette ouvre le spécimen
           en plein écran, lisible et zoomable. */}
-      <div className="livr-band" aria-label="Nos livrables">
+      <div className="livr-band" aria-label="Nos livrables" ref={bandRef}>
         {order.map((docIdx, i) => (
           <button
             key={i}
@@ -298,6 +325,11 @@ export function SpecimensRecus() {
               <span className="livr-thumb-open" aria-hidden="true">Agrandir →</span>
             </span>
           </button>
+        ))}
+      </div>
+      <div className="livr-dots" aria-hidden="true">
+        {order.map((_, i) => (
+          <span key={i} className={`livr-dot${i === bandActive ? " active" : ""}`} />
         ))}
       </div>
 
