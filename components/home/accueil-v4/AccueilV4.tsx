@@ -169,6 +169,48 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .pdemo .pdemo-stage *{font-size:14px !important}
   .accueilV4 .pdemo .pdemo-stage{min-height:146px !important}
 }
+
+/* === « L'équipe » : bande horizontale unique sous 639px ===
+   Un seul DOM : les deux groupes (avocats + intervenants techniques) sont
+   réunis dans le conteneur de défilement via display:contents ; l'ordre du DOM
+   (3 avocats puis 2 techniques) = l'ordre visuel = l'ordre de lecture. Jetons de
+   la charte : --blue #1A47FF, --line #E0E0EE, --ink #0A0A14, #4A4A63, #C9CBDA.
+   Au-dessus de 639px : aucune règle ici, la grille reste inchangée. */
+@media(max-width:639px){
+  .accueilV4 #equipe .team-group{display:contents}
+  .accueilV4 #equipe .team-group-label{display:none}
+  .accueilV4 #equipe .team-grid{
+    display:flex;grid-template-columns:none;gap:12px;
+    overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+    /* déborde jusqu'au bord de l'écran, retrait intérieur = marge (20px) */
+    margin-left:-20px;margin-right:-20px;padding:2px 20px;
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .accueilV4 #equipe .team-grid::-webkit-scrollbar{display:none}
+  .accueilV4 #equipe .team-grid:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+  .accueilV4 #equipe .person-card{
+    flex:0 0 min(280px,78vw);scroll-snap-align:start;
+    display:block;width:auto;max-width:none;margin:0;
+    background:#fff;border:1px solid var(--line);border-radius:0;box-shadow:none;
+  }
+  .accueilV4 #equipe .person-photo{width:100%;aspect-ratio:4/3}
+  .accueilV4 #equipe .person-photo img{width:100%;height:100%;object-fit:cover}
+  .accueilV4 #equipe .person-info{padding:14px 15px 16px}
+  .accueilV4 #equipe .person-status{font:400 12px/1.4 var(--ff-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:0}
+  .accueilV4 #equipe .person-status-tech{color:#4A4A63}
+  .accueilV4 #equipe .person-card h3{font-family:var(--ff-body);font-weight:600;font-size:19px;line-height:1.2;margin:6px 0 0;min-height:0}
+  .accueilV4 #equipe .person-role{font-size:14px;line-height:1.45;color:#4A4A63;margin-top:6px;min-height:0}
+  .accueilV4 #equipe .person-expertise{font-size:14px;line-height:1.45;color:var(--ink);margin-top:8px;padding-top:0;border-top:0}
+  /* pas d'effet de survol sous 639 (tactile) : le zoom d'image ne se déclenche pas. */
+  .accueilV4 #equipe .person-card:hover img{transform:none}
+  /* indicateur de position (décoratif) */
+  .accueilV4 #equipe .team-dots{display:flex;gap:6px;justify-content:center;margin-top:16px}
+  .accueilV4 #equipe .team-dot{width:6px;height:3px;background:#C9CBDA}
+  .accueilV4 #equipe .team-dot.active{width:18px;background:var(--blue)}
+}
+@media(max-width:639px) and (prefers-reduced-motion:reduce){
+  .accueilV4 #equipe .team-grid{scroll-behavior:auto}
+}
 `;
 
 const ROTATING = [
@@ -284,13 +326,14 @@ const CONTRIBUTIONS = [
 ];
 
 function PersonCard({ p }: { p: (typeof LAWYERS)[number] }) {
+  const isTech = p.statut === "Appui technique";
   return (
     <article className="person-card">
       <div className="person-photo">
-        <Image src={p.photo} alt={`Portrait de ${p.nom}`} fill sizes="(max-width:639px) 100vw, (max-width:1100px) 33vw, 220px" style={{ objectFit: "cover", objectPosition: p.pos }} />
+        <Image src={p.photo} alt={`Portrait de ${p.nom}`} fill sizes="(max-width:639px) 280px, (max-width:1100px) 33vw, 220px" style={{ objectFit: "cover", objectPosition: p.pos }} />
       </div>
       <div className="person-info">
-        <p className="person-status">{p.statut}</p>
+        <p className={`person-status${isTech ? " person-status-tech" : ""}`}>{p.statut}</p>
         <h3>{p.nom}</h3>
         <p className="person-role">{p.role}</p>
         <p className="person-expertise">{p.exp}</p>
@@ -312,6 +355,54 @@ export function AccueilV4() {
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
   }, []);
+
+  /* ---- Équipe en bande horizontale (≤639px uniquement) ----
+     Un seul DOM : les deux groupes sont réunis dans le même conteneur de
+     défilement via `display:contents` (CSS). Le conteneur reçoit role/tabindex/
+     nom et la navigation clavier SEULEMENT sous 639px ; l'indicateur de position
+     reflète le défilement réel (IntersectionObserver). Au-dessus : rien. */
+  const [teamMobile, setTeamMobile] = useState(false);
+  const [teamActive, setTeamActive] = useState(0);
+  const teamGridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setTeamMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!teamMobile) return;
+    const grid = teamGridRef.current;
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>(".person-card"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+            const idx = cards.indexOf(e.target as HTMLElement);
+            if (idx >= 0) setTeamActive(idx);
+          }
+        });
+      },
+      { root: grid, threshold: [0.6] },
+    );
+    cards.forEach((c) => io.observe(c));
+    return () => io.disconnect();
+  }, [teamMobile]);
+
+  const onTeamKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const grid = teamGridRef.current;
+    if (!grid) return;
+    e.preventDefault();
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>(".person-card"));
+    const delta = e.key === "ArrowRight" ? 1 : -1;
+    const next = Math.min(Math.max(teamActive + delta, 0), cards.length - 1);
+    cards[next]?.scrollIntoView({ inline: "start", block: "nearest" });
+  };
 
   // Interactions portées de la maquette (app.js), bornées à la racine.
   useEffect(() => {
@@ -675,7 +766,19 @@ export function AccueilV4() {
             </div>
             <p>Le droit et les faits techniques,<br />examinés ensemble.</p>
           </div>
-          <div className="team-grid">
+          <div
+            className="team-grid"
+            ref={teamGridRef}
+            {...(teamMobile
+              ? {
+                  role: "region",
+                  tabIndex: 0,
+                  "aria-label":
+                    "L'équipe : trois avocats et deux intervenants techniques",
+                  onKeyDown: onTeamKeyDown,
+                }
+              : {})}
+          >
             <div className="team-group team-group-lawyers" role="group" aria-labelledby="groupe-avocats">
               <p className="team-group-label" id="groupe-avocats">Les avocats</p>
               {LAWYERS.map((p) => <PersonCard key={p.nom} p={p} />)}
@@ -685,6 +788,13 @@ export function AccueilV4() {
               {TECHNICAL.map((p) => <PersonCard key={p.nom} p={p} />)}
             </div>
           </div>
+          {teamMobile && (
+            <div className="team-dots" aria-hidden="true">
+              {Array.from({ length: LAWYERS.length + TECHNICAL.length }).map((_, i) => (
+                <span key={i} className={`team-dot${i === teamActive ? " active" : ""}`} />
+              ))}
+            </div>
+          )}
           <p className="technical-note">Les intervenants techniques apportent leur expertise aux côtés des avocats.</p>
         </div>
       </section>
