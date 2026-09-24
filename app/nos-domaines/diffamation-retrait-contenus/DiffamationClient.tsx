@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { fr } from "@/lib/typo";
@@ -260,14 +261,13 @@ export default function DiffamationClient() {
         <section className="lawyer">
           <div className="wrap lawyer-grid">
             <div className="portrait">
-              <img
-                src="/assets/equipe/alexandre-lazaregue.jpg"
-                alt="Portrait d’Alexandre Lazarègue, avocat au barreau de Paris"
-                width={240}
-                height={300}
+              <Image
+                src="/images/alexandre-pro.jpg"
+                alt="Alexandre Lazarègue, avocat au Barreau de Paris"
+                fill
+                sizes="(max-width: 759px) 100vw, 260px"
                 loading="lazy"
-                decoding="async"
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
+                style={{ objectFit: "cover", objectPosition: "center 20%" }}
               />
             </div>
             <div>

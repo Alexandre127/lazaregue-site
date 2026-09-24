@@ -144,7 +144,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
   gap: 64px;
-  align-items: stretch;
+  align-items: center;
 }
 .h1 {
   font-family: var(--ff-display);
@@ -194,16 +194,19 @@
 .heroActions {
   margin-top: 36px;
 }
-/* Panneau photo (à produire) — traité comme un aplat discret, pas un trou. */
+/* Panneau photo — photo collective de l'équipe (equipe-panorama.webp, partagée
+   avec la section 2 de l'accueil). Cadre large (16/9) pour que les cinq personnes
+   restent visibles ; hauteur maîtrisée pour ne pas repousser le H1 et les boutons. */
 .heroMedia {
   position: relative;
-  min-height: 320px;
+  aspect-ratio: 16 / 9;
   border: 1px solid var(--lc-border);
   background: var(--lc-paper);
   overflow: hidden;
 }
 .heroMedia :global(img) {
   object-fit: cover;
+  object-position: center 32%;
 }
 .heroMedia span {
   font-family: var(--ff-mono);
@@ -959,7 +962,7 @@
     gap: 40px;
   }
   .heroMedia {
-    min-height: 240px;
+    aspect-ratio: 16 / 10;
     order: -1;
   }
   .reperesGrid {

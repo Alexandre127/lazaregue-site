@@ -218,11 +218,11 @@ export default function Page() {
             <div className={styles.heroMedia}>
               <Image
                 src="/images/equipe-panorama.webp"
-                alt="L'équipe du cabinet réunie"
+                alt="L'équipe du cabinet Lazarègue Avocats réunie"
                 fill
                 priority
-                sizes="(max-width: 1100px) 100vw, 42vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
+                sizes="(max-width: 1100px) 100vw, 48vw"
+                style={{ objectFit: "cover" }}
               />
             </div>
           </div>
