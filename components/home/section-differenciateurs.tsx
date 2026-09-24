@@ -638,6 +638,23 @@ export function PortailDemo() {
   const [notif, setNotif] = useState("");
   const [prog, setProg] = useState(68);
   const [paused, setPaused] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  // L'animation ne tourne que lorsque l'aperçu est visible à l'écran ; elle
+  // reprend là où elle s'était arrêtée (l'index `i` n'avance pas hors écran).
+  const onScreenRef = useRef(true);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        onScreenRef.current = e.isIntersecting;
+      },
+      { threshold: 0.01 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     // Aperçu décoratif : figé si l'utilisateur réduit les animations OU s'il a
@@ -657,6 +674,7 @@ export function PortailDemo() {
     ];
     let i = 0;
     const interval = setInterval(() => {
+      if (!onScreenRef.current) return; // hors écran : on ne fait pas avancer
       const s = states[i % states.length];
       setActiveTab(s.tab);
       setNotif(s.notif);
@@ -670,6 +688,7 @@ export function PortailDemo() {
 
   return (
     <div
+      ref={rootRef}
       className="pdemo"
       style={{
         background: "#FFFFFF",
@@ -775,8 +794,8 @@ export function PortailDemo() {
         ))}
       </div>
 
-      <div className="pdemo-stage" aria-hidden="true" style={{ minHeight: "160px", padding: "10px 12px" }}>
-        {activeTab === "dossiers" && (
+      <div className="pdemo-stage" aria-hidden="true" style={{ padding: "10px 12px" }}>
+        <div className="pdemo-panel" aria-hidden={activeTab !== "dossiers"} data-active={activeTab === "dossiers"}>
           <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
             {[
               { name: "RGPD — E-commerce", status: "EN COURS", bg: "rgba(26,71,255,0.1)", color: "#1A47FF" },
@@ -810,9 +829,9 @@ export function PortailDemo() {
               </div>
             ))}
           </div>
-        )}
+        </div>
 
-        {activeTab === "docs" && (
+        <div className="pdemo-panel" aria-hidden={activeTab !== "docs"} data-active={activeTab === "docs"}>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {["Rapport conformité RGPD v4", "DPA sous-traitant — version signée"].map((doc) => (
               <div
@@ -842,9 +861,9 @@ export function PortailDemo() {
               </div>
             ))}
           </div>
-        )}
+        </div>
 
-        {activeTab === "msgs" && (
+        <div className="pdemo-panel" aria-hidden={activeTab !== "msgs"} data-active={activeTab === "msgs"}>
           <div
             style={{
               padding: "8px",
@@ -876,9 +895,9 @@ export function PortailDemo() {
               Le projet DPA est prêt. Vous pouvez valider et signer depuis le portail.
             </div>
           </div>
-        )}
+        </div>
 
-        {activeTab === "avocat" && (
+        <div className="pdemo-panel" aria-hidden={activeTab !== "avocat"} data-active={activeTab === "avocat"}>
           <div
             style={{
               padding: "10px",
@@ -904,7 +923,7 @@ export function PortailDemo() {
               Disponible maintenant
             </div>
           </div>
-        )}
+        </div>
       </div>
 
       <div

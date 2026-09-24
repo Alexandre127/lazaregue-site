@@ -160,6 +160,16 @@ const ACCUEIL_V4_OVERRIDES = `
 /* mouvement réduit : rien ne s'anime, la commande de pause n'est pas affichée. */
 @media(prefers-reduced-motion:reduce){.accueilV4 .pdemo-pause{display:none}}
 
+/* Aperçu portail — hauteur STABLE : les 4 contenus d'onglet sont rendus en
+   permanence et superposés dans la même cellule de grille. Le bloc prend la
+   hauteur du contenu le plus haut → identique sur les 4 onglets, à toutes les
+   largeurs, sans aucune min-height (donc aucun décalage de mise en page). Seul
+   l'onglet actif est visible (opacité + visibilité) ; le fondu est conservé. */
+.accueilV4 .pdemo-stage{display:grid}
+.accueilV4 .pdemo-panel{grid-area:1/1;visibility:hidden;opacity:0;transition:opacity .25s ease}
+.accueilV4 .pdemo-panel[data-active="true"]{visibility:visible;opacity:1}
+@media(prefers-reduced-motion:reduce){.accueilV4 .pdemo-panel{transition:none}}
+
 @media(max-width:639px){
   /* --- Pourquoi : 3 arguments = liste à filets, même fond que la section,
      sans carte encadrée, sans alternance blanc/bleu nuit/gris, sans filet bleu. --- */
@@ -175,7 +185,6 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .pdemo *{font-size:13px !important}
   .accueilV4 .pdemo .pdemo-tab{font-size:14px !important}
   .accueilV4 .pdemo .pdemo-stage *{font-size:14px !important}
-  .accueilV4 .pdemo .pdemo-stage{min-height:146px !important}
 }
 
 /* === « L'équipe » : bande horizontale unique sous 639px ===
