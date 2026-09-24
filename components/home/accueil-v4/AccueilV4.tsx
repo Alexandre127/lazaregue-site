@@ -130,6 +130,17 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .domains-all-mobile .arrow{color:var(--blue)}
   .accueilV4 .domains-all-mobile:hover{text-decoration:underline;text-underline-offset:4px}
 }
+
+/* === Section « Dossiers traités » — version compacte MOBILE (≤639px) ===
+   Sous 640px : la rubrique « La situation » est retirée (display:none → hors de
+   l'arbre d'accessibilité, jamais transparente ni hors-écran). Restent le
+   libellé, le titre, « L'issue » et « Lire le cas » (cible ≥48px sur toute la
+   largeur de la carte). Fond sombre et corps de texte inchangés ; aucune hauteur
+   fixe. Au-dessus de 640px : aucun changement. */
+@media(max-width:639px){
+  .accueilV4 #dossiers .case-situation{display:none}
+  .accueilV4 #dossiers .case-detail-link{width:100%;min-height:48px}
+}
 `;
 
 const ROTATING = [
@@ -191,33 +202,35 @@ const SHORT_DESC: Record<string, string> = Object.fromEntries(
   MENU_FAMILLES.flatMap((f) => f.domaines.map((d) => [d.href, d.contexte])),
 );
 
+/* Dossiers de la home. Textes « au caractère près » (lot 24 sept. 2026) :
+   deux rubriques (situation + issue), plus de « Notre intervention », plus de
+   mention « Dossier clos ». Insécables ( ) avant « : » et dans les
+   montants (« 80 000 € », « 55 600 € »). La carte 01 (piratage téléphonique)
+   n'a pas encore de page dédiée → lien provisoire vers /cas-clients. */
 const CASES = [
   {
     id: "cas-accueil-1",
-    href: "/cas-clients/cyberattaque-responsabilite-prestataire-informatique",
+    href: "/cas-clients",
     kicker: "01 / CYBERSÉCURITÉ",
-    titre: "Une entreprise paralysée met en cause son prestataire informatique",
-    situation: "Après une intrusion, l’entreprise ne pouvait plus accéder à plusieurs outils métiers ; son infogérant contestait toute responsabilité et les journaux techniques risquaient d’être perdus.",
-    intervention: "Analyse des contrats et des éléments techniques, préservation des preuves et mise en place d’une expertise pour confronter les versions.",
-    issue: "Une expertise judiciaire a été ordonnée pour établir les causes et les responsabilités. Dossier clos, issue favorable.",
+    titre: "Un piratage téléphonique, 80 000 € d’appels : remonter jusqu’à la faille",
+    situation: "Des milliers d’appels surtaxés avaient été passés depuis le système téléphonique d’une entreprise. Son prestataire imputait l’incident à un défaut de sécurité interne.",
+    issue: "L’analyse des journaux de connexion a révélé une faille sur le routeur administré par le prestataire. Cette preuve technique a permis d’écarter la responsabilité de l’entreprise et d’obtenir une indemnisation.",
   },
   {
     id: "cas-accueil-2",
     href: "/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque",
     kicker: "02 / FRAUDE BANCAIRE",
-    titre: "Virements frauduleux vers des plateformes crypto : recours contre la banque",
-    situation: "Un particulier constatait une série de virements vers différents prestataires de paiement et plateformes de crypto-actifs, étalés sur plusieurs mois.",
-    intervention: "Reconstitution de la chronologie, analyse des mécanismes d’authentification et action fondée sur les règles du Code monétaire et financier.",
-    issue: "L’action a été menée contre l’établissement bancaire. Dossier clos, issue favorable.",
+    titre: "27 virements vers des plateformes crypto : faire parler la chronologie",
+    situation: "Un particulier avait perdu 55 600 € par virements successifs vers des prestataires de paiement et des plateformes crypto. La banque soutenait qu’il avait validé chaque opération.",
+    issue: "Nous avons reconstitué les flux, rapproché les alertes et contesté l’authentification des virements. La banque a finalement remboursé les sommes prélevées, intérêts compris.",
   },
   {
     id: "cas-accueil-3",
     href: "/cas-clients/dereferencement-google-procedure-judiciaire",
-    kicker: "03 / DIFFAMATION ET CONTENUS",
-    titre: "Déréférencement Google : une entreprise saisit le juge",
-    situation: "Une entreprise et ses dirigeants souhaitaient limiter l’accès, depuis le moteur de recherche, à des contenus liés à une procédure et nuisibles à leur réputation.",
-    intervention: "Analyse des contenus et des intérêts en présence, puis engagement d’une procédure pour soumettre la demande de déréférencement au juge.",
-    issue: "La demande de déréférencement a été soumise à l’examen du juge. Dossier clos, issue favorable.",
+    kicker: "03 / DÉRÉFÉRENCEMENT",
+    titre: "Des articles anciens en tête de Google : rétablir le contexte",
+    situation: "À chaque recherche de son nom, un dirigeant voyait apparaître des articles relatifs à une enquête ancienne. Ces résultats occultaient son activité actuelle et fragilisaient ses relations commerciales.",
+    issue: "Nous avons démontré que les résultats ne reflétaient plus la situation judiciaire ni l’intérêt actuel du public. Leur déréférencement a été obtenu pour les recherches portant sur son nom.",
   },
 ];
 
@@ -606,8 +619,7 @@ export function AccueilV4() {
               <article className="case-card" key={c.id}>
                 <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href}>{c.titre}</Link></h3></div>
                 <dl>
-                  <div><dt>La situation</dt><dd>{c.situation}</dd></div>
-                  <div><dt>Notre intervention</dt><dd>{c.intervention}</dd></div>
+                  <div className="case-situation"><dt>La situation</dt><dd>{c.situation}</dd></div>
                   <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
                 </dl>
                 <span className="case-detail-link" aria-hidden="true">Lire le cas <span className="arrow">→</span></span>
