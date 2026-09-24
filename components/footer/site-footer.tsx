@@ -82,11 +82,11 @@ export function SiteFooter() {
             </p>
             <p className={styles.bar}>Avocats au Barreau de Paris</p>
             <address className={styles.contact}>
-              <a href="tel:+33181706200">+33 1 81 70 62 00</a>
+              <a href="tel:+33181706200">01 81 70 62 00</a>
               <a href="mailto:contact@lazaregue-avocats.fr">
                 contact@lazaregue-avocats.fr
               </a>
-              <span>18 rue de Tilsitt, 75017 Paris</span>
+              <span>18 rue de Tilsitt, 75017 Paris · Sur rendez-vous</span>
             </address>
           </div>
 

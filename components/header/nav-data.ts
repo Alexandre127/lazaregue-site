@@ -40,7 +40,7 @@ export const FAMILLES: Famille[] = [
         href: "/nos-domaines/rgpd-donnees-personnelles",
       },
       {
-        titre: "Intelligence artificielle",
+        titre: "Intelligence artificielle et AI Act",
         contexte: "Appliquer l'AI Act et encadrer les usages internes",
         href: "/nos-domaines/avocat-intelligence-artificielle",
       },
@@ -60,14 +60,14 @@ export const FAMILLES: Famille[] = [
         href: "/nos-domaines/contrats-informatiques",
       },
       {
+        titre: "M&A tech et due diligence",
+        contexte: "Auditer le passif numérique avant une acquisition",
+        href: "/nos-domaines/ma-tech",
+      },
+      {
         titre: "Crypto-actifs et blockchain",
         contexte: "Obtenir un agrément et sécuriser ses opérations",
         href: "/nos-domaines/crypto-actifs-blockchain",
-      },
-      {
-        titre: "Fusions-acquisitions technologiques",
-        contexte: "Auditer le passif numérique avant une acquisition",
-        href: "/nos-domaines/ma-tech",
       },
     ],
   },
@@ -80,14 +80,14 @@ export const FAMILLES: Famille[] = [
         href: "/nos-domaines/contentieux-informatique-commercial",
       },
       {
-        titre: "Fraude bancaire et escroquerie en ligne",
-        contexte: "Obtenir le remboursement des sommes détournées",
-        href: "/nos-domaines/escroquerie-fraude-bancaire",
-      },
-      {
-        titre: "Cyberattaques et cybercriminalité",
+        titre: "Cybercriminalité et cyberattaques",
         contexte: "Réagir à une intrusion et engager les responsabilités",
         href: "/nos-domaines/cybercriminalite",
+      },
+      {
+        titre: "Fraude bancaire et escroquerie",
+        contexte: "Obtenir le remboursement des sommes détournées",
+        href: "/nos-domaines/escroquerie-fraude-bancaire",
       },
       {
         titre: "Diffamation et retrait de contenus",
