@@ -141,6 +141,34 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 #dossiers .case-situation{display:none}
   .accueilV4 #dossiers .case-detail-link{width:100%;min-height:48px}
 }
+
+/* === « Le cabinet » : flèche « Rencontrer l'équipe » rendue en SVG net
+   (l'ancienne « ↓ » en police Arial de repli s'affichait comme un trait
+   vertical détaché). Toutes largeurs. === */
+.accueilV4 .arrow-down{display:inline-flex;align-items:center}
+.accueilV4 .arrow-down svg{display:block}
+
+/* === « Pourquoi le cabinet » : illustration du portail NON interactive
+   (rôle image porté par .portal-demo-frame). Toutes largeurs. === */
+.accueilV4 .portal-demo-frame{pointer-events:none}
+
+@media(max-width:639px){
+  /* --- Pourquoi : 3 arguments = liste à filets, même fond que la section,
+     sans carte encadrée, sans alternance blanc/bleu nuit/gris, sans filet bleu. --- */
+  .accueilV4 #pourquoi .why-list{display:block}
+  .accueilV4 #pourquoi .why-row{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:18px 0;margin:0;color:var(--ink);grid-column:auto}
+  .accueilV4 #pourquoi .why-row:first-child{border-top:2px solid var(--ink)}
+  .accueilV4 #pourquoi .why-row h3{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.35;color:var(--muted);margin:0}
+  .accueilV4 #pourquoi .why-emphasis{display:block;font-family:var(--ff-display);font-weight:400;font-size:32px;line-height:1.05;color:var(--blue);margin-top:2px}
+  .accueilV4 #pourquoi .why-row p{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.5;color:var(--ink);margin-top:8px}
+
+  /* --- Portail : lisibilité (aucun texte < 13px ; contenus d'onglet ≥ 14px)
+     et suppression de la bande blanche vide (hauteur ramenée au contenu). --- */
+  .accueilV4 .pdemo *{font-size:13px !important}
+  .accueilV4 .pdemo .pdemo-tab{font-size:14px !important}
+  .accueilV4 .pdemo .pdemo-stage *{font-size:14px !important}
+  .accueilV4 .pdemo .pdemo-stage{min-height:146px !important}
+}
 `;
 
 const ROTATING = [
@@ -517,11 +545,11 @@ export function AccueilV4() {
           <div className="intro-body">
             <div>
               <span className="eyebrow">Le cabinet</span>
-              <h2 id="titre-cabinet">Avocats et experts techniques croisent leurs compétences pour traiter les dossiers de droit du numérique.</h2>
+              <h2 id="titre-cabinet">Avocats et experts techniques, une même équipe.</h2>
             </div>
             <div>
-              <p>Lazarègue Avocats est un cabinet d&rsquo;avocats exclusivement dédié au droit du numérique et des nouvelles technologies, établi à Paris. Nous conseillons et représentons les entreprises en matière de droit de l&rsquo;informatique. Notre pratique couvre les cyberattaques, les contrats informatiques, l&rsquo;intelligence artificielle, la protection des données et les litiges liés aux plateformes numériques.</p>
-              <a className="text-link" href="#equipe">Rencontrer l&rsquo;équipe <span className="arrow" aria-hidden="true">↓</span></a>
+              <p>Lazarègue Avocats réunit des avocats et des experts en cybersécurité et en intelligence artificielle pour conseiller et représenter les entreprises en droit du numérique et des nouvelles technologies. Établi à Paris, le cabinet intervient dans toute la France.</p>
+              <a className="text-link" href="#equipe">Rencontrer l&rsquo;équipe <span className="arrow arrow-down" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 1.25v9.5M2.25 7L6 10.75 9.75 7" /></svg></span></a>
             </div>
           </div>
         </div>
@@ -578,17 +606,16 @@ export function AccueilV4() {
             <div>
               <span className="eyebrow">Pourquoi le cabinet</span>
               <h2 id="titre-pourquoi">Le droit du numérique,<br />notre seul métier.</h2>
-              <p className="why-intro">Analyser les aspects techniques, évaluer les implications juridiques et concevoir avec vous une stratégie sur mesure.</p>
             </div>
             <ul className="why-list">
               <li className="why-row">
-                <div><h3>Un cabinet dédié au <span className="why-emphasis">numérique</span></h3><p>Le droit du numérique est la seule matière du cabinet, du contrat informatique au contentieux pénal des systèmes d&rsquo;information.</p></div>
+                <div><h3>Un cabinet dédié au <span className="why-emphasis">numérique</span></h3><p>Du contrat informatique au contentieux pénal des systèmes d&rsquo;information&#160;: aucune autre matière.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>Une équipe juridique et technique (avocats et experts en cybersécurité) confronte l&rsquo;analyse juridique aux réalités techniques du dossier.</p></div>
+                <div><h3>Une équipe <span className="why-emphasis">juridique et technique</span></h3><p>L&rsquo;analyse juridique est confrontée aux réalités techniques du dossier avant toute stratégie.</p></div>
               </li>
               <li className="why-row">
-                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Le cabinet intervient sur les cyberattaques, les données personnelles, l&rsquo;intelligence artificielle, les plateformes et les projets informatiques en difficulté.</p></div>
+                <div><h3>Une pratique du numérique <span className="why-emphasis">depuis 2016</span></h3><p>Dix ans de pratique exclusive, en conseil comme devant les juridictions.</p></div>
               </li>
             </ul>
           </div>
@@ -596,9 +623,13 @@ export function AccueilV4() {
             <div>
               <span className="eyebrow">Le suivi de votre dossier</span>
               <h3>Votre dossier accessible à tout moment.</h3>
-              <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les échanges, les échéances et l&rsquo;avancement de son dossier. Il bénéficie ainsi d&rsquo;un suivi clair tout au long de notre intervention.</p>
+              <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les échanges, les échéances et l&rsquo;avancement de son dossier.</p>
             </div>
-            <div className="portal-demo-frame" aria-hidden="true">
+            <div
+              className="portal-demo-frame"
+              role="img"
+              aria-label="Aperçu animé du portail client : dossiers, documents, messages et contact direct avec l'avocat"
+            >
               <PortailDemo />
             </div>
           </div>
