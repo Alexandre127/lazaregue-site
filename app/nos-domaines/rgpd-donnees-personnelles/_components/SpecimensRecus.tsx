@@ -30,12 +30,14 @@ export function SpecimensRecus() {
     return () => window.removeEventListener("keydown", onKey);
   }, [zoomed]);
 
+  // Spécimens réellement disponibles parmi les quatre livrables de la section
+  // (arbitrage sept. 2026). « Rapport d'audit et plan d'action » et « Procédure
+  // de gestion d'une violation » n'ont pas encore de document spécimen : ils ne
+  // sont PAS fabriqués ici (signalés dans le rapport). Retirés : due diligence,
+  // politique de confidentialité, grille d'évaluation du risque.
   const items = [
-    { num: "01", name: "DPA sous-traitant — art. 28", sub: "Les clauses que les éditeurs refusent — et comment elles se rédigent" },
-    { num: "02", name: "Politique de confidentialité", sub: "Droit du travail, cookies et régime sectoriel articulés" },
-    { num: "03", name: "Registre des traitements", sub: "La base légale documentée, traitement par traitement" },
-    { num: "04", name: "Grille d'évaluation du risque", sub: "Notifier ou non : les critères de la décision" },
-    { num: "05", name: "Rapport de due diligence", sub: "Ce qu'un acquéreur regarde dans une base clients" },
+    { num: "01", name: "Registre des traitements", sub: "La base légale documentée, traitement par traitement" },
+    { num: "02", name: "DPA sous-traitant — art. 28", sub: "Les clauses que les éditeurs refusent — et comment elles se rédigent" },
   ];
 
   const docs: ReactNode[] = [
@@ -150,9 +152,10 @@ export function SpecimensRecus() {
     </div>,
   ];
 
-  // L'ordre d'affichage place le DPA en premier ; `order` mappe l'index du menu
-  // vers le bloc `docs` et son bandeau.
-  const order = [2, 3, 0, 1, 4];
+  // `order` mappe l'index du menu vers le bloc `docs` et son bandeau : menu 01
+  // (registre) → doc 0 ; menu 02 (DPA art. 28) → doc 2. Les autres blocs `docs`
+  // (grille, politique, due diligence) restent définis mais ne sont plus mappés.
+  const order = [0, 2];
   const docBadges = ["Registre Art.30", "Procédure Art.33", "DPA Art.28", "Politique RGPD", "Due Diligence M&A"];
 
   return (
@@ -170,6 +173,34 @@ export function SpecimensRecus() {
           .livr-menu-items { display: flex; flex-direction: column; gap: 0; }
         }
         @media (prefers-reduced-motion: reduce) { .livr-doc-card, .livr-zoom-inner { transition: none !important; } }
+
+        /* Lot 5 — sous 639px : bande horizontale de vignettes (modèle bande
+           équipe de la home). Chaque vignette ouvre le spécimen EN PLEIN ÉCRAN
+           (lisible, zoomable). Plus d'aperçu de document en petit corps dans la
+           page : le viewer 340px est masqué. */
+        .livr-band { display: none; }
+        @media (max-width: 639px) {
+          .livr-grid { display: none; }
+          .livr-band {
+            display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+            margin: 0 -20px; padding: 2px 20px 12px; scrollbar-width: none; -ms-overflow-style: none;
+          }
+          .livr-band::-webkit-scrollbar { display: none; }
+          .livr-thumb {
+            flex: 0 0 78%; scroll-snap-align: start; display: flex; flex-direction: column;
+            background: #fff; border: 1px solid #e0e0ee; padding: 0 0 12px;
+            text-align: left; cursor: pointer; overflow: hidden;
+          }
+          .livr-thumb:focus-visible { outline: 3px solid #1A47FF; outline-offset: 2px; }
+          .livr-thumb-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f7f7f7; border-bottom: 1px solid #e5e5e5; padding: 9px 12px; }
+          .livr-thumb-brand { font-size: 10px; font-weight: 700; color: #111; letter-spacing: .04em; }
+          .livr-thumb-brand span { color: #1A47FF; }
+          .livr-thumb-badge { font-size: 8px; color: #666; letter-spacing: .06em; text-transform: uppercase; background: #eaeaea; padding: 2px 6px; }
+          .livr-thumb-doc { display: block; height: 168px; overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); pointer-events: none; }
+          .livr-thumb-cap { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px 0; min-height: 44px; }
+          .livr-thumb-name { font-size: 13px; font-weight: 500; color: #14141f; line-height: 1.35; }
+          .livr-thumb-open { flex: none; font-size: 12px; color: #1A47FF; white-space: nowrap; }
+        }
       `}</style>
 
       <div className="livr-grid">
@@ -188,7 +219,7 @@ export function SpecimensRecus() {
                     width: "100%", display: "flex", alignItems: "flex-start", gap: "12px",
                     padding: "10px 10px 10px 12px", border: "none",
                     borderLeft: cur === i ? `2px solid ${BRAND}` : "2px solid transparent",
-                    borderBottom: i < 4 ? `.5px solid ${LIGHT.border}` : "none",
+                    borderBottom: i < items.length - 1 ? `.5px solid ${LIGHT.border}` : "none",
                     background: cur === i ? "#f4f4f8" : "none",
                     textAlign: "left", font: "inherit", cursor: "pointer",
                   }}
@@ -244,6 +275,30 @@ export function SpecimensRecus() {
             Agrandir le document
           </button>
         </div>
+      </div>
+
+      {/* Bande de vignettes — mobile (lot 5). Chaque vignette ouvre le spécimen
+          en plein écran, lisible et zoomable. */}
+      <div className="livr-band" aria-label="Nos livrables">
+        {order.map((docIdx, i) => (
+          <button
+            key={i}
+            type="button"
+            className="livr-thumb"
+            onClick={() => { setCur(i); setZoomed(true); }}
+            aria-label={`Ouvrir le spécimen en plein écran : ${items[i].name}`}
+          >
+            <span className="livr-thumb-head">
+              <span className="livr-thumb-brand">LAZARÈGUE <span>AVOCATS</span></span>
+              <span className="livr-thumb-badge">{docBadges[docIdx]}</span>
+            </span>
+            <span className="livr-thumb-doc" aria-hidden="true">{docs[docIdx]}</span>
+            <span className="livr-thumb-cap">
+              <span className="livr-thumb-name">{items[i].num} · {items[i].name}</span>
+              <span className="livr-thumb-open" aria-hidden="true">Agrandir →</span>
+            </span>
+          </button>
+        ))}
       </div>
 
       {zoomed ? (

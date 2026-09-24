@@ -15,6 +15,7 @@
  */
 export type TrackEvent =
   | "cta_principal"
+  | "cta_intermediaire"
   | "cta_violation"
   | "cta_cnil"
   | "specimen_ouvert"

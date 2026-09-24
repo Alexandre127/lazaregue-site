@@ -69,12 +69,18 @@ const FAQ_LD = {
   })),
 };
 
+/* Phrase de réassurance, reprise de la section honoraires (lot 2). Ajoutée sous
+   les points d'action (hero, bouton intermédiaire, contact final). */
+const REASSURANCE =
+  "Premier échange pour comprendre votre besoin. Mission et honoraires convenus par écrit avant de commencer.";
+
+/* Cinq situations : les deux situations d'urgence (violation de données,
+   contrôle CNIL) sont désormais traitées par la section « situations urgentes »
+   placée juste après le hero (lot 4). */
 const SITUATIONS: { t: string; p: string; cta: string }[] = [
   { t: "Vous devez vous mettre en conformité", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer.", cta: "Faire le point sur la conformité" },
   { t: "Vos prestataires ne sont pas encadrés", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties.", cta: "Encadrer les contrats" },
   { t: "Vous lancez un produit ou un outil d’intelligence artificielle", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont actuellement en cours d’arbitrage.", cta: "Intégrer la protection des données" },
-  { t: "Vous êtes victime d’une violation de données", p: "Vous devez décider rapidement s’il faut signaler l’incident à la CNIL et informer les personnes concernées (fuite, rançongiciel ou envoi erroné).", cta: "Être accompagné après une violation" },
-  { t: "Vous êtes contrôlé par la CNIL", p: "La Commission nationale de l’informatique et des libertés (CNIL) vous a adressé un questionnaire, un avis de contrôle ou une demande d’information. Les réponses que vous fournirez détermineront la suite de la procédure.", cta: "Préparer la réponse à la CNIL" },
   { t: "Vous préparez une acquisition ou une levée de fonds", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
   { t: "Un accompagnement RGPD dans la durée", p: "Un avocat identifié suit vos questions, vos contrats et l’évolution de vos projets, en lien avec vos équipes. Lorsque les conditions sont réunies, la fonction de délégué à la protection des données peut être assurée par le cabinet.", cta: "Échanger sur votre suivi RGPD" },
 ];
@@ -83,30 +89,26 @@ const SITUATIONS: { t: string; p: string; cta: string }[] = [
    (registre Art. 30, AIPD, DPO, procédures des droits, contrats Art. 28,
    transferts hors UE, sécurité Art. 32, privacy by design Art. 25, violations
    et notification CNIL, documentation d'accountability). */
-const MC_BLOCKS: { titre: string; resume: string; detail: string; livrable: string }[] = [
+const MC_BLOCKS: { titre: string; resume: string; detail: string }[] = [
   {
     titre: "Cartographier",
     resume: "Savoir ce que vous traitez — et pourquoi",
     detail: "Cartographie des traitements, registre Art. 30 avec base légale documentée, identification des AIPD nécessaires.",
-    livrable: "Registre des traitements",
   },
   {
     titre: "Organiser",
     resume: "Répartir les rôles et les responsabilités",
     detail: "DPO interne ou externe, politiques internes, procédures de réponse aux droits des personnes, comités de suivi.",
-    livrable: "Politiques et procédures internes",
   },
   {
     titre: "Encadrer",
     resume: "Maîtriser votre exposition contractuelle et technique",
     detail: "Contrats sous-traitants Art. 28, clauses négociées, transferts hors UE (CCT, BCR), mesures de sécurité Art. 32 et protection des données dès la conception (privacy by design, Art. 25).",
-    livrable: "Contrats sous-traitants Art. 28",
   },
   {
     titre: "Documenter",
     resume: "Être prêt à démontrer, à tout moment",
     detail: "Procédures de violation et de notification CNIL, traçabilité des décisions, documentation tenue à jour en vue d’un contrôle.",
-    livrable: "Dossier de conformité",
   },
 ];
 
@@ -148,16 +150,43 @@ export default function Page() {
             <div className="hero-main">
               <p className="badge">RGPD &amp; DONNÉES · PARIS</p>
               <h1>Avocat RGPD <span>pour les entreprises</span></h1>
-              <p className="lead">Le cabinet accompagne les PME et les ETI pour auditer leurs pratiques, corriger les écarts et rendre leur conformité démontrable. Selon votre besoin, le cabinet établit un plan d’action et prépare les documents adaptés à votre activité.</p>
+              <p className="lead"><span className="lead-s1">Le cabinet accompagne les PME et les ETI pour auditer leurs pratiques, corriger les écarts et rendre leur conformité démontrable.</span> <span className="lead-s2">Selon votre besoin, le cabinet établit un plan d’action et prépare les documents adaptés à votre activité.</span></p>
               <div className="hero-actions">
                 <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat <span aria-hidden="true">→</span></TrackedLink>
                 <a className="link-nav" href="#urgences">Une violation ou un contrôle CNIL ? <span aria-hidden="true">→</span></a>
               </div>
+              <p className="reassurance reassurance-dark">{REASSURANCE}</p>
             </div>
           </div>
         </div>
 
-        {/* ============ 2. SITUATIONS ============ */}
+        {/* ============ 2. SITUATIONS URGENTES (remontées juste après le hero) ============ */}
+        <section className="tint" id="urgences">
+          <div className="wrap">
+            <div className="sec-head">
+              <p className="label">situations urgentes</p>
+              <h2>Violation de données et contrôle CNIL</h2>
+            </div>
+            <div className="urgences">
+              <div className="urg">
+                <p className="delai">72 heures</p>
+                <h3>Violation de données</h3>
+                <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement doit informer la CNIL dans un délai très court lorsque l’incident présente un risque pour les personnes concernées.</p>
+                <p className="urg-more">Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision. Il travaille en étroite collaboration avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
+                <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Contacter un avocat après une violation</TrackedLink>
+              </div>
+              <div className="urg">
+                <p className="delai">procédure en cours</p>
+                <h3>Contrôle ou procédure CNIL</h3>
+                <p>Questionnaire écrit, contrôle sur place, contrôle sur pièces ou mise en demeure&nbsp;: chaque réponse écrite devient une pièce du dossier et détermine la suite de la procédure.</p>
+                <p className="urg-more">Le cabinet élabore les réponses, encadre les échanges et assure la défense de l’entreprise devant la formation restreinte de la CNIL si la procédure se poursuit.</p>
+                <TrackedLink href="/contact" event="cta_cnil" className="btn btn-urgent">Être assisté face à la CNIL</TrackedLink>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============ 3. SITUATIONS ============ */}
         <section id="situations">
           <div className="wrap">
             <div className="sec-head">
@@ -177,7 +206,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 3. MÉTHODE — QUATRE TEMPS ============ */}
+        {/* ============ 4. MÉTHODE — QUATRE TEMPS ============ */}
         <section className="tint" id="missions">
           <div className="wrap">
             <div className="sec-head">
@@ -192,15 +221,14 @@ export default function Page() {
                   <h3>{b.titre}</h3>
                   <p className="mc-resume">{b.resume}</p>
                   <p className="mc-detail">{b.detail}</p>
-                  <p className="mc-livrable">Livrable · {b.livrable}</p>
                 </li>
               ))}
             </ol>
           </div>
         </section>
 
-        {/* ============ 4. LIVRABLES ============ */}
-        {/* « Ce que vous recevez » : menu des cinq livrables + document spécimen
+        {/* ============ 5. LIVRABLES ============ */}
+        {/* « Ce que vous recevez » : menu des livrables + document spécimen
             (aperçu + « Agrandir le document »). Extraits illustratifs anonymisés. */}
         <section id="livrables">
           <div className="wrap">
@@ -210,36 +238,16 @@ export default function Page() {
               <p className="lead">À chaque mission correspondent des documents précis, rattachés à votre activité. En voici des exemples illustratifs, sans aucune donnée réelle.</p>
             </div>
             <SpecimensRecus />
-          </div>
-        </section>
 
-        {/* ============ 5. URGENCES ============ */}
-        <section className="tint" id="urgences">
-          <div className="wrap">
-            <div className="sec-head">
-              <p className="label">situations urgentes</p>
-              <h2>Violation de données et contrôle CNIL</h2>
-            </div>
-            <div className="urgences">
-              <div className="urg">
-                <p className="delai">72 heures</p>
-                <h3>Violation de données</h3>
-                <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement doit informer la CNIL dans un délai très court lorsque l’incident présente un risque pour les personnes concernées.</p>
-                <p>Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision. Il travaille en étroite collaboration avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
-                <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Contacter un avocat après une violation</TrackedLink>
-              </div>
-              <div className="urg">
-                <p className="delai">procédure en cours</p>
-                <h3>Contrôle ou procédure CNIL</h3>
-                <p>Questionnaire écrit, contrôle sur place, contrôle sur pièces ou mise en demeure&nbsp;: chaque réponse écrite devient une pièce du dossier et détermine la suite de la procédure.</p>
-                <p>Le cabinet élabore les réponses, encadre les échanges et assure la défense de l’entreprise devant la formation restreinte de la CNIL si la procédure se poursuit.</p>
-                <TrackedLink href="/contact" event="cta_cnil" className="btn btn-urgent">Être assisté face à la CNIL</TrackedLink>
-              </div>
+            {/* 6. Bouton intermédiaire + réassurance (lot 4) */}
+            <div className="mid-cta">
+              <TrackedLink href="/contact" event="cta_intermediaire" className="btn btn-primary">Faire le point sur votre conformité <span aria-hidden="true">→</span></TrackedLink>
+              <p className="reassurance">{REASSURANCE}</p>
             </div>
           </div>
         </section>
 
-        {/* ============ 6. SUR LE TERRAIN ============ */}
+        {/* ============ 7. SUR LE TERRAIN ============ */}
         <section id="terrain">
           <div className="wrap">
             <div className="sec-head">
@@ -251,19 +259,14 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 8. POURQUOI ============ */}
-        <section id="pourquoi">
+        {/* ============ 8. L'ÉQUIPE (section distincte, avant « Pourquoi ») ============ */}
+        <section id="equipe">
           <div className="wrap">
             <div className="sec-head">
-              <p className="label">le cabinet</p>
-              <h2>Pourquoi Lazarègue Avocats</h2>
+              <p className="label">l’équipe</p>
+              <h2>Les intervenants sur vos dossiers RGPD</h2>
             </div>
-            <ul className="arguments pourquoi-args">
-              {ARGUMENTS.map((a) => (
-                <li key={a.t}><h3>{a.t}</h3><p>{a.p}</p></li>
-              ))}
-            </ul>
-            <div className="team-row" aria-label="Les intervenants sur vos dossiers RGPD">
+            <div className="team-row">
               <figure className="person">
                 <div className="shot">
                   <Image
@@ -323,7 +326,22 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 9. HONORAIRES ============ */}
+        {/* ============ 9. POURQUOI ============ */}
+        <section id="pourquoi">
+          <div className="wrap">
+            <div className="sec-head">
+              <p className="label">le cabinet</p>
+              <h2>Pourquoi Lazarègue Avocats</h2>
+            </div>
+            <ul className="arguments pourquoi-args">
+              {ARGUMENTS.map((a) => (
+                <li key={a.t}><h3>{a.t}</h3><p>{a.p}</p></li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ============ 10. HONORAIRES ============ */}
         <section className="tint" id="honoraires">
           <div className="wrap">
             <div className="sec-head">
@@ -334,7 +352,7 @@ export default function Page() {
               <div>
                 <p>Le premier échange permet de comprendre votre activité, votre besoin et son urgence. Avant de commencer, nous convenons par écrit de la mission, des documents à préparer et des honoraires.</p>
                 <p>Lorsque le périmètre peut être précisément délimité — audit, documentation de conformité ou ensemble de contrats — le cabinet propose un forfait.</p>
-                <p>Lorsqu’une mission dépend d’événements extérieurs, notamment en cas de violation de données ou de procédure devant la CNIL, elle peut être facturée au temps passé sur la base d’un taux horaire annoncé à l’avance.</p>
+                <p>En cas d’urgence (violation, procédure CNIL), les modalités sont convenues dès le premier échange.</p>
               </div>
               <div>
                 <h3>Ce qui fait varier le prix</h3>
@@ -350,7 +368,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ ACCOMPAGNEMENTS SPÉCIALISÉS (après honoraires, cf. maquette) ============ */}
+        {/* ============ 11. PROLONGEMENTS DE LA MISSION ============ */}
         <section id="specialises">
           <div className="wrap">
             <div className="sec-head">
@@ -378,7 +396,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 10. FAQ ============ */}
+        {/* ============ 12. FAQ ============ */}
         <section id="faq">
           <div className="wrap">
             <div className="sec-head">
@@ -397,24 +415,16 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ============ 11. CONTACT FINAL ============ */}
+        {/* ============ 13. CONTACT FINAL ============ */}
         <section className="dark final" id="contact">
           <div className="wrap">
             <p className="label">contact</p>
             <h2>Parlons de votre situation</h2>
             <p className="lead">Le cabinet intervient pour un audit, pour un projet en cours, pour une violation de données ou pour un contrôle de la CNIL. Le premier échange permet d’évaluer l’urgence de la situation et de définir le périmètre.</p>
             <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat</TrackedLink>
+            <p className="reassurance reassurance-dark">{REASSURANCE}</p>
           </div>
         </section>
-
-        {/* Barre de contact mobile (< 768px), masquée quand la modale est ouverte. */}
-        <div className="barre">
-          <TrackedLink href="tel:+33181706200" event="clic_telephone" className="tel" ariaLabel="Appeler le cabinet au 01 81 70 62 00">
-            <span className="tel-long" aria-hidden="true">01 81 70 62 00</span>
-            <span className="tel-court" aria-hidden="true">Appeler</span>
-          </TrackedLink>
-          <TrackedLink href="/contact" event="cta_principal" className="btn btn-primary">Échanger avec un avocat</TrackedLink>
-        </div>
       </main>
     </>
   );

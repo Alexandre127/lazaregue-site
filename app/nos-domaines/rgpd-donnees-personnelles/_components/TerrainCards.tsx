@@ -26,39 +26,29 @@ const TERRAIN: Terrain[] = [
     title: "Outils SaaS américains utilisés sans encadrement",
     sub: "Des outils SaaS empilés, sans contrat adéquat ni documentation des traitements et des transferts de données",
     expand:
-      "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Sans contrat Art. 28 conforme, vous restez responsable en cas de violation.",
+      "Le Cloud Act américain peut contraindre l'hébergeur à transmettre vos données sans vous prévenir. Confier des données à un sous-traitant sans contrat conforme à l’article 28 constitue en soi un manquement.",
     link: { href: "/nos-domaines/contrats-informatiques", label: "Encadrer vos contrats IT" },
-  },
-  {
-    title: "Registre des traitements manquant ou obsolète",
-    sub: "La base légale de chaque traitement n'est pas documentée",
-    expand:
-      "La CNIL peut sanctionner même sans violation effective. Sans registre à jour, impossible de démontrer la conformité lors d'un contrôle ou d'une due diligence investisseur.",
   },
   {
     title: "DRH qui s’appuie sur une intelligence artificielle générative en utilisant des données RH",
     sub: "CV, évaluations, informations sur les salariés, sans aucune supervision en matière d’IA",
     expand:
-      "Double exposition : RGPD et AI Act (système IA à risque élevé). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
+      "Double exposition : RGPD et AI Act (système d’IA susceptible d’être classé à haut risque s’il sert au recrutement ou à l’évaluation des salariés). Le salarié peut exercer son droit d'opposition. La CNIL a déjà ouvert des enquêtes sur ce sujet.",
     link: { href: "/nos-domaines/avocat-intelligence-artificielle", label: "Conformité AI Act" },
   },
   {
     title: "Lancement d’une application mobile sans mise en conformité",
     sub: "Géolocalisation, cookies et données utilisateurs non encadrés",
     expand:
-      "La CNIL surveille activement les applis mobiles. Une plainte utilisateur suffit à déclencher un contrôle. Les données de géolocalisation sont sensibles — leur collecte sans consentement valide expose à une sanction immédiate.",
+      "La CNIL surveille activement les applis mobiles. Une plainte utilisateur suffit à déclencher un contrôle. Les données de géolocalisation sont sensibles — leur collecte sans consentement valide expose l’entreprise à une procédure de la CNIL.",
+    link: { href: "/contact", label: "Échanger avec un avocat" },
   },
   {
     title: "Salarié qui réclame l’accès à l’ensemble de ses courriels",
     sub: "Droit d’accès exercé dans un contexte de contentieux en ressources humaines",
     expand:
       "Sans procédure documentée, l'entreprise doit répondre sous un mois. Un refus ou retard expose à une réclamation CNIL. Nous structurons la réponse juridique tout en protégeant les intérêts de l'entreprise.",
-  },
-  {
-    title: "Opération de financement qui met en évidence des écarts de conformité",
-    sub: "Lors de la due diligence, la protection des données devient un facteur de valorisation",
-    expand:
-      "Un fichier prospects sans consentement valide peut être qualifié d'actif illicite — impact direct sur la valorisation. Nous accompagnons les fondateurs dans la régularisation pré-closing.",
+    link: { href: "/contact", label: "Échanger avec un avocat" },
   },
 ];
 
@@ -77,6 +67,7 @@ export function TerrainCards() {
               className="terrain-btn"
               aria-expanded={isOpen}
               aria-controls={panelId}
+              aria-label={`Voir ce qui se passe sans encadrement : ${item.title}`}
               onClick={() => setOpen((prev) => (prev === i ? null : i))}
             >
               <span className="terrain-top">

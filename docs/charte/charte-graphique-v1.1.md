@@ -78,6 +78,14 @@ C'est le Pantone Reflex Blue (#2E3191) de la charte originale repensé pour l'é
 - Sur fond Electric Blue : toutes les barres = blanc (plein ou semi-transparent).
 - Ne jamais utiliser le vert pomme (#C8F53A), le violet ou une couleur décorative concurrente. Contraste minimal : 4,5:1 pour le texte courant, 3:1 pour le grand texte et les composants. Viser 7:1 pour les contenus essentiels.
 
+**Jetons de statut**
+
+| Aperçu | NOM / HEX | RÔLE | USAGE |
+|---|---|---|---|
+| | Statut urgence / #B3231F | Message fonctionnel d'urgence | Filet et libellé des situations à délai contraint (violation de données, contrôle CNIL). **Toujours accompagné d'un libellé** (« 72 heures », « Procédure en cours »), jamais porteur seul de l'information. Sur blanc : ≈ 6,6:1 (AA). Jeton `--urgence`. |
+
+Les jetons de statut ne sont pas des accents de marque : ils ne concurrencent pas l'Electric Blue et ne servent qu'aux messages fonctionnels. Aucun autre rouge ni vert n'est introduit dans la palette.
+
 ---
 
 ## 03 · TYPOGRAPHIE
