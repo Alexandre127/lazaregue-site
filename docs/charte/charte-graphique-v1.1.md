@@ -86,6 +86,13 @@ C'est le Pantone Reflex Blue (#2E3191) de la charte originale repensé pour l'é
 
 Les jetons de statut ne sont pas des accents de marque : ils ne concurrencent pas l'Electric Blue et ne servent qu'aux messages fonctionnels. Aucun autre rouge ni vert n'est introduit dans la palette.
 
+**Jetons de filet**
+
+| Aperçu | NOM / HEX | RÔLE | USAGE |
+|---|---|---|---|
+| | Border / #E0E0EE | Séparateur (par défaut) | Bordures et grilles sur fond blanc. Ne porte jamais seul une information. Jeton `--border`. |
+| | Line-strong / #C9CBDA | Séparateur renforcé | **Séparateurs de listes sur fond gris-bleu #F4F4F8**, où #E0E0EE est invisible. N'apparaît pas sur fond blanc (Border y suffit). Jeton `--line-strong`. |
+
 ---
 
 ## 03 · TYPOGRAPHIE

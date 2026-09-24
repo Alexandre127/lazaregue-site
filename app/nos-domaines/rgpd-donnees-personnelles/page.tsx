@@ -3,11 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./rgpd.module.css";
 import { FAQ_ITEMS } from "./faq";
-import { HeroVideo } from "./_components/HeroVideo";
 import { FaqAccordion } from "./_components/FaqAccordion";
 import { TrackedLink } from "./_components/TrackedLink";
 import { SpecimensRecus } from "./_components/SpecimensRecus";
 import { TerrainCards } from "./_components/TerrainCards";
+import { CasClients } from "./_components/CasClients";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/nos-domaines/rgpd-donnees-personnelles";
@@ -77,12 +77,14 @@ const REASSURANCE =
 /* Cinq situations : les deux situations d'urgence (violation de données,
    contrôle CNIL) sont désormais traitées par la section « situations urgentes »
    placée juste après le hero (lot 4). */
-const SITUATIONS: { t: string; p: string; cta: string }[] = [
-  { t: "Vous devez vous mettre en conformité", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer.", cta: "Faire le point sur la conformité" },
-  { t: "Vos prestataires ne sont pas encadrés", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties.", cta: "Encadrer les contrats" },
-  { t: "Vous lancez un produit ou un outil d’intelligence artificielle", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont actuellement en cours d’arbitrage.", cta: "Intégrer la protection des données" },
-  { t: "Vous préparez une acquisition ou une levée de fonds", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Préparer l’opération" },
-  { t: "Un accompagnement RGPD dans la durée", p: "Un avocat identifié suit vos questions, vos contrats et l’évolution de vos projets, en lien avec vos équipes. Lorsque les conditions sont réunies, la fonction de délégué à la protection des données peut être assurée par le cabinet.", cta: "Échanger sur votre suivi RGPD" },
+/* `short` : phrase courte affichée sous l'intitulé (validée par le cabinet).
+   `p` (texte long) reste dans le code mais n'est plus affiché (cf. lot 6). */
+const SITUATIONS: { t: string; short: string; p: string; cta: string; href: string }[] = [
+  { t: "Vous devez vous mettre en conformité", short: "Votre activité traite des données personnelles sans documentation formalisée.", p: "Votre activité traite des données personnelles sans documentation formalisée. Vous voulez savoir où vous en êtes et par quoi commencer.", cta: "Voir comment se déroule la mise en conformité", href: "#missions" },
+  { t: "Vos prestataires ne sont pas encadrés", short: "Vos sous-traitants traitent vos données sans clauses suffisantes, alors que clients et assureur exigent ces garanties.", p: "Vos outils et vos sous-traitants traitent vos données sans clauses suffisantes. Vos clients ou votre assureur réclament ces garanties.", cta: "Voir comment encadrer vos sous-traitants", href: "#etape-encadrer" },
+  { t: "Vous lancez un produit ou un outil d’intelligence artificielle", short: "Le nouveau service doit intégrer la protection des données dès sa conception, avant que les choix techniques soient arrêtés.", p: "Un nouveau service doit intégrer la protection des données dès sa conception. Les choix techniques sont actuellement en cours d’arbitrage.", cta: "Voir comment intégrer la protection des données", href: "#etape-encadrer" },
+  { t: "Vous préparez une acquisition ou une levée de fonds", short: "L’acquéreur ou l’investisseur examinera votre conformité ; les écarts peuvent peser sur l’évaluation, les garanties ou les conditions de l’opération.", p: "Un examen de votre conformité sera effectué par l’acquéreur ou l’investisseur. Les écarts identifiés peuvent influencer l’évaluation du risque, les garanties ou les conditions de l’opération.", cta: "Voir comment rendre votre conformité démontrable", href: "#etape-documenter" },
+  { t: "Un accompagnement RGPD dans la durée", short: "Un avocat identifié suit vos questions, contrats et projets ; le cabinet peut être désigné délégué à la protection des données.", p: "Un avocat identifié suit vos questions, vos contrats et l’évolution de vos projets, en lien avec vos équipes. Lorsque les conditions sont réunies, la fonction de délégué à la protection des données peut être assurée par le cabinet.", cta: "Découvrir l’accompagnement par abonnement", href: "#honoraires" },
 ];
 
 /* Quatre temps de la mise en conformité — contenu restauré de l'ancienne page
@@ -112,12 +114,16 @@ const MC_BLOCKS: { titre: string; resume: string; detail: string }[] = [
   },
 ];
 
+/* Trois arguments au format compact de la home (titre Bebas encre, filet Ink,
+   une phrase). Lot 7.1. */
 const ARGUMENTS: { t: string; p: string }[] = [
-  { t: "Une approche juridique, contractuelle et contentieuse", p: "La conformité est traitée comme un dossier susceptible d’être examiné par la CNIL, un client, un assureur ou un tribunal." },
-  { t: "Un accompagnement adapté aux PME et aux ETI", p: "Le cabinet travaille avec des entreprises qui ne disposent pas d’une direction juridique dédiée à ces sujets. Il adapte la documentation à leurs moyens réels." },
-  { t: "Un cabinet de droit du numérique depuis 2016", p: "Le cabinet exerce en droit du numérique depuis 2016 et intervient sur l’ensemble du territoire." },
-  { t: "Des interlocuteurs identifiés", p: "Un avocat désigné conduit la mission, supervise les échanges et demeure votre interlocuteur tout au long du dossier." },
+  { t: "Le RGPD, pratique fondatrice du cabinet", p: "Créé en 2016, l’année de l’adoption du règlement, le cabinet accompagne les entreprises depuis avant son entrée en application." },
+  { t: "Avocats et experts techniques, une même équipe", p: "Les flux de données et les mesures de sécurité sont examinés sur le terrain, et non sur les seules déclarations des prestataires." },
+  { t: "Du conseil à la procédure", p: "L’équipe qui documente la conformité est celle qui défend l’entreprise en cas de violation, de contrôle ou de procédure devant la CNIL." },
 ];
+
+/* Secteurs accompagnés (texte simple, non cliquable) — lot 7.1. */
+const SECTEURS = ["Banque", "Immobilier commercial", "Santé et IA", "Mobilité", "Industrie automobile", "Construction"];
 
 export default function Page() {
   return (
@@ -137,8 +143,7 @@ export default function Page() {
       <main id="contenu-principal" className={styles.rgpd}>
         {/* ============ 1. HERO ============ */}
         <div className="hero dark">
-          {/* Vidéo de fond, fondue dans la section (aucun cadre) — cf. HeroVideo. */}
-          <HeroVideo />
+          {/* Fond Deep Navy uni (la vidéo de fond a été retirée). */}
           <div className="wrap">
             <nav className="breadcrumb" aria-label="Fil d’Ariane">
               <ol>
@@ -198,8 +203,12 @@ export default function Page() {
               {SITUATIONS.map((s) => (
                 <li key={s.t}>
                   <h3>{s.t}</h3>
-                  <p>{s.p}</p>
-                  <Link className="link-nav" href="/contact">{s.cta} <span aria-hidden="true">→</span></Link>
+                  <p className="situation-short">{s.short}</p>
+                  {/* Texte long conservé dans le code, non affiché (lot 6). */}
+                  <p className="situation-full">{s.p}</p>
+                  {/* Lien interne vers l'étape correspondante de la mise en conformité
+                      (ancre de la page, pas /contact) — cf. lot 6. */}
+                  <a className="link-nav" href={s.href}>{s.cta} <span aria-hidden="true">→</span></a>
                 </li>
               ))}
             </ul>
@@ -216,7 +225,7 @@ export default function Page() {
             </div>
             <ol className="mc-blocks">
               {MC_BLOCKS.map((b, i) => (
-                <li key={b.titre}>
+                <li key={b.titre} id={`etape-${b.titre.toLowerCase()}`}>
                   <span className="mc-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <h3>{b.titre}</h3>
                   <p className="mc-resume">{b.resume}</p>
@@ -319,7 +328,6 @@ export default function Page() {
                   <b>Khalid Sookia</b>
                   <span className="role">Consultant en cybersécurité.</span>
                   <span className="role">Examen des faits techniques, des outils et des mesures de sécurité.</span>
-                  <span className="role-note">N’exerce pas la profession d’avocat.</span>
                 </figcaption>
               </figure>
             </div>
@@ -330,14 +338,31 @@ export default function Page() {
         <section id="pourquoi">
           <div className="wrap">
             <div className="sec-head">
-              <p className="label">le cabinet</p>
-              <h2>Pourquoi Lazarègue Avocats</h2>
+              <p className="label">pourquoi le cabinet</p>
+              <h2>Pourquoi confier votre conformité RGPD au cabinet</h2>
             </div>
-            <ul className="arguments pourquoi-args">
+            <ul className="pourquoi-grid">
               {ARGUMENTS.map((a) => (
                 <li key={a.t}><h3>{a.t}</h3><p>{a.p}</p></li>
               ))}
             </ul>
+            <div className="secteurs">
+              <p className="secteurs-label">Secteurs accompagnés</p>
+              <ul className="secteurs-list">
+                {SECTEURS.map((s) => <li key={s}>{s}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* ============ 9 bis. CAS CLIENTS ============ */}
+        <section className="dark" id="cas-clients">
+          <div className="wrap">
+            <div className="sec-head">
+              <p className="label">cas clients</p>
+              <h2>Mises en conformité conduites par le cabinet</h2>
+            </div>
+            <CasClients />
           </div>
         </section>
 
@@ -351,8 +376,21 @@ export default function Page() {
             <div className="honoraires">
               <div>
                 <p>Le premier échange permet de comprendre votre activité, votre besoin et son urgence. Avant de commencer, nous convenons par écrit de la mission, des documents à préparer et des honoraires.</p>
-                <p>Lorsque le périmètre peut être précisément délimité — audit, documentation de conformité ou ensemble de contrats — le cabinet propose un forfait.</p>
                 <p>En cas d’urgence (violation, procédure CNIL), les modalités sont convenues dès le premier échange.</p>
+                {/* Deux modes d'honoraires (mêmes informations à toutes les largeurs).
+                    La case « Forfait » porte l'information de l'ancien paragraphe. */}
+                <div className="honoraires-offres">
+                  <div className="offre">
+                    <span className="offre-label">PÉRIMÈTRE DÉLIMITÉ</span>
+                    <h3>Forfait</h3>
+                    <p>Audit, documentation, contrats</p>
+                  </div>
+                  <div className="offre">
+                    <span className="offre-label">DANS LA DURÉE</span>
+                    <h3>Abonnement</h3>
+                    <p>Mise en conformité avec feuille de route, DPO externalisé</p>
+                  </div>
+                </div>
               </div>
               <div>
                 <h3>Ce qui fait varier le prix</h3>
