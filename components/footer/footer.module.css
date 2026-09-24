@@ -135,6 +135,15 @@
   font-size: 16px;
   line-height: 1.6;
 }
+/* Sous 1024px, la barre basse fixe « Nous écrire / téléphone » recouvre la fin
+   de page (icône LinkedIn) une fois défilé tout en bas. On réserve en bas un
+   espace égal à la hauteur de la barre + la zone sûre iOS, sans toucher la
+   barre elle-même. */
+@media (max-width: 1023px) {
+  .siteFooter {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+}
 .inner {
   max-width: 1200px;
   margin: 0 auto;

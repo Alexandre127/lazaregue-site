@@ -111,7 +111,7 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .domain-groups{gap:28px}
   .accueilV4 .domain-family{display:block;background:transparent;border:0;border-top:2px solid var(--ink);padding:0}
   /* En-tête de famille sur UNE ligne : numéro (Bebas 26px, bleu) + titre (Space Grotesk 500, 17px). Accroche masquée. */
-  .accueilV4 .family-heading{display:flex;align-items:baseline;gap:10px;padding:14px 0 6px;min-height:0;grid-template-columns:none;column-gap:0}
+  .accueilV4 .family-heading{display:flex;align-items:baseline;gap:12px;padding:14px 0 6px;min-height:0;grid-template-columns:none}
   .accueilV4 .family-number{font:400 26px/1 var(--ff-display);color:var(--blue);margin:0;grid-row:auto}
   .accueilV4 .family-heading h3{font-family:var(--ff-body);font-weight:500;font-size:17px;line-height:1.25;margin:0;min-height:0}
   .accueilV4 .family-purpose{display:none}
@@ -131,14 +131,13 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .domains-all-mobile:hover{text-decoration:underline;text-underline-offset:4px}
 }
 
-/* === Section « Dossiers traités » — version compacte MOBILE (≤639px) ===
-   Sous 640px : la rubrique « La situation » est retirée (display:none → hors de
-   l'arbre d'accessibilité, jamais transparente ni hors-écran). Restent le
-   libellé, le titre, « L'issue » et « Lire le cas » (cible ≥48px sur toute la
-   largeur de la carte). Fond sombre et corps de texte inchangés ; aucune hauteur
-   fixe. Au-dessus de 640px : aucun changement. */
+/* === Section « Dossiers traités » — format court (audit) : libellé, titre, UN
+   paragraphe, lien, à toutes les largeurs. Le paragraphe s'affiche aussi sur
+   mobile. Sur carte active (survol pointeur précis), le paragraphe passe en
+   clair sur le fond bleu nuit. === */
+.accueilV4 #dossiers .case-para{font-size:1rem;line-height:1.6;color:var(--muted);margin:0}
+.accueilV4 #dossiers .case-card.is-active .case-para{color:#e7e7ef}
 @media(max-width:639px){
-  .accueilV4 #dossiers .case-situation{display:none}
   .accueilV4 #dossiers .case-detail-link{width:100%;min-height:48px}
 }
 
@@ -148,9 +147,18 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .arrow-down{display:inline-flex;align-items:center}
 .accueilV4 .arrow-down svg{display:block}
 
-/* === « Pourquoi le cabinet » : illustration du portail NON interactive
-   (rôle image porté par .portal-demo-frame). Toutes largeurs. === */
+/* === Portail : l'illustration est décorative et NON interactive
+   (pointer-events:none, parties internes aria-hidden) ; SEULE la commande de
+   pause reste utilisable (clavier + toucher), conformément à WCAG 2.2.2.
+   Toutes largeurs. === */
 .accueilV4 .portal-demo-frame{pointer-events:none}
+.accueilV4 .pdemo-pause{position:relative;pointer-events:auto}
+.accueilV4 .pdemo-pause-icon{font-size:11px;line-height:1;letter-spacing:-1px}
+/* cible tactile ≥44px sans agrandir le bouton visuel */
+.accueilV4 .pdemo-pause::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px}
+.accueilV4 .pdemo-pause:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+/* mouvement réduit : rien ne s'anime, la commande de pause n'est pas affichée. */
+@media(prefers-reduced-motion:reduce){.accueilV4 .pdemo-pause{display:none}}
 
 @media(max-width:639px){
   /* --- Pourquoi : 3 arguments = liste à filets, même fond que la section,
@@ -211,55 +219,54 @@ const ACCUEIL_V4_OVERRIDES = `
 @media(max-width:639px) and (prefers-reduced-motion:reduce){
   .accueilV4 #equipe .team-grid{scroll-behavior:auto}
 }
+
+/* === Mot tournant du hero : hauteur STABLE = celle de l'état final.
+   L'état final (index 0) reste dans le flux et fixe la hauteur du bloc ; les
+   états 1→8 sont superposés en absolu (ils n'influent pas sur la hauteur → aucun
+   décalage de mise en page). Les états trop longs sont réduits en taille par le
+   JS (fitWords) pour tenir dans cette hauteur. Toutes largeurs. === */
+.accueilV4 .rotating{display:block;position:relative;min-height:0}
+.accueilV4 .rotating>span{grid-area:auto}
+.accueilV4 .rotating>span:not(:first-child){position:absolute;top:0;left:0;right:0}
 `;
 
+/* Mot tournant du hero. Index 0 = état FINAL « droit du numérique » : c'est lui
+   qui est rendu actif au chargement (DOM/SEO/sans-JS). L'animation (JS) parcourt
+   rapidement les états 1→8 puis s'arrête définitivement sur l'index 0. */
 const ROTATING = [
   "droit du numérique",
-  "intelligence artificielle",
-  "données personnelles",
-  "cybersécurité",
-  "cybercriminalité",
-  "contrats informatiques",
-  "contentieux informatique",
-  "fraude bancaire",
-  "crypto-actifs",
-  "diffamation",
-  "M&A Tech",
+  "droit de l’intelligence artificielle",
+  "droit des données personnelles",
+  "droit de la cybersécurité",
+  "droit de l’informatique",
+  "droit pénal du numérique",
+  "droit de la presse",
+  "droit des crypto-actifs",
+  "droit des fusions-acquisitions",
 ];
 
-type Domaine = { titre: string; desc: string; href: string };
-const FAMILLES: { num: string; nom: string; but: string; domaines: Domaine[] }[] = [
-  {
-    num: "01",
-    nom: "Conformité et gouvernance",
-    but: "Organiser vos obligations.",
-    domaines: [
-      { titre: "RGPD et données personnelles", desc: "Mettre l’entreprise en conformité avec les règles encadrant le traitement des données personnelles et réagir à un contrôle de la CNIL ou à une violation de données.", href: "/nos-domaines/rgpd-donnees-personnelles" },
-      { titre: "Intelligence artificielle et AI Act", desc: "Encadrer l’utilisation ou le développement d’outils d’IA par l’entreprise et organiser sa conformité à l’AI Act.", href: "/nos-domaines/avocat-intelligence-artificielle" },
-      { titre: "Cybersécurité et NIS 2", desc: "Assurer la gestion des risques d’incidents et respecter les exigences de sécurité, y compris les dispositions de NIS 2.", href: "/nos-domaines/cybersecurite" },
-    ],
-  },
-  {
-    num: "02",
-    nom: "Contrats et opérations numériques",
-    but: "Sécuriser vos projets et vos engagements.",
-    domaines: [
-      { titre: "Contrats informatiques", desc: "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d’infogérance.", href: "/nos-domaines/contrats-informatiques" },
-      { titre: "Fusions-acquisitions technologiques et due diligence", desc: "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.", href: "/nos-domaines/ma-tech" },
-      { titre: "Crypto-actifs et blockchain", desc: "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.", href: "/nos-domaines/crypto-actifs-blockchain" },
-    ],
-  },
-  {
-    num: "03",
-    nom: "Contentieux et atteintes numériques",
-    but: "Réagir en cas de litige ou d’infraction numérique.",
-    domaines: [
-      { titre: "Contentieux informatique et commercial", desc: "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.", href: "/nos-domaines/contentieux-informatique-commercial" },
-      { titre: "Cyberattaques et cybercriminalité", desc: "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.", href: "/nos-domaines/cybercriminalite" },
-      { titre: "Fraude bancaire et escroquerie en ligne", desc: "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.", href: "/nos-domaines/escroquerie-fraude-bancaire" },
-      { titre: "Diffamation et retrait de contenus", desc: "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.", href: "/nos-domaines/diffamation-retrait-contenus" },
-    ],
-  },
+/* Descriptions LONGUES de la home, rattachées par href (contenu inchangé). Les
+   INTITULÉS et l’ORDRE des domaines viennent désormais de la source unique
+   nav-data.ts (MENU_FAMILLES) : la home ne porte plus ses propres intitulés
+   (audit — lot 3). */
+const LONG_DESC: Record<string, string> = {
+  "/nos-domaines/rgpd-donnees-personnelles": "Mettre l’entreprise en conformité avec les règles encadrant le traitement des données personnelles et réagir à un contrôle de la CNIL ou à une violation de données.",
+  "/nos-domaines/avocat-intelligence-artificielle": "Encadrer l’utilisation ou le développement d’outils d’IA par l’entreprise et organiser sa conformité à l’AI Act.",
+  "/nos-domaines/cybersecurite": "Assurer la gestion des risques d’incidents et respecter les exigences de sécurité, y compris les dispositions de NIS 2.",
+  "/nos-domaines/contrats-informatiques": "Négocier ou sécuriser un contrat SaaS, cloud, de développement ou d’infogérance.",
+  "/nos-domaines/ma-tech": "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.",
+  "/nos-domaines/crypto-actifs-blockchain": "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.",
+  "/nos-domaines/contentieux-informatique-commercial": "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.",
+  "/nos-domaines/cybercriminalite": "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.",
+  "/nos-domaines/escroquerie-fraude-bancaire": "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.",
+  "/nos-domaines/diffamation-retrait-contenus": "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.",
+};
+
+/* Numéro + phrase d’accroche par famille, dans l’ordre de MENU_FAMILLES. */
+const FAMILY_META = [
+  { num: "01", but: "Organiser vos obligations." },
+  { num: "02", but: "Sécuriser vos projets et vos engagements." },
+  { num: "03", but: "Réagir en cas de litige ou d’infraction numérique." },
 ];
 
 /**
@@ -272,35 +279,31 @@ const SHORT_DESC: Record<string, string> = Object.fromEntries(
   MENU_FAMILLES.flatMap((f) => f.domaines.map((d) => [d.href, d.contexte])),
 );
 
-/* Dossiers de la home. Textes « au caractère près » (lot 24 sept. 2026) :
-   deux rubriques (situation + issue), plus de « Notre intervention », plus de
-   mention « Dossier clos ». Insécables ( ) avant « : » et dans les
-   montants (« 80 000 € », « 55 600 € »). La carte 01 (piratage téléphonique)
-   n'a pas encore de page dédiée → lien provisoire vers /cas-clients. */
+/* Dossiers de la home (audit 24 sept. 2026). Format court : libellé, titre, UN
+   SEUL paragraphe, lien — à toutes les largeurs (plus de rubriques situation/
+   issue). Insécable dans « 80 000 € ». Aucune page dédiée n'existe : les trois
+   liens pointent provisoirement vers /cas-clients. */
 const CASES = [
   {
     id: "cas-accueil-1",
     href: "/cas-clients",
-    kicker: "01 / CYBERSÉCURITÉ",
-    titre: "Un piratage téléphonique, 80 000 € d’appels : remonter jusqu’à la faille",
-    situation: "Des milliers d’appels surtaxés avaient été passés depuis le système téléphonique d’une entreprise. Son prestataire imputait l’incident à un défaut de sécurité interne.",
-    issue: "L’analyse des journaux de connexion a révélé une faille sur le routeur administré par le prestataire. Cette preuve technique a permis d’écarter la responsabilité de l’entreprise et d’obtenir une indemnisation.",
+    kicker: "01 / CYBERATTAQUE",
+    titre: "Un piratage. 80\u00A0000\u00A0€ d’appels internationaux facturés.",
+    para: "L’opérateur soutenait que les appels provenaient du système de l’entreprise. Nous avons retracé l’intrusion et identifié la faille exploitée. La facture a été annulée.",
   },
   {
     id: "cas-accueil-2",
-    href: "/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque",
-    kicker: "02 / FRAUDE BANCAIRE",
-    titre: "27 virements vers des plateformes crypto : faire parler la chronologie",
-    situation: "Un particulier avait perdu 55 600 € par virements successifs vers des prestataires de paiement et des plateformes crypto. La banque soutenait qu’il avait validé chaque opération.",
-    issue: "Nous avons reconstitué les flux, rapproché les alertes et contesté l’authentification des virements. La banque a finalement remboursé les sommes prélevées, intérêts compris.",
+    href: "/cas-clients",
+    kicker: "02 / CONTRAT INFORMATIQUE",
+    titre: "Le logiciel était livré. L’entreprise ne pouvait toujours pas l’utiliser.",
+    para: "Le prestataire réclamait le solde du contrat. Nous avons fait constater les fonctions manquantes et leur effet sur l’activité. L’entreprise a obtenu la résiliation du contrat et le remboursement des sommes versées.",
   },
   {
     id: "cas-accueil-3",
-    href: "/cas-clients/dereferencement-google-procedure-judiciaire",
-    kicker: "03 / DÉRÉFÉRENCEMENT",
-    titre: "Des articles anciens en tête de Google : rétablir le contexte",
-    situation: "À chaque recherche de son nom, un dirigeant voyait apparaître des articles relatifs à une enquête ancienne. Ces résultats occultaient son activité actuelle et fragilisaient ses relations commerciales.",
-    issue: "Nous avons démontré que les résultats ne reflétaient plus la situation judiciaire ni l’intérêt actuel du public. Leur déréférencement a été obtenu pour les recherches portant sur son nom.",
+    href: "/cas-clients",
+    kicker: "03 / DONNÉES PERSONNELLES",
+    titre: "Une fuite de données. Des clients qui demandaient des comptes.",
+    para: "Il fallait établir ce qui avait été exposé, notifier les personnes concernées et répondre aux partenaires commerciaux. Nous avons coordonné l’analyse technique et la réponse juridique. L’entreprise a conservé ses contrats majeurs et évité une rupture de confiance.",
   },
 ];
 
@@ -345,6 +348,9 @@ function PersonCard({ p }: { p: (typeof LAWYERS)[number] }) {
 export function AccueilV4() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [mountGlobe, setMountGlobe] = useState(false);
+  // Index du mot tournant du hero. Piloté par un ÉTAT React (et non par une
+  // manipulation directe de classe) pour survivre aux re-rendus du composant.
+  const [activeWord, setActiveWord] = useState(0);
 
   // Le canvas THREE n'est monté qu'au-dessus du seuil où le globe est visible
   // (851px), jamais sous 850px (le CSS y masque .hero-art).
@@ -411,46 +417,66 @@ export function AccueilV4() {
     const cleanups: (() => void)[] = [];
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    /* ---- Titre tournant + pause ---- */
-    const words = Array.from(root.querySelectorAll<HTMLElement>(".rotating > span"));
+    /* ---- Titre tournant : défilement RAPIDE (≈300 ms) des états 1→8 puis
+       ARRÊT DÉFINITIF sur « droit du numérique » (index 0). Aucune boucle,
+       aucune reprise. Sous mouvement réduit : état final direct. ---- */
+    const rotating = root.querySelector<HTMLElement>(".rotating");
+    const words = rotating
+      ? Array.from(rotating.querySelectorAll<HTMLElement>(":scope > span"))
+      : [];
+    if (words.length) {
+      // Hauteur stable = hauteur de l'état final ; les états plus longs voient
+      // leur taille de caractère réduite pour tenir dans cette hauteur. (Les
+      // tailles inline ne sont pas contrôlées par React → elles survivent aux
+      // re-rendus.)
+      const fitWords = () => {
+        words.forEach((s) => (s.style.fontSize = ""));
+        const finalH = words[0].getBoundingClientRect().height;
+        words.forEach((s, i) => {
+          if (i === 0) return;
+          let guard = 0;
+          while (s.getBoundingClientRect().height > finalH + 1 && guard < 30) {
+            const cur = parseFloat(getComputedStyle(s).fontSize);
+            s.style.fontSize = `${Math.max(12, cur * 0.95)}px`;
+            guard += 1;
+          }
+        });
+      };
+      fitWords();
+      window.addEventListener("resize", fitWords);
+      cleanups.push(() => window.removeEventListener("resize", fitWords));
+
+      if (!reduced.matches && words.length > 1) {
+        let step = 1;
+        setActiveWord(step);
+        const iv = setInterval(() => {
+          step += 1;
+          if (step >= words.length) {
+            setActiveWord(0); // arrêt définitif sur « droit du numérique »
+            clearInterval(iv);
+            return;
+          }
+          setActiveWord(step);
+        }, 300);
+        cleanups.push(() => clearInterval(iv));
+      }
+    }
+
+    /* ---- Commande de pause du hero : elle ne pilote plus le mot (animation
+       courte et non bouclée) mais uniquement le globe THREE, via l'événement. ---- */
     const pauseBtn = root.querySelector<HTMLButtonElement>("#motion-control");
-    if (words.length && pauseBtn) {
-      let index = 0;
+    if (pauseBtn) {
       let paused = reduced.matches;
-      let timer: ReturnType<typeof setInterval> | undefined;
       const reflect = () => {
         pauseBtn.setAttribute("data-paused", String(paused));
         pauseBtn.querySelector(".motion-icon")!.textContent = paused ? "▷" : "Ⅱ";
         pauseBtn.setAttribute("aria-label", paused ? "Reprendre l’animation" : "Mettre l’animation en pause");
-        // La pause gèle aussi la rotation du globe (le composant THREE écoute cet
-        // événement) : « Pause » arrête effectivement les animations du hero.
         document.dispatchEvent(new CustomEvent("accueilv4:motion", { detail: { paused } }));
       };
-      const nextWord = () => {
-        words[index].classList.remove("active");
-        index = (index + 1) % words.length;
-        words[index].classList.add("active");
-      };
-      const schedule = () => {
-        if (timer) clearInterval(timer);
-        if (!paused && !document.hidden) timer = setInterval(nextWord, 4200);
-        reflect();
-      };
-      const onPause = () => { paused = !paused; schedule(); };
-      const onReduce = () => {
-        if (reduced.matches) { paused = true; words.forEach((n, i) => n.classList.toggle("active", i === 0)); index = 0; }
-        schedule();
-      };
+      const onPause = () => { paused = !paused; reflect(); };
       pauseBtn.addEventListener("click", onPause);
-      reduced.addEventListener("change", onReduce);
-      document.addEventListener("visibilitychange", schedule);
-      schedule();
-      cleanups.push(() => {
-        if (timer) clearInterval(timer);
-        pauseBtn.removeEventListener("click", onPause);
-        reduced.removeEventListener("change", onReduce);
-        document.removeEventListener("visibilitychange", schedule);
-      });
+      reflect();
+      cleanups.push(() => pauseBtn.removeEventListener("click", onPause));
     }
 
     /* ---- Carrousel de presse ---- */
@@ -515,9 +541,12 @@ export function AccueilV4() {
       cleanups.push(() => archiveToggle.removeEventListener("click", onToggle));
     }
 
-    /* ---- Accent des dossiers (survol / clavier / tap) ---- */
+    /* ---- Accent bleu des dossiers : au SURVOL uniquement, et seulement sur
+       les appareils à pointeur précis (souris/stylet). Sur écran tactile, aucune
+       activation → la carte ne reste jamais bleue après un toucher. ---- */
     const grid = root.querySelector<HTMLElement>(".case-grid");
-    if (grid) {
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (grid && finePointer) {
       const cards = [...grid.querySelectorAll<HTMLElement>(":scope > .case-card")];
       if (cards.length) {
         let keyboardInput = true;
@@ -600,7 +629,7 @@ export function AccueilV4() {
                   <span className="hero-prefix">Votre cabinet<br />d&rsquo;avocats en</span>
                   <span className="rotating">
                     {ROTATING.map((w, i) => (
-                      <span key={w} className={i === 0 ? "active" : ""}>{w}</span>
+                      <span key={w} className={i === activeWord ? "active" : ""}>{w}</span>
                     ))}
                   </span>
                 </span>
@@ -657,12 +686,12 @@ export function AccueilV4() {
             <p>Trouvez le domaine qui correspond à votre situation.</p>
           </div>
           <div className="domain-groups">
-            {FAMILLES.map((fam, fi) => (
-              <section className="domain-family" aria-labelledby={`family-${fi}`} key={fam.num}>
+            {MENU_FAMILLES.map((fam, fi) => (
+              <section className="domain-family" aria-labelledby={`family-${fi}`} key={fam.intitule}>
                 <div className="family-heading">
-                  <span className="family-number" aria-hidden="true">{fam.num}</span>
-                  <h3 id={`family-${fi}`}>{fam.nom}</h3>
-                  <p className="family-purpose">{fam.but}</p>
+                  <span className="family-number" aria-hidden="true">{FAMILY_META[fi].num}</span>
+                  <h3 id={`family-${fi}`}>{fam.intitule}</h3>
+                  <p className="family-purpose">{FAMILY_META[fi].but}</p>
                 </div>
                 <ul className="domain-list">
                   {fam.domaines.map((d) => (
@@ -672,7 +701,7 @@ export function AccueilV4() {
                           <span className="domain-title">{d.titre}</span>
                           <span className="arrow" aria-hidden="true">→</span>
                         </span>
-                        <span className="domain-description">{d.desc}</span>
+                        <span className="domain-description">{LONG_DESC[d.href]}</span>
                         {SHORT_DESC[d.href] ? (
                           <span className="domain-description-short">{SHORT_DESC[d.href]}</span>
                         ) : null}
@@ -716,11 +745,7 @@ export function AccueilV4() {
               <h3>Votre dossier accessible à tout moment.</h3>
               <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les échanges, les échéances et l&rsquo;avancement de son dossier.</p>
             </div>
-            <div
-              className="portal-demo-frame"
-              role="img"
-              aria-label="Aperçu animé du portail client : dossiers, documents, messages et contact direct avec l'avocat"
-            >
+            <div className="portal-demo-frame">
               <PortailDemo />
             </div>
           </div>
@@ -739,12 +764,9 @@ export function AccueilV4() {
           <div className="case-grid">
             {CASES.map((c) => (
               <article className="case-card" key={c.id}>
-                <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href}>{c.titre}</Link></h3></div>
-                <dl>
-                  <div className="case-situation"><dt>La situation</dt><dd>{c.situation}</dd></div>
-                  <div className="case-outcome"><dt>L&rsquo;issue</dt><dd>{c.issue}</dd></div>
-                </dl>
-                <span className="case-detail-link" aria-hidden="true">Lire le cas <span className="arrow">→</span></span>
+                <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href} aria-label={`Découvrir le cas : ${c.titre}`}>{c.titre}</Link></h3></div>
+                <p className="case-para">{c.para}</p>
+                <span className="case-detail-link" aria-hidden="true">Découvrir le cas <span className="arrow">→</span></span>
               </article>
             ))}
           </div>
@@ -764,7 +786,6 @@ export function AccueilV4() {
               <span className="eyebrow">L&rsquo;équipe</span>
               <h2 id="titre-equipe">Des avocats qui comprennent le code.<br />Des experts techniques qui comprennent le droit.</h2>
             </div>
-            <p>Le droit et les faits techniques,<br />examinés ensemble.</p>
           </div>
           <div
             className="team-grid"
@@ -856,7 +877,6 @@ export function AccueilV4() {
           <div className="contact-actions">
             <Link className="btn" href="/contact">Écrire au cabinet <span className="arrow" aria-hidden="true">→</span></Link>
             <a className="contact-phone" href="tel:+33181706200">01 81 70 62 00</a>
-            <span className="contact-small">18 rue de Tilsitt · Paris 17e · Sur rendez-vous</span>
           </div>
         </div>
       </section>

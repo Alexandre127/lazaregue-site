@@ -637,13 +637,15 @@ export function PortailDemo() {
   const [showNotif, setShowNotif] = useState(false);
   const [notif, setNotif] = useState("");
   const [prog, setProg] = useState(68);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    // La maquette est décorative (aria-hidden) : on la fige si l'utilisateur
-    // demande à réduire les animations.
+    // Aperçu décoratif : figé si l'utilisateur réduit les animations OU s'il a
+    // activé la commande de pause.
     if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      paused ||
+      (typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches)
     ) {
       return;
     }
@@ -664,12 +666,11 @@ export function PortailDemo() {
       i++;
     }, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [paused]);
 
   return (
     <div
       className="pdemo"
-      aria-hidden="true"
       style={{
         background: "#FFFFFF",
         border: "1px solid #E5E7EB",
@@ -679,14 +680,18 @@ export function PortailDemo() {
       }}
     >
       <div
+        className="pdemo-head"
         style={{
           padding: "8px 12px",
           borderBottom: "0.5px solid rgba(10,15,46,0.1)",
           display: "flex",
+          alignItems: "center",
           justifyContent: "space-between",
+          gap: "8px",
         }}
       >
         <span
+          aria-hidden="true"
           style={{
             color: "rgba(10,15,46,0.5)",
             letterSpacing: "0.08em",
@@ -695,23 +700,51 @@ export function PortailDemo() {
         >
           Portail client
         </span>
-        <span
-          style={{
-            background: "#1A47FF",
-            color: "#FFFFFF",
-            padding: "1px 6px",
-            borderRadius: "2px",
-            fontSize: "9px",
-            fontFamily: "monospace",
-            textTransform: "uppercase",
-            letterSpacing: ".06em",
-          }}
-        >
-          TEMPS RÉEL
+        <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+          <button
+            type="button"
+            className="pdemo-pause"
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? "Reprendre l’aperçu animé du portail" : "Mettre en pause l’aperçu animé du portail"}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "26px",
+              height: "26px",
+              padding: 0,
+              border: "1px solid rgba(10,15,46,0.18)",
+              borderRadius: "4px",
+              background: "#fff",
+              color: "#0A0F2E",
+              cursor: "pointer",
+              lineHeight: 1,
+            }}
+          >
+            <span aria-hidden="true" className="pdemo-pause-icon">
+              {paused ? "▷" : "❚❚"}
+            </span>
+          </button>
+          <span
+            aria-hidden="true"
+            style={{
+              background: "#1A47FF",
+              color: "#FFFFFF",
+              padding: "1px 6px",
+              borderRadius: "2px",
+              fontSize: "9px",
+              fontFamily: "monospace",
+              textTransform: "uppercase",
+              letterSpacing: ".06em",
+            }}
+          >
+            TEMPS RÉEL
+          </span>
         </span>
       </div>
 
       <div
+        aria-hidden="true"
         style={{
           display: "flex",
           borderBottom: "0.5px solid rgba(10,15,46,0.1)",
@@ -742,7 +775,7 @@ export function PortailDemo() {
         ))}
       </div>
 
-      <div className="pdemo-stage" style={{ minHeight: "160px", padding: "10px 12px" }}>
+      <div className="pdemo-stage" aria-hidden="true" style={{ minHeight: "160px", padding: "10px 12px" }}>
         {activeTab === "dossiers" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
             {[
@@ -875,6 +908,7 @@ export function PortailDemo() {
       </div>
 
       <div
+        aria-hidden="true"
         style={{
           padding: "6px 12px",
           background: "rgba(26,71,255,0.04)",
