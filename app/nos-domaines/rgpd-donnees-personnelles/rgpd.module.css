@@ -19,7 +19,7 @@
   --text-2: #4a4a63; /* secondaire sur clair (charte) */
   --on-dark: #f2f3fa; /* corps sur sombre */
   --on-dark-2: #9fb2ff; /* secondaire / labels / liens secondaires sur sombre (charte) */
-  --red: #b3231f;
+  --urgence: #b3231f; /* jeton de statut « urgence » — charte v1.1 (toujours avec libellé) */
   --risk-h-bg: #fbebea; --risk-h-tx: #8e1b18; --risk-h-bd: #e7bdbb;
   --risk-m-bg: #fcf3e3; --risk-m-tx: #7a4a00; --risk-m-bd: #e6d2ab;
   --risk-b-bg: #eaf5ee; --risk-b-tx: #1b5c33; --risk-b-bd: #bedcc8;
@@ -108,8 +108,8 @@
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.16em;
-  text-transform: lowercase;
-  color: var(--blue-dark);
+  text-transform: uppercase; /* lot 6 : capitales DM Mono, comme la home */
+  color: var(--blue-dark); /* Deep Blue #0A2ACC : label de section (charte), distinct de l'Electric Blue d'action */
   margin: 0 0 14px;
 }
 /* Sur fond sombre : blanc pur (retrait du bleu clair d'interface sur cette page). */
@@ -185,7 +185,7 @@
 /* bouton d'urgence : fond transparent, bordure #4A4A63, texte Ink, marqueur rouge */
 .rgpd :global(.btn-urgent) { background: transparent; color: var(--ink); border-color: var(--text-2); }
 .rgpd :global(.btn-urgent:hover) { border-color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-.rgpd :global(.btn-urgent)::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--red); flex: none; }
+.rgpd :global(.btn-urgent)::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--urgence); flex: none; }
 .rgpd :global(.link-nav) { font-weight: 600; }
 
 /* ==========================================================================
@@ -354,9 +354,9 @@
    ========================================================================== */
 .rgpd :global(.urgences) { display: grid; gap: 22px; }
 @media (min-width: 860px) { .rgpd :global(.urgences) { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
-.rgpd :global(.urg) { background: var(--white); border: 1px solid var(--border); border-top: 4px solid var(--red); padding: 24px; }
+.rgpd :global(.urg) { background: var(--white); border: 1px solid var(--border); border-top: 4px solid var(--urgence); padding: 24px; }
 .rgpd :global(.urg p) { font-size: 0.98rem; line-height: 1.55; }
-.rgpd :global(.urg .delai) { font-family: var(--ff-mono); font-size: 14px; color: var(--red); letter-spacing: 0.12em; margin-bottom: 10px; }
+.rgpd :global(.urg .delai) { font-family: var(--ff-mono); font-size: 14px; color: var(--urgence); letter-spacing: 0.12em; margin-bottom: 10px; }
 
 /* ==========================================================================
    6. RENVOIS
@@ -419,23 +419,11 @@
 .rgpd :global(.final p) { max-width: 56ch; }
 
 /* ==========================================================================
-   BARRE DE CONTACT MOBILE (< 768px)
+   BARRE DE CONTACT MOBILE PROPRE À LA PAGE — SUPPRIMÉE (lot 1).
+   Seule la barre commune du site (« Nous écrire / téléphone ») subsiste, à
+   toutes les largeurs où elle existe. La réserve basse et la règle de masquage
+   liée à la modale ne sont donc plus nécessaires.
    ========================================================================== */
-.rgpd :global(.barre) {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  background: #fff; border-top: 1px solid var(--border);
-  padding: 10px var(--gut) calc(10px + env(safe-area-inset-bottom));
-  display: flex; gap: 12px; align-items: center; justify-content: space-between;
-}
-.rgpd :global(.barre .btn) { flex: 1; min-height: 48px; padding: 12px 16px; font-size: 0.95rem; }
-.rgpd :global(.barre .tel) { font-family: var(--ff-mono); font-size: 14px; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; min-height: 48px; min-width: 44px; display: flex; align-items: center; white-space: nowrap; }
-.rgpd :global(.barre .tel-court) { display: none; }
-@media (max-width: 359px) { .rgpd :global(.barre .tel-long) { display: none; } .rgpd :global(.barre .tel-court) { display: inline; } }
-@media (min-width: 768px) { .rgpd :global(.barre) { display: none; } }
-/* réserve basse pour ne pas masquer le contact final */
-@media (max-width: 767px) { .rgpd { padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }
-/* masquée quand la modale est ouverte (classe posée sur <body>) */
-:global(body.rgpd-modal-open) .rgpd :global(.barre) { display: none; }
 
 /* ==========================================================================
    MODALE
@@ -525,7 +513,8 @@
 @media (min-width: 620px) { .rgpd :global(.mc-blocks) { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
 @media (min-width: 980px) { .rgpd :global(.mc-blocks) { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
 .rgpd :global(.mc-blocks li) { margin: 0; border-top: 2px solid var(--blue); padding-top: 14px; }
-.rgpd :global(.mc-num) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--blue); display: block; margin-bottom: 8px; }
+/* lot 6 : le bleu est réservé aux éléments cliquables → numéros d'étape en gris d'accompagnement. */
+.rgpd :global(.mc-num) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--text-2); display: block; margin-bottom: 8px; }
 .rgpd :global(.mc-blocks h3) { font-size: 1.05rem; margin: 0 0 6px; }
 .rgpd :global(.mc-resume) { font-size: 0.95rem; line-height: 1.5; color: var(--text); margin: 0 0 8px; max-width: none; font-weight: 500; }
 .rgpd :global(.mc-detail) { font-size: 0.9rem; line-height: 1.6; color: var(--text-2); margin: 0 0 10px; max-width: none; }
@@ -540,8 +529,12 @@
 .rgpd :global(.terrain-btn) { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; padding: 14px 16px; }
 .rgpd :global(.terrain-btn:focus-visible) { outline: 3px solid var(--blue); outline-offset: -3px; }
 .rgpd :global(.terrain-top) { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.rgpd :global(.terrain-num) { font-family: var(--ff-mono); font-size: 12px; color: var(--blue); }
-.rgpd :global(.terrain-sign) { font-size: 18px; line-height: 1; color: var(--text-2); flex-shrink: 0; }
+.rgpd :global(.terrain-num) { font-family: var(--ff-mono); font-size: 12px; color: var(--text-2); }
+/* lot 4 : « + » plus visible — cible 44px, bordure bleue (le bouton entier
+   reste cliquable ; son nom accessible porte « Voir ce qui se passe sans
+   encadrement : [titre] »). */
+.rgpd :global(.terrain-sign) { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--blue); color: var(--blue); font-size: 20px; line-height: 1; flex-shrink: 0; }
+.rgpd :global(.terrain-card.is-open .terrain-sign) { background: var(--blue); color: #fff; }
 .rgpd :global(.terrain-title) { display: block; margin-top: 8px; font-size: 1rem; font-weight: 600; line-height: 1.4; color: var(--text); }
 .rgpd :global(.terrain-sub) { display: block; margin-top: 6px; font-size: 0.88rem; line-height: 1.5; color: var(--text-2); }
 .rgpd :global(.terrain-panel) { border-top: 1px solid var(--border); padding: 12px 16px 16px; }
@@ -567,3 +560,75 @@
 .rgpd :global(.team-row b) { font-weight: 500; font-size: 1.05rem; }
 .rgpd :global(.team-row .role) { font-size: 0.9rem; line-height: 1.5; color: var(--text-2); }
 .rgpd :global(.team-row .role-note) { font-size: 0.8rem; color: var(--text-2); margin-top: 4px; font-style: italic; }
+
+/* ==========================================================================
+   RÉASSURANCE & BOUTON INTERMÉDIAIRE (lot 2)
+   ========================================================================== */
+.rgpd :global(.reassurance) { font-size: 13px; line-height: 1.5; color: var(--text-2); margin: 12px 0 0; max-width: 52ch; }
+/* sur fond sombre : #E0E0EE (spécificité portée au-dessus de « .dark p »). */
+.rgpd :global(.dark) :global(.reassurance),
+.rgpd :global(.reassurance.reassurance-dark) { color: #e0e0ee; }
+.rgpd :global(.mid-cta) { margin-top: clamp(28px, 4vw, 44px); display: flex; flex-direction: column; align-items: flex-start; }
+
+/* ==========================================================================
+   MISES EN PAGE COMPACTES — SOUS 639 px (lot 5)
+   Modèle commun (comme la home) : liste à filets (2px Ink en tête, 1px #E0E0EE
+   entre les lignes), lignes cliquables ≥ 56px (padding + flèche bleue), aucune
+   carte encadrée, aucun filet latéral bleu. Les textes « non affichés » sont
+   masqués par display:none — jamais retirés du HTML.
+   ========================================================================== */
+@media (max-width: 639px) {
+  /* Hero : seule la première phrase du paragraphe ; fil d'Ariane espacé du logo. */
+  .rgpd :global(.hero-main .lead-s2) { display: none; }
+  .rgpd :global(.breadcrumb) { padding-top: 14px; }
+
+  /* Urgences : cartes courtes — première phrase seulement (le reste masqué). */
+  .rgpd :global(.urg .urg-more) { display: none; }
+
+  /* Situations : liste à filets — intitulé + libellé d'action ; description masquée. */
+  .rgpd :global(.situations) { display: block; }
+  .rgpd :global(.situations li) { background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: 14px 0; display: block; }
+  .rgpd :global(.situations li:first-child) { border-top: 2px solid var(--ink); }
+  .rgpd :global(.situations li > p) { display: none; }
+  .rgpd :global(.situations h3) { margin: 0; }
+  .rgpd :global(.situations .link-nav) { margin-top: 6px; padding-top: 0; min-height: 44px; }
+
+  /* Méthode : liste — numéro, verbe, sous-titre ; le paragraphe masqué. */
+  .rgpd :global(.mc-blocks) { display: block; }
+  .rgpd :global(.mc-blocks li) { border-top: 1px solid rgba(255, 255, 255, 0.18); padding: 14px 0; }
+  .rgpd :global(.mc-blocks li:first-child) { border-top: 2px solid rgba(255, 255, 255, 0.5); }
+  .rgpd :global(.mc-detail) { display: none; }
+
+  /* Sur le terrain : liste — numéro, titre, explication, « + » à droite ; le
+     panneau se déplie sous la ligne. */
+  .rgpd :global(.terrain) { display: block; }
+  .rgpd :global(.terrain-card) { background: transparent; border: 0; border-bottom: 1px solid var(--border); }
+  .rgpd :global(.terrain-card:first-child) { border-top: 2px solid var(--ink); }
+  .rgpd :global(.terrain-card.is-open) { border-color: var(--border); }
+  .rgpd :global(.terrain-btn) { padding: 12px 0; }
+
+  /* L'équipe : une ligne par personne — petite photo 76×96 + texte. */
+  .rgpd :global(.team-row) { display: block; margin-top: 4px; }
+  .rgpd :global(.team-row .person) { background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: 14px 0; flex-direction: row; gap: 14px; align-items: flex-start; }
+  .rgpd :global(.team-row .person:first-child) { border-top: 2px solid var(--ink); }
+  .rgpd :global(.team-row .shot) { width: 76px; height: 96px; flex: none; margin-bottom: 0; aspect-ratio: auto; }
+  .rgpd :global(.team-row figcaption) { min-width: 0; }
+
+  /* Pourquoi : les quatre intitulés en liste, sans paragraphe. */
+  .rgpd :global(.arguments) { display: block; }
+  .rgpd :global(.arguments li) { border-left: 0; border-bottom: 1px solid var(--border); padding: 14px 0; }
+  .rgpd :global(.arguments li:first-child) { border-top: 2px solid var(--ink); }
+  .rgpd :global(.arguments li p) { display: none; }
+
+  /* Prolongements : trois lignes cliquables (filet). */
+  .rgpd :global(.renvois) { display: block; }
+  .rgpd :global(.renvois li) { border-top: 0; border-bottom: 1px solid var(--border); padding: 14px 0; }
+  .rgpd :global(.renvois li:first-child) { border-top: 2px solid var(--ink); }
+  .rgpd :global(.renvois p) { display: none; }
+  .rgpd :global(.renvois .link-nav) { min-height: 44px; }
+
+  /* Honoraires : premier paragraphe + critères en liste (stack). Les deux cases
+     Forfait/Abonnement demandent une copie absente de la page — non fabriquées
+     (voir rapport). */
+  .rgpd :global(.honoraires) { display: block; gap: 0; }
+}
