@@ -668,6 +668,8 @@ export function PortailDemo() {
 
   return (
     <div
+      className="pdemo"
+      aria-hidden="true"
       style={{
         background: "#FFFFFF",
         border: "1px solid #E5E7EB",
@@ -718,6 +720,7 @@ export function PortailDemo() {
         {["dossiers", "docs", "msgs", "avocat"].map((tab) => (
           <div
             key={tab}
+            className="pdemo-tab"
             style={{
               flex: 1,
               padding: "8px 4px",
@@ -739,7 +742,7 @@ export function PortailDemo() {
         ))}
       </div>
 
-      <div style={{ minHeight: "160px", padding: "10px 12px" }}>
+      <div className="pdemo-stage" style={{ minHeight: "160px", padding: "10px 12px" }}>
         {activeTab === "dossiers" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
             {[
