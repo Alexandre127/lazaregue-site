@@ -19,7 +19,7 @@
   --famille-tint: var(--off);
   --muted-on-dark: rgba(255, 255, 255, 0.74);
   --measure: 68ch;
-  --header-h: 72px;
+  --header-h: 104px;
 
   color: var(--ink);
   background: var(--wh);

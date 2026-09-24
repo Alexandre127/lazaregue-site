@@ -138,7 +138,7 @@
 .hero {
   background: var(--lc-paper);
   /* Le header global est absolu au repos : on dégage sa hauteur (~72px). */
-  padding: calc(72px + 64px) 0 64px;
+  padding: calc(104px + 64px) 0 64px;
 }
 .heroGrid {
   display: grid;

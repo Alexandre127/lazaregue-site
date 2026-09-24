@@ -551,6 +551,7 @@ const strongStyle: React.CSSProperties = { color: LIGHT.text, fontWeight: 600 };
 export default function CybersecuriteClient() {
   return (
     <main
+      id="contenu"
       style={{
         background: LIGHT.bg,
         color: LIGHT.text,

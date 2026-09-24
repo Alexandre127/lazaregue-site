@@ -1,196 +1,219 @@
 /*
- * Header global. Tokens du brief :
- *   bleu #1A47FF · fond repos #05060F · fond collant/panneau #0A0F2E
- *   texte clair #FFFFFF · texte second #E8E8F2 · texte muet #8f96b8
- *   accent muet #7f8aff · filets rgba(255,255,255,.14)
- * Fontes via les tokens existants (--ff-display/mono/body) : Bebas (wordmark),
- * DM Mono (entrées de menu, intitulés de famille), Space Grotesk (panneaux).
+ * Header global — réintégration d'après `home-menu-maquette.html` (23.09.2026).
+ * Jetons EXACTS de la maquette :
+ *   --navy:#05070F (repos opaque / base solide) · --panel:#0A0E22 (panneau,
+ *   tiroir) · --blue:#1A47FF · filets rgba(255,255,255,.13) · texte muet
+ *   rgba(255,255,255,.66). Fond solide translucide rgba(5,7,15,.82) + flou.
+ * Fontes via les jetons du site : Bebas (wordmark, cf. logo.module.css),
+ * DM Mono (entrées, CTA, intitulés), Space Grotesk (contenu du panneau).
+ * Gouttière horizontale identique à la maquette : --px clamp(20px,4.5vw,96px).
  */
 
-/* Sentinelle de l'état collant : posée en haut du document, haute d'une barre
-   (72px). Quand elle a défilé au-dessus du viewport, le header au repos a lui
-   aussi disparu → on bascule en barre fixe (relais sans couture). Hors flux,
-   invisible, sans interception d'événements. */
-.sentinelFallback {
-  position: absolute;
+/* ---------- lien d'évitement (global, un seul) ---------- */
+/* Hors-écran par défaut (JAMAIS display:none : reste lu par les lecteurs
+   d'écran) ; révélé uniquement au focus clavier, en haut à gauche, au-dessus
+   de tout. Motif hors-écran robuste — insensible au contexte de positionnement
+   des pages (corrige l'affichage permanent constaté sur /rgpd). */
+.skip {
+  position: fixed;
+  left: -9999px;
   top: 0;
-  left: 0;
-  width: 1px;
-  height: 72px;
-  pointer-events: none;
-  visibility: hidden;
+  z-index: 300;
+  background: #fff;
+  color: #0a0a14;
+  font-family: var(--ff-body, system-ui, sans-serif);
+  font-size: 15px;
+  padding: 12px 18px;
+  text-decoration: none;
+}
+.skip:focus {
+  left: 16px;
+  top: 16px;
+  outline: 2px solid #1a47ff;
+  outline-offset: 2px;
 }
 
 /* ---------- barre ---------- */
 .header {
+  --px: clamp(20px, 4.5vw, 96px);
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  /* OPAQUE par défaut (#05070F) : lisible sur toute page sans hero sombre et
+     sur toute page future non déclarée. Les routes à hero sombre reçoivent
+     `.heroDark` → transparent AU REPOS (flotte sur le hero). Drapeau déclaratif
+     (cf. aHeroSombre) : connu dès le rendu serveur, aucun clignotement. */
+  background: #05070f;
+  color: #fff;
+  transition: background 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), backdrop-filter 0.35s;
+}
+/* Filet bas, révélé à l'état solide. */
+.header::after {
+  content: "";
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  /* OPAQUE PAR DÉFAUT (#0a0f2e) : lisible sur n'importe quelle page, y compris
-     celles sans hero sombre (ex. /blog) et toute page future non déclarée.
-     Les routes à hero sombre reçoivent la classe `.heroDark` (drapeau
-     déclaratif calculé depuis le pathname, cf. ROUTES_HERO_SOMBRE) : le header
-     devient alors transparent AU REPOS pour flotter sur le hero. Ce n'est pas
-     une détection au défilement — l'état est connu dès le rendu serveur. */
-  background: #0a0f2e;
-  color: #fff;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.13);
+  opacity: 0;
+  transition: opacity 0.35s;
 }
-/* Route à hero sombre : header transparent au repos ; opaque dès qu'il colle
-   (.sticky l'emporte via :not). */
-.heroDark:not(.sticky) {
+/* Hero sombre au repos : transparent (sauf s'il est déjà solide au défilement). */
+.heroDark:not(.solid) {
   background: transparent;
 }
-/* Barre collante : fixe, compacte, ombre légère (transition franche, pas un
-   rétrécissement progressif au défilement). Toujours opaque. */
-.sticky {
-  position: fixed;
-  background: #0a0f2e;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
+/* Défilement > 40 px : fond bleu nuit translucide + flou + filet + compact. */
+.solid {
+  background: rgba(5, 7, 15, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
+.solid::after {
+  opacity: 1;
+}
+/* Panneau ouvert : fond plein (le panneau prolonge la barre sans couture). */
+.open {
+  background: var(--panel, #0a0e22);
+}
+
 .bar {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 var(--px);
+  height: 104px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  max-width: 1280px;
-  margin: 0 auto;
-  height: 72px;
-  padding: 0 32px;
-  transition: height 0.2s ease;
+  gap: 28px;
+  transition: height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.sticky .bar {
-  height: 54px;
-}
-@media (max-width: 640px) {
-  .bar {
-    padding: 0 20px;
-  }
+.solid .bar {
+  height: 76px;
 }
 
 /* ---------- navigation desktop ---------- */
 .nav {
   display: flex;
   align-self: stretch;
+  margin-left: auto;
 }
 .navList {
   display: flex;
-  /* Les entrées occupent TOUTE la hauteur de la barre : le <li> DOMAINES
-     (conteneur du survol) devient ainsi contigu au panneau posé juste en
-     dessous — aucun pixel non survolé entre le libellé et le panneau. */
+  /* Les entrées occupent TOUTE la hauteur de la barre : le conteneur DOMAINES
+     est ainsi contigu au panneau posé juste dessous — aucun pixel non survolé
+     entre le libellé et le panneau. */
   align-items: stretch;
-  gap: 26px;
+  gap: clamp(14px, 2vw, 34px);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .navItem {
-  /* Volontairement NON positionné : le panneau (absolu) doit se caler sur le
-     header (pleine largeur), pas sur le <li>. */
+  /* Volontairement NON positionné : le panneau (absolu) se cale sur le header
+     (pleine largeur), pas sur le <li>. */
   display: flex;
   align-items: center;
 }
 .navLink {
-  font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.17em;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--ff-mono, monospace);
+  font-size: 12.5px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.86);
+  color: #fff;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.15s ease;
 }
-.navLink:hover {
-  color: #fff;
+/* Soulignement animé (bleu ; blanc pour la page active). */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 2px;
+  background: #1a47ff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-/* Entrée DOMAINES ouverte : pas de halo — un simple filet de 2 px sous le
-   libellé et le libellé qui passe au bleu. Le filet est tracé en box-shadow
-   pour ne déplacer aucun pixel (pas de réservation de bordure). */
-.navLinkOpen,
-.navLinkOpen:hover {
-  color: #1a47ff;
-  box-shadow: 0 2px 0 #1a47ff;
+.navLink:hover::after,
+.navLinkOpen::after {
+  transform: scaleX(1);
 }
+.navLink[aria-current="page"]::after {
+  background: #fff;
+  transform: scaleX(1);
+}
+
+/* Chevron = bouton du panneau. */
 .chevron {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   border: 0;
-  color: #8888a0;
-  padding: 6px 3px;
-  margin-left: 3px;
+  color: #fff;
+  padding: 6px 4px;
+  margin-left: 6px;
   cursor: pointer;
 }
-.chevron:hover {
-  color: #fff;
+/* Zone sensible du bouton débordant vers le bas (le survol ne se coupe pas
+   quand on vise le panneau). */
+.chevron::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: -8px;
+  bottom: -24px;
 }
-/* Supprime l'anneau de focus par défaut du navigateur (il apparaît au clic
-   et se lit comme un halo autour du chevron). On conserve un focus visible
-   pour le clavier uniquement. */
 .chevron:focus {
   outline: none;
 }
 .chevron:focus-visible {
-  outline: 2px solid #1a47ff;
-  outline-offset: 2px;
-}
-/* Chevron ouvert : caret bleu, cohérent avec le libellé. */
-.chevron[aria-expanded="true"] {
-  color: #1a47ff;
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 .chevronIcon {
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .chevron[aria-expanded="true"] .chevronIcon {
   transform: rotate(180deg);
 }
-.ctaButton {
-  font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
+
+/* ---------- bouton d'action « Nous écrire » ---------- */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 24px;
   background: #1a47ff;
-  padding: 10px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+  color: #fff;
+  font-family: var(--ff-mono, monospace);
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.ctaButton:hover {
-  background: #0a2acc;
+.cta:hover {
+  background: #0e33e0;
+  transform: translateY(-1px);
 }
-
-/* ---------- hamburger ---------- */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 44px;
-  height: 44px;
-  padding: 8px;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
+.ctaAr {
+  transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.hamburger span {
-  display: block;
-  height: 2px;
-  width: 22px;
-  background: #fff;
-  border-radius: 2px;
-}
-
-@media (max-width: 1023px) {
-  .nav {
-    display: none;
-  }
-  .hamburger {
-    display: inline-flex;
-  }
+.cta:hover .ctaAr {
+  transform: translateX(3px);
 }
 
 /* ---------- panneau DOMAINES ---------- */
@@ -198,152 +221,218 @@
   /* Rendu dans le <li> mais calé sur le header (ancêtre positionné le plus
      proche) : pleine largeur, juste sous la barre. */
   position: absolute;
-  top: 100%;
   left: 0;
   right: 0;
+  top: 100%;
   z-index: 1;
-  background: #0a0f2e;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.42);
-  /* Toujours dans le DOM ; masqué en CSS (visibilité) tant qu'il n'est pas ouvert. */
-  visibility: hidden;
+  background: var(--panel, #0a0e22);
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  /* Toujours dans le DOM (SSR) ; masqué en CSS. Fondu + translation 6 px,
+     180 ms. AUCUNE animation de hauteur : les liens ne descendent pas pendant
+     qu'on vise. */
   opacity: 0;
+  visibility: hidden;
   transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  transition: opacity 0.18s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.18s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0.18s;
 }
 .panelOpen {
-  visibility: visible;
   opacity: 1;
+  visibility: visible;
   transform: none;
   pointer-events: auto;
 }
+/* Passerelle invisible entre la barre et le panneau : le survol ne se coupe pas
+   en traversant le vide. */
+.panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -18px;
+  height: 18px;
+}
 .panelInner {
-  max-width: 1280px;
+  max-width: 1560px;
   margin: 0 auto;
-  padding: 22px 32px;
+  padding: 40px var(--px) 30px;
+}
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+.panelLabel {
+  font-family: var(--ff-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+  margin: 0;
+}
+.panelAll {
+  font-family: var(--ff-body, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 3px;
+  white-space: nowrap;
+}
+.panelAll:hover {
+  border-bottom-color: #fff;
 }
 .panelCols {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.panelCol {
-  padding: 0 34px;
-}
-.panelCol:first-child {
-  padding-left: 0;
-}
-.panelCol:not(:first-child) {
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
 }
 .familleLabel {
-  font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
+  font-family: var(--ff-mono, monospace);
+  font-weight: 400;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7f8aff;
-  margin: 0 0 16px;
+  color: #7e97ff;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  margin: 0 0 4px;
 }
 .cardList {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 4px;
 }
+/* Chaque lien occupe TOUTE la largeur de sa colonne, ≥ 54 px de haut, fond
+   bleu atténué au survol/focus, flèche visible en permanence. */
 .card {
-  display: block;
-  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 12px 12px 12px 12px;
   margin: 0 -12px;
-  border-radius: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: background 0.15s, color 0.15s;
 }
-.card:hover {
-  background: rgba(255, 255, 255, 0.05);
+.card:hover,
+.card:focus-visible {
+  background: rgba(26, 71, 255, 0.16);
+  outline: none;
+}
+.card:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+.cardText {
+  display: block;
 }
 .cardTitle {
   display: block;
-  /* Fonte explicitement rappelée ici : les titres du panneau doivent rendre
-     en Space Grotesk, pas sur un repli système. */
-  font-family: "Space Grotesk", var(--ff-body);
-  font-size: 15px;
+  font-family: var(--ff-body, sans-serif);
+  font-size: 16px;
   font-weight: 500;
-  color: #e8e8f2;
-  line-height: 1.45;
+  color: #fff;
+  line-height: 1.35;
 }
 .cardContext {
   display: block;
-  font-family: "Space Grotesk", var(--ff-body);
-  font-size: 12px;
-  color: #8f96b8;
-  line-height: 1.45;
-  margin-top: 3px;
+  font-family: var(--ff-body, sans-serif);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+  margin-top: 2px;
 }
-.panelFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+.cardAr {
+  flex: none;
+  font-size: 16px;
+  color: #8fa6ff;
+  opacity: 0.35;
+  transition: opacity 0.15s, transform 0.15s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.panelFooterLink {
-  font-family: var(--ff-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #7f8aff;
-  text-decoration: none;
+.card:hover .cardAr,
+.card:focus-visible .cardAr {
+  opacity: 1;
+  transform: translateX(3px);
 }
-.panelFooterLink:hover {
-  color: #fff;
-}
-.panelFooterMention {
-  font-family: var(--ff-mono);
-  font-size: 10px;
+.panelMention {
+  margin: 22px 0 0;
+  font-family: var(--ff-mono, monospace);
+  font-size: 11px;
   letter-spacing: 0.06em;
-  color: #8f96b8;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-/* ---------- tiroir mobile ---------- */
-.drawer {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: #05060f;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-}
-.drawerTop {
-  flex: none;
-  display: flex;
+/* ---------- bouton Menu (mobile / tablette) ---------- */
+.burger {
+  display: none;
   align-items: center;
-  justify-content: space-between;
-  height: 54px;
-  padding: 0 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-.drawerClose {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  margin: -8px;
-  background: transparent;
-  border: 0;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: none;
   color: #fff;
-  font-size: 22px;
-  line-height: 1;
+  font-family: var(--ff-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   cursor: pointer;
 }
-.drawerNav {
-  flex: 1;
+.burgerBars {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.burgerBars i {
+  width: 16px;
+  height: 1.5px;
+  background: #fff;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.2s;
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(1) {
+  transform: translateY(4.5px) rotate(45deg);
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(2) {
+  opacity: 0;
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(3) {
+  transform: translateY(-4.5px) rotate(-45deg);
+}
+
+/* ---------- tiroir plein écran (mobile / tablette) ---------- */
+.drawer {
+  --px: clamp(20px, 4.5vw, 96px);
+  display: none;
+  position: fixed;
+  top: 78px;
+  left: 0;
+  right: 0;
+  /* Hauteur avec dvh (barres des navigateurs mobiles), repli vh. */
+  height: calc(100vh - 78px);
+  height: calc(100dvh - 78px);
+  z-index: 95;
+  background: var(--panel, #0a0e22);
+  color: #fff;
   overflow-y: auto;
-  padding: 4px 20px;
+  padding: 10px var(--px) 40px;
+  transform: translateY(-8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s, transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0.28s;
+}
+.drawerOpen {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
 }
 .drawerList {
   list-style: none;
@@ -351,157 +440,130 @@
   padding: 0;
 }
 .drawerList > li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
 }
-.drawerLink {
-  display: block;
-  font-family: var(--ff-mono);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #fff;
-  text-decoration: none;
-  padding: 18px 0;
-}
-.drawerAccRow {
+.drawerRow {
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-}
-.drawerAccBtn {
-  background: transparent;
+  align-items: center;
+  min-height: 62px;
+  background: none;
   border: 0;
   color: #fff;
-  padding: 12px;
+  font-family: var(--ff-mono, monospace);
+  font-size: 13.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
 }
-.drawerAccBtn svg {
-  transition: transform 0.2s ease;
+.drawerRow[aria-current="page"] {
+  color: #7e97ff;
 }
-.accIconOpen {
-  transform: rotate(180deg);
+.drawerSign {
+  font-size: 20px;
+  line-height: 1;
 }
-.drawerAccPanel {
-  padding: 2px 0 18px;
+.acc {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.drawerFamille {
+.accOpen {
+  max-height: 900px;
+}
+.accHead {
+  font-family: var(--ff-mono, monospace);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+  margin: 14px 0 2px;
+}
+.accLink {
+  display: block;
+  padding: 12px 0 12px 14px;
+  border-left: 2px solid rgba(255, 255, 255, 0.13);
+  color: #fff;
+  font-size: 16.5px;
+  text-decoration: none;
+}
+.accLink:last-child {
   margin-bottom: 14px;
 }
-.drawerFamille > ul {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 2px;
-}
-.drawerCard {
-  display: block;
-  padding: 8px 0;
-  text-decoration: none;
-}
-.drawerAllDomaines {
-  display: inline-block;
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #7f8aff;
-  text-decoration: none;
-  margin-top: 6px;
-}
-.drawerFooter {
-  flex: none;
-  display: flex;
-  gap: 12px;
-  padding: 16px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
 .drawerCta {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  min-height: 56px;
   background: #1a47ff;
   color: #fff;
-  font-family: var(--ff-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
+  font-family: var(--ff-mono, monospace);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 14px;
-  border-radius: 4px;
   text-decoration: none;
 }
-.drawerTel {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-family: var(--ff-mono);
+.drawerFoot {
+  margin-top: 22px;
+  font-family: var(--ff-mono, monospace);
   font-size: 12px;
-  padding: 14px 16px;
-  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.66);
+  line-height: 1.8;
+}
+.drawerFoot a {
+  color: #fff;
   text-decoration: none;
 }
 
-/* ---------- barre basse mobile ---------- */
-.bottomBar {
-  display: none;
-}
-@media (max-width: 1023px) {
-  .bottomBar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 90;
-    display: flex;
-    gap: 10px;
-    padding: 10px 16px;
-    background: rgba(10, 15, 46, 0.97);
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    transform: translateY(120%);
-    transition: transform 0.25s ease;
+/* ---------- bascule desktop → mobile (< 1280 px) ---------- */
+@media (max-width: 1279px) {
+  .nav,
+  .cta {
+    display: none;
   }
-  .bottomBarShown {
-    transform: none;
+  .burger {
+    display: inline-flex;
+  }
+  .bar,
+  .solid .bar {
+    height: 78px;
+  }
+  .drawer {
+    display: block;
   }
 }
-.bottomBarBtn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #1a47ff;
-  color: #fff;
-  font-family: var(--ff-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 13px;
-  border-radius: 4px;
-  text-decoration: none;
+@media (max-width: 480px) {
+  .burger {
+    padding: 0 10px;
+  }
 }
-.bottomBarTel {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  padding: 13px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+@media (max-width: 360px) {
+  .burgerTxt {
+    display: none;
+  }
 }
 
+/* ---------- mouvement réduit ---------- */
 @media (prefers-reduced-motion: reduce) {
   .header,
+  .header::after,
   .bar,
   .panel,
   .chevronIcon,
-  .drawerAccBtn svg,
-  .bottomBar,
+  .navLink::after,
+  .cta,
+  .ctaAr,
   .card,
-  .navLink {
+  .cardAr,
+  .burgerBars i,
+  .acc,
+  .drawer {
     transition: none !important;
   }
 }

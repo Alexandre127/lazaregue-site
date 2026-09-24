@@ -109,7 +109,6 @@ export default function Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       <link rel="preload" as="image" href={HERO_POSTER} fetchPriority="high" />
-      <a className={styles.skipLink} href="#contenu">Aller au contenu principal</a>
 
       <div className={styles.cc}>
         {/* 0 · BANDEAU D’URGENCE (seul rouge) */}

@@ -37,7 +37,6 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <a className={styles.skipLink} href="#contenu">Aller au contenu principal</a>
       <DiffamationClient />
     </>
   );

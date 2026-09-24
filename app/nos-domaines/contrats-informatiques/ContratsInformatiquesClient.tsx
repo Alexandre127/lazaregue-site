@@ -487,7 +487,7 @@ function ClauseBoard() {
 
 export default function ContratsInformatiquesClient() {
   return (
-    <main data-domaine="contrats" style={{ background: WH, color: INK, fontFamily: "var(--ff-body)", fontSize: 17, overflowX: "clip" }}>
+    <main id="contenu" data-domaine="contrats" style={{ background: WH, color: INK, fontFamily: "var(--ff-body)", fontSize: 17, overflowX: "clip" }}>
       <style>{`
         [data-domaine="contrats"] .cx-wrap { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--page-margin); }
         @media (max-width: 640px) { [data-domaine="contrats"] .cx-wrap { padding: 0 var(--page-margin-mobile); } }

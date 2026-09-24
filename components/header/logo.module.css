@@ -1,11 +1,16 @@
-/* Logo — bloc unique cliquable (symbole + nom). */
+/* Logo — bloc unique cliquable (symbole + nom). Dimensions reprises de la
+   maquette (23.09.2026) : Bebas 32 px au repos, réduit à 27 px et symbole mis à
+   l'échelle .86 quand le header devient solide au défilement. L'état solide est
+   porté par l'attribut `data-solid` du <header> (ancêtre) : les sélecteurs
+   d'attribut ne sont pas hachés par les CSS Modules. */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
+  flex-shrink: 0;
   transition: opacity 0.15s ease;
 }
 /* État de survol visible — sauf sur la page d'accueil (aria-current). */
@@ -19,24 +24,54 @@
   opacity: 1;
 }
 .mark {
-  height: 24px;
+  height: 34px;
   width: auto;
   flex: none;
   display: block;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .word {
   font-family: var(--ff-display, "Bebas Neue", sans-serif);
-  font-size: 22px;
-  letter-spacing: 0.04em;
+  font-size: 32px;
+  letter-spacing: 0.02em;
   line-height: 1;
   white-space: nowrap;
+  transition: font-size 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .avocats {
   color: #1a47ff;
 }
 
+/* Header solide (défilement) : wordmark réduit, symbole mis à l'échelle. */
+:global([data-solid="true"]) .word {
+  font-size: 27px;
+}
+:global([data-solid="true"]) .mark {
+  transform: scale(0.86);
+}
+
+@media (max-width: 480px) {
+  .word {
+    font-size: 21px;
+  }
+  .mark {
+    height: 27px;
+  }
+  :global([data-solid="true"]) .word {
+    font-size: 21px;
+  }
+}
+@media (max-width: 360px) {
+  .word,
+  :global([data-solid="true"]) .word {
+    font-size: 17px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .logo {
+  .logo,
+  .mark,
+  .word {
     transition: none;
   }
 }

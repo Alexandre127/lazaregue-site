@@ -13,7 +13,7 @@
   --white: var(--wh);
   --border: var(--bd);
   --pad: var(--page-margin);
-  --header-h: 72px;
+  --header-h: 104px;
 
   background: var(--wh);
   color: var(--ink);

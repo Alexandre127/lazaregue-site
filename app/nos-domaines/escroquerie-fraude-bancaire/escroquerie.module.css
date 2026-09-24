@@ -12,7 +12,7 @@
   --red: #b42318;
   --tintb: #eef1fb; /* bleu très clair (colonne Configuration C) */
   --muted-on-dark: rgba(255, 255, 255, 0.78); /* surcharge du token global sky-blue */
-  --header-h: 72px;
+  --header-h: 104px;
   --measure: 70ch;
 
   color: var(--ink);

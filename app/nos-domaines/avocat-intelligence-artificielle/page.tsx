@@ -143,7 +143,7 @@ const REL = [
 
 export default function Page() {
   return (
-    <main className={styles.ia}>
+    <main id="contenu" className={styles.ia}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       {/* ============================ 1. HERO ============================ */}

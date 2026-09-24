@@ -115,12 +115,13 @@ export type NavEntry =
 
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  // « Actions collectives » retirée (aucune page dédiée n'existe) : reviendra le
-  // jour où la page existera. Ne rien mettre à sa place.
+  // Ordre repris de la maquette (23 sept. 2026) : Domaines · Formations ·
+  // Ressources · Cas clients · Le cabinet · Contact. FORMATIONS passe avant
+  // RESSOURCES.
+  { type: "link", label: "FORMATIONS", href: "/formations" },
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
   { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
-  { type: "link", label: "FORMATIONS", href: "/formations" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
   { type: "link", label: "CONTACT", href: "/contact" },
 ];
@@ -131,8 +132,11 @@ export const PANEL_DOMAINES_FOOTER = {
   mention: "le cabinet intervient partout en France",
 };
 
-/** Téléphone (barre mobile + pied de tiroir). */
+/** Téléphone (pied de tiroir mobile). */
 export const TEL = { display: "01 81 70 62 00", href: "tel:+33181706200" };
+
+/** Adresse du cabinet (pied de tiroir mobile) — reprise du pied de page. */
+export const ADRESSE = "18 rue de Tilsitt, 75017 Paris";
 
 /**
  * Routes dont le HAUT DE PAGE est un hero sombre : le header s'y pose en

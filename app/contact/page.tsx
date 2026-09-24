@@ -55,7 +55,7 @@ const JSON_LD = {
 
 export default function Page() {
   return (
-    <main className={styles.page}>
+    <main id="contenu" className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       {/* ===================== 1. HERO (vidéo conservée) ===================== */}

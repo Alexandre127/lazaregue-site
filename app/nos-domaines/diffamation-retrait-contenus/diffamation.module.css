@@ -6,7 +6,7 @@
    ========================================================================== */
 .diff {
   --measure: 68ch;
-  --header-h: 72px;
+  --header-h: 104px;
   --red: #b42318;
   --muted-on-dark: rgba(255, 255, 255, 0.74); /* surcharge du token global #9fb2ff */
 

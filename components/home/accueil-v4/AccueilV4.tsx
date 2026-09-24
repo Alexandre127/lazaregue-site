@@ -412,7 +412,8 @@ export function AccueilV4() {
       <style dangerouslySetInnerHTML={{ __html: ACCUEIL_V4_CSS + ACCUEIL_V4_OVERRIDES }} />
 
       {/* ============ HERO ============ */}
-      <section className="hero dark" aria-labelledby="titre-accueil">
+      {/* Cible du lien d'évitement global (header) : première section utile. */}
+      <section id="contenu" className="hero dark" aria-labelledby="titre-accueil">
         <div className="wrap">
           <div className="hero-grid">
             <div>

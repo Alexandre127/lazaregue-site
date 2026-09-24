@@ -19,7 +19,7 @@
   --muted: var(--text-muted, #4a4a63);
   --px: 120px;
   --py: 104px;
-  --header-h: 72px;
+  --header-h: 104px;
   color: var(--ink);
   background: #fff;
   font-family: var(--ff-body);

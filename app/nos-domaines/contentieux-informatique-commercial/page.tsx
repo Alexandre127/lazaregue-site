@@ -201,7 +201,6 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <a className={styles.skipLink} href="#contenu">Aller au contenu</a>
 
       <div className={styles.contentieux}>
         {/* Fil d'Ariane (réserve la hauteur du header global) */}

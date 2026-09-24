@@ -134,7 +134,7 @@ const SUJETS = [
 
 export function CyberV4() {
   return (
-    <main data-domaine="cyberwf">
+    <main id="contenu" data-domaine="cyberwf">
       <style>{CSS}</style>
 
       {/* ===== 1. HERO ===== */}

@@ -7,6 +7,10 @@
    riche des spécimens garde ses classes via :global.
    ========================================================================== */
 .rgpd {
+  /* Hauteur du header global au repos (comme les autres pages de domaine) :
+     le hero sombre l'utilise pour dégager le fil d'Ariane sous le header
+     transparent. */
+  --header-h: 104px;
   --blue: #1a47ff;
   --blue-dark: #0a2acc; /* charte : sur-titre clair, hover/actif bouton */
   --peri: #4d6fff;
@@ -191,7 +195,11 @@
 /* ==========================================================================
    1. HERO
    ========================================================================== */
-.rgpd :global(.hero) { background: var(--navy); color: var(--on-dark); padding: clamp(28px, 4vw, 44px) 0 clamp(32px, 4.5vw, 56px); }
+/* Le hero est sombre et le header GLOBAL flotte dessus en transparent : le
+   contenu (fil d'Ariane, titre) doit dégager la hauteur du header au repos,
+   comme les autres pages de domaine (calc(var(--header-h) + …)). Auparavant un
+   padding fixe (~44 px) laissait le fil d'Ariane sous le logo. */
+.rgpd :global(.hero) { background: var(--navy); color: var(--on-dark); padding: calc(var(--header-h) + clamp(12px, 2vw, 24px)) 0 clamp(32px, 4.5vw, 56px); }
 .rgpd :global(.hero-grid) { display: grid; gap: 26px; }
 @media (min-width: 960px) { .rgpd :global(.hero-grid) { grid-template-columns: 58fr 42fr; gap: 48px; align-items: center; } }
 .rgpd :global(.hero h1) { max-width: 18ch; color: #fff; }

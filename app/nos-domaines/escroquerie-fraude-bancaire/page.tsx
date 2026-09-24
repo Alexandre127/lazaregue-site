@@ -162,10 +162,9 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <a className={styles.skipLink} href="#main">Aller au contenu</a>
 
       <div className={styles.esc}>
-        <main id="main">
+        <main id="contenu">
           {/* ===== 1. HERO (photo La Défense + dégradé bleu nuit) ===== */}
           <section className="hero hero-photo" aria-labelledby="h1">
             <div className="hero-bg" aria-hidden="true">

@@ -77,7 +77,6 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <a className={styles.skipLink} href="#contenu">Aller au contenu</a>
 
       <div className={styles.mt}>
         <nav className="crumb" aria-label="Fil d’Ariane">

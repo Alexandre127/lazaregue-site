@@ -130,9 +130,8 @@ export default function Page() {
       </noscript>
 
       {/* Lien d'évitement (UX-159) — première cible utile de la page. */}
-      <a className={styles.skipLink} href="#contenu-principal">Aller au contenu principal</a>
 
-      <main id="contenu-principal" className={styles.rgpd}>
+      <main id="contenu" className={styles.rgpd}>
         {/* ============ 1. HERO ============ */}
         <div className="hero dark">
           {/* Vidéo de fond, fondue dans la section (aucun cadre) — cf. HeroVideo. */}
