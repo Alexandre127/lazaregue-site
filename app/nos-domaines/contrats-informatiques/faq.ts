@@ -18,11 +18,11 @@
 export const FAQ_ITEMS: { q: string; a: string }[] = [
   {
     q: "Comment répartir la responsabilité en cas de perte de données ?",
-    a: "Sa responsabilité dépend de ce qu'il s'est engagé à faire. Lorsqu'il s'est expressément engagé à réaliser et à maintenir des sauvegardes exploitables, leur absence ou leur inefficacité peut caractériser l'inexécution de son obligation. L'appréciation tient néanmoins au périmètre contractuel, aux diligences respectives des parties et aux causes de la perte de données. Le devoir de conseil joue en outre indépendamment de toute demande du client.",
+    a: "La répartition se fixe dans le contrat : périmètre, fréquence et tests de restauration des sauvegardes, niveau de l'obligation (de moyens ou de résultat), plafonds et exclusions de responsabilité, coopération attendue du client. À défaut de stipulations précises, la responsabilité du prestataire s'apprécie au regard de ce qu'il s'était engagé à faire, de son devoir de conseil et des diligences respectives des parties.",
   },
   {
     q: "Peut-on résilier un contrat informatique avant son terme ?",
-    a: "Un contrat à durée déterminée ne se résilie pas pour simple insatisfaction. La résolution suppose une inexécution suffisamment grave et, sauf urgence ou circonstances particulières, une mise en demeure demeurée sans effet. Le non-respect d'un calendrier présenté dès l'origine comme déterminant du consentement peut à lui seul la justifier. À défaut, le client s'expose aux sommes dues jusqu'au terme et aux pénalités contractuelles.",
+    a: "Un contrat à durée déterminée ne se résilie pas pour simple insatisfaction. La résolution suppose une inexécution suffisamment grave et, sauf urgence ou circonstances particulières, une mise en demeure demeurée sans effet. Le non-respect d'un calendrier présenté dès l'origine comme déterminant du consentement peut à lui seul la justifier. À défaut, le client s'expose aux sommes dues jusqu'au terme et aux pénalités contractuelles. D'où l'intérêt de prévoir dès la rédaction les cas de résiliation anticipée, leur préavis et les conditions de sortie, réversibilité comprise.",
   },
   {
     q: "À qui appartient le code source d'un logiciel développé sur mesure ?",

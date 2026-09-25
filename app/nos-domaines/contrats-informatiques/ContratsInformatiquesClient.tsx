@@ -72,7 +72,6 @@ const HERO_STAGES = [
 
 const HERO_BASELINE = [
   "Clients et prestataires informatiques",
-  "Paris · Intervention partout en France",
   "Paris · Intervention partout en France · Depuis 2016",
 ];
 
@@ -324,10 +323,6 @@ const AUTRES_FAQ: { q: string; a: string }[] = [
     q: "Comment organiser la recette d’un logiciel ?",
     a: "Par une procédure écrite : jeux d’essai, critères d’acceptation, délais de vérification, effets d’une recette avec réserves et d’un refus. Une recette signée sans réserve fragilise durablement toute contestation ultérieure.",
   },
-  {
-    q: "Comment se prépare une expertise judiciaire informatique ?",
-    a: "Par la conservation immédiate des journaux, configurations et échanges, l’identification d’un conseil technique aux côtés de l’avocat, et la préparation des dires. L’expertise se joue largement sur les pièces produites lors des premières réunions.",
-  },
 ];
 
 const RELATED = [
@@ -551,10 +546,9 @@ export default function ContratsInformatiquesClient() {
           [data-domaine="contrats"] .cx-crumb ol { flex-wrap: nowrap; overflow: hidden; }
           [data-domaine="contrats"] .cx-crumb li { white-space: nowrap; }
           [data-domaine="contrats"] .cx-crumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-          /* Puces « Clients et prestataires… » et « Paris · Intervention… » masquées. */
+          /* Puce « Clients et prestataires… » masquée ; « Paris · … · Depuis 2016 » conservée. */
           [data-domaine="contrats"] .cx-hero-baseline { gap: 12px 25px; font-size: 11px; }
-          [data-domaine="contrats"] .cx-hero-baseline span:nth-child(1),
-          [data-domaine="contrats"] .cx-hero-baseline span:nth-child(2) { display: none; }
+          [data-domaine="contrats"] .cx-hero-baseline span:nth-child(1) { display: none; }
         }
         @media (max-width: 480px) {
           [data-domaine="contrats"] .cx-hero-actions { display: block; }
