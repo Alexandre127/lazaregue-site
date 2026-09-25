@@ -49,7 +49,7 @@ const JSON_LD = {
       mainEntity: FAQ_IA.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a.join(" ") } })),
     },
     { "@type": "Person", name: "Alexandre Lazarègue", jobTitle: "Avocat au barreau de Paris", worksFor: { "@id": `${URL_BASE}/#cabinet` } },
-    { "@type": "Person", name: "Nadia Abchiche-Mimouni", jobTitle: "Experte en intelligence artificielle", worksFor: { "@id": `${URL_BASE}/#cabinet` } },
+    { "@type": "Person", name: "Nadia Abchiche-Mimouni", jobTitle: "Docteure en intelligence artificielle, maîtresse de conférences en informatique (Université Côte d'Azur)", worksFor: { "@id": `${URL_BASE}/#cabinet` } },
   ],
 };
 
@@ -135,7 +135,7 @@ export default function Page() {
             </div>
             <div className="hero-side">
               <p className="acc">Une IA mal documentée devient un risque de responsabilité.</p>
-              <p className="lead">Le cabinet assiste les entreprises qui utilisent, déploient ou commercialisent des systèmes d’intelligence artificielle, depuis la qualification des usages et la mise en conformité documentaire et contractuelle jusqu’à leur défense en cas de contrôle ou de contentieux.</p>
+              <p className="lead">Le cabinet assiste les entreprises qui utilisent, déploient ou commercialisent des systèmes d’intelligence artificielle, depuis la qualification des usages et la mise en conformité documentaire et contractuelle jusqu’à la documentation qui rend leur conformité démontrable.</p>
               <div className="hero-cta">
                 <a className="btn" href="/contact">Parler de votre situation →</a>
                 <a className="heroLink" href="#missions">Voir les cinq missions</a>
@@ -225,15 +225,15 @@ export default function Page() {
       <section className="sec navy" aria-labelledby="h-duo">
         <div className="wrap meth-grid">
           <div className="meth">
-            <div className="head"><p className="label">Méthode</p><h2 className="h2" id="h-duo">Du contrat à l’algorithme</h2><p className="lead">Une qualification juridique qui ne repose pas sur le fonctionnement réel du système ne résiste pas à un contrôle. Les dossiers techniques sont traités à deux.</p></div>
+            <div className="head"><p className="label">Méthode</p><h2 className="h2" id="h-duo">Du contrat à l’algorithme</h2></div>
             <div className="duo">
               <article>
                 <span className="ph" role="img" aria-label="Portrait d’Alexandre Lazarègue"><Image src="/images/alexandre-pro.jpg" alt="" fill sizes="110px" style={{ objectFit: "cover" }} /></span>
-                <div><p className="label">Avocat au Barreau de Paris</p><h3 className="h3">Me Alexandre Lazarègue</h3><p>Qualification juridique, contrats et défense.</p></div>
+                <div><p className="label">Avocat au Barreau de Paris</p><h3 className="h3">Me Alexandre Lazarègue</h3><p>Qualification des systèmes et de leurs usages, mise en conformité au règlement, engagements contractuels avec les fournisseurs et les clients.</p></div>
               </article>
               <article>
                 <span className="ph" role="img" aria-label="Portrait de Nadia Abchiche-Mimouni"><Image src="/images/nadia-pro.jpg" alt="" fill sizes="110px" style={{ objectFit: "cover" }} /></span>
-                <div><p className="label">Experte en intelligence artificielle — intervenante indépendante</p><h3 className="h3">Nadia Abchiche-Mimouni</h3><p>Fonctionnement du système, données, tests et supervision. Elle intervient à la demande, sur les dossiers qui l’exigent.</p></div>
+                <div><p className="label">Docteure en intelligence artificielle</p><h3 className="h3">Nadia Abchiche-Mimouni</h3><p>Maîtresse de conférences en informatique à l’Université Côte d’Azur. Examine le fonctionnement réel des systèmes (architecture, données, tests, supervision, biais) pour que chaque qualification juridique repose sur des constats vérifiés.</p></div>
               </article>
             </div>
             <p className="common"><strong>Résultat commun.</strong> Une documentation cohérente avec le fonctionnement réel du système. C’est cette correspondance qui est examinée en cas de contrôle, et c’est elle qui manque le plus souvent aux dossiers constitués sans examen technique.</p>
