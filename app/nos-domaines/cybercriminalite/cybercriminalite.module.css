@@ -275,3 +275,76 @@
 /* Lien d'évitement. */
 .skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; font-weight: 600; padding: 12px 18px; text-decoration: none; }
 .skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ==========================================================================
+   REFONTE MOBILE / LONGUEURS / LANGAGE (brief) — chargé en dernier.
+   ========================================================================== */
+
+/* §1 — Portes : plus de sur-titre ; mobile côte à côte, compact (≥44 px). */
+.cc :global(.doors b) { font-size: 18px; }
+@media (max-width: 640px) {
+  .cc :global(.doors) { grid-template-columns: 1fr 1fr; }
+  .cc :global(.doors a) { min-height: 48px; padding: 12px 14px; }
+  .cc :global(.doors a + a) { border-left: 1px solid rgba(255, 255, 255, 0.35); border-top: 0; }
+  .cc :global(.doors b) { font-size: 15px; line-height: 1.25; }
+  .cc :global(.doors a > span[aria-hidden]) { font-size: 14px; }
+}
+
+/* §2 — Quatre questions : grille (bureau) / accordéon numéroté (mobile). */
+.cc :global(.q-item) { border-top: 1px solid var(--ink); }
+.cc :global(.q-item > summary) { list-style: none; display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; align-items: start; padding: 22px 0 6px; cursor: pointer; }
+.cc :global(.q-item > summary)::-webkit-details-marker { display: none; }
+.cc :global(.q-n) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); padding-top: 3px; }
+.cc :global(.q-item h3) { font-size: 20px; font-weight: 600; margin: 0; }
+.cc :global(.q-sign) { display: none; }
+.cc :global(.q-ans) { padding: 0 0 22px 62px; }
+.cc :global(.q-ans p) { font-size: 16px; color: var(--text-muted); margin: 0; max-width: 60ch; }
+@media (min-width: 761px) {
+  .cc :global(.q-item > summary) { cursor: default; pointer-events: none; }
+}
+@media (max-width: 760px) {
+  .cc :global(.q-item > summary) { padding: 18px 0; align-items: center; }
+  .cc :global(.q-sign) { display: block; width: 22px; height: 22px; position: relative; }
+  .cc :global(.q-sign)::before,
+  .cc :global(.q-sign)::after { content: ""; position: absolute; background: var(--blue); }
+  .cc :global(.q-sign)::before { left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; }
+  .cc :global(.q-sign)::after { top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; }
+  .cc :global(.q-item[open] .q-sign)::after { opacity: 0; }
+  .cc :global(.q-ans) { padding: 0 0 20px 62px; }
+}
+
+/* §3 — Encart 72 heures. */
+.cc :global(.encart-wrap) { padding: var(--s6) 0 var(--s7); background: var(--wh); }
+.cc :global(.encart72) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s4) var(--s6); background: var(--tintb); border: 1px solid var(--borderb); border-left: 4px solid var(--blue); padding: 22px 24px; }
+.cc :global(.encart72-txt) { max-width: 74ch; }
+.cc :global(.encart72 strong) { display: block; font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.cc :global(.encart72 p) { margin: 0; font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+.cc :global(.encart72 .btn) { flex: none; }
+@media (max-width: 640px) { .cc :global(.encart72 .btn) { width: 100%; } }
+
+/* §4 — Situations : badge + « Ce que dit le droit ». */
+.cc :global(.sixc .badge) { align-self: flex-start; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); border: 1px solid var(--borderb); padding: 4px 8px; }
+.cc :global(.sixc--mis .badge) { color: #fff; background: var(--blue); border-color: var(--blue); }
+.cc :global(.sixc .droit) { margin-top: auto; background: var(--off); padding: 12px 14px; }
+.cc :global(.droit-k) { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.cc :global(.sixc .droit p) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
+
+/* §5 — Exergue avant les deux positions. */
+.cc :global(.exergue-wrap) { padding: var(--s7) 0; }
+.cc :global(.exergue) { margin: 0; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.4; font-weight: 500; color: var(--ink); border-left: 4px solid var(--blue); padding-left: 20px; max-width: 44ch; }
+
+/* §6 — « En clair » : texte toujours en encre, y compris sur le panneau navy. */
+.cc :global(.gl) { color: var(--ink); }
+
+/* §7 — Dossiers : ligne « L'enjeu » dans le bandeau sombre. */
+.cc :global(.dtop) { min-height: auto; }
+.cc :global(.dtop .enjeu) { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: #fff; }
+.cc :global(.dtop .enjeu span) { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-onDark); margin-bottom: 3px; }
+
+/* §8 — Équipe : 4 intervenants ; mobile en bande horizontale (comme la home). */
+.cc :global(.team4) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .cc :global(.team4) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .cc :global(.team4) { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: var(--s6) calc(-1 * var(--page-margin-mobile)) 0; padding: 0 var(--page-margin-mobile) 10px; }
+  .cc :global(.team4 article) { flex: 0 0 200px; scroll-snap-align: start; }
+}
