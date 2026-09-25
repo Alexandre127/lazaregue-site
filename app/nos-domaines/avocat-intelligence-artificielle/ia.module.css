@@ -80,7 +80,15 @@
 .ia :global(.renvoi .rg) { font-weight: 600; }
 
 /* ==================== 3. CE QUE DIT LE RÈGLEMENT =================== */
-.ia :global(.reg-toute) { display: grid; grid-template-columns: 4fr 8fr; border: 1px solid var(--bd); }
+/* Ordinateur : bloc « Toute entreprise » au-dessus, puis intitulé, onglets,
+   panneau du niveau actif. Mobile : les onglets remontent en tête (order),
+   l'intitulé disparaît, et « Toute entreprise » redevient le premier onglet. */
+.ia :global(.reg) { display: flex; flex-direction: column; }
+.ia :global(.reg-toute) { order: 1; display: grid; grid-template-columns: 4fr 8fr; border: 1px solid var(--bd); }
+.ia :global(.reg-h) { order: 2; }
+.ia :global(.mtabs) { order: 3; }
+.ia :global(.reg-panels) { order: 4; }
+.ia :global(.reg-foot) { order: 5; }
 .ia :global(.reg-cartouche) { background: var(--navy); color: #fff; padding: 26px 28px; display: flex; flex-direction: column; gap: 10px; }
 .ia :global(.reg-cartouche .h3) { color: #fff; }
 .ia :global(.reg-cartouche p) { color: rgba(255, 255, 255, 0.82); font-size: 15px; line-height: 1.55; margin: 0; }
@@ -98,14 +106,15 @@
 .ia :global(.reg-row-body) { display: none; font-size: 13.5px; line-height: 1.5; color: var(--text-muted); margin: 8px 0 0; }
 .ia :global(.reg-row-body.is-open) { display: block; }
 
-.ia :global(.reg-levels) { margin-top: 28px; }
-.ia :global(.reg-h) { font-family: var(--ff-body); font-size: 21px; font-weight: 500; margin: 0 0 14px; }
+.ia :global(.reg-h) { font-family: var(--ff-body); font-size: 21px; font-weight: 500; margin: 28px 0 14px; }
 .ia :global(.mtabs) { display: flex; flex-wrap: wrap; border: 1px solid var(--ink); width: max-content; max-width: 100%; }
 .ia :global(.mtabs button) { min-height: 48px; padding: 0 18px; border: 0; border-right: 1px solid var(--ink); background: #fff; font: 500 15px var(--ff-body); cursor: pointer; color: var(--ink); }
 .ia :global(.mtabs button:last-child) { border-right: 0; }
 .ia :global(.mtabs button[aria-selected="true"]) { background: var(--navy); color: #fff; }
-.ia :global(.reg-panel) { margin-top: 18px; border: 1px solid var(--ink); }
-.ia :global(.reg-panel[hidden]) { display: none; }
+.ia :global(.reg-tab-toute) { display: none; } /* onglet Toute entreprise : mobile seulement */
+.ia :global(.reg-panel) { display: none; margin-top: 18px; border: 1px solid var(--ink); }
+.ia :global(.reg-panel.is-active) { display: block; }
+.ia :global(.reg-select) { display: none; } /* sélecteur Déployeur/Fournisseur : mobile seulement */
 .ia :global(.reg-panel .reg-band) { background: var(--navy); color: #fff; padding: 12px 18px; }
 .ia :global(.reg-cols) { display: grid; grid-template-columns: 4fr 8fr; }
 .ia :global(.reg-cases) { padding: 16px 18px; border-right: 1px solid var(--bd); }
@@ -120,6 +129,11 @@
 .ia :global(.reg-role:first-child) { border-left: 0; }
 .ia :global(.reg-role-t) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin: 0 0 8px; }
 .ia :global(.reg-plain) { font-size: 14px; line-height: 1.55; color: var(--text-muted); margin: 0; }
+.ia :global(.reg-band-muted) { font-family: var(--ff-body); font-size: 14px; letter-spacing: 0; text-transform: none; line-height: 1.5; }
+.ia :global(.reg-band-muted a) { color: #fff; text-decoration: underline; }
+.ia :global(.reg-select-btn) { min-height: 44px; padding: 0 18px; border: 0; border-right: 1px solid var(--bd); background: #fff; font: 500 14px var(--ff-body); color: var(--ink); cursor: pointer; }
+.ia :global(.reg-select-btn:last-child) { border-right: 0; }
+.ia :global(.reg-select-btn.is-on) { background: var(--navy); color: #fff; }
 .ia :global(.reg-role .reg-row) { border-left: 0; padding: 10px 0; }
 .ia :global(.reg-role .reg-row:first-of-type) { border-top: 0; }
 .ia :global(.reg-role .reg-row:first-child) { border-top: 0; }
@@ -232,6 +246,14 @@
   /* Déroulement : rail défilant + repère « i / 3 ». */
   .ia :global(.derou .steps3) { grid-auto-flow: column; grid-auto-columns: 82vw; width: max-content; }
   .ia :global(.derou .steps3 .step) { border-top: 2px solid rgba(255, 255, 255, 0.3); padding-right: 20px; scroll-snap-align: start; }
+  /* Onglets en tête, « Toute entreprise » redevient le 1er onglet. */
+  .ia :global(.reg-h) { display: none; }
+  .ia :global(.mtabs) { order: 1; }
+  .ia :global(.reg-toute) { order: 2; display: none; }
+  .ia :global(.reg-toute.is-active) { display: block; }
+  .ia :global(.reg-panels) { order: 2; }
+  .ia :global(.reg-foot) { order: 3; }
+  .ia :global(.reg-tab-toute) { display: block; }
   .ia :global(.reg-obls) { grid-template-columns: 1fr; }
   .ia :global(.reg-obls .reg-row) { border-left: 0; }
   .ia :global(.reg-obls .reg-row:nth-child(-n + 3)) { border-top: 1px solid var(--bd); }
@@ -239,8 +261,10 @@
   .ia :global(.reg-cols) { grid-template-columns: 1fr; }
   .ia :global(.reg-cases) { border-right: 0; border-bottom: 1px solid var(--bd); }
   .ia :global(.reg-roles), .ia :global(.reg-roles[data-count="1"]) { grid-template-columns: 1fr; }
-  .ia :global(.reg-role) { border-left: 0; border-top: 1px solid var(--bd); }
-  .ia :global(.reg-role:first-child) { border-top: 0; }
+  /* Sélecteur Déployeur / Fournisseur : une seule liste à la fois. */
+  .ia :global(.reg-select) { display: flex; width: max-content; max-width: 100%; border: 1px solid var(--bd); margin: 0 0 14px; }
+  .ia :global(.reg-role) { display: none; border-left: 0; }
+  .ia :global(.reg-role.is-rolevis) { display: block; }
   .ia :global(.cases) { grid-template-columns: 1fr; }
   .ia :global(.dcard-inner) { grid-template-columns: 1fr; }
   .ia :global(.dcard-inner .d-dif) { border-right: 0; }

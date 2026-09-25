@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
 
 /**
@@ -8,20 +8,18 @@ import Link from "next/link";
  * Principe de lecture, Matrice de risque, Obligations et Calendrier.
  *
  * Deux briques du site : onglets accessibles (role="tablist", flèches clavier,
- * Home/End, roving tabindex) + accordéons natifs <details> pour les lignes
- * repliables. Tout le contenu est dans le HTML rendu côté serveur : les <details>
- * gardent leur texte dans le DOM même fermés ; sur ordinateur, le CSS force leur
- * ouverture (pas de contenu masqué au rendu).
+ * Home/End, roving tabindex) + lignes/sélecteurs à visibilité pilotée par classe
+ * (jamais l'attribut `hidden` : sur ordinateur, `[hidden]` est `display:none`
+ * d'origine navigateur, imbattable par un `!important` auteur). Tout le contenu
+ * reste dans le DOM ; le CSS décide de ce qui s'affiche selon la taille.
  *
- * Structure :
- *  - bloc « Toute entreprise qui utilise l'IA » (cartouche + 6 obligations),
- *    toujours visible ;
- *  - onglets des quatre niveaux de risque (Haut risque par défaut) : chaque
- *    panneau = bande de date + « Les cas » + obligations par acteur.
+ * Ordinateur : bloc « Toute entreprise » toujours visible + onglets des quatre
+ * niveaux (Haut risque par défaut), chaque niveau montrant Déployeur ET
+ * Fournisseur. Mobile (maquette) : un seul jeu de cinq onglets — Toute entreprise
+ * (ouvert par défaut) puis les quatre niveaux — et, dans chaque niveau, un
+ * sélecteur Déployeur / Fournisseur n'affichant qu'une liste à la fois.
  *
- * Textes repris mot pour mot des données actuelles de la page (const OBLIGATIONS)
- * et de la matrice (const PANELS), avec les seules modifications validées
- * (description « Former les équipes », « Tenir l'inventaire », renvoi mission 05).
+ * `sel` : 0 = Toute entreprise, 1..4 = niveaux (index LEVELS + 1).
  */
 
 type Rich = { b: string; span: string; em: string; href?: string };
@@ -111,7 +109,7 @@ const LEVELS: Level[] = [
   },
   {
     label: "Risque minimal",
-    band: "Aucune échéance propre au titre du risque",
+    band: "",
     cases: [
       "Assistant de rédaction ou de traduction utilisé en interne",
       "Filtre anti-spam, correcteur, moteur de recherche interne",
@@ -126,6 +124,14 @@ const LEVELS: Level[] = [
 
 const SYNTHESE =
   "Synthèse indicative du règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744. Les listes de cas ne sont pas exhaustives ; la qualification dépend de l’usage réel.";
+
+// Renvois des situations : #reglement-<clé> active l'onglet (sel) correspondant.
+const HASH_TO_SEL: Record<string, number> = {
+  interdites: 1,
+  "haut-risque": 2,
+  transparence: 3,
+  minimal: 4,
+};
 
 function RichRow({ it }: { it: Rich }) {
   const [open, setOpen] = useState(false);
@@ -153,54 +159,103 @@ function RichRow({ it }: { it: Rich }) {
   );
 }
 
-// Renvois des situations : #reglement-<clé> active l'onglet correspondant.
-const HASH_TO_TAB: Record<string, number> = {
-  interdites: 0,
-  "haut-risque": 1,
-  transparence: 2,
-  minimal: 3,
-};
-
 export default function ReglementModule() {
-  const [active, setActive] = useState(1); // Haut risque par défaut
+  const [sel, setSel] = useState(2); // Haut risque (défaut ordinateur ; mobile → Toute)
+  const [roleView, setRoleView] = useState("Déployeur"); // sélecteur mobile
   const tabsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
-  // Un renvoi « Haut risque · … » depuis une situation active l'onglet visé et
-  // amène le module à l'écran, même si l'ancre ne correspond à aucun élément.
+  function scrollToModule() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const target = rootRef.current?.closest("section") ?? rootRef.current;
+    target?.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+  }
+
   useEffect(() => {
-    function apply() {
-      if (!location.hash.startsWith("#reglement")) return;
+    function applyHash(): boolean {
+      if (!location.hash.startsWith("#reglement")) return false;
       const key = location.hash.replace(/^#reglement-?/, "");
-      if (key && key in HASH_TO_TAB) setActive(HASH_TO_TAB[key]);
-      if (key) {
-        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const target = rootRef.current?.closest("section") ?? rootRef.current;
-        target?.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
-      }
+      const idx = key === "" ? 0 : (key in HASH_TO_SEL ? HASH_TO_SEL[key] : null);
+      if (idx === null) return false;
+      setSel(idx);
+      scrollToModule();
+      return true;
     }
-    apply();
-    window.addEventListener("hashchange", apply);
-    return () => window.removeEventListener("hashchange", apply);
+    const hadHash = applyHash();
+    // Défaut mobile : premier onglet « Toute entreprise ».
+    if (!hadHash && window.matchMedia("(max-width: 767px)").matches) setSel(0);
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
   }, []);
 
   function onKey(e: KeyboardEvent<HTMLButtonElement>) {
-    let next: number | null = null;
-    if (e.key === "ArrowRight") next = (active + 1) % LEVELS.length;
-    else if (e.key === "ArrowLeft") next = (active - 1 + LEVELS.length) % LEVELS.length;
-    else if (e.key === "Home") next = 0;
-    else if (e.key === "End") next = LEVELS.length - 1;
-    if (next !== null) {
+    const visible = tabsRef.current.filter((b): b is HTMLButtonElement => !!b && b.offsetParent !== null);
+    const cur = visible.indexOf(e.currentTarget);
+    if (cur < 0) return;
+    let ni: number | null = null;
+    if (e.key === "ArrowRight") ni = (cur + 1) % visible.length;
+    else if (e.key === "ArrowLeft") ni = (cur - 1 + visible.length) % visible.length;
+    else if (e.key === "Home") ni = 0;
+    else if (e.key === "End") ni = visible.length - 1;
+    if (ni !== null) {
       e.preventDefault();
-      setActive(next);
-      tabsRef.current[next]?.focus();
+      const target = visible[ni];
+      setSel(tabsRef.current.indexOf(target));
+      target.focus();
     }
+  }
+
+  function goToute(e: ReactMouseEvent) {
+    e.preventDefault();
+    setSel(0);
+    scrollToModule();
   }
 
   return (
     <div className="reg" ref={rootRef}>
-      {/* ---- Bloc « Toute entreprise » : cartouche + obligations ---- */}
-      <div className="reg-toute">
+      <p className="reg-h">Selon le niveau de risque du système</p>
+
+      {/* ---- Barre d'onglets (Toute entreprise masqué sur ordinateur) ---- */}
+      <div className="mtabs" role="tablist" aria-label="Obligations par régime">
+        <button
+          type="button"
+          role="tab"
+          className="reg-tab-toute"
+          ref={(el) => { tabsRef.current[0] = el; }}
+          id="rt-toute"
+          aria-controls="rp-toute"
+          aria-selected={sel === 0}
+          tabIndex={sel === 0 ? 0 : -1}
+          onClick={() => setSel(0)}
+          onKeyDown={onKey}
+        >
+          Toute entreprise
+        </button>
+        {LEVELS.map((p, k) => (
+          <button
+            key={p.label}
+            type="button"
+            role="tab"
+            ref={(el) => { tabsRef.current[k + 1] = el; }}
+            id={`rt${k}`}
+            aria-controls={`rp${k}`}
+            aria-selected={sel === k + 1}
+            tabIndex={sel === k + 1 ? 0 : -1}
+            onClick={() => setSel(k + 1)}
+            onKeyDown={onKey}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ---- Panneau « Toute entreprise » : cartouche + obligations ---- */}
+      <div
+        className={sel === 0 ? "reg-toute is-active" : "reg-toute"}
+        role="tabpanel"
+        id="rp-toute"
+        aria-labelledby="rt-toute"
+      >
         <div className="reg-cartouche">
           <p className="reg-band">Déjà applicable</p>
           <h3 className="h3">Toute entreprise qui utilise l’IA</h3>
@@ -213,31 +268,23 @@ export default function ReglementModule() {
         </div>
       </div>
 
-      {/* ---- Onglets des niveaux de risque ---- */}
-      <div className="reg-levels">
-        <p className="reg-h">Selon le niveau de risque du système</p>
-        <div className="mtabs" role="tablist" aria-label="Niveaux de risque">
-          {LEVELS.map((p, i) => (
-            <button
-              key={p.label}
-              ref={(el) => { tabsRef.current[i] = el; }}
-              type="button"
-              role="tab"
-              id={`rt${i}`}
-              aria-controls={`rp${i}`}
-              aria-selected={active === i}
-              tabIndex={active === i ? 0 : -1}
-              onClick={() => setActive(i)}
-              onKeyDown={onKey}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-
-        {LEVELS.map((p, i) => (
-          <div className="reg-panel" role="tabpanel" id={`rp${i}`} aria-labelledby={`rt${i}`} hidden={active !== i} key={p.label}>
-            <p className="reg-band">{p.band}</p>
+      {/* ---- Panneaux des niveaux de risque ---- */}
+      <div className="reg-panels">
+        {LEVELS.map((p, k) => (
+          <div
+            className={sel === k + 1 ? "reg-panel is-active" : "reg-panel"}
+            role="tabpanel"
+            id={`rp${k}`}
+            aria-labelledby={`rt${k}`}
+            key={p.label}
+          >
+            {p.label === "Risque minimal" ? (
+              <p className="reg-band reg-band-muted">
+                Aucune obligation propre à ce niveau — <a href="#reglement" onClick={goToute}>voir les obligations applicables à toute entreprise</a>
+              </p>
+            ) : (
+              <p className="reg-band">{p.band}</p>
+            )}
             <div className="reg-cols">
               <div className="reg-cases">
                 <p className="hd2">Les cas qui relèvent de ce niveau</p>
@@ -248,16 +295,34 @@ export default function ReglementModule() {
                 </ul>
               </div>
               <div className="reg-roles" data-count={p.cols.length}>
-                {p.cols.map((col) => (
-                  <div className="reg-role" key={col.role}>
-                    <p className="reg-role-t">{col.role}</p>
-                    {col.rich ? (
-                      col.rich.map((it) => <RichRow it={it} key={it.b} />)
-                    ) : (
-                      <p className="reg-plain">{col.plain}</p>
-                    )}
+                {p.cols.length > 1 ? (
+                  <div className="reg-select" role="group" aria-label="Choisir un rôle">
+                    {p.cols.map((col) => (
+                      <button
+                        key={col.role}
+                        type="button"
+                        className={roleView === col.role ? "reg-select-btn is-on" : "reg-select-btn"}
+                        aria-pressed={roleView === col.role}
+                        onClick={() => setRoleView(col.role)}
+                      >
+                        {col.role}
+                      </button>
+                    ))}
                   </div>
-                ))}
+                ) : null}
+                {p.cols.map((col) => {
+                  const mobileVisible = p.cols.length === 1 || col.role === roleView;
+                  return (
+                    <div className={mobileVisible ? "reg-role is-rolevis" : "reg-role"} key={col.role}>
+                      <p className="reg-role-t">{col.role}</p>
+                      {col.rich ? (
+                        col.rich.map((it) => <RichRow it={it} key={it.b} />)
+                      ) : (
+                        <p className="reg-plain">{col.plain}</p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <p className="ft">
