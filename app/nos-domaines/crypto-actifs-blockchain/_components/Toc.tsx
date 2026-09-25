@@ -9,14 +9,18 @@ import { useEffect, useState } from "react";
  * graisse (jamais par la couleur seule). Les liens sont dans le HTML serveur.
  */
 const SECTIONS = [
-  { id: "structurer", label: "Structurer le projet" },
-  { id: "psca", label: "Autorisation PSCA" },
-  { id: "contrats", label: "Contrats et code" },
-  { id: "technique", label: "Lecture technique" },
-  { id: "jetons", label: "Jetons, tokenisation et NFT" },
-  { id: "lcb-ft", label: "LCB-FT et obligations déclaratives" },
-  { id: "contentieux", label: "Contentieux" },
-  { id: "intervention", label: "Notre intervention" },
+  { id: "structurer", label: "Les règles applicables", num: true },
+  { id: "psca", label: "L'autorisation (PSCA)", num: true },
+  { id: "contrats", label: "Contrats et smart contracts", num: true },
+  { id: "technique", label: "L'examen technique", num: true },
+  { id: "jetons", label: "Jetons et NFT", num: true },
+  { id: "lcb-ft", label: "Lutte contre le blanchiment", num: true },
+  { id: "contentieux", label: "Litiges", num: true },
+  { id: "intervention", label: "Méthode", num: true },
+  { id: "cas", label: "Un cas, du code aux documents", num: false },
+  { id: "livrables", label: "Livrables", num: false },
+  { id: "equipe", label: "Équipe", num: false },
+  { id: "faq", label: "Questions", num: false },
 ];
 
 export function Toc() {
@@ -41,7 +45,7 @@ export function Toc() {
       <h2 id="toc-titre">Sur cette page</h2>
       <ol>
         {SECTIONS.map((s) => (
-          <li key={s.id}>
+          <li key={s.id} data-nonum={s.num ? undefined : "true"}>
             <a href={`#${s.id}`} aria-current={active === s.id ? "true" : undefined}>
               {s.label}
             </a>
