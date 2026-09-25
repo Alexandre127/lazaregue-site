@@ -349,7 +349,7 @@ export default function Page() {
                 </li>
                 <li className="person">
                   <div className="ph">Emplacement réservé · intervenant technique à valider</div>
-                  <div><h3>Appui technique</h3><p className="role">Selon le dossier</p><p>{fr("Un intervenant technique adapté est associé lorsque les faits l’exigent.")}</p></div>
+                  <div><h3>Expertise technique</h3><p>{fr("Examen technique conduit avec les experts du cabinet.")}</p></div>
                 </li>
               </ul>
             </div>
