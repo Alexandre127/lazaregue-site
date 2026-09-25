@@ -10,7 +10,7 @@ export const FAQ_IA: FaqItem[] = [
     id: "a1",
     q: "Notre entreprise utilise seulement ChatGPT. Sommes-nous vraiment concernés ?",
     a: [
-      "Les obligations les plus lourdes ne s’appliquent pas à cet usage. Mais l’utilisation d’un assistant générique soulève d’autres questions : confidentialité des informations saisies, protection des secrets d’affaires, propriété des contenus produits, information des salariés. Ces sujets relèvent du RGPD, du droit du travail et du droit des contrats, et sont exigibles aujourd’hui.",
+      "Les obligations les plus lourdes ne s’appliquent pas à cet usage. L’obligation de maîtrise de l’IA de l’article 4 s’applique en revanche dès maintenant, et l’usage d’un assistant générique soulève d’autres questions : confidentialité des informations saisies, secrets d’affaires, propriété des contenus produits, information des salariés. Ces sujets relèvent du RGPD, du droit du travail et du droit des contrats, et sont exigibles aujourd’hui.",
     ],
   },
   {

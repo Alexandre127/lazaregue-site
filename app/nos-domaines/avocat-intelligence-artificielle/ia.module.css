@@ -1,8 +1,8 @@
 /* ==========================================================================
-   Page /nos-domaines/avocat-intelligence-artificielle — refonte v4 (21 sept.
-   2026). Portée : descendants de `.ia` (classe hashée) ; :global pour le balisage
-   repris de la maquette. Hero bleu nuit (photo fondue). Charte : Bebas H1 + grands
-   numéros ; Space Grotesk ; DM Mono labels ; bleu #1A47FF, aucun bleu ciel.
+   Page /nos-domaines/avocat-intelligence-artificielle — refonte (fil unique :
+   situation → règlement → mission → preuve). Portée : descendants de `.ia`
+   (classe hashée) ; :global pour le balisage repris. Hero bleu nuit uni. Charte :
+   Bebas H1 + grands numéros ; Space Grotesk ; DM Mono labels ; bleu #1A47FF.
    ========================================================================== */
 .ia {
   --tint: #eef1fb;
@@ -17,9 +17,20 @@
 @media (max-width: 640px) { .ia :global(.wrap) { padding-inline: var(--page-margin-mobile); } }
 .ia :global(.sec) { padding-block: clamp(56px, 7vw, 104px); }
 .ia :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
+.ia :global(.missions article[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 .ia :global(.ghost) { background: var(--off); }
 .ia :global(.navy) { background: var(--navy); color: #fff; }
 .ia :global(.navy :focus-visible) { outline-color: #fff; }
+/* Texte clair par défaut dans toute section navy : la règle de base
+   `:where(.ia) p,li,dd { color: var(--ink) }` pose la couleur sombre
+   directement sur chaque <p>/<li>/<dd> (elle bat l'héritage blanc du parent).
+   On la surcharge ici pour tous les p/li/dd des sections navy (spécificité
+   supérieure) ; les correctifs explicites plus spécifiques (.navy .lead, etc.)
+   gardent leur couleur propre. Corrige l'accroche (.acc) et « Résultat commun »
+   (.common), auparavant en --ink sur navy donc illisibles. */
+.ia :global(.navy) p,
+.ia :global(.navy) li,
+.ia :global(.navy) dd { color: rgba(255, 255, 255, 0.85); }
 
 .ia :global(.label) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); }
 .ia :global(.navy .label) { color: rgba(255, 255, 255, 0.72); }
@@ -29,6 +40,7 @@
 .ia :global(.lead) { font-size: 18px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; margin: 0; }
 .ia :global(.navy .lead) { color: rgba(255, 255, 255, 0.82); }
 .ia :global(.tx) { font-size: 16px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+.ia :global(.navy .tx) { color: rgba(255, 255, 255, 0.82); }
 .ia :global(.h3) { font-family: var(--ff-body); font-size: 21px; font-weight: 500; line-height: 1.3; margin: 0; }
 .ia :global(.navy .h3) { color: #fff; }
 .ia :global(.meta) { font-family: var(--ff-mono); font-size: 12px; color: var(--text-muted); }
@@ -39,21 +51,19 @@
 .ia :global(.btn-disabled) { opacity: 0.5; cursor: not-allowed; }
 
 /* ================================ 1. HERO =========================== */
-.ia :global(.hero-i) { position: relative; overflow: hidden; min-height: 600px; background: var(--navy); color: #fff; padding: calc(var(--header-h) + 28px) 0 96px; }
-.ia :global(.hero-i .wrap) { position: relative; z-index: 1; }
-.ia :global(.ph-bg) { position: absolute; inset: 0 0 0 40%; background: var(--navy); }
-.ia :global(.ph-bg img) { object-fit: cover; }
-.ia :global(.ph-bg)::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, var(--navy) 0%, rgba(10, 15, 46, 0.75) 35%, rgba(10, 15, 46, 0.2) 100%); }
+.ia :global(.hero-i) { position: relative; overflow: hidden; background: var(--navy); color: #fff; padding: calc(var(--header-h) + 28px) 0 96px; }
 .ia :global(.crumb) { font-family: var(--ff-mono); font-size: 13px; color: rgba(255, 255, 255, 0.7); }
 .ia :global(.crumb a) { color: rgba(255, 255, 255, 0.7); text-decoration: none; }
 .ia :global(.crumb a:hover) { color: #fff; }
 .ia :global(.crumb [aria-current]) { color: #fff; }
-.ia :global(.hero-copy) { max-width: 760px; }
-.ia :global(.hero-i .label) { color: rgba(255, 255, 255, 0.75); margin-top: 22px; display: block; }
-.ia :global(.hero-i h1) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(44px, 5.6vw, 80px); line-height: 0.94; margin: 16px 0 18px; color: #fff; overflow-wrap: break-word; }
-.ia :global(.hero-i .acc) { font-size: clamp(20px, 2vw, 24px); font-weight: 500; line-height: 1.35; border-left: 4px solid var(--blue); padding-left: 18px; }
+.ia :global(.hero-grid) { display: grid; grid-template-columns: 7fr 5fr; gap: 24px 56px; align-items: end; margin-top: 30px; }
+.ia :global(.hero-main) { min-width: 0; }
+.ia :global(.hero-side) { min-width: 0; }
+.ia :global(.hero-i .label) { color: rgba(255, 255, 255, 0.75); display: block; }
+.ia :global(.hero-i h1) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(44px, 5.2vw, 76px); line-height: 0.94; margin: 14px 0 0; color: #fff; overflow-wrap: break-word; }
+.ia :global(.hero-i .acc) { font-size: clamp(20px, 2vw, 24px); font-weight: 500; line-height: 1.35; border-left: 4px solid var(--blue); padding-left: 18px; color: #fff; }
 .ia :global(.hero-i .lead) { color: rgba(255, 255, 255, 0.85); margin-top: 16px; }
-.ia :global(.hero-cta) { display: flex; gap: 14px 24px; flex-wrap: wrap; margin-top: 32px; align-items: center; }
+.ia :global(.hero-cta) { display: flex; gap: 14px 24px; flex-wrap: wrap; margin-top: 28px; align-items: center; }
 .ia :global(.heroLink) { color: #fff; font-weight: 600; font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; }
 
 /* ============================ 2. SITUATIONS ========================= */
@@ -62,49 +72,68 @@
 .ia :global(.sits .s) { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 22px; font-size: 18px; font-weight: 600; line-height: 1.35; }
 .ia :global(.sits .s p) { margin: 0; }
 .ia :global(.sits .sn) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); padding-top: 3px; }
-.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; margin-top: auto; font-size: 16px; line-height: 1.55; color: var(--ink); }
+.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; margin-top: auto; font-size: 16px; line-height: 1.55; color: var(--ink); display: flex; flex-direction: column; gap: 12px; }
 .ia :global(.sits .d p) { margin: 0; }
-.ia :global(.sits .dl) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.ia :global(.renvoi) { font-family: var(--ff-mono); font-size: 12.5px; letter-spacing: 0.02em; color: var(--blue); display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
+.ia :global(.renvoi a) { color: var(--blue); text-decoration: none; min-height: 24px; display: inline-flex; align-items: center; }
+.ia :global(.renvoi a:hover) { text-decoration: underline; }
+.ia :global(.renvoi .rg) { font-weight: 600; }
 
-/* ==================== 3. PRINCIPE + MATRICE ======================== */
-.ia :global(.three) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-bottom: 28px; }
-.ia :global(.three article) { border-top: 3px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-.ia :global(.three-h) { font-size: 19px; font-weight: 600; }
-.ia :global(.three-nuance) { max-width: 860px; margin-bottom: 36px; }
-.ia :global(.matrice-intro) { margin: 6px 0 16px; }
+/* ==================== 3. CE QUE DIT LE RÈGLEMENT =================== */
+.ia :global(.reg-toute) { display: grid; grid-template-columns: 4fr 8fr; border: 1px solid var(--bd); }
+.ia :global(.reg-cartouche) { background: var(--navy); color: #fff; padding: 26px 28px; display: flex; flex-direction: column; gap: 10px; }
+.ia :global(.reg-cartouche .h3) { color: #fff; }
+.ia :global(.reg-cartouche p) { color: rgba(255, 255, 255, 0.82); font-size: 15px; line-height: 1.55; margin: 0; }
+.ia :global(.reg-band) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin: 0; }
+.ia :global(.reg-cartouche .reg-band) { color: rgba(255, 255, 255, 0.7); }
+.ia :global(.reg-obls) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ia :global(.reg-row) { border-top: 1px solid var(--bd); border-left: 1px solid var(--bd); padding: 12px 16px; }
+.ia :global(.reg-obls .reg-row:nth-child(-n + 3)) { border-top: 0; }
+.ia :global(.reg-obls .reg-row:nth-child(3n + 1)) { border-left: 0; }
+.ia :global(.reg-row-head) { display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; align-items: start; }
+.ia :global(.reg-row-b) { grid-column: 1; font-size: 15px; font-weight: 600; }
+.ia :global(.reg-row-b a) { color: var(--blue); text-decoration: underline; }
+.ia :global(.reg-row-head em) { grid-column: 1; font-style: normal; font-family: var(--ff-mono); font-size: 11.5px; color: var(--blue); }
+.ia :global(.reg-row-toggle) { grid-column: 2; grid-row: 1 / span 2; align-self: start; width: 40px; min-height: 40px; border: 0; background: none; cursor: pointer; color: var(--blue); font-family: var(--ff-mono); font-size: 22px; line-height: 1; }
+.ia :global(.reg-row-body) { display: none; font-size: 13.5px; line-height: 1.5; color: var(--text-muted); margin: 8px 0 0; }
+.ia :global(.reg-row-body.is-open) { display: block; }
 
+.ia :global(.reg-levels) { margin-top: 28px; }
+.ia :global(.reg-h) { font-family: var(--ff-body); font-size: 21px; font-weight: 500; margin: 0 0 14px; }
 .ia :global(.mtabs) { display: flex; flex-wrap: wrap; border: 1px solid var(--ink); width: max-content; max-width: 100%; }
 .ia :global(.mtabs button) { min-height: 48px; padding: 0 18px; border: 0; border-right: 1px solid var(--ink); background: #fff; font: 500 15px var(--ff-body); cursor: pointer; color: var(--ink); }
 .ia :global(.mtabs button:last-child) { border-right: 0; }
 .ia :global(.mtabs button[aria-selected="true"]) { background: var(--navy); color: #fff; }
-.ia :global(.mpanel) { margin-top: 20px; border: 1px solid var(--ink); }
-.ia :global(.mpanel[hidden]) { display: none; }
-.ia :global(.mpanel .hd) { background: var(--navy); color: #fff; padding: 14px 18px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
-.ia :global(.cases-in) { background: #fff; padding: 18px 18px 8px; }
-.ia :global(.hd2) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
-.ia :global(.cases-in ul) { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; list-style: none; margin: 0; padding: 0; }
-.ia :global(.cases-in li) { font-size: 15px; line-height: 1.45; padding: 8px 0 8px 18px; border-top: 1px solid var(--bd); position: relative; }
-.ia :global(.cases-in li)::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
-.ia :global(.mpanel .r) { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 16px 18px; border-top: 1px solid var(--bd); background: #fff; }
-.ia :global(.mpanel .r b) { font-weight: 600; }
-.ia :global(.mpanel .ft) { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 12px 18px; background: var(--tint); font-size: 14px; border-top: 1px solid var(--bd); margin: 0; }
-.ia :global(.mis-hint) { display: none; margin-top: 8px; }
+.ia :global(.reg-panel) { margin-top: 18px; border: 1px solid var(--ink); }
+.ia :global(.reg-panel[hidden]) { display: none; }
+.ia :global(.reg-panel .reg-band) { background: var(--navy); color: #fff; padding: 12px 18px; }
+.ia :global(.reg-cols) { display: grid; grid-template-columns: 4fr 8fr; }
+.ia :global(.reg-cases) { padding: 16px 18px; border-right: 1px solid var(--bd); }
+.ia :global(.hd2) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin: 0 0 8px; }
+.ia :global(.reg-cases ul) { list-style: none; margin: 0; padding: 0; }
+.ia :global(.reg-cases li) { font-size: 14px; line-height: 1.45; padding: 8px 0 8px 18px; border-top: 1px solid var(--bd); position: relative; }
+.ia :global(.reg-cases li:first-child) { border-top: 0; }
+.ia :global(.reg-cases li)::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
+.ia :global(.reg-roles) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ia :global(.reg-roles[data-count="1"]) { grid-template-columns: 1fr; }
+.ia :global(.reg-role) { padding: 16px 18px; border-left: 1px solid var(--bd); }
+.ia :global(.reg-role:first-child) { border-left: 0; }
+.ia :global(.reg-role-t) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin: 0 0 8px; }
+.ia :global(.reg-plain) { font-size: 14px; line-height: 1.55; color: var(--text-muted); margin: 0; }
+.ia :global(.reg-role .reg-row) { border-left: 0; padding: 10px 0; }
+.ia :global(.reg-role .reg-row:first-of-type) { border-top: 0; }
+.ia :global(.reg-role .reg-row:first-child) { border-top: 0; }
+.ia :global(.ft) { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 12px 18px; background: var(--tint); font-size: 14px; border-top: 1px solid var(--bd); margin: 0; }
+.ia :global(.reg-foot) { margin-top: 18px; font-size: 14px; color: var(--text-muted); line-height: 1.55; max-width: 900px; }
+.ia :global(.reg-cal) { color: var(--text-muted); }
 
-/* ==================== 4. OBLIGATIONS ============================== */
-.ia :global(.obls) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.ia :global(.obl) { background: #fff; border: 1px solid var(--bd); display: flex; flex-direction: column; }
-.ia :global(.obl .oh) { background: var(--navy); color: #fff; padding: 18px 20px; border-bottom: 4px solid var(--blue); min-height: 132px; }
-.ia :global(.obl .oh h3) { font-family: var(--ff-body); font-size: 19px; font-weight: 600; line-height: 1.3; color: #fff; margin: 0; }
-.ia :global(.obl .when) { font-family: var(--ff-mono); font-size: 12px; color: rgba(255, 255, 255, 0.8); margin-top: 8px; }
-.ia :global(.obl ul) { padding: 4px 20px 14px; list-style: none; margin: 0; }
-.ia :global(.obl li) { display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--bd); }
-.ia :global(.obl li:last-child) { border-bottom: 0; }
-.ia :global(.obl li b) { font-size: 16px; font-weight: 600; }
-.ia :global(.obl li span) { font-size: 14px; line-height: 1.5; color: var(--text-muted); }
-.ia :global(.obl li em) { font-style: normal; font-family: var(--ff-mono); font-size: 12px; color: var(--blue); }
-.ia :global(.ft2) { margin-top: 18px; font-size: 14px; color: var(--text-muted); line-height: 1.55; max-width: 900px; }
+/* Ordinateur : les lignes repliables sont dépliées, sans bouton (aucun texte masqué). */
+@media (min-width: 768px) {
+  .ia :global(.reg-row-body) { display: block; }
+  .ia :global(.reg-row-toggle) { display: none; }
+}
 
-/* ==================== 5. MISSIONS (subgrid) ====================== */
+/* ==================== 4. MISSIONS (subgrid) ====================== */
 .ia :global(.missions) { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: auto auto 1fr auto; column-gap: 0; border-top: 2px solid var(--ink); }
 .ia :global(.missions article) { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 14px; padding: 24px 18px 0; border-left: 1px solid var(--bd); }
 .ia :global(.missions article:first-child) { padding-left: 0; border-left: 0; }
@@ -117,59 +146,58 @@
 .ia :global(.recv b) { font-family: var(--ff-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); display: block; margin-bottom: 4px; }
 .ia :global(.missions-foot) { margin-top: 24px; max-width: 860px; }
 
-/* ==================== 6. DÉROULEMENT ============================= */
-.ia :global(.steps3) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; list-style: none; margin: 0; padding: 0; }
-.ia :global(.steps3 li) { border-top: 3px solid var(--blue); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-.ia :global(.steps3 .k) { font-family: var(--ff-mono); font-size: 13px; color: var(--blue); }
-.ia :global(.step-h) { font-size: 19px; }
+/* Rails défilants (missions, déroulement) : grille sur ordinateur, rail sur mobile. */
+.ia :global(.rail) { min-width: 0; }
+.ia :global(.rail-count) { display: none; font-family: var(--ff-mono); font-size: 13px; color: var(--blue); margin: 10px 0 0; }
 
-/* ==================== 7. DEUX INTERVENTIONS ===================== */
+/* ==================== 5. DEUX INTERVENTIONS ===================== */
 .ia :global(.cases) { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .ia :global(.dcard) { background: #fff; border: 1px solid var(--bd); display: flex; flex-direction: column; }
 .ia :global(.dcard .top) { padding: 20px 22px; background: var(--ink); color: #fff; border-bottom: 4px solid var(--blue); }
 .ia :global(.dcard .pp) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); margin: 0; }
 .ia :global(.dcard .ct) { font-family: var(--ff-body); font-size: 20px; font-weight: 600; line-height: 1.3; margin-top: 6px; color: #fff; }
-.ia :global(.dcard dl) { margin: 0; padding: 0 22px 8px; flex: 1; }
+.ia :global(.dcard .dmis) { font-family: var(--ff-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); margin: 10px 0 0; }
+.ia :global(.dcard dl) { margin: 0; padding: 0 22px; }
+.ia :global(.dcard .d-sit) { padding-top: 8px; }
 .ia :global(.dcard dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); padding-top: 14px; }
-.ia :global(.dcard dd) { margin: 4px 0 0; font-size: 15px; line-height: 1.55; padding-bottom: 12px; border-bottom: 1px solid var(--bd); }
-.ia :global(.dcard dd:last-of-type) { border-bottom: 0; }
-.ia :global(.dcard .res) { background: var(--blue); color: #fff; padding: 16px 22px; }
+.ia :global(.dcard dd) { margin: 4px 0 0; font-size: 15px; line-height: 1.55; padding-bottom: 12px; }
+.ia :global(.dcard .d-sit dd) { border-bottom: 1px solid var(--bd); }
+.ia :global(.dcard-toggle) { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: 0; border-top: 1px solid var(--bd); cursor: pointer; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); padding: 14px 22px; min-height: 44px; }
+.ia :global(.dcard-inner) { display: none; grid-template-columns: 1fr 1fr; }
+.ia :global(.dcard-inner.is-open) { display: grid; }
+.ia :global(.dcard-inner .d-dif) { border-right: 1px solid var(--bd); }
+.ia :global(.dcard .res) { background: var(--blue); color: #fff; padding: 16px 22px; margin-top: auto; }
 .ia :global(.dcard .res b) { font-family: var(--ff-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 4px; color: rgba(255, 255, 255, 0.85); }
 .ia :global(.dcard .res p) { font-weight: 600; line-height: 1.45; color: #fff; margin: 0; }
-.ia :global(.risk) { margin-top: 28px; background: var(--navy); color: #fff; padding: 28px 32px; display: grid; grid-template-columns: 5fr 7fr; gap: 40px; }
-.ia :global(.risk-h) { font-size: 22px; color: #fff; }
-.ia :global(.risk p) { color: rgba(255, 255, 255, 0.88); line-height: 1.6; margin: 0; }
 
-/* ==================== 8. DUO (navy) ============================= */
-.ia :global(.duo) { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.ia :global(.duo article) { border: 1px solid rgba(255, 255, 255, 0.3); padding: 24px; display: grid; grid-template-columns: 110px 1fr; gap: 20px; }
-.ia :global(.duo .ph) { position: relative; height: 130px; overflow: hidden; background: rgba(255, 255, 255, 0.12); }
+/* Ordinateur : « Détail du dossier » toujours ouvert (Difficulté | Intervention). */
+@media (min-width: 768px) {
+  .ia :global(.dcard-toggle) { display: none; }
+  .ia :global(.dcard-inner) { display: grid; }
+}
+
+/* ============= 6. MÉTHODE ET DÉROULEMENT (navy) =============== */
+.ia :global(.meth-grid) { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: start; }
+.ia :global(.meth), .ia :global(.derou) { min-width: 0; }
+.ia :global(.derou-h) { font-family: var(--ff-body); }
+.ia :global(.duo) { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ia :global(.duo article) { border: 1px solid rgba(255, 255, 255, 0.3); padding: 22px; display: grid; grid-template-columns: 96px 1fr; gap: 18px; }
+.ia :global(.duo .ph) { position: relative; height: 116px; overflow: hidden; background: rgba(255, 255, 255, 0.12); }
 .ia :global(.duo p) { color: rgba(255, 255, 255, 0.85); line-height: 1.55; font-size: 15px; margin: 0; }
-.ia :global(.common) { margin-top: 24px; border-left: 4px solid var(--blue); padding-left: 20px; font-size: 19px; line-height: 1.5; }
+.ia :global(.common) { margin-top: 24px; border-left: 4px solid var(--blue); padding-left: 20px; font-size: 19px; line-height: 1.5; color: #fff; }
+.ia :global(.steps3) { display: grid; grid-template-columns: 1fr; gap: 0; list-style: none; margin: 0; padding: 0; }
+.ia :global(.steps3 .step) { border-top: 2px solid rgba(255, 255, 255, 0.3); padding: 18px 0; display: flex; flex-direction: column; gap: 8px; }
+.ia :global(.steps3 .step:first-child) { border-top: 0; }
+.ia :global(.steps3 .k) { font-family: var(--ff-mono); font-size: 13px; color: rgba(255, 255, 255, 0.72); }
+.ia :global(.step-h) { font-size: 19px; }
+.ia :global(.derou .step-h) { color: #fff; }
 
-/* ==================== 9. CALENDRIER ============================= */
-.ia :global(.tl) { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); list-style: none; margin: 0; padding: 0; }
-.ia :global(.tl li) { padding: 18px 16px 0 0; display: flex; flex-direction: column; gap: 6px; position: relative; }
-.ia :global(.tl li + li) { padding-left: 16px; border-left: 1px solid var(--bd); }
-.ia :global(.tl li)::before { content: ""; width: 12px; height: 12px; background: var(--ink); position: absolute; top: -7px; left: 0; }
-.ia :global(.tl li + li)::before { left: 16px; }
-.ia :global(.tl li.next)::before { background: var(--blue); }
-.ia :global(.tl .d) { font-family: var(--ff-mono); font-size: 13px; font-weight: 500; }
-.ia :global(.tl li.done .d) { color: var(--text-muted); }
-.ia :global(.tl li.next .d) { color: var(--blue); }
-.ia :global(.tl p) { font-size: 14px; line-height: 1.45; color: var(--text-muted); margin: 0; }
-.ia :global(.keep) { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.ia :global(.keep > div) { padding: 20px 22px; }
-.ia :global(.keep .ghost) { background: var(--off); }
-.ia :global(.keep-tx) { margin-top: 8px; line-height: 1.55; }
-.ia :global(.cal-maj) { margin-top: 14px; }
-.ia :global(.cal-ressource) { color: var(--text-muted); }
-.ia :global(.wp) { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; background: #f7f6f2; border: 1px solid var(--bd); padding: 22px 26px; margin-top: 24px; }
-.ia :global(.wp-t) { font-weight: 600; font-size: 18px; }
-
-/* ==================== 10. FAQ =================================== */
-.ia :global(.faq-grid) { display: grid; grid-template-columns: 4fr 8fr; gap: 64px; }
+/* ==================== 7. LIVRE BLANC + FAQ ===================== */
+.ia :global(.faq-grid) { display: grid; grid-template-columns: 4fr 8fr; gap: 64px; align-items: start; }
+.ia :global(.faq-left) { display: flex; flex-direction: column; gap: 28px; }
 .ia :global(.faq-head) { margin: 0; }
+.ia :global(.wp) { display: flex; flex-direction: column; gap: 16px; background: #f7f6f2; border: 1px solid var(--bd); padding: 22px 26px; }
+.ia :global(.wp-t) { font-weight: 600; font-size: 18px; }
 .ia :global(.faq) { border-top: 1px solid var(--ink); }
 .ia :global(.faq-item) { border-bottom: 1px solid var(--bd); }
 .ia :global(.faq-item h3) { margin: 0; }
@@ -187,33 +215,48 @@
 
 /* ================================ responsive ======================== */
 @media (max-width: 1100px) {
-  .ia :global(.mis-scroll) { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
+  .ia :global(.hero-grid) { grid-template-columns: 1fr; align-items: start; }
+  .ia :global(.reg-toute) { grid-template-columns: 1fr; }
+  .ia :global(.reg-obls) { grid-template-columns: 1fr 1fr; }
+  .ia :global(.meth-grid) { grid-template-columns: 1fr; gap: 40px; }
+  /* Missions : rail défilant + repère « i / 5 ». */
+  .ia :global(.rail) { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
   .ia :global(.missions) { grid-template-columns: repeat(5, 260px); width: max-content; }
   .ia :global(.missions article) { scroll-snap-align: start; }
-  .ia :global(.mis-hint) { display: block; }
-  .ia :global(.hero-copy) { max-width: none; }
+  .ia :global(.rail-count) { display: block; }
   .ia :global(.sits) { grid-template-columns: 1fr; }
-  .ia :global(.obls) { grid-template-columns: 1fr; }
-  .ia :global(.tl) { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; }
-  .ia :global(.tl li + li) { border-left: 0; padding-left: 0; }
-  .ia :global(.tl li + li)::before { left: 0; }
-  .ia :global(.risk) { grid-template-columns: 1fr; gap: 16px; }
 }
 @media (max-width: 767px) {
+  .ia :global(.hero-i) { padding-top: calc(var(--header-h) + 20px); padding-bottom: 64px; }
   .ia :global(.missions) { grid-template-columns: repeat(5, 80vw); }
-  .ia :global(.ph-bg) { inset: 0; opacity: 0.4; }
-  .ia :global(.hero-i) { min-height: 0; padding-top: calc(var(--header-h) + 20px); }
-  .ia :global(.three),
-  .ia :global(.steps3),
-  .ia :global(.cases),
-  .ia :global(.duo),
-  .ia :global(.keep),
-  .ia :global(.tl) { grid-template-columns: 1fr; }
-  .ia :global(.mpanel .r) { grid-template-columns: 1fr; gap: 6px; }
-  .ia :global(.cases-in ul) { grid-template-columns: 1fr; }
-  .ia :global(.duo article) { grid-template-columns: 1fr; }
+  /* Déroulement : rail défilant + repère « i / 3 ». */
+  .ia :global(.derou .steps3) { grid-auto-flow: column; grid-auto-columns: 82vw; width: max-content; }
+  .ia :global(.derou .steps3 .step) { border-top: 2px solid rgba(255, 255, 255, 0.3); padding-right: 20px; scroll-snap-align: start; }
+  .ia :global(.reg-obls) { grid-template-columns: 1fr; }
+  .ia :global(.reg-obls .reg-row) { border-left: 0; }
+  .ia :global(.reg-obls .reg-row:nth-child(-n + 3)) { border-top: 1px solid var(--bd); }
+  .ia :global(.reg-obls .reg-row:first-child) { border-top: 0; }
+  .ia :global(.reg-cols) { grid-template-columns: 1fr; }
+  .ia :global(.reg-cases) { border-right: 0; border-bottom: 1px solid var(--bd); }
+  .ia :global(.reg-roles), .ia :global(.reg-roles[data-count="1"]) { grid-template-columns: 1fr; }
+  .ia :global(.reg-role) { border-left: 0; border-top: 1px solid var(--bd); }
+  .ia :global(.reg-role:first-child) { border-top: 0; }
+  .ia :global(.cases) { grid-template-columns: 1fr; }
+  .ia :global(.dcard-inner) { grid-template-columns: 1fr; }
+  .ia :global(.dcard-inner .d-dif) { border-right: 0; }
+  .ia :global(.duo) { grid-template-columns: 1fr; }
+  .ia :global(.duo article) { grid-template-columns: 64px 1fr; }
+  .ia :global(.duo .ph) { height: 64px; }
   .ia :global(.faq-grid) { grid-template-columns: 1fr; gap: 28px; }
-  .ia :global(.mtabs) { width: 100%; }
-  .ia :global(.mtabs button) { flex: 1 1 50%; border-bottom: 1px solid var(--ink); }
+  .ia :global(.mtabs) { width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+  .ia :global(.mtabs button) { flex: 0 0 auto; }
   .ia :global(.hero-cta .btn) { width: 100%; }
+  .ia :global(.sits-intro) { display: none; }
+  .ia :global(.sits li) { border: 0; border-top: 1px solid var(--bd); }
+  .ia :global(.sits .s) { padding: 16px 0 8px; }
+  .ia :global(.sits .d) { background: none; border-top: 0; padding: 0 0 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ia :global(*) { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
