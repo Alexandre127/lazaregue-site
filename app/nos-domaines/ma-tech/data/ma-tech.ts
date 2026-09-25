@@ -97,7 +97,7 @@ export const METHODE = {
   eyebrow: "Méthode",
   h2: "Auditer, traduire, remédier",
   steps: [
-    { meta: "Avant la lettre d'intention, puis en data room", when: "avant la lettre d'intention, puis en data room", big: "Auditer", p: "Établir ce que la cible détient réellement sur son code, ses composants tiers, ses contrats, ses données, sa sécurité et ses systèmes d'IA." },
+    { meta: "Avant la lettre d'intention, puis en data room", when: "avant la lettre d'intention, puis en data room", big: "Auditer", p: "Établir ce que la cible détient réellement, sur pièces et en entretiens." },
     { meta: "Effet sur le prix, le calendrier et le contrat", when: "au moment de fixer le prix, le calendrier et le contrat", big: "Traduire", p: "Convertir chaque constat en décision : poursuivre, demander une pièce, régulariser, conditionner, garantir ou budgéter." },
     { meta: "Régularisations avant closing, plan après", when: "avant la signature, puis après le closing", big: "Remédier", p: "Obtenir les cessions de droits et accords manquants avant la réalisation, puis sécuriser l'intégration une fois l'opération conclue." },
   ],
