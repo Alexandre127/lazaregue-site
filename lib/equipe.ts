@@ -61,7 +61,7 @@ export const MEMBRES: Record<string, Membre> = {
   nadia: {
     slug: "nadia",
     nom: "Nadia Abchiche-Mimouni",
-    statut: "Experte indépendante — docteure en IA",
+    statut: "Docteure en intelligence artificielle",
     avocat: false,
     photo: "/images/nadia-pro.jpg",
   },

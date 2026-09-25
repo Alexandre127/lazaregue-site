@@ -100,7 +100,7 @@ export const EXPERTS: Membre[] = [
     bio: "Il intervient sur l'audit des systèmes d'information, les politiques de sécurité et l'investigation numérique. Sur un incident, il établit l'état réel du système et sécurise les traces — ce qui déterminera ce qui peut être démontré.",
     domaines: ["Incidents cyber", "NIS 2", "Preuve numérique", "Contentieux techniques"],
     meta: [{ dt: "Modalités", dd: "Mobilisé selon les besoins du dossier" }],
-    statut: "N'exerce pas la profession d'avocat.",
+    statut: "Consultant technique en cybersécurité",
     lien: {
       href: "https://www.kinsa.fr/cybersecurite.html",
       label: "Son activité",
@@ -109,12 +109,12 @@ export const EXPERTS: Membre[] = [
   },
   {
     slug: "nadia",
-    eyebrow: "Experte indépendante — docteure en IA",
+    eyebrow: "Docteure en intelligence artificielle",
     nom: "Nadia Abchiche-Mimouni",
     bio: "Docteure en intelligence artificielle et maître de conférences à Nice Sophia Antipolis, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
     domaines: ["Dossiers IA et AI Act", "Qualification de systèmes", "Expertise"],
     meta: [{ dt: "Modalités", dd: "Mobilisée selon les besoins du dossier" }],
-    statut: "N'exerce pas la profession d'avocat.",
+    statut: "Docteure en intelligence artificielle",
     lien: {
       href: "https://webusers.i3s.unice.fr/~abchiche/",
       label: "Sa page universitaire",

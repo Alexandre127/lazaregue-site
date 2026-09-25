@@ -428,8 +428,8 @@ const LAWYERS = [
   { nom: "Amir Ben Majed", statut: "Avocat", role: "Avocat au barreau d’Évry", exp: "Contrats IT et contentieux informatique", photo: "/images/amir-pro.jpg", pos: "center 22%" },
 ];
 const TECHNICAL = [
-  { nom: "Khalid Sookia", statut: "Appui technique", role: "Consultant en cybersécurité", exp: "Investigation numérique", photo: "/images/khalid-pro.jpg", pos: "center 22%" },
-  { nom: "Nadia Abchiche-Mimouni", statut: "Appui technique", role: "Maîtresse de conférences en informatique à l’Université Côte d’Azur", exp: "Intelligence artificielle et éthique algorithmique", photo: "/images/nadia-pro.jpg", pos: "center 22%" },
+  { nom: "Khalid Sookia", statut: "Consultant technique en cybersécurité", role: "Consultant en cybersécurité", exp: "Investigation numérique", photo: "/images/khalid-pro.jpg", pos: "center 22%" },
+  { nom: "Nadia Abchiche-Mimouni", statut: "Docteure en intelligence artificielle", role: "Maîtresse de conférences en informatique à l’Université Côte d’Azur", exp: "Intelligence artificielle et éthique algorithmique", photo: "/images/nadia-pro.jpg", pos: "center 22%" },
 ];
 
 const CONTRIBUTIONS = [
@@ -444,7 +444,7 @@ const CONTRIBUTIONS = [
 ];
 
 function PersonCard({ p }: { p: (typeof LAWYERS)[number] }) {
-  const isTech = p.statut === "Appui technique";
+  const isTech = p.statut !== "Avocat" && p.statut !== "Avocate";
   return (
     <article className="person-card">
       <div className="person-photo">
