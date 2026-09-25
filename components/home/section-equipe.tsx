@@ -60,14 +60,14 @@ const LAWYERS: TeamMember[] = [
 const TECHNICAL: TeamMember[] = [
   {
     fullName: "Khalid Sookia",
-    status: "Appui technique",
+    status: "Consultant technique en cybersécurité",
     quality: "Consultant en cybersécurité",
     role: "Investigation numérique",
     photo: "/images/khalid-pro.jpg",
   },
   {
     fullName: "Nadia Abchiche-Mimouni",
-    status: "Appui technique",
+    status: "Docteure en intelligence artificielle",
     quality:
       "Maîtresse de conférences en informatique à l'Université Côte d'Azur",
     role: "Intelligence artificielle et éthique algorithmique",

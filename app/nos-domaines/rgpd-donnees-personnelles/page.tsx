@@ -316,7 +316,7 @@ export default function Page() {
                 <div className="shot">
                   <Image
                     src="/images/khalid-pro.jpg"
-                    alt="Khalid Sookia, appui technique en cybersécurité"
+                    alt="Khalid Sookia, consultant technique en cybersécurité"
                     fill
                     sizes="(min-width:720px) 33vw, 100vw"
                     loading="lazy"
@@ -324,9 +324,8 @@ export default function Page() {
                   />
                 </div>
                 <figcaption>
-                  <span className="role-eyebrow">Appui technique</span>
+                  <span className="role-eyebrow">Consultant technique en cybersécurité</span>
                   <b>Khalid Sookia</b>
-                  <span className="role">Consultant en cybersécurité.</span>
                   <span className="role">Examen des faits techniques, des outils et des mesures de sécurité.</span>
                 </figcaption>
               </figure>
