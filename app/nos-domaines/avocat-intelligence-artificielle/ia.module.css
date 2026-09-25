@@ -244,7 +244,7 @@
   .ia :global(.hero-i) { padding-top: calc(var(--header-h) + 20px); padding-bottom: 64px; }
   .ia :global(.missions) { grid-template-columns: repeat(5, 80vw); }
   /* Déroulement : rail défilant + repère « i / 3 ». */
-  .ia :global(.derou .steps3) { grid-auto-flow: column; grid-auto-columns: 82vw; width: max-content; }
+  .ia :global(.derou .steps3) { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 82vw; width: max-content; }
   .ia :global(.derou .steps3 .step) { border-top: 2px solid rgba(255, 255, 255, 0.3); padding-right: 20px; scroll-snap-align: start; }
   /* Onglets en tête, « Toute entreprise » redevient le 1er onglet. */
   .ia :global(.reg-h) { display: none; }
