@@ -80,7 +80,7 @@ export function SiteFooter() {
               Cabinet d&apos;avocats en droit du numérique, établi à Paris et
               intervenant dans toute la France.
             </p>
-            <p className={styles.bar}>Avocats au Barreau de Paris</p>
+            <p className={styles.bar}>Avocats aux barreaux de Paris et d&apos;Évry</p>
             <address className={styles.contact}>
               <a href="tel:+33181706200">01 81 70 62 00</a>
               <a href="mailto:contact@lazaregue-avocats.fr">

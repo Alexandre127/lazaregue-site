@@ -4,15 +4,16 @@ import { fr } from "@/lib/typo";
 import { MembreCarte } from "@/components/equipe-dossier";
 import styles from "./ma-tech.module.css";
 import DemoTabs from "./_components/DemoTabs";
-import ConseqReveal from "./_components/ConseqReveal";
 import LivrablesGrid from "./_components/LivrablesGrid";
+import RemedierSelector from "./_components/RemedierSelector";
+import StructList from "./_components/StructList";
 import {
   AUDIT,
   AUDITER,
-  CONSEQ,
   CONTACT,
   CONTACT_SECTION,
   DEFINITION,
+  DEMO,
   FAQ,
   HERO,
   LIVRABLES,
@@ -60,6 +61,15 @@ const JSON_LD = {
         { "@type": "ListItem", position: 2, name: "Nos domaines", item: `${URL_BASE}/nos-domaines` },
         { "@type": "ListItem", position: 3, name: "M&A Tech", item: `${URL_BASE}${PATH}` },
       ],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${URL_BASE}${PATH}#faq`,
+      mainEntity: FAQ.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
     },
   ],
 };
@@ -114,25 +124,26 @@ export default function Page() {
                 <h1>{fr(HERO.h1)}</h1>
                 <p className="hero__what">{fr(HERO.what)}</p>
                 <p className="hero__why">{fr(HERO.why)}</p>
-                <div className="btn-row">
+                <div className="btn-row hero__btns">
                   <Link className="btn btn--primary" href={CONTACT}>{HERO.cta1} →</Link>
-                  <Link className="btn btn--ghost" href={CONTACT}>{HERO.cta2}</Link>
+                  <Link className="btn btn--ghost hero__cta2" href={CONTACT}>{HERO.cta2}</Link>
                 </div>
+                <p className="hero__publics">{HERO.publics}</p>
               </div>
             </div>
           </section>
 
-          {/* 2 · CE QUE L'AUDIT PEUT CHANGER (remonté) */}
-          <section className="section" id="consequences" aria-labelledby="h-conseq">
+          {/* 2 · DÉMONSTRATION (remontée, onglets, navy) */}
+          <section className="section section--navy on-dark demo-sec" id="demonstration" aria-labelledby="h-demo">
             <div className="shell">
               <div className="shead">
                 <div>
-                  <span className="eyebrow">{CONSEQ.eyebrow}</span>
-                  <h2 id="h-conseq">{fr(CONSEQ.h2)}</h2>
+                  <span className="eyebrow">{DEMO.eyebrow}</span>
+                  <h2 id="h-demo">{fr(DEMO.h2)}</h2>
                 </div>
               </div>
-              <p className="lede" style={{ marginBottom: 34 }}>{fr(CONSEQ.lede)}</p>
-              <ConseqReveal />
+              <p className="lede" style={{ marginBottom: 28 }}>{fr(DEMO.lede)}</p>
+              <DemoTabs />
             </div>
           </section>
 
@@ -145,7 +156,7 @@ export default function Page() {
                   <h2 id="h-pub">{fr(POUR_QUI.h2)}</h2>
                 </div>
               </div>
-              <div className="cards">
+              <div className="cards cards--4">
                 {POUR_QUI.cards.map((c) => (
                   <article className="card" key={c.tag}>
                     <span className="card__tag">{c.tag}</span>
@@ -157,40 +168,16 @@ export default function Page() {
             </div>
           </section>
 
-          {/* 4 · DÉFINITION */}
+          {/* 4 · DÉFINITION + DEUX EXAMENS (fusionnées) */}
           <section className="section" id="definition" aria-labelledby="h-def">
-            <div className="shell split">
-              <div className="shead split-head">
+            <div className="shell">
+              <div className="shead">
                 <div>
                   <span className="eyebrow">{DEFINITION.eyebrow}</span>
                   <h2 id="h-def">{fr(DEFINITION.h2)}</h2>
                 </div>
               </div>
-              <div className="measure">
-                <p style={{ fontSize: "1.12rem", lineHeight: 1.6 }}>{fr(DEFINITION.para1)}</p>
-                <blockquote className="pull">{fr(DEFINITION.pull)}</blockquote>
-                <details className="more">
-                  <summary>{fr(DEFINITION.moreSummary)}</summary>
-                  <div>
-                    {DEFINITION.more.map((p) => (
-                      <p key={p}>{fr(p)}</p>
-                    ))}
-                  </div>
-                </details>
-              </div>
-            </div>
-          </section>
-
-          {/* 5 · AUDIT JURIDIQUE / TECHNIQUE */}
-          <section className="section section--ghost" id="audit" aria-labelledby="h-aud">
-            <div className="shell">
-              <div className="shead">
-                <div>
-                  <span className="eyebrow">Périmètre</span>
-                  <h2 id="h-aud">{fr(AUDIT.h2)}</h2>
-                </div>
-              </div>
-              <p className="lede" style={{ marginBottom: 28 }}>{fr(AUDIT.lede)}</p>
+              <p className="def-para">{fr(DEFINITION.para1)}</p>
               <div className="cmp">
                 {AUDIT.synth.map((s) => (
                   <div className={s.accent ? "cmp__col cmp__col--accent" : "cmp__col"} key={s.label}>
@@ -200,6 +187,7 @@ export default function Page() {
                   </div>
                 ))}
               </div>
+              <p className="pull">{fr(DEFINITION.encadre)}</p>
               <details className="more">
                 <summary>{fr(AUDIT.moreSummary)}</summary>
                 <div>
@@ -223,11 +211,19 @@ export default function Page() {
                   </div>
                 </div>
               </details>
+              <details className="more">
+                <summary>{fr(DEFINITION.moreSummary)}</summary>
+                <div>
+                  {DEFINITION.more.map((p) => (
+                    <p key={p}>{fr(p)}</p>
+                  ))}
+                </div>
+              </details>
             </div>
           </section>
 
-          {/* 6 · MÉTHODE (rail, navy) */}
-          <section className="section section--navy on-dark" id="methode" aria-labelledby="h-meth">
+          {/* 5 · MÉTHODE — Auditer, traduire, remédier (un seul bloc) */}
+          <section className="section methode-bloc" id="methode" aria-labelledby="h-meth">
             <div className="shell">
               <div className="shead">
                 <div>
@@ -235,93 +231,89 @@ export default function Page() {
                   <h2 id="h-meth">{fr(METHODE.h2)}</h2>
                 </div>
               </div>
-              <p className="lede" style={{ marginBottom: 34 }}>{fr(METHODE.lede)}</p>
-              <ol className="rail">
-                {METHODE.steps.map((s, i) => (
-                  <li className={i === METHODE.steps.length - 1 ? "rail-step rail-step--last" : "rail-step"} key={s.big}>
-                    <span className="rail-meta">{fr(s.meta)}</span>
-                    <span className="rail-big">{s.big}</span>
-                    <p>{fr(s.p)}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </section>
-
-          {/* 7 · LES ACTIFS ET DROITS EXAMINÉS (accordéons) */}
-          <section className="section section--sub" id="auditer" aria-labelledby="h-auditer">
-            <div className="shell split">
-              <div className="shead split-head">
-                <div>
-                  <span className="eyebrow">{AUDITER.eyebrow}</span>
-                  <h2 id="h-auditer">{fr(AUDITER.h2)}</h2>
-                  <p className="lede" style={{ marginTop: 14 }}>{fr(AUDITER.lede)}</p>
-                </div>
-              </div>
-              <div className="acc">
-                {AUDITER.items.map((it) => (
-                  <details key={it.k}>
-                    <summary><span className="acc__k">{it.k}</span> {fr(it.titre)}</summary>
-                    <div className="acc__body">
-                      <p>
-                        {fr(it.before)}
-                        <Link href={it.href}>{fr(it.lien)}</Link>
-                        {it.after}
-                      </p>
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 8 · DÉMONSTRATION (onglets, navy) */}
-          <section className="section section--navy on-dark demo-sec" id="demonstration" aria-labelledby="h-demo">
-            <div className="shell">
-              <div className="shead">
-                <div>
-                  <span className="eyebrow">Démonstration</span>
-                  <h2 id="h-demo">Ce que l’audit fait apparaître</h2>
-                </div>
-              </div>
-              <p className="lede" style={{ marginBottom: 28 }}>L’écart entre ce qu’une data room déclare et ce que les pièces établissent constitue l’essentiel du travail.</p>
-              <DemoTabs />
-            </div>
-          </section>
-
-          {/* 9 · TRADUIRE (groupes + lexique) */}
-          <section className="section" id="traduire" aria-labelledby="h-trad">
-            <div className="shell">
-              <div className="shead">
-                <div>
-                  <span className="eyebrow">{TRADUIRE.eyebrow}</span>
-                  <h2 id="h-trad">{fr(TRADUIRE.h2)}</h2>
-                </div>
-              </div>
-              <p className="lede" style={{ marginBottom: 30 }}>{fr(TRADUIRE.lede)}</p>
-              <div className="groups">
-                {TRADUIRE.groups.map((g) => (
-                  <section className="group" key={g.h3}>
-                    <h3>{fr(g.h3)}</h3>
-                    <ul>
-                      {g.items.map((it) => <li key={it}>{fr(it)}</li>)}
-                    </ul>
-                  </section>
-                ))}
-              </div>
-              <h3 className="gloss-title">{fr(TRADUIRE.glossTitle)}</h3>
-              <dl className="gloss">
-                {TRADUIRE.gloss.map((g) => (
-                  <div key={g.dt}>
-                    <dt>{fr(g.dt)}</dt>
-                    <dd>{fr(g.dd)}</dd>
+              <div className="mbloc">
+                {/* Auditer */}
+                <div className="mcol">
+                  <span className="mcol__step">Étape 1 ·</span>
+                  <span className="mcol__meta">{fr(METHODE.steps[0].meta)}</span>
+                  <span className="mcol__big">{METHODE.steps[0].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[0].when)}</span>
+                  <p className="mcol__p">{fr(METHODE.steps[0].p)}</p>
+                  <div className="acc">
+                    {AUDITER.items.map((it) => (
+                      <details key={it.k}>
+                        <summary><span className="acc__k">{it.k}</span> {fr(it.titre)}</summary>
+                        <div className="acc__body">
+                          <p>
+                            {fr(it.before)}
+                            <Link href={it.href}>{fr(it.lien)}</Link>
+                            {it.after}
+                          </p>
+                        </div>
+                      </details>
+                    ))}
                   </div>
-                ))}
-              </dl>
+                </div>
+
+                {/* Traduire */}
+                <div className="mcol">
+                  <span className="mcol__step">Étape 2 ·</span>
+                  <span className="mcol__meta">{fr(METHODE.steps[1].meta)}</span>
+                  <span className="mcol__big">{METHODE.steps[1].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[1].when)}</span>
+                  <p className="mcol__p">{fr(METHODE.steps[1].p)}</p>
+                  <div className="acc">
+                    {TRADUIRE.groups.map((g) => (
+                      <details key={g.h3}>
+                        <summary>{fr(g.h3)}</summary>
+                        <div className="acc__body">
+                          <ul className="acc__ul">
+                            {g.items.map((it) => <li key={it}>{fr(it)}</li>)}
+                          </ul>
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Remédier */}
+                <div className="mcol mcol--accent">
+                  <span className="mcol__step">Étape 3 ·</span>
+                  <span className="mcol__meta">{fr(METHODE.steps[2].meta)}</span>
+                  <span className="mcol__big">{METHODE.steps[2].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[2].when)}</span>
+                  <p className="mcol__p">{fr(METHODE.steps[2].p)}</p>
+                  {/* Bureau : sélecteur Avant/Après (inchangé). */}
+                  <RemedierSelector />
+                  {/* Mobile : deux dépliants fermés à l'arrivée (mêmes listes). */}
+                  <div className="rem-acc">
+                    <details className="rem-d">
+                      <summary>
+                        <span className="rem-d__t">{REMEDIER.avantT}</span>
+                        <span className="rem-d__n">({REMEDIER.avant.length} actions)</span>
+                        <span className="rem-d__chev" aria-hidden="true" />
+                      </summary>
+                      <ul className="rem__list">
+                        {REMEDIER.avant.map((it) => <li key={it}>{fr(it)}</li>)}
+                      </ul>
+                    </details>
+                    <details className="rem-d">
+                      <summary>
+                        <span className="rem-d__t">{REMEDIER.apresT}</span>
+                        <span className="rem-d__n">({REMEDIER.apres.length} actions)</span>
+                        <span className="rem-d__chev" aria-hidden="true" />
+                      </summary>
+                      <ul className="rem__list">
+                        {REMEDIER.apres.map((it) => <li key={it}>{fr(it)}</li>)}
+                      </ul>
+                    </details>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* 10 · CTA INTERMÉDIAIRE (unique, navy) */}
+          {/* 6 · BANDEAU D'APPEL (après la méthode) */}
           <section className="section--navy on-dark mid-sec" aria-label="Prendre contact">
             <div className="shell mid">
               <p className="mid__phrase">{fr(MID.phrase)}</p>
@@ -332,29 +324,7 @@ export default function Page() {
             </div>
           </section>
 
-          {/* 11 · REMÉDIER */}
-          <section className="section section--ghost" id="remedier" aria-labelledby="h-rem">
-            <div className="shell">
-              <div className="shead">
-                <div>
-                  <span className="eyebrow">{REMEDIER.eyebrow}</span>
-                  <h2 id="h-rem">{fr(REMEDIER.h2)}</h2>
-                </div>
-              </div>
-              <div className="cols2">
-                <div className="colbox">
-                  <h3>{REMEDIER.avantT}</h3>
-                  <ul>{REMEDIER.avant.map((it) => <li key={it}>{fr(it)}</li>)}</ul>
-                </div>
-                <div className="colbox">
-                  <h3>{REMEDIER.apresT}</h3>
-                  <ul>{REMEDIER.apres.map((it) => <li key={it}>{fr(it)}</li>)}</ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 12 · LIVRABLES (trois exemples, un par étape) */}
+          {/* 7 · CE QUE VOUS RECEVEZ (huit livrables + CTA) */}
           <section className="section" id="livrables" aria-labelledby="h-liv">
             <div className="shell">
               <div className="shead">
@@ -365,10 +335,14 @@ export default function Page() {
               </div>
               <p className="lede" style={{ marginBottom: 34 }}>{fr(LIVRABLES.lede)}</p>
               <LivrablesGrid />
+              <div className="btn-row">
+                <Link className="btn btn--primary" href={CONTACT}>{HERO.cta1} →</Link>
+                <Link className="btn btn--ghost" href={CONTACT}>{HERO.cta2}</Link>
+              </div>
             </div>
           </section>
 
-          {/* 13 · STRUCTURES D'OPÉRATION */}
+          {/* 8 · STRUCTURES D'OPÉRATION (repliables sur mobile) */}
           <section className="section section--warm" id="situations" aria-labelledby="h-str">
             <div className="shell">
               <div className="shead">
@@ -377,18 +351,11 @@ export default function Page() {
                   <h2 id="h-str">{fr(SITUATIONS.h2)}</h2>
                 </div>
               </div>
-              <div className="struct">
-                {SITUATIONS.cards.map((c) => (
-                  <article key={c.h3}>
-                    <h3>{fr(c.h3)}</h3>
-                    <p>{fr(c.p)}</p>
-                  </article>
-                ))}
-              </div>
+              <StructList />
             </div>
           </section>
 
-          {/* 14 · LE CABINET */}
+          {/* 9 · ÉQUIPE — avocats et experts (cinq cartes) */}
           <section className="section" id="equipe" aria-labelledby="h-cab">
             <div className="shell">
               <div className="shead">
@@ -397,13 +364,13 @@ export default function Page() {
                   <h2 id="h-cab">{fr(TEAM.h2)}</h2>
                 </div>
               </div>
-              <div className="team-grid">
+              <p className="def-para" style={{ marginBottom: 30 }}>{fr(TEAM.closing)}</p>
+              <div className="team-grid team-grid--5">
                 {TEAM.membres.map((m) => (
                   <MembreCarte key={m.slug} membre={m} couleurs={TEAM_COLORS} />
                 ))}
               </div>
-              <p className="measure" style={{ marginTop: 34 }}>{fr(TEAM.closing)}</p>
-              <p className="measure" style={{ marginTop: 12 }}>
+              <p className="measure" style={{ marginTop: 30 }}>
                 {TEAM.liensIntro}
                 {TEAM.liens.map((l, i) => (
                   <span key={l.href}>
@@ -415,7 +382,7 @@ export default function Page() {
             </div>
           </section>
 
-          {/* 15 · FAQ */}
+          {/* 10 · FAQ */}
           <section className="section section--ghost" id="faq" aria-labelledby="h-faq">
             <div className="shell faq-grid">
               <div className="shead" style={{ marginBottom: 0 }}>
@@ -435,7 +402,7 @@ export default function Page() {
             </div>
           </section>
 
-          {/* 16 · CONTACT */}
+          {/* 11 · CONTACT */}
           <section className="section section--navy on-dark" id="contact" aria-labelledby="h-contact">
             <div className="shell">
               <div className="shead">

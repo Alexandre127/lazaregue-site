@@ -1,16 +1,21 @@
 "use client";
 
 /**
- * Section « Ce que l'audit fait apparaître » — composant à onglets (navy).
+ * Section « Ce que l'audit fait apparaître ».
  *
- * Accessibilité : vrai `tablist` / `tab` / `tabpanel`, flèches gauche/droite,
- * Début / Fin, roving tabindex, focus visible. Les CINQ panneaux restent dans
- * le HTML (attribut `hidden` sur les inactifs) pour l'indexation. L'animation
- * d'apparition est retirée si `prefers-reduced-motion` (géré en CSS).
+ * BUREAU (> 640 px) : composant à onglets — vrai `tablist` / `tab` / `tabpanel`,
+ * flèches gauche/droite, Début / Fin, roving tabindex, focus visible. Un seul
+ * panneau visible à la fois (les inactifs sont masqués par classe, jamais par
+ * l'attribut `hidden`, pour rester dans le rendu serveur).
  *
- * Chaque panneau : déclaration de la data room (citation barrée, cadre en
- * pointillés) → flèche → constat (bloc bleu électrique) → bandeau « Effet
- * possible sur l'opération » (fond blanc, filet bleu). Exemples fictifs.
+ * MOBILE (≤ 640 px) : les cinq panneaux s'affichent en liste verticale de cartes
+ * autonomes (en-tête « 01 · Code », puis trois lignes étiquetées). Onglets,
+ * flèches et compteur sont masqués en CSS. Aucune duplication du texte : le même
+ * DOM sert les deux présentations ; seuls les libellés des trois lignes changent
+ * (bureau : « Déclaré en data room »… / mobile : « La data room déclare »…).
+ *
+ * Chaque panneau : déclaration de la data room (citation barrée) → constat →
+ * bandeau « Effet ». Exemples fictifs.
  */
 
 import { useRef, useState } from "react";
@@ -38,7 +43,6 @@ export default function DemoTabs() {
   return (
     <div className="demo2">
       <div className="d-top">
-        <p className="d-top-hint">{fr(DEMO.hint)}</p>
         <p className="d-count" aria-live="polite">{cur + 1} / {rows.length}</p>
       </div>
 
@@ -66,23 +70,38 @@ export default function DemoTabs() {
         {rows.map((r, i) => (
           <div
             key={r.court}
-            className="dpanel"
+            className={i === cur ? "dpanel is-active" : "dpanel"}
             role="tabpanel"
             id={`demo-panel-${i}`}
             aria-labelledby={`demo-tab-${i}`}
-            hidden={i !== cur}
           >
+            {/* En-tête « Exemple NN · axe » — marque clairement un cas fictif
+                (bureau et mobile). Décoratif : le nom accessible du panneau vient
+                déjà de l'onglet via aria-labelledby. */}
+            <div className="d-head" aria-hidden="true">
+              <span className="d-head-n">Exemple {String(i + 1).padStart(2, "0")}</span>
+              <span className="d-head-court">{fr(`· ${r.court}`)}</span>
+            </div>
             <div className="d-decl">
-              <span className="d-stamp">Déclaré en data room</span>
+              <span className="d-stamp">
+                <span className="lbl-d">Déclaré en data room</span>
+                <span className="lbl-m">La data room déclare</span>
+              </span>
               <p className="d-q">{fr(r.decl)}</p>
             </div>
             <div className="d-arrow" aria-hidden="true">→</div>
             <div className="d-const">
-              <span className="d-stamp d-stamp--inv">Constaté après audit</span>
+              <span className="d-stamp d-stamp--inv">
+                <span className="lbl-d">Constaté après audit</span>
+                <span className="lbl-m">{fr("L'audit constate")}</span>
+              </span>
               <p>{fr(r.constat)}</p>
             </div>
             <div className="d-eff">
-              <span className="d-stamp d-stamp--eff">Effet possible sur l&apos;opération</span>
+              <span className="d-stamp d-stamp--eff">
+                <span className="lbl-d">{fr("Effet possible sur l'opération")}</span>
+                <span className="lbl-m">{fr("Effet sur l'opération")}</span>
+              </span>
               <p>{fr(r.effet)}</p>
             </div>
           </div>
