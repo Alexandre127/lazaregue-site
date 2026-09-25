@@ -417,7 +417,7 @@ const CSS = `
 /* Hero */
 /* Le header global flotte au-dessus du hero sombre (route hero sombre) :
    dégager le haut pour que le fil d'Ariane ne passe pas sous le logo. */
-[data-domaine="cyberwf"] .cw-hero { display: grid; grid-template-columns: 8fr 4fr; gap: 56px; align-items: center; padding: clamp(84px,9vw,116px) var(--px) clamp(36px,5vw,80px); }
+[data-domaine="cyberwf"] .cw-hero { display: grid; grid-template-columns: 8fr 4fr; gap: 56px; align-items: center; padding: max(clamp(84px,9vw,116px), calc(var(--header-h) + 12px)) var(--px) clamp(36px,5vw,80px); }
 [data-domaine="cyberwf"] .cw-hero-text { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
 [data-domaine="cyberwf"] .cw-crumb { font-family: var(--ff-mono); font-size: 13px; color: rgba(255,255,255,0.7); }
 [data-domaine="cyberwf"] .cw-crumb a { color: rgba(255,255,255,0.7); }
