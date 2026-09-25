@@ -73,7 +73,7 @@ const HERO_STAGES = [
 const HERO_BASELINE = [
   "Clients et prestataires informatiques",
   "Paris · Intervention partout en France",
-  "Cabinet fondé en 2016",
+  "Paris · Intervention partout en France · Depuis 2016",
 ];
 
 const SITUATIONS = [
@@ -358,7 +358,7 @@ function ClauseBoard() {
   const [enhanced, setEnhanced] = useState(false);
   const [selected, setSelected] = useState(1); // Réversibilité par défaut
   const [isMobile, setIsMobile] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState<Record<number, boolean>>({ 1: true });
+  const [mobileOpen, setMobileOpen] = useState<Record<number, boolean>>({});
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
@@ -547,9 +547,10 @@ export default function ContratsInformatiquesClient() {
           [data-domaine="contrats"] .cx-hero-copy { font-size: 17px; }
           /* Surtitre « Contrats informatiques · Paris » masqué. */
           [data-domaine="contrats"] .cx-hero-grid .cx-label { display: none; }
-          /* Fil d'Ariane sur une ligne. */
-          [data-domaine="contrats"] .cx-crumb ol { flex-wrap: nowrap; overflow-x: auto; }
+          /* Fil d'Ariane sur une ligne, dernier élément tronqué, sans barre de défilement. */
+          [data-domaine="contrats"] .cx-crumb ol { flex-wrap: nowrap; overflow: hidden; }
           [data-domaine="contrats"] .cx-crumb li { white-space: nowrap; }
+          [data-domaine="contrats"] .cx-crumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
           /* Puces « Clients et prestataires… » et « Paris · Intervention… » masquées. */
           [data-domaine="contrats"] .cx-hero-baseline { gap: 12px 25px; font-size: 11px; }
           [data-domaine="contrats"] .cx-hero-baseline span:nth-child(1),
@@ -678,18 +679,21 @@ export default function ContratsInformatiquesClient() {
         /* Équipe. */
         [data-domaine="contrats"] .cx-team-quote { font-family: var(--ff-body); font-weight: 300; font-size: clamp(21px, 2.6vw, 28px); line-height: 1.35; color: var(--ink); max-width: 24ch; margin: 0 0 24px; padding-left: 22px; border-left: 3px solid var(--blue); }
         [data-domaine="contrats"] .cx-team-intro { margin: 0 0 32px; color: var(--text-muted); font-size: 17px; line-height: 1.65; max-width: 72ch; }
-        [data-domaine="contrats"] .cx-lawyers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
-        [data-domaine="contrats"] .cx-exam { background: #fff; border: 1px solid var(--bd); padding: 24px; margin-top: 24px; }
+        [data-domaine="contrats"] .cx-lawyers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; align-items: start; }
+        [data-domaine="contrats"] .cx-khalid-col { display: flex; flex-direction: column; gap: 16px; }
+        [data-domaine="contrats"] .cx-exam { background: #fff; border: 1px solid var(--bd); padding: 20px; }
         [data-domaine="contrats"] .cx-exam h3 { font-size: 20px; margin: 0 0 16px; }
         [data-domaine="contrats"] .cx-exam ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
         [data-domaine="contrats"] .cx-exam li { display: flex; gap: 8px; font-size: 16px; color: var(--text-muted); line-height: 1.5; }
         @media (max-width: 1050px) { [data-domaine="contrats"] .cx-lawyers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 600px) {
           [data-domaine="contrats"] .cx-lawyers { grid-template-columns: 1fr; gap: 12px; }
-          /* Portrait réduit (~64×80) à gauche, texte à droite : surcharge du composant MembreCarte (styles inline). */
-          [data-domaine="contrats"] .cx-lawyers > article { flex-direction: row !important; }
-          [data-domaine="contrats"] .cx-lawyers > article > div:first-child { width: 64px !important; aspect-ratio: 4 / 5 !important; flex: 0 0 64px; }
-          [data-domaine="contrats"] .cx-lawyers > article > div:last-child { padding: 12px !important; }
+          /* Portrait réduit (64×80) à gauche, texte à droite : surcharge du composant MembreCarte (styles inline). Cible les 4 cartes, y compris celle de Khalid imbriquée dans .cx-khalid-col. */
+          [data-domaine="contrats"] .cx-khalid-col { gap: 12px; }
+          [data-domaine="contrats"] .cx-lawyers article { flex-direction: row !important; align-items: flex-start; }
+          [data-domaine="contrats"] .cx-lawyers article > div:first-child { width: 64px !important; height: 80px !important; aspect-ratio: auto !important; flex: 0 0 64px; align-self: flex-start; }
+          [data-domaine="contrats"] .cx-lawyers article img { object-fit: cover !important; object-position: center top !important; }
+          [data-domaine="contrats"] .cx-lawyers article > div:last-child { padding: 12px !important; }
         }
 
         /* FAQ + renvois. */
@@ -929,22 +933,24 @@ export default function ContratsInformatiquesClient() {
                 couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
               />
             ))}
-            <MembreCarte
-              membre={{
-                slug: "khalid",
-                role: "Sauvegardes, traces techniques et faisabilité de la réversibilité.",
-                tags: ["Sauvegardes", "Réversibilité", "Journalisation"],
-              }}
-              couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
-            />
-          </div>
-          <div className="cx-exam">
-            <h3>Des engagements que l’on peut vérifier</h3>
-            <ul>
-              {KHALID_EXAMINE.map((k) => (
-                <li key={k}><span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span><span>{fr(k)}</span></li>
-              ))}
-            </ul>
+            <div className="cx-khalid-col">
+              <MembreCarte
+                membre={{
+                  slug: "khalid",
+                  role: "Sauvegardes, traces techniques et faisabilité de la réversibilité.",
+                  tags: ["Sauvegardes", "Réversibilité", "Journalisation"],
+                }}
+                couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
+              />
+              <div className="cx-exam">
+                <h3>Ce que l’examen technique vérifie</h3>
+                <ul>
+                  {KHALID_EXAMINE.map((k) => (
+                    <li key={k}><span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span><span>{fr(k)}</span></li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>
