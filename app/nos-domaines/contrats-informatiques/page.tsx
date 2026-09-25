@@ -76,7 +76,7 @@ const JSON_LD = {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
-        { "@type": "ListItem", position: 2, name: "Domaines d'intervention", item: `${URL_BASE}/nos-domaines` },
+        { "@type": "ListItem", position: 2, name: "Domaines", item: `${URL_BASE}/nos-domaines` },
         { "@type": "ListItem", position: 3, name: "Contrats informatiques et projets IT", item: `${URL_BASE}${PATH}` },
       ],
     },

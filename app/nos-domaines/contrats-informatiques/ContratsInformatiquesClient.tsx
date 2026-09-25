@@ -48,7 +48,10 @@ const BD = "var(--bd)";
 const MUTED = "var(--text-muted)";
 const ON_DARK = "var(--wh)";
 
-const HEADER_H = 72;
+/* Décalage d'ancre = header collant compact + 12 px (jeton commun du site) ;
+   dégagement du haut du héro = header au repos + 18 px. */
+const ANCHOR_OFFSET = "calc(var(--header-h-compact) + 12px)";
+const HERO_TOP = "calc(var(--header-h) + 18px)";
 
 /* Parcours de contact réel. On transmet l’objet et, quand c’est utile, la
    situation, selon la convention du site (`/contact?objet=…`). */
@@ -96,7 +99,7 @@ const SITUATIONS = [
     q: "Un différend est déjà engagé.",
     d: "Retards contestés, logiciel non conforme, rupture, perte de données ou mise en demeure.",
     l: "Le contentieux informatique",
-    href: "#contentieux",
+    href: CONTENTIEUX,
   },
 ];
 
@@ -332,7 +335,6 @@ const RELATED = [
   { label: "Sous-traitance et données personnelles", href: "/nos-domaines/rgpd-donnees-personnelles" },
   { label: "Intelligence artificielle et prestataires", href: "/nos-domaines/avocat-intelligence-artificielle" },
   { label: "Acquisition et due diligence technologique", href: "/nos-domaines/ma-tech" },
-  { label: "Contentieux informatique et commercial", href: CONTENTIEUX },
 ];
 
 /* ---------- Primitives locales ------------------------------------------- */
@@ -441,7 +443,7 @@ function ClauseBoard() {
               hidden={hiddenDesktop || undefined}
               role={enhanced && !isMobile ? "tabpanel" : undefined}
               aria-labelledby={enhanced && !isMobile ? `tab-${c.key}` : undefined}
-              style={{ scrollMarginTop: HEADER_H + 12 }}
+              style={{ scrollMarginTop: ANCHOR_OFFSET }}
             >
               <button
                 type="button"
@@ -541,16 +543,22 @@ export default function ContratsInformatiquesClient() {
         @media (max-width: 760px) {
           [data-domaine="contrats"] .cx-hero-grid { grid-template-columns: 1fr; padding: 24px 0 32px; gap: 0; }
           [data-domaine="contrats"] .cx-hero-art { display: none; }
-          [data-domaine="contrats"] .cx-hero h1 { font-size: clamp(46px, 8.8vw, 64px); max-width: none; }
+          [data-domaine="contrats"] .cx-hero h1 { font-size: clamp(32px, 9vw, 38px); max-width: none; }
           [data-domaine="contrats"] .cx-hero-copy { font-size: 17px; }
+          /* Surtitre « Contrats informatiques · Paris » masqué. */
+          [data-domaine="contrats"] .cx-hero-grid .cx-label { display: none; }
+          /* Fil d'Ariane sur une ligne. */
+          [data-domaine="contrats"] .cx-crumb ol { flex-wrap: nowrap; overflow-x: auto; }
+          [data-domaine="contrats"] .cx-crumb li { white-space: nowrap; }
+          /* Puces « Clients et prestataires… » et « Paris · Intervention… » masquées. */
           [data-domaine="contrats"] .cx-hero-baseline { gap: 12px 25px; font-size: 11px; }
+          [data-domaine="contrats"] .cx-hero-baseline span:nth-child(1),
+          [data-domaine="contrats"] .cx-hero-baseline span:nth-child(2) { display: none; }
         }
         @media (max-width: 480px) {
-          [data-domaine="contrats"] .cx-hero h1 { font-size: 48px; }
           [data-domaine="contrats"] .cx-hero-actions { display: block; }
           [data-domaine="contrats"] .cx-hero-actions .cx-btn { width: 100%; }
           [data-domaine="contrats"] .cx-hero-actions .cx-link { margin-top: 10px; }
-          [data-domaine="contrats"] .cx-hero-baseline span:last-child { display: none; }
         }
 
         /* Situations. */
@@ -562,7 +570,7 @@ export default function ContratsInformatiquesClient() {
         [data-domaine="contrats"] .cx-situation .route { margin-top: auto; font-size: 14px; font-weight: 500; color: var(--blue); display: flex; justify-content: space-between; gap: 12px; align-items: center; line-height: 1.45; padding-top: 7px; }
         [data-domaine="contrats"] .cx-situation:hover, [data-domaine="contrats"] .cx-situation:focus-visible { background: var(--navy); color: #fff; }
         [data-domaine="contrats"] .cx-situation:hover p, [data-domaine="contrats"] .cx-situation:hover .route, [data-domaine="contrats"] .cx-situation:focus-visible p, [data-domaine="contrats"] .cx-situation:focus-visible .route { color: #fff; }
-        @media (max-width: 760px) { [data-domaine="contrats"] .cx-situations { grid-template-columns: repeat(2, minmax(0, 1fr)); } [data-domaine="contrats"] .cx-situation:nth-child(3) { border-left: 0; } [data-domaine="contrats"] .cx-situation:nth-child(n+3) { border-top: 1px solid var(--bd); } }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-situations { grid-template-columns: repeat(2, minmax(0, 1fr)); } [data-domaine="contrats"] .cx-situation:nth-child(3) { border-left: 0; } [data-domaine="contrats"] .cx-situation:nth-child(n+3) { border-top: 1px solid var(--bd); } [data-domaine="contrats"] .cx-situation { padding: 18px 16px; gap: 12px; } [data-domaine="contrats"] .cx-situation h3 { font-size: 16px; } }
         @media (max-width: 480px) { [data-domaine="contrats"] .cx-situations { grid-template-columns: 1fr; } [data-domaine="contrats"] .cx-situation + .cx-situation { border-left: 0; border-top: 1px solid var(--bd); } }
 
         /* Services : Auditer. Rédiger. Négocier. */
@@ -580,7 +588,23 @@ export default function ContratsInformatiquesClient() {
         [data-domaine="contrats"] .cx-timing { margin-top: 32px; display: flex; gap: 22px; align-items: baseline; }
         [data-domaine="contrats"] .cx-timing .cx-label { flex-shrink: 0; margin: 0; color: var(--blue3); }
         [data-domaine="contrats"] .cx-timing p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.6; }
-        @media (max-width: 760px) { [data-domaine="contrats"] .cx-services { grid-template-columns: 1fr; gap: 18px; } [data-domaine="contrats"] .cx-service { padding: 25px; display: grid; grid-template-columns: 58px minmax(0, 1fr); column-gap: 20px; } [data-domaine="contrats"] .cx-service .big { font-size: 49px; grid-row: 1 / 3; margin: 0; } [data-domaine="contrats"] .cx-service h3 { font-size: 23px; margin: 0 0 12px; } [data-domaine="contrats"] .cx-service p, [data-domaine="contrats"] .cx-service ul, [data-domaine="contrats"] .cx-service .cx-link { grid-column: 2; } [data-domaine="contrats"] .cx-service ul { margin: 17px 0 8px; } [data-domaine="contrats"] .cx-timing { display: block; } [data-domaine="contrats"] .cx-timing p { margin-top: 12px; } }
+        [data-domaine="contrats"] .cx-services-cta { margin-top: 28px; }
+        @media (max-width: 760px) {
+          [data-domaine="contrats"] .cx-services { grid-template-columns: 1fr; gap: 16px; }
+          /* Numéro sur la ligne du titre (~28px), texte pleine largeur, filet bleu en haut. */
+          [data-domaine="contrats"] .cx-service { display: block; padding: 22px; border-top: 3px solid var(--blue); }
+          [data-domaine="contrats"] .cx-service.primary { background: #fff; color: var(--ink); border-color: var(--blue); }
+          [data-domaine="contrats"] .cx-service.primary .big, [data-domaine="contrats"] .cx-service.primary p { color: var(--blue); }
+          [data-domaine="contrats"] .cx-service.primary li { border-color: var(--bd); }
+          [data-domaine="contrats"] .cx-service .big { display: inline; font-size: 28px; margin: 0 10px 0 0; }
+          [data-domaine="contrats"] .cx-service h3 { display: inline; font-size: 20px; margin: 0; }
+          [data-domaine="contrats"] .cx-service p { margin-top: 12px; }
+          [data-domaine="contrats"] .cx-service ul { margin: 14px 0 0; }
+          [data-domaine="contrats"] .cx-services-cta .cx-btn { width: 100%; }
+          /* « Quand intervenir ? » : encadré à filet bleu en fin de section. */
+          [data-domaine="contrats"] .cx-timing { display: block; background: #fff; border-left: 3px solid var(--blue); padding: 18px 20px; margin-top: 24px; }
+          [data-domaine="contrats"] .cx-timing p { margin-top: 10px; }
+        }
 
         /* Familles de contrats. */
         [data-domaine="contrats"] .cx-contract-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; margin-bottom: 35px; }
@@ -596,7 +620,7 @@ export default function ContratsInformatiquesClient() {
         [data-domaine="contrats"] .cx-family[open] { border-top-color: var(--blue); }
         [data-domaine="contrats"] .cx-family > p { padding: 0 36px 23px 0; font-size: 16px; color: var(--text-muted); margin: 0; line-height: 1.6; }
         [data-domaine="contrats"] .cx-family summary:hover h3 { color: var(--blue); }
-        @media (max-width: 760px) { [data-domaine="contrats"] .cx-contract-intro { grid-template-columns: 1fr; gap: 20px; } [data-domaine="contrats"] .cx-family-grid { grid-template-columns: 1fr; } [data-domaine="contrats"] .cx-family summary { min-height: 0; padding: 20px 0; } }
+        @media (max-width: 760px) { [data-domaine="contrats"] .cx-contract-intro { grid-template-columns: 1fr; gap: 20px; } [data-domaine="contrats"] .cx-family-grid { grid-template-columns: 1fr; } [data-domaine="contrats"] .cx-family summary { min-height: 0; padding: 20px 0; } [data-domaine="contrats"] .cx-family .desc { display: none; } [data-domaine="contrats"] .cx-family[open] .desc { display: block; margin-top: 6px; } }
 
         /* Clauses (tableau à onglets). */
         [data-domaine="contrats"] .cx-clause-board { display: grid; grid-template-columns: 285px minmax(0, 1fr); border: 1px solid rgba(255,255,255,0.35); align-items: start; }
@@ -654,14 +678,19 @@ export default function ContratsInformatiquesClient() {
         /* Équipe. */
         [data-domaine="contrats"] .cx-team-quote { font-family: var(--ff-body); font-weight: 300; font-size: clamp(21px, 2.6vw, 28px); line-height: 1.35; color: var(--ink); max-width: 24ch; margin: 0 0 24px; padding-left: 22px; border-left: 3px solid var(--blue); }
         [data-domaine="contrats"] .cx-team-intro { margin: 0 0 32px; color: var(--text-muted); font-size: 17px; line-height: 1.65; max-width: 72ch; }
-        [data-domaine="contrats"] .cx-lawyers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-        [data-domaine="contrats"] .cx-technical { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 12px; align-items: start; }
-        [data-domaine="contrats"] .cx-tech-note { font-size: 13px; color: var(--text-muted); margin: 12px 0 0; }
-        [data-domaine="contrats"] .cx-exam { background: #fff; border: 1px solid var(--bd); padding: 24px; }
+        [data-domaine="contrats"] .cx-lawyers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+        [data-domaine="contrats"] .cx-exam { background: #fff; border: 1px solid var(--bd); padding: 24px; margin-top: 24px; }
         [data-domaine="contrats"] .cx-exam h3 { font-size: 20px; margin: 0 0 16px; }
         [data-domaine="contrats"] .cx-exam ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
         [data-domaine="contrats"] .cx-exam li { display: flex; gap: 8px; font-size: 16px; color: var(--text-muted); line-height: 1.5; }
-        @media (max-width: 900px) { [data-domaine="contrats"] .cx-lawyers { grid-template-columns: 1fr; gap: 22px; } [data-domaine="contrats"] .cx-technical { grid-template-columns: 1fr; } }
+        @media (max-width: 1050px) { [data-domaine="contrats"] .cx-lawyers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 600px) {
+          [data-domaine="contrats"] .cx-lawyers { grid-template-columns: 1fr; gap: 12px; }
+          /* Portrait réduit (~64×80) à gauche, texte à droite : surcharge du composant MembreCarte (styles inline). */
+          [data-domaine="contrats"] .cx-lawyers > article { flex-direction: row !important; }
+          [data-domaine="contrats"] .cx-lawyers > article > div:first-child { width: 64px !important; aspect-ratio: 4 / 5 !important; flex: 0 0 64px; }
+          [data-domaine="contrats"] .cx-lawyers > article > div:last-child { padding: 12px !important; }
+        }
 
         /* FAQ + renvois. */
         [data-domaine="contrats"] .cx-faq-layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.8fr); gap: 75px; }
@@ -724,11 +753,11 @@ export default function ContratsInformatiquesClient() {
       {/* ===== HÉRO (fil d’Ariane + étapes) ===== */}
       <section className="cx-hero" id="haut">
         <div className="cx-wrap">
-          <nav className="cx-crumb" aria-label="Fil d’Ariane" style={{ paddingTop: HEADER_H + 18, paddingBottom: 6 }}>
+          <nav className="cx-crumb" aria-label="Fil d’Ariane" style={{ paddingTop: HERO_TOP, paddingBottom: 6 }}>
             <ol>
               <li><Link href="/">Accueil</Link></li>
               <li aria-hidden style={{ color: "#5A639B" }}>/</li>
-              <li><Link href="/nos-domaines">Domaines d’intervention</Link></li>
+              <li><Link href="/nos-domaines">Domaines</Link></li>
               <li aria-hidden style={{ color: "#5A639B" }}>/</li>
               <li aria-current="page" style={{ color: "#fff" }}>Contrats informatiques et projets IT</li>
             </ol>
@@ -738,15 +767,13 @@ export default function ContratsInformatiquesClient() {
               <Eyebrow light>Contrats informatiques · Paris</Eyebrow>
               <h1>Avocat en contrats informatiques et projets IT à Paris</h1>
               <p className="cx-hero-copy">
-                Lazarègue Avocats accompagne les <strong>PME, ETI, éditeurs, intégrateurs et ESN</strong> dans
-                l’audit, la rédaction, la négociation et l’exécution de leurs contrats informatiques : logiciels,
-                SaaS, cloud, infogérance et projets de transformation numérique.
+                Le cabinet audite, rédige et négocie les contrats informatiques des <strong>PME, ETI, éditeurs, intégrateurs et ESN</strong> : logiciels, SaaS, cloud, infogérance et projets de transformation numérique.
               </p>
               <div className="cx-hero-actions">
                 <Link href={contactObjet("audit")} className="cx-btn">
-                  Faire auditer un contrat <span className="arrow" aria-hidden>↗</span>
+                  Faire auditer un contrat <span className="arrow" aria-hidden>→</span>
                 </Link>
-                <a className="cx-link" href="#contentieux">Évaluer un projet en difficulté <span aria-hidden>↗</span></a>
+                <a className="cx-link" href="#clauses">Les cinq clauses décisives <span aria-hidden>↓</span></a>
               </div>
             </div>
             <aside className="cx-hero-art" aria-label="Les moments clés du contrat">
@@ -758,7 +785,7 @@ export default function ContratsInformatiquesClient() {
                     <strong>{s.t}</strong>
                     <small>{fr(s.s)}</small>
                   </div>
-                  <span className="arrow" aria-hidden>↗</span>
+                  <span className="arrow" aria-hidden>→</span>
                 </a>
               ))}
             </aside>
@@ -772,7 +799,7 @@ export default function ContratsInformatiquesClient() {
       </section>
 
       {/* ===== SITUATIONS ===== */}
-      <section className="cx-section" id="situations" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section" id="situations" style={{ background: WH, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap">
           <div className="cx-split-head">
             <div>
@@ -786,7 +813,7 @@ export default function ContratsInformatiquesClient() {
               <Link key={r.q} href={r.href} className="cx-situation">
                 <h3>{fr(r.q)}</h3>
                 <p>{fr(r.d)}</p>
-                <span className="route">{fr(r.l)} <span className="arrow" aria-hidden>↗</span></span>
+                <span className="route">{fr(r.l)} <span className="arrow" aria-hidden>→</span></span>
               </Link>
             ))}
           </div>
@@ -794,7 +821,7 @@ export default function ContratsInformatiquesClient() {
       </section>
 
       {/* ===== ACCOMPAGNEMENT : Auditer. Rédiger. Négocier. ===== */}
-      <section className="cx-section" id="accompagnement" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section" id="accompagnement" style={{ background: GHOST, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap">
           <div className="cx-split-head">
             <div>
@@ -814,11 +841,13 @@ export default function ContratsInformatiquesClient() {
                     <li key={it}>{fr(it)}</li>
                   ))}
                 </ul>
-                <Link className="cx-link" href={contactObjet(s.situation)}>
-                  {fr(s.link)} <span className="arrow" aria-hidden>↗</span>
-                </Link>
               </article>
             ))}
+          </div>
+          <div className="cx-services-cta">
+            <Link href={contactObjet("redaction")} className="cx-btn">
+              Présenter votre projet <span className="arrow" aria-hidden>→</span>
+            </Link>
           </div>
           <p className="cx-exec-line">
             Pendant l’exécution, le cabinet sécurise également les recettes, réserves, changements de périmètre et preuves contractuelles.
@@ -834,7 +863,7 @@ export default function ContratsInformatiquesClient() {
       </section>
 
       {/* ===== FAMILLES DE CONTRATS ===== */}
-      <section className="cx-section" id="contrats" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section" id="contrats" style={{ background: WH, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap">
           <div className="cx-contract-intro">
             <div>
@@ -842,10 +871,7 @@ export default function ContratsInformatiquesClient() {
               <h2>Quels contrats informatiques accompagnons-nous&nbsp;?</h2>
             </div>
             <p>
-              Une même opération associe fréquemment licence, intégration, maintenance et financement. Leur
-              qualification et leur articulation déterminent les responsabilités et les conséquences d’une
-              défaillance. Le cabinet intervient depuis Paris et sur l’ensemble du territoire, aux côtés des
-              clients comme des prestataires.
+              Une même opération associe souvent licence, intégration, maintenance et financement&nbsp;: leur articulation détermine les responsabilités en cas de défaillance.
             </p>
           </div>
           <div className="cx-family-grid">
@@ -865,29 +891,8 @@ export default function ContratsInformatiquesClient() {
         </div>
       </section>
 
-      {/* ===== CE QUI ENGAGE LES PARTIES (différenciation droit + preuve) ===== */}
-      <section className="cx-section" id="engage" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
-        <div className="cx-wrap">
-          <div className="cx-split-head">
-            <div>
-              <Eyebrow>Droit, exécution et preuve</Eyebrow>
-              <h2>Ce qui engage les parties&nbsp;— et ce qui permet de le prouver</h2>
-            </div>
-            <p>Un contrat ne se juge pas seulement à ses clauses. Son exécution, les réserves formulées et les preuves techniques déterminent aussi les responsabilités.</p>
-          </div>
-          <div className="cx-engage">
-            {ENGAGE.map((c) => (
-              <div key={c.titre}>
-                <h3>{fr(c.titre)}</h3>
-                <p>{fr(c.p)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===== CINQ CLAUSES DÉCISIVES (navy) ===== */}
-      <section className="cx-section cx-clauses" id="clauses" style={{ background: NAVY, color: ON_DARK, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section cx-clauses" id="clauses" style={{ background: NAVY, color: ON_DARK, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap">
           <div className="cx-split-head">
             <div>
@@ -900,65 +905,21 @@ export default function ContratsInformatiquesClient() {
           <div className="cx-clauses-foot">
             <p>Les obligations et les procédures de validation doivent correspondre à la réalité du projet informatique.</p>
             <Link href={CONTACT} className="cx-link">
-              Faire examiner mon contrat <span className="arrow" aria-hidden>↗</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TROIS CAS COMPACTS (situations-types, non des dossiers réels) ===== */}
-      <section className="cx-section" id="cas" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
-        <div className="cx-wrap">
-          <div className="cx-split-head">
-            <div>
-              <Eyebrow>Quand le contrat rencontre la réalité du projet</Eyebrow>
-              <h2>Trois situations que nous rencontrons</h2>
-            </div>
-            <p>Des situations-types, sans donnée ni résultat de dossier réel&nbsp;: elles illustrent la méthode d’analyse.</p>
-          </div>
-          <div className="cx-cases">
-            {CAS.map((c, i) => (
-              <article key={i} className="cx-case">
-                <p className="cx-case-num" aria-hidden>{String(i + 1).padStart(2, "0")}</p>
-                <h3>{fr(c.situation)}</h3>
-                <dl>
-                  <div><dt>Ce que le cabinet examine</dt><dd>{fr(c.examine)}</dd></div>
-                  <div><dt>Enjeu de la décision</dt><dd>{fr(c.enjeu)}</dd></div>
-                </dl>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== BANDEAU CONTENTIEUX (bleu) ===== */}
-      <section style={{ background: WH, padding: "42px 0" }} id="contentieux">
-        <div className="cx-wrap">
-          <div className="cx-litigation">
-            <div>
-              <Eyebrow light>Un différend est déjà engagé</Eyebrow>
-              <h2 style={{ color: "#fff" }}>Le projet est en difficulté&nbsp;?</h2>
-              <p>Retards répétés, logiciel non conforme, réserves contestées, perte de données, factures impayées ou rupture conflictuelle.</p>
-            </div>
-            <Link href={CONTENTIEUX} className="cx-btn outline">
-              Découvrir l’accompagnement en contentieux <span className="arrow" aria-hidden>↗</span>
+              Faire examiner mon contrat <span className="arrow" aria-hidden>→</span>
             </Link>
           </div>
         </div>
       </section>
 
       {/* ===== ÉQUIPE ===== */}
-      <section className="cx-section" id="equipe" style={{ background: GHOST, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section" id="equipe" style={{ background: GHOST, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap">
           <Eyebrow>Les personnes qui interviennent</Eyebrow>
-          <p className="cx-team-quote">
-            Un engagement contractuel ne vaut que ce que vaut la réalité technique sur laquelle il repose.
-          </p>
           <h2 style={{ maxWidth: "22ch", marginBottom: 16 }}>Le contrat, confronté à la réalité technique.</h2>
           <p className="cx-team-intro">
             L’analyse juridique peut être complétée, lorsque le dossier le nécessite, par l’examen des
-            architectures, des sauvegardes, des traces d’intervention ou des conditions de migration. L’examen
-            juridique et l’examen technique sont alors menés ensemble plutôt que successivement.
+            architectures, des sauvegardes, des traces d’intervention ou des conditions de migration&nbsp;:
+            examen juridique et examen technique sont alors menés ensemble.
           </p>
           <div className="cx-lawyers">
             {AVOCATS.map((a) => (
@@ -968,33 +929,28 @@ export default function ContratsInformatiquesClient() {
                 couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
               />
             ))}
+            <MembreCarte
+              membre={{
+                slug: "khalid",
+                role: "Sauvegardes, traces techniques et faisabilité de la réversibilité.",
+                tags: ["Sauvegardes", "Réversibilité", "Journalisation"],
+              }}
+              couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
+            />
           </div>
-          <div className="cx-technical">
-            <div>
-              <MembreCarte
-                membre={{
-                  slug: "khalid",
-                  role: "Sauvegardes, traces techniques et faisabilité de la réversibilité.",
-                  tags: ["Sauvegardes", "Réversibilité", "Journalisation"],
-                }}
-                couleurs={{ panneau: GHOST, carte: WH, bordure: BD, texte: INK, secondaire: MUTED, accent: BLUE }}
-              />
-              <p className="cx-tech-note">Intervient en appui technique. N’exerce pas la profession d’avocat.</p>
-            </div>
-            <div className="cx-exam">
-              <h3>Des engagements que l’on peut vérifier</h3>
-              <ul>
-                {KHALID_EXAMINE.map((k) => (
-                  <li key={k}><span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span><span>{fr(k)}</span></li>
-                ))}
-              </ul>
-            </div>
+          <div className="cx-exam">
+            <h3>Des engagements que l’on peut vérifier</h3>
+            <ul>
+              {KHALID_EXAMINE.map((k) => (
+                <li key={k}><span aria-hidden style={{ color: BLUE, flexShrink: 0 }}>—</span><span>{fr(k)}</span></li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
       {/* ===== FAQ + RENVOIS ===== */}
-      <section className="cx-section" id="questions" style={{ background: WH, scrollMarginTop: HEADER_H + 8 }}>
+      <section className="cx-section" id="questions" style={{ background: WH, scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="cx-wrap cx-faq-layout">
           <div>
             <Eyebrow>Avant de vous engager</Eyebrow>
@@ -1017,7 +973,7 @@ export default function ContratsInformatiquesClient() {
             <Eyebrow>Selon les enjeux du projet</Eyebrow>
             {RELATED.map((r) => (
               <Link key={r.href} href={r.href}>
-                {fr(r.label)} <span className="arrow" aria-hidden>↗</span>
+                {fr(r.label)} <span className="arrow" aria-hidden>→</span>
               </Link>
             ))}
           </aside>
@@ -1037,10 +993,7 @@ export default function ContratsInformatiquesClient() {
           </div>
           <div className="cx-contact-action">
             <Link href={contactObjet("audit")} className="cx-btn">
-              Faire auditer un contrat <span className="arrow" aria-hidden>↗</span>
-            </Link>
-            <Link href={CONTENTIEUX} className="cx-link cx-contact-secondary">
-              Projet en difficulté&nbsp;? Évaluer la situation <span className="arrow" aria-hidden>↗</span>
+              Faire auditer un contrat <span className="arrow" aria-hidden>→</span>
             </Link>
           </div>
         </div>
