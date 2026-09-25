@@ -335,3 +335,74 @@
 /* Lien d'évitement (hashé : styles.skipLink). */
 .skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; padding: 12px 18px; text-decoration: none; }
 .skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ======================================================================
+   Refonte v3 (25 sept. 2026) — suppression de la logique A/B/C, parcours
+   « deux cas » → thèse du cabinet → cas clients → premières mesures →
+   contre qui agir → actes → FAQ → équipe (4 cartes) → contact.
+   Classes ci-dessous : ajouts ; les blocs .conf/.qc/.typo/.crypto/.flowf/.who
+   ne sont plus rendus (styles conservés sans effet).
+   ====================================================================== */
+
+/* Bande d'urgence — version courte (une ligne + lien). */
+.esc :global(.urgband-simple) { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.esc :global(.urgband-simple .urgband-title) { grid-column: auto; grid-row: auto; padding-top: 0; white-space: normal; }
+.esc :global(.urgband-simple .urgband-link) { grid-column: auto; grid-row: auto; justify-self: auto; }
+@media (max-width: 640px) { .esc :global(.urgband-simple) { flex-direction: column; align-items: flex-start; gap: 8px; } }
+
+/* §2 — Votre situation, deux cas. */
+.esc :global(.cas2) { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+.esc :global(.cas2card) { background: #fff; border: 1px solid var(--bd); border-top: 4px solid var(--blue); padding: 28px 26px; display: flex; flex-direction: column; gap: 12px; }
+.esc :global(.cas2card h3) { font-size: 21px; font-weight: 600; line-height: 1.3; }
+.esc :global(.cas2card > p) { font-size: 16px; line-height: 1.6; color: var(--text-muted); margin: 0; max-width: none; }
+.esc :global(.cas2tags) { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; max-width: none; }
+.esc :global(.cas2tags .tag) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.03em; color: var(--blue3); background: var(--off); border: 1px solid var(--bd); padding: 5px 10px; }
+
+/* §3 — Ce que le cabinet soutient (navy). */
+.esc :global(.soutient) { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 0; }
+.esc :global(.soutient li) { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 26px 0; border-top: 1px solid rgba(255, 255, 255, 0.22); }
+.esc :global(.soutient .num) { font-family: var(--ff-display); font-weight: 400; font-size: 48px; line-height: 0.85; color: #fff; }
+.esc :global(.soutient h3) { font-size: 20px; font-weight: 500; margin-bottom: 8px; color: #fff; }
+.esc :global(.soutient p) { font-size: 16px; line-height: 1.6; color: var(--muted-on-dark); margin: 0; max-width: 70ch; }
+.esc :global(.soutient-refs) { font-family: var(--ff-mono); font-size: 12px; line-height: 1.7; color: var(--muted-on-dark); margin: 22px 0 0; max-width: none; }
+.esc :global(.soutient-cta) { margin: 24px 0 0; max-width: none; }
+
+/* §6 — Contre qui agir (trois blocs) + encart assureur. */
+.esc :global(.contre3) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 8px; }
+.esc :global(.contre3 article) { background: #fff; border: 1px solid var(--bd); border-left: 4px solid var(--blue); padding: 24px 22px; display: flex; flex-direction: column; gap: 10px; }
+.esc :global(.contre3 h3) { font-size: 19px; font-weight: 600; }
+.esc :global(.contre3 p) { font-size: 16px; line-height: 1.58; color: var(--text-muted); margin: 0; max-width: none; }
+.esc :global(.assur) { margin-top: 28px; background: #fff; border: 2px solid var(--blue); padding: 20px 24px; }
+.esc :global(.assur b) { color: var(--ink); display: block; margin-bottom: 6px; }
+.esc :global(.assur p) { font-size: 16px; line-height: 1.55; color: var(--text-muted); margin: 0; max-width: none; }
+
+/* §7 — Ce que prépare le cabinet (une ligne par acte). */
+.esc :global(.actline) { list-style: none; margin: 8px 0 0; padding: 0; border-top: 2px solid var(--ink); }
+.esc :global(.actline li) { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--bd); }
+.esc :global(.actline .n) { font-family: var(--ff-display); font-weight: 400; font-size: 30px; line-height: 0.9; color: var(--blue); }
+.esc :global(.actline p) { font-size: 17px; line-height: 1.5; color: var(--ink); margin: 0; max-width: none; }
+
+/* Cas clients sur fond clair : note en gris (et non blanc atténué). */
+.esc :global(.note-line--light) { color: var(--text-muted); }
+
+/* §9 — Équipe : quatre cartes. */
+.esc :global(.team4) { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+/* Voir aussi (bas de page). */
+.esc :global(.voir-wrap) { padding-block: clamp(28px, 3vw, 40px); border-top: 1px solid var(--bd); }
+.esc :global(.voir) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0; max-width: none; font-size: 15px; }
+.esc :global(.voir .lbl) { display: inline; margin: 0; }
+.esc :global(.voir a) { font-weight: 600; }
+
+/* Refonte v3 — tablette / mobile. */
+@media (max-width: 1100px) {
+  .esc :global(.contre3) { grid-template-columns: 1fr; }
+  .esc :global(.team4) { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  .esc :global(.cas2),
+  .esc :global(.contre3),
+  .esc :global(.team4) { grid-template-columns: 1fr; }
+  .esc :global(.soutient li),
+  .esc :global(.actline li) { grid-template-columns: 44px 1fr; gap: 12px; }
+}
