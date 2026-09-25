@@ -1,12 +1,16 @@
 /**
- * Questions fréquentes — page « Fraude bancaire et escroquerie » (maquette v3.5).
- * Texte repris à l'identique. La première question est ouverte au chargement.
+ * Questions fréquentes — page « Fraude bancaire et escroquerie ».
+ * La première question est ouverte au chargement.
  */
 export const FAQ_ITEMS: { q: string; a: string; open?: boolean }[] = [
   {
-    q: "La banque doit-elle rembourser une opération non autorisée ?",
-    a: "Le remboursement intervient aussitôt que l'établissement est informé de l'opération, et au plus tard à la fin du premier jour ouvrable suivant, sauf s'il a de bonnes raisons de soupçonner une fraude de l'utilisateur et qu'il les communique par écrit à la Banque de France. Ce régime peut être aménagé par contrat pour les clients qui ne sont pas des consommateurs.",
+    q: "Ma banque refuse de rembourser parce que j'ai validé l'opération. Est-ce définitif ?",
+    a: "Non. Valider un écran présenté comme une mesure de sécurité n'équivaut pas à consentir au paiement qui a été exécuté. Pour refuser le remboursement, la banque doit établir une négligence grave de votre part, ce qui est l'exception dans ces fraudes conçues pour tromper. Le refus opposé au guichet n'est donc pas le dernier mot.",
     open: true,
+  },
+  {
+    q: "Que faire si j'ai moi-même effectué le virement ?",
+    a: "Deux questions se posent successivement : celle de la qualification — l'opération exécutée n'est pas toujours celle à laquelle le consentement a porté — puis, lorsque l'ordre a réellement été voulu, celle d'un autre manquement précisément caractérisé, notamment une anomalie apparente non détectée par la banque.",
   },
   {
     q: "L'authentification forte suffit-elle à prouver mon consentement ?",
@@ -14,18 +18,14 @@ export const FAQ_ITEMS: { q: string; a: string; open?: boolean }[] = [
   },
   {
     q: "Quel délai pour contester ?",
-    a: "Treize mois à compter de la date du débit, en application de l'article L. 133-24 du code monétaire et financier, pour signaler une opération non autorisée ou mal exécutée. Cette échéance doit être vérifiée en priorité, sans préjuger des autres actions susceptibles d'être engagées.",
+    a: "Treize mois à compter de la date du débit, en application de l'article L. 133-24 du code monétaire et financier, pour signaler une opération non autorisée ou mal exécutée. Pour les entreprises, le contrat de compte peut prévoir un délai plus court : il faut le vérifier en priorité, sans préjuger des autres actions susceptibles d'être engagées.",
   },
   {
     q: "Faut-il porter plainte avant de demander le remboursement ?",
     a: "La contestation adressée à la banque ne dépend pas du dépôt d'une plainte. La plainte peut contribuer à l'identification, aux réquisitions et aux saisies ; elle est conduite en parallèle du recours contre les établissements, et le retard pris à l'une ne doit pas retarder l'autre.",
   },
   {
-    q: "Que faire si j'ai moi-même effectué le virement ?",
-    a: "Deux questions se posent successivement : celle de la qualification — l'opération exécutée n'est pas toujours celle à laquelle le consentement a porté — puis, lorsque l'ordre a réellement été voulu, celle d'un autre manquement précisément caractérisé, notamment une anomalie apparente.",
-  },
-  {
     q: "Peut-on agir contre la banque qui a reçu les fonds ?",
-    a: "Cette voie suppose de caractériser une faute civile propre dans l'ouverture ou le fonctionnement du compte de réception, ainsi que le préjudice et le lien de causalité. C'est l'angle le moins exploité du contentieux, et le plus exigeant.",
+    a: "Oui, en caractérisant une faute propre dans l'ouverture ou le fonctionnement du compte de réception, ainsi que le préjudice et le lien de causalité. C'est l'angle le plus exigeant du contentieux ; il a permis, dans le cas client 03, un accord transactionnel avec la banque réceptrice.",
   },
 ];
