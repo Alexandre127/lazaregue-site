@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { fr } from "@/lib/typo";
+import SituationTravail from "./SituationTravail";
 
 /* ==========================================================================
    Page « Avocat en cybersécurité » — refonte sur le wireframe du 21 sept. 2026.
@@ -28,27 +29,10 @@ const NIS2 = "/nos-domaines/cybersecurite/nis2";
 const TEL = "tel:+33181706200";
 
 const EXPOSITIONS = [
-  { n: "01", l: "Réglementaire", p: "L’entreprise doit déterminer si l’incident doit être déclaré à la CNIL, à l’ANSSI, à un client ou à une autre autorité, et dans quel délai." },
-  { n: "02", l: "Contractuel", p: "Il est essentiel d’examiner les termes des contrats signés avec les clients, l’hébergeur, l’infogérant et l’assureur, puis d’identifier les responsabilités et de déterminer les garanties mobilisables." },
-  { n: "03", l: "Pénal et preuve", p: "Les journaux de connexion, messages et chronologies doivent être conservés sans altération afin d’établir les faits et, si nécessaire, de préparer une plainte ou une défense." },
-  { n: "04", l: "Gouvernance", p: "La direction, le service juridique et les équipes techniques doivent savoir qui prend les décisions, quelles informations sont utilisées et comment ces décisions sont consignées." },
-];
-
-/* Développements — repris VERBATIM de la V7 (maquette-cybersecurite-v7, §« Ce
-   qui est en jeu »). */
-const DEPLIABLES = [
-  {
-    s: "Qui faut-il informer après un incident ?",
-    paras: [
-      "Les cyberattaques ne déclenchent pas automatiquement les mêmes déclarations. Le cabinet commence par établir les faits : est-ce une simple indisponibilité, un accès non autorisé, un vol de fichiers, des données personnelles concernées ou un service essentiel perturbé ? À partir de ces éléments, il détermine si l’entreprise doit informer la CNIL, l’ANSSI, ses clients, son assureur ou une autre autorité, et dans quel délai. La décision de notifier, ou non, est motivée et conservée.",
-    ],
-  },
-  {
-    s: "Pourquoi faut-il préserver les preuves immédiatement ?",
-    paras: [
-      "Les journaux de connexion, les messages, les fichiers et les configurations peuvent être perdus lors d’une réinstallation ou d’un redémarrage. Il faut donc identifier et conserver les éléments qui permettront de reconstituer l’incident avant toute suppression. Ces éléments serviront à répondre aux autorités, à établir un éventuel manquement du prestataire et à mobiliser la garantie de l’assureur. Le cabinet encadre leur collecte avec l’expert technique afin qu’ils restent datés, compréhensibles et exploitables.",
-    ],
-  },
+  { n: "01", l: "Réglementaire", p: "Faut-il déclarer l’incident à la CNIL, à l’ANSSI, à un client ou à une autre autorité, et dans quel délai ?" },
+  { n: "02", l: "Contractuel", p: "Relire les contrats avec les clients, l’hébergeur, l’infogérant et l’assureur pour établir les responsabilités et les garanties mobilisables." },
+  { n: "03", l: "Pénal et preuve", p: "Conserver sans altération journaux, messages et chronologies, pour établir les faits et préparer une plainte ou une défense." },
+  { n: "04", l: "Gouvernance", p: "Savoir qui décide, sur quelles informations, et consigner chaque décision." },
 ];
 
 const REGLES = [
@@ -58,9 +42,9 @@ const REGLES = [
 ];
 
 const NIS_Q = [
-  { n: "01", h: "Votre entreprise est-elle directement soumise à NIS 2 ?", p: "Le secteur d’activité, la taille de l’entreprise et certaines désignations particulières déterminent le régime applicable. Le cabinet vérifie ce périmètre au regard du texte en vigueur en France au moment de la mission." },
-  { n: "02", h: "Êtes-vous fournisseur d’une entreprise concernée ?", p: "Un client soumis à NIS 2 peut vous adresser un questionnaire, demander des preuves, imposer un audit ou renforcer les clauses de sécurité et de notification du contrat." },
-  { n: "03", h: "Que fait le cabinet ?", p: "Il qualifie les obligations applicables, analyse les engagements demandés, négocie les clauses et prépare les politiques et procédures nécessaires. L’appui technique vérifie ce qui existe déjà, ce qui peut être démontré et ce qui doit être corrigé." },
+  { n: "01", h: "Votre entreprise est-elle directement soumise à NIS 2 ?", p: "Le secteur, la taille et certaines désignations déterminent le régime. Le cabinet vérifie ce périmètre au regard du texte en vigueur en France." },
+  { n: "02", h: "Êtes-vous fournisseur d’une entreprise concernée ?", p: "Un client soumis à NIS 2 peut vous adresser un questionnaire, exiger des preuves, imposer un audit ou renforcer vos clauses de sécurité." },
+  { n: "03", h: "Que fait le cabinet ?", p: "Il qualifie vos obligations, analyse et négocie les engagements demandés, prépare les politiques et procédures ; l’expert technique vérifie ce qui peut être démontré." },
 ];
 
 const SITUATIONS = [
@@ -117,7 +101,8 @@ const SITUATIONS = [
 /* FAQ — Q1 (wireframe), Q2 à Q5 (V7), Q6 et Q7 (version récente de la page). */
 const FAQ = [
   { q: "À quel moment faut-il appeler un avocat ?", a: "Avant les premières déclarations. Les messages adressés aux clients, au prestataire, à l’assureur et à l’autorité de contrôle fixent la position de l’entreprise et seront relus plus tard. En prévention, le bon moment est celui où un client impose des exigences de sécurité ou celui où un contrat d’infogérance se négocie.", open: true },
-  { q: "Faut-il informer la CNIL, l’ANSSI ou une autre autorité ?", a: "Cela dépend de ce que l’incident a touché et de ce qu’est l’entreprise. La CNIL est concernée lorsque des données personnelles ont fait l’objet d’une violation présentant un risque pour les personnes. D’autres destinataires peuvent s’ajouter selon le secteur, la qualification de l’entité ou les engagements contractuels : régulateur sectoriel, assureur, clients, personnes concernées. Chacun a son propre régime et son propre délai. La première étape est de déterminer lesquels s’appliquent réellement." },
+  { q: "Faut-il informer la CNIL, l’ANSSI ou une autre autorité ?", a: "Cela dépend de ce que l’incident a touché et de ce qu’est l’entreprise. Le cabinet établit d’abord la nature de l’incident — indisponibilité, accès non autorisé, vol de fichiers, données personnelles concernées ou service essentiel perturbé —, car c’est elle qui commande les déclarations à faire. La CNIL doit être notifiée de toute violation de données personnelles dans les 72 heures, sauf si elle n’est pas susceptible d’engendrer un risque pour les droits et libertés des personnes (article 33 du RGPD). D’autres destinataires peuvent s’ajouter selon le secteur, la qualification de l’entité ou les engagements contractuels : régulateur sectoriel, assureur, clients, personnes concernées. Chacun a son propre régime et son propre délai. La première étape est de déterminer lesquels s’appliquent réellement." },
+  { q: "Pourquoi faut-il préserver les preuves immédiatement ?", a: "Les journaux de connexion, les messages, les fichiers et les configurations peuvent être perdus lors d’une réinstallation ou d’un redémarrage. Il faut donc identifier et conserver les éléments qui permettront de reconstituer l’incident avant toute suppression. Ces éléments serviront à répondre aux autorités, à établir un éventuel manquement du prestataire et à mobiliser la garantie de l’assureur. Le cabinet encadre leur collecte avec l’expert technique afin qu’ils restent datés, compréhensibles et exploitables." },
   { q: "Le prestataire informatique est-il responsable de l’attaque ?", a: "Cela dépend de ce qu’il s’était engagé à faire. Le débat porte sur le périmètre souscrit, la nature de l’obligation, les niveaux de service convenus, les alertes qu’il aurait dû émettre et les clauses limitant sa responsabilité. Une attaque subie ne caractérise pas à elle seule un manquement : il faut identifier l’obligation précise qui n’a pas été exécutée et son lien avec le dommage." },
   { q: "Que répondre à un client qui exige des garanties de sécurité ?", a: "Ni un refus, ni une signature automatique. Les questionnaires et clauses transmis par les donneurs d’ordre contiennent souvent des engagements que l’entreprise ne peut pas tenir techniquement, ou qui transforment une obligation de moyens en garantie de résultat. Le cabinet identifie ce qui peut être signé en l’état, ce qui doit être renégocié et ce qui suppose d’abord une mise à niveau." },
   { q: "Comment sont fixés les honoraires ?", a: "La consultation initiale d’une heure est facturée selon un montant indiqué avant le rendez-vous. Pour la suite, les honoraires sont convenus par écrit avant toute intervention : au forfait lorsque le périmètre est délimité — rédaction de documents, revue contractuelle, rapport d’écart — et au temps passé lorsqu’il ne peut pas l’être, notamment en gestion d’incident et en contentieux." },
@@ -145,7 +130,7 @@ export function CyberV4() {
           </nav>
           <p className="cw-label"><span className="cw-only-d">Paris · entreprises · intervention partout en France</span><span className="cw-only-m">Paris · partout en France</span></p>
           <h1 className="cw-h1">AVOCAT EN CYBERSÉCURITÉ POUR LES ENTREPRISES</h1>
-          <p className="cw-hero-lead">{fr("Le cabinet accompagne les entreprises dans la prévention des risques informatiques, la réponse en cas de cyberattaque et la défense de leurs intérêts à l’encontre des auteurs d’intrusions ou de tout acteur dont la responsabilité est engagée. Il les conseille également dans la mise en conformité avec leurs obligations de cybersécurité : RGPD et NIS 2, en documentant cette conformité et en l’intégrant à leur dispositif général de conformité.")}</p>
+          <p className="cw-hero-lead">{fr("Le cabinet accompagne les entreprises avant, pendant et après une cyberattaque : prévention des risques, gestion de l’incident, conformité RGPD et NIS 2, action contre les responsables.")}</p>
           <div className="cw-hero-cta">
             <Link href={CONTACT} className="cw-btn">Échanger avec un avocat →</Link>
             <a href="#interventions" className="cw-link cw-hero-link">Voir nos interventions ↓</a>
@@ -158,8 +143,8 @@ export function CyberV4() {
 
       {/* ===== 2. BANDE ROUGE — INCIDENT EN COURS ===== */}
       <div className="cw-urgent">
-        <span className="cw-urgent-tag">INCIDENT EN COURS&nbsp;?</span>
-        <a href={TEL} className="cw-urgent-tel"><span className="cw-only-d">Appeler le cabinet : 01 81 70 62 00 →</span><span className="cw-only-m">Appeler : 01 81 70 62 00 →</span></a>
+        <span className="cw-urgent-tag">{fr("INCIDENT EN COURS ?")}</span>
+        <a href={TEL} className="cw-urgent-tel"><span className="cw-only-d">{fr("Appeler le cabinet : 01 81 70 62 00 →")}</span><span className="cw-only-m">{fr("Appeler : 01 81 70 62 00 →")}</span></a>
       </div>
 
       {/* ===== 3. AVANT / PENDANT / APRÈS ===== */}
@@ -170,27 +155,24 @@ export function CyberV4() {
         </div>
         <div className="cw-apa">
           <div className="cw-apa-card">
-            <span className="cw-big">AVANT</span>
-            <h3 className="cw-h3">Anticiper les obligations et les risques</h3>
+            <div className="cw-apa-head"><span className="cw-big">Avant</span><h3 className="cw-h3">Anticiper les obligations et les risques</h3></div>
             <p>{fr("Vérifier vos obligations, vos contrats, vos sauvegardes et votre assurance avant qu’un incident survienne.")}</p>
           </div>
           <div className="cw-apa-card cw-apa-dark">
-            <span className="cw-big">PENDANT</span>
-            <h3 className="cw-h3">Prendre les premières décisions</h3>
+            <div className="cw-apa-head"><span className="cw-big">Pendant</span><h3 className="cw-h3">Prendre les premières décisions</h3></div>
             <p>{fr("Contenir l’incident, préserver les preuves, décider des notifications et encadrer les communications.")}</p>
           </div>
           <div className="cw-apa-card">
-            <span className="cw-big">APRÈS</span>
-            <h3 className="cw-h3">Établir les responsabilités</h3>
+            <div className="cw-apa-head"><span className="cw-big">Après</span><h3 className="cw-h3">Établir les responsabilités</h3></div>
             <p>{fr("Identifier les manquements, mobiliser les garanties et préparer le recours ou la défense.")}</p>
           </div>
         </div>
         <div className="cw-orient">
-          <h3 className="cw-h3">Un client vous impose des exigences de sécurité ? Un prestataire est mis en cause ?</h3>
-          <p className="cw-tx">Le cabinet vous aide à répondre aux questionnaires de sécurité, négocier les clauses exigées et examiner la responsabilité d’un prestataire après un incident.</p>
+          <h3 className="cw-h3">{fr("Un client vous impose des exigences de sécurité ? Un prestataire est mis en cause ?")}</h3>
+          <p className="cw-tx">{fr("Le cabinet vous aide à répondre aux questionnaires de sécurité, négocier les clauses exigées et examiner la responsabilité d’un prestataire après un incident.")}</p>
           <div className="cw-orient-links">
-            <a href="#nis2" className="cw-link">Répondre aux exigences d’un client ↓</a>
-            <a href="#interventions" className="cw-link">Examiner la responsabilité d’un prestataire ↓</a>
+            <a href="#nis2" className="cw-link cw-orient-link"><span>{fr("Répondre aux exigences d’un client")}</span><span aria-hidden="true">↓</span></a>
+            <a href="#interventions" className="cw-link cw-orient-link"><span>{fr("Examiner la responsabilité d’un prestataire")}</span><span aria-hidden="true">↓</span></a>
           </div>
         </div>
       </section>
@@ -200,24 +182,14 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Ce qui est en jeu</p>
           <h2 className="cw-h2">Un incident, quatre expositions simultanées</h2>
-          <p className="cw-lead">Les décisions techniques, les exigences réglementaires et les engagements contractuels interagissent. Le cabinet les évalue ensemble avec la direction et les équipes concernées.</p>
+          <p className="cw-lead">{fr("Un même incident engage l’entreprise sur quatre terrains à la fois. Le cabinet les traite ensemble, avec la direction et les équipes concernées.")}</p>
         </div>
         <div className="cw-expo">
           {EXPOSITIONS.map((e) => (
             <div key={e.l} className="cw-expo-item">
-              <p className="cw-expo-head"><span className="cw-expo-num">{e.n}</span><span className="cw-label cw-expo-label">{e.l}</span></p>
+              <p className="cw-expo-head"><span className="cw-expo-num">{e.n}</span><span className="cw-label cw-expo-label">{fr(e.l)}</span></p>
               <p>{fr(e.p)}</p>
             </div>
-          ))}
-        </div>
-        <div className="cw-dl">
-          {DEPLIABLES.map((d) => (
-            <details key={d.s}>
-              <summary>{fr(d.s)}</summary>
-              {d.paras.map((p, i) => (
-                <p key={i}>{fr(p)}</p>
-              ))}
-            </details>
           ))}
         </div>
       </section>
@@ -226,8 +198,8 @@ export function CyberV4() {
       <section className="cw-sec">
         <div className="cw-head">
           <p className="cw-label">Protéger les données et les systèmes</p>
-          <h2 className="cw-h2">Comment vérifier si les mesures de sécurité sont suffisantes ?</h2>
-          <p className="cw-lead">Il ne suffit pas d’affirmer qu’un système est sécurisé. L’entreprise doit pouvoir démontrer qui peut consulter les données, comment elles sont sauvegardées et si un incident peut être retracé. Lorsque des données personnelles sont concernées, l’article 32 du RGPD exige des mesures appropriées au niveau de risque.</p>
+          <h2 className="cw-h2">{fr("Comment vérifier si les mesures de sécurité sont suffisantes ?")}</h2>
+          <p className="cw-lead">{fr("Il ne suffit pas d’affirmer qu’un système est sécurisé : il faut pouvoir le démontrer. Pour les données personnelles, l’article 32 du RGPD impose des mesures adaptées au risque.")}</p>
         </div>
         <div className="cw-kv-wrap">
           {REGLES.map((r) => (
@@ -240,11 +212,11 @@ export function CyberV4() {
       </section>
 
       {/* ===== 6. NIS 2 ===== */}
-      <section id="nis2" className="cw-sec cw-tint" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
+      <section id="nis2" className="cw-sec cw-dark" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
         <div className="cw-head">
-          <p className="cw-label">NIS 2 : la sécurité des entreprises concernées</p>
-          <h2 className="cw-h2">NIS 2 : êtes-vous directement ou indirectement concerné ?</h2>
-          <p className="cw-lead">NIS 2 renforce les obligations de cybersécurité des entreprises appartenant à des secteurs essentiels ou importants. Même lorsqu’une entreprise ne relève pas directement de son champ d’application, elle peut être concernée en tant que fournisseur ou sous-traitant d’un client régulé, qui doit également maîtriser les risques liés à sa chaîne d’approvisionnement.</p>
+          <p className="cw-label">{fr("Nouveauté · NIS 2")}</p>
+          <h2 className="cw-h2">{fr("NIS 2 : êtes-vous directement ou indirectement concerné ?")}</h2>
+          <p className="cw-lead">{fr("NIS 2 vise les entreprises des secteurs essentiels ou importants, mais aussi, par ricochet, leurs fournisseurs et sous-traitants, que ces clients doivent désormais contrôler.")}</p>
         </div>
         <ol className="cw-nis">
           {NIS_Q.map((q) => (
@@ -258,7 +230,7 @@ export function CyberV4() {
           ))}
         </ol>
         <div>
-          <Link href={NIS2} className="cw-link">Comprendre les obligations NIS 2 et notre accompagnement →</Link>
+          <Link href={NIS2} className="cw-link">{fr("Comprendre les obligations NIS 2 et notre accompagnement →")}</Link>
         </div>
       </section>
 
@@ -267,7 +239,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Vos interlocuteurs</p>
           <h2 className="cw-h2">Un avocat et un expert technique sur votre dossier</h2>
-          <p className="cw-lead">Les données techniques — journaux d’accès, état des sauvegardes, comptes actifs — servent de base à l’analyse juridique. L’appui technique est mobilisé selon les besoins de la mission.</p>
+          <p className="cw-lead">{fr("Les données techniques — journaux d’accès, sauvegardes, comptes actifs — servent de base à l’analyse juridique.")}</p>
         </div>
         <div className="cw-team">
           <article className="cw-person">
@@ -277,21 +249,21 @@ export function CyberV4() {
             <div>
               <p className="cw-label">Avocat au Barreau de Paris</p>
               <h3 className="cw-h3">Alexandre Lazarègue</h3>
-              <p className="cw-tx">Obligations applicables, contrats, relations avec les autorités et contentieux.</p>
+              <p className="cw-tx">{fr("Obligations applicables, contrats, relations avec les autorités et contentieux.")}</p>
             </div>
           </article>
           <article className="cw-person">
             <div className="cw-shot">
-              <Image src="/images/khalid-pro.jpg" alt="Khalid Sookia, appui technique en cybersécurité" fill sizes="160px" style={{ objectFit: "cover", objectPosition: "center 20%" }} />
+              <Image src="/images/khalid-pro.jpg" alt="Khalid Sookia, consultant technique en cybersécurité" fill sizes="160px" style={{ objectFit: "cover", objectPosition: "center 20%" }} />
             </div>
             <div>
               <p className="cw-label">Consultant technique en cybersécurité</p>
               <h3 className="cw-h3">Khalid Sookia</h3>
-              <p className="cw-tx">Analyse technique, sauvegardes, restauration, journalisation et investigation.</p>
+              <p className="cw-tx">{fr("Examen des accès, des sauvegardes et des journaux ; vérifie que les mesures déclarées correspondent à celles réellement en place.")}</p>
             </div>
           </article>
         </div>
-        <p className="cw-note-box">Lorsqu’un client adresse un questionnaire de sécurité, l’avocat analyse les engagements qui seront signés&nbsp;; le consultant vérifie si les réponses correspondent aux mesures et aux preuves disponibles. Le cabinet distingue ainsi ce qui est démontré, ce qui reste à vérifier et ce qui doit être négocié.</p>
+        <p className="cw-note-box">{fr("Face à un questionnaire de sécurité, l’avocat analyse les engagements à signer ; l’expert vérifie que les réponses correspondent aux mesures réellement en place.")}</p>
       </section>
 
       {/* ===== 8. QUATRE SITUATIONS ===== */}
@@ -299,7 +271,7 @@ export function CyberV4() {
         <div className="cw-head">
           <p className="cw-label">Notre intervention, concrètement</p>
           <h2 className="cw-h2">Quatre situations, un travail concret</h2>
-          <p className="cw-lead">Un questionnaire à signer, une mise en conformité imposée, un incident ou un audit client : le travail du cabinet part de votre situation et des engagements de votre entreprise.</p>
+          <p className="cw-lead">{fr("Un questionnaire à signer, une mise en conformité imposée, un incident ou un audit client : le travail du cabinet part de votre situation et des engagements de votre entreprise.")}</p>
         </div>
         <div className="cw-sits">
           {SITUATIONS.map((s) => (
@@ -309,14 +281,7 @@ export function CyberV4() {
                 <h3 className="cw-h3 cw-sit-h">{fr(s.h)}</h3>
                 <p className="cw-tx">{fr(s.ctx)}</p>
                 <p className="cw-sit-line"><strong>{fr("L’enjeu :")}</strong> {fr(s.enjeu)}</p>
-                <div>
-                  <p className="cw-sit-sub">Le travail du cabinet</p>
-                  <ul className="cw-sit-ul">
-                    {s.travail.map((t) => (
-                      <li key={t}>{fr(t)}</li>
-                    ))}
-                  </ul>
-                </div>
+                <SituationTravail items={s.travail} />
                 <p className="cw-sit-prep"><strong>{fr("Ce que le cabinet prépare :")}</strong> {fr(s.prepare)}</p>
               </div>
             </article>
@@ -331,15 +296,13 @@ export function CyberV4() {
         <div className="cw-parc cw-dark">
           <p className="cw-label">Si un incident est en cours</p>
           <h2 className="cw-h2 cw-h2-sm">Coordonner les premières décisions</h2>
-          <p className="cw-tx">Le confinement, la poursuite des activités et la conservation des preuves doivent être coordonnés avec les intervenants techniques. Avant toute suppression, réinstallation ou reconstruction, il est essentiel de déterminer les éléments à conserver : journaux, messages et horodatages.</p>
-          <p className="cw-tx">Déterminer qui doit être informé, évaluer la portée des communications et tracer les décisions. Le cabinet qualifie ensuite l’incident, prépare les notifications dues et les échanges nécessaires.</p>
-          <div><a href={TEL} className="cw-btn">Appeler : 01 81 70 62 00 →</a></div>
+          <p className="cw-tx">{fr("Avant toute suppression, réinstallation ou reconstruction : préserver journaux, messages et horodatages, déterminer qui informer et tracer chaque décision.")}</p>
+          <div><a href={TEL} className="cw-btn">{fr("Appeler : 01 81 70 62 00 →")}</a></div>
         </div>
         <div className="cw-parc cw-parc-light">
           <p className="cw-label">Si vous préparez l’entreprise</p>
           <h2 className="cw-h2 cw-h2-sm">Un périmètre et des honoraires annoncés</h2>
-          <p className="cw-tx cw-tx-dark">Consultation initiale d’une heure, facturée selon les honoraires communiqués avant le rendez-vous.</p>
-          <p className="cw-tx cw-tx-dark">Examen des contrats, des mesures et des exigences clients ; rapport d’écart, documents retenus et clauses à renégocier. Un point de revue est convenu selon la mission.</p>
+          <p className="cw-tx cw-tx-dark">{fr("Consultation initiale d’une heure, facturée selon les honoraires communiqués avant le rendez-vous. Ensuite : examen des contrats, des mesures et des exigences clients, rapport d’écart et clauses à renégocier ; un point de revue est convenu selon la mission.")}</p>
           <div><Link href={CONTACT} className="cw-btn">Contacter le cabinet →</Link></div>
         </div>
       </section>
@@ -374,13 +337,13 @@ export function CyberV4() {
       <section className="cw-final cw-dark">
         <div>
           <h2 className="cw-h2 cw-h2-final">Parlons de votre situation</h2>
-          <p className="cw-tx">Incident en cours, exigence d’un client, contrat à relire ou mise en conformité : décrivez brièvement votre situation. Le cabinet vous indiquera comment transmettre les documents utiles.</p>
+          <p className="cw-tx">{fr("Incident en cours, exigence d’un client, contrat à relire ou mise en conformité : décrivez brièvement votre situation. Le cabinet vous indiquera comment transmettre les documents utiles.")}</p>
         </div>
         <div className="cw-final-actions">
           <Link href={CONTACT} className="cw-btn">Contacter le cabinet →</Link>
           <div>
-            <span className="cw-mono">Incident en cours&nbsp;?</span><br />
-            <a href={TEL} className="cw-final-tel">01 81 70 62 00</a>
+            <span className="cw-mono">{fr("Incident en cours ?")}</span><br />
+            <a href={TEL} className="cw-final-tel">{fr("01 81 70 62 00")}</a>
           </div>
         </div>
       </section>
@@ -437,13 +400,19 @@ const CSS = `
 /* Avant / Pendant / Après */
 [data-domaine="cyberwf"] .cw-apa { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
 [data-domaine="cyberwf"] .cw-apa-card { border: 1px solid #0A0A14; padding: 36px; display: flex; flex-direction: column; gap: 12px; }
-[data-domaine="cyberwf"] .cw-apa-card + .cw-apa-card { border-left: 0; }
+/* Bureau : les cartes partagent leur bord vertical (rangée de 3). Sur mobile,
+   chaque carte empilée garde un cadre complet (bord gauche rétabli plus bas). */
+@media (min-width: 768px) {
+  [data-domaine="cyberwf"] .cw-apa-card + .cw-apa-card { border-left: 0; }
+}
 [data-domaine="cyberwf"] .cw-apa-card p { margin: 0; font-size: 16px; line-height: 1.55; color: #4A4A63; }
 [data-domaine="cyberwf"] .cw-apa-dark { background: #05060F; color: #FFFFFF; border-color: #05060F; }
 [data-domaine="cyberwf"] .cw-apa-dark p { color: rgba(255,255,255,0.8); }
-[data-domaine="cyberwf"] .cw-big { font-family: var(--ff-display); font-size: 64px; line-height: 0.85; }
+[data-domaine="cyberwf"] .cw-apa-head { display: flex; flex-direction: column; gap: 12px; }
+[data-domaine="cyberwf"] .cw-big { font-family: var(--ff-display); font-size: 64px; line-height: 0.85; text-transform: uppercase; }
 [data-domaine="cyberwf"] .cw-orient { border-top: 1px solid #0A0A14; padding-top: 28px; display: flex; flex-direction: column; gap: 10px; }
 [data-domaine="cyberwf"] .cw-orient-links { display: flex; gap: 28px; flex-wrap: wrap; }
+[data-domaine="cyberwf"] .cw-orient-link { gap: 6px; }
 
 /* Expositions */
 [data-domaine="cyberwf"] .cw-expo { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); column-gap: 48px; row-gap: 32px; }
@@ -470,6 +439,23 @@ const CSS = `
 
 /* NIS 2 + examine + numbered */
 [data-domaine="cyberwf"] .cw-num { font-family: var(--ff-mono); font-size: 15px; color: #1A47FF; }
+/* Section NIS 2 sur fond bleu nuit : lead et numéros passent en clair (AA). */
+[data-domaine="cyberwf"] .cw-dark .cw-lead { color: rgba(255,255,255,0.85); }
+[data-domaine="cyberwf"] .cw-dark .cw-num { color: #FFFFFF; }
+/* Règle générale : dans TOUTE section .cw-dark, titres, textes, listes, strong et
+   intitulés de questions sont clairs par défaut. Nécessaire car la base
+   [data-domaine] li (color #0A0A14) s'applique directement aux li et se transmet
+   par héritage aux h3 des questions (sombre sur sombre sinon). Les couleurs
+   atténuées explicites (.cw-tx, .cw-lead, .cw-label) restent prioritaires. */
+[data-domaine="cyberwf"] .cw-dark h2,
+[data-domaine="cyberwf"] .cw-dark h3,
+[data-domaine="cyberwf"] .cw-dark h4,
+[data-domaine="cyberwf"] .cw-dark strong,
+[data-domaine="cyberwf"] .cw-dark summary { color: #FFFFFF; }
+[data-domaine="cyberwf"] .cw-dark p,
+[data-domaine="cyberwf"] .cw-dark li,
+[data-domaine="cyberwf"] .cw-dark dd { color: rgba(255,255,255,0.85); }
+[data-domaine="cyberwf"] .cw-dark .cw-mono { color: rgba(255,255,255,0.72); }
 [data-domaine="cyberwf"] .cw-nis { list-style: none; margin: 0; padding: 0; max-width: 1000px; border-bottom: 1px solid #E0E0EE; }
 [data-domaine="cyberwf"] .cw-nis li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 20px 0; border-top: 1px solid #E0E0EE; }
 [data-domaine="cyberwf"] .cw-nis h3 { font-size: 20px; }
@@ -498,6 +484,8 @@ const CSS = `
 [data-domaine="cyberwf"] .cw-sit-sub { margin: 0 0 6px; font-size: 16px; }
 [data-domaine="cyberwf"] .cw-sit-ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.6; }
 [data-domaine="cyberwf"] .cw-sit-prep { margin: 0; font-size: 16px; line-height: 1.5; background: #F4F4F8; padding: 12px 16px; }
+/* « Le travail du cabinet » : bouton masqué sur ordinateur (liste dépliée). */
+[data-domaine="cyberwf"] .cw-travail-toggle { display: none; }
 [data-domaine="cyberwf"] .cw-docs { border: 1px solid #0A0A14; padding: 28px 32px; display: flex; flex-direction: column; gap: 10px; }
 [data-domaine="cyberwf"] .cw-docs p:first-of-type { margin: 0; font-size: 16px; line-height: 1.6; }
 
@@ -548,10 +536,29 @@ const CSS = `
   [data-domaine="cyberwf"] .cw-sit { padding: 20px; }
   [data-domaine="cyberwf"] .cw-apa-card { border: 1px solid #0A0A14; padding: 18px; }
   [data-domaine="cyberwf"] .cw-apa-dark { border-color: #05060F; }
-  [data-domaine="cyberwf"] .cw-kv, [data-domaine="cyberwf"] .cw-sit, [data-domaine="cyberwf"] .cw-person { grid-template-columns: 1fr; gap: 10px; }
+  /* Avant / Pendant / Après : intitulé (~26px) enchaîné au sous-titre (texte inline), séparés par un tiret. */
+  [data-domaine="cyberwf"] .cw-apa-head { display: block; }
+  [data-domaine="cyberwf"] .cw-big { display: inline; font-size: 26px; text-transform: none; margin-right: 6px; }
+  [data-domaine="cyberwf"] .cw-apa-head .cw-h3 { display: inline; font-weight: 500; }
+  [data-domaine="cyberwf"] .cw-apa-head .cw-h3::before { content: "— "; }
+  /* Expositions : numéro (~24px) sur la même ligne que l'étiquette mono. */
+  [data-domaine="cyberwf"] .cw-expo-num { font-size: 24px; }
+  [data-domaine="cyberwf"] .cw-expo-label::before { content: "· "; }
+  /* Liens du bloc « exigences » : pleine largeur, flèche à droite. */
+  [data-domaine="cyberwf"] .cw-orient-links { flex-direction: column; gap: 0; }
+  [data-domaine="cyberwf"] .cw-orient-link { width: 100%; justify-content: space-between; border-top: 1px solid #0A0A14; padding: 12px 0; min-height: 52px; }
+  [data-domaine="cyberwf"] .cw-kv, [data-domaine="cyberwf"] .cw-sit { grid-template-columns: 1fr; gap: 10px; }
+  /* Binôme : portrait réduit à gauche, texte à droite. */
+  [data-domaine="cyberwf"] .cw-person { grid-template-columns: 64px 1fr; gap: 16px; align-items: start; }
+  [data-domaine="cyberwf"] .cw-shot { width: 64px; height: 76px; }
+  /* Situations : « Le travail du cabinet » replié sous un bouton, après « Ce que le cabinet prépare ». */
+  [data-domaine="cyberwf"] .cw-travail { order: 1; }
+  [data-domaine="cyberwf"] .cw-travail-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; background: none; border: 0; border-top: 1px solid #E0E0EE; padding: 12px 0; min-height: 44px; font-size: 16px; font-weight: 600; color: #1A47FF; cursor: pointer; }
+  [data-domaine="cyberwf"] .cw-travail-label { display: none; }
+  [data-domaine="cyberwf"] .cw-sit-ul { display: none; padding-bottom: 6px; }
+  [data-domaine="cyberwf"] .cw-sit-ul.is-open { display: block; }
   [data-domaine="cyberwf"] .cw-nis li, [data-domaine="cyberwf"] .cw-exam li { grid-template-columns: 40px 1fr; }
   [data-domaine="cyberwf"] .cw-exam li { font-size: 17px; }
-  [data-domaine="cyberwf"] .cw-shot { width: 120px; height: 150px; }
   [data-domaine="cyberwf"] .cw-final { align-items: start; }
 }
 @media (prefers-reduced-motion: reduce) {
