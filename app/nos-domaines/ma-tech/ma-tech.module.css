@@ -315,7 +315,7 @@
 .mt :global(.dtabs button:hover) { color: #fff; }
 .mt :global(.dstage) { margin-top: 32px; position: relative; }
 .mt :global(.dpanel) { display: grid; grid-template-columns: 5fr 56px 6fr; grid-template-rows: auto auto; gap: 0; align-items: stretch; animation: mt-din 0.35s ease-out; }
-.mt :global(.dpanel[hidden]) { display: none; }
+.mt :global(.dpanel:not(.is-active)) { display: none; }
 @keyframes mt-din { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .mt :global(.d-decl) { border: 1px dashed rgba(255, 255, 255, 0.45); padding: 26px; display: flex; flex-direction: column; justify-content: center; }
 .mt :global(.d-q) { font-size: clamp(20px, 2.2vw, 28px); line-height: 1.25; font-weight: 500; font-style: italic; text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, 0.55); text-decoration-thickness: 2px; color: #fff; margin: 0; }
@@ -606,4 +606,42 @@
   .mt :global(.team-grid--5 article) { flex-direction: row !important; align-items: flex-start; }
   .mt :global(.team-grid--5 article > div:first-child) { width: 64px !important; height: 76px !important; flex: 0 0 64px; aspect-ratio: auto !important; align-self: flex-start; }
   .mt :global(.team-grid--5 article > div:last-child) { flex: 1 1 auto; padding: 12px 14px !important; }
+}
+
+/* ==========================================================================
+   Démonstration — MOBILE (≤ 640 px) : onglets → liste de cinq cartes.
+   En-têtes de carte et libellés mobiles masqués sur bureau (rendu inchangé).
+   ========================================================================== */
+.mt :global(.demo-sec .d-head) { display: none; }
+.mt :global(.demo-sec .lbl-m) { display: none; }
+
+@media (max-width: 640px) {
+  /* Retirer le mécanisme d'onglets : grille d'onglets, flèches, compteur, flèche interne. */
+  .mt :global(.demo-sec .d-top),
+  .mt :global(.demo-sec .dtabs),
+  .mt :global(.demo-sec .d-nav),
+  .mt :global(.demo-sec .d-arrow) { display: none; }
+
+  /* Basculer les libellés des trois lignes en version mobile. */
+  .mt :global(.demo-sec .lbl-d) { display: none; }
+  .mt :global(.demo-sec .lbl-m) { display: inline; }
+
+  /* Afficher les cinq panneaux en liste verticale de cartes autonomes. */
+  .mt :global(.demo-sec .dstage) { margin-top: 0; display: flex; flex-direction: column; gap: 16px; }
+  .mt :global(.demo-sec .dpanel) { display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.04); padding: 18px 16px; animation: none; }
+
+  .mt :global(.demo-sec .d-head) { display: flex; align-items: baseline; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.22); padding-bottom: 10px; }
+  .mt :global(.demo-sec .d-head-n) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: 24px; line-height: 1; letter-spacing: 0.02em; color: var(--blue2); }
+  .mt :global(.demo-sec .d-head-court) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; }
+
+  .mt :global(.demo-sec .d-decl),
+  .mt :global(.demo-sec .d-const),
+  .mt :global(.demo-sec .d-eff) { margin: 0; padding: 14px; display: flex; flex-direction: column; }
+  .mt :global(.demo-sec .d-decl) { border: 1px dashed rgba(255, 255, 255, 0.45); background: transparent; }
+  .mt :global(.demo-sec .d-q) { font-size: 18px; line-height: 1.3; }
+  .mt :global(.demo-sec .d-const) { background: var(--blue); }
+  .mt :global(.demo-sec .d-const p) { font-size: 16px; }
+  .mt :global(.demo-sec .d-eff) { background: #fff; border-left: 6px solid var(--blue); gap: 8px; }
+  .mt :global(.demo-sec .d-eff .d-stamp) { margin: 0; justify-self: start; }
+  .mt :global(.demo-sec .d-stamp) { margin-bottom: 0; }
 }
