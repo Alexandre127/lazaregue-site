@@ -330,7 +330,8 @@
 .mt :global(.d-nav) { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
 .mt :global(.d-nav button) { min-width: 48px; min-height: 48px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.5); color: #fff; font-size: 20px; cursor: pointer; }
 .mt :global(.d-nav button:hover) { background: var(--blue); border-color: var(--blue); }
-.mt :global(.demo-sec .proof__note) { background: rgba(255, 255, 255, 0.06); color: var(--muted-on-dark); border-left: 3px solid var(--blue); padding: 18px 22px; margin-top: 20px; font-size: 0.92rem; }
+/* §2 — note de gravité : une ligne mono sous le module (plus d'encadré). */
+.mt :global(.demo-sec .proof__note) { background: transparent; border: 0; padding: 0; margin-top: 18px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; line-height: 1.5; color: var(--muted-on-dark); }
 
 /* Traduire — quatre groupes + lexique */
 .mt :global(.groups) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
@@ -503,3 +504,106 @@
 /* Lien d'évitement. */
 .skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; padding: 12px 18px; text-decoration: none; }
 .skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ==========================================================================
+   RESTRUCTURATION (suppression des doublons) — bloc chargé en dernier.
+   ========================================================================== */
+
+/* §1 — Hero : ligne mono d'audience (bureau) + CTA mobile en lien */
+.mt :global(.hero__publics) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--famille-on-dark); margin: 20px 0 0; }
+
+/* §3 — « À qui nous nous adressons » : une ligne de quatre colonnes (bureau) */
+.mt :global(.cards--4) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* §4 — Définition + deux examens : paragraphe d'intro */
+.mt :global(.def-para) { font-size: 1.12rem; line-height: 1.6; max-width: var(--measure); color: var(--ink); margin: 0 0 26px; }
+.mt :global(.cmp) { margin-bottom: 0; }
+/* L'encadré à filet bleu (réutilise .pull) suit les deux cartes. */
+.mt :global(.cmp + .pull) { margin-top: 22px; }
+
+/* §5 — Méthode : Auditer / Traduire / Remédier en un seul bloc */
+.mt :global(.mbloc) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.mt :global(.mcol) { border-top: 4px solid rgba(10, 15, 46, 0.16); padding-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.mt :global(.mcol--accent) { border-top-color: var(--blue); background: #eef1fb; padding: 20px 22px 24px; }
+.mt :global(.mcol__meta) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--text-muted); }
+.mt :global(.mcol__big) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(36px, 4vw, 52px); line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; color: var(--ink); }
+.mt :global(.mcol--accent .mcol__big) { color: var(--blue); }
+.mt :global(.mcol__p) { font-size: 0.95rem; line-height: 1.55; color: var(--text-muted); margin: 0 0 6px; }
+.mt :global(.mcol .acc) { margin-top: 4px; }
+.mt :global(.acc__ul) { list-style: none; margin: 0; padding: 0; }
+.mt :global(.acc__ul li) { font-size: 0.97rem; line-height: 1.5; padding: 9px 0; border-bottom: 1px solid var(--bd); color: var(--text-muted); }
+.mt :global(.acc__ul li:last-child) { border-bottom: none; }
+
+/* Remédier — sélecteur Avant / Après */
+.mt :global(.rem__tabs) { display: flex; border: 1px solid var(--blue); margin-bottom: 16px; }
+.mt :global(.rem__tabs button) { flex: 1; min-height: 44px; padding: 10px 12px; background: #fff; border: 0; color: var(--blue); font-family: var(--ff-body); font-weight: 600; font-size: 14px; cursor: pointer; }
+.mt :global(.rem__tabs button + button) { border-left: 1px solid var(--blue); }
+.mt :global(.rem__tabs button[aria-selected="true"]) { background: var(--blue); color: #fff; }
+.mt :global(.rem__tabs button:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.mt :global(.rem__list) { list-style: none; margin: 0; padding: 0; }
+.mt :global(.rem__list.is-hidden) { display: none; }
+.mt :global(.rem__list li) { font-size: 0.95rem; line-height: 1.5; padding: 9px 0; border-bottom: 1px solid rgba(10, 15, 46, 0.14); color: var(--ink); display: flex; gap: 12px; }
+.mt :global(.rem__list li)::before { content: ""; flex: 0 0 7px; height: 7px; margin-top: 0.5em; background: var(--blue); }
+.mt :global(.rem__list li:last-child) { border-bottom: none; }
+
+/* §8 — Structures d'opération : grille 3×2 (bureau), repliables (mobile).
+   Bouton + panneau (div normale) : le panneau se peint toujours, contrairement
+   au contenu d'un <details> fermé. */
+.mt :global(.structg) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.mt :global(.structg__item) { padding: 24px 24px 26px 0; border-bottom: 1px solid var(--bd); }
+.mt :global(.structg__item:not(:nth-child(3n+1))) { padding-left: 24px; border-left: 1px solid var(--bd); }
+.mt :global(.structg__sum) { width: 100%; background: transparent; border: 0; padding: 0; margin: 0; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.mt :global(.structg__h) { font-family: var(--ff-body); font-weight: 600; font-size: 21px; line-height: 1.3; color: var(--ink); display: block; }
+.mt :global(.structg__chev) { display: none; }
+.mt :global(.structg__body) { margin-top: 10px; }
+.mt :global(.structg__body p) { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+/* Bureau : toujours déplié, bouton inerte (le contenu reste dans le rendu serveur). */
+@media (min-width: 861px) {
+  .mt :global(.structg__body) { display: block !important; }
+  .mt :global(.structg__sum) { cursor: default; pointer-events: none; }
+}
+
+/* §9 — Équipe : cinq cartes de même format */
+.mt :global(.team-grid--5) { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+/* Responsive de la restructuration */
+@media (max-width: 1040px) {
+  .mt :global(.cards--4) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mt :global(.mbloc) { grid-template-columns: 1fr; gap: 28px; }
+  .mt :global(.team-grid--5) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1040px) and (min-width: 861px) {
+  .mt :global(.structg) { grid-template-columns: 1fr 1fr; }
+  .mt :global(.structg__item:not(:nth-child(3n+1))) { padding-left: 0; border-left: 0; }
+  .mt :global(.structg__item:nth-child(2n)) { padding-left: 24px; border-left: 1px solid var(--bd); }
+}
+@media (max-width: 860px) {
+  .mt :global(.hero__publics) { display: none; }
+  .mt :global(.hero__btns) { flex-direction: column; align-items: stretch; }
+  .mt :global(.hero__btns .btn--primary) { width: 100%; }
+  .mt :global(.hero__btns .hero__cta2) { width: auto; align-self: flex-start; min-height: 0; padding: 6px 0; background: transparent; border: 0; color: #fff; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+  .mt :global(.hero__btns .hero__cta2)::after { content: " →"; }
+  .mt :global(.hero__btns .hero__cta2:hover) { background: transparent; }
+
+  .mt :global(.cards--4) { grid-template-columns: 1fr; }
+
+  /* Structures : lignes repliables (titre visible, description dans le dépliant). */
+  .mt :global(.structg) { grid-template-columns: 1fr; }
+  .mt :global(.structg__item),
+  .mt :global(.structg__item:not(:nth-child(3n+1))) { padding: 0; border-left: 0; }
+  .mt :global(.structg__sum) { padding: 16px 0; min-height: 56px; }
+  .mt :global(.structg__chev) { display: block; flex: 0 0 auto; width: 14px; height: 14px; position: relative; }
+  .mt :global(.structg__chev)::before,
+  .mt :global(.structg__chev)::after { content: ""; position: absolute; background: var(--blue); }
+  .mt :global(.structg__chev)::before { left: 0; right: 0; top: 6px; height: 2px; }
+  .mt :global(.structg__chev)::after { top: 0; bottom: 0; left: 6px; width: 2px; }
+  .mt :global(.structg__sum[aria-expanded="true"] .structg__chev)::after { display: none; }
+  .mt :global(.structg__body) { display: none; padding-bottom: 16px; margin-top: 4px; }
+  .mt :global(.structg__body.is-open) { display: block; }
+
+  /* Équipe : portrait réduit (≈64×76) à gauche, texte à droite. */
+  .mt :global(.team-grid--5) { grid-template-columns: 1fr; gap: 12px; }
+  .mt :global(.team-grid--5 article) { flex-direction: row !important; align-items: flex-start; }
+  .mt :global(.team-grid--5 article > div:first-child) { width: 64px !important; height: 76px !important; flex: 0 0 64px; aspect-ratio: auto !important; align-self: flex-start; }
+  .mt :global(.team-grid--5 article > div:last-child) { flex: 1 1 auto; padding: 12px 14px !important; }
+}
