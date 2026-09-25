@@ -21,7 +21,7 @@ export const FAQ_ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "Que faire si vous êtes accusé de diffamation ?",
-    a: "Ne répondez pas publiquement avant d'avoir fait examiner les propos, leur date, leur contexte et le document reçu. Le cabinet détermine les règles applicables et prépare la défense adaptée.",
+    a: "Ne répondez pas publiquement avant d'avoir fait examiner les propos, leur date, leur contexte et le document reçu. Le cabinet vérifie les trois défenses possibles — la vérité des faits, la bonne foi et la prescription — et prépare la défense adaptée.",
   },
   {
     q: "Combien coûte l'intervention d'un avocat ?",

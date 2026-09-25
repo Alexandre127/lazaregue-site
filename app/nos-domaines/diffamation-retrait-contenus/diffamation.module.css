@@ -229,3 +229,45 @@
 /* Lien d'évitement. */
 .skipLink { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--blue); color: #fff; font-family: var(--ff-body); font-size: 15px; padding: 12px 18px; text-decoration: none; }
 .skipLink:focus { top: 12px; outline: 3px solid #fff; outline-offset: 2px; }
+
+/* ==========================================================================
+   REFONTE (brief mobile/longueurs/langage/photo) — chargé en dernier.
+   ========================================================================== */
+
+/* §0 — Portrait avocat via next/image (fill). */
+.diff :global(.portrait img) { object-fit: cover; }
+
+/* §1 — Hero mobile : masquer le lien secondaire et la ligne d'adresse. */
+@media (max-width: 899px) {
+  .diff :global(.link-hero) { display: none; }
+  .diff :global(.hero-local) { display: none; }
+}
+
+/* §2 — Encart « 3 mois » (rouge), pleine largeur, juste après le hero. */
+.diff :global(.delai-wrap) { padding-top: 40px; padding-bottom: 0; }
+.diff :global(.delai) { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center; background: #fff; border: 2px solid var(--red); padding: 22px 26px; }
+.diff :global(.delai-n) { font-size: 40px; font-weight: 600; line-height: 1; color: var(--red); margin: 0; }
+.diff :global(.delai-n span) { display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; color: var(--red); }
+.diff :global(.delai > p:last-child) { font-size: 16px; line-height: 1.55; color: var(--ink); margin: 0; }
+@media (max-width: 640px) { .diff :global(.delai) { grid-template-columns: 1fr; gap: 10px; } }
+
+/* §3 — Situations : cartes « situation → ce que le cabinet peut obtenir ». */
+.diff :global(.scards) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+.diff :global(.scard) { background: #fff; border: 1px solid var(--bd); border-top: 4px solid var(--ink); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.diff :global(.scard--accent) { border-top-color: var(--blue); }
+.diff :global(.scard h3) { font-size: 19px; font-weight: 600; color: var(--navy); }
+.diff :global(.scard--accent h3) { color: var(--blue); }
+.diff :global(.scard > p) { font-size: 15px; color: var(--text-muted); margin: 0; }
+.diff :global(.obtenir) { margin-top: auto; background: var(--off); padding: 12px 14px; }
+.diff :global(.obtenir-k) { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.diff :global(.obtenir p) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
+.diff :global(.sit-links) { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.diff :global(.sit-links .obj-link) { margin: 0; }
+@media (max-width: 1000px) { .diff :global(.scards) { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .diff :global(.scards) { grid-template-columns: 1fr; } }
+
+/* §4 — Méthode : exergue sous les étapes. */
+.diff :global(.method-pull) { margin-top: 40px; border-left: 4px solid var(--blue); padding-left: 22px; font-size: clamp(20px, 2vw, 26px); font-weight: 500; line-height: 1.35; color: #fff; max-width: 52ch; }
+
+/* §9 — Contact : numéro de téléphone insécable. */
+.diff :global(.coords a[href^="tel:"]) { white-space: nowrap; }
