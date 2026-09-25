@@ -43,7 +43,6 @@ export default function DemoTabs() {
   return (
     <div className="demo2">
       <div className="d-top">
-        <p className="d-top-hint">{fr(DEMO.hint)}</p>
         <p className="d-count" aria-live="polite">{cur + 1} / {rows.length}</p>
       </div>
 
@@ -76,10 +75,11 @@ export default function DemoTabs() {
             id={`demo-panel-${i}`}
             aria-labelledby={`demo-tab-${i}`}
           >
-            {/* En-tête de carte — visible en mobile seulement (le nom accessible
-                du panneau vient déjà de l'onglet via aria-labelledby). */}
+            {/* En-tête « Exemple NN · axe » — marque clairement un cas fictif
+                (bureau et mobile). Décoratif : le nom accessible du panneau vient
+                déjà de l'onglet via aria-labelledby. */}
             <div className="d-head" aria-hidden="true">
-              <span className="d-head-n">{String(i + 1).padStart(2, "0")}</span>
+              <span className="d-head-n">Exemple {String(i + 1).padStart(2, "0")}</span>
               <span className="d-head-court">{fr(`· ${r.court}`)}</span>
             </div>
             <div className="d-decl">

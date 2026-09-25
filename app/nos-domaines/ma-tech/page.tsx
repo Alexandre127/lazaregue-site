@@ -20,6 +20,7 @@ import {
   METHODE,
   MID,
   POUR_QUI,
+  REMEDIER,
   SITUATIONS,
   TEAM,
   TRADUIRE,
@@ -233,8 +234,10 @@ export default function Page() {
               <div className="mbloc">
                 {/* Auditer */}
                 <div className="mcol">
+                  <span className="mcol__step">Étape 1 ·</span>
                   <span className="mcol__meta">{fr(METHODE.steps[0].meta)}</span>
                   <span className="mcol__big">{METHODE.steps[0].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[0].when)}</span>
                   <p className="mcol__p">{fr(METHODE.steps[0].p)}</p>
                   <div className="acc">
                     {AUDITER.items.map((it) => (
@@ -254,8 +257,10 @@ export default function Page() {
 
                 {/* Traduire */}
                 <div className="mcol">
+                  <span className="mcol__step">Étape 2 ·</span>
                   <span className="mcol__meta">{fr(METHODE.steps[1].meta)}</span>
                   <span className="mcol__big">{METHODE.steps[1].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[1].when)}</span>
                   <p className="mcol__p">{fr(METHODE.steps[1].p)}</p>
                   <div className="acc">
                     {TRADUIRE.groups.map((g) => (
@@ -273,10 +278,36 @@ export default function Page() {
 
                 {/* Remédier */}
                 <div className="mcol mcol--accent">
+                  <span className="mcol__step">Étape 3 ·</span>
                   <span className="mcol__meta">{fr(METHODE.steps[2].meta)}</span>
                   <span className="mcol__big">{METHODE.steps[2].big}</span>
+                  <span className="mcol__when">Quand : {fr(METHODE.steps[2].when)}</span>
                   <p className="mcol__p">{fr(METHODE.steps[2].p)}</p>
+                  {/* Bureau : sélecteur Avant/Après (inchangé). */}
                   <RemedierSelector />
+                  {/* Mobile : deux dépliants fermés à l'arrivée (mêmes listes). */}
+                  <div className="rem-acc">
+                    <details className="rem-d">
+                      <summary>
+                        <span className="rem-d__t">{REMEDIER.avantT}</span>
+                        <span className="rem-d__n">({REMEDIER.avant.length} actions)</span>
+                        <span className="rem-d__chev" aria-hidden="true" />
+                      </summary>
+                      <ul className="rem__list">
+                        {REMEDIER.avant.map((it) => <li key={it}>{fr(it)}</li>)}
+                      </ul>
+                    </details>
+                    <details className="rem-d">
+                      <summary>
+                        <span className="rem-d__t">{REMEDIER.apresT}</span>
+                        <span className="rem-d__n">({REMEDIER.apres.length} actions)</span>
+                        <span className="rem-d__chev" aria-hidden="true" />
+                      </summary>
+                      <ul className="rem__list">
+                        {REMEDIER.apres.map((it) => <li key={it}>{fr(it)}</li>)}
+                      </ul>
+                    </details>
+                  </div>
                 </div>
               </div>
             </div>

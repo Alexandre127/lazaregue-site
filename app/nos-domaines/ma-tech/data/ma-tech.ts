@@ -36,7 +36,6 @@ export const DEMO = {
   eyebrow: "Ce que l'audit fait apparaître",
   h2: "Ce que l'audit peut changer dans l'opération",
   lede: "L'écart entre ce qu'une data room déclare et ce que les pièces établissent constitue l'essentiel du travail : cinq situations fréquentes, et leur effet sur le prix, le calendrier ou les garanties.",
-  hint: "Exemple illustratif · société fictive · déclaration → constat → effet",
   rows: [
     { court: "Code", decl: "« Le code de la plateforme est développé en interne. »", constat: "Deux modules essentiels ont été écrits par un prestataire, sur un contrat sans clause de cession de droits.", effet: "Régularisation recherchée avant le closing ; à défaut, condition suspensive ou garantie spécifique." },
     { court: "Open source", decl: "« Aucune dépendance open source contraignante. »", constat: "Une bibliothèque sous licence réciproque est intégrée au produit distribué aux clients.", effet: "Remplacement du composant, ou réexamen du mode de distribution et des engagements pris aux clients." },
@@ -98,9 +97,9 @@ export const METHODE = {
   eyebrow: "Méthode",
   h2: "Auditer, traduire, remédier",
   steps: [
-    { meta: "Avant la lettre d'intention, puis en data room", big: "Auditer", p: "Établir ce que la cible détient réellement sur son code, ses composants tiers, ses contrats, ses données, sa sécurité et ses systèmes d'IA." },
-    { meta: "Effet sur le prix, le calendrier et le contrat", big: "Traduire", p: "Convertir chaque constat en décision : poursuivre, demander une pièce, régulariser, conditionner, garantir ou budgéter." },
-    { meta: "Régularisations avant closing, plan après", big: "Remédier", p: "Obtenir les cessions de droits et accords manquants avant la réalisation, puis sécuriser l'intégration une fois l'opération conclue." },
+    { meta: "Avant la lettre d'intention, puis en data room", when: "avant la lettre d'intention, puis en data room", big: "Auditer", p: "Établir ce que la cible détient réellement sur son code, ses composants tiers, ses contrats, ses données, sa sécurité et ses systèmes d'IA." },
+    { meta: "Effet sur le prix, le calendrier et le contrat", when: "au moment de fixer le prix, le calendrier et le contrat", big: "Traduire", p: "Convertir chaque constat en décision : poursuivre, demander une pièce, régulariser, conditionner, garantir ou budgéter." },
+    { meta: "Régularisations avant closing, plan après", when: "avant la signature, puis après le closing", big: "Remédier", p: "Obtenir les cessions de droits et accords manquants avant la réalisation, puis sécuriser l'intégration une fois l'opération conclue." },
   ],
 };
 

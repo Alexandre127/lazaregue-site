@@ -612,7 +612,11 @@
    Démonstration — MOBILE (≤ 640 px) : onglets → liste de cinq cartes.
    En-têtes de carte et libellés mobiles masqués sur bureau (rendu inchangé).
    ========================================================================== */
-.mt :global(.demo-sec .d-head) { display: none; }
+/* En-tête « Exemple NN · axe » — bureau : bandeau mono en tête du panneau actif
+   (n'affecte pas la ligne d'onglets). Mobile : en-tête de carte (voir ci-dessous). */
+.mt :global(.demo-sec .d-head) { display: flex; align-items: baseline; gap: 8px; grid-column: 1 / -1; margin-bottom: 6px; }
+.mt :global(.demo-sec .d-head-n) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; }
+.mt :global(.demo-sec .d-head-court) { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-on-dark); }
 .mt :global(.demo-sec .lbl-m) { display: none; }
 
 @media (max-width: 640px) {
@@ -630,9 +634,9 @@
   .mt :global(.demo-sec .dstage) { margin-top: 0; display: flex; flex-direction: column; gap: 16px; }
   .mt :global(.demo-sec .dpanel) { display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.04); padding: 18px 16px; animation: none; }
 
-  .mt :global(.demo-sec .d-head) { display: flex; align-items: baseline; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.22); padding-bottom: 10px; }
-  .mt :global(.demo-sec .d-head-n) { font-family: var(--ff-display), Impact, sans-serif; font-weight: 400; font-size: 24px; line-height: 1; letter-spacing: 0.02em; color: var(--blue2); }
-  .mt :global(.demo-sec .d-head-court) { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; }
+  .mt :global(.demo-sec .d-head) { border-bottom: 1px solid rgba(255, 255, 255, 0.22); padding-bottom: 10px; margin-bottom: 0; }
+  .mt :global(.demo-sec .d-head-n) { font-size: 13px; }
+  .mt :global(.demo-sec .d-head-court) { font-size: 13px; color: rgba(255, 255, 255, 0.82); }
 
   .mt :global(.demo-sec .d-decl),
   .mt :global(.demo-sec .d-const),
@@ -644,4 +648,35 @@
   .mt :global(.demo-sec .d-eff) { background: #fff; border-left: 6px solid var(--blue); gap: 8px; }
   .mt :global(.demo-sec .d-eff .d-stamp) { margin: 0; justify-self: start; }
   .mt :global(.demo-sec .d-stamp) { margin-bottom: 0; }
+}
+
+/* ==========================================================================
+   Méthode — MOBILE (≤ 640 px) : étapes numérotées, repère « Quand : » lisible,
+   Remédier en deux dépliants (le sélecteur reste sur bureau).
+   ========================================================================== */
+.mt :global(.mcol__step) { display: none; }
+.mt :global(.mcol__when) { display: none; }
+.mt :global(.rem-acc) { display: none; }
+
+@media (max-width: 640px) {
+  /* La ligne mono de moment cède la place au repère « Quand : » + à l'étape. */
+  .mt :global(.mcol__meta) { display: none; }
+  .mt :global(.mcol__step) { display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: -4px; }
+  .mt :global(.mcol--accent .mcol__step) { color: var(--blue); }
+  .mt :global(.mcol__when) { display: block; font-size: 0.95rem; line-height: 1.5; color: var(--ink); }
+
+  /* Remédier : masquer le sélecteur, afficher les deux dépliants. */
+  .mt :global(.mcol--accent .rem) { display: none; }
+  .mt :global(.rem-acc) { display: flex; flex-direction: column; gap: 10px; }
+  .mt :global(.rem-d) { border: 1px solid var(--blue); background: #fff; }
+  .mt :global(.rem-d summary) { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px 14px; min-height: 48px; font-family: var(--ff-body); font-weight: 600; font-size: 15px; color: var(--blue); }
+  .mt :global(.rem-d summary)::-webkit-details-marker { display: none; }
+  .mt :global(.rem-d__n) { font-family: var(--ff-mono); font-size: 12px; font-weight: 400; letter-spacing: 0.04em; color: var(--text-muted); }
+  .mt :global(.rem-d__chev) { margin-left: auto; flex: 0 0 auto; width: 14px; height: 14px; position: relative; }
+  .mt :global(.rem-d__chev)::before,
+  .mt :global(.rem-d__chev)::after { content: ""; position: absolute; background: var(--blue); }
+  .mt :global(.rem-d__chev)::before { left: 0; right: 0; top: 6px; height: 2px; }
+  .mt :global(.rem-d__chev)::after { top: 0; bottom: 0; left: 6px; width: 2px; }
+  .mt :global(.rem-d[open] .rem-d__chev)::after { display: none; }
+  .mt :global(.rem-d .rem__list) { padding: 0 14px 12px; }
 }
