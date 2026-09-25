@@ -315,3 +315,49 @@
 /* lien d'évitement */
 .skipLink { position: absolute; left: 16px; top: -72px; z-index: 200; background: var(--wh); color: var(--ink); padding: 12px 16px; font-weight: 600; text-decoration: none; }
 .skipLink:focus { top: 16px; outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* ==========================================================================
+   REFONTE « langage clair » — ajouts (chargés en dernier).
+   ========================================================================== */
+
+/* H1 en Bebas capitales, comme les autres pages de domaine. */
+.crypto :global(.hero h1) { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(44px, 5vw + 20px, 76px); line-height: 0.98; max-width: 16ch; }
+
+/* Titres clairs sur toutes les sections sombres (corrige le dark-sur-dark de la
+   bande « L'examen technique » : le défaut global colore les h2/h3 en encre). */
+.crypto :global(.dark h2),
+.crypto :global(.dark h3) { color: var(--white); }
+
+/* Sommaire : entrées non numérotées (cas, livrables, équipe, questions). */
+.crypto :global(.toc li[data-nonum] a)::before { content: none; }
+
+/* Livrables : « Voir un exemple » — ouvert (visible) sur bureau, replié mobile. */
+.crypto :global(.docs .ex) { margin-top: auto; padding-top: 4px; }
+.crypto :global(.docs .ex summary) { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 32px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
+.crypto :global(.docs .ex summary)::-webkit-details-marker { display: none; }
+.crypto :global(.docs .ex summary)::after { content: "+"; font-family: var(--mono); font-size: 18px; line-height: 1; }
+.crypto :global(.docs .ex[open] summary)::after { content: "\2212"; }
+.crypto :global(.docs .ex > div) { padding-top: 10px; }
+.crypto :global(.docs .ex > div p) { font-size: 14px; line-height: 1.5; color: var(--ink); background: var(--white); border-left: 3px solid var(--blue); padding: 12px 14px; margin: 0; }
+
+/* Cas type — du code aux documents (panneau sombre autonome). */
+.crypto :global(.castype) { margin-top: 48px; background: var(--navy); color: var(--white); padding: 36px; scroll-margin-top: calc(var(--header-h-compact) + 12px); }
+.crypto :global(.castype .label) { color: rgba(255, 255, 255, 0.8); }
+.crypto :global(.castype__title) { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; font-size: clamp(28px, 2vw + 18px, 40px); line-height: 1.04; color: var(--white); margin-bottom: 28px; }
+.crypto :global(.castype__full),
+.crypto :global(.castype__mobile) { display: grid; gap: 1px; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.16); }
+.crypto :global(.castype__mobile) { display: none; }
+.crypto :global(.ct-block) { background: var(--navy); padding: 22px 24px; }
+.crypto :global(.ct-k) { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); margin-bottom: 10px; line-height: 1.4; }
+.crypto :global(.ct-block p),
+.crypto :global(.ct-block li) { color: var(--white); font-size: 16px; line-height: 1.55; }
+.crypto :global(.ct-block ul.dash li)::before { background: var(--white); }
+.crypto :global(.ct-block--tech) { background: #10173a; border-left: 3px solid var(--blue); }
+.crypto :global(.ct-block--result) { background: var(--blue); }
+.crypto :global(.ct-block--result .ct-k) { color: rgba(255, 255, 255, 0.88); }
+
+@media (max-width: 639px) {
+  .crypto :global(.castype) { padding: 24px 20px; }
+  .crypto :global(.castype__full) { display: none; }
+  .crypto :global(.castype__mobile) { display: grid; }
+}
