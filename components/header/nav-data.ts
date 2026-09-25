@@ -113,14 +113,14 @@ export type NavEntry =
   | { type: "panel"; label: string; href: string; panelId: string }
   | { type: "link"; label: string; href: string };
 
+// Ordre du menu v2 (brief §1) : Domaines · Formations · Ressources · Cas clients
+// · Le cabinet · Contact. Source unique du header ET du tiroir mobile.
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  // « Actions collectives » retirée (aucune page dédiée n'existe) : reviendra le
-  // jour où la page existera. Ne rien mettre à sa place.
+  { type: "link", label: "FORMATIONS", href: "/formations" },
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
   { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
-  { type: "link", label: "FORMATIONS", href: "/formations" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
   { type: "link", label: "CONTACT", href: "/contact" },
 ];

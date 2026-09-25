@@ -6,7 +6,6 @@
    ========================================================================== */
 .ia {
   --tint: #eef1fb;
-  --header-h: 72px;
   color: var(--ink);
   background: #fff;
 }
@@ -17,7 +16,7 @@
 .ia :global(.wrap) { max-width: var(--content-max); margin: 0 auto; padding-inline: var(--page-margin); }
 @media (max-width: 640px) { .ia :global(.wrap) { padding-inline: var(--page-margin-mobile); } }
 .ia :global(.sec) { padding-block: clamp(56px, 7vw, 104px); }
-.ia :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.ia :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 .ia :global(.ghost) { background: var(--off); }
 .ia :global(.navy) { background: var(--navy); color: #fff; }
 .ia :global(.navy :focus-visible) { outline-color: #fff; }

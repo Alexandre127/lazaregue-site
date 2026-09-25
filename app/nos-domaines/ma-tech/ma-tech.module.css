@@ -19,7 +19,6 @@
   --famille-tint: var(--off);
   --muted-on-dark: rgba(255, 255, 255, 0.74);
   --measure: 68ch;
-  --header-h: 72px;
 
   color: var(--ink);
   background: var(--wh);
@@ -85,7 +84,7 @@
 .mt :global(.section--sub) { padding-top: clamp(44px, 5vw, 72px); }
 .mt :global(.on-dark) { color: #fff; }
 .mt :global(.on-dark p) { color: var(--muted-on-dark); }
-.mt :global(section[id]) { scroll-margin-top: 84px; }
+.mt :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 
 .mt :global(.shead) { display: flex; gap: 26px; align-items: baseline; margin-bottom: 34px; }
 .mt :global(.shead__idx) { font-family: var(--ff-display); font-size: 2.5rem; color: var(--bd); line-height: 0.8; flex: 0 0 auto; }

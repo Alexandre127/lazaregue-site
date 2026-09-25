@@ -56,6 +56,22 @@
   --ok: #0e7a45;
   --ko: #c0272d;
   --warn: #8a6d00;
+
+  /* Hauteur de l'en-tête global — DÉFINIE UNE SEULE FOIS ICI (menu v2).
+     --header-h : en-tête au repos (104px sur ordinateur, 78px sous 1280px).
+     --header-h-compact : en-tête collant/opaque (76px, 78px sous 1280px).
+     Zone sûre iOS intégrée. Heros : padding-top calc(var(--header-h) + 12px) mini ;
+     ancres : scroll-margin-top calc(var(--header-h-compact) + 12px). Aucune valeur
+     de hauteur d'en-tête en dur ailleurs. */
+  --header-h: calc(104px + env(safe-area-inset-top, 0px));
+  --header-h-compact: calc(76px + env(safe-area-inset-top, 0px));
+}
+
+@media (max-width: 1279px) {
+  :root {
+    --header-h: calc(78px + env(safe-area-inset-top, 0px));
+    --header-h-compact: calc(78px + env(safe-area-inset-top, 0px));
+  }
 }
 
 @theme {

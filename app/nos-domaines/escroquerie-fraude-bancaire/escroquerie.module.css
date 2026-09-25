@@ -12,7 +12,6 @@
   --red: #b42318;
   --tintb: #eef1fb; /* bleu très clair (colonne Configuration C) */
   --muted-on-dark: rgba(255, 255, 255, 0.78); /* surcharge du token global sky-blue */
-  --header-h: 72px;
   --measure: 70ch;
 
   color: var(--ink);
@@ -34,7 +33,7 @@
 .esc :global(.wrap) { max-width: var(--content-max); margin: 0 auto; padding-inline: var(--page-margin); }
 @media (max-width: 640px) { .esc :global(.wrap) { padding-inline: var(--page-margin-mobile); } }
 .esc :global(section) { padding-block: clamp(56px, 7vw, 104px); }
-.esc :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.esc :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 
 /* ---- Typographie : H1 + grands repères en Bebas (charte) ---- */
 .esc :global(h1) { font-family: var(--ff-display); font-weight: 400; font-size: clamp(44px, 6vw, 82px); line-height: 0.92; letter-spacing: 0.01em; margin: 0; color: var(--ink); overflow-wrap: break-word; }

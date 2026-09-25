@@ -12,14 +12,13 @@
 
   --gut: 24px;
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
-  --header-h: 72px;
   --muted-onDark: rgba(255, 255, 255, 0.78); /* surcharge du token global #9fb2ff (contraste AA) */
 
   color: var(--ink);
   font-size: 17px;
   line-height: 1.6;
   overflow-x: clip;
-  padding-top: var(--header-h);
+  padding-top: calc(var(--header-h) + 12px);
 }
 @media (max-width: 640px) { .cc { font-size: 16px; } }
 
@@ -42,7 +41,7 @@
 .cc :global(section) { padding: var(--s8) 0; background: var(--wh); }
 @media (max-width: 640px) { .cc :global(section) { padding: var(--s7) 0; } }
 .cc :global(.alt) { background: var(--off); }
-.cc :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.cc :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 
 /* ---- Typographie (Space Grotesk + DM Mono ; aucune Bebas) ---- */
 .cc :global(h1),

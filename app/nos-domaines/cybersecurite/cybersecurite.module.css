@@ -21,7 +21,6 @@
   --maxw: 1200px;
   --gut: 36px;
 
-  --header-h: 72px;
 
   color: var(--text);
   font-size: 17px;
@@ -33,7 +32,7 @@
      navy du <body>, exactement comme le haut de hero des autres pages. Le bandeau
      d'urgence (rouge) vient donc SOUS le header, sans collision. Le blanc des
      sections de contenu est porté par `.section` (plus par `.cyber`). */
-  padding-top: var(--header-h);
+  padding-top: calc(var(--header-h) + 12px);
 }
 @media (max-width: 640px) { .cyber { --gut: 20px; } }
 
@@ -47,7 +46,7 @@
 .cyber :global(.section--tight) { padding: 56px 0; }
 .cyber :global(.section--ghost) { background: var(--ghost); }
 /* Ancre atteinte : dégager la hauteur du header collant (54px) + marge. */
-.cyber :global(section[id]) { scroll-margin-top: 72px; }
+.cyber :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 
 .cyber :global(h1),
 .cyber :global(h2),

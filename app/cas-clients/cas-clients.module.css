@@ -5,7 +5,6 @@
    ========================================================================== */
 .cas {
   --tint: #eef1fb;
-  --header-h: 72px;
   color: var(--ink);
   background: #fff;
 }
@@ -16,7 +15,7 @@
 .cas :global(.wrap) { max-width: var(--content-max); margin: 0 auto; padding-inline: var(--page-margin); }
 @media (max-width: 640px) { .cas :global(.wrap) { padding-inline: var(--page-margin-mobile); } }
 .cas :global(.sec) { padding-block: clamp(56px, 7vw, 104px); }
-.cas :global(section[id]) { scroll-margin-top: calc(var(--header-h) + 12px); }
+.cas :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 .cas :global(.ghost) { background: var(--off); }
 .cas :global(.navy) { background: var(--navy); color: #fff; }
 .cas :global(.navy :focus-visible) { outline-color: #fff; }

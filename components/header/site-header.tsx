@@ -14,113 +14,70 @@ import {
 import styles from "./site-header.module.css";
 
 /**
- * Header global du site.
+ * En-tête global du site (menu v2, d'après la maquette du 24.09.2026).
  *
- * Non négociables respectés :
- *  - Tous les liens sont de vraies balises `<a>` rendues au chargement (les
- *    panneaux sont dans le DOM dès le SSR, simplement masqués en CSS). Un seul
- *    `<a>` par carte, couvrant titre + phrase de contexte.
- *  - Panneau ouvrable au clic ET au survol ; `aria-expanded` sur le chevron,
- *    `aria-controls` vers l'id du panneau ; fermeture à Échap avec retour du
- *    focus sur le déclencheur ; fermeture au clic extérieur.
- *  - `prefers-reduced-motion` géré en CSS.
+ * Deux états sur ordinateur (≥1280px) :
+ *  · au repos : transparent, 104px, posé sur le hero (uniquement sur les pages à
+ *    hero sombre) ;
+ *  · collant / opaque : au-delà de 40px de défilement — ou d'emblée sur les pages
+ *    dont le hero n'est pas sombre — Deep Navy translucide + flou, 76px, filet bas.
  *
- * Deux états : au repos (absolu par-dessus le hero, sans bouton d'action) ;
- * en barre collante (fixe, compacte, CONTACT devient « NOUS ÉCRIRE »).
+ * « Domaines » ouvre un panneau (survol 60/450ms avec passerelle invisible, clic,
+ * clavier) ; les zones de lien font 54px, aucun élément ne bouge. Sous 1280px :
+ * menu plein écran avec accordéon. La barre basse « Nous écrire / téléphone »
+ * reste en place partout, masquée seulement quand le menu plein écran est ouvert.
+ *
+ * Hauteurs pilotées par --header-h / --header-h-compact (globals.css). Mouvement
+ * réduit géré en CSS.
  */
 
 const CONTACT_HREF = "/contact";
 
-/* Le panneau du menu « Nos domaines » (3 familles × 3), rendu toujours dans le
-   DOM (SSR), masqué en CSS tant que `open` est faux. */
-function DomainesPanel({ id, open }: { id: string; open: boolean }) {
+function chevronPath() {
   return (
-    // Toujours rendu (SSR) pour la crawlabilité des liens ; masqué en CSS
-    // (visibilité) tant que `open` est faux — pas d'attribut `hidden`/display:none.
-    <div
-      id={id}
-      className={`${styles.panel}${open ? ` ${styles.panelOpen}` : ""}`}
-      role="region"
-      aria-label="Domaines d'intervention"
-    >
-      <div className={styles.panelInner}>
-        <div className={styles.panelCols}>
-          {FAMILLES.map((f) => (
-            <div className={styles.panelCol} key={f.intitule}>
-              <p className={styles.familleLabel}>{f.intitule}</p>
-              <ul className={styles.cardList}>
-                {f.domaines.map((d) => (
-                  <li key={d.href}>
-                    <Link className={styles.card} href={d.href}>
-                      <span className={styles.cardTitle}>{d.titre}</span>
-                      <span className={styles.cardContext}>{d.contexte}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className={styles.panelFooter}>
-          <Link className={styles.panelFooterLink} href={PANEL_DOMAINES_FOOTER.lien.href}>
-            {PANEL_DOMAINES_FOOTER.lien.label}
-          </Link>
-          <span className={styles.panelFooterMention}>{PANEL_DOMAINES_FOOTER.mention}</span>
-        </div>
-      </div>
-    </div>
+    <path
+      d="M1 1.5L6 6.5L11 1.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   );
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  // Header transparent au repos sur les pages à hero sombre ; opaque partout
-  // ailleurs (drapeau déclaratif, cf. nav-data → aHeroSombre).
   const heroSombre = aHeroSombre(pathname);
 
-  const [sticky, setSticky] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  // Ouvert au CLIC (« épinglé ») : dans ce cas le survol ne le referme pas ;
-  // seuls un clic extérieur ou Échap le ferment.
   const [openedByClick, setOpenedByClick] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showBottomBar, setShowBottomBar] = useState(false);
 
+  // Opaque/compact d'emblée si le hero n'est pas sombre ; sinon transparent au
+  // repos et opaque au défilement (> 40px).
+  const solid = scrolled || !heroSombre;
+
   const panelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const navItemRef = useRef<HTMLLIElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const openTimer = useRef<number | null>(null);
   const closeTimer = useRef<number | null>(null);
-  const sentinelRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-  // Ferme le tiroir mobile ET rend le focus au hamburger (élément d'origine).
-  const closeMobile = useCallback(() => {
-    setMobileOpen(false);
-    hamburgerRef.current?.focus();
-  }, []);
-
-  /* ---- État collant : sentinelle IntersectionObserver ----
-     On observe une sentinelle posée en haut du document, haute d'une barre
-     (.sentinelFallback = 72px). Le header devient collant dès que cette
-     sentinelle a défilé au-dessus du viewport, c.-à-d. quand le header au repos
-     (absolu, en haut) a lui-même disparu vers le haut : le relais vers la barre
-     fixe est donc sans couture. Aucune référence à la hauteur du hero ni à une
-     fraction de viewport — l'ancienne heuristique à 0,68·viewport se décalait
-     dès qu'un hero changeait de hauteur ; ici c'est stable partout, sans réglage
-     par page. Observé une seule fois (la sentinelle est dans le layout). */
+  /* ---- État collant : au-delà de 40px de défilement ---- */
   useEffect(() => {
-    const sentinelle = sentinelRef.current;
-    if (!sentinelle) return;
-    const io = new IntersectionObserver(
-      ([e]) => setSticky(!e.isIntersecting),
-      { threshold: 0 },
-    );
-    io.observe(sentinelle);
-    return () => io.disconnect();
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* ---- Barre basse mobile (au défilement) ---- */
+  /* ---- Barre basse mobile : après le premier tiers de défilement ---- */
   useEffect(() => {
     const onScroll = () => setShowBottomBar(window.scrollY > window.innerHeight / 3);
     onScroll();
@@ -132,7 +89,7 @@ export function SiteHeader() {
     };
   }, []);
 
-  /* ---- Barre basse masquée dès que le bloc contact entre dans le viewport ---- */
+  /* ---- Barre basse masquée quand le bloc contact entre à l'écran ---- */
   useEffect(() => {
     const cible = document.querySelector("#contact");
     if (!cible) return;
@@ -146,18 +103,15 @@ export function SiteHeader() {
     return () => io.disconnect();
   }, [pathname]);
 
-  /* ---- Fermer les menus au changement de route ----
-     Le header vit dans le layout : il PERSISTE entre les navigations de l'App
-     Router (pas de remontage). Sans cette fermeture, le panneau/tiroir resterait
-     ouvert après un clic sur un lien ou un retour navigateur. setState en effet
-     assumé pour cette synchronisation avec le routeur. */
+  /* ---- Fermer les menus au changement de route ---- */
   useEffect(() => {
     /* eslint-disable-next-line react-hooks/set-state-in-effect */
     setPanelOpen(false);
+    setOpenedByClick(false);
     setMobileOpen(false);
   }, [pathname]);
 
-  /* ---- Verrou de défilement quand le tiroir mobile est ouvert ---- */
+  /* ---- Verrou de défilement quand le menu plein écran est ouvert ---- */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
@@ -165,14 +119,20 @@ export function SiteHeader() {
     };
   }, [mobileOpen]);
 
+  const closeMobile = useCallback(() => {
+    setMobileOpen(false);
+    hamburgerRef.current?.focus();
+  }, []);
+
   const closePanel = useCallback((focusTrigger = false) => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     setPanelOpen(false);
     setOpenedByClick(false);
     if (focusTrigger) triggerRef.current?.focus();
   }, []);
 
-  /* ---- Échap : ferme panneau (retour focus) ou tiroir ---- */
+  /* ---- Échap ---- */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
@@ -183,63 +143,117 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, [panelOpen, mobileOpen, closePanel, closeMobile]);
 
-  /* ---- Clic extérieur : ferme le panneau (y compris s'il est épinglé) ---- */
+  /* ---- Clic extérieur : ferme le panneau ---- */
   useEffect(() => {
     if (!panelOpen) return;
     const onClick = (e: MouseEvent) => {
-      if (navItemRef.current && !navItemRef.current.contains(e.target as Node)) {
-        if (closeTimer.current) window.clearTimeout(closeTimer.current);
-        setPanelOpen(false);
-        setOpenedByClick(false);
-      }
+      const t = e.target as Node;
+      if (navItemRef.current?.contains(t) || panelRef.current?.contains(t)) return;
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
+      setPanelOpen(false);
+      setOpenedByClick(false);
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [panelOpen]);
 
-  /* ---- Survol du conteneur (entrée + panneau) ----
-     Le conteneur est le <li> qui enveloppe le libellé, le chevron ET le panneau
-     (le panneau est rendu à l'intérieur). Descendre du libellé vers le panneau
-     ne quitte donc pas le conteneur. Délai de fermeture (~180 ms) annulé si la
-     souris revient, pour tolérer une trajectoire diagonale. Un panneau ouvert au
-     clic (épinglé) ne se ferme pas au survol. */
+  /* ---- Survol : ouverture 60ms, fermeture 450ms (passerelle invisible en CSS) ----
+     Actif seulement sur les pointeurs qui survolent (souris/stylet). */
+  const hoverCapable = () =>
+    typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
   const openOnHover = () => {
+    if (!hoverCapable()) return;
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    setPanelOpen(true);
+    if (panelOpen) return;
+    openTimer.current = window.setTimeout(() => setPanelOpen(true), 60);
   };
   const closeOnHover = () => {
-    if (openedByClick) return;
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setPanelOpen(false), 180);
+    if (!hoverCapable() || openedByClick) return;
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    closeTimer.current = window.setTimeout(() => setPanelOpen(false), 450);
   };
-  /* Clic sur le chevron : bascule, indépendamment du survol. Ouvrir épingle
-     (le survol ne le fermera plus) ; refermer désépingle. */
+
   const toggleByClick = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     const next = !panelOpen;
     setPanelOpen(next);
     setOpenedByClick(next);
   };
 
+  const panelLinks = () =>
+    panelRef.current
+      ? Array.from(panelRef.current.querySelectorAll<HTMLAnchorElement>("a"))
+      : [];
+
+  const openAndFocusFirst = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    setPanelOpen(true);
+    setOpenedByClick(true);
+    // Le focus entre dans le panneau une fois celui-ci rendu et visible.
+    window.setTimeout(() => panelLinks()[0]?.focus(), 60);
+  };
+
+  /* Clavier sur le bouton Domaines : Entrée / Espace / Flèche bas ouvrent. */
+  const onTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      openAndFocusFirst();
+    }
+  };
+
+  /* Clavier dans le panneau : Flèches, Début, Fin naviguent entre les liens. */
+  const onPanelKeyDown = (e: React.KeyboardEvent) => {
+    const links = panelLinks();
+    if (!links.length) return;
+    const i = links.indexOf(document.activeElement as HTMLAnchorElement);
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      links[Math.min(i + 1, links.length - 1)]?.focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (i <= 0) {
+        closePanel(true);
+      } else {
+        links[i - 1]?.focus();
+      }
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      links[0]?.focus();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      links[links.length - 1]?.focus();
+    }
+  };
+
+  // Rubrique active : une page de domaine → Domaines, etc.
+  const activeHref = (() => {
+    if (!pathname) return null;
+    if (pathname === "/nos-domaines" || pathname.startsWith("/nos-domaines/")) return "/nos-domaines";
+    const e = NAV_ENTRIES.find(
+      (x) => x.type === "link" && (pathname === x.href || pathname.startsWith(x.href + "/")),
+    );
+    return e?.href ?? null;
+  })();
+
   return (
     <>
-      {/* Sentinelle de repli pour l'état collant : observée uniquement quand
-          aucun hero n'est identifié sur la page. Invisible (1px de large). */}
-      <div ref={sentinelRef} className={styles.sentinelFallback} aria-hidden />
       <header
-        className={`${styles.header}${heroSombre ? ` ${styles.heroDark}` : ""}${
-          sticky ? ` ${styles.sticky}` : ""
+        className={`${styles.header}${solid ? ` ${styles.solid}` : ""}${
+          panelOpen ? ` ${styles.panelActive}` : ""
         }`}
-        data-sticky={sticky ? "true" : "false"}
+        data-solid={solid ? "true" : "false"}
       >
         <div className={styles.bar}>
           <Logo isHome={isHome} />
 
-          {/* --- Navigation desktop --- */}
+          {/* --- Navigation ordinateur (≥1280px) --- */}
           <nav className={styles.nav} aria-label="Navigation principale">
             <ul className={styles.navList}>
               {NAV_ENTRIES.map((entry) => {
                 if (entry.type === "panel") {
+                  const domActive = activeHref === "/nos-domaines";
                   return (
                     <li
                       key={entry.label}
@@ -248,67 +262,27 @@ export function SiteHeader() {
                       onMouseEnter={openOnHover}
                       onMouseLeave={closeOnHover}
                     >
-                      {/* Le libellé est un lien vers la rubrique ; le chevron est
-                          un bouton distinct (accès à la rubrique en tactile). */}
-                      <Link
-                        className={`${styles.navLink}${
-                          panelOpen ? ` ${styles.navLinkOpen}` : ""
-                        }`}
-                        href={entry.href}
-                      >
-                        {entry.label}
-                      </Link>
                       <button
                         type="button"
                         ref={triggerRef}
-                        className={styles.chevron}
+                        className={`${styles.navLink} ${styles.navButton}${
+                          panelOpen ? ` ${styles.navLinkOpen}` : ""
+                        }`}
                         aria-expanded={panelOpen}
                         aria-controls={panelId}
-                        aria-label={
-                          panelOpen
-                            ? "Fermer le panneau des domaines"
-                            : "Ouvrir le panneau des domaines"
-                        }
+                        aria-current={domActive ? "page" : undefined}
                         onClick={toggleByClick}
+                        onKeyDown={onTriggerKeyDown}
                       >
-                        <svg
-                          viewBox="0 0 12 8"
-                          width="11"
-                          height="8"
-                          aria-hidden="true"
-                          className={styles.chevronIcon}
-                        >
-                          <path
-                            d="M1 1.5L6 6.5L11 1.5"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.6"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
+                        {entry.label}
+                        <svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true" className={styles.chevronIcon}>
+                          {chevronPath()}
                         </svg>
                       </button>
-                      {/* Panneau rendu À L'INTÉRIEUR du conteneur (le <li>), pour
-                          que descendre du libellé au panneau ne quitte pas la
-                          zone de survol. Positionné en pleine largeur sous la
-                          barre (position absolue relative au header). */}
-                      <DomainesPanel id={panelId} open={panelOpen} />
                     </li>
                   );
                 }
-                // Lien simple. CONTACT devient un bouton « NOUS ÉCRIRE » en collant.
-                const isContact = entry.href === CONTACT_HREF;
-                if (isContact && sticky) {
-                  return (
-                    <li key={entry.label} className={styles.navItem}>
-                      <Link className={styles.ctaButton} href={CONTACT_HREF}>
-                        NOUS ÉCRIRE
-                      </Link>
-                    </li>
-                  );
-                }
-                const active =
-                  pathname === entry.href || pathname?.startsWith(entry.href + "/");
+                const active = activeHref === entry.href;
                 return (
                   <li key={entry.label} className={styles.navItem}>
                     <Link
@@ -321,47 +295,88 @@ export function SiteHeader() {
                   </li>
                 );
               })}
-              {/* Emplacement « Portail client » à réserver ici, à droite après un
-                  filet vertical, le jour où la page existera. Non posé (brief). */}
             </ul>
           </nav>
 
-          {/* --- Hamburger mobile --- */}
+          {/* --- Bouton « Nous écrire » (toujours visible, ordinateur) --- */}
+          <Link className={styles.cta} href={CONTACT_HREF}>
+            Nous écrire <span aria-hidden="true">→</span>
+          </Link>
+
+          {/* --- Bouton « Menu » (mobile / tablette) --- */}
           <button
             ref={hamburgerRef}
             type="button"
-            className={styles.hamburger}
-            aria-label="Ouvrir le menu"
+            className={styles.burger}
+            aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen(true)}
+            aria-controls="site-mobile-menu"
+            onClick={() => (mobileOpen ? closeMobile() : setMobileOpen(true))}
           >
-            <span />
-            <span />
-            <span />
+            <span className={styles.burgerLabel}>{mobileOpen ? "Fermer" : "Menu"}</span>
+            <span className={styles.burgerBars} aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
           </button>
+        </div>
+
+        {/* --- Panneau « Domaines » (pleine largeur sous la barre) --- */}
+        <div
+          id={panelId}
+          ref={panelRef}
+          className={`${styles.panel}${panelOpen ? ` ${styles.panelOpen}` : ""}`}
+          role="region"
+          aria-label="Domaines d'intervention"
+          onMouseEnter={openOnHover}
+          onMouseLeave={closeOnHover}
+          onKeyDown={onPanelKeyDown}
+        >
+          <div className={styles.panelInner}>
+            <div className={styles.panelHead}>
+              <p className={styles.panelHeadLabel}>Dix domaines, trois familles</p>
+              <Link className={styles.panelAll} href={PANEL_DOMAINES_FOOTER.lien.href}>
+                Tous les domaines <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <div className={styles.panelCols}>
+              {FAMILLES.map((f) => (
+                <div className={styles.panelCol} key={f.intitule}>
+                  <h3 className={styles.familleLabel}>{f.intitule}</h3>
+                  <ul className={styles.cardList}>
+                    {f.domaines.map((d) => (
+                      <li key={d.href}>
+                        <Link className={styles.card} href={d.href} tabIndex={panelOpen ? 0 : -1}>
+                          <span className={styles.cardTitle}>{d.titre}</span>
+                          <span className={styles.cardArrow} aria-hidden="true">→</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </header>
 
-      {/* --- Tiroir mobile plein écran --- */}
-      <MobileDrawer
-        open={mobileOpen}
-        onClose={closeMobile}
-        isHome={isHome}
-      />
+      {/* --- Menu plein écran (mobile / tablette) --- */}
+      <MobileMenu open={mobileOpen} onClose={closeMobile} activeHref={activeHref} />
 
-      {/* --- Barre basse mobile (après le premier tiers de défilement) --- */}
+      {/* --- Barre basse mobile --- */}
       <div
         className={`${styles.bottomBar}${showBottomBar && !mobileOpen ? ` ${styles.bottomBarShown}` : ""}`}
         aria-hidden={!showBottomBar || mobileOpen}
       >
-        <Link className={styles.bottomBarBtn} href={CONTACT_HREF} tabIndex={showBottomBar ? 0 : -1}>
+        <Link className={styles.bottomBarBtn} href={CONTACT_HREF} tabIndex={showBottomBar && !mobileOpen ? 0 : -1}>
           NOUS ÉCRIRE
         </Link>
         <a
           className={styles.bottomBarTel}
           href={TEL.href}
           aria-label={`Appeler le cabinet — ${TEL.display}`}
-          tabIndex={showBottomBar ? 0 : -1}
+          tabIndex={showBottomBar && !mobileOpen ? 0 : -1}
         >
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
@@ -372,116 +387,80 @@ export function SiteHeader() {
   );
 }
 
-/* ---------------- Tiroir mobile ---------------- */
-function MobileDrawer({
+/* ---------------- Menu plein écran (mobile / tablette) ---------------- */
+function MobileMenu({
   open,
   onClose,
-  isHome,
+  activeHref,
 }: {
   open: boolean;
   onClose: () => void;
-  isHome: boolean;
+  activeHref: string | null;
 }) {
   const [accordion, setAccordion] = useState(false);
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  // À l'ouverture, le focus entre dans le tiroir (bouton Fermer) — dialogue
-  // modal correct. Le retour du focus au hamburger est géré par le parent.
-  useEffect(() => {
-    if (open) closeRef.current?.focus();
-  }, [open]);
+  const accId = useId();
 
   return (
-    <div
-      className={`${styles.drawer}${open ? ` ${styles.drawerOpen}` : ""}`}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Menu"
+    <nav
+      id="site-mobile-menu"
+      className={`${styles.mmenu}${open ? ` ${styles.mmenuOpen}` : ""}`}
+      aria-label="Navigation principale (mobile)"
       hidden={!open}
     >
-      <div className={styles.drawerTop}>
-        <Logo isHome={isHome} />
-        <button
-          ref={closeRef}
-          type="button"
-          className={styles.drawerClose}
-          aria-label="Fermer le menu"
-          onClick={onClose}
-        >
-          ✕
-        </button>
-      </div>
+      <ul className={styles.mlist}>
+        {/* DOMAINES — accordéon */}
+        <li className={styles.maccItem}>
+          <button
+            type="button"
+            className={styles.mlink}
+            aria-expanded={accordion}
+            aria-controls={accId}
+            aria-current={activeHref === "/nos-domaines" ? "page" : undefined}
+            onClick={() => setAccordion((o) => !o)}
+          >
+            Domaines
+            <span className={styles.msign} aria-hidden="true">{accordion ? "–" : "+"}</span>
+          </button>
+          <div id={accId} className={`${styles.macc}${accordion ? ` ${styles.maccOpen}` : ""}`}>
+            {FAMILLES.map((f) => (
+              <div className={styles.mfam} key={f.intitule}>
+                <h4 className={styles.mfamLabel}>{f.intitule}</h4>
+                {f.domaines.map((d) => (
+                  <Link className={styles.macclink} href={d.href} key={d.href} onClick={onClose}>
+                    {d.titre}
+                  </Link>
+                ))}
+              </div>
+            ))}
+            <Link className={styles.macclink} href={PANEL_DOMAINES_FOOTER.lien.href} onClick={onClose}>
+              {PANEL_DOMAINES_FOOTER.lien.label}
+            </Link>
+          </div>
+        </li>
 
-      <nav className={styles.drawerNav} aria-label="Navigation principale (mobile)">
-        <ul className={styles.drawerList}>
-          <li>
-            <Link className={styles.drawerLink} href="/" onClick={onClose}>
-              ACCUEIL
+        {NAV_ENTRIES.filter((e) => e.type !== "panel").map((e) => (
+          <li key={e.label}>
+            <Link
+              className={styles.mlink}
+              href={e.href}
+              aria-current={activeHref === e.href ? "page" : undefined}
+              onClick={onClose}
+            >
+              {e.label}
             </Link>
           </li>
+        ))}
+      </ul>
 
-          {/* DOMAINES — accordéon reprenant le panneau, familles conservées. */}
-          <li className={styles.drawerAccordion}>
-            <div className={styles.drawerAccRow}>
-              <Link className={styles.drawerLink} href="/nos-domaines" onClick={onClose}>
-                DOMAINES
-              </Link>
-              <button
-                type="button"
-                className={styles.drawerAccBtn}
-                aria-expanded={accordion}
-                aria-label={accordion ? "Replier les domaines" : "Déplier les domaines"}
-                onClick={() => setAccordion((o) => !o)}
-              >
-                <svg viewBox="0 0 12 8" width="12" height="9" aria-hidden="true" className={accordion ? styles.accIconOpen : ""}>
-                  <path d="M1 1.5L6 6.5L11 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div className={styles.drawerAccPanel} hidden={!accordion}>
-              {FAMILLES.map((f) => (
-                <div className={styles.drawerFamille} key={f.intitule}>
-                  <p className={styles.familleLabel}>{f.intitule}</p>
-                  <ul>
-                    {f.domaines.map((d) => (
-                      <li key={d.href}>
-                        <Link className={styles.drawerCard} href={d.href} onClick={onClose}>
-                          <span className={styles.cardTitle}>{d.titre}</span>
-                          <span className={styles.cardContext}>{d.contexte}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              <Link className={styles.drawerAllDomaines} href="/nos-domaines" onClick={onClose}>
-                {PANEL_DOMAINES_FOOTER.lien.label}
-              </Link>
-            </div>
-          </li>
-
-          {NAV_ENTRIES.filter((e) => e.type !== "panel").map((e) => (
-            <li key={e.label}>
-              <Link className={styles.drawerLink} href={e.href} onClick={onClose}>
-                {e.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className={styles.drawerFooter}>
-        <Link className={styles.drawerCta} href={CONTACT_HREF} onClick={onClose}>
-          NOUS ÉCRIRE
-        </Link>
-        <a className={styles.drawerTel} href={TEL.href} aria-label={`Appeler — ${TEL.display}`}>
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-          </svg>
-          {TEL.display}
-        </a>
-      </div>
-    </div>
+      <Link className={styles.mcta} href={CONTACT_HREF} onClick={onClose}>
+        Nous écrire <span aria-hidden="true">→</span>
+      </Link>
+      <p className={styles.mfoot}>
+        <a href={TEL.href}>{TEL.display}</a>
+        <br />
+        18 rue de Tilsitt, 75017 Paris
+      </p>
+    </nav>
   );
 }
 

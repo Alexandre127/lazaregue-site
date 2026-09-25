@@ -240,7 +240,7 @@ export function CyberV4() {
       </section>
 
       {/* ===== 6. NIS 2 ===== */}
-      <section id="nis2" className="cw-sec cw-tint" style={{ scrollMarginTop: 88 }}>
+      <section id="nis2" className="cw-sec cw-tint" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
         <div className="cw-head">
           <p className="cw-label">NIS 2 : la sécurité des entreprises concernées</p>
           <h2 className="cw-h2">NIS 2 : êtes-vous directement ou indirectement concerné ?</h2>
@@ -295,7 +295,7 @@ export function CyberV4() {
       </section>
 
       {/* ===== 8. QUATRE SITUATIONS ===== */}
-      <section id="interventions" className="cw-sec" style={{ scrollMarginTop: 88 }}>
+      <section id="interventions" className="cw-sec" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
         <div className="cw-head">
           <p className="cw-label">Notre intervention, concrètement</p>
           <h2 className="cw-h2">Quatre situations, un travail concret</h2>

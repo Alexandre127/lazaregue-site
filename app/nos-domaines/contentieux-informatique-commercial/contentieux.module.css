@@ -19,7 +19,6 @@
   --maxw: 1200px;
   --readw: 68ch;
   --bd-dark: rgba(159, 178, 255, 0.22);
-  --header-h: 72px;
 
   background: var(--wh);
   color: var(--ink);

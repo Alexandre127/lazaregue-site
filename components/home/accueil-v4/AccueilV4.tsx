@@ -35,9 +35,12 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .team-panorama{position:relative;line-height:0}
 .accueilV4 .hero-art{position:relative}
 .accueilV4 .hero-art canvas{max-width:100%}
-.accueilV4 .hero{padding-top:96px}
-@media(max-width:850px){.accueilV4 .hero{padding-top:80px}}
-@media(max-width:639px){.accueilV4 .hero{padding-top:72px}}
+/* Dégagement sous l'en-tête v2 : le contenu du hero démarre 12px sous l'en-tête
+   au repos ; les ancres (#domaines, #contact) arrivent sous l'en-tête compact. */
+.accueilV4{scroll-padding-top:calc(var(--header-h-compact) + 12px)}
+.accueilV4 .hero{padding-top:calc(var(--header-h) + 12px)}
+@media(max-width:850px){.accueilV4 .hero{padding-top:calc(var(--header-h) + 12px)}}
+@media(max-width:639px){.accueilV4 .hero{padding-top:calc(var(--header-h) + 12px)}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(29,158,117,.45)}70%{box-shadow:0 0 0 6px rgba(29,158,117,0)}100%{box-shadow:0 0 0 0 rgba(29,158,117,0)}}
 
 /* --- Retouches ciblées du hero et de l'équipe (sept. 2026) --- */
