@@ -400,7 +400,11 @@ const CSS = `
 /* Avant / Pendant / Après */
 [data-domaine="cyberwf"] .cw-apa { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
 [data-domaine="cyberwf"] .cw-apa-card { border: 1px solid #0A0A14; padding: 36px; display: flex; flex-direction: column; gap: 12px; }
-[data-domaine="cyberwf"] .cw-apa-card + .cw-apa-card { border-left: 0; }
+/* Bureau : les cartes partagent leur bord vertical (rangée de 3). Sur mobile,
+   chaque carte empilée garde un cadre complet (bord gauche rétabli plus bas). */
+@media (min-width: 768px) {
+  [data-domaine="cyberwf"] .cw-apa-card + .cw-apa-card { border-left: 0; }
+}
 [data-domaine="cyberwf"] .cw-apa-card p { margin: 0; font-size: 16px; line-height: 1.55; color: #4A4A63; }
 [data-domaine="cyberwf"] .cw-apa-dark { background: #05060F; color: #FFFFFF; border-color: #05060F; }
 [data-domaine="cyberwf"] .cw-apa-dark p { color: rgba(255,255,255,0.8); }
@@ -438,6 +442,20 @@ const CSS = `
 /* Section NIS 2 sur fond bleu nuit : lead et numéros passent en clair (AA). */
 [data-domaine="cyberwf"] .cw-dark .cw-lead { color: rgba(255,255,255,0.85); }
 [data-domaine="cyberwf"] .cw-dark .cw-num { color: #FFFFFF; }
+/* Règle générale : dans TOUTE section .cw-dark, titres, textes, listes, strong et
+   intitulés de questions sont clairs par défaut. Nécessaire car la base
+   [data-domaine] li (color #0A0A14) s'applique directement aux li et se transmet
+   par héritage aux h3 des questions (sombre sur sombre sinon). Les couleurs
+   atténuées explicites (.cw-tx, .cw-lead, .cw-label) restent prioritaires. */
+[data-domaine="cyberwf"] .cw-dark h2,
+[data-domaine="cyberwf"] .cw-dark h3,
+[data-domaine="cyberwf"] .cw-dark h4,
+[data-domaine="cyberwf"] .cw-dark strong,
+[data-domaine="cyberwf"] .cw-dark summary { color: #FFFFFF; }
+[data-domaine="cyberwf"] .cw-dark p,
+[data-domaine="cyberwf"] .cw-dark li,
+[data-domaine="cyberwf"] .cw-dark dd { color: rgba(255,255,255,0.85); }
+[data-domaine="cyberwf"] .cw-dark .cw-mono { color: rgba(255,255,255,0.72); }
 [data-domaine="cyberwf"] .cw-nis { list-style: none; margin: 0; padding: 0; max-width: 1000px; border-bottom: 1px solid #E0E0EE; }
 [data-domaine="cyberwf"] .cw-nis li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 20px 0; border-top: 1px solid #E0E0EE; }
 [data-domaine="cyberwf"] .cw-nis h3 { font-size: 20px; }
