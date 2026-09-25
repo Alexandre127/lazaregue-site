@@ -68,7 +68,7 @@
 /* Ancres internes (liens des situations vers #missions / #etape-encadrer /
    #etape-documenter / #honoraires) : dégagement sous l'en-tête fixe (72px au
    repos) + zone sûre iOS, pour que la cible ne soit pas recouverte au saut. */
-.rgpd :global([id]) { scroll-margin-top: calc(72px + env(safe-area-inset-top, 0px) + 16px); }
+.rgpd :global([id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 .rgpd :global(.dark) { background: var(--navy); color: var(--on-dark); }
 .rgpd :global(.dark) :global(p),
 .rgpd :global(.dark) :global(li) { color: var(--on-dark); }
@@ -150,7 +150,9 @@
   text-decoration: none;
   transition: top 0.15s ease;
 }
-.skipLink:focus {
+/* Ne se révèle qu'au focus CLAVIER (focus-visible), jamais sur un focus souris
+   ou programmatique — évite tout « cadre bleu » hors navigation clavier. */
+.skipLink:focus-visible {
   top: 12px;
   outline: 3px solid #fff;
   outline-offset: 2px;
@@ -603,7 +605,7 @@
      + zone sûre iOS), avec 12px au moins jusqu'au fil d'Ariane et 16px du fil
      d'Ariane au cadre « RGPD & DONNÉES ». Fil d'Ariane : cible tactile ≥ 24px. */
   .rgpd :global(.hero-main .lead-s2) { display: none; }
-  .rgpd :global(.hero) { padding-top: calc(72px + env(safe-area-inset-top, 0px) + 12px); justify-content: flex-start; }
+  .rgpd :global(.hero) { padding-top: calc(var(--header-h) + 12px); justify-content: flex-start; }
   .rgpd :global(.hero) > :global(.wrap) > :global(.breadcrumb) { padding-top: 0; }
   .rgpd :global(.hero-main) { margin-top: 16px; }
   .rgpd :global(.breadcrumb a),
@@ -713,3 +715,10 @@
   .rgpd :global(.cas-dot) { width: 6px; height: 3px; background: rgba(255, 255, 255, 0.35); }
   .rgpd :global(.cas-dot.active) { width: 18px; background: #fff; }
 }
+
+/* ==========================================================================
+   Dégagement sous l'en-tête v2 (toutes largeurs). Règle finale : prime sur les
+   paddings V4 du hero. Le contenu (fil d'Ariane) démarre 12px sous l'en-tête au
+   repos ; il n'est plus centré verticalement, pour garantir ce dégagement.
+   ========================================================================== */
+.rgpd :global(.hero) { padding-top: calc(var(--header-h) + 12px); justify-content: flex-start; }

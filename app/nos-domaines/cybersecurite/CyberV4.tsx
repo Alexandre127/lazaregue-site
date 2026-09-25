@@ -240,7 +240,7 @@ export function CyberV4() {
       </section>
 
       {/* ===== 6. NIS 2 ===== */}
-      <section id="nis2" className="cw-sec cw-tint" style={{ scrollMarginTop: 88 }}>
+      <section id="nis2" className="cw-sec cw-tint" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
         <div className="cw-head">
           <p className="cw-label">NIS 2 : la sécurité des entreprises concernées</p>
           <h2 className="cw-h2">NIS 2 : êtes-vous directement ou indirectement concerné ?</h2>
@@ -295,7 +295,7 @@ export function CyberV4() {
       </section>
 
       {/* ===== 8. QUATRE SITUATIONS ===== */}
-      <section id="interventions" className="cw-sec" style={{ scrollMarginTop: 88 }}>
+      <section id="interventions" className="cw-sec" style={{ scrollMarginTop: "calc(var(--header-h-compact) + 12px)" }}>
         <div className="cw-head">
           <p className="cw-label">Notre intervention, concrètement</p>
           <h2 className="cw-h2">Quatre situations, un travail concret</h2>
@@ -417,7 +417,7 @@ const CSS = `
 /* Hero */
 /* Le header global flotte au-dessus du hero sombre (route hero sombre) :
    dégager le haut pour que le fil d'Ariane ne passe pas sous le logo. */
-[data-domaine="cyberwf"] .cw-hero { display: grid; grid-template-columns: 8fr 4fr; gap: 56px; align-items: center; padding: clamp(84px,9vw,116px) var(--px) clamp(36px,5vw,80px); }
+[data-domaine="cyberwf"] .cw-hero { display: grid; grid-template-columns: 8fr 4fr; gap: 56px; align-items: center; padding: max(clamp(84px,9vw,116px), calc(var(--header-h) + 12px)) var(--px) clamp(36px,5vw,80px); }
 [data-domaine="cyberwf"] .cw-hero-text { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
 [data-domaine="cyberwf"] .cw-crumb { font-family: var(--ff-mono); font-size: 13px; color: rgba(255,255,255,0.7); }
 [data-domaine="cyberwf"] .cw-crumb a { color: rgba(255,255,255,0.7); }

@@ -6,7 +6,6 @@
    ========================================================================== */
 .diff {
   --measure: 68ch;
-  --header-h: 72px;
   --red: #b42318;
   --muted-on-dark: rgba(255, 255, 255, 0.74); /* surcharge du token global #9fb2ff */
 
@@ -48,7 +47,7 @@
 .diff :global(.on-dark h3) { color: #fff; }
 .diff :global(.on-dark .eyebrow) { color: var(--muted-on-dark); }
 .diff :global(.on-dark p) { color: var(--muted-on-dark); }
-.diff :global(section[id]) { scroll-margin-top: 84px; }
+.diff :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 12px); }
 
 /* ---- Liens / focus ---- */
 .diff :global(a) { color: var(--blue3); }

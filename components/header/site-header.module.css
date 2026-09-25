@@ -1,470 +1,463 @@
-/*
- * Header global. Tokens du brief :
- *   bleu #1A47FF · fond repos #05060F · fond collant/panneau #0A0F2E
- *   texte clair #FFFFFF · texte second #E8E8F2 · texte muet #8f96b8
- *   accent muet #7f8aff · filets rgba(255,255,255,.14)
- * Fontes via les tokens existants (--ff-display/mono/body) : Bebas (wordmark),
- * DM Mono (entrées de menu, intitulés de famille), Space Grotesk (panneaux).
- */
+/* ==========================================================================
+   En-tête global — menu v2 (d'après la maquette du 24.09.2026).
+   Hauteurs pilotées par --header-h / --header-h-compact (globals.css) :
+   104px au repos, 76px collant (78px sous 1280px), zone sûre iOS incluse.
+   Tokens de la charte v1.1 (var(--navy/blue/wh/...)). Aucun texte en dur.
+   ========================================================================== */
 
-/* Sentinelle de l'état collant : posée en haut du document, haute d'une barre
-   (72px). Quand elle a défilé au-dessus du viewport, le header au repos a lui
-   aussi disparu → on bascule en barre fixe (relais sans couture). Hors flux,
-   invisible, sans interception d'événements. */
-.sentinelFallback {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 72px;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-/* ---------- barre ---------- */
 .header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 80;
+  color: #fff;
+  transition: background-color 0.35s ease, backdrop-filter 0.35s ease;
+}
+/* filet bas (visible seulement à l'état opaque). */
+.header::after {
+  content: "";
   position: absolute;
-  top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  /* OPAQUE PAR DÉFAUT (#0a0f2e) : lisible sur n'importe quelle page, y compris
-     celles sans hero sombre (ex. /blog) et toute page future non déclarée.
-     Les routes à hero sombre reçoivent la classe `.heroDark` (drapeau
-     déclaratif calculé depuis le pathname, cf. ROUTES_HERO_SOMBRE) : le header
-     devient alors transparent AU REPOS pour flotter sur le hero. Ce n'est pas
-     une détection au défilement — l'état est connu dès le rendu serveur. */
-  background: #0a0f2e;
-  color: #fff;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
-/* Route à hero sombre : header transparent au repos ; opaque dès qu'il colle
-   (.sticky l'emporte via :not). */
-.heroDark:not(.sticky) {
-  background: transparent;
+/* État opaque : Deep Navy translucide + flou + filet. */
+.header.solid {
+  background: rgba(10, 15, 46, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
-/* Barre collante : fixe, compacte, ombre légère (transition franche, pas un
-   rétrécissement progressif au défilement). Toujours opaque. */
-.sticky {
-  position: fixed;
-  background: #0a0f2e;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
+.header.solid::after {
+  opacity: 1;
 }
+/* Panneau ouvert : fond plein (le flou ne suffit pas derrière un grand panneau). */
+.header.panelActive {
+  background: var(--navy);
+}
+
 .bar {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4.5vw, 96px);
+  padding-top: env(safe-area-inset-top, 0px);
+  height: var(--header-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  max-width: 1280px;
-  margin: 0 auto;
-  height: 72px;
-  padding: 0 32px;
-  transition: height 0.2s ease;
+  gap: 28px;
+  transition: height 0.35s ease;
 }
-.sticky .bar {
-  height: 54px;
-}
-@media (max-width: 640px) {
-  .bar {
-    padding: 0 20px;
-  }
+.header.solid .bar {
+  height: var(--header-h-compact);
 }
 
-/* ---------- navigation desktop ---------- */
+/* --- Navigation ordinateur (≥1280px) --- */
 .nav {
   display: flex;
+  align-items: stretch;
   align-self: stretch;
+  margin-left: auto;
 }
 .navList {
   display: flex;
-  /* Les entrées occupent TOUTE la hauteur de la barre : le <li> DOMAINES
-     (conteneur du survol) devient ainsi contigu au panneau posé juste en
-     dessous — aucun pixel non survolé entre le libellé et le panneau. */
   align-items: stretch;
-  gap: 26px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  gap: clamp(14px, 2vw, 34px);
+  height: 100%;
 }
 .navItem {
-  /* Volontairement NON positionné : le panneau (absolu) doit se caler sur le
-     header (pleine largeur), pas sur le <li>. */
+  position: relative;
   display: flex;
   align-items: center;
 }
+
 .navLink {
-  font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.86);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.15s ease;
-}
-.navLink:hover {
-  color: #fff;
-}
-/* Entrée DOMAINES ouverte : pas de halo — un simple filet de 2 px sous le
-   libellé et le libellé qui passe au bleu. Le filet est tracé en box-shadow
-   pour ne déplacer aucun pixel (pas de réservation de bordure). */
-.navLinkOpen,
-.navLinkOpen:hover {
-  color: #1a47ff;
-  box-shadow: 0 2px 0 #1a47ff;
-}
-.chevron {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 0;
-  color: #8888a0;
-  padding: 6px 3px;
-  margin-left: 3px;
-  cursor: pointer;
-}
-.chevron:hover {
-  color: #fff;
-}
-/* Supprime l'anneau de focus par défaut du navigateur (il apparaît au clic
-   et se lit comme un halo autour du chevron). On conserve un focus visible
-   pour le clavier uniquement. */
-.chevron:focus {
-  outline: none;
-}
-.chevron:focus-visible {
-  outline: 2px solid #1a47ff;
-  outline-offset: 2px;
-}
-/* Chevron ouvert : caret bleu, cohérent avec le libellé. */
-.chevron[aria-expanded="true"] {
-  color: #1a47ff;
-}
-.chevronIcon {
-  transition: transform 0.2s ease;
-}
-.chevron[aria-expanded="true"] .chevronIcon {
-  transform: rotate(180deg);
-}
-.ctaButton {
+  gap: 8px;
+  min-height: 44px;
   font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #fff;
-  background: #1a47ff;
-  padding: 10px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.ctaButton:hover {
-  background: #0a2acc;
-}
-
-/* ---------- hamburger ---------- */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 44px;
-  height: 44px;
-  padding: 8px;
-  background: transparent;
+  background: none;
   border: 0;
   cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 }
-.hamburger span {
-  display: block;
-  height: 2px;
-  width: 22px;
-  background: #fff;
-  border-radius: 2px;
-}
-
-@media (max-width: 1023px) {
-  .nav {
-    display: none;
-  }
-  .hamburger {
-    display: inline-flex;
-  }
-}
-
-/* ---------- panneau DOMAINES ---------- */
-.panel {
-  /* Rendu dans le <li> mais calé sur le header (ancêtre positionné le plus
-     proche) : pleine largeur, juste sous la barre. */
+/* soulignement bleu animé au survol / ouverture. */
+.navLink::after {
+  content: "";
   position: absolute;
-  top: 100%;
   left: 0;
   right: 0;
-  z-index: 1;
-  background: #0a0f2e;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.42);
-  /* Toujours dans le DOM ; masqué en CSS (visibilité) tant qu'il n'est pas ouvert. */
-  visibility: hidden;
+  bottom: 6px;
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLinkOpen::after {
+  transform: scaleX(1);
+}
+/* rubrique active : soulignement BLANC permanent. */
+.navLink[aria-current="page"]::after {
+  background: #fff;
+  transform: scaleX(1);
+}
+.chevronIcon {
+  transition: transform 0.3s ease;
+}
+.navButton[aria-expanded="true"] .chevronIcon {
+  transform: rotate(180deg);
+}
+
+/* passerelle invisible : prolonge la zone de survol du bouton jusqu'au panneau,
+   pour qu'une trajectoire diagonale ne referme pas le panneau. */
+.navItem:first-child::before {
+  content: "";
+  position: absolute;
+  left: -44px;
+  right: -44px;
+  top: 100%;
+  height: calc(var(--header-h) - 24px);
+}
+
+/* --- Bouton « Nous écrire » --- */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 24px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.25s ease;
+}
+.cta:hover {
+  background: var(--blue3);
+}
+
+/* --- Panneau « Domaines » --- */
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--navy);
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 .panelOpen {
-  visibility: visible;
   opacity: 1;
-  transform: none;
-  pointer-events: auto;
+  visibility: visible;
 }
 .panelInner {
-  max-width: 1280px;
+  max-width: 1560px;
   margin: 0 auto;
-  padding: 22px 32px;
+  padding: 34px clamp(20px, 4.5vw, 96px) 30px;
+}
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.panelHeadLabel {
+  margin: 0;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-on-dark);
+}
+.panelAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+.panelAll:hover {
+  border-bottom-color: #fff;
 }
 .panelCols {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-.panelCol {
-  padding: 0 34px;
-}
-.panelCol:first-child {
-  padding-left: 0;
-}
-.panelCol:not(:first-child) {
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
 }
 .familleLabel {
+  margin: 0 0 4px;
   font-family: var(--ff-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
+  font-weight: 400;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7f8aff;
-  margin: 0 0 16px;
+  color: var(--muted-on-dark);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
 }
 .cardList {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 4px;
 }
+/* zone cliquable : toute la largeur de la colonne, 54px de haut, fond au survol,
+   aucun déplacement du texte (seuls le fond et la flèche apparaissent). */
 .card {
-  display: block;
-  padding: 8px 12px;
-  margin: 0 -12px;
-  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 0 10px;
+  margin: 0 -10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 17px;
+  font-weight: 500;
+  color: #fff;
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: background-color 0.15s ease;
 }
-.card:hover {
-  background: rgba(255, 255, 255, 0.05);
+.card:hover,
+.card:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
 }
 .cardTitle {
-  display: block;
-  /* Fonte explicitement rappelée ici : les titres du panneau doivent rendre
-     en Space Grotesk, pas sur un repli système. */
-  font-family: "Space Grotesk", var(--ff-body);
-  font-size: 15px;
-  font-weight: 500;
-  color: #e8e8f2;
-  line-height: 1.45;
+  min-width: 0;
 }
-.cardContext {
-  display: block;
-  font-family: "Space Grotesk", var(--ff-body);
-  font-size: 12px;
-  color: #8f96b8;
-  line-height: 1.45;
-  margin-top: 3px;
+.cardArrow {
+  flex: none;
+  color: var(--muted-on-dark);
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
-.panelFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
-.panelFooterLink {
-  font-family: var(--ff-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #7f8aff;
-  text-decoration: none;
-}
-.panelFooterLink:hover {
-  color: #fff;
-}
-.panelFooterMention {
-  font-family: var(--ff-mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: #8f96b8;
+.card:hover .cardArrow,
+.card:focus-visible .cardArrow {
+  opacity: 1;
 }
 
-/* ---------- tiroir mobile ---------- */
-.drawer {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: #05060f;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-}
-.drawerTop {
-  flex: none;
-  display: flex;
+/* --- Bouton « Menu » (mobile / tablette) --- */
+.burger {
+  display: none;
   align-items: center;
-  justify-content: space-between;
-  height: 54px;
-  padding: 0 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-.drawerClose {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  margin: -8px;
-  background: transparent;
-  border: 0;
-  color: #fff;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-.drawerNav {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 20px;
-}
-.drawerList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.drawerList > li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-.drawerLink {
-  display: block;
-  font-family: var(--ff-mono);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #fff;
-  text-decoration: none;
-  padding: 18px 0;
-}
-.drawerAccRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.drawerAccBtn {
-  background: transparent;
-  border: 0;
-  color: #fff;
-  padding: 12px;
-  cursor: pointer;
-}
-.drawerAccBtn svg {
-  transition: transform 0.2s ease;
-}
-.accIconOpen {
-  transform: rotate(180deg);
-}
-.drawerAccPanel {
-  padding: 2px 0 18px;
-}
-.drawerFamille {
-  margin-bottom: 14px;
-}
-.drawerFamille > ul {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 2px;
-}
-.drawerCard {
-  display: block;
-  padding: 8px 0;
-  text-decoration: none;
-}
-.drawerAllDomaines {
-  display: inline-block;
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #7f8aff;
-  text-decoration: none;
-  margin-top: 6px;
-}
-.drawerFooter {
-  flex: none;
-  display: flex;
-  gap: 12px;
-  padding: 16px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
-.drawerCta {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #1a47ff;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: none;
   color: #fff;
   font-family: var(--ff-mono);
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 14px;
-  border-radius: 4px;
-  text-decoration: none;
+  cursor: pointer;
 }
-.drawerTel {
+.burgerBars {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-family: var(--ff-mono);
-  font-size: 12px;
-  padding: 14px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+  flex-direction: column;
+  gap: 3px;
+}
+.burgerBars i {
+  width: 16px;
+  height: 1.5px;
+  background: #fff;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(1) {
+  transform: translateY(4.5px) rotate(45deg);
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(2) {
+  opacity: 0;
+}
+.burger[aria-expanded="true"] .burgerBars i:nth-child(3) {
+  transform: translateY(-4.5px) rotate(-45deg);
 }
 
-/* ---------- barre basse mobile ---------- */
-.bottomBar {
+/* ==========================================================================
+   MOBILE / TABLETTE (< 1280px)
+   ========================================================================== */
+.mmenu {
   display: none;
 }
-@media (max-width: 1023px) {
-  .bottomBar {
+@media (max-width: 1279px) {
+  .nav,
+  .cta,
+  .panel {
+    display: none;
+  }
+  .burger {
+    display: inline-flex;
+  }
+
+  /* Menu plein écran sous l'en-tête, en fondu. */
+  .mmenu {
+    display: block;
     position: fixed;
+    top: var(--header-h);
     left: 0;
     right: 0;
-    bottom: 0;
-    z-index: 90;
-    display: flex;
-    gap: 10px;
-    padding: 10px 16px;
-    background: rgba(10, 15, 46, 0.97);
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    transform: translateY(120%);
-    transition: transform 0.25s ease;
+    height: calc(100dvh - var(--header-h));
+    background: var(--navy);
+    z-index: 78;
+    overflow-y: auto;
+    padding: 10px clamp(20px, 4.5vw, 96px) 40px;
+    transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
   }
-  .bottomBarShown {
+  .mmenuOpen {
     transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+  .mlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mlist > li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  }
+  .mlink {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    min-height: 62px;
+    background: none;
+    border: 0;
+    color: #fff;
+    font-family: var(--ff-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .mlink[aria-current="page"] {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-color: #fff;
+  }
+  .msign {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .macc {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .maccOpen {
+    max-height: 1200px;
+  }
+  .mfam {
+    padding-bottom: 6px;
+  }
+  .mfamLabel {
+    margin: 14px 0 2px;
+    font-family: var(--ff-mono);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+  }
+  .macclink {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 0 0 14px;
+    border-left: 2px solid rgba(255, 255, 255, 0.13);
+    font-size: 16.5px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .mcta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 26px;
+    min-height: 56px;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--ff-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .mfoot {
+    margin: 22px 0 0;
+    font-family: var(--ff-mono);
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--muted-on-dark);
+  }
+  .mfoot a {
+    color: #fff;
+  }
+}
+
+/* ==========================================================================
+   BARRE BASSE MOBILE (inchangée, reste sur tout le site)
+   ========================================================================== */
+.bottomBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px clamp(20px, 4.5vw, 96px) calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(10, 15, 46, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  transform: translateY(120%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+.bottomBarShown {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+@media (min-width: 1280px) {
+  .bottomBar {
+    display: none;
   }
 }
 .bottomBarBtn {
@@ -472,36 +465,46 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #1a47ff;
+  min-height: 48px;
+  background: var(--blue);
   color: #fff;
   font-family: var(--ff-mono);
-  font-size: 12px;
+  font-size: 12.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 13px;
-  border-radius: 4px;
   text-decoration: none;
 }
 .bottomBarTel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  min-width: 48px;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
-  padding: 13px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+}
+
+/* --- focus visible --- */
+.header :focus-visible,
+.mmenu :focus-visible,
+.bottomBar :focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .header,
+  .header::after,
   .bar,
-  .panel,
+  .navLink::after,
   .chevronIcon,
-  .drawerAccBtn svg,
+  .panel,
+  .cta,
+  .mmenu,
+  .macc,
+  .burgerBars i,
   .bottomBar,
-  .card,
-  .navLink {
+  .cardArrow {
     transition: none !important;
   }
 }
