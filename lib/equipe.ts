@@ -54,7 +54,7 @@ export const MEMBRES: Record<string, Membre> = {
     // Intitulé « consultant technique » plutôt qu'« expert » : le mot « expert »
     // prête à confusion avec la qualité d'expert judiciaire, particulièrement
     // sur les pages qui traitent de l'expertise judiciaire informatique.
-    statut: "Notre consultant technique — cybersécurité",
+    statut: "Consultant technique en cybersécurité",
     avocat: false,
     photo: "/images/khalid-pro.jpg",
   },
