@@ -38,7 +38,7 @@ const JSON_LD = {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
         { "@type": "ListItem", position: 2, name: "Ressources", item: `${URL_BASE}/ressources` },
-        { "@type": "ListItem", position: 3, name: "Fraudes et paiements", item: `${URL_BASE}/ressources/?domaine=fraude` },
+        { "@type": "ListItem", position: 3, name: "Fraude bancaire et escroquerie", item: `${URL_BASE}/ressources/?domaine=fraude` },
         { "@type": "ListItem", position: 4, name: "Faux conseiller bancaire", item: `${URL_BASE}${PATH}` },
       ],
     },
@@ -70,10 +70,10 @@ export default function Page() {
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/">Accueil</Link> <span aria-hidden>/</span>{" "}
             <Link href="/ressources">Ressources</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources/?domaine=fraude">Fraudes et paiements</Link> <span aria-hidden>/</span>{" "}
+            <Link href="/ressources/?domaine=fraude">Fraude bancaire et escroquerie</Link> <span aria-hidden>/</span>{" "}
             <span aria-current="page">Faux conseiller bancaire</span>
           </nav>
-          <p className={styles.kicker}>Fraudes et paiements · Guide</p>
+          <p className={styles.kicker}>Fraude bancaire et escroquerie · Guide</p>
           <h1 id="h1">Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser&nbsp;?</h1>
           <p className={styles.chapo}>
             Lorsqu&apos;un fraudeur obtient la validation d&apos;un virement en se faisant passer pour un

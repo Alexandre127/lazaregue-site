@@ -13,7 +13,6 @@ export function CaseCard({ cas, hidden }: { cas: Cas; hidden?: boolean }) {
       <h3>
         <Link href={`${CAS_BASE}/${cas.slug}`}>{cas.titre}</Link>
       </h3>
-      <p className="ctx">{cas.resume}</p>
       <div className="foot">
         <span className="status stOk">{ISSUE}</span>
         <span className="clink" aria-hidden>Lire le cas →</span>

@@ -50,6 +50,14 @@
 .sitlist a { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; padding: 12px 0; border-bottom: 1px solid var(--bd); color: var(--ink); text-decoration: none; font-size: 18px; font-weight: 500; }
 .sitlist a::after { content: "→"; color: var(--blue); flex: none; }
 .sitlist a:hover { color: var(--blue); }
+.sitSoon { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; padding: 12px 0; border-bottom: 1px solid var(--bd); color: var(--text-muted); font-size: 18px; font-weight: 500; }
+.sitSoon em { font-family: var(--ff-mono); font-style: normal; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); flex: none; }
+
+/* Sélecteur unique « Ce qui vous arrive / Par domaine » */
+.seg { display: inline-flex; border: 1px solid var(--ink); margin-bottom: 8px; }
+.seg button { min-height: 48px; padding: 0 22px; background: #fff; border: 0; font: 500 15px var(--ff-body); color: var(--ink); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--ink); }
+.segOn { background: var(--ink) !important; color: #fff !important; }
 
 /* ============================ 02 — DOMAINES ========================== */
 .doms { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--bd); }
@@ -112,6 +120,20 @@
   .rep, .corpus { grid-template-columns: 1fr 1fr; }
   .feat, .heroGrid { grid-template-columns: 1fr; }
   .heroGrid { gap: 28px; align-items: start; }
+}
+@media (max-width: 900px) {
+  /* « Quatre repères » masqué en mobile (maquette). */
+  .repWrap { display: none; }
+  /* Filtres du corpus sur une seule ligne qui défile. */
+  .filters { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--page-margin-mobile)); padding-inline: var(--page-margin-mobile); scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters button { flex: none; }
+  /* Sélecteur en pleine largeur. */
+  .seg { display: flex; width: 100%; }
+  .seg button { flex: 1; }
+  /* Corpus : liste plutôt que cartes. */
+  .corpus .card { border: 0; border-bottom: 1px solid var(--bd); padding: 16px 0; gap: 6px; }
+  .corpus .cardExcerpt { display: none; }
 }
 @media (max-width: 767px) {
   .sitlist, .rep, .corpus, .doms { grid-template-columns: 1fr; }

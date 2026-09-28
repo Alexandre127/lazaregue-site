@@ -52,7 +52,7 @@ const JSON_LD = {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
         { "@type": "ListItem", position: 2, name: "Ressources", item: `${URL_BASE}/ressources` },
-        { "@type": "ListItem", position: 3, name: "Fraudes et paiements", item: `${URL_BASE}/ressources/?domaine=fraude` },
+        { "@type": "ListItem", position: 3, name: "Fraude bancaire et escroquerie", item: `${URL_BASE}/ressources/?domaine=fraude` },
         { "@type": "ListItem", position: 4, name: "Fraude bancaire : opposition, contestation et remboursement", item: `${URL_BASE}${PATH}` },
       ],
     },
@@ -121,10 +121,10 @@ export default function Page() {
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/">Accueil</Link> <span aria-hidden>/</span>{" "}
             <Link href="/ressources">Ressources</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources/?domaine=fraude">Fraudes et paiements</Link> <span aria-hidden>/</span>{" "}
+            <Link href="/ressources/?domaine=fraude">Fraude bancaire et escroquerie</Link> <span aria-hidden>/</span>{" "}
             <span aria-current="page">Fraude bancaire</span>
           </nav>
-          <p className={styles.kicker}>Fraudes et paiements · Note générale</p>
+          <p className={styles.kicker}>Fraude bancaire et escroquerie · Note générale</p>
           <h1 id="h1">Fraude bancaire : opposition, contestation et remboursement</h1>
           <p className={styles.chapo}>
             Vous avez été victime d&apos;une fraude : un appel, un message, un site qui imitait celui que vous connaissiez, et de l&apos;argent est parti de votre compte. Vous avez prévenu votre banque et demandé le remboursement. Elle a refusé.

@@ -54,6 +54,7 @@ export default function RessourcesIndex({ initialDomaine }: { initialDomaine?: s
 
   const [filter, setFilter] = useState<"all" | Dom>(initialFilter);
   const [query, setQuery] = useState("");
+  const [mode, setMode] = useState<"situation" | "domaine">("situation");
 
   const active = filter !== "all" || query.trim() !== "";
   const term = norm(query.trim());
@@ -119,54 +120,55 @@ export default function RessourcesIndex({ initialDomaine }: { initialDomaine?: s
         </div>
       </section>
 
-      {/* ============================ 01 — PAR SITUATION ================== */}
-      <section className={styles.sec} aria-labelledby="h-sit">
+      {/* ================= TROUVER LA BONNE RESSOURCE (sélecteur unique) === */}
+      <section className={styles.sec} aria-labelledby="h-trouver">
         <div className={styles.wrap}>
           <div className={styles.head}>
-            <p className={styles.label}>01 — Par situation</p>
-            <h2 className={styles.h2} id="h-sit">Ce qui vous arrive</h2>
-            <p className={styles.lead}>
-              Chaque situation renvoie vers les ressources qui permettent d&apos;identifier les
-              premières questions juridiques et les démarches utiles.
-            </p>
+            <h2 className={styles.h2} id="h-trouver">Trouver la bonne ressource</h2>
           </div>
-          <nav className={styles.sitlist} aria-label="Entrer par situation">
-            {SITUATIONS.map((s) => (
-              <Link key={s.texte} href={s.href}>
-                {s.texte}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </section>
-
-      {/* ============================ 02 — PAR DOMAINE =================== */}
-      <section className={`${styles.sec} ${styles.ghost}`} aria-labelledby="h-dom">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <p className={styles.label}>02 — Par domaine</p>
-            <h2 className={styles.h2} id="h-dom">Entrer par votre sujet</h2>
-            <p className={styles.lead}>
-              Les domaines d&apos;intervention du cabinet, sous les mêmes intitulés que dans le reste
-              du site.
-            </p>
+          <div className={styles.seg} role="tablist" aria-label="Entrer par situation ou par domaine">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === "situation"}
+              className={mode === "situation" ? styles.segOn : undefined}
+              onClick={() => setMode("situation")}
+            >
+              Ce qui vous arrive
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === "domaine"}
+              className={mode === "domaine" ? styles.segOn : undefined}
+              onClick={() => setMode("domaine")}
+            >
+              Par domaine
+            </button>
           </div>
-          <div className={styles.doms}>
-            {DOM_CARDS.map((d) => (
-              <article className={d.href ? `${styles.domCard} ${styles.cardlink}` : styles.domCard} key={d.n}>
-                <span className={styles.domN}>{d.n}</span>
-                <h3>
-                  {d.href ? <Link href={d.href}>{d.titre}</Link> : <span>{d.titre}</span>}
-                </h3>
-                <p className={styles.domDesc}>{d.desc}</p>
-                {d.soon ? (
-                  <p className={styles.soon}>Premières ressources à paraître</p>
+          {mode === "situation" ? (
+            <nav className={styles.sitlist} aria-label="Entrer par situation">
+              {SITUATIONS.map((s) => (
+                <Link key={s.texte} href={s.href}>
+                  {s.texte}
+                </Link>
+              ))}
+            </nav>
+          ) : (
+            <nav className={styles.sitlist} aria-label="Entrer par domaine">
+              {DOM_CARDS.map((d) =>
+                d.href ? (
+                  <Link key={d.n} href={d.href}>
+                    {d.titre}
+                  </Link>
                 ) : (
-                  <span className={styles.domGo} aria-hidden>Voir les ressources →</span>
-                )}
-              </article>
-            ))}
-          </div>
+                  <span key={d.n} className={styles.sitSoon}>
+                    {d.titre} <em>à paraître</em>
+                  </span>
+                ),
+              )}
+            </nav>
+          )}
         </div>
       </section>
 
@@ -199,15 +201,17 @@ export default function RessourcesIndex({ initialDomaine }: { initialDomaine?: s
             </div>
           </article>
 
-          <h3 className={styles.repTitle}>Quatre repères pour commencer</h3>
-          <p className={styles.repIntro}>
-            Quatre réponses pour agir face aux situations les plus fréquentes, sans avoir à connaître
-            leur qualification juridique.
-          </p>
-          <div className={styles.rep}>
-            {REPERES.map((r) => (
-              <ResourceCard key={r.id} dom={r.dom} titre={r.titre} excerpt={r.excerpt} href={r.href} />
-            ))}
+          <div className={styles.repWrap}>
+            <h3 className={styles.repTitle}>Quatre repères pour commencer</h3>
+            <p className={styles.repIntro}>
+              Quatre réponses pour agir face aux situations les plus fréquentes, sans avoir à connaître
+              leur qualification juridique.
+            </p>
+            <div className={styles.rep}>
+              {REPERES.map((r) => (
+                <ResourceCard key={r.id} dom={r.dom} titre={r.titre} excerpt={r.excerpt} href={r.href} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
