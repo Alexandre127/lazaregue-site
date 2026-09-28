@@ -25,7 +25,6 @@ import SituationTravail from "./SituationTravail";
    ========================================================================== */
 
 const CONTACT = "/contact?objet=cybersecurite";
-const NIS2 = "/nos-domaines/cybersecurite/nis2";
 const TEL = "tel:+33181706200";
 
 const EXPOSITIONS = [
@@ -229,9 +228,6 @@ export function CyberV4() {
             </li>
           ))}
         </ol>
-        <div>
-          <Link href={NIS2} className="cw-link">{fr("Comprendre les obligations NIS 2 et notre accompagnement →")}</Link>
-        </div>
       </section>
 
       {/* ===== 7. BINÔME AVOCAT / EXPERT ===== */}
