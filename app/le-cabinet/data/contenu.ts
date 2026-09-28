@@ -249,7 +249,7 @@ export const DEMARRAGE: { n: string; titre: string; corps: string }[] = [
     n: "01",
     titre: "Premier échange",
     corps:
-      "Nous précisons votre situation, votre objectif et son éventuel degré d'urgence.",
+      "Le premier échange permet de préciser votre situation, votre objectif et son éventuel degré d'urgence.",
   },
   {
     n: "02",

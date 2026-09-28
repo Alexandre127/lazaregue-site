@@ -654,8 +654,8 @@ export default function FormationRgpdPage() {
               Construisons une formation RGPD adaptée à vos équipes
             </h2>
             <p className="lead">
-              Indiquez-nous les personnes concernées, leur niveau et les situations qu’elles
-              rencontrent. Nous définirons le programme et le format adaptés à votre organisation.
+              Précisez le sujet, le public et le format souhaités : le programme est construit à
+              partir de ces éléments.
             </p>
           </div>
           <div className="hero-cta" style={{ marginTop: 0 }}>

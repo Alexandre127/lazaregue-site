@@ -846,8 +846,8 @@ export default function FormationIaPage() {
               Donnons à vos équipes un cadre clair pour utiliser l’IA
             </h2>
             <p className="lead">
-              Indiquez-nous les personnes concernées, les outils déjà utilisés et les situations que
-              vous souhaitez encadrer. Nous construirons le programme adapté à votre organisation.
+              Précisez le sujet, le public et le format souhaités : le programme est construit à
+              partir de ces éléments.
             </p>
           </div>
           <div className="hero-cta" style={{ marginTop: 0 }}>

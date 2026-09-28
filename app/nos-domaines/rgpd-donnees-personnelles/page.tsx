@@ -261,7 +261,7 @@ export default function Page() {
           <div className="wrap">
             <div className="sec-head">
               <p className="label">sur le terrain</p>
-              <h2>Ce que nous voyons le plus souvent</h2>
+              <h2>Les situations les plus fréquentes</h2>
               <p className="lead">Les situations les plus fréquentes&nbsp;— et ce qui se passe concrètement quand elles ne sont pas anticipées.</p>
             </div>
             <TerrainCards />
@@ -374,7 +374,7 @@ export default function Page() {
             </div>
             <div className="honoraires">
               <div>
-                <p>Le premier échange permet de comprendre votre activité, votre besoin et son urgence. Avant de commencer, nous convenons par écrit de la mission, des documents à préparer et des honoraires.</p>
+                <p>Le premier échange permet de comprendre votre activité, votre besoin et son urgence. Avant de commencer, la mission, les documents à préparer et les honoraires sont définis par écrit.</p>
                 <p>En cas d’urgence (violation, procédure CNIL), les modalités sont convenues dès le premier échange.</p>
                 {/* Deux modes d'honoraires (mêmes informations à toutes les largeurs).
                     La case « Forfait » porte l'information de l'ancien paragraphe. */}
