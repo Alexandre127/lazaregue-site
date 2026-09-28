@@ -13,7 +13,7 @@ export default function Faq() {
       <div className={styles.wrap}>
         <div className={styles.folio}>Questions fréquentes</div>
         <h2 id="faq-titre" className={styles.faqTitre}>
-          Vos questions, nos réponses
+          Vos questions, les réponses du cabinet
         </h2>
 
         <div className={styles.faqListe}>

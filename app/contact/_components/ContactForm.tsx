@@ -34,7 +34,7 @@ const MAX = 2000;
 
 type Errs = { objet?: boolean; urgence?: boolean; nom?: boolean; email?: boolean; message?: boolean };
 
-export default function ContactForm() {
+export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const [objet, setObjet] = useState("");
   const [urgence, setUrgence] = useState("");
   const [echeance, setEcheance] = useState("");
@@ -88,7 +88,11 @@ export default function ContactForm() {
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
         setStatus("done");
-        requestAnimationFrame(() => doneRef.current?.focus());
+        if (onSent) {
+          onSent();
+        } else {
+          requestAnimationFrame(() => doneRef.current?.focus());
+        }
       } else {
         setStatus("error");
         setFailMsg(json.error || "L'envoi a échoué. Réessayez, ou contactez le cabinet par téléphone ou e-mail.");
@@ -130,11 +134,10 @@ export default function ContactForm() {
   return (
     <div className={styles.fcard}>
       <form onSubmit={onSubmit} noValidate aria-labelledby="h-form">
-        <h2 id="h-form">Décrivez-nous votre situation</h2>
+        <h2 id="h-form">Décrivez votre situation</h2>
         <p className={styles.formIntro}>
-          Quelques informations suffisent pour un premier examen. Ne transmettez pas à ce stade de
-          documents particulièrement sensibles ou confidentiels : le cabinet pourra vous proposer un
-          canal sécurisé après vérification de la demande.
+          Quelques lignes suffisent. Ne joignez pas encore de document : le cabinet vous proposera un
+          canal sécurisé si nécessaire.
         </p>
         <p className={styles.req}>Les champs marqués * sont obligatoires.</p>
 
@@ -273,7 +276,7 @@ export default function ContactForm() {
 
         <p className={styles.priv}>
           Les informations transmises sont utilisées pour examiner votre demande et vous recontacter.
-          Pour en savoir plus sur leur traitement, consultez notre{" "}
+          Pour en savoir plus sur leur traitement, consultez la{" "}
           <a href="/politique-de-confidentialite">politique de confidentialité</a>.
         </p>
 
@@ -289,8 +292,6 @@ export default function ContactForm() {
         </button>
 
         <p className={styles.formFoot}>
-          Le cabinet répond dans les 24&nbsp;h ouvrées.
-          <br />
           L&apos;envoi du formulaire ne vaut pas acceptation du dossier ni création automatique d&apos;une relation avocat-client.
         </p>
       </form>
