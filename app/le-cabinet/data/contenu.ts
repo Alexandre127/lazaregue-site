@@ -70,7 +70,7 @@ export const AVOCATS: Membre[] = [
   },
   {
     slug: "amir",
-    eyebrow: "Avocat au barreau de l'Essonne · contentieux IT",
+    eyebrow: "Avocat au barreau d'Évry · contentieux IT",
     nom: "Amir Ben Majed",
     bio: "Il intervient sur les litiges informatiques complexes : projets qui dérapent, responsabilité des prestataires, contentieux de la preuve technique — ces dossiers où le droit ne se départage qu'à condition de comprendre la machine.",
     domaines: ["Contrats IT", "Contentieux IT", "Responsabilité des prestataires"],
@@ -111,7 +111,7 @@ export const EXPERTS: Membre[] = [
     slug: "nadia",
     eyebrow: "Docteure en intelligence artificielle",
     nom: "Nadia Abchiche-Mimouni",
-    bio: "Docteure en intelligence artificielle et maître de conférences à Nice Sophia Antipolis, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
+    bio: "Docteure en intelligence artificielle et maîtresse de conférences à l'Université Côte d'Azur, elle évalue l'architecture technique des systèmes, leurs jeux de données, leur supervision et leurs biais. Sur un dossier IA, elle établit ce que le système fait réellement — avant que le droit ne dise ce qu'il vaut.",
     domaines: ["Dossiers IA et AI Act", "Qualification de systèmes", "Expertise"],
     meta: [],
     statut: "Docteure en intelligence artificielle",
@@ -204,7 +204,7 @@ export const DOMAINES_FAMILLES: {
     nom: "Contrats et opérations numériques",
     items: [
       { href: "/nos-domaines/contrats-informatiques", label: "Contrats informatiques" },
-      { href: "/nos-domaines/ma-tech", label: "Fusions-acquisitions technologiques" },
+      { href: "/nos-domaines/ma-tech", label: "M&A tech et due diligence" },
       { href: "/nos-domaines/crypto-actifs-blockchain", label: "Crypto-actifs et blockchain" },
     ],
   },
@@ -212,8 +212,8 @@ export const DOMAINES_FAMILLES: {
     nom: "Contentieux et atteintes numériques",
     items: [
       { href: "/nos-domaines/contentieux-informatique-commercial", label: "Contentieux informatique et commercial" },
-      { href: "/nos-domaines/cybercriminalite", label: "Cyberattaques et cybercriminalité" },
-      { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Fraude bancaire et escroquerie en ligne" },
+      { href: "/nos-domaines/cybercriminalite", label: "Cybercriminalité et cyberattaques" },
+      { href: "/nos-domaines/escroquerie-fraude-bancaire", label: "Fraude bancaire et escroquerie" },
       { href: "/nos-domaines/diffamation-retrait-contenus", label: "Diffamation et retrait de contenus" },
     ],
   },

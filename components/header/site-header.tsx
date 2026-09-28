@@ -300,7 +300,7 @@ export function SiteHeader() {
 
           {/* --- Bouton « Nous écrire » (toujours visible, ordinateur) --- */}
           <Link className={styles.cta} href={CONTACT_HREF}>
-            Nous écrire <span aria-hidden="true">→</span>
+            Écrire au cabinet <span aria-hidden="true">→</span>
           </Link>
 
           {/* --- Bouton « Menu » (mobile / tablette) --- */}
@@ -370,7 +370,7 @@ export function SiteHeader() {
         aria-hidden={!showBottomBar || mobileOpen}
       >
         <Link className={styles.bottomBarBtn} href={CONTACT_HREF} tabIndex={showBottomBar && !mobileOpen ? 0 : -1}>
-          NOUS ÉCRIRE
+          ÉCRIRE AU CABINET
         </Link>
         <a
           className={styles.bottomBarTel}
@@ -453,7 +453,7 @@ function MobileMenu({
       </ul>
 
       <Link className={styles.mcta} href={CONTACT_HREF} onClick={onClose}>
-        Nous écrire <span aria-hidden="true">→</span>
+        Écrire au cabinet <span aria-hidden="true">→</span>
       </Link>
       <p className={styles.mfoot}>
         <a href={TEL.href}>{TEL.display}</a>

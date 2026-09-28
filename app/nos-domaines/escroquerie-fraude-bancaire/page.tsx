@@ -130,7 +130,7 @@ export default function Page() {
                   <p className="say">{fr("Faux conseiller bancaire, SMS frauduleux, faux RIB, placement fictif : le cabinet défend les victimes, particuliers comme entreprises, et engage les recours contre les banques pour récupérer les fonds.")}</p>
                   <p className="claim">{fr("L'escroc a disparu. Les établissements par lesquels les fonds ont circulé, non.")}</p>
                   <div className="actions">
-                    <a className="btn btn-primary" href={TEL}>Appeler le cabinet — 01 81 70 62 00</a>
+                    <a className="btn btn-primary" href={TEL}>Appeler — 01 81 70 62 00</a>
                     <Link className="btn btn-line" href="/contact">Demander à être contacté</Link>
                   </div>
                 </div>

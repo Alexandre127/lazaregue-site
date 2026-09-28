@@ -144,7 +144,7 @@ export function CyberV4() {
       {/* ===== 2. BANDE ROUGE — INCIDENT EN COURS ===== */}
       <div className="cw-urgent">
         <span className="cw-urgent-tag">{fr("INCIDENT EN COURS ?")}</span>
-        <a href={TEL} className="cw-urgent-tel"><span className="cw-only-d">{fr("Appeler le cabinet : 01 81 70 62 00 →")}</span><span className="cw-only-m">{fr("Appeler : 01 81 70 62 00 →")}</span></a>
+        <a href={TEL} className="cw-urgent-tel"><span className="cw-only-d">{fr("Appeler — 01 81 70 62 00")}</span><span className="cw-only-m">{fr("Appeler — 01 81 70 62 00")}</span></a>
       </div>
 
       {/* ===== 3. AVANT / PENDANT / APRÈS ===== */}
@@ -297,13 +297,13 @@ export function CyberV4() {
           <p className="cw-label">Si un incident est en cours</p>
           <h2 className="cw-h2 cw-h2-sm">Coordonner les premières décisions</h2>
           <p className="cw-tx">{fr("Avant toute suppression, réinstallation ou reconstruction : préserver journaux, messages et horodatages, déterminer qui informer et tracer chaque décision.")}</p>
-          <div><a href={TEL} className="cw-btn">{fr("Appeler : 01 81 70 62 00 →")}</a></div>
+          <div><a href={TEL} className="cw-btn">{fr("Appeler — 01 81 70 62 00")}</a></div>
         </div>
         <div className="cw-parc cw-parc-light">
           <p className="cw-label">Si vous préparez l’entreprise</p>
           <h2 className="cw-h2 cw-h2-sm">Un périmètre et des honoraires annoncés</h2>
           <p className="cw-tx cw-tx-dark">{fr("Consultation initiale d’une heure, facturée selon les honoraires communiqués avant le rendez-vous. Ensuite : examen des contrats, des mesures et des exigences clients, rapport d’écart et clauses à renégocier ; un point de revue est convenu selon la mission.")}</p>
-          <div><Link href={CONTACT} className="cw-btn">Contacter le cabinet →</Link></div>
+          <div><Link href={CONTACT} className="cw-btn">Échanger avec un avocat →</Link></div>
         </div>
       </section>
 
@@ -340,7 +340,7 @@ export function CyberV4() {
           <p className="cw-tx">{fr("Incident en cours, exigence d’un client, contrat à relire ou mise en conformité : décrivez brièvement votre situation. Le cabinet vous indiquera comment transmettre les documents utiles.")}</p>
         </div>
         <div className="cw-final-actions">
-          <Link href={CONTACT} className="cw-btn">Contacter le cabinet →</Link>
+          <Link href={CONTACT} className="cw-btn">Échanger avec un avocat →</Link>
           <div>
             <span className="cw-mono">{fr("Incident en cours ?")}</span><br />
             <a href={TEL} className="cw-final-tel">{fr("01 81 70 62 00")}</a>

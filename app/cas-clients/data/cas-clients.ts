@@ -11,10 +11,10 @@ export type DomKey = "cyber" | "contentieux" | "fraude" | "crypto" | "contenus" 
 export const DOM_META: Record<DomKey, { label: string; href: string }> = {
   cyber: { label: "Cybersécurité et NIS 2", href: "/nos-domaines/cybersecurite" },
   contentieux: { label: "Contentieux informatique et commercial", href: "/nos-domaines/contentieux-informatique-commercial" },
-  fraude: { label: "Fraude bancaire et escroquerie en ligne", href: "/nos-domaines/escroquerie-fraude-bancaire" },
+  fraude: { label: "Fraude bancaire et escroquerie", href: "/nos-domaines/escroquerie-fraude-bancaire" },
   crypto: { label: "Crypto-actifs et blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
   contenus: { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
-  cybercrim: { label: "Cyberattaques et cybercriminalité", href: "/nos-domaines/cybercriminalite" },
+  cybercrim: { label: "Cybercriminalité et cyberattaques", href: "/nos-domaines/cybercriminalite" },
   // Pas de page compétence Next pour la PI : lien vers la page PicRights/AFP du
   // site (à signaler — cette route est portée par le SPA, pas par l'app Next).
   pi: { label: "Propriété intellectuelle — photographies", href: "/litige-afp-picrights/" },
@@ -239,7 +239,7 @@ const AUTRES_SITE = [
   { label: "RGPD et données personnelles", href: "/nos-domaines/rgpd-donnees-personnelles" },
   { label: "Intelligence artificielle et AI Act", href: "/nos-domaines/avocat-intelligence-artificielle" },
   { label: "Contrats informatiques", href: "/nos-domaines/contrats-informatiques" },
-  { label: "Fusions-acquisitions technologiques", href: "/nos-domaines/ma-tech" },
+  { label: "M&A tech et due diligence", href: "/nos-domaines/ma-tech" },
 ];
 export const ALSO_DOMAINES = AUTRES_SITE; // aucun n'apparaît dans CAS → liste stable
 

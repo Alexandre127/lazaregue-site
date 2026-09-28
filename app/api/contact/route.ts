@@ -154,7 +154,7 @@ export async function POST(req: Request) {
       text: [
         `Bonjour ${nom},`,
         "",
-        "Nous avons bien reçu votre demande. Un avocat du cabinet l'examine et vous recontactera dans les 24 heures ouvrées.",
+        "Nous avons bien reçu votre demande. Un avocat du cabinet l'examine et vous recontactera.",
         "",
         "En cas d'urgence, vous pouvez appeler le cabinet au 01 81 70 62 00 (du lundi au vendredi, 9 h – 19 h).",
         "",
