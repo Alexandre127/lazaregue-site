@@ -266,7 +266,7 @@ export default function FormationsPage() {
             </div>
           </div>
           <p className="quote">
-            Notre objectif n’est pas que les participants mémorisent davantage de textes. Il est
+            L’objectif n’est pas que les participants mémorisent davantage de textes. Il est
             qu’ils sachent quoi faire lorsqu’une situation se présente.
           </p>
         </div>
@@ -432,8 +432,8 @@ export default function FormationsPage() {
               Parlons de la formation dont vos équipes ont besoin
             </h2>
             <p className="lead">
-              Indiquez-nous le sujet, les personnes concernées et votre objectif. Nous pourrons
-              définir avec vous le format et le programme adaptés.
+              Précisez le sujet, le public et le format souhaités : le programme est construit à
+              partir de ces éléments.
             </p>
           </div>
           <div className="hero-cta" style={{ marginTop: 0 }}>

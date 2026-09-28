@@ -404,21 +404,21 @@ const CASES = [
     href: "/cas-clients",
     kicker: "01 / CYBERATTAQUE",
     titre: "Un piratage. 80\u00A0000\u00A0€ d’appels internationaux facturés.",
-    para: "L’opérateur soutenait que les appels provenaient du système de l’entreprise. Nous avons retracé l’intrusion et identifié la faille exploitée. La facture a été annulée.",
+    para: "L’opérateur soutenait que les appels provenaient du système de l’entreprise. Le cabinet a retracé l’intrusion et identifié la faille exploitée. La facture a été annulée.",
   },
   {
     id: "cas-accueil-2",
     href: "/cas-clients",
     kicker: "02 / CONTRAT INFORMATIQUE",
     titre: "Le logiciel était livré. L’entreprise ne pouvait toujours pas l’utiliser.",
-    para: "Le prestataire réclamait le solde du contrat. Nous avons fait constater les fonctions manquantes et leur effet sur l’activité. L’entreprise a obtenu la résiliation du contrat et le remboursement des sommes versées.",
+    para: "Le prestataire réclamait le solde du contrat. Les fonctions manquantes et leur effet sur l’activité ont été constatés. L’entreprise a obtenu la résiliation du contrat et le remboursement des sommes versées.",
   },
   {
     id: "cas-accueil-3",
     href: "/cas-clients",
     kicker: "03 / DONNÉES PERSONNELLES",
     titre: "Une fuite de données. Des clients qui demandaient des comptes.",
-    para: "Il fallait établir ce qui avait été exposé, notifier les personnes concernées et répondre aux partenaires commerciaux. Nous avons coordonné l’analyse technique et la réponse juridique. L’entreprise a conservé ses contrats majeurs et évité une rupture de confiance.",
+    para: "Il fallait établir ce qui avait été exposé, notifier les personnes concernées et répondre aux partenaires commerciaux. Analyse technique et réponse juridique ont été menées de front. L’entreprise a conservé ses contrats majeurs et évité une rupture de confiance.",
   },
 ];
 
@@ -888,7 +888,7 @@ export function AccueilV4() {
           <div className="why-layout">
             <div>
               <span className="eyebrow">Pourquoi le cabinet</span>
-              <h2 id="titre-pourquoi">Le droit du numérique,<br />notre seul métier.</h2>
+              <h2 id="titre-pourquoi">Le droit du numérique<br />pour seul métier.</h2>
             </div>
             <ul className="why-list">
               <li className="why-row">

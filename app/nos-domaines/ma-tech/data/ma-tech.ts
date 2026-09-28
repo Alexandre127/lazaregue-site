@@ -48,7 +48,7 @@ export const DEMO = {
 
 export const POUR_QUI = {
   eyebrow: "Interlocuteurs",
-  h2: "À qui nous nous adressons",
+  h2: "À qui s’adresse le cabinet",
   cards: [
     { tag: "Acquisition", h3: "Acquéreur industriel ou entreprise de services", p: "Savoir ce qui sera effectivement transféré, ce qui restera chez des tiers et ce qui devra être régularisé." },
     { tag: "Investissement", h3: "Fonds d'investissement", p: "Isoler ce qui peut affecter la valorisation ou la sortie : code, open source, licences d'IA, données, contrats." },

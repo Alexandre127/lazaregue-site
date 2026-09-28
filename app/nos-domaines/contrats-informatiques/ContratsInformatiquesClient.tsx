@@ -204,7 +204,7 @@ const CLAUSES = [
     negociation:
       "Le périmètre des sauvegardes, la fréquence, la rétention, l’externalisation, les tests de restauration, le délai de reprise garanti et la répartition des responsabilités.",
     work:
-      "Nous rapprochons les engagements écrits du dispositif technique décrit par le prestataire. Les obligations de sauvegarde, de contrôle et d’alerte doivent pouvoir être vérifiées.",
+      "Rapprochement des engagements écrits du dispositif technique décrit par le prestataire. Les obligations de sauvegarde, de contrôle et d’alerte doivent pouvoir être vérifiées.",
   },
   {
     key: "reversibilite",
@@ -217,7 +217,7 @@ const CLAUSES = [
     negociation:
       "Les formats de restitution, la durée et le contenu de l’assistance à la migration, le plafonnement du coût, les délais et la conservation des données pendant la transition.",
     work:
-      "Nous examinons les conditions de sortie pendant que le contrat peut encore être négocié ou exécuté. L’objectif est de définir une transition réalisable et les engagements de chacun.",
+      "Examen des conditions de sortie pendant que le contrat peut encore être négocié ou exécuté. L’objectif est de définir une transition réalisable et les engagements de chacun.",
   },
   {
     key: "responsabilite",
@@ -230,7 +230,7 @@ const CLAUSES = [
     negociation:
       "Le plafond, son périmètre, les exclusions et leur articulation avec l’obligation essentielle du contrat et les assurances.",
     work:
-      "Nous analysons la portée des limitations au regard du contrat et de la mission. Seule est réputée non écrite la clause qui contredit la portée de l’obligation essentielle : un plafond non dérisoire, librement négocié, résiste au manquement même essentiel.",
+      "Analyse de la portée des limitations au regard du contrat et de la mission. Seule est réputée non écrite la clause qui contredit la portée de l’obligation essentielle : un plafond non dérisoire, librement négocié, résiste au manquement même essentiel.",
   },
   {
     key: "service",
@@ -243,7 +243,7 @@ const CLAUSES = [
     negociation:
       "Les indicateurs, les exclusions, les délais de prise en charge et de rétablissement, l’escalade, les pénalités ou crédits et les conséquences des manquements.",
     work:
-      "Nous examinons ensemble les niveaux de service, les procédures d’incident et les clauses de responsabilité pour éviter des engagements qui se contredisent.",
+      "Revue des niveaux de service, avec vos équipes, des procédures d’incident et des clauses de responsabilité, pour éviter des engagements qui se contredisent.",
   },
   {
     key: "interdependance",
@@ -256,7 +256,7 @@ const CLAUSES = [
     negociation:
       "L’articulation des contrats, les validations communes et les conséquences de la défaillance ou de la fin d’un engagement.",
     work:
-      "Nous reconstituons l’opération contractuelle dans son ensemble. Lorsque ces contrats poursuivent un même but et n’ont aucun sens séparément, leur interdépendance peut être reconnue et emporter la caducité de l’ensemble.",
+      "Reconstitution de l’opération contractuelle dans son ensemble. Lorsque ces contrats poursuivent un même but et n’ont aucun sens séparément, leur interdépendance peut être reconnue et emporter la caducité de l’ensemble.",
   },
 ];
 
@@ -468,7 +468,7 @@ function ClauseBoard() {
                   </div>
                 </div>
                 <div className="cx-clause-work">
-                  <strong>Ce que nous examinons</strong>
+                  <strong>Les points examinés</strong>
                   <p>{fr(c.work)}</p>
                 </div>
               </div>
@@ -866,7 +866,7 @@ export default function ContratsInformatiquesClient() {
           <div className="cx-contract-intro">
             <div>
               <Eyebrow>Les contrats accompagnés</Eyebrow>
-              <h2>Quels contrats informatiques accompagnons-nous&nbsp;?</h2>
+              <h2>Quels contrats informatiques le cabinet accompagne-t-il&nbsp;?</h2>
             </div>
             <p>
               Une même opération associe souvent licence, intégration, maintenance et financement&nbsp;: leur articulation détermine les responsabilités en cas de défaillance.

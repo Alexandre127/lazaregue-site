@@ -126,7 +126,7 @@ export const SECTIONS: Section[] = [
         { t: "case", lead: "Identifier l'auteur", x: "Une personne morale ne peut être auteur (Cass. 1re civ., 15 janvier 2015, n° 13-23.566). En équipe, œuvre collective ou de collaboration commandent la titularité (art. L113-2 et L113-4 CPI)." },
         { t: "case", lead: "Anticiper", x: "Préparez, avant tout litige, la description des caractéristiques originales et de leur combinaison, et ce qui dépasse les seules contraintes techniques." },
         { t: "case", lead: "Contextualiser", x: "L'examen des antériorités fait partie du dossier, comme le montrent les affaires Tod's et Betec." },
-        { t: "pratique", lead: "En pratique — ETI", x: "Un éditeur de logiciels de 480 salariés nous a consultés après qu'un concurrent eut repris l'architecture de son interface. Faute d'avoir daté ses versions et documenté ses choix de conception, la démonstration de l'originalité a demandé trois mois de reconstitution. Constituer le dossier en amont aurait divisé ce délai — et renforcé la position de négociation." },
+        { t: "pratique", lead: "En pratique — ETI", x: "Un éditeur de logiciels de 480 salariés a consulté le cabinet après qu'un concurrent eut repris l'architecture de son interface. Faute d'avoir daté ses versions et documenté ses choix de conception, la démonstration de l'originalité a demandé trois mois de reconstitution. Constituer le dossier en amont aurait divisé ce délai — et renforcé la position de négociation." },
       ],
     },
     {

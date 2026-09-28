@@ -832,9 +832,8 @@ export default function FormationCyberPage() {
               Préparons vos équipes aux situations qu’elles peuvent réellement rencontrer
             </h2>
             <p className="lead">
-              Indiquez-nous les collaborateurs concernés, les risques que vous souhaitez traiter et
-              les situations auxquelles votre organisation est exposée. Nous construirons le
-              programme adapté.
+              Précisez le sujet, le public et le format souhaités : le programme est construit à
+              partir de ces éléments.
             </p>
           </div>
           <div className="hero-cta" style={{ marginTop: 0 }}>

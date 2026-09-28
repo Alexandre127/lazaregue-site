@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 /**
- * « Ce que nous voyons le plus souvent » — six situations récurrentes.
+ * « Les situations les plus fréquentes » — six situations récurrentes.
  * Titre + explication courte visibles ; le détail (« ce qui se passe sans
  * encadrement ») se déplie au clic. Contenu restauré VERBATIM de l'ancienne
  * page RGPD (git 624bb52) ; seul le lien IA a été recâblé sur la route réelle
@@ -47,7 +47,7 @@ const TERRAIN: Terrain[] = [
     title: "Salarié qui réclame l’accès à l’ensemble de ses courriels",
     sub: "Droit d’accès exercé dans un contexte de contentieux en ressources humaines",
     expand:
-      "Sans procédure documentée, l'entreprise doit répondre sous un mois. Un refus ou retard expose à une réclamation CNIL. Nous structurons la réponse juridique tout en protégeant les intérêts de l'entreprise.",
+      "Sans procédure documentée, l'entreprise doit répondre sous un mois. Un refus ou retard expose à une réclamation CNIL. Le cabinet structure la réponse juridique tout en protégeant les intérêts de l'entreprise.",
     link: { href: "/contact", label: "Échanger avec un avocat" },
   },
 ];
