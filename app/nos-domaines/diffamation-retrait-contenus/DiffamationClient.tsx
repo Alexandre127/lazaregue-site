@@ -136,13 +136,11 @@ export default function DiffamationClient() {
         </section>
 
         {/* ===== 2. ENCART « 3 MOIS » (remonté juste après le hero) ===== */}
-        {/* TODO — liste exacte des motifs de l'art. 65-3 à vérifier par le cabinet
-            avant mise en ligne. */}
         <section className="delai-wrap" aria-label="Délai pour agir">
           <div className="wrap">
             <div className="delai" role="note">
               <p className="delai-n">3 mois<span>Délai à surveiller</span></p>
-              <p>{fr("Pour agir. En diffamation et en injure, la plainte ou l'assignation doit en principe intervenir dans les trois mois de la première publication, même si le contenu reste en ligne (art. 65 de la loi du 29 juillet 1881). Le délai est d'un an pour les propos visant l'origine, la religion, le sexe, l'orientation sexuelle, l'identité de genre ou le handicap (art. 65-3).")}</p>
+              <p>{fr("Pour agir. En diffamation et en injure, la plainte ou l'assignation doit en principe intervenir dans les trois mois de la première publication, même si le contenu reste en ligne (art. 65 de la loi du 29 juillet 1881). Le délai est d'un an pour les propos visant l'origine, l'appartenance à une ethnie, une nation ou une religion, le sexe, l'orientation sexuelle, l'identité de genre ou le handicap (art. 65-3).")}</p>
             </div>
           </div>
         </section>
