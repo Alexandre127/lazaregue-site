@@ -142,9 +142,7 @@
 }
 .heroGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-  gap: 64px;
-  align-items: stretch;
+  grid-template-columns: 1fr;
 }
 .h1 {
   font-family: var(--ff-display);
@@ -194,23 +192,21 @@
 .heroActions {
   margin-top: 36px;
 }
-/* Panneau photo (à produire) — traité comme un aplat discret, pas un trou. */
-.heroMedia {
-  position: relative;
-  min-height: 320px;
+/* Photo de groupe : bande pleine largeur sous le texte, ratio natif du
+   fichier (1800×792), aucun recadrage. width:100%/height:auto conserve le
+   ratio à toutes les largeurs ; aspect-ratio réserve la place avant chargement. */
+.heroPhoto {
+  margin: clamp(40px, 5vw, 56px) 0 0;
+  width: 100%;
   border: 1px solid var(--lc-border);
   background: var(--lc-paper);
-  overflow: hidden;
+  line-height: 0;
 }
-.heroMedia :global(img) {
-  object-fit: cover;
-}
-.heroMedia span {
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--lc-muted);
+.heroPhotoImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1800 / 792;
 }
 
 /* --- Repères (bandeau blanc) ------------------------------------ */
@@ -953,14 +949,6 @@
   .page {
     --lc-gutter: 28px;
     --lc-sect: 76px;
-  }
-  .heroGrid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .heroMedia {
-    min-height: 240px;
-    order: -1;
   }
   .reperesGrid {
     grid-template-columns: 1fr 1fr;

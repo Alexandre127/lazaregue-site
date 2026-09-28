@@ -215,17 +215,22 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className={styles.heroMedia}>
-              <Image
-                src="/images/equipe-panorama.webp"
-                alt="L'équipe du cabinet réunie"
-                fill
-                priority
-                sizes="(max-width: 1100px) 100vw, 42vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
-              />
-            </div>
           </div>
+
+          {/* Photo de groupe : bande pleine largeur, ratio natif (1800×792),
+              aucun recadrage des personnes. next/image en dimensions
+              intrinsèques + width:100%/height:auto → toutes largeurs. */}
+          <figure className={styles.heroPhoto}>
+            <Image
+              src="/images/equipe-panorama.webp"
+              alt="L'équipe du cabinet réunie"
+              width={1800}
+              height={792}
+              priority
+              sizes="(max-width: 1240px) 100vw, 1120px"
+              className={styles.heroPhotoImg}
+            />
+          </figure>
         </div>
 
         <div className={styles.reperes}>
