@@ -25,8 +25,15 @@
      mais est INTERDIT pour du petit texte sur fond clair (utiliser --text-muted).
      --focus : couleur de l'anneau de focus (= --blue). */
   --text-muted: #4a4a63;
-  --muted-on-dark: #9fb2ff;
+  /* Texte secondaire sur Navy/Ink : blanc atténué (70–85 %). Le bleu ciel
+     #9FB2FF est PROSCRIT (décision charte 28/09/2026) ; ne jamais le réintroduire. */
+  --muted-on-dark: rgba(255, 255, 255, 0.8);
   --focus: #1a47ff;
+
+  /* Fond clair « tint » (cartes, colonnes légères) et rouge d'urgence — SEULE
+     couleur d'urgence, jamais décorative. Tokens uniques, ne pas coder en dur. */
+  --tint: #eef1fb;
+  --red: #b3231f;
 
   /* Charte v1.1 §05 — échelle d'espacement, base 4px (4·8·12·16·24·36·72·96). */
   --space-4: 4px;

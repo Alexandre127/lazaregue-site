@@ -19,7 +19,7 @@
   --text: #14141f; /* corps sur clair (jamais #8888A0) */
   --text-2: #4a4a63; /* secondaire sur clair (charte) */
   --on-dark: #f2f3fa; /* corps sur sombre */
-  --on-dark-2: #9fb2ff; /* secondaire / labels / liens secondaires sur sombre (charte) */
+  --on-dark-2: var(--muted-on-dark); /* secondaire / labels / liens secondaires sur sombre (charte) */
   --urgence: #b3231f; /* jeton de statut « urgence » — charte v1.1 (toujours avec libellé) */
   --risk-h-bg: #fbebea; --risk-h-tx: #8e1b18; --risk-h-bd: #e7bdbb;
   --risk-m-bg: #fcf3e3; --risk-m-tx: #7a4a00; --risk-m-bd: #e6d2ab;
@@ -161,7 +161,7 @@
 /* --- focus visible 3px, doublé d'un liseré blanc sur sombre --- */
 .rgpd :global(:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
 .rgpd :global(.dark) :global(:focus-visible),
-.rgpd :global(.doc-brand) :global(:focus-visible) { box-shadow: 0 0 0 1px #fff; outline-color: #9fb2ff; }
+.rgpd :global(.doc-brand) :global(:focus-visible) { box-shadow: 0 0 0 1px #fff; outline-color: var(--muted-on-dark); }
 
 /* --- fil d'Ariane (UX-035/036) --- */
 .rgpd :global(.breadcrumb) { padding: 16px 0 0; }

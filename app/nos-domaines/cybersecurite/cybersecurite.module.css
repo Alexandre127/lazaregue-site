@@ -15,7 +15,7 @@
   --text: #14141f;
   --text-2: #4a4a63;
   --on-dark: #ededf6;
-  --on-dark-2: #9fb2ff;
+  --on-dark-2: var(--muted-on-dark);
   --red: #b3231f;
   --periwinkle: #4d6fff;
   --maxw: 1200px;
