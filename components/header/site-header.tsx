@@ -50,6 +50,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const heroSombre = aHeroSombre(pathname);
+  /* La page /contact porte déjà son formulaire : la barre basse y est masquée. */
+  const hideBottomBar = pathname === "/contact";
 
   const [scrolled, setScrolled] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -79,7 +81,7 @@ export function SiteHeader() {
 
   /* ---- Barre basse mobile : après le premier tiers de défilement ---- */
   useEffect(() => {
-    const onScroll = () => setShowBottomBar(window.scrollY > window.innerHeight / 3);
+    const onScroll = () => setShowBottomBar(!hideBottomBar && window.scrollY > window.innerHeight / 3);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -87,7 +89,7 @@ export function SiteHeader() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [hideBottomBar]);
 
   /* ---- Barre basse masquée quand le bloc contact entre à l'écran ---- */
   useEffect(() => {
