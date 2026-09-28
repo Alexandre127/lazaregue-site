@@ -10,14 +10,14 @@
 export type Dom = "cyber" | "fraude" | "rgpd" | "ia" | "contrats" | "contenus" | "pi" | "ma";
 
 export const DOM_LABEL: Record<Dom, string> = {
-  cyber: "Cybersécurité et cyberattaques",
-  fraude: "Fraudes et paiements",
-  rgpd: "Données personnelles et RGPD",
-  ia: "IA et AI Act",
+  cyber: "Cybersécurité et NIS 2",
+  fraude: "Fraude bancaire et escroquerie",
+  rgpd: "RGPD et données personnelles",
+  ia: "Intelligence artificielle et AI Act",
   contrats: "Contrats informatiques",
   contenus: "Diffamation et retrait de contenus",
   pi: "Propriété intellectuelle",
-  ma: "M&A Tech",
+  ma: "M&A tech et due diligence",
 };
 
 /** Filtres du corpus (04) — seulement les domaines qui portent au moins un article. */
@@ -50,16 +50,16 @@ export const SITUATIONS: { texte: string; href: string }[] = [
 
 /* 02 — Par domaine (10 cartes). `href` = filtre corpus ; `soon` = à paraître. */
 export const DOM_CARDS: { n: string; titre: string; desc: string; href: string | null; soon?: boolean }[] = [
-  { n: "01", titre: "Cybersécurité et cyberattaques", desc: "NIS 2, rançongiciel, gestion de crise, plainte après une attaque et responsabilités après un incident.", href: "/ressources/?domaine=cyber" },
-  { n: "02", titre: "Fraudes et paiements", desc: "Faux conseiller bancaire, virements frauduleux, fraude à la carte et placements fictifs.", href: "/ressources/?domaine=fraude" },
-  { n: "03", titre: "Données personnelles et RGPD", desc: "Mise en conformité, sous-traitance, violations de données, contrôles de la CNIL et DPO.", href: "/ressources/?domaine=rgpd" },
-  { n: "04", titre: "IA et AI Act", desc: "Gouvernance IA, rôles réglementaires, systèmes à risque, chartes internes et documentation.", href: "/ressources/?domaine=ia" },
+  { n: "01", titre: "Cybersécurité et NIS 2", desc: "NIS 2, rançongiciel, gestion de crise, plainte après une attaque et responsabilités après un incident.", href: "/ressources/?domaine=cyber" },
+  { n: "02", titre: "Fraude bancaire et escroquerie", desc: "Faux conseiller bancaire, virements frauduleux, fraude à la carte et placements fictifs.", href: "/ressources/?domaine=fraude" },
+  { n: "03", titre: "RGPD et données personnelles", desc: "Mise en conformité, sous-traitance, violations de données, contrôles de la CNIL et DPO.", href: "/ressources/?domaine=rgpd" },
+  { n: "04", titre: "Intelligence artificielle et AI Act", desc: "Gouvernance IA, rôles réglementaires, systèmes à risque, chartes internes et documentation.", href: "/ressources/?domaine=ia" },
   { n: "05", titre: "Contrats informatiques", desc: "SaaS, maintenance, infogérance, recette, responsabilité et réversibilité.", href: "/ressources/?domaine=contrats" },
-  { n: "06", titre: "Contentieux informatique", desc: "Projet défaillant, perte de données, responsabilité du prestataire et expertise judiciaire.", href: null, soon: true },
+  { n: "06", titre: "Contentieux informatique et commercial", desc: "Projet défaillant, perte de données, responsabilité du prestataire et expertise judiciaire.", href: null, soon: true },
   { n: "07", titre: "Diffamation et retrait de contenus", desc: "Faux avis, dénigrement, diffamation, identification d'auteur, retrait et déréférencement.", href: "/ressources/?domaine=contenus" },
-  { n: "08", titre: "Crypto-actifs", desc: "Compte bloqué sur une plateforme, fraude aux cryptomonnaies, obligations des prestataires.", href: null, soon: true },
+  { n: "08", titre: "Crypto-actifs, blockchain et Web3", desc: "Compte bloqué sur une plateforme, fraude aux cryptomonnaies, obligations des prestataires.", href: null, soon: true },
   { n: "09", titre: "Propriété intellectuelle", desc: "Logiciels, photographies, PicRights, droit d'auteur et concurrence déloyale.", href: "/ressources/?domaine=pi" },
-  { n: "10", titre: "M&A Tech", desc: "Audit des actifs technologiques, code, données, contrats et garanties d'acquisition.", href: "/ressources/?domaine=ma" },
+  { n: "10", titre: "M&A tech et due diligence", desc: "Audit des actifs technologiques, code, données, contrats et garanties d'acquisition.", href: "/ressources/?domaine=ma" },
 ];
 
 /* Note générale « Fraude bancaire : opposition… » — 1er article publié, mis à la une. */

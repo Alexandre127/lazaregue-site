@@ -51,6 +51,10 @@
 .cas :global(.chips) { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
 .cas :global(.chips button) { min-height: 44px; padding: 0 14px; border: 1px solid var(--ink); background: #fff; font: 500 14px var(--ff-body); cursor: pointer; color: var(--ink); }
 .cas :global(.chips button[aria-pressed="true"]) { background: var(--ink); color: #fff; }
+/* Filtre en menu déroulant (mobile) : masqué au-dessus de 900px. */
+.cas :global(.filterSelect) { display: none; margin-top: 24px; }
+.cas :global(.filterSelect label) { display: block; font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.cas :global(.filterSelect select) { font: 16px var(--ff-body); border: 1px solid var(--ink); padding: 12px 14px; min-height: 48px; width: 100%; background: #fff; color: var(--ink); border-radius: 0; }
 .cas :global(.casSec) { padding-top: 56px; }
 
 .cas :global(.feat) { display: grid; grid-template-columns: 7fr 5fr; gap: 0; border: 1px solid var(--ink); background: #fff; margin-top: 14px; }
@@ -165,6 +169,11 @@
   .cas :global(.grid3),
   .cas :global(.rel3) { grid-template-columns: 1fr 1fr; }
   .cas :global(.alsodo) { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  /* Filtre : chips → menu déroulant. */
+  .cas :global(.chips) { display: none; }
+  .cas :global(.filterSelect) { display: block; }
 }
 @media (max-width: 767px) {
   .cas :global(.hub-hero h1) { font-size: clamp(38px, 11vw, 88px); }

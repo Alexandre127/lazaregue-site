@@ -37,6 +37,7 @@ export default function CasesBrowser({ initialDomaine }: { initialDomaine?: stri
             menés à leur terme par le cabinet, présentés de manière anonymisée, de la situation
             rencontrée à l’issue obtenue.
           </p>
+          {/* Filtre : chips à partir de 900px, menu déroulant en dessous. */}
           <div className="chips" role="group" aria-label="Filtrer par domaine">
             <button type="button" aria-pressed={f === "all"} onClick={() => setF("all")}>Tous les domaines</button>
             {FILTER_ORDER.map((k) => (
@@ -44,6 +45,17 @@ export default function CasesBrowser({ initialDomaine }: { initialDomaine?: stri
                 {DOM_META[k].label}
               </button>
             ))}
+          </div>
+          <div className="filterSelect">
+            <label htmlFor="cas-filtre">Filtrer par domaine</label>
+            <select id="cas-filtre" value={f} onChange={(e) => setF(e.target.value as "all" | DomKey)}>
+              <option value="all">Tous les domaines ({CAS.length})</option>
+              {FILTER_ORDER.map((k) => (
+                <option key={k} value={k}>
+                  {DOM_META[k].label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </section>
@@ -61,9 +73,8 @@ export default function CasesBrowser({ initialDomaine }: { initialDomaine?: stri
             <p className="empty" role="status">Aucun cas publié pour ce domaine à ce jour.</p>
           )}
           <p className="note-a">
-            Dossiers anonymisés et clos : les faits sont modifiés dans la mesure nécessaire à
-            l’anonymat des parties. Les résultats obtenus ne préjugent pas de l’issue d’un autre
-            dossier, chaque situation dépendant de ses propres faits et pièces.
+            Dossiers clos et anonymisés : les faits sont modifiés dans la mesure nécessaire à
+            l’anonymat des parties.
           </p>
         </div>
       </section>
