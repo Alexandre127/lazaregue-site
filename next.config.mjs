@@ -87,6 +87,13 @@ const nextConfig = {
         destination: "/nos-domaines/diffamation-retrait-contenus",
         statusCode: 301,
       },
+      // La page dédiée NIS 2 a été supprimée : son contenu est couvert par la
+      // page Cybersécurité. 301 directe vers le slug définitif, sans chaîne.
+      {
+        source: "/nos-domaines/cybersecurite/nis2",
+        destination: "/nos-domaines/cybersecurite",
+        statusCode: 301,
+      },
     ];
   },
 };

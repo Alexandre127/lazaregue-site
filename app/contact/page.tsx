@@ -14,7 +14,7 @@ const ESPACE_CLIENT_URL = "#";
 
 const TITLE = "Avocat droit du numérique Paris | Contact | Lazarègue Avocats";
 const DESCRIPTION =
-  "Cabinet d'avocats spécialisé en droit du numérique à Paris 17e. Litige numérique, conformité RGPD, fraude informatique. Réponse sous 24 h. PME et ETI.";
+  "Cabinet d'avocats spécialisé en droit du numérique à Paris 17e. Litige numérique, conformité RGPD, fraude informatique. PME et ETI.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -166,7 +166,7 @@ export default function Page() {
               </p>
               <div className={styles.visitLinks}>
                 <a href={MAPS} target="_blank" rel="noopener">Ouvrir l&apos;itinéraire ↗</a>
-                <a href={TEL}>Appeler le cabinet →</a>
+                <a href={TEL}>Appeler — 01 81 70 62 00</a>
               </div>
             </div>
             <div className={styles.visitPhoto}>

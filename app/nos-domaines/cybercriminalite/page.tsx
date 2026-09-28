@@ -152,7 +152,7 @@ export default function Page() {
                   <strong>Assurance cyber&nbsp;: 72 heures pour porter plainte.</strong>
                   <p>{fr("Pour les entreprises et les professionnels, l’indemnisation des pertes liées à une cyberattaque par l’assureur est subordonnée au dépôt d’une plainte dans les 72 heures suivant la connaissance de l’attaque (art. L. 12-10-1 du code des assurances).")}</p>
                 </div>
-                <a className="btn" href={TEL}>Appeler le cabinet</a>
+                <a className="btn" href={TEL}>Appeler — 01 81 70 62 00</a>
               </div>
             </div>
           </section>

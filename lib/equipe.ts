@@ -44,7 +44,7 @@ export const MEMBRES: Record<string, Membre> = {
   sarah: {
     slug: "sarah",
     nom: "Me Sarah Hinderer",
-    statut: "Avocate au barreau de Paris",
+    statut: "Avocate aux barreaux de Paris et de Montréal",
     avocat: true,
     photo: "/images/sarah-pro.jpg",
   },

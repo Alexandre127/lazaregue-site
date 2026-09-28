@@ -21,8 +21,8 @@ export const FAQ: Question[] = [
     a: "Oui, dès le premier contact. Le secret professionnel de l'avocat couvre l'ensemble de nos échanges, y compris avant toute mission (art. 66-5 de la loi du 31 décembre 1971). Les informations transmises par ce formulaire servent uniquement à examiner votre demande et à vous recontacter ; elles ne sont pas conservées au-delà de ce traitement.",
   },
   {
-    q: "Quel délai pour obtenir une réponse ?",
-    a: "Nous répondons sous 24 heures ouvrées. En cas d'urgence, appelez directement le 01 81 70 62 00, du lundi au vendredi de 9 h à 19 h.",
+    q: "Comment joindre le cabinet en cas d'urgence ?",
+    a: "Appelez directement le 01 81 70 62 00, du lundi au vendredi de 9 h à 19 h.",
   },
   {
     q: "Intervenez-vous en dehors de Paris ?",

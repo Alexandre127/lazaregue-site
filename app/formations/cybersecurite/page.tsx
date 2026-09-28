@@ -839,7 +839,7 @@ export default function FormationCyberPage() {
           </div>
           <div className="hero-cta" style={{ marginTop: 0 }}>
             <Link className="btn" href="/contact?objet=formation">
-              Nous parler de votre besoin →
+              Échanger avec un avocat →
             </Link>
             <Link className="link" href="/formations" style={{ color: "#fff" }}>
               Voir les autres formations

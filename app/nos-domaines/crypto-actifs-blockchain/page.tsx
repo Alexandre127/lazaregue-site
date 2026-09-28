@@ -448,7 +448,7 @@ export default function Page() {
               </div>
               <div className="contact-actions">
                 <Link className="btn btn-primary" href={CT}>Exposer un projet ou un litige</Link>
-                <a className="tel" href="tel:+33181706200">Appeler le 01&nbsp;81&nbsp;70&nbsp;62&nbsp;00</a>
+                <a className="tel" href="tel:+33181706200">Appeler — 01&nbsp;81&nbsp;70&nbsp;62&nbsp;00</a>
                 <address>18 rue de Tilsitt, 75017 Paris</address>
               </div>
             </div>

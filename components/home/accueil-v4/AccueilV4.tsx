@@ -70,7 +70,7 @@ const ACCUEIL_V4_OVERRIDES = `
 /* 1. Libellé « Atlas interactif du droit du numérique » près du globe, discret,
       dans le coin haut-droit (hors de la sphère). Masqué sur mobile car le
       conteneur .hero-art y est déjà display:none (globe absent). */
-.accueilV4 .hero-atlas-label{position:absolute;top:6px;right:2px;margin:0;max-width:184px;text-align:right;font:400 .6875rem/1.5 var(--ff-mono);letter-spacing:.06em;text-transform:uppercase;color:#9fb2ff;z-index:2;pointer-events:none}
+.accueilV4 .hero-atlas-label{position:absolute;top:6px;right:2px;margin:0;max-width:184px;text-align:right;font:400 .6875rem/1.5 var(--ff-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted-on-dark);z-index:2;pointer-events:none}
 /* 2. Globe légèrement agrandi (~10%) sur ordinateur, par transform : n'augmente
       pas la hauteur du hero, la sphère reste dans sa boîte (pas de chevauchement,
       pas de débordement). Rendu, rotation, interactions et pause inchangés. */
@@ -428,7 +428,7 @@ const LAWYERS = [
   { nom: "Amir Ben Majed", statut: "Avocat", role: "Avocat au barreau d’Évry", exp: "Contrats IT et contentieux informatique", photo: "/images/amir-pro.jpg", pos: "center 22%" },
 ];
 const TECHNICAL = [
-  { nom: "Khalid Sookia", statut: "Consultant technique en cybersécurité", role: "Consultant en cybersécurité", exp: "Investigation numérique", photo: "/images/khalid-pro.jpg", pos: "center 22%" },
+  { nom: "Khalid Sookia", statut: "Consultant technique en cybersécurité", role: "Consultant technique en cybersécurité", exp: "Investigation numérique", photo: "/images/khalid-pro.jpg", pos: "center 22%" },
   { nom: "Nadia Abchiche-Mimouni", statut: "Docteure en intelligence artificielle", role: "Maîtresse de conférences en informatique à l’Université Côte d’Azur", exp: "Intelligence artificielle et éthique algorithmique", photo: "/images/nadia-pro.jpg", pos: "center 22%" },
 ];
 

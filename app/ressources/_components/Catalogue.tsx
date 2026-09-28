@@ -225,7 +225,7 @@ export default function Catalogue({ children }: { children?: ReactNode }) {
                   Une question dépasse ce que lit un moteur de recherche ? Parlons de
                   votre cas précis.
                 </p>
-                <a href="/contact">Nous écrire →</a>
+                <a href="/contact">Échanger avec un avocat →</a>
               </div>
             </aside>
           </div>
