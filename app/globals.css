@@ -282,8 +282,15 @@
   body {
     font-family: var(--ff-body);
     font-weight: 400;
+    /* Charte 28/09/2026 : corps 17px sur ordinateur, 16px sous 900px. */
+    font-size: 17px;
     background-color: var(--navy);
     color: var(--wh);
+  }
+  @media (max-width: 900px) {
+    body {
+      font-size: 16px;
+    }
   }
 
   p {
@@ -416,5 +423,79 @@
   height: 6px;
   margin-right: 8px;
   vertical-align: middle;
-  background: #1a47ff;
+  background: var(--blue);
+}
+
+/* ==========================================================================
+   Composants partagés canoniques (charte 28/09/2026).
+   Source de vérité unique pour les boutons et le sur-titre : les nouvelles
+   pages utilisent ces classes globales plutôt que de redéfinir `.btn`/`.eyebrow`
+   dans leur module. Les pages historiques qui portent encore leur propre `.btn`
+   scopé continuent de fonctionner (même spécificité, l'ordre de chargement du
+   module l'emporte) ; elles seront migrées progressivement vers ces classes.
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 13px 24px;
+  font-family: var(--ff-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.btn-primary {
+  background: var(--blue);
+  color: var(--wh);
+  border-color: var(--blue);
+}
+.btn-primary:hover {
+  background: var(--blue3);
+  border-color: var(--blue3);
+}
+/* Secondaire : contour sur fond clair. */
+.btn-line {
+  background: var(--wh);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn-line:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+/* Sur fond sombre : contour blanc. */
+.btn-ghost {
+  background: transparent;
+  color: var(--wh);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.btn-ghost:hover {
+  border-color: var(--wh);
+}
+/* Sur fond bleu : plein blanc. */
+.btn-white {
+  background: var(--wh);
+  color: var(--blue);
+  border-color: var(--wh);
+}
+.btn-white:hover {
+  background: #dce3ff;
+  color: var(--blue3);
+}
+
+/* Sur-titre / eyebrow canonique : DM Mono, bleu action, casse haute, 0.14em. */
+.eyebrow {
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
 }

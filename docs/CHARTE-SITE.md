@@ -57,7 +57,7 @@ Polices chargées via `next/font` (`app/layout.tsx`) : **Space Grotesk** (`--ff-
 
 - ✅ **Aucun corps de texte en Bebas** ; Bebas strictement réservé aux titres, gros chiffres, logo (conforme).
 - ✅ **Aucune serif** dans l'UI.
-- ⚠️ **Exception Bebas** : **cybercriminalité proscrit Bebas entièrement** (H1 en Space Grotesk 600, arbitrage documenté dans son CSS). **diffamation** et **crypto** font de facto de même (H1 en Space Grotesk). Les trois sont les pages « refonte langage clair ». → à confirmer comme règle ou exception.
+- ✅ **Exception Bebas — VALIDÉE (28/09/2026), à maintenir** : les pages **cybercriminalité**, **diffamation** et **crypto-actifs** proscrivent Bebas et composent leur **H1 en Space Grotesk 600** (registre « langage clair »). C'est une exception assumée et fermée : **toutes les autres pages conservent Bebas en H1**. Ne pas étendre l'exception à d'autres pages ni réintroduire Bebas sur ces trois-là.
 - ⚠️ **Surtitre : 6 noms de classe pour un motif identique** — `.label`, `.eyebrow`, `.kicker`, `.lbl`, `.cx-label`, `.role-eyebrow`. Interlettrage divergent (0.06 / 0.08 / 0.1 / 0.14em). **Valeur à généraliser : DM Mono UPPERCASE `--blue`, LS 0.14em.**
 
 ### A.3 Échelle des titres (mobile → desktop)
