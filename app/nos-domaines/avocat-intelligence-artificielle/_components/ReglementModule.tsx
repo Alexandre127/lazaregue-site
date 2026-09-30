@@ -181,9 +181,10 @@ export default function ReglementModule() {
       scrollToModule();
       return true;
     }
-    const hadHash = applyHash();
-    // Défaut mobile : premier onglet « Toute entreprise ».
-    if (!hadHash && window.matchMedia("(max-width: 767px)").matches) setSel(0);
+    // Renvois #reglement-… : applyHash sélectionne le bon onglet (ordinateur).
+    // Sous 900px, le bloc « Toute entreprise » est affiché par le CSS quel que
+    // soit l'onglet, donc plus de sélection mobile forcée ici.
+    applyHash();
     window.addEventListener("hashchange", applyHash);
     return () => window.removeEventListener("hashchange", applyHash);
   }, []);
@@ -266,6 +267,17 @@ export default function ReglementModule() {
             <RichRow it={it} key={it.b} />
           ))}
         </div>
+      </div>
+
+      {/* ---- Renvoi mobile (<900px) : remplace le tableau par niveau ---- */}
+      <div className="reg-mnote">
+        <p>
+          Les autres obligations dépendent du niveau de risque de l&apos;outil et du rôle de
+          l&apos;entreprise, qui l&apos;utilise ou le fournit.
+        </p>
+        <Link className="btn btn-primary" href="/contact">
+          Qualifier mes outils avec un avocat
+        </Link>
       </div>
 
       {/* ---- Panneaux des niveaux de risque ---- */}

@@ -72,7 +72,10 @@
 .ia :global(.sits .s) { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 22px; font-size: 18px; font-weight: 600; line-height: 1.35; }
 .ia :global(.sits .s p) { margin: 0; }
 .ia :global(.sits .sn) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); padding-top: 3px; }
-.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; margin-top: auto; font-size: 16px; line-height: 1.55; color: var(--ink); display: flex; flex-direction: column; gap: 12px; }
+/* flex:1 (au lieu de margin-top:auto) : la zone bleue démarre juste après le
+   titre, à la même hauteur dans toute la rangée → filets bleus alignés (carte 04
+   vs 03), et le fond teinté remplit jusqu'au bas de la carte. */
+.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; flex: 1; font-size: 16px; line-height: 1.55; color: var(--ink); display: flex; flex-direction: column; gap: 12px; }
 .ia :global(.sits .d p) { margin: 0; }
 .ia :global(.renvoi) { font-family: var(--ff-mono); font-size: 12.5px; letter-spacing: 0.02em; color: var(--blue); display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
 .ia :global(.renvoi a) { color: var(--blue); text-decoration: none; min-height: 24px; display: inline-flex; align-items: center; }
@@ -89,6 +92,7 @@
 .ia :global(.mtabs) { order: 3; }
 .ia :global(.reg-panels) { order: 4; }
 .ia :global(.reg-foot) { order: 5; }
+.ia :global(.reg-mnote) { display: none; } /* renvoi mobile <900px seulement */
 .ia :global(.reg-cartouche) { background: var(--navy); color: #fff; padding: 26px 28px; display: flex; flex-direction: column; gap: 10px; }
 .ia :global(.reg-cartouche .h3) { color: #fff; }
 .ia :global(.reg-cartouche p) { color: rgba(255, 255, 255, 0.82); font-size: 15px; line-height: 1.55; margin: 0; }
@@ -279,6 +283,27 @@
   .ia :global(.sits li) { border: 0; border-top: 1px solid var(--bd); }
   .ia :global(.sits .s) { padding: 16px 0 8px; }
   .ia :global(.sits .d) { background: none; border-top: 0; padding: 0 0 16px; }
+}
+
+/* Section « Qui doit faire quoi » — sous 900px : on garde le bloc « Toute
+   entreprise » (déjà applicable) et ses six obligations en liste simple ; le
+   tableau par niveau de risque (titre, onglets, panneaux, sanctions) est
+   remplacé par une phrase et un bouton. Desktop (>=900px) inchangé. */
+@media (max-width: 899px) {
+  .ia :global(.reg-h),
+  .ia :global(.mtabs),
+  .ia :global(.reg-panels),
+  .ia :global(.reg-foot) { display: none; }
+  .ia :global(.reg-toute) { display: grid; grid-template-columns: 1fr; order: 1; }
+  .ia :global(.reg-obls) { grid-template-columns: 1fr; }
+  .ia :global(.reg-obls .reg-row) { border-left: 0; }
+  .ia :global(.reg-obls .reg-row:nth-child(-n + 3)) { border-top: 1px solid var(--bd); }
+  .ia :global(.reg-obls .reg-row:first-child) { border-top: 0; }
+  /* Liste simple : titre + article seulement (le détail reste sur ordinateur). */
+  .ia :global(.reg-obls .reg-row-toggle),
+  .ia :global(.reg-obls .reg-row-body) { display: none; }
+  .ia :global(.reg-mnote) { display: block; order: 2; margin-top: 16px; padding: 18px 20px; border: 1px solid var(--bd); background: #fff; }
+  .ia :global(.reg-mnote p) { margin: 0 0 14px; font-size: 15px; line-height: 1.55; color: var(--text-muted); max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
