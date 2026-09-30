@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { PortailDemo } from "@/components/home/section-differenciateurs";
 import { ACCUEIL_V4_CSS } from "@/components/home/accueil-v4-css";
 import { FAMILLES as MENU_FAMILLES } from "@/components/header/nav-data";
+import { HOME_DOSSIERS } from "@/components/home/accueil-v4/home-dossiers";
 
 /**
  * Accueil — intégration fidèle de la maquette V4 validée (18 sept. 2026).
@@ -81,14 +82,6 @@ const ACCUEIL_V4_OVERRIDES = `
 @media(min-width:640px){.accueilV4 .team-panorama img{aspect-ratio:3;object-fit:cover;object-position:center top}}
 
 /* --- Ajustements (23 sept. 2026) --- */
-/* Dossiers : chaque carte pointe vers la page du cas réel (plus de fenêtre
-   interne). Le titre porte le lien ; son ::after rend toute la carte cliquable.
-   « Lire le cas → » redevient un repère visuel (span, non focusable). */
-.accueilV4 .case-card{position:relative}
-.accueilV4 .case-card-link{color:inherit;text-decoration:none}
-.accueilV4 .case-card-link::after{content:"";position:absolute;inset:0;z-index:1}
-.accueilV4 .case-card:hover .case-card-link,.accueilV4 .case-card-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
-.accueilV4 .case-card .case-detail-link{pointer-events:none}
 /* Commande d'animation (WCAG 2.2.2) — option B : icône seule, sans libellé.
    Toujours focusable ; sur écran tactile elle reste visible ; là où le survol
    existe (ordinateur) elle apparaît au survol du hero ou au focus clavier.
@@ -132,16 +125,6 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .domains-all-mobile{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:8px;color:var(--ink);font-family:var(--ff-body);font-weight:600;font-size:16px;text-decoration:none}
   .accueilV4 .domains-all-mobile .arrow{color:var(--blue)}
   .accueilV4 .domains-all-mobile:hover{text-decoration:underline;text-underline-offset:4px}
-}
-
-/* === Section « Dossiers traités » — format court (audit) : libellé, titre, UN
-   paragraphe, lien, à toutes les largeurs. Le paragraphe s'affiche aussi sur
-   mobile. Sur carte active (survol pointeur précis), le paragraphe passe en
-   clair sur le fond bleu nuit. === */
-.accueilV4 #dossiers .case-para{font-size:1rem;line-height:1.6;color:var(--muted);margin:0}
-.accueilV4 #dossiers .case-card.is-active .case-para{color:#e7e7ef}
-@media(max-width:639px){
-  .accueilV4 #dossiers .case-detail-link{width:100%;min-height:48px}
 }
 
 /* === « Le cabinet » : flèche « Rencontrer l'équipe » rendue en SVG net
@@ -255,10 +238,6 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .why-list .why-row:nth-child(2) .why-emphasis{color:#fff}
 /* Numéros de famille « 01 » « 02 » « 03 » → encre. */
 .accueilV4 .family-number{color:var(--ink)}
-/* Libellés des cas (« 01 / CYBERATTAQUE »…) → gris d'accompagnement ;
-   blanc sur carte active (fond navy). */
-.accueilV4 .case-kicker{color:var(--muted)}
-.accueilV4 #dossiers .case-card.is-active .case-kicker{color:#fff}
 
 /* --- Lot 3 : rythme des fonds (alternance blanc / gris-bleu #F4F4F8) ---
    Suite rétablie : cabinet(blanc) · domaines(gris) · pourquoi(blanc) ·
@@ -267,7 +246,6 @@ const ACCUEIL_V4_OVERRIDES = `
    pour qu'aucune paire consécutive ne partage le même fond, « L'équipe »
    repasse en blanc et « Contributions » sur le gris-bleu. */
 .accueilV4 #dossiers{background:var(--off)}
-.accueilV4 #dossiers .case-grid{background:#fff}
 .accueilV4 #equipe{background:#fff}
 .accueilV4 #contributions{background:var(--off)}
 
@@ -317,18 +295,12 @@ const ACCUEIL_V4_OVERRIDES = `
 
 /* ===================== ALIGNEMENTS DESKTOP (24 sept. 2026) ===================== */
 
-/* --- Lot 1 : Dossiers traités — cartes alignées (subgrid) ---
-   La rangée des 3 cartes existe à partir de 851px. Chaque carte partage les
-   lignes de grille de la rangée (grid-template-rows: subgrid) : ligne 1 = tête
-   (libellé + titre), ligne 2 = paragraphe (1fr, s'étire), ligne 3 = lien.
-   → libellé/titre/paragraphe démarrent à la même hauteur et le lien
-   « Découvrir le cas → » est calé EN BAS des trois cartes, à la même hauteur,
-   quelle que soit la longueur du paragraphe. Hauteurs égales, aucun texte
-   tronqué (aucune hauteur fixe en pixels). */
-@media(min-width:851px){
-  .accueilV4 #dossiers .case-grid{grid-template-rows:auto 1fr auto}
-  .accueilV4 #dossiers .case-card{display:grid;grid-template-rows:subgrid;grid-row:span 3}
-}
+/* --- Lot 1 : Dossiers traités — cartes riches alignées (subgrid, Étape 2) ---
+   Voir le bloc « ÉTAPE 2 » plus bas : chaque carte partage 8 lignes de grille
+   (numéro · domaine/profil · titre · Situation · Intervention · levier · Issue ·
+   lien), si bien que Situation, Intervention, le bloc Issue navy et le lien
+   « Découvrir le cas → » démarrent à la même hauteur dans les trois cartes,
+   quelle que soit la longueur des textes. */
 
 /* --- Lot 2 : Équipe — biographies alignées ---
    Les 5 cartes sont réparties dans DEUX groupes imbriqués (avocats / appui
@@ -373,6 +345,36 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 .family-number{font-size:44px;margin-bottom:6px;color:var(--blue)}
   .accueilV4 .family-heading h3{font-size:18px}
   .accueilV4 .family-purpose{display:block;font-size:14px;line-height:1.4;color:var(--muted);margin-top:4px}
+}
+
+/* ===================== ÉTAPE 2 — Dossiers traités : cartes riches =====================
+   Ordre d'une carte : numéro (Bebas, bleu) · domaine (DM Mono, bleu) + profil
+   (DM Mono, gris) · titre · Situation · Intervention · levier (pastille) · Issue
+   (bloc navy, texte blanc) · lien « Découvrir le cas → ». Mobile (≤639px) :
+   version compacte — Situation, Intervention et le levier (.detail) sont masqués,
+   on garde numéro, domaine, profil, titre, Issue et le lien. */
+.accueilV4 #dossiers .cases{display:grid;grid-template-columns:1fr;gap:16px}
+.accueilV4 #dossiers .case{background:var(--white);border:1px solid var(--line);padding:22px 20px;display:flex;flex-direction:column;min-width:0}
+.accueilV4 #dossiers .c-num{font:400 44px/1 var(--ff-display);color:var(--blue);margin:0}
+.accueilV4 #dossiers .c-meta{margin:10px 0 0}
+.accueilV4 #dossiers .c-dom{display:block;font:400 .75rem/1.4 var(--ff-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.accueilV4 #dossiers .c-prof{display:block;font:400 .75rem/1.4 var(--ff-mono);letter-spacing:.04em;color:var(--muted);margin-top:4px}
+.accueilV4 #dossiers .c-title{font-weight:500;font-size:1.3125rem;line-height:1.3;margin:16px 0 4px;color:var(--ink)}
+.accueilV4 #dossiers .c-lab{font:400 .75rem/1 var(--ff-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+.accueilV4 #dossiers .c-txt{font-size:.9375rem;line-height:1.55;margin:0;color:var(--ink)}
+.accueilV4 #dossiers .c-lev{align-self:start;justify-self:start;font:400 .75rem/1.5 var(--ff-mono);letter-spacing:.04em;color:var(--deep);background:var(--off);padding:6px 10px;margin-top:16px}
+.accueilV4 #dossiers .c-iss{background:var(--navy);color:#fff;padding:14px 16px;margin-top:18px}
+.accueilV4 #dossiers .c-iss .c-lab{color:rgba(255,255,255,.85);margin:0 0 6px}
+.accueilV4 #dossiers .c-iss p{font-weight:500;font-size:1.125rem;line-height:1.35;margin:0}
+.accueilV4 #dossiers .c-link{align-self:start;display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:22px;color:var(--blue);font-weight:600;font-size:1rem;text-decoration:none}
+.accueilV4 #dossiers .c-link:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:639px){
+  .accueilV4 #dossiers .case .detail{display:none}
+  .accueilV4 #dossiers .c-title{font-size:1.1875rem}
+}
+@media(min-width:851px){
+  .accueilV4 #dossiers .cases{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(8,auto);column-gap:24px;gap:0}
+  .accueilV4 #dossiers .case{grid-row:span 8;display:grid;grid-template-rows:subgrid;padding:32px}
 }
 `;
 
@@ -428,34 +430,6 @@ const SHORT_DESC: Record<string, string> = {
   // sa formulation) : « Négocier, sécuriser et faire exécuter… » → version courte.
   "/nos-domaines/contrats-informatiques": "Négocier et sécuriser un projet IT",
 };
-
-/* Dossiers de la home (audit 24 sept. 2026). Format court : libellé, titre, UN
-   SEUL paragraphe, lien — à toutes les largeurs (plus de rubriques situation/
-   issue). Insécable dans « 80 000 € ». Aucune page dédiée n'existe : les trois
-   liens pointent provisoirement vers /cas-clients. */
-const CASES = [
-  {
-    id: "cas-accueil-1",
-    href: "/cas-clients",
-    kicker: "01 / CYBERATTAQUE",
-    titre: "Un piratage. 80\u00A0000\u00A0€ d’appels internationaux facturés.",
-    para: "L’opérateur soutenait que les appels provenaient du système de l’entreprise. Le cabinet a retracé l’intrusion et identifié la faille exploitée. La facture a été annulée.",
-  },
-  {
-    id: "cas-accueil-2",
-    href: "/cas-clients",
-    kicker: "02 / CONTRAT INFORMATIQUE",
-    titre: "Le logiciel était livré. L’entreprise ne pouvait toujours pas l’utiliser.",
-    para: "Le prestataire réclamait le solde du contrat. Les fonctions manquantes et leur effet sur l’activité ont été constatés. L’entreprise a obtenu la résiliation du contrat et le remboursement des sommes versées.",
-  },
-  {
-    id: "cas-accueil-3",
-    href: "/cas-clients",
-    kicker: "03 / DONNÉES PERSONNELLES",
-    titre: "Une fuite de données. Des clients qui demandaient des comptes.",
-    para: "Il fallait établir ce qui avait été exposé, notifier les personnes concernées et répondre aux partenaires commerciaux. Analyse technique et réponse juridique ont été menées de front. L’entreprise a conservé ses contrats majeurs et évité une rupture de confiance.",
-  },
-];
 
 const LAWYERS = [
   { nom: "Alexandre Lazarègue", statut: "Avocat", role: "Avocat au barreau de Paris", exp: "Cybercriminalité et gestion de crise", photo: "/images/alexandre-pro.jpg", pos: "center 22%" },
@@ -739,75 +713,6 @@ export function AccueilV4() {
       cleanups.push(() => archiveToggle.removeEventListener("click", onToggle));
     }
 
-    /* ---- Accent bleu des dossiers : au SURVOL uniquement, et seulement sur
-       les appareils à pointeur précis (souris/stylet). Sur écran tactile, aucune
-       activation → la carte ne reste jamais bleue après un toucher. ---- */
-    const grid = root.querySelector<HTMLElement>(".case-grid");
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (grid && finePointer) {
-      const cards = [...grid.querySelectorAll<HTMLElement>(":scope > .case-card")];
-      if (cards.length) {
-        let keyboardInput = true;
-        let hovered: HTMLElement | null = null;
-        let touchSelection: HTMLElement | null = null;
-        let tap: { id: number; card: HTMLElement; x: number; y: number; time: number; sx: number; sy: number; moved: boolean } | null = null;
-        const interactive = 'a,button,input,select,textarea,summary,[role="button"],[role="link"]';
-        const cardAt = (t: EventTarget | null) => {
-          const c = t instanceof Element ? t.closest<HTMLElement>(".case-card") : null;
-          return c && cards.includes(c) ? c : null;
-        };
-        const activate = (card: HTMLElement | null) => cards.forEach((it) => it.classList.toggle("is-active", it === card));
-        const kbCard = () => (keyboardInput ? cardAt(document.activeElement) : null);
-        const onKeydownDoc = () => { keyboardInput = true; };
-        const onPointerdownDoc = () => { keyboardInput = false; };
-        document.addEventListener("keydown", onKeydownDoc, true);
-        document.addEventListener("pointerdown", onPointerdownDoc, { capture: true, passive: true });
-        activate(cards[0]);
-        const onOver = (e: PointerEvent) => {
-          if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
-          const c = cardAt(e.target);
-          if (c) { hovered = c; activate(kbCard() || c); }
-        };
-        const onLeave = (e: PointerEvent) => {
-          if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
-          hovered = null; activate(kbCard() || cards[0]);
-        };
-        const onFocusin = (e: FocusEvent) => { const c = cardAt(e.target); if (c && keyboardInput) activate(c); };
-        const onKeydown = (e: KeyboardEvent) => { const c = cardAt(e.target); if (c) activate(c); };
-        const onFocusout = () => queueMicrotask(() => activate(kbCard() || hovered || touchSelection || cards[0]));
-        const onDown = (e: PointerEvent) => {
-          if (e.pointerType !== "touch") return;
-          const c = cardAt(e.target);
-          if (!e.isPrimary || !c || (e.target as Element).closest(interactive)) { tap = null; return; }
-          tap = { id: e.pointerId, card: c, x: e.clientX, y: e.clientY, time: e.timeStamp, sx: window.scrollX, sy: window.scrollY, moved: false };
-        };
-        const onMove = (e: PointerEvent) => { if (tap && e.pointerId === tap.id && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 10) tap.moved = true; };
-        const onCancel = () => { tap = null; };
-        const onUp = (e: PointerEvent) => {
-          if (!tap || e.pointerId !== tap.id) return;
-          const cand = tap; tap = null;
-          if (cand.moved || e.timeStamp - cand.time > 500 || Math.hypot(e.clientX - cand.x, e.clientY - cand.y) > 10) return;
-          if (Math.abs(window.scrollX - cand.sx) > 2 || Math.abs(window.scrollY - cand.sy) > 2) return;
-          const r = cand.card.getBoundingClientRect();
-          if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
-          hovered = null; touchSelection = cand.card; activate(touchSelection);
-        };
-        grid.addEventListener("pointerover", onOver, { passive: true });
-        grid.addEventListener("pointerleave", onLeave, { passive: true });
-        grid.addEventListener("focusin", onFocusin);
-        grid.addEventListener("keydown", onKeydown);
-        grid.addEventListener("focusout", onFocusout);
-        grid.addEventListener("pointerdown", onDown, { passive: true });
-        grid.addEventListener("pointermove", onMove, { passive: true });
-        grid.addEventListener("pointercancel", onCancel, { passive: true });
-        grid.addEventListener("pointerup", onUp, { passive: true });
-        cleanups.push(() => {
-          document.removeEventListener("keydown", onKeydownDoc, true);
-          document.removeEventListener("pointerdown", onPointerdownDoc, { capture: true } as EventListenerOptions);
-        });
-      }
-    }
-
     return () => cleanups.forEach((c) => c());
   }, []);
 
@@ -961,15 +866,34 @@ export function AccueilV4() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">Dossiers traités</span>
-              <h2 id="titre-dossiers">Trois dossiers, trois stratégies.</h2>
+              <h2 id="titre-dossiers">Des situations comme la vôtre, et leur issue.</h2>
             </div>
           </div>
-          <div className="case-grid">
-            {CASES.map((c) => (
-              <article className="case-card" key={c.id}>
-                <div><p className="case-kicker">{c.kicker}</p><h3><Link className="case-card-link" href={c.href} aria-label={`Découvrir le cas : ${c.titre}`}>{c.titre}</Link></h3></div>
-                <p className="case-para">{c.para}</p>
-                <span className="case-detail-link" aria-hidden="true">Découvrir le cas <span className="arrow">→</span></span>
+          <div className="cases">
+            {HOME_DOSSIERS.map((d) => (
+              <article className="case" key={d.id}>
+                <p className="c-num">{d.numero}</p>
+                <p className="c-meta">
+                  <span className="c-dom">{d.domaine}</span>
+                  <span className="c-prof">{d.profil}</span>
+                </p>
+                <h3 className="c-title">{d.titre}</h3>
+                <div className="detail">
+                  <p className="c-lab">Situation</p>
+                  <p className="c-txt">{d.situation}</p>
+                </div>
+                <div className="detail">
+                  <p className="c-lab">Intervention</p>
+                  <p className="c-txt">{d.intervention}</p>
+                </div>
+                <span className="c-lev detail">{d.levier}</span>
+                <div className="c-iss">
+                  <p className="c-lab">Issue</p>
+                  <p>{d.issue}</p>
+                </div>
+                <Link className="c-link" href={d.href} aria-label={`Découvrir le cas : ${d.titre}`}>
+                  Découvrir le cas <span className="arrow" aria-hidden="true">→</span>
+                </Link>
               </article>
             ))}
           </div>
