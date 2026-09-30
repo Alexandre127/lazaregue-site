@@ -119,6 +119,46 @@ export const GLOBE_CITIES: GlobeCity[] = [
     insight:
       "En 2023, l’Inde adopte sa loi sur la protection des données personnelles numériques.",
   },
+  {
+    name: "Santiago",
+    lat: -33.4489,
+    lon: -70.6693,
+    title: "Neurodroits",
+    insight:
+      "En 2021, le Chili devient le premier pays à protéger dans sa Constitution l’activité cérébrale et les informations qui en sont issues face aux neurotechnologies.",
+  },
+  {
+    name: "Abuja",
+    lat: 9.0765,
+    lon: 7.3986,
+    title: "Big Tech et données",
+    insight:
+      "En 2025, un tribunal nigérian confirme l’amende de 220 millions de dollars infligée à Meta et WhatsApp pour des pratiques abusives à l’égard des données des consommateurs.",
+  },
+  {
+    name: "Durban",
+    lat: -29.8587,
+    lon: 31.0218,
+    title: "Cyberattaque",
+    insight:
+      "En juillet 2021, une cyberattaque paralyse les terminaux portuaires de Transnet ; l’opérateur sud-africain invoque la force majeure.",
+  },
+  {
+    name: "Dubaï",
+    lat: 25.2048,
+    lon: 55.2708,
+    title: "Crypto-actifs",
+    insight:
+      "En 2022, Dubaï crée la VARA, l’une des premières autorités au monde entièrement dédiées à la régulation des actifs virtuels.",
+  },
+  {
+    name: "Singapour",
+    lat: 1.3521,
+    lon: 103.8198,
+    title: "Gouvernance de l’IA",
+    insight:
+      "En 2019, Singapour publie l’un des premiers cadres de gouvernance de l’IA destinés aux entreprises.",
+  },
 ];
 
 // Arcs de liaison entre les points conservés (indices 0–9). Densité comparable
