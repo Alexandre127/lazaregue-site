@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./rgpd.module.css";
 import { FAQ_ITEMS } from "./faq";
+import { HeroVideo } from "./_components/HeroVideo";
 import { FaqAccordion } from "./_components/FaqAccordion";
 import { TrackedLink } from "./_components/TrackedLink";
 import { SpecimensRecus } from "./_components/SpecimensRecus";
@@ -143,7 +144,10 @@ export default function Page() {
       <main id="contenu-principal" className={styles.rgpd}>
         {/* ============ 1. HERO ============ */}
         <div className="hero dark">
-          {/* Fond Deep Navy uni (la vidéo de fond a été retirée). */}
+          {/* Vidéo de fond, fondue dans la section (aucun cadre) — cf. HeroVideo.
+              Desktop et tablette uniquement ; en mobile (≤ 759 px) le CSS masque
+              la couche vidéo et le hero reste sur fond Deep Navy uni (inchangé). */}
+          <HeroVideo />
           <div className="wrap">
             <nav className="breadcrumb" aria-label="Fil d’Ariane">
               <ol>
