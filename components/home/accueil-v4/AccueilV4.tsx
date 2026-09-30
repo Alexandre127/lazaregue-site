@@ -358,6 +358,7 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 #dossiers .c-num{font:400 44px/1 var(--ff-display);color:var(--blue);margin:0}
 .accueilV4 #dossiers .c-meta{margin:10px 0 0}
 .accueilV4 #dossiers .c-dom{display:block;font:400 .75rem/1.4 var(--ff-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.accueilV4 #dossiers .c-dom-num{display:none} /* numéro inline « 01 · » : mobile uniquement (desktop = grand numéro Bebas) */
 .accueilV4 #dossiers .c-prof{display:block;font:400 .75rem/1.4 var(--ff-mono);letter-spacing:.04em;color:var(--muted);margin-top:4px}
 .accueilV4 #dossiers .c-title{font-weight:500;font-size:1.3125rem;line-height:1.3;margin:16px 0 4px;color:var(--ink)}
 .accueilV4 #dossiers .c-lab{font:400 .75rem/1 var(--ff-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
@@ -368,9 +369,29 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 #dossiers .c-iss p{font-weight:500;font-size:1.125rem;line-height:1.35;margin:0}
 .accueilV4 #dossiers .c-link{align-self:start;display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:22px;color:var(--blue);font-weight:600;font-size:1rem;text-decoration:none}
 .accueilV4 #dossiers .c-link:hover{text-decoration:underline;text-underline-offset:4px}
+/* --- Mobile (≤639px) : carte compacte et dense (voir bloc « Objectif : 2 cartes
+   visibles »). Numéro + domaine sur une ligne, Intervention affichée sans label,
+   Issue en filet bleu (plus de bloc navy). Desktop et tablette inchangés. --- */
 @media(max-width:639px){
-  .accueilV4 #dossiers .case .detail{display:none}
-  .accueilV4 #dossiers .c-title{font-size:1.1875rem}
+  .accueilV4 #dossiers .cases{gap:12px}
+  .accueilV4 #dossiers .case{padding:18px}
+  /* 1 · Numéro + domaine sur une seule ligne (DM Mono bleu) ; grand numéro Bebas retiré. */
+  .accueilV4 #dossiers .c-num{display:none}
+  .accueilV4 #dossiers .c-dom-num{display:inline}
+  .accueilV4 #dossiers .c-meta{margin:0}
+  /* 2 · Titre. */
+  .accueilV4 #dossiers .c-title{font-size:1.1875rem;margin:10px 0 4px}
+  /* 3 · Situation et levier masqués ; Intervention affichée sans son label. */
+  .accueilV4 #dossiers .detail{display:none}
+  .accueilV4 #dossiers .c-interv{margin:10px 0 0}
+  .accueilV4 #dossiers .c-interv .c-lab{display:none}
+  .accueilV4 #dossiers .c-interv .c-txt{font-size:.9375rem;line-height:1.5}
+  /* 4 · Issue : filet 3px bleu à gauche, plus de fond navy. */
+  .accueilV4 #dossiers .c-iss{background:transparent;color:var(--ink);margin-top:14px;padding:0 0 0 12px;border-left:3px solid var(--blue)}
+  .accueilV4 #dossiers .c-iss .c-lab{color:var(--muted);font-size:11px;letter-spacing:.1em;margin:0 0 2px}
+  .accueilV4 #dossiers .c-iss p{color:var(--ink);font-weight:500;font-size:16px;line-height:1.35}
+  /* 5 · Lien juste sous l'issue. */
+  .accueilV4 #dossiers .c-link{margin-top:12px}
 }
 @media(min-width:851px){
   .accueilV4 #dossiers .cases{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(8,auto);column-gap:24px;gap:0}
@@ -874,7 +895,7 @@ export function AccueilV4() {
               <article className="case" key={d.id}>
                 <p className="c-num">{d.numero}</p>
                 <p className="c-meta">
-                  <span className="c-dom">{d.domaine}</span>
+                  <span className="c-dom"><span className="c-dom-num">{d.numero} · </span>{d.domaine}</span>
                   <span className="c-prof">{d.profil}</span>
                 </p>
                 <h3 className="c-title">{d.titre}</h3>
@@ -882,7 +903,7 @@ export function AccueilV4() {
                   <p className="c-lab">Situation</p>
                   <p className="c-txt">{d.situation}</p>
                 </div>
-                <div className="detail">
+                <div className="c-interv">
                   <p className="c-lab">Intervention</p>
                   <p className="c-txt">{d.intervention}</p>
                 </div>
