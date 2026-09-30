@@ -489,7 +489,9 @@
    contraste du titre en bleu électrique quelle que soit l'image de la vidéo,
    fondu vers la droite où la vidéo reste visible. */
 .rgpd :global(.hero-media)::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(4, 5, 14, 0.97) 0%, rgba(5, 7, 18, 0.9) 38%, rgba(10, 15, 46, 0.5) 100%); }
-@media (max-width: 759px) { .rgpd :global(.hero-media)::after { background: linear-gradient(180deg, rgba(4, 5, 14, 0.9) 0%, rgba(5, 7, 18, 0.94) 100%); } }
+/* Vidéo de fond : desktop et tablette uniquement. En mobile (≤ 759 px), la
+   couche vidéo est masquée et le hero reste sur fond Deep Navy uni (inchangé). */
+@media (max-width: 759px) { .rgpd :global(.hero-media) { display: none; } }
 
 .rgpd :global(.hero-main) { max-width: 640px; }
 /* Accent du grand titre : bleu électrique de la charte (et non le bleu lavande). */
