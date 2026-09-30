@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./article.module.css";
-import ShareBar from "./_components/ShareBar";
+import styles from "../_components/article/article.module.css";
+import ArticleLayout from "../_components/article/ArticleLayout";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/ressources/faux-conseiller-bancaire-remboursement";
@@ -60,50 +60,61 @@ const AUTRES = [
 ];
 
 export default function Page() {
-  return (
-    <main className={styles.page} id="contenu">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-
-      {/* ================================ HERO ============================ */}
-      <section className={styles.aHero} aria-labelledby="h1">
+  const after = (
+    <>
+      {/* ============================ POUR ALLER PLUS LOIN ================ */}
+      <section className={`${styles.sec} ${styles.ghost}`} aria-labelledby="h-more">
         <div className={styles.wrap}>
-          <nav className={styles.crumb} aria-label="Fil d’Ariane">
-            <Link href="/">Accueil</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources">Ressources</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources/?domaine=fraude">Fraude bancaire et escroquerie</Link> <span aria-hidden>/</span>{" "}
-            <span aria-current="page">Faux conseiller bancaire</span>
-          </nav>
-          <p className={styles.kicker}>Fraude bancaire et escroquerie · Guide</p>
-          <h1 id="h1">Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser&nbsp;?</h1>
-          <p className={styles.chapo}>
-            Lorsqu&apos;un fraudeur obtient la validation d&apos;un virement en se faisant passer pour un
-            conseiller bancaire, le remboursement dépend notamment du consentement au paiement, de
-            l&apos;authentification et de l&apos;éventuelle négligence grave du client.
-          </p>
-          <div className={styles.byline}>
-            <span className={styles.ava}>
-              <Image src="/images/alexandre-pro.jpg" alt="Portrait d'Alexandre Lazarègue" fill sizes="48px" style={{ objectFit: "cover" }} />
-            </span>
-            <div>
-              <p className={styles.bylineName}>Me Alexandre Lazarègue</p>
-              <p className={styles.meta}>Avocat au Barreau de Paris</p>
-            </div>
-            <p className={`${styles.meta} ${styles.bylineDate}`}>Mis à jour le {MAJ}</p>
+          <div className={styles.head}>
+            <h2 className={styles.h2} id="h-more">Pour aller plus loin</h2>
+          </div>
+          <div className={styles.more}>
+            {AUTRES.map((a) => (
+              <article key={a.titre}>
+                <p className={styles.tag}>{a.tag}</p>
+                <h3>{a.titre}</h3>
+                <p className={styles.soon}>À paraître</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <div className={styles.aGrid}>
-        <article className={styles.body}>
-          <details className={styles.tocM}>
-            <summary>Sommaire</summary>
-            <nav aria-label="Sommaire">
-              {TOC.map((t) => (
-                <a key={t.id} href={`#${t.id}`}>{t.label}</a>
-              ))}
-            </nav>
-          </details>
+      {/* ================================ CTA ============================= */}
+      <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
+        <div className={styles.wrap}>
+          <div className={styles.head}>
+            <h2 className={styles.h2} id="h-cta">Une question demeure sur votre situation&nbsp;?</h2>
+            <p className={styles.lead}>Un article expose les règles générales. Leur application dépend des faits, des documents disponibles et des délais.</p>
+          </div>
+          <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
+        </div>
+      </section>
+    </>
+  );
 
+  return (
+    <ArticleLayout
+      jsonLd={JSON_LD}
+      breadcrumb={[
+        { href: "/", label: "Accueil" },
+        { href: "/ressources", label: "Ressources" },
+        { href: "/ressources/?domaine=fraude", label: "Fraude bancaire et escroquerie" },
+        { label: "Faux conseiller bancaire" },
+      ]}
+      kicker="Fraude bancaire et escroquerie · Guide"
+      h1={<>Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser&nbsp;?</>}
+      chapo={
+        <>
+          Lorsqu&apos;un fraudeur obtient la validation d&apos;un virement en se faisant passer pour un
+          conseiller bancaire, le remboursement dépend notamment du consentement au paiement, de
+          l&apos;authentification et de l&apos;éventuelle négligence grave du client.
+        </>
+      }
+      bylineDate={<>Mis à jour le {MAJ}</>}
+      toc={TOC}
+      after={after}
+    >
           <div className={styles.brief}>
             <p className={styles.label}>En bref</p>
             <ul>
@@ -201,45 +212,6 @@ export default function Page() {
             </div>
           </div>
 
-          <ShareBar />
-        </article>
-
-        <aside className={styles.toc} aria-label="Sommaire">
-          <p className={styles.label}>Sommaire</p>
-          {TOC.map((t) => (
-            <a key={t.id} href={`#${t.id}`}>{t.label}</a>
-          ))}
-        </aside>
-      </div>
-
-      {/* ============================ POUR ALLER PLUS LOIN ================ */}
-      <section className={`${styles.sec} ${styles.ghost}`} aria-labelledby="h-more">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <h2 className={styles.h2} id="h-more">Pour aller plus loin</h2>
-          </div>
-          <div className={styles.more}>
-            {AUTRES.map((a) => (
-              <article key={a.titre}>
-                <p className={styles.tag}>{a.tag}</p>
-                <h3>{a.titre}</h3>
-                <p className={styles.soon}>À paraître</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================================ CTA ============================= */}
-      <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <h2 className={styles.h2} id="h-cta">Une question demeure sur votre situation&nbsp;?</h2>
-            <p className={styles.lead}>Un article expose les règles générales. Leur application dépend des faits, des documents disponibles et des délais.</p>
-          </div>
-          <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
-        </div>
-      </section>
-    </main>
+    </ArticleLayout>
   );
 }

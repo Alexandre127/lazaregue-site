@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import styles from "../article.module.css";
+import styles from "./article.module.css";
 
 /**
  * Modèle de courrier — demande de droit d'accès (art. 15 RGPD).
