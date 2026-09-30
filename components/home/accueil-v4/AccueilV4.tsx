@@ -343,6 +343,37 @@ const ACCUEIL_V4_OVERRIDES = `
 @media(min-width:1101px){
   .accueilV4 #equipe .team-grid .person-role{min-height:4.5em}
 }
+
+/* ===================== ÉTAPE 1 — Domaines : en-tête hybride + subgrid =====================
+   Présentation hybride (numéro Bebas bleu, intitulé, phrase de situation en
+   italique, filet 2px Ink) à toutes les largeurs. Alignement des rangées entre
+   les trois familles par subgrid au-dessus du breakpoint mobile (≥851px, là où
+   les familles sont côte à côte). Fonds de carte, flèches et survols inchangés. */
+.accueilV4 .family-purpose{font-style:italic}
+.accueilV4 .domain-empty{display:none;list-style:none}
+
+@media(min-width:851px){
+  .accueilV4 .domain-empty{display:block}
+  .accueilV4 .domain-groups{grid-template-rows:auto repeat(4,auto)}
+  .accueilV4 .domain-family{grid-row:span 5;display:grid;grid-template-rows:subgrid}
+  .accueilV4 .domain-list{display:contents}
+  .accueilV4 .family-heading{min-height:0;padding:0 0 20px;border-bottom:2px solid var(--ink)}
+  .accueilV4 .family-number{font-size:64px;margin-bottom:12px}
+  .accueilV4 .family-heading h3{min-height:0}
+  .accueilV4 .family-purpose{min-height:0;margin-top:6px}
+  .accueilV4 .domain-item,.accueilV4 .domain-item:first-child{border-top:0;border-bottom:1px solid #d4d4df}
+  .accueilV4 .domain-item:last-of-type,.accueilV4 .domain-item:has(+ .domain-empty){border-bottom:0}
+  .accueilV4 .domain-empty{border:0;padding:0;margin:0;list-style:none}
+}
+
+@media(max-width:639px){
+  /* Filet 2px Ink sous l'en-tête (au lieu d'au-dessus de la famille) + situation visible. */
+  .accueilV4 .domain-family{border-top:0}
+  .accueilV4 .family-heading{display:block;padding:16px 0 12px;border-bottom:2px solid var(--ink)}
+  .accueilV4 .family-number{font-size:44px;margin-bottom:6px;color:var(--blue)}
+  .accueilV4 .family-heading h3{font-size:18px}
+  .accueilV4 .family-purpose{display:block;font-size:14px;line-height:1.4;color:var(--muted);margin-top:4px}
+}
 `;
 
 /* Mot tournant du hero. Index 0 = état FINAL « droit du numérique » : c'est lui
@@ -372,16 +403,17 @@ const LONG_DESC: Record<string, string> = {
   "/nos-domaines/ma-tech": "Identifier les risques liés aux logiciels, données, contrats et actifs numériques avant une acquisition.",
   "/nos-domaines/crypto-actifs-blockchain": "Sécuriser une activité liée aux crypto-actifs et respecter les obligations issues du règlement MiCA.",
   "/nos-domaines/contentieux-informatique-commercial": "Intervenir lorsque le projet informatique rencontre une difficulté d’exécution, lorsque le prestataire ne respecte pas ses engagements ou lorsqu’une expertise s’avère nécessaire.",
-  "/nos-domaines/cybercriminalite": "Réagir à une intrusion, un rançongiciel, un vol de données ou une cyberattaque.",
+  "/nos-domaines/cybercriminalite": "Réagir à une intrusion, un rançongiciel ou un vol de données.",
   "/nos-domaines/escroquerie-fraude-bancaire": "Contester les opérations frauduleuses et demander le remboursement des sommes détournées.",
   "/nos-domaines/diffamation-retrait-contenus": "Faire retirer un contenu, identifier son auteur ou défendre une personne contre une atteinte à sa réputation.",
 };
 
-/* Numéro + phrase d’accroche par famille, dans l’ordre de MENU_FAMILLES. */
+/* Numéro + phrase de situation (italique) par famille, dans l’ordre de
+   MENU_FAMILLES. */
 const FAMILY_META = [
-  { num: "01", but: "Organiser vos obligations." },
-  { num: "02", but: "Sécuriser vos projets et vos engagements." },
-  { num: "03", but: "Réagir en cas de litige ou d’infraction numérique." },
+  { num: "01", situation: "Vous devez vous mettre en règle." },
+  { num: "02", situation: "Vous lancez ou sécurisez un projet." },
+  { num: "03", situation: "Vous faites face à un litige ou une attaque." },
 ];
 
 /**
@@ -390,9 +422,12 @@ const FAMILY_META = [
  * place des descriptions longues UNIQUEMENT sous 640px (version mobile
  * compacte) ; aucun texte n'est recopié en dur ici.
  */
-const SHORT_DESC: Record<string, string> = Object.fromEntries(
-  MENU_FAMILLES.flatMap((f) => f.domaines.map((d) => [d.href, d.contexte])),
-);
+const SHORT_DESC: Record<string, string> = {
+  ...Object.fromEntries(MENU_FAMILLES.flatMap((f) => f.domaines.map((d) => [d.href, d.contexte]))),
+  // Correction home mobile UNIQUEMENT (nav-data.ts inchangé, /nos-domaines conserve
+  // sa formulation) : « Négocier, sécuriser et faire exécuter… » → version courte.
+  "/nos-domaines/contrats-informatiques": "Négocier et sécuriser un projet IT",
+};
 
 /* Dossiers de la home (audit 24 sept. 2026). Format court : libellé, titre, UN
    SEUL paragraphe, lien — à toutes les largeurs (plus de rubriques situation/
@@ -854,7 +889,7 @@ export function AccueilV4() {
                 <div className="family-heading">
                   <span className="family-number" aria-hidden="true">{FAMILY_META[fi].num}</span>
                   <h3 id={`family-${fi}`}>{fam.intitule}</h3>
-                  <p className="family-purpose">{FAMILY_META[fi].but}</p>
+                  <p className="family-purpose">{FAMILY_META[fi].situation}</p>
                 </div>
                 <ul className="domain-list">
                   {fam.domaines.map((d) => (
@@ -871,6 +906,11 @@ export function AccueilV4() {
                       </Link>
                     </li>
                   ))}
+                  {/* Rangée vide : aligne les familles à 3 domaines sur la famille à 4
+                      (subgrid desktop). aria-hidden, non focusable. */}
+                  {fam.domaines.length < 4 ? (
+                    <li className="domain-empty" aria-hidden="true" />
+                  ) : null}
                 </ul>
               </section>
             ))}
