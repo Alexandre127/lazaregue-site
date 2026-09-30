@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { type Cas, DOM_META, ISSUE, CAS_BASE, caseLabel } from "../data/cas-clients";
 
@@ -94,7 +95,9 @@ export function CaseFactsAside({ cas }: { cas: Cas }) {
         <dd>{ISSUE}</dd>
       </dl>
       <div className="who">
-        <span className="ava" role="img" aria-label="Portrait d’Alexandre Lazarègue" />
+        <span className="ava">
+          <Image src="/images/alexandre-pro.jpg" alt="Portrait d’Alexandre Lazarègue" fill sizes="48px" style={{ objectFit: "cover" }} />
+        </span>
         <div>
           <p className="meta wsm">Dossier suivi par</p>
           <p className="wnm">Me Alexandre Lazarègue</p>

@@ -142,7 +142,7 @@
 .cas :global(.fiche dt) { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding-top: 12px; }
 .cas :global(.fiche dd) { margin: 4px 0 0; font-size: 15px; line-height: 1.45; padding-bottom: 10px; border-bottom: 1px solid var(--bd); }
 .cas :global(.fiche .who) { display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 14px 18px; border-top: 1px solid var(--bd); font-size: 14px; }
-.cas :global(.fiche .ava) { width: 48px; height: 48px; background: #e0e0ee; }
+.cas :global(.fiche .ava) { position: relative; width: 48px; height: 48px; overflow: hidden; background: #e0e0ee; flex: none; }
 .cas :global(.wsm) { font-size: 11px; margin: 0; }
 .cas :global(.wnm) { font-weight: 600; margin: 2px 0 0; }
 .cas :global(.wlk) { font-size: 13px; }

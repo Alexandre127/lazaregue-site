@@ -46,7 +46,9 @@ export const MEMBRES: Record<string, Membre> = {
     nom: "Me Sarah Hinderer",
     statut: "Avocate aux barreaux de Paris et de Montréal",
     avocat: true,
-    photo: "/images/sarah-pro.jpg",
+    // Photo unique de Sarah : celle de la page d'accueil, appliquée partout.
+    photo: "/images/equipe/sarah-hinderer.webp",
+    position: "center top",
   },
   khalid: {
     slug: "khalid",
