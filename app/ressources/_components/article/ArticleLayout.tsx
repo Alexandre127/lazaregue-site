@@ -4,6 +4,8 @@ import Link from "next/link";
 import styles from "./article.module.css";
 import ShareBar from "./ShareBar";
 import TocSpy from "./TocSpy";
+import ArticleMobileNav from "./ArticleMobileNav";
+import ArticleCollapsibles from "./ArticleCollapsibles";
 
 export type TocItem = { id: string; label: string };
 type Crumb = { href?: string; label: string };
@@ -31,6 +33,7 @@ export default function ArticleLayout({
   toc,
   children,
   after,
+  mobileCta,
 }: {
   jsonLd?: object;
   breadcrumb: Crumb[];
@@ -43,12 +46,19 @@ export default function ArticleLayout({
   toc: TocItem[];
   children: ReactNode;
   after?: ReactNode;
+  mobileCta?: { href: string; label: string };
 }) {
   return (
     <main className={styles.page} id="contenu">
       {jsonLd ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       ) : null}
+
+      {/* Chrome mobile (barre Sommaire collante + panneau + barre d'action) —
+          masqué en desktop par le CSS ; maquettes 05 / 06. */}
+      <ArticleMobileNav toc={toc} cta={mobileCta} />
+      {/* Blocs éditoriaux repliables sur mobile (desktop inchangé). */}
+      <ArticleCollapsibles />
 
       {/* ================================ HERO ============================ */}
       <section className={styles.aHero} aria-labelledby="h1">

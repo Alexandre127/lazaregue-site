@@ -225,6 +225,7 @@ sur-titre + H1 + chapô + signature), grille **corps + sommaire** (sommaire mobi
 | `toc` | `{ id, label }[]` | Sommaire. Chaque `id` doit correspondre à un `<h2 id="…">` du corps. |
 | `children` | `ReactNode` | **Le corps** : introduction, « En bref », toutes les sections. |
 | `after` | `ReactNode` (optionnel) | Sections placées **après** le corps et le sommaire (CTA navy, « Pour aller plus loin »…). |
+| `mobileCta` | `{ href, label }` (optionnel) | CTA de la barre d'action fixe mobile. Défaut : `{ href: "/contact", label: "Faire examiner mon dossier" }`. |
 
 Le corps est passé en `children` (et non éclaté en props) pour que **l'ordre
 interne reste libre** d'un article à l'autre — l'encadré « En bref » peut être
@@ -258,6 +259,34 @@ placé où on le souhaite.
 
 > Ne pas se baser sur `oeuvre-originale` : c'est un **gabarit distinct** (couverture,
 > sommaire groupé) qui n'utilise pas `ArticleLayout`.
+
+### G.5 Comportement mobile (≤ 767 px, maquettes 05 / 06)
+
+Le gabarit fournit automatiquement, sous 767 px, un chrome de lecture mobile via
+le composant client `ArticleMobileNav` (monté par `ArticleLayout`, `display:none`
+en desktop — le rendu desktop n'est pas affecté) :
+
+- **Barre « Sommaire » collante** sous l'en-tête : barre de progression de lecture
+  + libellé de la section courante (« Introduction » puis le titre au défilement).
+- **Panneau plein écran** (au toucher) : sommaire numéroté, section courante en
+  bleu, fermeture par croix ou touche Échap. Le numéro d'entrée vient de la
+  position dans `toc` ; le préfixe « 1. », « 2. »… des libellés est retiré à
+  l'affichage mobile (gouttière dédiée).
+- **Barre d'action fixe** en bas : ouverture du sommaire + `mobileCta`.
+- Les **tableaux** (`.voies`, `.compare`) passent en **blocs empilés** (déjà géré
+  par le CSS du gabarit).
+- **Blocs éditoriaux repliables** (`ArticleCollapsibles`, amélioration progressive
+  côté client, desktop jamais transformé) : « Ce que dit le texte » (`.box`, ouvert
+  par défaut), jurisprudence (`.jur`), « Sources et mise à jour » (`.sources`) et le
+  modèle de courrier (`.letter`) — ces trois derniers repliés par défaut. Le titre
+  visible sert de bascule (icône +/−). Aucun balisage à ajouter dans l'article :
+  le gabarit détecte ces classes automatiquement.
+
+La barre basse **globale** du site (« Écrire au cabinet ») est masquée sur les
+pages `/ressources/<slug>` du gabarit (mécanisme dans `components/header/site-header.tsx`,
+`isGabaritArticle`), pour éviter deux barres. `oeuvre-originale` en est exclue et
+conserve la barre globale. Un nouvel article sous `/ressources/` hérite donc
+automatiquement de la barre d'action de l'article à la place de la barre globale.
 
 ---
 
