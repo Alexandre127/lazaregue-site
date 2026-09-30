@@ -33,9 +33,10 @@
   color: var(--blue);
 }
 
-/* ============================ 1. HERO (fond navy) ===================== */
+/* ==================== 1. HERO (vidéo desktop, navy mobile) ============ */
 .hero {
   position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   /* L'en-tête global est absolu au repos sur cette route (hero sombre) :
@@ -43,6 +44,65 @@
   padding: calc(var(--header-h) + 28px) 0 64px;
   color: #fff;
   background: var(--navy);
+}
+
+/* Vidéo de fond (Arc de Triomphe, nuit) : desktop et tablette uniquement.
+   En mobile (≤ 767 px), les couches vidéo sont masquées et le hero reste sur
+   fond navy uni (mobile inchangé). */
+.heroBg,
+.heroVeil,
+.vidPause {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hero {
+    /* Fond fixe de repli (reduced-motion / échec de lecture). */
+    background: radial-gradient(ellipse at 70% 45%, #8a7a5a 0%, #3b3f5e 35%, var(--navy) 75%);
+  }
+  .heroBg {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .heroVeil {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /* Voile plus dense à gauche, sous le texte, pour le contraste AA. */
+    background: linear-gradient(90deg, rgba(10, 15, 46, 0.96) 0%, rgba(10, 15, 46, 0.84) 42%, rgba(10, 15, 46, 0.42) 100%);
+  }
+  .vidPause {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    z-index: 3;
+    min-width: 44px;
+    min-height: 44px;
+    background: rgba(10, 10, 20, 0.75);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .vidPause:hover {
+    background: rgba(10, 10, 20, 0.92);
+  }
+}
+/* Réduction de mouvement : sur desktop, on coupe la vidéo et le bouton ; le
+   fond dégradé de repli prend le relais. */
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .heroBg,
+  .vidPause {
+    display: none;
+  }
 }
 .heroHours {
   font-family: var(--ff-mono);
