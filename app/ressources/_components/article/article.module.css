@@ -193,3 +193,150 @@
   .compare > div + div { border-left: 0; border-top: 1px solid var(--ink); }
   .cascab { grid-template-columns: 1fr; }
 }
+
+/* ============ Chrome mobile du gabarit (maquettes 05 / 06) ============ */
+/* Masqué par défaut : le desktop n'est pas affecté. */
+.mNav, .mBar, .mPanelWrap { display: none; }
+
+@media (max-width: 767px) {
+  /* La barre collante remplace le sommaire dépliant sur téléphone. */
+  .tocM { display: none; }
+  /* Place pour la barre d'action fixe. */
+  .page { padding-bottom: 72px; }
+  /* Décalage d'ancre : en-tête global + barre Sommaire collante (~51 px). */
+  .body h2 { scroll-margin-top: calc(var(--header-h-compact) + 64px); }
+
+  /* 1. Barre « Sommaire » collante */
+  .mNav {
+    display: block;
+    position: sticky;
+    top: var(--header-h-compact);
+    z-index: 40;
+    background: #fff;
+    border-bottom: 1px solid var(--bd);
+  }
+  .mProg { height: 3px; background: var(--bd); }
+  .mProg > span { display: block; height: 3px; background: var(--blue); transition: width 0.1s linear; }
+  .mNavBtn {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 var(--page-margin-mobile);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .mNavLabel { display: inline-flex; align-items: center; gap: 10px; font: 500 14px var(--ff-body); }
+  .mNavLabel svg { color: var(--blue); }
+  .mNavCur {
+    font-family: var(--ff-mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 55%;
+  }
+
+  /* 2. Panneau plein écran */
+  .mPanelWrap { display: block; position: fixed; inset: 0; z-index: 80; }
+  .mPanelScrim { position: absolute; inset: 0; width: 100%; height: 100%; background: rgba(10, 15, 46, 0.55); border: 0; cursor: pointer; }
+  .mPanel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--header-h-compact);
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mPanelTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px var(--page-margin-mobile);
+    border-bottom: 1px solid var(--bd);
+    position: sticky;
+    top: 0;
+    background: #fff;
+  }
+  .mPanelTitle { font: 500 18px var(--ff-body); color: var(--ink); }
+  .mPanelClose { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; cursor: pointer; color: var(--ink); }
+  .mPanelList { padding: 6px var(--page-margin-mobile) 24px; }
+  .mItem {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    min-height: 44px;
+    padding: 11px 0;
+    border-top: 1px solid var(--bd);
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .mItem:first-child { border-top: 0; }
+  .mItem[aria-current="true"] { color: var(--blue); font-weight: 600; }
+  .mItemN { font-family: var(--ff-mono); font-size: 12px; color: var(--text-muted); width: 22px; flex-shrink: 0; padding-top: 2px; }
+  .mItem[aria-current="true"] .mItemN { color: var(--blue); }
+
+  /* 3. Barre d'action fixe */
+  .mBar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    height: 72px;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    gap: 10px;
+    background: #fff;
+    border-top: 1px solid var(--bd);
+  }
+  .mBarIcon { width: 52px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--navy); color: var(--navy); cursor: pointer; }
+  .mBarCta { flex: 1; display: inline-flex; align-items: center; justify-content: center; background: var(--blue); color: #fff; text-decoration: none; font: 600 15px var(--ff-body); }
+  .mBarCta:hover { background: var(--blue3); color: #fff; }
+
+  /* ---- Blocs repliables (.box / .jur / .sources / .letter) ---- */
+  /* Cadre uniforme façon maquette, quelles que soient les bordures d'origine. */
+  .discReady {
+    border: 1px solid var(--bd) !important;
+    border-left: 1px solid var(--bd) !important;
+    background: #fff !important;
+    padding: 0 !important;
+  }
+  .discSummary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+  .discSummary::-webkit-details-marker { display: none; }
+  .discHead { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .discHead > * { margin: 0 !important; }
+  .discIco { flex: none; font-family: var(--ff-mono); font-size: 22px; line-height: 1; color: var(--blue); }
+  .discIco::before { content: "+"; }
+  .discReady[open] .discIco::before { content: "\2212"; }
+  .discBody { padding: 0 16px 16px; }
+  .discBody > * + * { margin-top: 10px; }
+
+  /* Modèle de courrier : bouton de repli, corps masqué tant que non ouvert. */
+  .discToggle { flex: none; width: 40px; min-height: 40px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; cursor: pointer; }
+  .letter.discReady .letter-body { display: none; }
+  .letter.discReady.discOpen .letter-body { display: block; }
+  .letter.discReady.discOpen .discIco::before { content: "\2212"; }
+}

@@ -50,8 +50,13 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const heroSombre = aHeroSombre(pathname);
-  /* La page /contact porte déjà son formulaire : la barre basse y est masquée. */
-  const hideBottomBar = pathname === "/contact";
+  /* Barre basse globale masquée là où la page porte sa propre barre :
+     /contact (formulaire) et les articles du gabarit /ressources/<slug>
+     (barre d'action de l'article — maquette 05). Œuvre originale, gabarit
+     distinct, conserve la barre globale. */
+  const isGabaritArticle =
+    !!pathname && pathname.startsWith("/ressources/") && pathname !== "/ressources/oeuvre-originale";
+  const hideBottomBar = pathname === "/contact" || isGabaritArticle;
 
   const [scrolled, setScrolled] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
