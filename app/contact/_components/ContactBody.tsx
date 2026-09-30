@@ -7,6 +7,7 @@ import { fr } from "@/lib/typo";
 import styles from "../contact.module.css";
 import ContactForm from "./ContactForm";
 import Faq from "./Faq";
+import HeroVideo from "./HeroVideo";
 
 const TEL = "tel:+33181706200";
 const MAPS = "https://maps.google.com/?q=18+rue+de+Tilsitt+75017+Paris";
@@ -16,7 +17,8 @@ const MAPS = "https://maps.google.com/?q=18+rue+de+Tilsitt+75017+Paris";
  * confirmation (« Votre demande est transmise ») après un envoi réussi :
  * le hero, le formulaire, les coordonnées et la FAQ laissent alors place à
  * l'écran de confirmation seul, entre l'en-tête et le pied de page globaux.
- * Hero sans vidéo (fond navy) ; en mobile comme en desktop.
+ * Hero avec vidéo de fond (Arc de Triomphe) sur desktop et tablette ;
+ * fond navy uni en mobile (≤ 767 px, inchangé).
  */
 export default function ContactBody() {
   const [sent, setSent] = useState(false);
@@ -63,8 +65,10 @@ export default function ContactBody() {
 
   return (
     <>
-      {/* ===================== 1. HERO (fond navy, sans vidéo) =============== */}
+      {/* ===================== 1. HERO (vidéo desktop/tablette, navy mobile) === */}
       <header className={styles.hero} aria-labelledby="titre-contact">
+        <HeroVideo />
+        <div className={styles.heroVeil} aria-hidden />
         <div className={styles.heroInner}>
           <p className={styles.heroK}>Contact · Paris 17ᵉ · toute la France</p>
           <h1 id="titre-contact">
