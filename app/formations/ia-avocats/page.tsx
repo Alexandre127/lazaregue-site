@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import FormationLayout from "../_components/FormationLayout";
 import { formationMetadata } from "../_data/metadata";
-import { RGPD } from "../_data/rgpd";
+import { AVOCATS } from "../_data/avocats";
 
-export const metadata: Metadata = formationMetadata(RGPD);
+export const metadata: Metadata = formationMetadata(AVOCATS);
 
 export default function Page() {
-  return <FormationLayout f={RGPD} />;
+  return <FormationLayout f={AVOCATS} />;
 }

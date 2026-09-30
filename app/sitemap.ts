@@ -43,12 +43,12 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/cas-clients", priority: 0.7, frequence: "monthly" },
   ...CAS.map((c) => ({ path: `/cas-clients/${c.slug}`, priority: 0.6, frequence: "yearly" as const })),
 
-  // Formations — hub + trois formations (L'Avocat Augmenté /formations/ia-avocat
-  // pas encore construite : hors sitemap tant que la page n'existe pas)
+  // Formations — hub + trois formations entreprises + la formation avocats.
   { path: "/formations", priority: 0.7, frequence: "monthly" },
   { path: "/formations/intelligence-artificielle-entreprise", priority: 0.6, frequence: "monthly" },
   { path: "/formations/rgpd", priority: 0.6, frequence: "monthly" },
   { path: "/formations/cybersecurite", priority: 0.6, frequence: "monthly" },
+  { path: "/formations/ia-avocats", priority: 0.6, frequence: "monthly" },
 
   // Pages légales — priorité faible mais indexables
   { path: "/mentions-legales", priority: 0.3, frequence: "yearly" },

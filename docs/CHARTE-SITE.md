@@ -290,4 +290,54 @@ automatiquement de la barre d'action de l'article à la place de la barre global
 
 ---
 
+## H. Créer une page de formation
+
+Les pages de la rubrique **Formations** partagent un **gabarit unique**
+piloté par des données : `app/formations/_components/FormationLayout.tsx` +
+un fichier de données par formation dans `app/formations/_data/`.
+
+### H.1 Ajouter une formation
+
+1. Créer `app/formations/_data/<slug>.ts` exportant un objet `Formation`
+   (type dans `app/formations/_data/types.ts`). Renseigner tous les champs :
+   hero (`h1`, `accroche`, `intro`, `reperes`, `cta*`), `situation`, `concerne`
+   (3 questions), `objectifs`, `journee` (frise), `programme` (modules,
+   accordéon), `livrables`, `formateurs`, `faq`, CTA final, et les champs
+   `hub*` (carte du hub).
+2. Créer `app/formations/<slug>/page.tsx` (3 lignes) :
+   ```tsx
+   export const metadata = formationMetadata(MA_FORMATION);
+   export default function Page() { return <FormationLayout f={MA_FORMATION} />; }
+   ```
+3. Ajouter l'URL à `app/sitemap.ts`. La conserver ensuite (pas de redirection).
+4. Si la formation doit figurer sur le hub, l'ajouter à la liste `ENTREPRISES`
+   de `app/formations/page.tsx` (ou au bandeau « Vous êtes avocat ? »).
+
+### H.2 Formateurs
+
+`formateurs` accepte deux formes :
+- `{ slug, bio }` : membre de `lib/equipe.ts` — **photo et intitulé réels**,
+  partagés avec le reste du site (à privilégier) ;
+- `{ nom, statut, bio }` : fiche manuelle avec un cadre « Photo à venir »
+  (ex. intervenant pas encore ajouté à l'équipe).
+
+### H.3 Règles
+
+- **Boutons** : « Réserver une place » (primaire) et « Recevoir le programme
+  détaillé » (secondaire) pointent vers `/contact` **sans paramètre** (charte §E).
+  Aucun PDF n'est généré à ce stade.
+- **Tarifs** (validés) : session inter-entreprises **990 € HT (1 188 € TTC, TVA
+  20 %) par participant**, 1 journée (7 h), 12 personnes au plus, au cabinet ou à
+  distance ; option « toute une équipe » dans les locaux du client **sur devis**.
+  Formation avocats : idem, 10 au plus. Ne jamais réintroduire « 1 990 € »,
+  « 490 € », « par groupe » ni « tarif de lancement ».
+- **Dates de session** : afficher **« nous contacter »** (pas de placeholder).
+- **Valeurs manquantes** : laisser un placeholder `[À compléter]` + un
+  commentaire `TODO (cabinet)` dans le code ; **ne rien inventer** (nom de la
+  consœur coanimatrice, heures de formation continue).
+- `title` / `H1` / `meta` : voir `docs/SEO-formations.md`.
+- Rendu 100 % statique (accordéons = `<details>` natifs, premier ouvert).
+
+---
+
 *Fin de CHARTE-SITE.md — voir `ECARTS.md` pour l'inventaire trié et `ENSEIGNEMENTS.md` pour le plan.*
