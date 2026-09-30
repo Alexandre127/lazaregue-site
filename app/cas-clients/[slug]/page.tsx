@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "../cas-clients.module.css";
 import { CaseSummaryBar, CaseFactsAside, CaseSection, CasePrevNext } from "../_components/case-parts";
+import CaseMobileNav from "../_components/CaseMobileNav";
 import { CAS, getCas, caseLabel, DOM_META, ISSUE, CAS_BASE } from "../data/cas-clients";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
@@ -36,6 +37,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const next = CAS[idx + 1];
   const principal = DOM_META[cas.domaines[0]]; // § 4 : compétence principale = 1re clé
 
+  // Barre d'étapes mobile (maquette 07). Les id correspondent aux sections.
+  const steps = [
+    { id: "s1", n: "01", label: "Situation" },
+    { id: "s2", n: "02", label: "Enjeu" },
+    { id: "s3", n: "03", label: "Intervention" },
+    { id: "s4", n: "04", label: "Issue" },
+    { id: "s5", n: "05", label: "À retenir" },
+  ];
+
   const JSON_LD = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -62,6 +72,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <CaseSummaryBar cas={cas} />
         </div>
       </section>
+
+      {/* Chrome mobile (barre d'étapes collante + barre d'action) — masqué en
+          desktop par le CSS ; maquette 07. */}
+      <CaseMobileNav items={steps} />
 
       <div className="cgrid">
         <article className="cbody">
@@ -102,7 +116,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                     </thead>
                     <tbody>
                       {cas.arbitrage.map((a) => (
-                        <tr key={a.voie}>
+                        <tr key={a.voie} data-p={/axe principal/i.test(a.dec) ? "" : undefined}>
                           <th scope="row" data-l="Voie">{a.voie}</th>
                           <td data-l="Appréciation">{a.app}</td>
                           <td data-l="Décision" className={a.ret ? "ret" : undefined}>{a.dec}</td>

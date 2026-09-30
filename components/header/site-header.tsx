@@ -51,12 +51,14 @@ export function SiteHeader() {
   const isHome = pathname === "/";
   const heroSombre = aHeroSombre(pathname);
   /* Barre basse globale masquée là où la page porte sa propre barre :
-     /contact (formulaire) et les articles du gabarit /ressources/<slug>
-     (barre d'action de l'article — maquette 05). Œuvre originale, gabarit
-     distinct, conserve la barre globale. */
+     /contact (formulaire), les articles du gabarit /ressources/<slug>
+     (barre d'action — maquette 05) et les détails de cas /cas-clients/<slug>
+     (barre d'action — maquette 07). Œuvre originale (gabarit distinct) et les
+     index /ressources, /cas-clients conservent la barre globale. */
   const isGabaritArticle =
     !!pathname && pathname.startsWith("/ressources/") && pathname !== "/ressources/oeuvre-originale";
-  const hideBottomBar = pathname === "/contact" || isGabaritArticle;
+  const isCaseDetail = !!pathname && pathname.startsWith("/cas-clients/");
+  const hideBottomBar = pathname === "/contact" || isGabaritArticle || isCaseDetail;
 
   const [scrolled, setScrolled] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
