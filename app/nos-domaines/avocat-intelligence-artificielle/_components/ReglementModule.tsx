@@ -36,7 +36,7 @@ const TOUTE: Rich[] = [
   { b: "Tenir l’inventaire des outils", span: "Recenser les systèmes utilisés, leur fournisseur et leur usage. Mesure recommandée : sans lui, aucune qualification n’est possible.", em: "Mesure recommandée" },
 ];
 
-type Col = { role: string; rich?: Rich[]; plain?: string };
+type Col = { role: string; def?: string; rich?: Rich[]; plain?: string };
 type Level = { label: string; band: string; cases: string[]; cols: Col[]; articles: string };
 
 const LEVELS: Level[] = [
@@ -71,6 +71,7 @@ const LEVELS: Level[] = [
     cols: [
       {
         role: "Déployeur",
+        def: "Signaler les contenus hypertruqués ; informer les personnes exposées à certains systèmes (reconnaissance des émotions, catégorisation biométrique).",
         rich: [
           { b: "Utiliser selon la notice", span: "Mesures techniques et organisationnelles pour respecter la notice d’utilisation du fournisseur.", em: "Art. 26" },
           { b: "Confier le contrôle humain", span: "Désigner des personnes compétentes, formées et disposant de l’autorité nécessaire.", em: "Art. 26" },
@@ -81,6 +82,7 @@ const LEVELS: Level[] = [
       },
       {
         role: "Fournisseur",
+        def: "Informer les personnes qu’elles interagissent avec un système d’IA ; marquer les contenus générés.",
         rich: [
           { b: "Gérer les risques et les données", span: "Système de gestion des risques sur tout le cycle de vie ; qualité et gouvernance des données d’entraînement.", em: "Art. 9 · 10" },
           { b: "Documenter", span: "Documentation technique, journalisation automatique, notice d’utilisation claire pour les déployeurs.", em: "Art. 11 à 13" },
@@ -181,11 +183,28 @@ export default function ReglementModule() {
       scrollToModule();
       return true;
     }
-    const hadHash = applyHash();
-    // Défaut mobile : premier onglet « Toute entreprise ».
-    if (!hadHash && window.matchMedia("(max-width: 767px)").matches) setSel(0);
+    // Renvois #reglement-… : applyHash sélectionne le bon onglet (ordinateur).
+    // Sous 900px, le bloc « Toute entreprise » est affiché par le CSS quel que
+    // soit l'onglet, donc plus de sélection mobile forcée ici.
+    applyHash();
     window.addEventListener("hashchange", applyHash);
     return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
+
+  // « Les cas… » : repliés sous 900px (l'utilisateur peut les ouvrir), ouverts
+  // au-dessus. Piloté au chargement et au franchissement du point de rupture.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 899px)");
+    const apply = () => {
+      rootRef.current
+        ?.querySelectorAll<HTMLDetailsElement>(".reg-cases")
+        .forEach((d) => {
+          d.open = !mq.matches;
+        });
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   function onKey(e: KeyboardEvent<HTMLButtonElement>) {
@@ -286,14 +305,14 @@ export default function ReglementModule() {
               <p className="reg-band">{p.band}</p>
             )}
             <div className="reg-cols">
-              <div className="reg-cases">
-                <p className="hd2">Les cas qui relèvent de ce niveau</p>
+              <details className="reg-cases" open>
+                <summary className="hd2">Les cas qui relèvent de ce niveau</summary>
                 <ul>
                   {p.cases.map((c) => (
                     <li key={c}>{c}</li>
                   ))}
                 </ul>
-              </div>
+              </details>
               <div className="reg-roles" data-count={p.cols.length}>
                 {p.cols.length > 1 ? (
                   <div className="reg-select" role="group" aria-label="Choisir un rôle">
@@ -315,6 +334,7 @@ export default function ReglementModule() {
                   return (
                     <div className={mobileVisible ? "reg-role is-rolevis" : "reg-role"} key={col.role}>
                       <p className="reg-role-t">{col.role}</p>
+                      {col.def ? <p className="reg-role-def">{col.def}</p> : null}
                       {col.rich ? (
                         col.rich.map((it) => <RichRow it={it} key={it.b} />)
                       ) : (

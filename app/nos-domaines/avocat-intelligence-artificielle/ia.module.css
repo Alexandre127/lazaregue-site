@@ -72,7 +72,10 @@
 .ia :global(.sits .s) { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 20px 22px; font-size: 18px; font-weight: 600; line-height: 1.35; }
 .ia :global(.sits .s p) { margin: 0; }
 .ia :global(.sits .sn) { font-family: var(--ff-mono); font-size: 14px; color: var(--blue); padding-top: 3px; }
-.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; margin-top: auto; font-size: 16px; line-height: 1.55; color: var(--ink); display: flex; flex-direction: column; gap: 12px; }
+/* flex:1 (au lieu de margin-top:auto) : la zone bleue démarre juste après le
+   titre, à la même hauteur dans toute la rangée → filets bleus alignés (carte 04
+   vs 03), et le fond teinté remplit jusqu'au bas de la carte. */
+.ia :global(.sits .d) { background: var(--tint); border-top: 3px solid var(--blue); padding: 16px 22px 18px; flex: 1; font-size: 16px; line-height: 1.55; color: var(--ink); display: flex; flex-direction: column; gap: 12px; }
 .ia :global(.sits .d p) { margin: 0; }
 .ia :global(.renvoi) { font-family: var(--ff-mono); font-size: 12.5px; letter-spacing: 0.02em; color: var(--blue); display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
 .ia :global(.renvoi a) { color: var(--blue); text-decoration: none; min-height: 24px; display: inline-flex; align-items: center; }
@@ -137,6 +140,15 @@
 .ia :global(.reg-role .reg-row) { border-left: 0; padding: 10px 0; }
 .ia :global(.reg-role .reg-row:first-of-type) { border-top: 0; }
 .ia :global(.reg-role .reg-row:first-child) { border-top: 0; }
+/* Définition du rôle (reprise mot pour mot de l'onglet Transparence). */
+.ia :global(.reg-role-def) { font-size: 14px; line-height: 1.5; color: var(--text-muted); margin: 0 0 10px; }
+/* « Les cas… » : dépliable (details) — marqueur natif masqué. Sur ordinateur,
+   toujours ouvert et non cliquable ; sous 900px, replié par défaut (cf. bloc). */
+.ia :global(.reg-cases > summary) { list-style: none; }
+.ia :global(.reg-cases > summary)::-webkit-details-marker { display: none; }
+@media (min-width: 900px) {
+  .ia :global(.reg-cases > summary) { pointer-events: none; cursor: default; }
+}
 .ia :global(.ft) { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 12px 18px; background: var(--tint); font-size: 14px; border-top: 1px solid var(--bd); margin: 0; }
 .ia :global(.reg-foot) { margin-top: 18px; font-size: 14px; color: var(--text-muted); line-height: 1.55; max-width: 900px; }
 .ia :global(.reg-cal) { color: var(--text-muted); }
@@ -279,6 +291,49 @@
   .ia :global(.sits li) { border: 0; border-top: 1px solid var(--bd); }
   .ia :global(.sits .s) { padding: 16px 0 8px; }
   .ia :global(.sits .d) { background: none; border-top: 0; padding: 0 0 16px; }
+}
+
+/* ===== Tableau du règlement — version mobile compacte (< 900px) =====
+   Bloc « Toute entreprise » toujours affiché ; 4 onglets de niveau en grille
+   2×2 (pas de défilement) ; obligations en accordéon (titre + article) ; « les
+   cas » repliés ; rôles Déployeur puis Fournisseur empilés avec en-tête. Ce bloc
+   est placé après les media 767/768 pour les surcharger. Desktop (>=900px)
+   inchangé. */
+@media (max-width: 899px) {
+  /* Ordre : Toute entreprise, titre, onglets 2×2, panneau, sanctions. */
+  .ia :global(.reg-toute) { display: grid; grid-template-columns: 1fr; order: 1; }
+  .ia :global(.reg-h) { display: block; order: 2; }
+  .ia :global(.mtabs) { order: 3; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; width: 100%; max-width: none; overflow: visible; background: var(--ink); }
+  .ia :global(.mtabs button) { border: 0; }
+  .ia :global(.reg-tab-toute) { display: none; }
+  .ia :global(.reg-panels) { order: 4; }
+  .ia :global(.reg-foot) { order: 5; }
+
+  /* Obligations : accordéon (détail masqué, bouton visible). */
+  .ia :global(.reg-row-body) { display: none; }
+  .ia :global(.reg-row-body.is-open) { display: block; }
+  .ia :global(.reg-row-toggle) { display: block; }
+  .ia :global(.reg-obls) { grid-template-columns: 1fr; }
+  .ia :global(.reg-obls .reg-row) { border-left: 0; }
+  .ia :global(.reg-obls .reg-row:nth-child(-n + 3)) { border-top: 1px solid var(--bd); }
+  .ia :global(.reg-obls .reg-row:first-child) { border-top: 0; }
+
+  /* Colonnes empilées : « les cas » repliables, puis les rôles. */
+  .ia :global(.reg-cols) { grid-template-columns: 1fr; }
+  .ia :global(.reg-cases) { border-right: 0; border-bottom: 1px solid var(--bd); padding: 0; }
+  .ia :global(.reg-cases > summary) { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 48px; padding: 12px 18px; margin: 0; cursor: pointer; }
+  .ia :global(.reg-cases > summary)::after { content: "+"; font-family: var(--ff-mono); font-size: 22px; color: var(--blue); flex: none; }
+  .ia :global(.reg-cases[open] > summary)::after { content: "−"; }
+  .ia :global(.reg-cases ul) { padding: 0 18px 14px; }
+
+  /* Rôles Déployeur puis Fournisseur, avec en-tête visible. Plus de sélecteur. */
+  .ia :global(.reg-roles), .ia :global(.reg-roles[data-count="1"]) { grid-template-columns: 1fr; }
+  .ia :global(.reg-select) { display: none; }
+  .ia :global(.reg-role) { display: block; border-left: 0; border-top: 1px solid var(--bd); padding: 0; }
+  .ia :global(.reg-role:first-child) { border-top: 0; }
+  .ia :global(.reg-role-t) { background: var(--tint); margin: 0; padding: 10px 18px; font-size: 13px; color: var(--ink); }
+  .ia :global(.reg-role-def) { padding: 12px 18px 0; margin: 0; }
+  .ia :global(.reg-role .reg-row) { padding: 10px 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
