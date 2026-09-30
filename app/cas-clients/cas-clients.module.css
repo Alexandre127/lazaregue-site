@@ -160,6 +160,9 @@
 .cas :global(.pnRight) { text-align: right; }
 .cas :global(.ctaAll) { color: #fff; margin-left: 16px; text-decoration: underline; }
 
+/* Chrome mobile du détail de cas (maquette 07) — masqué en desktop. */
+.cas :global(.case-steps), .cas :global(.case-mbar) { display: none; }
+
 /* ================================ responsive ======================== */
 @media (max-width: 1280px) { .cas :global(.grid3) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 1100px) {
@@ -196,4 +199,94 @@
   .cas :global(.arb th) { border: 0; padding: 8px 0; }
   .cas :global(.arb td)::before,
   .cas :global(.arb th[scope="row"])::before { content: attr(data-l); display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+
+  /* ---------------- Chrome mobile du détail de cas (maquette 07) --------------- */
+  /* Barre d'étapes collante sous l'en-tête. */
+  .cas :global(.case-steps) {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 12px var(--page-margin-mobile);
+    border-bottom: 1px solid var(--bd);
+    background: #fff;
+    position: sticky;
+    top: var(--header-h-compact);
+    z-index: 40;
+  }
+  .cas :global(.case-steps)::-webkit-scrollbar { display: none; }
+  .cas :global(.case-step) {
+    flex-shrink: 0;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    border: 1px solid var(--bd);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .cas :global(.case-step-n) { font-family: var(--ff-mono); font-size: 12px; color: var(--text-muted); }
+  .cas :global(.case-step.is-active) { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .cas :global(.case-step.is-active .case-step-n) { color: rgba(255, 255, 255, 0.75); }
+
+  /* L'ancre doit tomber sous l'en-tête + la barre d'étapes (~49 px). */
+  .cas :global(section[id]) { scroll-margin-top: calc(var(--header-h-compact) + 62px); }
+
+  /* Place pour la barre d'action fixe. */
+  .cas { padding-bottom: 72px; }
+  .cas :global(.case-mbar) {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    height: 72px;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    background: #fff;
+    border-top: 1px solid var(--bd);
+  }
+  .cas :global(.case-mbar-cta) { flex: 1; display: inline-flex; align-items: center; justify-content: center; background: var(--blue); color: #fff; text-decoration: none; font: 600 15px var(--ff-body); }
+  .cas :global(.case-mbar-cta:hover) { background: var(--blue3); color: #fff; }
+
+  /* Titres de section : numéro en ligne avec le titre (façon maquette). */
+  .cas :global(.cbody .sn) { font-size: 30px; display: inline; margin-right: 10px; vertical-align: -2px; }
+  .cas :global(.cbody h2) { display: inline; }
+
+  /* Difficultés A–D : liste épurée (filets) plutôt que cartes bordées. */
+  .cas :global(.diff) { border-top: 1px solid var(--bd); margin-top: 16px; }
+  .cas :global(.diff > div) { border: 0; border-bottom: 1px solid var(--bd); padding: 13px 0; }
+
+  /* Arbitrage : badge de décision aligné au titre, appréciation en dessous. */
+  .cas :global(.arb tr) { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; padding: 14px 16px; }
+  .cas :global(.arb tr[data-p]) { border: 2px solid var(--blue); }
+  .cas :global(.arb td)::before,
+  .cas :global(.arb th[scope="row"])::before { content: none; }
+  .cas :global(.arb th[scope="row"]) { order: 1; width: auto; flex: 1 1 auto; font-size: 15px; font-weight: 600; padding: 0; }
+  .cas :global(.arb td[data-l="Décision"]) {
+    order: 2;
+    width: auto;
+    flex: none;
+    margin-left: auto;
+    padding: 4px 8px;
+    font-family: var(--ff-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    border: 1px solid #9a9ab0;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .cas :global(.arb td[data-l="Décision"].ret) { border-color: var(--blue); color: var(--blue); }
+  .cas :global(.arb tr[data-p] td[data-l="Décision"]) { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .cas :global(.arb td[data-l="Appréciation"]) { order: 3; width: 100%; padding: 6px 0 0; font-size: 14px; line-height: 1.45; color: var(--text-muted); }
+
+  /* Issue : bloc navy (façon maquette) plutôt que l'encadré clair du desktop. */
+  .cas :global(.state) { background: var(--navy); border-left: 0; color: #fff; padding: 18px; }
+  .cas :global(.state .status) { border: 0; padding: 0; color: rgba(255, 255, 255, 0.72); }
+  .cas :global(.state .status)::before { display: none; }
+  .cas :global(.state .stateP) { color: #fff; }
 }
