@@ -1,8 +1,8 @@
 /* ==========================================================================
-   En-tête global — menu v2 (d'après la maquette du 24.09.2026).
-   Hauteurs pilotées par --header-h / --header-h-compact (globals.css) :
-   104px au repos, 76px collant (78px sous 1280px), zone sûre iOS incluse.
-   Tokens de la charte v1.1 (var(--navy/blue/wh/...)). Aucun texte en dur.
+   En-tête global.
+   Fond Deep Navy PLEIN en permanence (aucune transparence ni flou).
+   Navigation complète dès 900px ; bouton « Menu » + menu plein écran sous 900px.
+   Hauteurs pilotées par --header-h / --header-h-compact (globals.css).
    ========================================================================== */
 
 .header {
@@ -10,9 +10,10 @@
   inset: 0 0 auto 0;
   z-index: 80;
   color: #fff;
-  transition: background-color 0.35s ease, backdrop-filter 0.35s ease;
+  background: var(--navy); /* Deep Navy plein, toujours (repos comme défilement). */
+  transition: transform 0.3s ease;
 }
-/* filet bas (visible seulement à l'état opaque). */
+/* filet bas discret. */
 .header::after {
   content: "";
   position: absolute;
@@ -21,19 +22,8 @@
   bottom: 0;
   height: 1px;
   background: rgba(255, 255, 255, 0.14);
-  opacity: 0;
-  transition: opacity 0.35s ease;
 }
-/* État opaque : Deep Navy translucide + flou + filet. */
-.header.solid {
-  background: rgba(10, 15, 46, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-.header.solid::after {
-  opacity: 1;
-}
-/* Panneau ouvert : fond plein (le flou ne suffit pas derrière un grand panneau). */
+/* Panneau ouvert : fond plein garanti (déjà le cas). */
 .header.panelActive {
   background: var(--navy);
 }
@@ -54,7 +44,7 @@
   height: var(--header-h-compact);
 }
 
-/* --- Navigation ordinateur (≥1280px) --- */
+/* --- Navigation ordinateur / tablette (≥900px) --- */
 .nav {
   display: flex;
   align-items: stretch;
@@ -64,7 +54,7 @@
 .navList {
   display: flex;
   align-items: stretch;
-  gap: clamp(14px, 2vw, 34px);
+  gap: clamp(10px, 1.6vw, 30px);
   height: 100%;
 }
 .navItem {
@@ -82,7 +72,7 @@
   font-family: var(--ff-mono);
   font-size: 12.5px;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #fff;
   background: none;
@@ -114,25 +104,82 @@
   background: #fff;
   transform: scaleX(1);
 }
+
+/* --- Bouton flèche (disclosure) : distinct du libellé-lien --- */
+.navArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 44px;
+  margin-left: 1px;
+  padding: 0 4px;
+  background: none;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
 .chevronIcon {
   transition: transform 0.3s ease;
 }
-.navButton[aria-expanded="true"] .chevronIcon {
+.navArrow[aria-expanded="true"] .chevronIcon {
   transform: rotate(180deg);
 }
 
-/* passerelle invisible : prolonge la zone de survol du bouton jusqu'au panneau,
-   pour qu'une trajectoire diagonale ne referme pas le panneau. */
-.navItem:first-child::before {
+/* passerelle invisible : prolonge la zone de survol jusqu'au panneau/dropdown. */
+.navItem::before {
   content: "";
   position: absolute;
-  left: -44px;
-  right: -44px;
+  left: -16px;
+  right: -16px;
   top: 100%;
-  height: calc(var(--header-h) - 24px);
+  height: 16px;
 }
 
-/* --- Bouton « Nous écrire » --- */
+/* --- Sous-menu compact « Formations » --- */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 260px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: var(--navy);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  z-index: 5;
+}
+.dropdownOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.dropLink {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  color: #fff;
+  font-size: 15px;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.dropLink:hover,
+.dropLink:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+}
+.dropLink[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --- Bouton « Écrire au cabinet » --- */
 .cta {
   display: inline-flex;
   align-items: center;
@@ -154,7 +201,7 @@
   background: var(--blue3);
 }
 
-/* --- Panneau « Domaines » --- */
+/* --- Panneau « Domaines » (pleine largeur sous la barre) --- */
 .panel {
   position: absolute;
   left: 0;
@@ -226,8 +273,6 @@
   margin: 0;
   padding: 0;
 }
-/* zone cliquable : toute la largeur de la colonne, 54px de haut, fond au survol,
-   aucun déplacement du texte (seuls le fond et la flèche apparaissent). */
 .card {
   display: flex;
   justify-content: space-between;
@@ -261,11 +306,12 @@
   opacity: 1;
 }
 
-/* --- Bouton « Menu » (mobile / tablette) --- */
+/* --- Bouton « Menu » (sous 900px) — cible tactile ≥ 44×44 --- */
 .burger {
   display: none;
   align-items: center;
   gap: 10px;
+  min-width: 44px;
   min-height: 44px;
   padding: 0 14px;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -298,13 +344,42 @@
   transform: translateY(-4.5px) rotate(-45deg);
 }
 
+/* --- Compression 900–1200px : la navigation complète + le logo + le bouton
+   doivent tenir dès 900px (y compris à 1440px avec zoom 110/125 %, qui ramène
+   la largeur CSS sous 1200px). On resserre polices, interlettrage, gouttières
+   et marges intérieures ; aucun élément n'est retiré. --- */
+@media (min-width: 900px) and (max-width: 1200px) {
+  .bar {
+    gap: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .navList {
+    gap: 8px;
+  }
+  .navLink {
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+  }
+  .navArrow {
+    min-width: 20px;
+    margin-left: 0;
+    padding: 0 2px;
+  }
+  .cta {
+    padding: 0 13px;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+  }
+}
+
 /* ==========================================================================
-   MOBILE / TABLETTE (< 1280px)
+   MOBILE / TABLETTE (< 900px)
    ========================================================================== */
 .mmenu {
   display: none;
 }
-@media (max-width: 1279px) {
+@media (max-width: 899px) {
   .nav,
   .cta,
   .panel {
@@ -312,6 +387,11 @@
   }
   .burger {
     display: inline-flex;
+  }
+
+  /* Articles : masquage de l'en-tête au défilement vers le bas (mobile only). */
+  .hHidden {
+    transform: translateY(-100%);
   }
 
   /* Menu plein écran sous l'en-tête, en fondu. */
@@ -344,13 +424,23 @@
   .mlist > li {
     border-bottom: 1px solid rgba(255, 255, 255, 0.13);
   }
+  /* Rangée « libellé-lien + bouton flèche » (disclosure mobile). */
+  .mrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .mrow .mlink {
+    flex: 1;
+  }
   .mlink {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    min-height: 62px;
+    min-height: 56px;
     background: none;
     border: 0;
     color: #fff;
@@ -366,8 +456,20 @@
     text-underline-offset: 6px;
     text-decoration-color: #fff;
   }
+  /* Bouton flèche mobile — cible tactile ≥ 44×44. */
+  .mtoggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    background: none;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+  }
   .msign {
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
   }
   .macc {
@@ -429,7 +531,7 @@
 }
 
 /* ==========================================================================
-   BARRE BASSE MOBILE (inchangée, reste sur tout le site)
+   BARRE BASSE MOBILE — uniquement sous 900px
    ========================================================================== */
 .bottomBar {
   position: fixed;
@@ -441,9 +543,7 @@
   gap: 12px;
   align-items: center;
   padding: 10px clamp(20px, 4.5vw, 96px) calc(10px + env(safe-area-inset-bottom, 0px));
-  background: rgba(10, 15, 46, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--navy);
   border-top: 1px solid rgba(255, 255, 255, 0.13);
   transform: translateY(120%);
   opacity: 0;
@@ -455,7 +555,7 @@
   opacity: 1;
   visibility: visible;
 }
-@media (min-width: 1280px) {
+@media (min-width: 900px) {
   .bottomBar {
     display: none;
   }
@@ -474,6 +574,7 @@
   text-transform: uppercase;
   text-decoration: none;
 }
+/* Icône téléphone — cible tactile ≥ 44×44 (ici 48). */
 .bottomBarTel {
   display: inline-flex;
   align-items: center;
@@ -499,6 +600,7 @@
   .navLink::after,
   .chevronIcon,
   .panel,
+  .dropdown,
   .cta,
   .mmenu,
   .macc,
