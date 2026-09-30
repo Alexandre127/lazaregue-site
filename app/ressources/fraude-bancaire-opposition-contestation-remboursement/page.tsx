@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./article.module.css";
-import ShareBar from "./_components/ShareBar";
-import ModeleCourrier from "./_components/ModeleCourrier";
-import ArticleFaq, { type QA } from "./_components/ArticleFaq";
-import TocSpy from "./_components/TocSpy";
+import styles from "../_components/article/article.module.css";
+import ArticleLayout from "../_components/article/ArticleLayout";
+import ModeleCourrier from "../_components/article/ModeleCourrier";
+import ArticleFaq, { type QA } from "../_components/article/ArticleFaq";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/ressources/fraude-bancaire-opposition-contestation-remboursement";
@@ -111,49 +110,39 @@ function Texte({ art, cite, apres, href }: { art: string; cite: ReactNode; apres
 }
 
 export default function Page() {
-  return (
-    <main className={styles.page} id="contenu">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-
-      {/* ================================ HERO ============================ */}
-      <section className={styles.aHero} aria-labelledby="h1">
-        <div className={styles.wrap}>
-          <nav className={styles.crumb} aria-label="Fil d’Ariane">
-            <Link href="/">Accueil</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources">Ressources</Link> <span aria-hidden>/</span>{" "}
-            <Link href="/ressources/?domaine=fraude">Fraude bancaire et escroquerie</Link> <span aria-hidden>/</span>{" "}
-            <span aria-current="page">Fraude bancaire</span>
-          </nav>
-          <p className={styles.kicker}>Fraude bancaire et escroquerie · Note générale</p>
-          <h1 id="h1">Fraude bancaire : opposition, contestation et remboursement</h1>
-          <p className={styles.chapo}>
-            Vous avez été victime d&apos;une fraude : un appel, un message, un site qui imitait celui que vous connaissiez, et de l&apos;argent est parti de votre compte. Vous avez prévenu votre banque et demandé le remboursement. Elle a refusé.
-          </p>
-          <div className={styles.byline}>
-            <span className={styles.ava}>
-              <Image src="/images/alexandre-pro.jpg" alt="Portrait d'Alexandre Lazarègue" fill sizes="48px" style={{ objectFit: "cover" }} />
-            </span>
-            <div>
-              <p className={styles.bylineName}>Me Alexandre Lazarègue</p>
-              <p className={styles.meta}>Avocat au Barreau de Paris</p>
-            </div>
-            <p className={`${styles.meta} ${styles.bylineDate}`}>Mis à jour en {MAJ} · {LECTURE}</p>
-          </div>
+  const after = (
+    <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
+      <div className={styles.wrap}>
+        <div className={styles.head}>
+          <h2 className={styles.h2} id="h-cta">Faire examiner votre dossier</h2>
+          <p className={styles.lead}>Un article expose les règles générales. Leur application dépend des faits, des pièces disponibles et des délais.</p>
         </div>
-      </section>
+        <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
+      </div>
+    </section>
+  );
 
-      <div className={styles.aGrid}>
-        <article className={styles.body}>
-          <details className={styles.tocM}>
-            <summary>Sommaire</summary>
-            <nav aria-label="Sommaire">
-              {TOC.map((t) => (
-                <a key={t.id} href={`#${t.id}`}>{t.label}</a>
-              ))}
-            </nav>
-          </details>
-
-          {/* Introduction (trois paragraphes suivant le chapeau) */}
+  return (
+    <ArticleLayout
+      jsonLd={JSON_LD}
+      breadcrumb={[
+        { href: "/", label: "Accueil" },
+        { href: "/ressources", label: "Ressources" },
+        { href: "/ressources/?domaine=fraude", label: "Fraude bancaire et escroquerie" },
+        { label: "Fraude bancaire" },
+      ]}
+      kicker="Fraude bancaire et escroquerie · Note générale"
+      h1="Fraude bancaire : opposition, contestation et remboursement"
+      chapo={
+        <>
+          Vous avez été victime d&apos;une fraude : un appel, un message, un site qui imitait celui que vous connaissiez, et de l&apos;argent est parti de votre compte. Vous avez prévenu votre banque et demandé le remboursement. Elle a refusé.
+        </>
+      }
+      bylineDate={<>Mis à jour en {MAJ} · {LECTURE}</>}
+      toc={TOC}
+      after={after}
+    >
+      {/* Introduction (trois paragraphes suivant le chapeau) */}
           <p>Le courrier de refus tient en général en dix lignes. Les opérations ont été « régulièrement authentifiées », aucune faute n&apos;est imputable à l&apos;établissement, le dossier est clos. Ce courrier n&apos;est pas une décision de justice, et il ne contient presque jamais les éléments que la loi impose précisément à la banque de produire pour refuser.</p>
           <p>Car la règle est l&apos;inverse de celle que la plupart des victimes croient : lorsqu&apos;une opération de paiement n&apos;a pas été autorisée, <strong>la banque devrait rembourser d&apos;abord et discuter ensuite</strong>. C&apos;est à elle de démontrer qu&apos;elle échappe à cette obligation, pas à vous de prouver que vous avez été piégé. Cette règle existe. Elle n&apos;est pas toujours appliquée — et les institutions elles-mêmes l&apos;ont constaté.</p>
           <p>Ce texte a pour objet de vous permettre de comprendre ce que la loi impose à votre banque, de situer votre propre situation dans ce cadre, et de préparer votre demande avec les bons arguments et les bonnes pièces. Il vaut pour la carte, le virement et le prélèvement. Chaque type de fraude — hameçonnage, faux conseiller, fraude au président, arnaque à l&apos;investissement — appelle ensuite une démonstration particulière, traitée séparément.</p>
@@ -448,22 +437,6 @@ export default function Page() {
             </div>
           </div>
 
-          <ShareBar />
-        </article>
-
-        <TocSpy items={TOC} />
-      </div>
-
-      {/* ================================ CTA ============================= */}
-      <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <h2 className={styles.h2} id="h-cta">Faire examiner votre dossier</h2>
-            <p className={styles.lead}>Un article expose les règles générales. Leur application dépend des faits, des pièces disponibles et des délais.</p>
-          </div>
-          <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
-        </div>
-      </section>
-    </main>
+    </ArticleLayout>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import styles from "../article.module.css";
+import styles from "./article.module.css";
 
 export type QA = { q: string; a: string };
 

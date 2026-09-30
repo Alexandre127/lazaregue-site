@@ -183,4 +183,82 @@ Exemple conforme : `app/cas-clients` (1200px, 36px, `clamp(56px,7vw,104px)`).
 
 ---
 
+## G. Rédiger un nouvel article
+
+Tout article de la rubrique **Ressources** repose sur le **gabarit commun**
+`app/ressources/_components/article/`. Le modèle de référence est l'article
+**« Fraude bancaire : opposition, contestation et remboursement »**
+(`app/ressources/fraude-bancaire-opposition-contestation-remboursement/page.tsx`) :
+pour un nouvel article, on le duplique et on remplace le contenu.
+
+### G.1 Créer le fichier
+
+1. Créer un dossier `app/ressources/<slug-de-l-article>/` avec un `page.tsx`.
+2. Copier le `page.tsx` de l'article Fraude bancaire comme point de départ.
+3. Adapter les imports (ils pointent tous vers le gabarit partagé) :
+
+```tsx
+import Image from "next/image";              // uniquement si le corps contient une <Image>
+import Link from "next/link";                // uniquement si le corps a des liens internes <Link>
+import styles from "../_components/article/article.module.css";
+import ArticleLayout, { type TocItem } from "../_components/article/ArticleLayout";
+import ModeleCourrier from "../_components/article/ModeleCourrier"; // optionnel
+import ArticleFaq, { type QA } from "../_components/article/ArticleFaq"; // optionnel
+```
+
+### G.2 Le composant `ArticleLayout`
+
+Il fournit tout l'enveloppe : `<main id="contenu">`, JSON-LD, hero (fil d'Ariane +
+sur-titre + H1 + chapô + signature), grille **corps + sommaire** (sommaire mobile
+`tocM` replié + aside `TocSpy` actif au défilement) et **barre de partage**.
+
+| Prop | Type | Rôle |
+|---|---|---|
+| `jsonLd` | `object` (optionnel) | Données structurées (Article, FAQPage…) injectées en `<script type="application/ld+json">`. |
+| `breadcrumb` | `{ href?, label }[]` | Fil d'Ariane. Le **dernier** item n'a pas de `href` (page courante). |
+| `kicker` | `string` | Sur-titre (ex. `"Fraude bancaire et escroquerie · Note générale"`). |
+| `h1` | `ReactNode` | Titre. Passer un fragment `<>…&nbsp;?</>` pour maîtriser les espaces insécables. |
+| `chapo` | `ReactNode` | Chapô sous le titre. |
+| `bylineName` | `string` | Défaut `"Me Alexandre Lazarègue"`. |
+| `bylineRole` | `string` | Défaut `"Avocat au Barreau de Paris"`. |
+| `bylineDate` | `ReactNode` | Ex. `<>Mis à jour en {MAJ} · {LECTURE}</>`. |
+| `toc` | `{ id, label }[]` | Sommaire. Chaque `id` doit correspondre à un `<h2 id="…">` du corps. |
+| `children` | `ReactNode` | **Le corps** : introduction, « En bref », toutes les sections. |
+| `after` | `ReactNode` (optionnel) | Sections placées **après** le corps et le sommaire (CTA navy, « Pour aller plus loin »…). |
+
+Le corps est passé en `children` (et non éclaté en props) pour que **l'ordre
+interne reste libre** d'un article à l'autre — l'encadré « En bref » peut être
+placé où on le souhaite.
+
+### G.3 Structurer le corps (classes `styles.*`)
+
+- **Sections** : `<section className={styles.sec}>` avec un `<h2 id="s1">…`. L'`id`
+  doit figurer dans `toc` pour que le sommaire et le `TocSpy` fonctionnent.
+- **En bref** : `<div className={styles.brief}>` (encadré sombre en tête de corps).
+- **Encadré texte de loi** : `styles.box` + `styles.boxTitle` + `styles.boxLink`
+  (lien Légifrance `target="_blank" rel="noopener noreferrer"`).
+- **Jurisprudence** : `styles.jur` (+ `jurHead`).
+- **Liste d'étapes numérotées** : `<ol className={styles.steps}>`.
+- **Modèle de courrier** : `<ModeleCourrier />` (boutons Copier / Imprimer inclus).
+- **FAQ** : `<ArticleFaq items={FAQ} />` avec `FAQ: QA[]` (`{ q, a }`) — penser au
+  `FAQPage` dans `jsonLd`.
+- **Sources** : `<div className={styles.sources}>`.
+- **Section sombre / CTA** : combiner `styles.sec` + `styles.navy` (voir le bloc
+  `after` de l'article Fraude bancaire).
+
+### G.4 Règles à respecter
+
+- **H1 en Bebas** via le gabarit (ne pas surcharger la typo du titre).
+- **Liens `/contact` sans paramètre** (règle §E — pas de `?objet=…`).
+- **Aucune décision de justice non vérifiée** : toute référence passe par le
+  garde-fou du composant `jurisprudence` (`verifiee:false` = jamais rendue).
+- **Pas d'engagement de délai** de service (« réponse sous 48 h »…).
+- Après création : `npm run build` + `npx eslint <dossier>` sans erreur, puis
+  captures **375 / 390 / 1440** avant intégration.
+
+> Ne pas se baser sur `oeuvre-originale` : c'est un **gabarit distinct** (couverture,
+> sommaire groupé) qui n'utilise pas `ArticleLayout`.
+
+---
+
 *Fin de CHARTE-SITE.md — voir `ECARTS.md` pour l'inventaire trié et `ENSEIGNEMENTS.md` pour le plan.*

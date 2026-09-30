@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "../article.module.css";
+import styles from "./article.module.css";
 
 export type TocItem = { id: string; label: string };
 

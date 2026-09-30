@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "../article.module.css";
+import styles from "./article.module.css";
 
 /** Partage en fin d'article : LinkedIn, copie du lien, impression. */
 export default function ShareBar() {
