@@ -23,18 +23,40 @@ export function HeroVideo() {
         ? window.matchMedia(q)
         : ({ matches: false, addEventListener: undefined } as unknown as MediaQueryList);
     const reduce = mq("(prefers-reduced-motion: reduce)");
+    // Vidéo réservée au desktop et à la tablette : en mobile (< 760 px), la
+    // couche est masquée par le CSS ET le fichier n'est jamais sollicité — les
+    // <source> ne sont injectées que si cette requête média est satisfaite.
+    const desktop = mq("(min-width: 760px)");
 
     const reseauLent = () => {
       const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
       return !!(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || "")));
     };
-    const autorisee = () => !reduce.matches && !reseauLent();
+    const autorisee = () => desktop.matches && !reduce.matches && !reseauLent();
+
+    // Les sources ne sont ajoutées qu'ici : tant qu'elles sont absentes du DOM,
+    // le navigateur ne télécharge aucun fichier (preload="none").
+    const SOURCES = [
+      { src: "/videos/rgpd-hero.webm", type: "video/webm" },
+      { src: "/videos/rgpd-hero.mp4", type: "video/mp4" },
+    ];
+    const ajouterSources = () => {
+      if (video.querySelector("source")) return;
+      for (const s of SOURCES) {
+        const el = document.createElement("source");
+        el.src = s.src;
+        el.type = s.type;
+        video.appendChild(el);
+      }
+      video.load();
+    };
 
     const init = () => {
       if (!autorisee()) {
         video.pause();
         return;
       }
+      ajouterSources();
       video.preload = "metadata";
       video.loop = true;
       const p = video.play();
@@ -48,17 +70,20 @@ export function HeroVideo() {
     const onVis = () => {
       if (document.hidden) video.pause();
       else if (autorisee()) {
+        ajouterSources();
         const p = video.play();
         if (p && p.catch) p.catch(() => {});
       }
     };
     document.addEventListener("visibilitychange", onVis);
     reduce.addEventListener?.("change", init);
+    desktop.addEventListener?.("change", init);
 
     return () => {
       window.removeEventListener("load", init);
       document.removeEventListener("visibilitychange", onVis);
       reduce.removeEventListener?.("change", init);
+      desktop.removeEventListener?.("change", init);
     };
   }, []);
 
@@ -75,8 +100,8 @@ export function HeroVideo() {
         width={960}
         height={540}
       >
-        <source src="/videos/rgpd-hero.webm" type="video/webm" />
-        <source src="/videos/rgpd-hero.mp4" type="video/mp4" />
+        {/* Les <source> sont injectées par le script uniquement ≥ 760 px
+            (voir useEffect) : en mobile, aucun fichier vidéo n'est téléchargé. */}
       </video>
       {/* Couches décoratives : duoton bleu nuit + assombrissement pour la
           lisibilité du texte du hero. */}
