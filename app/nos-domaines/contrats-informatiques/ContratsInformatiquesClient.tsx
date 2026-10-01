@@ -274,44 +274,6 @@ const KHALID_EXAMINE = [
   "Faisabilité et format des opérations de réversibilité",
 ];
 
-/* « Ce qui engage les parties — et ce qui permet de le prouver » : le contenu de
-   différenciation juridique/technique restauré de la version initiale. */
-const ENGAGE: { titre: string; p: string }[] = [
-  {
-    titre: "Les obligations du prestataire",
-    p: "Obligation d’information, de conseil et de mise en garde ; engagements de sécurité, de disponibilité, de sauvegarde et de réversibilité.",
-  },
-  {
-    titre: "La coopération du client",
-    p: "Expression des besoins, validation des livrables, recettes, réserves et décisions prises pendant le projet.",
-  },
-  {
-    titre: "Les preuves à conserver",
-    p: "Contrat et cahier des charges, avenants, courriels, tickets, journaux techniques, tests de restauration, procès-verbaux et rapports d’expertise.",
-  },
-];
-
-/* Trois cas COMPACTS présentés comme des situations-types (aucun dossier réel,
-   aucun montant, aucun résultat — cf. brief : à confirmer par le cabinet avant
-   toute présentation en dossier réel). */
-const CAS: { situation: string; examine: string; enjeu: string }[] = [
-  {
-    situation: "Des sauvegardes prévues au contrat se révèlent inutilisables après un incident.",
-    examine: "Le périmètre réellement sauvegardé, la fréquence, les tests de restauration et les engagements écrits du prestataire.",
-    enjeu: "Déterminer si l’inexécution engage la responsabilité du prestataire ou relève d’un partage.",
-  },
-  {
-    situation: "Un projet ERP accuse un retard important ou ne fonctionne pas comme prévu.",
-    examine: "Le cahier des charges, la procédure de recette, les réserves émises et la chronologie des alertes.",
-    enjeu: "Décider entre poursuite encadrée, renégociation ou sortie, en sécurisant les preuves.",
-  },
-  {
-    situation: "Les données sont bloquées lors d’un changement de prestataire.",
-    examine: "La clause de réversibilité, les formats de restitution, les délais et le coût de sortie annoncés.",
-    enjeu: "Rétablir l’accès aux données et organiser une transition réalisable.",
-  },
-];
-
 /* FAQ complémentaire (« Autres questions ») — réponses VERBATIM de la version
    initiale (git a8fd008). */
 const AUTRES_FAQ: { q: string; a: string }[] = [
