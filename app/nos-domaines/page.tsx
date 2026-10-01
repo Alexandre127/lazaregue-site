@@ -74,7 +74,7 @@ export default function Page() {
             technologies numériques : conformité des traitements de données et
             des systèmes d&apos;intelligence artificielle, sécurisation des
             contrats informatiques, contentieux de la fraude bancaire, des
-            cyberattaques et des atteintes à la réputation en ligne. Les neuf
+            cyberattaques et des atteintes à la réputation en ligne. Les dix
             domaines ci-dessous précisent le périmètre de chaque intervention.
           </p>
         </div>

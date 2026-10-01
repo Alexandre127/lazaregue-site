@@ -55,10 +55,9 @@ export const metadata: Metadata = {
   title: "Lazarègue Avocats — Droit du numérique",
   description:
     "Cabinet d'avocats dédié au droit du numérique, à la cybersécurité, à l'intelligence artificielle et à la régulation des plateformes.",
-  // VERROU PRÉ-PROD — le site n'est pas encore public (contenus en placeholder,
-  // ex. {{CHAPO_A_REDIGER}}). noindex/nofollow à l'échelle du site. À RETIRER
-  // le jour de la mise en ligne publique (voir aussi app/robots.ts).
-  robots: { index: false, follow: false },
+  // Site public : indexation autorisée (le verrou pré-prod noindex a été levé le
+  // 1er octobre 2026). Deux pages de test gardent leur noindex propre
+  // (/ressources/oeuvre-originale, /ressources/faux-conseiller-bancaire-remboursement).
   // Image de partage par défaut (1200×630). Next ne fusionnant pas en profondeur
   // openGraph/twitter, chaque page qui les redéclare reprend aussi cette image ;
   // ce défaut couvre les pages sans métadonnées propres (ex. sous-pages

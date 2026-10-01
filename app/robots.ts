@@ -2,24 +2,19 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-url";
 
 /**
- * PRÉPROD — accessible aux AGENTS DE LECTURE IA « à la demande », NON indexable.
+ * SITE PUBLIC — verrou pré-prod levé le 1er octobre 2026.
  *
- * Objectif (23 sept. 2026) : permettre à Claude, ChatGPT et Perplexity d'OUVRIR
- * les pages lorsqu'un utilisateur le demande, tout en interdisant l'indexation
- * par les moteurs et l'aspiration par les robots d'entraînement.
- *   · Agents de lecture à la demande        → Allow: /
- *   · Robots d'entraînement / d'aspiration   → Disallow: /
- *   · Tous les autres robots (`*`)           → Disallow: /  (préprod verrouillée)
+ *   · Agents de lecture à la demande (Claude, ChatGPT, Perplexity) → Allow: /
+ *   · Robots d'entraînement / d'aspiration                         → Disallow: /
+ *     (choix éditorial : on autorise la lecture à la demande, pas l'entraînement)
+ *   · Tous les autres robots (`*`)  → Allow: / sauf /api/ et /_next/ (routes techniques)
  *
- * L'INDEXATION reste bloquée indépendamment de ce fichier : balise
- * `robots: { index:false, follow:false }` (app/layout.tsx) + en-tête
- * `X-Robots-Tag: noindex, nofollow` (proxy.ts). Un `Allow` dans robots.txt
- * n'autorise que l'exploration/lecture, jamais l'indexation.
+ * Le `noindex` site-wide a été retiré de app/layout.tsx. L'en-tête
+ * `X-Robots-Tag: noindex` de proxy.ts ne s'applique plus que hors domaine de
+ * production (previews *.vercel.app) : il disparaît de lui-même sur
+ * lazaregue-avocats.fr. Deux pages de test gardent leur `noindex` propre.
  *
- * Le `sitemap.xml` est déclaré (les agents de lecture peuvent s'y référer).
- *
- * À la mise en ligne publique : rouvrir `Allow: /` pour `*` (en excluant
- * /api/ et /_next/), et retirer le `noindex` (layout.tsx + proxy.ts).
+ * Le `sitemap.xml` est déclaré ci-dessous (domaine de production).
  */
 
 // Agents de LECTURE à la demande (fetch déclenché par un utilisateur) : autorisés.
@@ -46,7 +41,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       { userAgent: LECTEURS, allow: "/" },
       { userAgent: ENTRAINEMENT, disallow: "/" },
-      { userAgent: "*", disallow: "/" },
+      // Site public (verrou levé le 1er oct. 2026) : exploration autorisée, hors
+      // routes techniques.
+      { userAgent: "*", allow: "/", disallow: ["/api/", "/_next/"] },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
