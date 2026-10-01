@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { upsertContact } from "@/lib/hubspot";
 
 /**
  * Traitement serveur du formulaire de contact.
@@ -83,6 +84,15 @@ export async function POST(req: Request) {
   const email = String(data.email ?? "").trim();
   const tel = String(data.tel ?? "").trim();
   const message = String(data.message ?? "").trim();
+  const page = String(data.page ?? "").trim().slice(0, 300);
+  const rawUtm = (data.utm && typeof data.utm === "object" ? data.utm : {}) as Record<string, unknown>;
+  const utm = {
+    source: String(rawUtm.source ?? "").trim().slice(0, 150) || undefined,
+    medium: String(rawUtm.medium ?? "").trim().slice(0, 150) || undefined,
+    campaign: String(rawUtm.campaign ?? "").trim().slice(0, 150) || undefined,
+    term: String(rawUtm.term ?? "").trim().slice(0, 150) || undefined,
+    content: String(rawUtm.content ?? "").trim().slice(0, 150) || undefined,
+  };
 
   const invalides: string[] = [];
   if (!OBJETS.includes(objet)) invalides.push("objet");
@@ -94,12 +104,45 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Champs invalides.", invalides }, { status: 422 });
   }
 
+  const urgenceLabel =
+    urgence === "incident"
+      ? "Incident ou contentieux en cours"
+      : urgence === "echeance"
+        ? "Une échéance approche"
+        : "Projet ou demande de conseil";
+
+  // Enregistrement dans le CRM HubSpot : côté serveur, donc INDÉPENDANT des
+  // cookies et du choix de consentement (il a lieu même après « Tout refuser »).
+  // Démarré ici et attendu avant chaque réponse, pour qu'il aboutisse même si
+  // l'instance serverless se fige juste après la réponse. Ne bloque JAMAIS
+  // l'e-mail : toute erreur est seulement journalisée.
+  const crm = upsertContact({
+    email,
+    nom,
+    org,
+    tel,
+    objet,
+    urgenceLabel,
+    echeance,
+    message,
+    page,
+    utm,
+  })
+    .then((r) => {
+      if (!r.ok) console.error("[contact] HubSpot:", r.reason);
+      return r;
+    })
+    .catch((e) => {
+      console.error("[contact] HubSpot:", e);
+      return { ok: false as const };
+    });
+
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   if (!host || !user || !pass) {
-    // Service non configuré : on le signale clairement pour que le client
-    // conserve la saisie et propose téléphone + e-mail.
+    // Service d'e-mail non configuré : la capture CRM a tout de même lieu.
+    await crm;
     return NextResponse.json(
       { ok: false, error: "Le service d'envoi n'est pas encore configuré." },
       { status: 503 },
@@ -108,12 +151,6 @@ export async function POST(req: Request) {
 
   const to = process.env.CONTACT_TO || "contact@lazaregue-avocats.fr";
   const from = process.env.CONTACT_FROM || user;
-  const urgenceLabel =
-    urgence === "incident"
-      ? "Incident ou contentieux en cours"
-      : urgence === "echeance"
-        ? "Une échéance approche"
-        : "Projet ou demande de conseil";
 
   const transporter = nodemailer.createTransport({
     host,
@@ -164,8 +201,11 @@ export async function POST(req: Request) {
       ].join("\n"),
     });
 
+    await crm;
     return NextResponse.json({ ok: true });
   } catch {
+    // L'e-mail a échoué : la capture CRM, elle, a pu aboutir — on l'attend.
+    await crm;
     return NextResponse.json(
       { ok: false, error: "L'envoi a échoué. Réessayez, ou contactez le cabinet par téléphone ou e-mail." },
       { status: 502 },

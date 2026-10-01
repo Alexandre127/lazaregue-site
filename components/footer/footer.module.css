@@ -262,6 +262,38 @@
 .flist a:focus-visible {
   border-left-color: var(--blue);
 }
+/* « Gérer les cookies » : un <button> qui ouvre le panneau de consentement,
+   habillé exactement comme les liens du pied de page. */
+.flist button.manage {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-left: 2px solid transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--wh);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  padding-left: 0;
+  transition: padding-left 0.18s ease, border-color 0.18s ease;
+}
+.flist button.manage:hover {
+  border-left-color: var(--blue);
+  padding-left: 12px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.flist button.manage:focus-visible {
+  border-left-color: var(--blue);
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
 /* Entrée « à venir » : texte non cliquable (pas de faux lien, pas de 404).
    Light Blue #9FB2FF (au lieu du blanc des liens), curseur normal, non
    focusable (c'est un <span>). Enveloppe à la ligne pour ne pas déborder. */
@@ -307,6 +339,38 @@
   line-height: 1.5;
   letter-spacing: 0.04em;
   color: var(--muted-on-dark);
+}
+/* Ligne légale inférieure : copyright + liens + colophon, séparés par des
+   points médians. Boutons (« Gérer les cookies ») alignés sur les liens. */
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.legal a,
+.legal button {
+  color: var(--muted-on-dark);
+  text-decoration: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.legal a:hover,
+.legal button:hover,
+.legal a:focus-visible,
+.legal button:focus-visible {
+  color: var(--wh);
+}
+.sep {
+  color: rgba(255, 255, 255, 0.28);
+  user-select: none;
 }
 .social {
   display: inline-flex;

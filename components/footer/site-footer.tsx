@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/header/logo";
+import ManageCookiesLink from "@/components/footer/manage-cookies-link";
 import { FAMILLES } from "@/components/header/nav-data";
 import styles from "./footer.module.css";
 
@@ -41,10 +42,11 @@ const CABINET: FooterLink[] = [
 // résiduelles n'apportaient rien tant que les pages n'existent pas.
 const INFORMATIONS: FooterLink[] = [
   { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  { label: "Politique de cookies", href: "/politique-cookies" },
   { label: "Mentions légales", href: "/mentions-legales" },
 ];
 
-function LinkList({ items }: { items: FooterLink[] }) {
+function LinkList({ items, extra }: { items: FooterLink[]; extra?: React.ReactNode }) {
   return (
     <ul className={styles.flist}>
       {items.map((item) =>
@@ -62,6 +64,7 @@ function LinkList({ items }: { items: FooterLink[] }) {
           </li>
         ),
       )}
+      {extra}
     </ul>
   );
 }
@@ -111,15 +114,25 @@ export function SiteFooter() {
             <p className={styles.colTitle} id="ft-informations">
               Informations
             </p>
-            <LinkList items={INFORMATIONS} />
+            <LinkList items={INFORMATIONS} extra={<ManageCookiesLink />} />
           </nav>
         </div>
       </div>
 
       <div className={styles.footerBottom}>
-        <p className={styles.copyright}>
-          © 2026 Lazarègue Avocats — Tous droits réservés
-        </p>
+        <nav className={styles.legal} aria-label="Informations légales">
+          <span className={styles.copyright}>© 2026 Lazarègue Avocats — tous droits réservés</span>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/politique-cookies">Politique de cookies</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <ManageCookiesLink bare />
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/colophon">v2.0 — colophon</Link>
+        </nav>
         <a
           className={styles.social}
           href="https://www.linkedin.com/in/alexandre-lazarègue"

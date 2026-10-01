@@ -385,7 +385,7 @@ export function SiteHeader() {
           </nav>
 
           {/* --- Bouton « Écrire au cabinet » (toujours visible, ordinateur/tablette) --- */}
-          <Link className={styles.cta} href={CONTACT_HREF}>
+          <Link className={styles.cta} href={CONTACT_HREF} data-track="cta_click" data-track-composant="header">
             Écrire au cabinet <span aria-hidden="true">→</span>
           </Link>
 
@@ -585,7 +585,13 @@ function MobileMenu({
         ))}
       </ul>
 
-      <Link className={styles.mcta} href={CONTACT_HREF} onClick={onClose}>
+      <Link
+        className={styles.mcta}
+        href={CONTACT_HREF}
+        onClick={onClose}
+        data-track="cta_click"
+        data-track-composant="header_mobile"
+      >
         Écrire au cabinet <span aria-hidden="true">→</span>
       </Link>
       <p className={styles.mfoot}>

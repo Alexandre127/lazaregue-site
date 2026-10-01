@@ -23,8 +23,8 @@ import { useState, useEffect, useCallback } from "react";
 /*  Constantes éditoriales                                                     */
 /* -------------------------------------------------------------------------- */
 
-const VERSION = "1.0";
-const MAJ = "1er septembre 2026";
+const VERSION = "1.1";
+const MAJ = "1er octobre 2026";
 
 /* -------------------------------------------------------------------------- */
 /*  Primitives                                                                 */
@@ -59,10 +59,10 @@ const REGISTRE = [
   {
     traitement: "Prise de contact",
     finalite:
-      "Répondre à une sollicitation, vérifier l'absence de conflit d'intérêts avant toute ouverture de dossier",
+      "Répondre à une sollicitation, envoyer un accusé de réception, vérifier l'absence de conflit d'intérêts avant toute ouverture de dossier",
     base: "Mesures précontractuelles et intérêt légitime du cabinet",
     donnees: "Identité, coordonnées, objet de la demande",
-    duree: "12 mois à compter du dernier échange si la demande n'est pas suivie d'un dossier",
+    duree: "3 ans à compter du dernier échange si la demande n'est pas suivie d'un dossier",
   },
   {
     traitement: "Ouverture et conduite du dossier",
@@ -111,10 +111,45 @@ const REGISTRE = [
       "Maintien en condition opérationnelle, journalisation, détection et traitement des incidents",
     base: "Intérêt légitime du cabinet à la sécurité de son système d'information",
     donnees: "Adresse IP, horodatage, données techniques de connexion",
-    duree: "6 mois à compter de leur enregistrement",
+    duree: "Durée appliquée par l'hébergeur (journaux techniques)",
   },
-  // Aucune ligne « Mesure d'audience » : le site n'installe aucun outil de
-  // mesure d'audience (cf. section « Traceurs et mesure d'audience »).
+  {
+    traitement: "Mesure d'audience sans cookie (Vercel Web Analytics)",
+    finalite: "Compter la fréquentation du site de façon globale, pour en suivre l'usage",
+    base: "Intérêt légitime du cabinet à mesurer l'audience de son site",
+    donnees:
+      "Données agrégées de navigation (page, source, pays, type d'appareil), sans cookie ni identifiant persistant ni adresse IP conservée",
+    duree: "Aucun cookie ; la session de visite est automatiquement supprimée après 24 heures",
+  },
+  {
+    traitement: "Mesure d'audience (Google Analytics 4)",
+    finalite: "Statistiques de fréquentation et de parcours, amélioration éditoriale du site",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Pages consultées, parcours, source, données de navigation (cookies _ga)",
+    duree: "Cookies : 13 mois. Transferts vers les États-Unis encadrés par le Data Privacy Framework",
+  },
+  {
+    traitement: "Analyse de l'expérience (Microsoft Clarity)",
+    finalite: "Cartes de chaleur et relecture agrégée de la navigation, avec masquage strict des saisies",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Interactions agrégées, défilement, clics (aucune donnée saisie)",
+    duree: "Cookies : de la session à 1 an. Microsoft Corporation (États-Unis), Data Privacy Framework",
+  },
+  {
+    traitement: "Suivi de la relation en ligne (HubSpot)",
+    finalite: "Rattachement des visites à la fiche d'un prospect qui contacte le cabinet",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Pages vues, source, identifiant de suivi (cookies __hstc, hubspotutk…)",
+    duree: "Cookies : 6 mois (__hstc, hubspotutk), 30 min (__hssc). Hébergement UE (eu1)",
+  },
+  {
+    traitement: "Gestion des demandes de contact (CRM HubSpot)",
+    finalite: "Traiter la demande adressée via le formulaire et en assurer le suivi",
+    base: "Mesures précontractuelles et intérêt légitime du cabinet",
+    donnees: "Objet, urgence, nom, organisation, e-mail, téléphone, message, page d'arrivée, UTM",
+    duree:
+      "3 ans à compter du dernier contact (demandes sans suite) ; clients : durée de la relation puis archivage légal. Hébergement UE (eu1) ; accès possible de sous-traitants depuis les États-Unis (Data Privacy Framework)",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -371,15 +406,37 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Un cabinet d&#39;avocats traite, par nature, des informations que ses clients ne confieraient
-          à personne d&#39;autre. Le secret professionnel prime sur toute considération de commodité :
-          il commande la limitation des données collectées, le choix des prestataires, la
-          localisation des serveurs et les réponses apportées aux demandes de tiers.
+          Dès votre premier message, vos échanges avec le cabinet sont protégés par le secret
+          professionnel de l&#39;avocat (article 66-5 de la loi du 31 décembre 1971). Ce secret prime
+          sur toute considération de commodité : il commande la limitation des données collectées, le
+          choix des prestataires et la localisation des serveurs.
         </P>
+        <P>Concrètement :</P>
+        <UL>
+          <li>seuls les avocats du cabinet lisent les demandes envoyées par le site ;</li>
+          <li>
+            aucune information n&#39;est transmise à un tiers, en dehors des prestataires techniques
+            indispensables, cités plus bas (hébergement, messagerie, logiciel de suivi des
+            demandes) ;
+          </li>
+          <li>
+            si votre dossier nécessite l&#39;avis d&#39;un expert technique travaillant avec le cabinet,
+            celui-ci ne reçoit que les éléments utiles à sa mission et s&#39;engage par écrit à les
+            garder confidentiels.
+          </li>
+        </UL>
+        <div className="lz-avertissement">
+          <span className="lz-avertissement-label">un conseil</span>
+          <P>
+            Dans le formulaire, décrivez simplement votre situation. Les pièces et les détails
+            sensibles pourront être transmis lors de votre premier échange avec un avocat, par un
+            canal adapté.
+          </P>
+        </div>
         <P>
           Aucune donnée traitée par le cabinet n&#39;est vendue, louée, ni utilisée à des fins
           publicitaires. Aucune décision automatisée produisant des effets juridiques n&#39;est prise à
-          l&#39;égard des personnes concernées.
+          votre égard.
         </P>
       </>
     ),
@@ -439,6 +496,12 @@ const DONNEES = [
           <li>l&#39;expert-comptable et, le cas échéant, le commissaire aux comptes.</li>
         </UL>
         <P>
+          Les prestataires techniques qui interviennent pour le site et le suivi des demandes sont les
+          suivants. Chacun n&#39;utilise vos données que pour sa mission, dans le cadre d&#39;un contrat
+          conforme au RGPD.
+        </P>
+        <TablePrestataires />
+        <P>
           Les demandes de communication émanant d&#39;une autorité ne sont satisfaites que dans les
           formes et limites prévues par la loi, en particulier celles qui protègent le secret
           professionnel et exigent l&#39;intervention du Bâtonnier.
@@ -477,6 +540,19 @@ const DONNEES = [
           Le cabinet suit l&#39;évolution de ce cadre, dont la validité est contestée devant le juge de
           l&#39;Union. Une remise en cause de la décision d&#39;adéquation conduirait au réexamen immédiat
           de cet hébergement.
+        </P>
+        <H3>Les autres transferts possibles</H3>
+        <P>
+          Si vous acceptez les outils de mesure facultatifs, Google et Microsoft peuvent traiter
+          certaines données aux États-Unis, dans le même cadre (Data Privacy Framework du 10 juillet
+          2023, complété par les clauses contractuelles types). Le logiciel de suivi des demandes,
+          HubSpot, héberge les données dans l&#39;Union européenne (région eu1)&nbsp;; certains de ses
+          sous-traitants peuvent toutefois y accéder depuis les États-Unis, dans le même cadre.
+          Le détail de ces outils figure dans la{" "}
+          <a className="lz-lien-inline" href="/politique-cookies">
+            politique de cookies
+          </a>
+          .
         </P>
         <P>
           Un dossier peut par ailleurs exiger la communication de pièces à une juridiction ou à une
@@ -519,23 +595,37 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Le site ne dépose que les traceurs strictement nécessaires à son fonctionnement et à la
-          sécurité de la navigation, exemptés de consentement au titre de l&#39;article 82 de la loi
-          du 6 janvier 1978.
+          Le site ne dépose sans votre accord que les traceurs strictement nécessaires à son
+          fonctionnement et à sa sécurité, ainsi qu&#39;un cookie conservant votre choix de
+          consentement. La fréquentation est mesurée de façon globale, sans cookie et sans vous
+          identifier (Vercel Web Analytics), au titre de l&#39;intérêt légitime du cabinet.
         </P>
         <P>
-          Aucun outil de mesure d&#39;audience n&#39;est installé. Le site ne comporte aucun cookie
-          publicitaire, aucun traceur statistique, aucun bouton de partage ni dispositif de
-          profilage, et n&#39;incorpore aucun contenu tiers : les polices sont hébergées sur le domaine
-          du cabinet, les images et les vidéos sont servies depuis le site, sans carte, vidéo ni
-          police externe. Aucune donnée de navigation n&#39;est transmise à un tiers à des fins de
-          mesure ou de publicité.
+          Les autres outils de mesure (Google Analytics, Microsoft Clarity, suivi HubSpot) ne sont
+          activés qu&#39;avec votre consentement, recueilli finalité par finalité au moyen du bandeau,
+          et révocable à tout moment via le lien «&nbsp;Gérer les cookies&nbsp;» en pied de page.
+          Aucun traceur publicitaire, aucun profilage publicitaire, aucune donnée vendue.
         </P>
         <P>
-          Aucune bannière de recueil du consentement n&#39;est donc nécessaire. Si une mesure
-          d&#39;audience venait à être mise en place, cette politique serait actualisée au préalable
-          et, le cas échéant, le consentement recueilli avant tout dépôt, refusé aussi facilement
-          qu&#39;accepté et révocable à tout moment.
+          Le détail de ces outils, des cookies déposés, de leurs durées et des transferts hors Union
+          européenne figure dans la{" "}
+          <a className="lz-lien-inline" href="/politique-cookies">
+            politique de cookies
+          </a>
+          .
+        </P>
+        <P>
+          <strong>Formulaire de contact et CRM.</strong> Lorsque vous utilisez le formulaire, votre
+          demande (objet, degré d&#39;urgence, nom, organisation, e-mail, téléphone, message), ainsi
+          que la page d&#39;arrivée et les paramètres de campagne (UTM) présents dans l&#39;adresse,
+          sont transmis au logiciel de suivi HubSpot afin de traiter votre demande et d&#39;en assurer
+          le suivi. Cette transmission est effectuée côté serveur, indépendamment des cookies et de
+          votre choix relatif aux traceurs. Les demandes adressées au cabinet peuvent contenir des
+          informations couvertes par le secret professionnel&nbsp;; l&#39;accès au logiciel de suivi
+          est strictement réservé au cabinet. Ces données sont conservées trois ans à compter du
+          dernier contact pour les demandes qui n&#39;aboutissent pas à une relation client&nbsp;;
+          pour les clients, pendant la durée de la relation, puis archivées selon les obligations
+          légales applicables.
         </P>
       </>
     ),
@@ -597,6 +687,200 @@ const DROITS = [
   ["Retrait", "Retirer un consentement à tout moment, sans effet rétroactif", "art. 7"],
 ];
 
+// Prestataires techniques nommés (point « Qui y a accès » + « Hors de l'UE »).
+const PRESTATAIRES = [
+  [
+    "Vercel",
+    "Héberge le site et en mesure la fréquentation sans cookie",
+    "États-Unis — adhérent au cadre de protection des données UE — États-Unis (Data Privacy Framework)",
+  ],
+  ["IONOS", "Messagerie électronique du cabinet", "Union européenne"],
+  [
+    "HubSpot",
+    "Logiciel de suivi des demandes (CRM) et, après consentement, suivi des visites",
+    "Union européenne (région eu1) ; un accès technique de sous-traitants depuis les États-Unis reste possible (Data Privacy Framework)",
+  ],
+  [
+    "Google",
+    "Statistiques de fréquentation détaillées, uniquement si vous les acceptez",
+    "Union européenne et États-Unis (Data Privacy Framework)",
+  ],
+  [
+    "Microsoft",
+    "Analyse de l'utilisation des pages, uniquement si vous l'acceptez",
+    "États-Unis (Data Privacy Framework)",
+  ],
+];
+
+/* -------------------------------------------------------------------------- */
+/*  Onglet 3 — Politique de cookies                                            */
+/* -------------------------------------------------------------------------- */
+
+// Cookie déposé sans consentement (fonctionnement / mémorisation du choix).
+const COOKIE_NECESSAIRE = [
+  [
+    "lz_consent",
+    "Retenir vos choix de consentement, pour ne pas vous les redemander à chaque page",
+    "6 mois",
+  ],
+];
+
+// Cookies soumis au consentement, finalité par finalité.
+const COOKIES_CONSENTEMENT = [
+  {
+    role: "Statistiques de fréquentation : pages les plus lues, chemin suivi sur le site, provenance des visiteurs, envoi d'une demande",
+    outil: "Google Analytics 4 (Google)",
+    cookies: "_ga, _ga_…",
+    duree: "13 mois maximum",
+  },
+  {
+    role: "Amélioration des pages : repérer où les visiteurs cliquent, hésitent ou s'arrêtent. Ce que vous écrivez dans les formulaires et le texte affiché ne sont jamais enregistrés.",
+    outil: "Microsoft Clarity",
+    cookies: "_clck, _clsk (et des cookies de domaine Microsoft : MUID, CLID…)",
+    duree: "_clck : jusqu'à 1 an ; _clsk : environ 1 jour",
+  },
+  {
+    role: "Suivi de votre demande : si vous écrivez au cabinet, relier vos visites précédentes à votre demande, pour mieux en comprendre l'objet",
+    outil: "HubSpot",
+    cookies: "__hstc, hubspotutk, __hssc, __hssrc",
+    duree: "6 mois, 6 mois, 30 minutes, durée de la session",
+  },
+];
+
+const COOKIES = [
+  {
+    id: "definition",
+    titre: "Qu'est-ce qu'un cookie",
+    corps: (
+      <P>
+        Un cookie est un petit fichier enregistré sur votre ordinateur, votre téléphone ou votre
+        tablette lorsque vous visitez un site. Certains sont indispensables à son fonctionnement.
+        D&#39;autres servent à mesurer sa fréquentation ou à comprendre comment il est utilisé&nbsp;:
+        ceux-là ne sont déposés <strong>que si vous les acceptez</strong>.
+      </P>
+    ),
+  },
+  {
+    id: "controle",
+    titre: "Vous gardez la main",
+    corps: (
+      <UL>
+        <li>
+          <strong>Rien n&#39;est activé sans votre accord.</strong> Tant que vous n&#39;avez pas fait
+          de choix, aucun cookie facultatif n&#39;est déposé.
+        </li>
+        <li>
+          <strong>Refuser est aussi simple qu&#39;accepter.</strong> Les boutons «&nbsp;Tout
+          accepter&nbsp;» et «&nbsp;Tout refuser&nbsp;» sont présentés côte à côte, de la même façon.
+        </li>
+        <li>
+          <strong>Vous pouvez choisir au cas par cas</strong>, avec le bouton
+          «&nbsp;Personnaliser&nbsp;».
+        </li>
+        <li>
+          <strong>Refuser ne change rien à votre visite</strong>&nbsp;: l&#39;ensemble du site reste
+          accessible.
+        </li>
+        <li>
+          <strong>Vous pouvez changer d&#39;avis à tout moment</strong>, avec le lien «&nbsp;Gérer
+          les cookies&nbsp;», en bas de chaque page.
+        </li>
+      </UL>
+    ),
+  },
+  {
+    id: "necessaires",
+    titre: "Le cookie qui ne nécessite pas votre accord",
+    tableNecessaire: true,
+    corps: (
+      <P>
+        Un seul cookie est déposé sans votre accord&nbsp;: il sert à retenir votre choix de
+        consentement. La mesure de fréquentation globale (Vercel Web Analytics) ne dépose, elle,
+        aucun cookie et ne vous identifie pas&nbsp;: les visites sont comptées au moyen d&#39;un
+        identifiant éphémère, supprimé après 24&nbsp;heures. Elle ne nécessite donc pas votre accord.
+      </P>
+    ),
+  },
+  {
+    id: "consentement",
+    titre: "Les cookies soumis à votre accord",
+    tableConsentement: true,
+    corps: (
+      <>
+        <P>
+          Ces cookies ne sont déposés qu&#39;après votre consentement, recueilli finalité par
+          finalité.
+        </P>
+      </>
+    ),
+    apres: (
+      <>
+        <P>
+          Les statistiques détaillées sont conservées <strong>14 mois au plus</strong>, puis
+          supprimées.
+        </P>
+        <P>
+          <strong>Le site n&#39;utilise aucun traceur publicitaire</strong>
+          {" "}et aucun bouton de partage vers les réseaux sociaux. Seul Microsoft Clarity, s&#39;il
+          est accepté, peut déposer des cookies Microsoft susceptibles d&#39;être utilisés au-delà de
+          ce site.
+        </P>
+      </>
+    ),
+  },
+  {
+    id: "fonctionnement",
+    titre: "Comment cela fonctionne",
+    corps: (
+      <P>
+        Ces outils sont pilotés par Google Tag Manager, qui applique vos choix&nbsp;: chaque outil ne
+        s&#39;active que si vous avez accepté ce qu&#39;il fait (Consent Mode&nbsp;v2). Si vous
+        refusez, aucun n&#39;est chargé.
+      </P>
+    ),
+  },
+  {
+    id: "duree-choix",
+    titre: "Combien de temps votre choix est-il retenu",
+    corps: (
+      <P>
+        Votre choix, que vous ayez accepté ou refusé, est conservé <strong>6 mois</strong>. Il vous
+        est ensuite demandé à nouveau.
+      </P>
+    ),
+  },
+  {
+    id: "changer",
+    titre: "Changer d'avis",
+    corps: (
+      <UL>
+        <li>
+          <strong>Sur le site</strong>&nbsp;: cliquez sur «&nbsp;Gérer les cookies&nbsp;», en bas de
+          chaque page. Vous pouvez y retirer votre accord aussi simplement que vous l&#39;avez donné.
+        </li>
+        <li>
+          <strong>Dans votre navigateur</strong>&nbsp;: vous pouvez bloquer ou supprimer les cookies
+          dans ses réglages. Ce choix s&#39;appliquera à tous les sites que vous visitez.
+        </li>
+      </UL>
+    ),
+  },
+  {
+    id: "savoir-plus",
+    titre: "Pour en savoir plus",
+    corps: (
+      <P>
+        Les garanties prévues lorsque des données sont traitées hors de l&#39;Union européenne, ainsi
+        que vos droits et la façon de les exercer, sont expliqués dans la{" "}
+        <a className="lz-lien-inline" href="/politique-de-confidentialite">
+          politique de confidentialité
+        </a>
+        .
+      </P>
+    ),
+  },
+];
+
 /* -------------------------------------------------------------------------- */
 /*  Page                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -608,6 +892,12 @@ const ONGLETS = [
     label: "politique de confidentialité",
     titre: "DONNÉES PERSONNELLES",
     sections: DONNEES,
+  },
+  {
+    cle: "cookies",
+    label: "politique de cookies",
+    titre: "COOKIES",
+    sections: COOKIES,
   },
 ];
 
@@ -652,11 +942,7 @@ export default function PagesLegales({ initial = "mentions" }) {
             Lazarègue Avocats · document juridique · version {VERSION} · à jour au {MAJ}
           </p>
           <h1 className="lz-h1">{courant.titre}</h1>
-          <p className="lz-chapo">
-            Un cabinet qui conseille sur la protection des données se doit d&#39;appliquer à lui-même la
-            clarté qu&#39;il recommande. Ces deux documents sont écrits pour être lus, non pour être
-            acceptés sans l&#39;être.
-          </p>
+          {courant.chapo && <p className="lz-chapo">{courant.chapo}</p>}
 
           <nav className="lz-tabs" aria-label="Documents légaux">
             {ONGLETS.map((o) => (
@@ -704,6 +990,9 @@ export default function PagesLegales({ initial = "mentions" }) {
               {s.corps}
               {s.registre && <Registre />}
               {s.droits && <TableauDroits />}
+              {s.tableNecessaire && <TableCookieNecessaire />}
+              {s.tableConsentement && <TableCookiesConsentement />}
+              {s.apres}
             </section>
           ))}
 
@@ -791,6 +1080,116 @@ function TableauDroits() {
   );
 }
 
+/** Tableau des prestataires techniques nommés, lisible en pile sur mobile. */
+function TablePrestataires() {
+  return (
+    <figure className="lz-piece">
+      <figcaption className="lz-piece-entete">
+        <span className="lz-piece-label">prestataires techniques</span>
+        <span className="lz-piece-meta">sous-traitants · art. 28 RGPD</span>
+      </figcaption>
+      <div className="lz-piece-scroll">
+        <table className="lz-table lz-table-3">
+          <thead>
+            <tr>
+              <th scope="col">prestataire</th>
+              <th scope="col">son rôle</th>
+              <th scope="col">où sont les données</th>
+            </tr>
+          </thead>
+          <tbody>
+            {PRESTATAIRES.map(([nom, role, lieu]) => (
+              <tr key={nom}>
+                <th scope="row" data-lb="prestataire">
+                  {nom}
+                </th>
+                <td data-lb="son rôle">{role}</td>
+                <td data-lb="où sont les données">{lieu}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="lz-piece-note">
+        La liste nominative complète, avec les coordonnées de chaque prestataire, est communiquée sur
+        demande.
+      </p>
+    </figure>
+  );
+}
+
+/** Politique de cookies — cookie nécessaire (mémorisation du choix). */
+function TableCookieNecessaire() {
+  return (
+    <figure className="lz-piece">
+      <figcaption className="lz-piece-entete">
+        <span className="lz-piece-label">cookie nécessaire</span>
+        <span className="lz-piece-meta">sans consentement · art. 82 loi 1978</span>
+      </figcaption>
+      <div className="lz-piece-scroll">
+        <table className="lz-table lz-table-3">
+          <thead>
+            <tr>
+              <th scope="col">cookie</th>
+              <th scope="col">à quoi il sert</th>
+              <th scope="col">durée</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COOKIE_NECESSAIRE.map(([nom, role, duree]) => (
+              <tr key={nom}>
+                <th scope="row" data-lb="cookie">
+                  <code>{nom}</code>
+                </th>
+                <td data-lb="à quoi il sert">{role}</td>
+                <td data-lb="durée">{duree}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </figure>
+  );
+}
+
+/** Politique de cookies — cookies soumis au consentement. */
+function TableCookiesConsentement() {
+  return (
+    <figure className="lz-piece">
+      <figcaption className="lz-piece-entete">
+        <span className="lz-piece-label">cookies soumis à votre accord</span>
+        <span className="lz-piece-meta">consentement · finalité par finalité</span>
+      </figcaption>
+      <div className="lz-piece-scroll">
+        <table className="lz-table lz-table-cons">
+          <thead>
+            <tr>
+              <th scope="col">ce qu&#39;ils permettent</th>
+              <th scope="col">outil</th>
+              <th scope="col">cookies</th>
+              <th scope="col">durée</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COOKIES_CONSENTEMENT.map((c) => (
+              <tr key={c.outil}>
+                <th scope="row" data-lb="ce qu'ils permettent">
+                  {c.role}
+                </th>
+                <td data-lb="outil">{c.outil}</td>
+                <td data-lb="cookies">
+                  <code>{c.cookies}</code>
+                </td>
+                <td data-lb="durée">{c.duree}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </figure>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Styles — charte v1.0                                                       */
 /* -------------------------------------------------------------------------- */
@@ -814,7 +1213,7 @@ const CSS = `
   letter-spacing:.01em;margin:0;max-width:14ch;}
 .lz-chapo{font-weight:300;font-style:italic;font-size:clamp(16px,1.6vw,19px);color:#C9CEE4;
   max-width:56ch;margin:28px 0 48px;}
-.lz-tabs{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.16);}
+.lz-tabs{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.16);margin-top:48px;flex-wrap:wrap;}
 .lz-tab{appearance:none;background:none;border:0;border-top:2px solid transparent;margin-top:-1px;
   padding:20px 28px 20px 0;margin-right:36px;cursor:pointer;color:#9AA3C4;
   font-family:var(--mono);font-size:12px;letter-spacing:.16em;transition:color .18s;}
@@ -881,6 +1280,12 @@ const CSS = `
 .lz-piece-meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#9AA3C4;}
 .lz-piece-scroll{overflow-x:auto;}
 .lz-table{border-collapse:collapse;width:100%;min-width:820px;font-size:13px;line-height:1.5;}
+.lz-table-3{min-width:0;}
+.lz-table-3 tbody th{width:20%;}
+.lz-table-cons{min-width:0;}
+.lz-table-cons tbody th{width:32%;font-weight:400;}
+.lz-table-cons td{font-size:12.5px;}
+.lz-table code{font-family:var(--mono);font-size:12px;}
 .lz-table th,.lz-table td{border-bottom:1px solid var(--bord);border-right:1px solid var(--bord);
   padding:12px 14px;text-align:left;vertical-align:top;}
 .lz-table th:last-child,.lz-table td:last-child{border-right:0;}
@@ -900,6 +1305,11 @@ const CSS = `
   .lz-table td::before{content:attr(data-lb);display:block;font-family:var(--mono);font-size:10px;
     letter-spacing:.16em;color:var(--muted);margin-bottom:3px;}
   .lz-table tbody th{font-size:15px;padding-top:12px;}
+  /* En pile (mobile), les largeurs de colonne des tableaux spécifiques ne
+     doivent pas s'appliquer, sinon l'en-tête de ligne se réduit à ~32 % et le
+     texte tombe mot par mot. On rend la pleine largeur. */
+  .lz-table-3 tbody th,.lz-table-cons tbody th{width:auto;}
+  .lz-table-cons td,.lz-table-cons tbody th{font-size:15px;}
 }
 
 /* Droits */
@@ -925,6 +1335,8 @@ const CSS = `
 .lz-lien-fort{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--bleu);
   text-decoration:none;border-bottom:1px solid var(--bleu);padding-bottom:3px;}
 .lz-lien-fort:hover{color:var(--bleu-fonce);border-color:var(--bleu-fonce);}
+.lz-lien-inline{color:var(--bleu);text-decoration:underline;text-underline-offset:2px;}
+.lz-lien-inline:hover{color:var(--bleu-fonce);}
 
 @media print{
   .lz-masthead{background:none;color:#000;padding-top:0;}
@@ -937,18 +1349,25 @@ const CSS = `
 `;
 
 /* -------------------------------------------------------------------------- */
-/*  Mentions restant à vérifier — plus aucun blanc dans les mentions légales  */
+/*  Notes de vérification (1er octobre 2026)                                   */
 /*                                                                            */
-/*   1. Traceurs : RÉGLÉ — aucun outil de mesure d'audience installé, aucun    */
-/*      contenu tiers incorporé (polices auto-hébergées, images et vidéos      */
-/*      servies depuis le site). Le texte reflète cette réalité.               */
-/*   2. Formulaire de contact : le texte affirme qu'aucune donnée de dossier  */
-/*      n'est stockée sur l'infrastructure du site. À confirmer si le         */
-/*      formulaire transmet par courriel sans persistance en base.            */
-/*   3. TVA intracommunautaire FR24 823 894 142, calculée par la clé          */
-/*      officielle (12 + 3 × SIREN mod 97) mod 97, à confronter aux           */
-/*      déclarations du cabinet.                                              */
+/*   Trois onglets : mentions légales, politique de confidentialité, cookies.  */
+/*   La politique de cookies reprend le même gabarit (masthead + sommaire +    */
+/*   sections + tableaux « pièce »).                                           */
 /*                                                                            */
-/*  Hébergeur : coordonnées relevées le 1er septembre 2026 sur la politique   */
-/*  de confidentialité et la DMCA Policy publiées par Vercel Inc.             */
+/*   Traceurs : GA4 + Microsoft Clarity + suivi HubSpot, pilotés par GTM +     */
+/*   Consent Mode v2 ; consentement recueilli par le bandeau CookieConsent v3  */
+/*   (cookie de choix lz_consent, 6 mois). Durées vérifiées (oct. 2026) :      */
+/*   HubSpot __hstc/hubspotutk 6 mois, __hssc 30 min, __hssrc session ;         */
+/*   Clarity _clck/_clsk (+ cookies Microsoft MUID/CLID) ; Vercel Web          */
+/*   Analytics sans cookie (identifiant éphémère, 24 h).                        */
+/*   Formulaire : transmis par e-mail (SMTP cabinet) ET au CRM HubSpot côté    */
+/*   serveur (base légale « Exécution d'un contrat »), indépendamment des       */
+/*   cookies ; aucune persistance en base sur l'infra du site.                  */
+/*                                                                            */
+/*   Confirmé par le cabinet (oct. 2026) : aucun DPO désigné ; IONOS dans       */
+/*   l'UE ; Vercel certifié Data Privacy Framework, données aux États-Unis,     */
+/*   durée des journaux = celle appliquée par l'hébergeur (formule Vercel Pro   */
+/*   en cours pour le DPA). Reste opérationnel (hors texte) : régler GA4 à       */
+/*   13 mois dans GTM et activer le RGPD dans HubSpot. Voir docs/.              */
 /* -------------------------------------------------------------------------- */
