@@ -101,7 +101,7 @@ const CASES = [
 /* Équipe — quatre intervenants. Khalid : statut issu de lib/equipe. */
 const TEAM = [
   { photo: "/images/alexandre-pro.jpg", alt: "Portrait d'Alexandre Lazarègue", nom: "Alexandre Lazarègue", bar: "avocat au barreau de Paris", p: "Droit du numérique. Conduit les recours contre les établissements financiers, l'action pénale et les mesures d'instruction destinées à identifier les comptes de réception.", pos: "center 25%" },
-  { photo: "/images/amir-pro.jpg", alt: "Portrait d'Amir Ben Majed", nom: "Amir Ben Majed", bar: "avocat au barreau d'Évry", p: "Contentieux et procédure. Intervient sur les écritures, les mesures d'urgence et la conduite des instances devant les juridictions saisies.", pos: "center 25%" },
+  { photo: "/images/amir-pro.jpg", alt: "Portrait d'Amir Ben Majed", nom: "Amir Ben Majed", bar: "avocat partenaire au barreau d'Évry", p: "Contentieux et procédure. Intervient sur les écritures, les mesures d'urgence et la conduite des instances devant les juridictions saisies.", pos: "center 25%" },
   { photo: "/images/equipe/sarah-hinderer.webp", alt: "Portrait de Sarah Hinderer", nom: "Sarah Hinderer", bar: "avocate aux barreaux de Paris et de Montréal", p: "Suit les dossiers de fraude bancaire et d'escroquerie, de la constitution du dossier de preuve au suivi des plaintes et du lien avec les services d'enquête.", pos: "center top" },
   { photo: "/images/khalid-pro.jpg", alt: "Portrait de Khalid Sookia", nom: "Khalid Sookia", bar: "consultant technique en cybersécurité", p: "Reconstitution des flux et analyse des journaux d'authentification.", pos: "center 20%" },
 ];

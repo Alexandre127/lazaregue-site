@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { fr } from "@/lib/typo";
+import { AMIR_BARREAU } from "@/lib/equipe";
 import styles from "./contentieux.module.css";
 import ContactForm from "./_components/ContactForm";
 import WaysTabs from "./_components/WaysTabs";
@@ -123,7 +124,7 @@ const DEROULE: { n: string; t: string; p: string; tags?: string[]; dark?: boolea
    même formule que la page cybercriminalité. */
 const EQUIPE: { statut: string; nom: string; barreau: string; texte: string; photo: string; dark?: boolean }[] = [
   { statut: "Avocat", nom: "Me Alexandre Lazarègue", barreau: "Barreau de Paris — droit du numérique et contentieux", texte: "Définit la stratégie, organise la preuve et conduit la négociation ou la procédure.", photo: "/images/alexandre-pro.jpg" },
-  { statut: "Avocat", nom: "Me Amir Ben Majed", barreau: "Avocat au barreau d’Évry (Essonne)", texte: "Analyse contractuelle, chronologie du projet, mises en demeure, expertises et écritures.", photo: "/images/amir-pro.jpg" },
+  { statut: "Avocat", nom: "Me Amir Ben Majed", barreau: `${AMIR_BARREAU} (Essonne)`, texte: "Analyse contractuelle, chronologie du projet, mises en demeure, expertises et écritures.", photo: "/images/amir-pro.jpg" },
   { statut: "Consultant technique en cybersécurité", nom: "Khalid Sookia", barreau: "Systèmes d’information et cybersécurité", texte: "Examine journaux, configurations, sauvegardes, versions et conditions techniques de la réversibilité.", photo: "/images/khalid-pro.jpg", dark: true },
 ];
 

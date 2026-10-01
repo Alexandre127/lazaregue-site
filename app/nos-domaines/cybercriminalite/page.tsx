@@ -78,7 +78,7 @@ const CASES = [
 /* Équipe — 4 intervenants. Khalid : statut issu de lib/equipe. Photos réelles. */
 const TEAM = [
   { nom: "Me Alexandre Lazarègue", statut: "Avocat au Barreau de Paris", role: "Droit pénal du numérique", photo: "/images/alexandre-pro.jpg" },
-  { nom: "Me Amir Ben Majed", statut: "Avocat au Barreau d’Évry (Essonne)", role: "Contentieux informatique et pénal", photo: "/images/amir-pro.jpg" },
+  { nom: "Me Amir Ben Majed", statut: "Avocat partenaire au Barreau d’Évry (Essonne)", role: "Contentieux informatique et pénal", photo: "/images/amir-pro.jpg" },
   { nom: "Me Sarah Hinderer", statut: "Avocate aux Barreaux de Paris et de Montréal", role: "Données personnelles et pénal", photo: "/images/equipe/sarah-hinderer.webp" },
   { nom: "Khalid Sookia", statut: "Consultant technique en cybersécurité", role: "Analyse des journaux, accès et configurations", photo: "/images/khalid-pro.jpg" },
 ];

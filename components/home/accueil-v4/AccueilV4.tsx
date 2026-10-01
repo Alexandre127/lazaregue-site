@@ -8,6 +8,7 @@ import { PortailDemo } from "@/components/home/section-differenciateurs";
 import { ACCUEIL_V4_CSS } from "@/components/home/accueil-v4-css";
 import { FAMILLES as MENU_FAMILLES } from "@/components/header/nav-data";
 import { HOME_DOSSIERS } from "@/components/home/accueil-v4/home-dossiers";
+import { AMIR_BARREAU } from "@/lib/equipe";
 
 /**
  * Accueil — intégration fidèle de la maquette V4 validée (18 sept. 2026).
@@ -455,7 +456,7 @@ const SHORT_DESC: Record<string, string> = {
 const LAWYERS = [
   { nom: "Alexandre Lazarègue", statut: "Avocat", role: "Avocat au barreau de Paris", exp: "Cybercriminalité et gestion de crise", photo: "/images/alexandre-pro.jpg", pos: "center 22%" },
   { nom: "Sarah Hinderer", statut: "Avocate", role: "Avocate aux barreaux de Paris et de Montréal", exp: "Données personnelles et intelligence artificielle", photo: "/images/equipe/sarah-hinderer.webp", pos: "center top" },
-  { nom: "Amir Ben Majed", statut: "Avocat", role: "Avocat au barreau d’Évry", exp: "Contrats IT et contentieux informatique", photo: "/images/amir-pro.jpg", pos: "center 22%" },
+  { nom: "Amir Ben Majed", statut: "Avocat", role: AMIR_BARREAU, exp: "Contrats IT et contentieux informatique", photo: "/images/amir-pro.jpg", pos: "center 22%" },
 ];
 const TECHNICAL = [
   { nom: "Khalid Sookia", statut: "Consultant technique en cybersécurité", role: "Consultant technique en cybersécurité", exp: "Investigation numérique", photo: "/images/khalid-pro.jpg", pos: "center 22%" },

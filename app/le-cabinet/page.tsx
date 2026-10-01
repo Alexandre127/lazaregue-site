@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./le-cabinet.module.css";
 import { CABINET } from "./data/liens";
-import { MEMBRES } from "@/lib/equipe";
+import { MEMBRES, AMIR_BARREAU } from "@/lib/equipe";
 import { PortailDemo } from "@/components/home/section-differenciateurs";
 import {
   HERO,
@@ -73,7 +73,7 @@ const AVOCATS_LD = [
   {
     slug: "amir-ben-majed",
     name: "Amir Ben Majed",
-    jobTitle: "Avocat au barreau de l'Essonne",
+    jobTitle: AMIR_BARREAU,
     knowsAbout: ["Contrats IT", "Contentieux IT", "Responsabilité des prestataires"],
   },
   {

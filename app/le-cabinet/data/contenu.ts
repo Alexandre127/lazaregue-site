@@ -9,6 +9,8 @@
  * pas des textes « à préciser » restés à l'état de gabarit dans la maquette.
  */
 
+import { AMIR_BARREAU } from "@/lib/equipe";
+
 /* ------------------------------------------------------------------ HERO */
 export const HERO = {
   eyebrow: "Le cabinet",
@@ -70,7 +72,7 @@ export const AVOCATS: Membre[] = [
   },
   {
     slug: "amir",
-    eyebrow: "Avocat au barreau d'Évry · contentieux IT",
+    eyebrow: `${AMIR_BARREAU} · contentieux IT`,
     nom: "Amir Ben Majed",
     bio: "Il intervient sur les litiges informatiques complexes : projets qui dérapent, responsabilité des prestataires, contentieux de la preuve technique — ces dossiers où le droit ne se départage qu'à condition de comprendre la machine.",
     domaines: ["Contrats IT", "Contentieux IT", "Responsabilité des prestataires"],

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import KeywordBadge from "@/components/keyword-badge";
 import { fr } from "@/lib/typo";
-import { MEMBRES } from "@/lib/equipe";
+import { MEMBRES, AMIR_BARREAU } from "@/lib/equipe";
 import styles from "./crypto.module.css";
 import { FAQ_ITEMS, faqAnswerText } from "./faq";
 import { Faq } from "./_components/Faq";
@@ -405,7 +405,7 @@ export default function Page() {
                   <div className="ph ph--filled">
                     <Image src="/images/amir-pro.jpg" alt="Me Amir Ben Majed" fill sizes="(max-width: 900px) 50vw, 33vw" loading="lazy" style={{ objectFit: "cover" }} />
                   </div>
-                  <div><h3>Me Amir Ben Majed</h3><p className="role">Avocat au barreau d’Évry</p><p>{fr("Contrats, responsabilité et exécution.")}</p></div>
+                  <div><h3>Me Amir Ben Majed</h3><p className="role">{AMIR_BARREAU}</p><p>{fr("Contrats, responsabilité et exécution.")}</p></div>
                 </li>
                 <li className="person">
                   <div className="ph ph--filled">
