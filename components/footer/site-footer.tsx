@@ -120,9 +120,19 @@ export function SiteFooter() {
       </div>
 
       <div className={styles.footerBottom}>
-        <p className={styles.copyright}>
-          © 2026 Lazarègue Avocats — Tous droits réservés
-        </p>
+        <nav className={styles.legal} aria-label="Informations légales">
+          <span className={styles.copyright}>© 2026 Lazarègue Avocats — tous droits réservés</span>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/politique-cookies">Politique de cookies</Link>
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <ManageCookiesLink bare />
+          <span className={styles.sep} aria-hidden="true">·</span>
+          <Link href="/colophon">v2.0 — colophon</Link>
+        </nav>
         <a
           className={styles.social}
           href="https://www.linkedin.com/in/alexandre-lazarègue"

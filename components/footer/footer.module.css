@@ -340,6 +340,38 @@
   letter-spacing: 0.04em;
   color: var(--muted-on-dark);
 }
+/* Ligne légale inférieure : copyright + liens + colophon, séparés par des
+   points médians. Boutons (« Gérer les cookies ») alignés sur les liens. */
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.legal a,
+.legal button {
+  color: var(--muted-on-dark);
+  text-decoration: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.legal a:hover,
+.legal button:hover,
+.legal a:focus-visible,
+.legal button:focus-visible {
+  color: var(--wh);
+}
+.sep {
+  color: rgba(255, 255, 255, 0.28);
+  user-select: none;
+}
 .social {
   display: inline-flex;
   align-items: center;

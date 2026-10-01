@@ -55,6 +55,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/mentions-legales", priority: 0.3, frequence: "yearly" },
   { path: "/politique-de-confidentialite", priority: 0.3, frequence: "yearly" },
   { path: "/politique-cookies", priority: 0.3, frequence: "yearly" },
+  { path: "/colophon", priority: 0.2, frequence: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

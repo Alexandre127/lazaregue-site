@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colophon — comment ce site est fait | Lazarègue Avocats</title>
+<meta name="description" content="Technologies, hébergement, mesure d'audience, consentement, usage de l'intelligence artificielle, crédits et licences : l'inventaire du site du cabinet Lazarègue Avocats.">
+<!-- MAQUETTE : polices chargées depuis Google Fonts pour l'aperçu uniquement.
+     Sur le site, elles sont auto-hébergées (la section 3 l'affirme). -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --electric:#1A47FF;--periwinkle:#4D6FFF;--deep:#0A2ACC;--navy:#0A0F2E;--ink:#0A0A14;
+  --ghost:#F4F4F8;--white:#FFFFFF;--muted:#8888A0;--border:#E0E0EE;
+  --display:"Bebas Neue",Impact,sans-serif;--sans:"Space Grotesk",system-ui,sans-serif;--mono:"DM Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--ghost);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--electric);text-decoration:none;border-bottom:1px solid rgba(26,71,255,.3)}
+a:hover{border-bottom-color:var(--electric)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--electric);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+
+.topbar{border-bottom:1px solid var(--border);background:var(--white)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mark{font-family:var(--display);font-size:24px;letter-spacing:.04em;color:var(--ink);border:0}
+.mark span{color:var(--electric)}
+.back{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);border:0}
+.back:hover{color:var(--electric)}
+
+.imprint{background:var(--navy);color:var(--white);padding:88px 0 72px}
+.imprint .wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:64px;align-items:end}
+.imprint h1{font-family:var(--display);font-weight:400;font-size:clamp(76px,13vw,168px);line-height:.82;letter-spacing:.01em}
+.imprint h1 em{font-style:normal;color:var(--periwinkle)}
+.imprint .sub{font-weight:300;font-size:20px;line-height:1.5;color:#C9CCE6;margin-top:24px;max-width:32ch}
+.record{border-top:2px solid var(--electric);padding-top:18px}
+.record dl{display:grid;grid-template-columns:auto 1fr;gap:9px 20px;font-family:var(--mono);font-size:12.5px;line-height:1.5}
+.record dt{color:#6E74A8;letter-spacing:.14em}
+.record dd{color:#DEE0F0;text-align:right}
+.record dd b{font-weight:500;color:var(--periwinkle)}
+
+.lede{background:var(--white);border-bottom:1px solid var(--border);padding:56px 0}
+.lede p{font-size:21px;line-height:1.6;max-width:62ch}
+.lede p+p{font-size:17px;color:#4A4A63;margin-top:20px;line-height:1.75}
+
+.entry{border-bottom:1px solid var(--border);padding:64px 0}
+.entry .wrap{display:grid;grid-template-columns:150px minmax(0,1fr);gap:48px}
+.gutter{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);line-height:1.9}
+.gutter .ref{color:var(--electric);display:block}
+.body{max-width:68ch}
+.body h2{font-weight:500;font-size:29px;line-height:1.25;letter-spacing:-.01em;margin-bottom:22px}
+.body p+p{margin-top:18px}
+.body p+h3,.body table+h3{margin-top:32px}
+.body h3{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.1em;color:var(--deep);margin-bottom:8px}
+
+.ledger{margin:28px 0 6px;width:100%;border-collapse:collapse;font-size:15.5px}
+.ledger th{font-family:var(--mono);font-size:11.5px;font-weight:400;letter-spacing:.14em;color:var(--muted);text-align:left;padding:0 14px 10px 0;border-bottom:1px solid var(--border)}
+.ledger th:last-child{text-align:right;padding-right:0}
+.ledger td{padding:16px 14px 16px 0;border-bottom:1px solid var(--border);vertical-align:top}
+.ledger td:first-child{font-weight:500;width:30%}
+.ledger td:last-child{text-align:right;padding-right:0;width:130px}
+.ledger tr:last-child td{border-bottom:0}
+.state{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--deep);white-space:nowrap}
+.state.off{color:var(--muted)}
+.state.consent{color:var(--electric)}
+.note{font-size:14.5px;color:#5A5A72;line-height:1.6;margin-top:5px}
+
+.versions{width:100%;border-collapse:collapse;margin-top:8px;font-size:15.5px}
+.versions td{padding:15px 16px 15px 0;border-bottom:1px solid var(--border);vertical-align:top}
+.versions tr:last-child td{border-bottom:0}
+.versions td:first-child{font-family:var(--display);font-size:26px;color:var(--electric);width:74px;line-height:1}
+.versions td:nth-child(2){font-family:var(--mono);font-size:12.5px;color:var(--muted);width:120px;letter-spacing:.08em}
+
+.tbc{font-family:var(--mono);font-size:.82em;color:var(--muted);background:#EAEAF2;padding:1px 7px;border-radius:2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+footer{background:var(--ink);color:#9A9AB4;padding:44px 0}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+footer a,footer button{color:#9A9AB4;border:0;background:none;font:inherit;letter-spacing:inherit;cursor:pointer;padding:0}
+footer a:hover,footer button:hover{color:var(--white)}
+footer .here{color:var(--periwinkle);border-bottom:1px solid var(--periwinkle)}
+footer .sep{color:#33334A}
+
+@media (max-width:900px){
+  .imprint .wrap{grid-template-columns:minmax(0,1fr);gap:44px;align-items:start}
+  .entry .wrap{grid-template-columns:minmax(0,1fr);gap:16px}
+  .gutter{display:flex;gap:14px;line-height:1.4}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  .imprint{padding:60px 0 52px}
+  .lede p{font-size:19px}
+  .body h2{font-size:25px}
+  .ledger thead{display:none}
+  .ledger tr{display:block;border-bottom:1px solid var(--border);padding:14px 0}
+  .ledger tr:last-child{border-bottom:0}
+  .ledger td{display:block;border:0;padding:2px 0;width:auto!important;text-align:left!important}
+  .ledger td:last-child{margin-top:6px}
+  .versions td:nth-child(2){width:96px}
+  .record dl{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="mark" href="/">LAZARÈGUE <span>AVOCATS</span></a>
+  <a class="back" href="/">retour au site</a>
+</div></div>
+
+<header class="imprint"><div class="wrap">
+  <div>
+    <h1>COLO<em>PHON</em></h1>
+    <p class="sub">Comment ce site est fait : ce qu'il utilise, ce qu'il mesure, ce qu'il conserve.</p>
+  </div>
+  <div class="record"><dl>
+    <dt>version</dt><dd><b>2.0</b></dd>
+    <dt>mise à jour</dt><dd><span class="tbc">date</span></dd>
+    <dt>outils de mesure</dt><dd><b>sur consentement</b></dd>
+    <dt>refuser</dt><dd>aussi simple qu'accepter</dd>
+    <dt>publicité</dt><dd><b>aucune</b></dd>
+    <dt>demandes reçues</dt><dd>hébergées dans l'UE</dd>
+    <dt>polices</dt><dd>auto-hébergées</dd>
+    <dt>visuels de synthèse</dt><dd>signalés</dd>
+  </dl></div>
+</div></header>
+
+<section class="lede"><div class="wrap">
+  <p>Cette page décrit le site que vous consultez : les technologies qu'il utilise, où il est hébergé, ce qu'il mesure, ce qu'il conserve, ce qu'il doit à d'autres et ce qu'il doit à des outils d'intelligence artificielle. Elle est datée et mise à jour à chaque évolution notable.</p>
+  <p>Le colophon est une tradition de l'édition : la note finale où l'imprimeur indiquait le papier, les caractères et l'atelier.</p>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 01</span> parti pris</div>
+  <div class="body">
+    <h2>Un site conçu par le cabinet</h2>
+    <p>Ce site n'a pas été confié à une agence. Il a été conçu et développé par le cabinet, avec l'assistance d'outils de génération de code décrits plus bas.</p>
+    <p>Ce choix tient à la nature de l'activité du cabinet. Conseiller des entreprises sur leurs contrats informatiques, leurs sous-traitants ou leur conformité en matière de données suppose de connaître de l'intérieur ce que recouvrent ces arbitrages : choisir un hébergeur, organiser le recueil du consentement, lire une licence jusqu'à sa dernière clause.</p>
+  </div>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 02</span> chaîne technique</div>
+  <div class="body">
+    <h2>Ce qui fait tourner ces pages</h2>
+    <h3>développement</h3>
+    <p>Le site est une application Next.js <span class="tbc">version</span>, écrite en TypeScript. Le globe de la page d'accueil repose sur la bibliothèque three.js. Les pages sont versionnées comme du code, sans système de gestion de contenu tiers.</p>
+    <h3>hébergement</h3>
+    <p>Le site est hébergé par Vercel Inc., société de droit américain, région d'exécution <span class="tbc">région</span>. Le nom de domaine est enregistré auprès de <span class="tbc">registraire</span>.</p>
+    <h3>messagerie et suivi des demandes</h3>
+    <p>Les demandes envoyées par le formulaire sont acheminées par la messagerie du cabinet, hébergée par IONOS <span class="tbc">localisation UE</span>, et enregistrées dans le logiciel de suivi HubSpot, dont les données sont hébergées dans l'Union européenne.</p>
+    <h3>l'arbitrage de l'hébergement</h3>
+    <p>Recourir à un hébergeur américain pose deux questions : la possibilité d'un accès aux données par les autorités des États-Unis en vertu de leur législation, et l'encadrement des transferts hors de l'Union européenne. La seconde est traitée par <span class="tbc">Data Privacy Framework et/ou clauses contractuelles types</span>. La première ne se règle pas par contrat.</p>
+    <p>Ce choix a été retenu parce que le site ne conserve pas lui-même de données personnelles : il n'a ni base d'utilisateurs, ni compte, ni espace personnel. Les demandes adressées au cabinet sont conservées dans un logiciel hébergé en Europe, et non chez l'hébergeur du site.</p>
+  </div>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 03</span> relevé</div>
+  <div class="body">
+    <h2>Ce que ce site mesure, et comment</h2>
+    <p>Ces informations sont vérifiables par quiconque ouvre les outils de développement de son navigateur.</p>
+    <table class="ledger">
+      <thead><tr><th>élément</th><th>observation</th><th>statut</th></tr></thead>
+      <tbody>
+        <tr><td>Avant tout choix</td><td>Aucun outil de mesure soumis à consentement n'est chargé.<p class="note">« Tout accepter » et « Tout refuser » sont présentés de la même façon. Refuser n'a aucune conséquence sur l'accès au site.</p></td><td><span class="state off">rien d'activé</span></td></tr>
+        <tr><td>Fréquentation globale</td><td>Vercel Web Analytics, sans cookie ni identifiant persistant <span class="tbc">à vérifier</span>.</td><td><span class="state">sans cookie</span></td></tr>
+        <tr><td>Statistiques détaillées</td><td>Google Analytics 4 : pages consultées, parcours, provenance.</td><td><span class="state consent">sur consentement</span></td></tr>
+        <tr><td>Usage des pages</td><td>Microsoft Clarity : endroits où les visiteurs cliquent, hésitent ou s'arrêtent.<p class="note">Le texte saisi dans les formulaires et le texte affiché sont masqués : ils ne sont jamais enregistrés.</p></td><td><span class="state consent">sur consentement</span></td></tr>
+        <tr><td>Suivi des demandes</td><td>HubSpot : relie les visites d'une personne à la demande qu'elle adresse au cabinet.</td><td><span class="state consent">sur consentement</span></td></tr>
+        <tr><td>Publicité</td><td>Aucun pixel publicitaire (Meta, LinkedIn, Google Ads), aucune régie, aucun bouton de partage, aucun suivi d'un site à l'autre.</td><td><span class="state off">aucune</span></td></tr>
+        <tr><td>Polices, images, vidéos</td><td>Servies depuis le domaine du site, sans appel à un serveur tiers.<p class="note">Sur téléphone, aucune vidéo n'est chargée.</p></td><td><span class="state">auto-hébergées</span></td></tr>
+        <tr><td>Formulaire de contact</td><td>Demandes transmises au cabinet par e-mail et enregistrées dans HubSpot (Union européenne), conservées 3 ans après le dernier échange en l'absence de suite. Aucune cession.</td><td><span class="state">limité</span></td></tr>
+        <tr><td>Journaux techniques</td><td>L'hébergeur conserve adresse IP, horodatage et navigateur pendant <span class="tbc">durée</span>, à des fins de sécurité.</td><td><span class="state">conservés</span></td></tr>
+        <tr><td>Consentement</td><td>Bandeau CookieConsent, bibliothèque libre hébergée sur le site. Choix conservé 6 mois, modifiable à tout moment par « Gérer les cookies ».</td><td><span class="state">6 mois</span></td></tr>
+        <tr><td>Accessibilité</td><td><span class="tbc">indiquer le référentiel et le niveau réellement atteint, ou supprimer cette ligne</span></td><td><span class="state off">à statuer</span></td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="margin-top:18px">Le détail des cookies figure dans la <a href="/politique-cookies">politique de cookies</a> ; celui des traitements de données et de vos droits, dans la <a href="/politique-de-confidentialite">politique de confidentialité</a>.</p>
+  </div>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 04</span> intelligence artificielle</div>
+  <div class="body">
+    <h2>La part des outils, et celle des avocats</h2>
+    <h3>code</h3>
+    <p>Une partie importante du code de ce site a été produite avec l'assistance d'un agent de génération de code <span class="tbc">outil, si précisé</span>. L'architecture, les choix de conception et la relecture relèvent du cabinet.</p>
+    <h3>textes</h3>
+    <p>Les contenus juridiques publiés ici peuvent être préparés avec l'assistance d'outils de génération de texte. Aucun n'est publié sans relecture et validation par un avocat du cabinet, qui en assume la responsabilité.</p>
+    <h3>images et vidéos</h3>
+    <p>Certains visuels de ce site sont des contenus de synthèse, produits par des modèles génératifs : <span class="tbc">liste des visuels, outil</span>. Ils sont signalés ici conformément à la logique de transparence de l'article 50 du règlement (UE) 2024/1689 sur l'intelligence artificielle.</p>
+    <h3>vos demandes</h3>
+    <p>Les messages adressés au cabinet par ce site sont lus et traités par ses avocats. Ils ne sont soumis à aucun outil d'intelligence artificielle pour y répondre, et ne servent à entraîner aucun modèle.</p>
+  </div>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 05</span> crédits</div>
+  <div class="body">
+    <h2>Ce que ce site doit à d'autres</h2>
+    <table class="ledger"><tbody>
+      <tr><td>Typographies</td><td>Bebas Neue — Ryoichi Tsunekawa, Dharma Type. Space Grotesk — Florian Karsten. DM Mono — Colophon Foundry.<p class="note">Licence SIL Open Font 1.1. <span class="tbc">à confirmer</span></p></td><td><span class="state">libres</span></td></tr>
+      <tr><td>Image de la Terre</td><td>Textures du globe issues des images « Blue Marble » et « Black Marble » de la NASA.</td><td><span class="state">domaine public</span></td></tr>
+      <tr><td>Photographies</td><td>Portraits de l'équipe et vues du cabinet réalisés par <span class="tbc">photographe, date</span>. Les personnes représentées ont consenti à l'utilisation de leur image.</td><td><span class="state">cédées</span></td></tr>
+      <tr><td>Visuels de synthèse</td><td><span class="tbc">outil, formule souscrite, usage commercial, absence de filigrane — à régler avant publication</span></td><td><span class="state off">à statuer</span></td></tr>
+      <tr><td>Bibliothèques</td><td>Next.js et React, three.js, CookieConsent.<p class="note">Licence MIT. <span class="tbc">à confirmer</span></p></td><td><span class="state">libres</span></td></tr>
+    </tbody></table>
+    <p class="note" style="margin-top:18px">Une erreur ou un oubli dans ces crédits peut être signalé à <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a>. Il sera corrigé, et la correction datée ci-dessous.</p>
+  </div>
+</div></section>
+
+<section class="entry"><div class="wrap">
+  <div class="gutter"><span class="ref">§ 06</span> versions</div>
+  <div class="body">
+    <h2>Journal des versions</h2>
+    <table class="versions"><tbody>
+      <tr><td>2.0</td><td><span class="tbc">date</span></td><td>Nouveau site : refonte complète, dix domaines de compétence, cas clients, ressources, formations, bandeau de consentement et mesure d'audience, publication de ce colophon.</td></tr>
+    </tbody></table>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Lazarègue Avocats — tous droits réservés</span><span class="sep">·</span>
+  <a href="/mentions-legales">mentions légales</a><span class="sep">·</span>
+  <a href="/politique-de-confidentialite">politique de confidentialité</a><span class="sep">·</span>
+  <a href="/politique-cookies">politique de cookies</a><span class="sep">·</span>
+  <button type="button">gérer les cookies</button><span class="sep">·</span>
+  <a class="here" href="/colophon">v2.0 — colophon</a>
+</div></footer>
+
+</body>
+</html>
