@@ -113,8 +113,8 @@ Un déclencheur « Événement personnalisé » par événement du §2 de la str
 - Déclencheur : **Initialisation — toutes les pages** (le Consent Mode bride la
   collecte tant que `analytics_storage` = `denied`).
 - Champs de configuration :
-  - `cookie_expires` = `34164000` (13 mois, en secondes) — **répond au point ⚑
-    « cookies GA4 limités à 13 mois »**.
+  - `cookie_expires` = `34164000` (13 mois, en secondes) — limite les cookies
+    GA4 à **13 mois**.
   - Dans GA4 (Administration) : conservation des données **14 mois**, partage
     des données avec Google **désactivé**, Google Signals **désactivé**.
 

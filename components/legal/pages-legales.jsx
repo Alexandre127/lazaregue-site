@@ -111,7 +111,7 @@ const REGISTRE = [
       "Maintien en condition opérationnelle, journalisation, détection et traitement des incidents",
     base: "Intérêt légitime du cabinet à la sécurité de son système d'information",
     donnees: "Adresse IP, horodatage, données techniques de connexion",
-    duree: "6 mois à compter de leur enregistrement",
+    duree: "Durée appliquée par l'hébergeur (journaux techniques)",
   },
   {
     traitement: "Mesure d'audience sans cookie (Vercel Web Analytics)",
@@ -820,8 +820,10 @@ const COOKIES = [
           supprimées.
         </P>
         <P>
-          <strong>Le site n&#39;utilise aucun cookie publicitaire</strong>, aucun bouton de partage
-          vers les réseaux sociaux, et ne vous suit pas sur d&#39;autres sites.
+          <strong>Le site n&#39;utilise aucun traceur publicitaire</strong>
+          {" "}et aucun bouton de partage vers les réseaux sociaux. Seul Microsoft Clarity, s&#39;il
+          est accepté, peut déposer des cookies Microsoft susceptibles d&#39;être utilisés au-delà de
+          ce site.
         </P>
       </>
     ),
@@ -1363,7 +1365,9 @@ const CSS = `
 /*   serveur (base légale « Exécution d'un contrat »), indépendamment des       */
 /*   cookies ; aucune persistance en base sur l'infra du site.                  */
 /*                                                                            */
-/*   Restent à confirmer par le cabinet : absence de DPO, localisation et       */
-/*   journaux Vercel/IONOS, durées exactes des cookies Clarity, réglage GA4     */
-/*   13 mois dans GTM, activation du RGPD dans HubSpot. Voir docs/.             */
+/*   Confirmé par le cabinet (oct. 2026) : aucun DPO désigné ; IONOS dans       */
+/*   l'UE ; Vercel certifié Data Privacy Framework, données aux États-Unis,     */
+/*   durée des journaux = celle appliquée par l'hébergeur (formule Vercel Pro   */
+/*   en cours pour le DPA). Reste opérationnel (hors texte) : régler GA4 à       */
+/*   13 mois dans GTM et activer le RGPD dans HubSpot. Voir docs/.              */
 /* -------------------------------------------------------------------------- */

@@ -5,7 +5,9 @@ Deux textes pour le site lazaregue-avocats.fr, rédigés en langage clair pour l
 - la **politique de confidentialité** (`/politique-de-confidentialite`) ;
 - la **politique de cookies** (`/politique-cookies`).
 
-Les mentions suivies de **⚑** sont à vérifier avant la mise en ligne, puis à retirer du texte publié. La liste figure à la fin du document.
+> **État au 1er octobre 2026.** Ce document de référence a été appliqué aux
+> pages publiées. Les points de vérification initiaux sont résolus (voir la
+> section finale) ; les pages légales en ligne font foi.
 
 ---
 
@@ -74,11 +76,11 @@ Des prestataires techniques interviennent pour le compte du cabinet. Chacun n'ut
 
 | Prestataire | Son rôle | Où sont les données ? |
 |---|---|---|
-| Vercel | Héberge le site et mesure sa fréquentation sans cookie | États-Unis ⚑ |
-| IONOS | Messagerie électronique du cabinet | Union européenne ⚑ |
+| Vercel | Héberge le site et mesure sa fréquentation sans cookie | États-Unis |
+| IONOS | Messagerie électronique du cabinet | Union européenne |
 | HubSpot | Logiciel de suivi des demandes | Union européenne (un accès technique depuis les États-Unis reste possible) |
 | Google | Statistiques de fréquentation, uniquement si vous les acceptez | Union européenne et États-Unis |
-| Microsoft ⚑ | Analyse de l'utilisation des pages, uniquement si vous l'acceptez | États-Unis |
+| Microsoft | Analyse de l'utilisation des pages, uniquement si vous l'acceptez | États-Unis |
 
 Vos données peuvent aussi être communiquées aux autorités, lorsque la loi l'impose, dans le respect du secret professionnel.
 
@@ -86,7 +88,7 @@ Vos données peuvent aussi être communiquées aux autorités, lorsque la loi l'
 
 Certains prestataires peuvent traiter des données aux États-Unis. Ces transferts sont encadrés :
 
-- par la décision de la Commission européenne du 10 juillet 2023 qui reconnaît un niveau de protection suffisant aux entreprises américaines engagées dans le « Data Privacy Framework » ⚑ ;
+- par la décision de la Commission européenne du 10 juillet 2023 qui reconnaît un niveau de protection suffisant aux entreprises américaines engagées dans le « Data Privacy Framework » ;
 - ou, à défaut, par les clauses contractuelles types de la Commission européenne.
 
 ## 7. Combien de temps vos données sont-elles conservées ?
@@ -95,7 +97,7 @@ Certains prestataires peuvent traiter des données aux États-Unis. Ces transfer
 |---|---|
 | Vous avez écrit au cabinet, sans donner suite | 3 ans après votre dernier échange avec le cabinet |
 | Vous êtes devenu client | Pendant toute la mission, puis 5 ans après sa fin (délai de prescription de la responsabilité de l'avocat, article 2225 du Code civil) |
-| Informations techniques de sécurité | Durée appliquée par l'hébergeur ⚑ |
+| Informations techniques de sécurité | Durée appliquée par l'hébergeur |
 | Statistiques et traceurs | Voir la politique de cookies |
 
 Au terme de ces durées, les données sont supprimées.
@@ -105,7 +107,7 @@ Au terme de ces durées, les données sont supprimées.
 - Le site est chiffré (HTTPS) : les informations que vous envoyez ne circulent pas en clair.
 - Les demandes sont conservées dans un logiciel hébergé en Europe.
 - L'accès est réservé aux avocats du cabinet.
-- Les comptes d'administration sont protégés par une double authentification ⚑.
+- Les comptes d'administration sont protégés par une double authentification.
 
 ## 9. Vos droits
 
@@ -152,21 +154,21 @@ Un cookie est un petit fichier enregistré sur votre ordinateur, votre télépho
 
 | Cookie | À quoi il sert | Durée |
 |---|---|---|
-| `cc_cookie` ⚑ | Retenir vos choix, pour ne pas vous les redemander à chaque page | 6 mois |
+| `cc_cookie` | Retenir vos choix, pour ne pas vous les redemander à chaque page | 6 mois |
 
-**La mesure de fréquentation globale** (Vercel Web Analytics) ne dépose aucun cookie et ne vous identifie pas ⚑. Elle ne nécessite donc pas votre accord.
+**La mesure de fréquentation globale** (Vercel Web Analytics) ne dépose aucun cookie et ne vous identifie pas. Elle ne nécessite donc pas votre accord.
 
 ## 4. Les cookies soumis à votre accord
 
 | Ce qu'ils permettent | Outil | Cookies | Durée |
 |---|---|---|---|
-| **Statistiques de fréquentation** : pages les plus lues, chemin suivi sur le site, provenance des visiteurs, envoi d'une demande | Google Analytics, de Google | `_ga`, `_ga_…` | 13 mois maximum ⚑ |
-| **Amélioration des pages** : repérer les endroits où les visiteurs cliquent, hésitent ou s'arrêtent. **Ce que vous écrivez dans les formulaires et le texte affiché ne sont jamais enregistrés.** | Microsoft Clarity ⚑ | `_clck`, `_clsk` ⚑ | 1 an, et 1 jour ⚑ |
-| **Suivi de votre demande** : si vous écrivez au cabinet, relier vos visites précédentes à votre demande, pour mieux en comprendre l'objet | HubSpot | `__hstc`, `hubspotutk`, `__hssc` ⚑ | 6 mois, 6 mois et 30 minutes ⚑ |
+| **Statistiques de fréquentation** : pages les plus lues, chemin suivi sur le site, provenance des visiteurs, envoi d'une demande | Google Analytics, de Google | `_ga`, `_ga_…` | 13 mois maximum |
+| **Amélioration des pages** : repérer les endroits où les visiteurs cliquent, hésitent ou s'arrêtent. **Ce que vous écrivez dans les formulaires et le texte affiché ne sont jamais enregistrés.** | Microsoft Clarity | `_clck`, `_clsk` | 1 an, et 1 jour |
+| **Suivi de votre demande** : si vous écrivez au cabinet, relier vos visites précédentes à votre demande, pour mieux en comprendre l'objet | HubSpot | `__hstc`, `hubspotutk`, `__hssc` | 6 mois, 6 mois et 30 minutes |
 
 Les statistiques détaillées sont conservées **14 mois au plus**, puis supprimées.
 
-**Le site n'utilise aucun cookie publicitaire**, aucun bouton de partage vers les réseaux sociaux, et ne vous suit pas sur d'autres sites.
+**Le site n'utilise aucun traceur publicitaire** et aucun bouton de partage vers les réseaux sociaux. Seul Microsoft Clarity, s'il est accepté, peut déposer des cookies Microsoft susceptibles d'être utilisés au-delà de ce site.
 
 ## 5. Comment cela fonctionne
 
@@ -187,19 +189,33 @@ Les garanties prévues lorsque des données sont traitées aux États-Unis, ains
 
 ---
 
-# Points à vérifier avant publication (⚑)
+# Vérifications — état au 1er octobre 2026
 
-1. **Délégué à la protection des données** : confirmer qu'aucun n'est désigné (le texte n'en mentionne pas).
-2. **Vercel** : localisation des données, certification au Data Privacy Framework, durée de conservation des journaux techniques, absence de cookie et d'identifiant pour Web Analytics.
+Confirmé par le cabinet :
+
+1. **Délégué à la protection des données** : aucun désigné.
+2. **Vercel** : certifié au Data Privacy Framework ; données traitées aux
+   États-Unis ; journaux techniques conservés selon la durée appliquée par
+   l'hébergeur (formule Vercel Pro en cours pour bénéficier du DPA) ; Web
+   Analytics sans cookie ni identifiant persistant.
 3. **IONOS** : messagerie hébergée dans l'Union européenne.
-4. **Microsoft Clarity** : entité responsable, noms et durées exacts des cookies.
-5. **HubSpot** : noms et durées actuels des cookies de suivi.
-6. **Google Analytics** : expiration des cookies réglée à 13 mois dans GTM (par défaut : 2 ans).
-7. **Outil de consentement** : nom exact du cookie de choix (`cc_cookie` est le nom par défaut de CookieConsent v3).
-8. **Double authentification** : activée sur Vercel, HubSpot, Google, Microsoft et IONOS avant d'en faire état.
 
-# Réglages à faire dans les outils, pour que les textes soient exacts
+Vérifié sur la documentation des outils :
 
-- **Google Analytics** (Administration) : désactiver le partage des données avec Google, laisser Google Signals désactivé, conservation des données à 14 mois (déjà fait).
-- **Microsoft Clarity** : masquage « Strict » (déjà fait).
-- **HubSpot** : désactiver la bannière de cookies propre à HubSpot, le consentement étant géré par le site.
+4. **Microsoft Clarity** : produit de Microsoft ; cookies `_clck`/`_clsk`
+   (première partie) et cookies de domaine Microsoft (MUID, CLID…). Conservé en
+   l'état.
+5. **HubSpot** : `__hstc`/`hubspotutk` 6 mois, `__hssc` 30 min, `__hssrc`
+   session.
+6. **Outil de consentement** : cookie de choix `lz_consent` (6 mois).
+
+# Réglages opérationnels (hors texte des pages)
+
+- **Google Analytics** : expiration des cookies réglée à 13 mois dans GTM
+  (`cookie_expires = 34164000`) ; partage des données avec Google désactivé ;
+  Google Signals désactivé ; conservation des données à 14 mois.
+- **Microsoft Clarity** : masquage « Strict » (déjà fait) ; le formulaire porte
+  en plus `data-clarity-mask="true"`.
+- **HubSpot** : désactiver la bannière de cookies propre à HubSpot (le
+  consentement est géré par le site) ; activer les fonctionnalités RGPD du
+  compte pour renseigner la base légale « Exécution d'un contrat ».
