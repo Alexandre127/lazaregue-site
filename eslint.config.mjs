@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Build three.js vendorisé de l'outil d'export du globe (non suivi par git,
+    // code tiers minifié) : exclu du lint pour ne remonter que nos propres erreurs.
+    "tools/globe-export/bundle.js",
   ]),
 ]);
 
