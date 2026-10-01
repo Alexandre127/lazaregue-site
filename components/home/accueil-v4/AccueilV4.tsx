@@ -464,6 +464,7 @@ const TECHNICAL = [
 ];
 
 const CONTRIBUTIONS = [
+  { media: "La Semaine Juridique – Entreprise et Affaires (JCP E)", role: "Numérique · « 3 questions »", date: "24 septembre 2026 (n° 39)", titre: "L’intelligence artificielle, nouvel objet de gouvernance d’entreprise", topic: "Gouvernance de l’IA en entreprise", url: "https://www.lexiskiosque.com/catalog/jcp-e/jcp-e/n39-2026" },
   { media: "Le Monde", role: "Tribune", date: "21 juin 2026", titre: "IA : « L’Europe doit transformer les discours sur la souveraineté numérique en une véritable stratégie industrielle »", topic: "IA et souveraineté numérique", url: "https://www.lemonde.fr/idees/article/2026/06/21/ia-l-europe-doit-transformer-les-discours-sur-la-souverainete-numerique-en-une-veritable-strategie-industrielle_6706105_3232.html" },
   { media: "Capital", role: "Interview", date: "2 septembre 2026", titre: "Piratage bancaire : votre banque doit-elle vraiment vous rembourser ?", topic: "Cyberfraude bancaire et contestation des paiements", url: "https://www.capital.fr/votre-argent/piratage-bancaire-dans-quels-cas-votre-banque-doit-elle-obligatoirement-vous-rembourser-1529747" },
   { media: "Le Revenu", role: "Tribune", date: "23 octobre 2024", titre: "Fraude bancaire en ligne : les banques se dérobent, les épargnants paient le prix", topic: "Fraude bancaire, phishing et spoofing", url: "https://www.lerevenu.com/diversifier-placements/placements-divers/fraude-bancaire-en-ligne-les-banques-se-derobent-les-epargnants-paient-le-prix/" },
