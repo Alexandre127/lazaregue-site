@@ -154,12 +154,12 @@ const MENTIONS = [
           ]}
         />
         <P>
-          L'avocat exerce une profession libérale qui n'a pas le caractère commercial : le cabinet
-          n'est pas immatriculé au registre du commerce et des sociétés. Son inscription au barreau
-          de Paris vaut habilitation à exercer et le place sous le contrôle du Conseil de l'Ordre.
+          L&#39;avocat exerce une profession libérale qui n&#39;a pas le caractère commercial : le cabinet
+          n&#39;est pas immatriculé au registre du commerce et des sociétés. Son inscription au barreau
+          de Paris vaut habilitation à exercer et le place sous le contrôle du Conseil de l&#39;Ordre.
         </P>
         <P>
-          Le site est édité par un cabinet d'avocats. Sa consultation ne fait naître aucune
+          Le site est édité par un cabinet d&#39;avocats. Sa consultation ne fait naître aucune
           relation entre son éditeur et son lecteur.
         </P>
       </>
@@ -179,8 +179,8 @@ const MENTIONS = [
           ]}
         />
         <P>
-          Ces mentions sont exigées par l'article 6 de la loi du 21 juin 2004 pour la confiance
-          dans l'économie numérique. Vercel exploite un réseau de diffusion mondial ; les
+          Ces mentions sont exigées par l&#39;article 6 de la loi du 21 juin 2004 pour la confiance
+          dans l&#39;économie numérique. Vercel exploite un réseau de diffusion mondial ; les
           coordonnées ci-dessus sont celles que la société publie pour la réception des
           signalements.
         </P>
@@ -193,7 +193,7 @@ const MENTIONS = [
     corps: (
       <>
         <P>
-          L'avocat exerce une profession réglementée. Les mentions qui suivent sont imposées par
+          L&#39;avocat exerce une profession réglementée. Les mentions qui suivent sont imposées par
           la directive 2006/123/CE du 12 décembre 2006 relative aux services dans le marché
           intérieur.
         </P>
@@ -207,22 +207,22 @@ const MENTIONS = [
         />
         <H3>Règles professionnelles</H3>
         <P>
-          L'exercice de la profession est régi par la loi n° 71-1130 du 31 décembre 1971, le
+          L&#39;exercice de la profession est régi par la loi n° 71-1130 du 31 décembre 1971, le
           décret n° 91-1197 du 27 novembre 1991, le décret n° 2005-790 du 12 juillet 2005 relatif
-          aux règles de déontologie et le Règlement Intérieur National de la profession d'avocat,
+          aux règles de déontologie et le Règlement Intérieur National de la profession d&#39;avocat,
           consultable sur le site du Conseil national des barreaux, ainsi que par le Règlement
           Intérieur du barreau de Paris.
         </P>
         <H3>Assurances</H3>
         <P>
-          Conformément à l'article 27 de la loi du 31 décembre 1971, la responsabilité civile
+          Conformément à l&#39;article 27 de la loi du 31 décembre 1971, la responsabilité civile
           professionnelle du cabinet et la représentation des fonds sont garanties par les polices
-          collectives souscrites par l'Ordre des avocats de Paris pour l'ensemble des avocats qui y
+          collectives souscrites par l&#39;Ordre des avocats de Paris pour l&#39;ensemble des avocats qui y
           sont inscrits. La garantie couvre les activités professionnelles exercées sur le
-          territoire des États membres de l'Union européenne.
+          territoire des États membres de l&#39;Union européenne.
         </P>
         <P>
-          L'attestation d'inscription au barreau et l'attestation annuelle d'assurance sont
+          L&#39;attestation d&#39;inscription au barreau et l&#39;attestation annuelle d&#39;assurance sont
           communiquées sur simple demande.
         </P>
       </>
@@ -235,16 +235,16 @@ const MENTIONS = [
       <>
         <P>
           Les honoraires sont fixés par une convention écrite conclue avant toute intervention,
-          selon les critères de l'article 10 de la loi du 31 décembre 1971.
+          selon les critères de l&#39;article 10 de la loi du 31 décembre 1971.
         </P>
         <P>
           Tout différend relatif au montant et au recouvrement des honoraires relève du Bâtonnier
-          de l'Ordre des avocats de Paris, saisi selon la procédure prévue par les articles 174 et
+          de l&#39;Ordre des avocats de Paris, saisi selon la procédure prévue par les articles 174 et
           suivants du décret du 27 novembre 1991.
         </P>
         <P>
           Le client consommateur peut, après réclamation écrite adressée au cabinet et restée sans
-          issue, saisir gratuitement le Médiateur de la consommation de la profession d'avocat,
+          issue, saisir gratuitement le Médiateur de la consommation de la profession d&#39;avocat,
           conformément aux articles L. 612-1 et suivants du code de la consommation. Les modalités
           de saisine et les coordonnées du Médiateur sont accessibles sur le site
           mediateur-consommation-avocat.fr.
@@ -259,27 +259,27 @@ const MENTIONS = [
       <>
         <P>
           La structure du site, sa charte graphique, ses développements, ses illustrations
-          documentaires et l'ensemble des analyses qui y sont publiées sont protégés par le code de
+          documentaires et l&#39;ensemble des analyses qui y sont publiées sont protégés par le code de
           la propriété intellectuelle. Le cabinet en est titulaire ou détient les droits nécessaires
           à leur exploitation.
         </P>
         <P>
-          La citation d'un extrait est admise sous réserve d'indiquer clairement le nom de l'auteur
+          La citation d&#39;un extrait est admise sous réserve d&#39;indiquer clairement le nom de l&#39;auteur
           et la source. Toute autre reproduction, adaptation ou réutilisation, notamment à des fins
-          d'indexation, d'entraînement de modèles ou de constitution de bases documentaires, est
-          soumise à autorisation préalable écrite. L'usage des données publiées sur ce site aux fins
-          de fouille de textes et de données est expressément réservé au sens de l'article
+          d&#39;indexation, d&#39;entraînement de modèles ou de constitution de bases documentaires, est
+          soumise à autorisation préalable écrite. L&#39;usage des données publiées sur ce site aux fins
+          de fouille de textes et de données est expressément réservé au sens de l&#39;article
           L. 122-5-3 du code de la propriété intellectuelle.
         </P>
         <P>
-          La dénomination Lazarègue Avocats, le logotype du cabinet et l'ensemble des signes
-          distinctifs qui l'accompagnent sont la propriété de l'éditeur. Leur usage par un tiers,
+          La dénomination Lazarègue Avocats, le logotype du cabinet et l&#39;ensemble des signes
+          distinctifs qui l&#39;accompagnent sont la propriété de l&#39;éditeur. Leur usage par un tiers,
           y compris à titre de référencement ou de mot-clé publicitaire, est interdit.
         </P>
         <P>
           Photographies et séquences vidéo : propriété du cabinet ou exploitées sous licence.
-          Certaines séquences d'illustration ont été produites à l'aide d'outils de génération
-          d'images ; elles ne représentent aucune personne réelle.
+          Certaines séquences d&#39;illustration ont été produites à l&#39;aide d&#39;outils de génération
+          d&#39;images ; elles ne représentent aucune personne réelle.
         </P>
       </>
     ),
@@ -290,17 +290,17 @@ const MENTIONS = [
     corps: (
       <>
         <P>
-          Les analyses publiées présentent l'état du droit à la date de leur rédaction. Elles ont
-          une valeur d'information générale et ne constituent ni une consultation juridique, ni un
+          Les analyses publiées présentent l&#39;état du droit à la date de leur rédaction. Elles ont
+          une valeur d&#39;information générale et ne constituent ni une consultation juridique, ni un
           avis sur une situation particulière. Une règle exacte appliquée à des faits mal qualifiés
-          conduit à une décision erronée : seule l'étude d'un dossier permet une réponse.
+          conduit à une décision erronée : seule l&#39;étude d&#39;un dossier permet une réponse.
         </P>
         <P>
           Les liens conduisant vers des sites tiers sont proposés à titre documentaire. Le cabinet
-          n'exerce aucun contrôle sur leur contenu et n'en répond pas.
+          n&#39;exerce aucun contrôle sur leur contenu et n&#39;en répond pas.
         </P>
         <P>
-          Tout contenu manifestement illicite constaté sur ce site peut être signalé à l'adresse
+          Tout contenu manifestement illicite constaté sur ce site peut être signalé à l&#39;adresse
           contact@lazaregue-avocats.fr, qui traite les signalements dans les meilleurs délais.
         </P>
       </>
@@ -313,22 +313,22 @@ const MENTIONS = [
       <>
         <P>
           Les correspondances entre un avocat et son client sont couvertes par le secret
-          professionnel, qui est d'ordre public, général et illimité dans le temps.
+          professionnel, qui est d&#39;ordre public, général et illimité dans le temps.
         </P>
         <div className="lz-avertissement">
-          <span className="lz-avertissement-label">avant d'écrire</span>
+          <span className="lz-avertissement-label">avant d&#39;écrire</span>
           <P>
-            L'envoi d'un message par le formulaire de contact ne vaut pas acceptation de mission et
-            ne fait naître aucune relation client. Tant que la vérification des conflits d'intérêts
-            n'a pas été effectuée et qu'une convention d'honoraires n'a pas été signée, il est
-            recommandé de s'en tenir à une description sommaire de la situation et de ne pas
-            transmettre de pièces ni d'informations sensibles.
+            L&#39;envoi d&#39;un message par le formulaire de contact ne vaut pas acceptation de mission et
+            ne fait naître aucune relation client. Tant que la vérification des conflits d&#39;intérêts
+            n&#39;a pas été effectuée et qu&#39;une convention d&#39;honoraires n&#39;a pas été signée, il est
+            recommandé de s&#39;en tenir à une description sommaire de la situation et de ne pas
+            transmettre de pièces ni d&#39;informations sensibles.
           </P>
         </div>
         <P>
-          La messagerie électronique ordinaire n'est pas un canal sûr. Une fois le dossier ouvert,
+          La messagerie électronique ordinaire n&#39;est pas un canal sûr. Une fois le dossier ouvert,
           le cabinet indique le canal de transmission adapté à la sensibilité des pièces et à la
-          nature de l'affaire.
+          nature de l&#39;affaire.
         </P>
       </>
     ),
@@ -340,7 +340,7 @@ const MENTIONS = [
       <P>
         Le site et ses mentions sont soumis au droit français. Les juridictions françaises sont
         seules compétentes, sous réserve des règles impératives applicables aux consommateurs et de
-        la compétence du Bâtonnier en matière d'honoraires.
+        la compétence du Bâtonnier en matière d&#39;honoraires.
       </P>
     ),
   },
@@ -363,13 +363,13 @@ const DONNEES = [
           contact@lazaregue-avocats.fr ou par courrier au siège.
         </P>
         <P>
-          Le cabinet ne relève d'aucun des cas de désignation obligatoire d'un délégué à la
-          protection des données prévus par l'article 37 du règlement : les demandes sont instruites
+          Le cabinet ne relève d&#39;aucun des cas de désignation obligatoire d&#39;un délégué à la
+          protection des données prévus par l&#39;article 37 du règlement : les demandes sont instruites
           et signées par un avocat, tenu au secret professionnel, et non déléguées à un tiers.
         </P>
         <P>
-          Cette politique s'applique au site et à l'ensemble des traitements mis en œuvre dans le
-          cadre de l'activité du cabinet. Elle est rédigée en application des articles 12 à 14 du
+          Cette politique s&#39;applique au site et à l&#39;ensemble des traitements mis en œuvre dans le
+          cadre de l&#39;activité du cabinet. Elle est rédigée en application des articles 12 à 14 du
           règlement (UE) 2016/679.
         </P>
       </>
@@ -381,15 +381,15 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Un cabinet d'avocats traite, par nature, des informations que ses clients ne confieraient
-          à personne d'autre. Le secret professionnel prime sur toute considération de commodité :
+          Un cabinet d&#39;avocats traite, par nature, des informations que ses clients ne confieraient
+          à personne d&#39;autre. Le secret professionnel prime sur toute considération de commodité :
           il commande la limitation des données collectées, le choix des prestataires, la
           localisation des serveurs et les réponses apportées aux demandes de tiers.
         </P>
         <P>
-          Aucune donnée traitée par le cabinet n'est vendue, louée, ni utilisée à des fins
-          publicitaires. Aucune décision automatisée produisant des effets juridiques n'est prise à
-          l'égard des personnes concernées.
+          Aucune donnée traitée par le cabinet n&#39;est vendue, louée, ni utilisée à des fins
+          publicitaires. Aucune décision automatisée produisant des effets juridiques n&#39;est prise à
+          l&#39;égard des personnes concernées.
         </P>
       </>
     ),
@@ -402,7 +402,7 @@ const DONNEES = [
       <P>
         Chaque traitement répond à une finalité déterminée et à une base légale identifiée. Le
         tableau ci-dessous en reprend la substance ; il est tenu à jour en même temps que le
-        registre interne prévu par l'article 30 du règlement.
+        registre interne prévu par l&#39;article 30 du règlement.
       </P>
     ),
   },
@@ -414,14 +414,14 @@ const DONNEES = [
         <P>
           Un dossier contient nécessairement des données relatives à des personnes qui ne sont pas
           clientes du cabinet : parties adverses, salariés, témoins, dirigeants, auteurs présumés
-          d'agissements. Ces données proviennent du client, des pièces de la procédure, des
+          d&#39;agissements. Ces données proviennent du client, des pièces de la procédure, des
           décisions de justice, des registres publics et des sources ouvertes.
         </P>
         <P>
-          Leur traitement est nécessaire à la constatation, à l'exercice ou à la défense d'un droit
-          en justice. L'information individuelle de ces personnes est écartée lorsqu'elle est
-          impossible, exige des efforts disproportionnés, ou compromettrait l'objet même du
-          traitement et le secret professionnel, conformément à l'article 14 du règlement.
+          Leur traitement est nécessaire à la constatation, à l&#39;exercice ou à la défense d&#39;un droit
+          en justice. L&#39;information individuelle de ces personnes est écartée lorsqu&#39;elle est
+          impossible, exige des efforts disproportionnés, ou compromettrait l&#39;objet même du
+          traitement et le secret professionnel, conformément à l&#39;article 14 du règlement.
         </P>
       </>
     ),
@@ -431,27 +431,27 @@ const DONNEES = [
     titre: "Qui y a accès",
     corps: (
       <>
-        <P>Les données ne sont accessibles qu'aux personnes qui en ont besoin :</P>
+        <P>Les données ne sont accessibles qu&#39;aux personnes qui en ont besoin :</P>
         <UL>
           <li>les avocats et collaborateurs du cabinet, tenus au secret professionnel ;</li>
           <li>
-            les auxiliaires de justice et intervenants du dossier lorsque la mission l'exige :
+            les auxiliaires de justice et intervenants du dossier lorsque la mission l&#39;exige :
             juridictions, greffes, huissiers, avocats postulants, experts, confrères de la partie
             adverse ;
           </li>
           <li>
             les prestataires techniques du cabinet, liés par un contrat de sous-traitance conforme
-            à l'article 28 du règlement, et limités à quatre catégories : hébergement du site
+            à l&#39;article 28 du règlement, et limités à quatre catégories : hébergement du site
             (Vercel Inc., États-Unis), messagerie professionnelle, logiciel de gestion des
-            dossiers, diffusion des lettres d'information. La liste nominative complète est
+            dossiers, diffusion des lettres d&#39;information. La liste nominative complète est
             communiquée sur demande ;
           </li>
-          <li>l'expert-comptable et, le cas échéant, le commissaire aux comptes.</li>
+          <li>l&#39;expert-comptable et, le cas échéant, le commissaire aux comptes.</li>
         </UL>
         <P>
-          Les demandes de communication émanant d'une autorité ne sont satisfaites que dans les
+          Les demandes de communication émanant d&#39;une autorité ne sont satisfaites que dans les
           formes et limites prévues par la loi, en particulier celles qui protègent le secret
-          professionnel et exigent l'intervention du Bâtonnier.
+          professionnel et exigent l&#39;intervention du Bâtonnier.
         </P>
       </>
     ),
@@ -462,36 +462,36 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          L'hébergement du site est assuré par Vercel Inc., société de droit américain établie en
-          Californie. Le recours à ce prestataire emporte un transfert de données hors de l'Union
+          L&#39;hébergement du site est assuré par Vercel Inc., société de droit américain établie en
+          Californie. Le recours à ce prestataire emporte un transfert de données hors de l&#39;Union
           européenne. Ce transfert est identifié, circonscrit et encadré.
         </P>
         <H3>Ce qui est transféré</H3>
         <P>
           Les seules données concernées sont celles qui transitent nécessairement par
-          l'infrastructure du site : données techniques de connexion et, le cas échéant, le contenu
-          d'un message adressé par le formulaire de contact. Le site ne comporte ni espace client,
+          l&#39;infrastructure du site : données techniques de connexion et, le cas échéant, le contenu
+          d&#39;un message adressé par le formulaire de contact. Le site ne comporte ni espace client,
           ni base documentaire, ni annuaire de dossiers : aucune pièce, aucune correspondance
-          couverte par le secret professionnel n'y est hébergée.
+          couverte par le secret professionnel n&#39;y est hébergée.
         </P>
-        <H3>Ce qui l'encadre</H3>
+        <H3>Ce qui l&#39;encadre</H3>
         <P>
-          Vercel Inc. intervient en qualité de sous-traitant, sur la base d'un accord de traitement
-          conforme à l'article 28 du règlement. La société déclare adhérer au cadre de protection
-          des données UE — États-Unis, qui a fait l'objet de la décision d'adéquation de la
+          Vercel Inc. intervient en qualité de sous-traitant, sur la base d&#39;un accord de traitement
+          conforme à l&#39;article 28 du règlement. La société déclare adhérer au cadre de protection
+          des données UE — États-Unis, qui a fait l&#39;objet de la décision d&#39;adéquation de la
           Commission européenne du 10 juillet 2023, et recourir en outre aux clauses contractuelles
-          types pour les transferts qui n'en relèveraient pas. Sa certification est vérifiable sur
+          types pour les transferts qui n&#39;en relèveraient pas. Sa certification est vérifiable sur
           le registre public du Département du commerce des États-Unis.
         </P>
         <P>
-          Le cabinet suit l'évolution de ce cadre, dont la validité est contestée devant le juge de
-          l'Union. Une remise en cause de la décision d'adéquation conduirait au réexamen immédiat
+          Le cabinet suit l&#39;évolution de ce cadre, dont la validité est contestée devant le juge de
+          l&#39;Union. Une remise en cause de la décision d&#39;adéquation conduirait au réexamen immédiat
           de cet hébergement.
         </P>
         <P>
           Un dossier peut par ailleurs exiger la communication de pièces à une juridiction ou à une
-          autorité étrangère. Une telle communication n'intervient que dans le respect de la loi du
-          26 juillet 1968, dite loi de blocage, et des voies d'entraide judiciaire.
+          autorité étrangère. Une telle communication n&#39;intervient que dans le respect de la loi du
+          26 juillet 1968, dite loi de blocage, et des voies d&#39;entraide judiciaire.
         </P>
       </>
     ),
@@ -505,18 +505,18 @@ const DONNEES = [
           Les mesures techniques et organisationnelles sont proportionnées aux risques et reposent
           sur quatre principes : le contrôle des accès, poste par poste et dossier par dossier ; le
           chiffrement des supports et des sauvegardes ; la journalisation des accès aux systèmes ;
-          la mise à jour et la sensibilisation continues. Leur détail n'est pas publié — la
-          description publique d'un dispositif de sécurité en affaiblit l'effet — mais il est
+          la mise à jour et la sensibilisation continues. Leur détail n&#39;est pas publié — la
+          description publique d&#39;un dispositif de sécurité en affaiblit l&#39;effet — mais il est
           communiqué au client qui en fait la demande.
         </P>
         <P>
-          À l'expiration des durées mentionnées au registre, les données sont supprimées ou
+          À l&#39;expiration des durées mentionnées au registre, les données sont supprimées ou
           archivées sous une forme excluant leur usage courant. Les dossiers papier restitués au
           client le sont contre décharge ; ceux qui ne sont pas réclamés sont détruits dans des
           conditions garantissant la confidentialité.
         </P>
         <P>
-          En cas de violation de données susceptible d'engendrer un risque pour les personnes, le
+          En cas de violation de données susceptible d&#39;engendrer un risque pour les personnes, le
           cabinet notifie la CNIL dans les 72 heures et informe les personnes concernées lorsque le
           risque est élevé.
         </P>
@@ -530,22 +530,22 @@ const DONNEES = [
       <>
         <P>
           Les traceurs strictement nécessaires au fonctionnement du site et à la sécurité de la
-          navigation sont déposés sans consentement, conformément à l'article 82 de la loi du
+          navigation sont déposés sans consentement, conformément à l&#39;article 82 de la loi du
           6 janvier 1978.
         </P>
         <P>
           Le site ne comporte aucun traceur publicitaire, aucun bouton de partage vers un réseau
-          social et aucun dispositif de profilage. La mesure d'audience, lorsqu'elle est activée,
+          social et aucun dispositif de profilage. La mesure d&#39;audience, lorsqu&#39;elle est activée,
           est limitée à la production de statistiques anonymes pour le seul compte du cabinet et
-          n'alimente aucun croisement avec d'autres traitements.{" "}
+          n&#39;alimente aucun croisement avec d&#39;autres traitements.{" "}
           <AC>
-            À vérifier avant mise en ligne : outil d'audience effectivement installé, contenus
+            À vérifier avant mise en ligne : outil d&#39;audience effectivement installé, contenus
             incorporés — vidéos, cartes, polices distantes — et éventuel bandeau de recueil.
           </AC>
         </P>
         <P>
-          Le consentement, lorsqu'il est requis, est recueilli avant tout dépôt, refusé aussi
-          facilement qu'accepté, et peut être retiré à tout moment. Le refus n'altère pas l'accès
+          Le consentement, lorsqu&#39;il est requis, est recueilli avant tout dépôt, refusé aussi
+          facilement qu&#39;accepté, et peut être retiré à tout moment. Le refus n&#39;altère pas l&#39;accès
           au contenu du site.
         </P>
       </>
@@ -558,27 +558,27 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Ces droits s'exercent auprès du cabinet, à l'adresse indiquée en tête de la présente
-          politique. Une réponse est apportée dans le délai d'un mois, prorogeable de deux mois pour
-          les demandes complexes. Une preuve d'identité peut être demandée en cas de doute
+          Ces droits s&#39;exercent auprès du cabinet, à l&#39;adresse indiquée en tête de la présente
+          politique. Une réponse est apportée dans le délai d&#39;un mois, prorogeable de deux mois pour
+          les demandes complexes. Une preuve d&#39;identité peut être demandée en cas de doute
           raisonnable.
         </P>
         <H3>Ce que le secret professionnel limite</H3>
         <P>
-          Lorsque les données figurent dans le dossier d'une affaire, l'exercice de ces droits par
+          Lorsque les données figurent dans le dossier d&#39;une affaire, l&#39;exercice de ces droits par
           un tiers peut être restreint pour préserver le secret professionnel, les droits de la
-          défense et le bon déroulement d'une procédure judiciaire. Le cabinet motive alors sa
+          défense et le bon déroulement d&#39;une procédure judiciaire. Le cabinet motive alors sa
           réponse et indique les voies de recours.
         </P>
         <H3>Après le décès</H3>
         <P>
           Toute personne peut définir des directives relatives au sort de ses données après son
-          décès, en application de l'article 85 de la loi du 6 janvier 1978. Le cabinet s'y
+          décès, en application de l&#39;article 85 de la loi du 6 janvier 1978. Le cabinet s&#39;y
           conforme, sous réserve des règles applicables à la conservation des dossiers.
         </P>
         <H3>Réclamation</H3>
         <P>
-          Une réclamation peut être adressée à la Commission nationale de l'informatique et des
+          Une réclamation peut être adressée à la Commission nationale de l&#39;informatique et des
           libertés, 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, ou déposée en ligne sur
           son site.
         </P>
@@ -664,9 +664,9 @@ export default function PagesLegales({ initial = "mentions" }) {
           </p>
           <h1 className="lz-h1">{courant.titre}</h1>
           <p className="lz-chapo">
-            Un cabinet qui conseille sur la protection des données se doit d'appliquer à lui-même la
-            clarté qu'il recommande. Ces deux documents sont écrits pour être lus, non pour être
-            acceptés sans l'être.
+            Un cabinet qui conseille sur la protection des données se doit d&#39;appliquer à lui-même la
+            clarté qu&#39;il recommande. Ces deux documents sont écrits pour être lus, non pour être
+            acceptés sans l&#39;être.
           </p>
 
           <nav className="lz-tabs" aria-label="Documents légaux">
@@ -730,7 +730,7 @@ export default function PagesLegales({ initial = "mentions" }) {
           <div>
             <p className="lz-pied-titre">Une question sur vos données</p>
             <p className="lz-pied-txt">
-              Une demande d'accès, de rectification ou d'effacement s'écrit en trois lignes. Elle est
+              Une demande d&#39;accès, de rectification ou d&#39;effacement s&#39;écrit en trois lignes. Elle est
               traitée par un avocat, pas par un formulaire.
             </p>
           </div>
