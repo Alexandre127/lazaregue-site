@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Build three.js vendorisé de l'outil d'export du globe (non suivi par git,
     // code tiers minifié) : exclu du lint pour ne remonter que nos propres erreurs.
     "tools/globe-export/bundle.js",
+    // tarteaucitron auto-hébergé (bibliothèque tierce épinglée) : exclu du lint.
+    "public/vendor/tarteaucitron/**",
   ]),
 ]);
 

@@ -5,8 +5,11 @@ import { SiteFooter } from "@/components/footer/site-footer";
 import { PageEffects } from "@/components/lazaregue/page-effects";
 import { SiteHeader } from "@/components/header/site-header";
 import { SITE_URL } from "@/lib/site-url";
+import { Analytics } from "@vercel/analytics/next";
+import ConsentAnalytics from "@/components/analytics/consent-analytics";
 import "./globals.css";
 import "./hero.css";
+import "./tarteaucitron-theme.css";
 
 /**
  * Polices AUTO-HÉBERGÉES (charte § 08, UX-121). next/font/google télécharge les
@@ -79,11 +82,13 @@ export default function RootLayout({
   return (
     <html lang="fr" className={fontVariables}>
       <body className="min-h-screen bg-navy antialiased text-wh">
+        <ConsentAnalytics />
         <PageEffects />
         <SiteHeader />
         {children}
         <GlobalCta />
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );

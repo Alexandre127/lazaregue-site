@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/header/logo";
+import ManageCookiesLink from "@/components/footer/manage-cookies-link";
 import { FAMILLES } from "@/components/header/nav-data";
 import styles from "./footer.module.css";
 
@@ -44,7 +45,7 @@ const INFORMATIONS: FooterLink[] = [
   { label: "Mentions légales", href: "/mentions-legales" },
 ];
 
-function LinkList({ items }: { items: FooterLink[] }) {
+function LinkList({ items, extra }: { items: FooterLink[]; extra?: React.ReactNode }) {
   return (
     <ul className={styles.flist}>
       {items.map((item) =>
@@ -62,6 +63,7 @@ function LinkList({ items }: { items: FooterLink[] }) {
           </li>
         ),
       )}
+      {extra}
     </ul>
   );
 }
@@ -111,7 +113,7 @@ export function SiteFooter() {
             <p className={styles.colTitle} id="ft-informations">
               Informations
             </p>
-            <LinkList items={INFORMATIONS} />
+            <LinkList items={INFORMATIONS} extra={<ManageCookiesLink />} />
           </nav>
         </div>
       </div>
