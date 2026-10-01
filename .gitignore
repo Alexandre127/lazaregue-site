@@ -64,3 +64,6 @@ public/videos/*.mp4
 
 # Outil d'export globe : artefact régénérable (voir tools/globe-export/README.md)
 tools/globe-export/bundle.js
+
+# Dossier d'archive hors site (documents de travail sortis du depot, nettoyage oct. 2026)
+/_archive-hors-site/

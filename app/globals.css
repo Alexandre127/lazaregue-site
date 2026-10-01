@@ -53,10 +53,8 @@
   --page-margin-mobile: 20px;
 
   /* Familles typographiques : AUTO-HÉBERGÉES via next/font/google (voir
-     app/layout.tsx), qui pose --ff-display / --ff-body / --ff-mono / --ff-hand
-     sur <html> avec sous-ensemble latin, font-display: swap et repli métrique.
-     --ff-hand (Caveat) reste réservée aux annotations des documents-preuves
-     (page Ressources) : jamais dans l'interface. */
+     app/layout.tsx), qui pose --ff-display / --ff-body / --ff-mono sur <html>
+     avec sous-ensemble latin, font-display: swap et repli métrique. */
 
   /* Statuts fonctionnels — réservés aux documents-preuves.
      Seul #1A47FF fait office de couleur d'accent dans l'interface. */
