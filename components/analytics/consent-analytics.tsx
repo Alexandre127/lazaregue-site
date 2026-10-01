@@ -56,6 +56,8 @@ type CCWindow = {
   CookieConsent?: CookieConsent;
   gtag?: (...a: unknown[]) => void;
   dataLayer?: Record<string, unknown>[];
+  _hsq?: unknown[];
+  _hsp?: unknown[];
 };
 
 export default function ConsentAnalytics() {
@@ -78,7 +80,22 @@ export default function ConsentAnalytics() {
       if (w.gtag) w.gtag("consent", "update", { analytics_storage: ga ? "granted" : "denied" });
       if (ga) push("consent_update_ga4");
       if (clarity) push("consent_update_clarity");
-      if (crm) push("consent_update_hubspot");
+      if (crm) {
+        push("consent_update_hubspot");
+      } else {
+        // Finalité « Relation client » refusée ou retirée. Le bandeau HubSpot
+        // étant désactivé dans le compte, son code (s'il a été chargé) suivrait
+        // par défaut : on lui demande explicitement de ne pas suivre et de
+        // révoquer son consentement, via son API de confidentialité.
+        try {
+          w._hsq = w._hsq || [];
+          w._hsq.push(["doNotTrack"]);
+          w._hsp = w._hsp || [];
+          w._hsp.push(["revokeCookieConsent"]);
+        } catch {
+          /* API HubSpot absente : rien à faire */
+        }
+      }
     };
 
     cc.run({

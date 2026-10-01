@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/header/site-header";
 import { SITE_URL } from "@/lib/site-url";
 import { Analytics } from "@vercel/analytics/next";
 import ConsentAnalytics from "@/components/analytics/consent-analytics";
+import AnalyticsEvents from "@/components/analytics/analytics-events";
 import "./globals.css";
 import "./hero.css";
 import "./cookieconsent-theme.css";
@@ -83,6 +84,7 @@ export default function RootLayout({
     <html lang="fr" className={fontVariables}>
       <body className="min-h-screen bg-navy antialiased text-wh">
         <ConsentAnalytics />
+        <AnalyticsEvents />
         <PageEffects />
         <SiteHeader />
         {children}

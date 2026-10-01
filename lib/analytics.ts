@@ -2,7 +2,7 @@
  * Utilitaire UNIQUE de mesure côté client : `track(event, params)` pousse un
  * événement dans `window.dataLayer`. Google Tag Manager le relaie ensuite aux
  * seuls outils AUTORISÉS par le visiteur (Consent Mode v2 + déclencheurs liés
- * aux finalités tarteaucitron).
+ * aux finalités du bandeau CookieConsent).
  *
  * RÈGLE ABSOLUE (§2 du doc stratégie) : AUCUNE donnée saisie ni personnelle ne
  * transite par le dataLayer — ni nom, e-mail, téléphone, ni contenu de message.

@@ -30,7 +30,13 @@ export function GlobalCta() {
             Votre problème numérique a une solution.
           </h2>
         </div>
-        <Link className={styles.btn} href="/contact">
+        <Link
+          className={styles.btn}
+          href="/contact"
+          data-track="cta_click"
+          data-track-composant="cta_global"
+          data-track-emplacement="pre_footer"
+        >
           Échanger avec un avocat
         </Link>
       </div>

@@ -2,6 +2,21 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import styles from "../contact.module.css";
+import { track } from "@/lib/analytics";
+
+/** Lit la page courante et les paramètres de campagne (UTM) de l'URL.
+ *  Aucune donnée personnelle : seulement le chemin et les UTM éventuels. */
+function contexteEnvoi(): { page: string; utm: Record<string, string> } {
+  if (typeof window === "undefined") return { page: "", utm: {} };
+  const page = window.location.pathname;
+  const q = new URLSearchParams(window.location.search);
+  const utm: Record<string, string> = {};
+  for (const k of ["source", "medium", "campaign", "term", "content"] as const) {
+    const v = q.get(`utm_${k}`);
+    if (v) utm[k] = v;
+  }
+  return { page, utm };
+}
 
 /**
  * Formulaire de contact — envoi RÉEL côté serveur (POST /api/contact, SMTP du
@@ -53,8 +68,17 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
   const summaryRef = useRef<HTMLDivElement>(null);
   const doneRef = useRef<HTMLDivElement>(null);
   const failRef = useRef<HTMLParagraphElement>(null);
+  const started = useRef(false);
 
   const urgent = urgence === "echeance" || urgence === "incident";
+
+  // Première interaction avec le formulaire : un seul événement, sans aucune
+  // donnée saisie.
+  function onFirstInteraction() {
+    if (started.current) return;
+    started.current = true;
+    track("contact_start", { page_type: "contact", composant: "contact_form" });
+  }
 
   function validate(): Errs {
     return {
@@ -73,21 +97,30 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
     setErrs(next);
     if (hasError) {
       setShowSummary(true);
+      // Erreur de validation : seuls les noms de champs manquants, jamais leur contenu.
+      track("contact_error", { composant: "contact_form", motif: "validation" });
       requestAnimationFrame(() => summaryRef.current?.focus());
       return;
     }
     setShowSummary(false);
     setStatus("sending");
     setFailMsg("");
+    const { page, utm } = contexteEnvoi();
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ objet, urgence, echeance, nom, org, email, tel, message, website }),
+        body: JSON.stringify({ objet, urgence, echeance, nom, org, email, tel, message, website, page, utm }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
         setStatus("done");
+        // Conversion : objet (liste fermée) et urgence (oui/non) uniquement.
+        track("contact_submit", {
+          composant: "contact_form",
+          objet,
+          urgent: urgence !== "non",
+        });
         if (onSent) {
           onSent();
         } else {
@@ -95,11 +128,13 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
         }
       } else {
         setStatus("error");
+        track("contact_error", { composant: "contact_form", motif: "serveur" });
         setFailMsg(json.error || "L'envoi a échoué. Réessayez, ou contactez le cabinet par téléphone ou e-mail.");
         requestAnimationFrame(() => failRef.current?.focus());
       }
     } catch {
       setStatus("error");
+      track("contact_error", { composant: "contact_form", motif: "reseau" });
       setFailMsg("L'envoi a échoué (problème de connexion). Votre texte est conservé : réessayez, ou contactez le cabinet par téléphone ou e-mail.");
       requestAnimationFrame(() => failRef.current?.focus());
     }
@@ -133,7 +168,16 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
 
   return (
     <div className={styles.fcard}>
-      <form onSubmit={onSubmit} noValidate aria-labelledby="h-form">
+      {/* data-clarity-mask : Microsoft Clarity n'enregistre JAMAIS le contenu
+          saisi dans ce formulaire (masquage au niveau de l'élément, en plus du
+          masquage « Strict » réglé dans le compte). */}
+      <form
+        onSubmit={onSubmit}
+        onFocusCapture={onFirstInteraction}
+        noValidate
+        aria-labelledby="h-form"
+        data-clarity-mask="true"
+      >
         <h2 id="h-form">Décrivez votre situation</h2>
         <p className={styles.formIntro}>
           Quelques lignes suffisent. Ne joignez pas encore de document : le cabinet vous proposera un
