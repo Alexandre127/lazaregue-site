@@ -65,8 +65,9 @@ const LEGACY = [
   ["/avocat-en-droit-du-numerique/avocat-droit-e-commerce/avocat-redaction-cgv", "/nos-domaines/contrats-informatiques"],
   ["/applications-digitales-et-ecommerce", "/nos-domaines/contrats-informatiques"],
 
-  // --- Ancien WordPress : page d'ensemble des compétences ---
+  // --- Ancien WordPress : pages d'ensemble des compétences ---
   ["/avocat-en-droit-du-numerique", "/nos-domaines"],
+  ["/competences", "/nos-domaines"],
 
   // --- Exception : lien entrant actif (legavox.fr, sos-justice.net) ---
   ["/litige-afp-picrights/courrier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],

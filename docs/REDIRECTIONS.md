@@ -59,14 +59,14 @@ aucune chaîne de redirection de contenu (A → B → C), aucune boucle.
 | `/avocat-en-droit-du-numerique/avocat-droit-e-commerce/avocat-redaction-cgv` | `/nos-domaines/contrats-informatiques` | 301 |
 | `/applications-digitales-et-ecommerce` | `/nos-domaines/contrats-informatiques` | 301 |
 | `/avocat-en-droit-du-numerique` | `/nos-domaines` | 301 |
+| `/competences` | `/nos-domaines` | 301 |
 
 ### Pages de compétences WordPress repérées mais NON redirigées
 
-Repérées via l'API CDX de la Wayback Machine, sur des thèmes **non couverts** par
-une page de domaine du nouveau site (arbre « Propriété intellectuelle ») ou en
-doublon d'un autre point d'entrée. Laissées de côté volontairement — à arbitrer :
+Repérées via l'API CDX de la Wayback Machine, sur le thème **Propriété
+intellectuelle** — non couvert par une page de domaine du nouveau site.
+Laissées de côté volontairement (arbre PI entier) :
 
-- `/competences/` (autre page « ensemble des compétences »)
 - `/propriete-intellectuelle-et-concurrence/`
 - `/avocat-specialiste-propriete-intellectuelle/`
 - `/avocat-en-droit-du-numerique/avocat-propriete-intellectuelle/` + sous-pages
