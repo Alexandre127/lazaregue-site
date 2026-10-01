@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { fr } from "@/lib/typo";
 import { MembreCarte } from "@/components/equipe-dossier";
 import styles from "./ma-tech.module.css";
@@ -104,18 +105,18 @@ export default function Page() {
           {/* 1 · HERO — photographie fondue en fond de section */}
           <section className="hero on-dark">
             <div className="hero__bg" aria-hidden="true">
-              <picture>
-                <source type="image/webp" srcSet="/images/ma-tech/ma-tech-800.webp 800w, /images/ma-tech/ma-tech-1200.webp 1200w" sizes="(max-width:1040px) 100vw, 60vw" />
-                <img
-                  src="/images/ma-tech/ma-tech-1200.jpg"
-                  srcSet="/images/ma-tech/ma-tech-800.jpg 800w, /images/ma-tech/ma-tech-1200.jpg 1200w"
-                  sizes="(max-width:1040px) 100vw, 60vw"
-                  alt=""
-                  width={1200}
-                  height={1500}
-                  decoding="async"
-                />
-              </picture>
+              {/* Fond décoratif via next/image (fill) : Next sert AVIF/WebP et
+                  les tailles responsives à partir de la source. Le cadrage
+                  (object-fit: cover + object-position, y compris le repli
+                  mobile) reste porté par la règle `.hero__bg img` du module,
+                  donc identique à l'ancien <img>. */}
+              <Image
+                src="/images/ma-tech/ma-tech-1200.jpg"
+                alt=""
+                fill
+                sizes="(max-width:1040px) 100vw, 60vw"
+                priority
+              />
               <span className="hero__veil" />
             </div>
             <div className="shell">

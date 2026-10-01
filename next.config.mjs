@@ -16,6 +16,15 @@ const nextConfig = {
   // effet en production, où il n'apparaît jamais.
   devIndicators: false,
 
+  // Formats servis par next/image. AVIF en premier (meilleure compression),
+  // WebP en repli ; Next négocie selon les en-têtes Accept du navigateur et
+  // retombe sur la source d'origine pour les agents qui ne gèrent ni l'un ni
+  // l'autre. S'applique à toutes les images rendues via next/image, quel que
+  // soit le format du fichier source.
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
+
   // Une seule forme d'URL, sans barre oblique finale : `/page/` est redirigé
   // en 308 vers `/page`. C'est déjà le défaut de Next, rendu explicite ici
   // pour verrouiller l'intention et éviter les doublons d'exploration.
