@@ -11,12 +11,12 @@ export type GlobeCardElements = {
 };
 
 /**
- * Base URL par défaut des textures planétaires (dépôt three.js). NB : dépendance
- * externe à régler au lot technique (servir depuis /public). Défaut inchangé
- * pour ne rien modifier au rendu desktop de production dans ce lot.
+ * Base URL des textures planétaires. Rapatriées localement sous
+ * `public/images/globe/` (issues des exemples three.js) : AUCUNE dépendance
+ * externe n'est chargée au runtime — l'IP du visiteur n'est exposée à aucun
+ * tiers. Reste surchargeable via l'option `textureBaseUrl`.
  */
-const DEFAULT_TEXTURE_BASE =
-  "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/";
+const DEFAULT_TEXTURE_BASE = "/images/globe/";
 
 export type InitPremiumGlobeOptions = {
   /**

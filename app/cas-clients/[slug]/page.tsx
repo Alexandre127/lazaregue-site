@@ -170,10 +170,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               )}
             </article>
             {cas.ressources.map((r) => (
-              <article key={r.href}>
+              <article key={r.titre}>
                 <p className="tagd">Ressource</p>
                 <h3>{r.titre}</h3>
-                <Link className="link relLink" href={r.href}>Lire la ressource →</Link>
+                {/* Lien seulement si la ressource est publiée ; sinon titre
+                    conservé, lien retiré (article « à paraître »). */}
+                {r.href ? (
+                  <Link className="link relLink" href={r.href}>Lire la ressource →</Link>
+                ) : (
+                  <span className="relLink relLinkOff">À paraître</span>
+                )}
               </article>
             ))}
           </div>

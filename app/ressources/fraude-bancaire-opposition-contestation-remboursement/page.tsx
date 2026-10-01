@@ -401,7 +401,8 @@ export default function Page() {
           <div className={styles.more}>
             <article>
               <p className={styles.tag}>Faux conseiller bancaire</p>
-              <h3><Link href="/ressources/faux-conseiller-bancaire-remboursement">Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?</Link></h3>
+              {/* Article de test « à paraître » : titre conservé, lien retiré. */}
+              <h3><span>Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?</span></h3>
             </article>
           </div>
           <p style={{ marginTop: 18 }}>Une voie encore peu exploitée mérite d&apos;être signalée : la responsabilité de l&apos;opérateur téléphonique. Saisi d&apos;une fraude reposant sur l&apos;usurpation du numéro de la banque, le tribunal judiciaire de Paris a jugé que l&apos;opérateur devait authentifier les identifiants d&apos;appelant et interrompre l&apos;acheminement des appels non authentiques, et l&apos;a condamné à garantir la banque de sa propre condamnation (TJ Paris, 15 janvier 2026, n° 24/04856 — <a href="https://www.doctrine.fr/d/TJ/Paris/2026/TJPE9AEC6538CF1CABF0203" target="_blank" rel="noopener noreferrer">lire la décision</a> (accès abonné)).</p>

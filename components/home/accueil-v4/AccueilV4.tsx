@@ -912,8 +912,8 @@ export function AccueilV4() {
                   <p className="c-lab">Issue</p>
                   <p>{d.issue}</p>
                 </div>
-                <Link className="c-link" href={d.href} aria-label={`Découvrir le cas : ${d.titre}`}>
-                  Découvrir le cas <span className="arrow" aria-hidden="true">→</span>
+                <Link className="c-link" href={d.href} aria-label={`${d.cta ?? "Découvrir le cas"} : ${d.titre}`}>
+                  {d.cta ?? "Découvrir le cas"} <span className="arrow" aria-hidden="true">→</span>
                 </Link>
               </article>
             ))}

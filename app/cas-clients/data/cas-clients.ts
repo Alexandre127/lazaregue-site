@@ -43,10 +43,12 @@ export type Cas = {
   arbitrage?: { voie: string; app: string; dec: string; ret: boolean }[];
   issue: string;
   aRetenir: string[];
-  ressources: { titre: string; href: string }[];
+  ressources: { titre: string; href: string | null }[];
 };
 
-const FCB = { titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", href: "/ressources/faux-conseiller-bancaire-remboursement" };
+// Article de test « Faux conseiller » présenté comme « à paraître » : href null
+// → la ressource reste listée (titre conservé) mais n'est pas cliquable.
+const FCB = { titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", href: null };
 
 export const CAS: Cas[] = [
   {
@@ -82,7 +84,7 @@ export const CAS: Cas[] = [
       { voie: "Expertise (art. 145 CPC)", app: "Établir les causes techniques avant tout procès", dec: "Retenue — axe principal", ret: true },
       { voie: "Action au fond immédiate", app: "Prématurée sans constatations techniques", dec: "Différée", ret: false },
     ],
-    issue: "Une expertise judiciaire a été ordonnée afin de déterminer les causes de l’incident et les responsabilités. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Une expertise judiciaire a été ordonnée afin de déterminer les causes de l’incident et les responsabilités. Les journaux et éléments techniques exposés à l’effacement ont été préservés, et le cadre contradictoire d’établissement des responsabilités fixé.",
     aRetenir: ["En matière de cyberattaque, la préservation immédiate des journaux, sauvegardes, échanges et éléments contractuels peut conditionner la possibilité d’établir ultérieurement les responsabilités."],
     ressources: [],
   },
@@ -107,7 +109,7 @@ export const CAS: Cas[] = [
       "Le cabinet a reconstitué la chronologie des virements, identifié les différents établissements et prestataires intervenus dans la chaîne de paiement et analysé les mécanismes d’authentification utilisés.",
       "L’action a été construite notamment autour des règles du Code monétaire et financier relatives à l’autorisation des opérations de paiement, à la preuve et au remboursement.",
     ],
-    issue: "L’action a été menée contre l’établissement bancaire. Le dossier est clos, avec une issue favorable au client.",
+    issue: "L’action a été menée contre l’établissement bancaire. Chaque virement a été examiné individuellement au regard du régime des opérations de paiement, au soutien de la demande de remboursement.",
     aRetenir: ["Dans les dossiers de fraude bancaire, la chronologie des opérations, les modalités exactes d’authentification et la circulation des fonds doivent être établies opération par opération."],
     ressources: [FCB],
   },
@@ -129,7 +131,7 @@ export const CAS: Cas[] = [
       "Le cabinet a analysé les contenus, leur ancienneté, leur accessibilité depuis les résultats de recherche ainsi que les intérêts en présence.",
       "Une procédure a ensuite été engagée afin d’obtenir l’examen judiciaire de la demande de déréférencement.",
     ],
-    issue: "La demande de déréférencement a été soumise à l’examen du juge. Le dossier est clos, avec une issue favorable aux clients.",
+    issue: "La demande de déréférencement a été soumise à l’examen du juge. Les droits des personnes concernées ont été confrontés à la liberté d’information dans le cadre de cet examen judiciaire.",
     aRetenir: ["Le retrait du contenu à sa source et son déréférencement par un moteur de recherche sont deux mécanismes juridiquement distincts."],
     ressources: [],
   },
@@ -148,7 +150,7 @@ export const CAS: Cas[] = [
     situation: ["Une entreprise contestait l’exécution de prestations informatiques intervenues dans le cadre d’une relation contractuelle comprenant plusieurs opérations et financements."],
     enjeu: "Reconstituer les prestations effectivement commandées et exécutées, déterminer les obligations contractuelles de chaque intervenant et évaluer les conséquences financières des manquements allégués.",
     intervention: ["Analyse des contrats, factures, échanges, livrables et chronologie du projet ; identification des obligations discutées ; préparation de la stratégie contentieuse."],
-    issue: "Le contentieux commercial a été conduit à son terme. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Le contentieux commercial a été conduit à son terme. La relation contractuelle a été reconstituée et les obligations de chaque intervenant établies avant toute discussion de responsabilité.",
     aRetenir: ["Dans un contentieux informatique, la première difficulté consiste souvent à reconstruire précisément la relation contractuelle avant même de déterminer la responsabilité technique."],
     ressources: [],
   },
@@ -167,7 +169,7 @@ export const CAS: Cas[] = [
     situation: ["À la suite d’un incident de sécurité affectant son infrastructure informatique, une entreprise devait déterminer le scénario technique de l’attaque et le rôle éventuel des différents intervenants chargés du réseau."],
     enjeu: "Transformer un événement technique complexe en faits susceptibles d’être discutés contradictoirement dans une procédure.",
     intervention: ["Le cabinet a travaillé sur la chronologie de l’incident, les équipements concernés, les données disponibles et les obligations des différents prestataires afin de préparer l’expertise et les questions soumises au technicien."],
-    issue: "L’expertise a été préparée et conduite sur la base des questions techniques définies. Le dossier est clos, avec une issue favorable au client.",
+    issue: "L’expertise a été préparée et conduite sur la base des questions techniques définies. Les constatations techniques ont été reliées aux obligations contractuelles des prestataires concernés.",
     aRetenir: ["L’expertise informatique n’a d’utilité contentieuse que si les questions techniques sont reliées précisément aux obligations contractuelles dont dépend la responsabilité."],
     ressources: [],
   },
@@ -186,7 +188,7 @@ export const CAS: Cas[] = [
     situation: ["Une entreprise avait reçu une demande d’indemnisation en raison de l’utilisation alléguée de plusieurs photographies protégées par le droit d’auteur."],
     enjeu: "Vérifier la titularité des droits invoqués, déterminer les conditions exactes d’utilisation des photographies et apprécier le montant de l’indemnisation réclamée.",
     intervention: ["Le cabinet a examiné les photographies concernées, les droits revendiqués, les usages reprochés et les éléments justifiant le montant demandé avant de définir la réponse et la stratégie contentieuse."],
-    issue: "La réclamation a été contestée sur la preuve des droits, les usages et le montant demandé. Le dossier est clos, avec une issue favorable au client.",
+    issue: "La réclamation a été contestée sur la preuve des droits, les usages et le montant demandé. La titularité des droits invoqués, les conditions d’utilisation des photographies et la méthode de calcul de l’indemnisation ont été examinées point par point.",
     aRetenir: ["La réception d’une réclamation ne dispense pas de vérifier la preuve des droits, les usages effectivement réalisés et la méthode de calcul de l’indemnisation."],
     ressources: [],
   },
@@ -205,7 +207,7 @@ export const CAS: Cas[] = [
     situation: ["Après avoir été entraînée dans un dispositif frauduleux en ligne, une victime avait effectué plusieurs opérations par carte bancaire ainsi qu’un virement vers des services associés aux crypto-actifs."],
     enjeu: "Distinguer chaque opération, ses modalités d’autorisation et les mécanismes d’authentification utilisés afin de déterminer les recours envisageables.",
     intervention: ["Reconstitution des opérations, analyse des flux et des authentifications, qualification juridique et contestation auprès de l’établissement bancaire."],
-    issue: "Les opérations ont été contestées auprès de l’établissement bancaire, chacune selon son régime. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Les opérations ont été contestées auprès de l’établissement bancaire, chacune selon son régime. Paiements par carte et virement ont été traités séparément, selon leurs modalités d’autorisation et d’authentification propres.",
     aRetenir: ["Dans les escroqueries complexes, il est rarement pertinent de traiter toutes les opérations comme un bloc : leur régime juridique peut différer selon le moyen de paiement utilisé."],
     ressources: [FCB],
   },
