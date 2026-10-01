@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Habillage de CookieConsent v3 à la charte Lazarègue.
+   On surcharge ses variables CSS (déclarées sur #cc-main) en !important pour
+   gagner quel que soit l'ordre de chargement. Fond bleu nuit #0A0F2E, bouton
+   principal #1A47FF, typographies du site, angles droits.
+   ========================================================================== */
+
+#cc-main {
+  --cc-font-family: var(--ff-body, system-ui, sans-serif) !important;
+  --cc-bg: #0a0f2e !important;
+  --cc-primary-color: #ffffff !important;
+  --cc-secondary-color: #b9bdd6 !important;
+  --cc-link-color: #ffffff !important;
+
+  --cc-btn-primary-bg: #1a47ff !important;
+  --cc-btn-primary-color: #ffffff !important;
+  --cc-btn-primary-border-color: #1a47ff !important;
+  --cc-btn-primary-hover-bg: #1338d6 !important;
+  --cc-btn-primary-hover-color: #ffffff !important;
+  --cc-btn-primary-hover-border-color: #1338d6 !important;
+
+  --cc-btn-secondary-bg: transparent !important;
+  --cc-btn-secondary-color: #ffffff !important;
+  --cc-btn-secondary-border-color: rgba(255, 255, 255, 0.55) !important;
+  --cc-btn-secondary-hover-bg: rgba(255, 255, 255, 0.08) !important;
+  --cc-btn-secondary-hover-color: #ffffff !important;
+  --cc-btn-secondary-hover-border-color: #ffffff !important;
+
+  --cc-btn-border-radius: 0 !important;
+  --cc-modal-border-radius: 0 !important;
+  --cc-pm-toggle-border-radius: 20px !important;
+
+  --cc-separator-border-color: rgba(255, 255, 255, 0.14) !important;
+  --cc-section-category-border: rgba(255, 255, 255, 0.14) !important;
+
+  --cc-cookie-category-block-bg: #141a3d !important;
+  --cc-cookie-category-block-border: rgba(255, 255, 255, 0.14) !important;
+  --cc-cookie-category-block-hover-bg: #1b2350 !important;
+  --cc-cookie-category-block-hover-border: rgba(255, 255, 255, 0.25) !important;
+  --cc-cookie-category-expanded-block-bg: #10163a !important;
+  --cc-cookie-category-expanded-block-hover-bg: #1b2350 !important;
+
+  --cc-toggle-on-bg: #1a47ff !important;
+  --cc-toggle-off-bg: #444a6b !important;
+  --cc-toggle-on-knob-bg: #ffffff !important;
+  --cc-toggle-off-knob-bg: #ffffff !important;
+  --cc-toggle-enabled-icon-color: #0a0f2e !important;
+  --cc-toggle-disabled-icon-color: #0a0f2e !important;
+  --cc-toggle-readonly-bg: #2a3566 !important;
+  --cc-toggle-readonly-knob-bg: #b9bdd6 !important;
+
+  --cc-footer-bg: #0a0f2e !important;
+  --cc-footer-color: #b9bdd6 !important;
+  --cc-footer-border-color: rgba(255, 255, 255, 0.14) !important;
+
+  --cc-overlay-bg: rgba(5, 8, 24, 0.72) !important;
+  --cc-webkit-scrollbar-bg: #2a3566 !important;
+  --cc-webkit-scrollbar-hover-bg: #3a4680 !important;
+  --cc-z-index: 2147483000 !important;
+}
+
+/* Titres à la typographie d'affichage du site. */
+#cc-main .cm__title,
+#cc-main .pm__title {
+  font-family: var(--ff-display, var(--ff-body, sans-serif)) !important;
+}
+
+/* « Tout accepter » et « Tout refuser » : STRICTEMENT identiques (deux boutons
+   pleins #1A47FF, égale prominence CNIL). « Personnaliser » reste secondaire. */
+#cc-main .cm__btn[data-role="necessary"],
+#cc-main .pm__btn[data-role="necessary"] {
+  background: #1a47ff !important;
+  color: #ffffff !important;
+  border: 1px solid #1a47ff !important;
+}
+#cc-main .cm__btn[data-role="necessary"]:hover,
+#cc-main .pm__btn[data-role="necessary"]:hover {
+  background: #1338d6 !important;
+  border-color: #1338d6 !important;
+}

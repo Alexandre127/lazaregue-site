@@ -1,0 +1,3 @@
+CookieConsent v3.1.0 (épinglé) — auto-hébergé, aucun CDN.
+Source : https://github.com/orestbida/cookieconsent (tag v3.1.0)
+Fichiers : cookieconsent.umd.js (global window.CookieConsent) + cookieconsent.css.

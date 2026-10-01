@@ -3,22 +3,14 @@
 import styles from "./footer.module.css";
 
 /**
- * Lien « Gérer les cookies » du pied de page : ouvre le panneau de préférences
- * tarteaucitron (API `userInterface.openPanel`, repli sur le hashtag
- * `#gerer-cookies`). Rendu comme un lien du footer.
+ * Lien « Gérer les cookies » du pied de page : rouvre le panneau de préférences
+ * CookieConsent (permet aussi de retirer son consentement). Rendu comme un lien
+ * du footer.
  */
 export default function ManageCookiesLink() {
   const open = () => {
-    const tac = (window as unknown as {
-      tarteaucitron?: { userInterface?: { openPanel?: () => void } };
-    }).tarteaucitron;
-    if (tac?.userInterface?.openPanel) {
-      tac.userInterface.openPanel();
-    } else {
-      // Repli : déclenche l'ouverture via le hashtag configuré.
-      window.location.hash = "";
-      window.location.hash = "gerer-cookies";
-    }
+    const cc = (window as unknown as { CookieConsent?: { showPreferences: () => void } }).CookieConsent;
+    cc?.showPreferences();
   };
 
   return (

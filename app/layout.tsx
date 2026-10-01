@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/next";
 import ConsentAnalytics from "@/components/analytics/consent-analytics";
 import "./globals.css";
 import "./hero.css";
-import "./tarteaucitron-theme.css";
+import "./cookieconsent-theme.css";
 
 /**
  * Polices AUTO-HÉBERGÉES (charte § 08, UX-121). next/font/google télécharge les

@@ -1,3 +1,0 @@
-tarteaucitron.js v1.35.0 (épinglé) — auto-hébergé, aucun CDN.
-Source : https://github.com/AmauriC/tarteaucitron.js (tag v1.35.0)
-Fichiers : tarteaucitron.js + lang/tarteaucitron.fr.js. CSS 100% custom (useExternalCss).

@@ -113,8 +113,35 @@ const REGISTRE = [
     donnees: "Adresse IP, horodatage, données techniques de connexion",
     duree: "6 mois à compter de leur enregistrement",
   },
-  // Aucune ligne « Mesure d'audience » : le site n'installe aucun outil de
-  // mesure d'audience (cf. section « Traceurs et mesure d'audience »).
+  {
+    traitement: "Mesure d'audience (Google Analytics 4)",
+    finalite: "Statistiques de fréquentation et de parcours, amélioration éditoriale du site",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Pages consultées, parcours, source, données de navigation (cookies _ga)",
+    duree: "Cookies : 13 mois. Transferts vers les États-Unis encadrés par le Data Privacy Framework",
+  },
+  {
+    traitement: "Analyse de l'expérience (Microsoft Clarity)",
+    finalite: "Cartes de chaleur et relecture agrégée de la navigation, avec masquage strict des saisies",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Interactions agrégées, défilement, clics (aucune donnée saisie)",
+    duree: "Cookies : de la session à 1 an. Microsoft Corporation (États-Unis), Data Privacy Framework",
+  },
+  {
+    traitement: "Suivi de la relation en ligne (HubSpot)",
+    finalite: "Rattachement des visites à la fiche d'un prospect qui contacte le cabinet",
+    base: "Consentement (art. 82 loi du 6 janvier 1978 ; art. 6.1.a RGPD)",
+    donnees: "Pages vues, source, identifiant de suivi (cookies __hstc, hubspotutk…)",
+    duree: "Cookies : 6 mois (__hstc, hubspotutk), 30 min (__hssc). Hébergement UE (eu1)",
+  },
+  {
+    traitement: "Gestion des demandes de contact (CRM HubSpot)",
+    finalite: "Traiter la demande adressée via le formulaire et en assurer le suivi",
+    base: "Mesures précontractuelles et intérêt légitime du cabinet",
+    donnees: "Objet, urgence, nom, organisation, e-mail, téléphone, message, page d'arrivée, UTM",
+    duree:
+      "3 ans à compter du dernier contact (demandes sans suite) ; clients : durée de la relation puis archivage légal. Hébergement UE (eu1) ; accès possible de sous-traitants depuis les États-Unis (Data Privacy Framework)",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -519,23 +546,71 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Le site ne dépose que les traceurs strictement nécessaires à son fonctionnement et à la
-          sécurité de la navigation, exemptés de consentement au titre de l&#39;article 82 de la loi
-          du 6 janvier 1978.
+          Le site dépose sans consentement les seuls traceurs strictement nécessaires à son
+          fonctionnement et à la sécurité de la navigation, ainsi qu&#39;un cookie conservant votre
+          choix de consentement, au titre de l&#39;article 82 de la loi du 6 janvier 1978.
         </P>
         <P>
-          Aucun outil de mesure d&#39;audience n&#39;est installé. Le site ne comporte aucun cookie
-          publicitaire, aucun traceur statistique, aucun bouton de partage ni dispositif de
-          profilage, et n&#39;incorpore aucun contenu tiers : les polices sont hébergées sur le domaine
-          du cabinet, les images et les vidéos sont servies depuis le site, sans carte, vidéo ni
-          police externe. Aucune donnée de navigation n&#39;est transmise à un tiers à des fins de
-          mesure ou de publicité.
+          Avec votre consentement, recueilli finalité par finalité au moyen du bandeau, le site
+          active les outils suivants&nbsp;:
         </P>
         <P>
-          Aucune bannière de recueil du consentement n&#39;est donc nécessaire. Si une mesure
-          d&#39;audience venait à être mise en place, cette politique serait actualisée au préalable
-          et, le cas échéant, le consentement recueilli avant tout dépôt, refusé aussi facilement
-          qu&#39;accepté et révocable à tout moment.
+          <strong>Mesure d&#39;audience — Google Analytics 4</strong> (Google Ireland Limited)&nbsp;:
+          statistiques de fréquentation et de parcours, pour améliorer les pages. Cookies{" "}
+          <em>_ga</em> et dérivés, d&#39;une durée limitée à 13 mois.
+        </P>
+        <P>
+          <strong>Analyse de l&#39;expérience — Microsoft Clarity</strong> (Microsoft Corporation,
+          États-Unis)&nbsp;: cartes de chaleur et relecture agrégée de la navigation, avec masquage
+          strict du contenu saisi. Cookies d&#39;une durée allant de la session à un an selon le
+          cookie.
+        </P>
+        <P>
+          <strong>Relation client — suivi HubSpot</strong> (HubSpot Ireland Limited&nbsp;;
+          hébergement des données dans l&#39;Union européenne, région eu1)&nbsp;: rattachement des
+          visites à votre fiche lorsque vous contactez le cabinet. Cookies <em>__hstc</em> et{" "}
+          <em>hubspotutk</em> (6 mois), <em>__hssc</em> (30 minutes), <em>__hssrc</em> (session).
+          Des sous-traitants de HubSpot peuvent accéder à certaines données depuis les États-Unis,
+          dans le cadre du Data Privacy Framework.
+        </P>
+        <P>
+          Ces outils sont pilotés par Google Tag Manager, qui ne déclenche aucune balise avant
+          consentement (Consent Mode v2). Aucun traceur publicitaire, aucun profilage publicitaire,
+          aucune donnée vendue.
+        </P>
+        <P>
+          <strong>Base légale et retrait.</strong> Ces traitements reposent sur votre consentement
+          (article 6.1.a du RGPD et article 82 de la loi du 6 janvier 1978), libre, spécifique à
+          chaque finalité, aussi simple à refuser qu&#39;à accepter, et révocable à tout moment via
+          le lien «&nbsp;Gérer les cookies&nbsp;» en pied de page. Le refus n&#39;altère pas
+          l&#39;accès au site.
+        </P>
+        <P>
+          <strong>Mesure d&#39;audience sans cookie.</strong> Une mesure globale sans cookie ni
+          identifiant (Vercel Web Analytics) couvre l&#39;ensemble du trafic au titre de
+          l&#39;intérêt légitime du cabinet&nbsp;; elle ne requiert pas de consentement.
+        </P>
+        <P>
+          <strong>Transferts hors Union européenne.</strong> Google et Microsoft peuvent traiter
+          certaines données aux États-Unis. Ces transferts sont encadrés par la décision
+          d&#39;adéquation «&nbsp;EU-US Data Privacy Framework&nbsp;» du 10 juillet 2023 et, à titre
+          de garantie complémentaire, par les clauses contractuelles types de la Commission
+          européenne. HubSpot héberge les données dans l&#39;Union européenne&nbsp;; certains de ses
+          sous-traitants peuvent toutefois y accéder depuis les États-Unis, dans le même cadre.
+        </P>
+        <P>
+          <strong>Formulaire de contact et CRM.</strong> Lorsque vous utilisez le formulaire, votre
+          demande (objet, degré d&#39;urgence, nom, organisation, e-mail, téléphone, message), ainsi
+          que la page d&#39;arrivée et les paramètres de campagne (UTM) présents dans l&#39;adresse,
+          sont transmis au CRM HubSpot afin de traiter votre demande et d&#39;en assurer le suivi.
+          Cette transmission est effectuée côté serveur, indépendamment des cookies et de votre
+          choix relatif aux traceurs. Les demandes adressées au cabinet peuvent contenir des
+          informations couvertes par le secret professionnel&nbsp;; l&#39;accès au CRM est
+          strictement réservé au cabinet. Ces données sont conservées trois ans à compter du
+          dernier contact pour les demandes qui n&#39;aboutissent pas à une relation client&nbsp;;
+          pour les clients, pendant la durée de la relation, puis archivées selon les obligations
+          légales applicables. Base légale&nbsp;: mesures précontractuelles et intérêt légitime du
+          cabinet à gérer ses contacts.
         </P>
       </>
     ),
@@ -939,12 +1014,11 @@ const CSS = `
 /* -------------------------------------------------------------------------- */
 /*  Mentions restant à vérifier — plus aucun blanc dans les mentions légales  */
 /*                                                                            */
-/*   1. Traceurs : RÉGLÉ — aucun outil de mesure d'audience installé, aucun    */
-/*      contenu tiers incorporé (polices auto-hébergées, images et vidéos      */
-/*      servies depuis le site). Le texte reflète cette réalité.               */
-/*   2. Formulaire de contact : le texte affirme qu'aucune donnée de dossier  */
-/*      n'est stockée sur l'infrastructure du site. À confirmer si le         */
-/*      formulaire transmet par courriel sans persistance en base.            */
+/*   1. Traceurs : mesure/consentement en place (GA4, Clarity, HubSpot via     */
+/*      GTM + Consent Mode v2 ; bandeau tarteaucitron). Durées vérifiées déc.   */
+/*      2026 : HubSpot __hstc/hubspotutk 6 mois ; Clarity _clck 1 an.           */
+/*   2. Formulaire de contact : transmis par e-mail (SMTP cabinet) ET au CRM   */
+/*      HubSpot côté serveur ; aucune persistance en base sur l'infra du site.  */
 /*   3. TVA intracommunautaire FR24 823 894 142, calculée par la clé          */
 /*      officielle (12 + 3 × SIREN mod 97) mod 97, à confronter aux           */
 /*      déclarations du cabinet.                                              */
