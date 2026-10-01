@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Space_Grotesk, DM_Mono, Caveat } from "next/font/google";
+import { Bebas_Neue, Space_Grotesk, DM_Mono } from "next/font/google";
 import { GlobalCta } from "@/components/footer/global-cta";
 import { SiteFooter } from "@/components/footer/site-footer";
 import { PageEffects } from "@/components/lazaregue/page-effects";
@@ -44,16 +44,7 @@ const dmMono = DM_Mono({
   preload: false,
   fallback: ["ui-monospace", "monospace"],
 });
-const caveat = Caveat({
-  subsets: ["latin", "latin-ext"],
-  weight: "500",
-  display: "swap",
-  variable: "--ff-hand",
-  preload: false,
-  fallback: ["cursive"],
-});
-
-const fontVariables = `${spaceGrotesk.variable} ${bebasNeue.variable} ${dmMono.variable} ${caveat.variable}`;
+const fontVariables = `${spaceGrotesk.variable} ${bebasNeue.variable} ${dmMono.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -73,12 +64,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={fontVariables}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
-        />
-      </head>
       <body className="min-h-screen bg-navy antialiased text-wh">
         <PageEffects />
         <SiteHeader />
