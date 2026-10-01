@@ -42,6 +42,7 @@ const CABINET: FooterLink[] = [
 // résiduelles n'apportaient rien tant que les pages n'existent pas.
 const INFORMATIONS: FooterLink[] = [
   { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  { label: "Politique de cookies", href: "/politique-cookies" },
   { label: "Mentions légales", href: "/mentions-legales" },
 ];
 

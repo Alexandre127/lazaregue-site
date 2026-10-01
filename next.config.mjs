@@ -71,6 +71,10 @@ const LEGACY = [
 
   // --- Exception : lien entrant actif (legavox.fr, sos-justice.net) ---
   ["/litige-afp-picrights/courrier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+
+  // --- Anciennes adresses de la politique de cookies → page unique ---
+  ["/politique-de-cookie", "/politique-cookies"],
+  ["/politique-de-cookies-ue", "/politique-cookies"],
 ];
 
 // Génère pour chaque entrée les deux variantes (sans et avec barre finale),

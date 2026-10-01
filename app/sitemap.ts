@@ -54,6 +54,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // Pages légales — priorité faible mais indexables
   { path: "/mentions-legales", priority: 0.3, frequence: "yearly" },
   { path: "/politique-de-confidentialite", priority: 0.3, frequence: "yearly" },
+  { path: "/politique-cookies", priority: 0.3, frequence: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
