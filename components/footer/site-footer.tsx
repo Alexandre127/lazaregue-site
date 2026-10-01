@@ -114,25 +114,23 @@ export function SiteFooter() {
             <p className={styles.colTitle} id="ft-informations">
               Informations
             </p>
-            <LinkList items={INFORMATIONS} extra={<ManageCookiesLink />} />
+            <LinkList
+              items={INFORMATIONS}
+              extra={
+                <>
+                  <ManageCookiesLink />
+                  <li>
+                    <Link href="/colophon">Colophon</Link>
+                  </li>
+                </>
+              }
+            />
           </nav>
         </div>
       </div>
 
       <div className={styles.footerBottom}>
-        <nav className={styles.legal} aria-label="Informations légales">
-          <span className={styles.copyright}>© 2026 Lazarègue Avocats — tous droits réservés</span>
-          <span className={styles.sep} aria-hidden="true">·</span>
-          <Link href="/mentions-legales">Mentions légales</Link>
-          <span className={styles.sep} aria-hidden="true">·</span>
-          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
-          <span className={styles.sep} aria-hidden="true">·</span>
-          <Link href="/politique-cookies">Politique de cookies</Link>
-          <span className={styles.sep} aria-hidden="true">·</span>
-          <ManageCookiesLink bare />
-          <span className={styles.sep} aria-hidden="true">·</span>
-          <Link href="/colophon">v2.0 — colophon</Link>
-        </nav>
+        <p className={styles.copyright}>© 2026 Lazarègue Avocats — tous droits réservés</p>
         <a
           className={styles.social}
           href="https://www.linkedin.com/in/alexandre-lazarègue"
