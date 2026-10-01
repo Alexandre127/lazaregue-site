@@ -350,7 +350,7 @@ export function initPremiumGlobe(
 
   const cityMarkers: CityMarker[] = [];
 
-  cities.forEach((city, idx) => {
+  cities.forEach((city) => {
     const pos = latLonToVec3(city.lat, city.lon, GLOBE_RADIUS);
     const markerMat = new THREE.ShaderMaterial({
       vertexShader: markerVertexShader,

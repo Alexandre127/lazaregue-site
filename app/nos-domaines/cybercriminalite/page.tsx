@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { fr } from "@/lib/typo";
 import styles from "./cybercriminalite.module.css";
@@ -269,7 +270,12 @@ export default function Page() {
                 {TEAM.map((m) => (
                   <article key={m.nom}>
                     <div className="ph">
-                      <img src={m.photo} alt={`Portrait de ${m.nom}`} width={320} height={400} loading="lazy" decoding="async" />
+                      <Image
+                        src={m.photo}
+                        alt={`Portrait de ${m.nom}`}
+                        fill
+                        sizes="(max-width: 760px) 200px, (max-width: 1000px) 45vw, 280px"
+                      />
                     </div>
                     <p className="barreau">{m.statut}</p>
                     <h3>{m.nom}</h3>
