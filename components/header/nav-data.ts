@@ -111,18 +111,33 @@ export const FAMILLES: Famille[] = [
  */
 export type NavEntry =
   | { type: "panel"; label: string; href: string; panelId: string }
+  | { type: "disclosure"; label: string; href: string; menuId: string; items: { label: string; href: string }[] }
   | { type: "link"; label: string; href: string };
 
-// Ordre du menu v2 (brief §1) : Domaines · Formations · Ressources · Cas clients
-// · Le cabinet · Contact. Source unique du header ET du tiroir mobile.
+/**
+ * Sous-liens du menu « Formations » (les quatre formations réelles).
+ * Le libellé « Formations » reste un lien vers /formations ; un bouton flèche
+ * distinct ouvre cette liste (modèle W3C « Disclosure Navigation Menu with
+ * Top-Level Links »).
+ */
+export const FORMATIONS_LINKS: { label: string; href: string }[] = [
+  { label: "IA Act", href: "/formations/intelligence-artificielle-entreprise" },
+  { label: "RGPD et DPO", href: "/formations/rgpd" },
+  { label: "Cybersécurité et cyberfraude", href: "/formations/cybersecurite" },
+  { label: "L’Avocat augmenté", href: "/formations/ia-avocats" },
+];
+
+// Ordre du menu : Domaines · Formations · Ressources · Cas clients · Le cabinet.
+// L'entrée « Contact » a été retirée (le bouton « Écrire au cabinet » y mène
+// déjà ; la page /contact et le lien du pied de page sont conservés).
+// Source unique du header ET du tiroir mobile.
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  { type: "link", label: "FORMATIONS", href: "/formations" },
+  { type: "disclosure", label: "FORMATIONS", href: "/formations", menuId: "menu-formations", items: FORMATIONS_LINKS },
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
   { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
-  { type: "link", label: "CONTACT", href: "/contact" },
 ];
 
 /** Pied du panneau DOMAINES. */

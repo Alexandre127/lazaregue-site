@@ -214,6 +214,17 @@
     z-index: 40;
     background: #fff;
     border-bottom: 1px solid var(--bd);
+    transition: top 0.3s ease;
+  }
+  /* En-tête masqué au défilement (articles mobile) : la barre Sommaire prend sa
+     place en haut, sans bande de contenu résiduelle au-dessus. */
+  :global(html[data-header-hidden="true"]) .mNav {
+    top: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mNav {
+      transition: none;
+    }
   }
   .mProg { height: 3px; background: var(--bd); }
   .mProg > span { display: block; height: 3px; background: var(--blue); transition: width 0.1s linear; }

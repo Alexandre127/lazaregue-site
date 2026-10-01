@@ -74,11 +74,20 @@
   --header-h-compact: calc(76px + env(safe-area-inset-top, 0px));
 }
 
-@media (max-width: 1279px) {
+/* Sous 900px : en-tête « Menu » (78px). Le seuil est aligné sur la bascule
+   navigation complète / bouton Menu du header (900px). */
+@media (max-width: 899px) {
   :root {
     --header-h: calc(78px + env(safe-area-inset-top, 0px));
     --header-h-compact: calc(78px + env(safe-area-inset-top, 0px));
   }
+}
+
+/* Ancrages : l'élément ciblé s'arrête sous l'en-tête fixe (hauteur compacte
+   + petite marge), sur toutes les pages à ancres. Complète les
+   scroll-margin-top locaux déjà posés (articles, cas clients). */
+html {
+  scroll-padding-top: calc(var(--header-h-compact) + 12px);
 }
 
 @theme {
