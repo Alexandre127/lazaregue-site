@@ -33,8 +33,6 @@ export const FILTERS: { key: "all" | Dom; label: string }[] = [
   { key: "ma", label: DOM_LABEL.ma },
 ];
 
-const REEL = "/ressources/faux-conseiller-bancaire-remboursement";
-
 /* 01 — Par situation. Filtre du corpus (?domaine=) ou page de domaine réelle. */
 export const SITUATIONS: { texte: string; href: string }[] = [
   { texte: "Une banque refuse de rembourser une fraude", href: "/ressources/?domaine=fraude" },
@@ -92,7 +90,8 @@ export type CorpusItem = { dom: Dom; id: string; titre: string; excerpt: string;
 export const CORPUS: CorpusItem[] = [
   { dom: "cyber", id: "nis2", featDup: true, href: null, titre: "NIS 2 : quelles entreprises sont concernées et quelles obligations anticiper ?", excerpt: "Entités essentielles, entités importantes, sous-traitants, gouvernance et notification des incidents : les principaux critères à vérifier." },
   { dom: "fraude", id: "fbo", featDup: true, href: NOTE, titre: "Fraude bancaire : opposition, contestation et remboursement", excerpt: "Ce que la banque doit prouver, ce que vous pouvez exiger, et comment préparer votre demande — de l'opposition au tribunal." },
-  { dom: "fraude", id: "fcb", href: REEL, titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", excerpt: "Consentement, authentification forte, négligence grave et opérations inhabituelles : les critères à examiner pour contester les paiements." },
+  // Article de test : présenté comme « à paraître » (href null) jusqu'à sa réécriture — non cliquable, page en noindex et hors sitemap.
+  { dom: "fraude", id: "fcb", href: null, titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", excerpt: "Consentement, authentification forte, négligence grave et opérations inhabituelles : les critères à examiner pour contester les paiements." },
   { dom: "rgpd", id: "a28", featDup: true, href: null, titre: "Article 28 du RGPD : quelles clauses prévoir avec un sous-traitant ?", excerpt: "Instructions, sécurité, sous-traitance ultérieure, audits, violations et restitution des données : les clauses à prévoir dans le contrat." },
   { dom: "cyber", id: "rw", featDup: true, href: null, titre: "Ransomware (rançongiciel) : les décisions juridiques à prendre dans les premières 24 heures", excerpt: "Préserver les preuves, coordonner les intervenants, examiner les notifications et organiser la continuité sans compromettre les recours." },
   { dom: "contenus", id: "fa", href: null, titre: "Faux avis Google : comment demander leur suppression ?", excerpt: "Qualifier l'avis, conserver la preuve, adresser un signalement exploitable et choisir la voie d'action adaptée." },

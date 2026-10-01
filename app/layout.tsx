@@ -55,6 +55,20 @@ export const metadata: Metadata = {
   // ex. {{CHAPO_A_REDIGER}}). noindex/nofollow à l'échelle du site. À RETIRER
   // le jour de la mise en ligne publique (voir aussi app/robots.ts).
   robots: { index: false, follow: false },
+  // Image de partage par défaut (1200×630). Next ne fusionnant pas en profondeur
+  // openGraph/twitter, chaque page qui les redéclare reprend aussi cette image ;
+  // ce défaut couvre les pages sans métadonnées propres (ex. sous-pages
+  // Formations). metadataBase (ci-dessus) préfixe l'URL absolue.
+  openGraph: {
+    siteName: "Lazarègue Avocats",
+    locale: "fr_FR",
+    type: "website",
+    images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }],
+  },
 };
 
 export default function RootLayout({

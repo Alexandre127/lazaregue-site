@@ -25,11 +25,11 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: PATH,
-    siteName: "Lazarègue Avocats",
+    siteName: "Lazarègue Avocats", images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }],
     locale: "fr_FR",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title: TITLE, description: DESCRIPTION },
 };
 
 // Balisages : ne décrivent que du contenu réellement visible dans la page.
@@ -446,12 +446,11 @@ export default function Page() {
             </div>
             <FaqAccordion />
             <p className="faq-suite">
-              Deux sujets voisins sont traités à part&nbsp;:{" "}
-              {/* TODO(URL à renseigner) : ressource « IA et salariés ». */}
-              <Link href="/ressources/ia-salaries">l’usage des outils d’intelligence artificielle par les salariés</Link>{" "}
-              et{" "}
-              {/* TODO(URL à renseigner) : ressource « hébergeurs américains ». */}
-              <Link href="/ressources/hebergeurs-americains">le recours aux solutions hébergées par des fournisseurs américains</Link>.
+              {/* Ressources dédiées à paraître : texte conservé, liens retirés
+                  tant que les articles n'existent pas (aucune cible 404). */}
+              Deux sujets voisins sont traités à part&nbsp;: l’usage des outils
+              d’intelligence artificielle par les salariés et le recours aux
+              solutions hébergées par des fournisseurs américains.
             </p>
           </div>
         </section>

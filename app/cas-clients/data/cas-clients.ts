@@ -7,17 +7,19 @@
 
 export type DomKey = "cyber" | "contentieux" | "fraude" | "crypto" | "contenus" | "cybercrim" | "pi";
 
-/** Intitulés EXACTS du site + route réelle de la page compétence (§ 4). */
-export const DOM_META: Record<DomKey, { label: string; href: string }> = {
+/** Intitulés EXACTS du site + route réelle de la page compétence (§ 4).
+ *  `href: null` = pas de page compétence sur l'app Next : l'intitulé est alors
+ *  rendu en texte simple (jamais en lien), pour ne produire aucune 404. */
+export const DOM_META: Record<DomKey, { label: string; href: string | null }> = {
   cyber: { label: "Cybersécurité et NIS 2", href: "/nos-domaines/cybersecurite" },
   contentieux: { label: "Contentieux informatique et commercial", href: "/nos-domaines/contentieux-informatique-commercial" },
   fraude: { label: "Fraude bancaire et escroquerie", href: "/nos-domaines/escroquerie-fraude-bancaire" },
   crypto: { label: "Crypto-actifs et blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
   contenus: { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
   cybercrim: { label: "Cybercriminalité et cyberattaques", href: "/nos-domaines/cybercriminalite" },
-  // Pas de page compétence Next pour la PI : lien vers la page PicRights/AFP du
-  // site (à signaler — cette route est portée par le SPA, pas par l'app Next).
-  pi: { label: "Propriété intellectuelle — photographies", href: "/litige-afp-picrights/" },
+  // Pas de page compétence sur l'app Next pour la PI (la page PicRights/AFP est
+  // portée par le SPA du domaine principal) : intitulé affiché sans lien.
+  pi: { label: "Propriété intellectuelle — photographies", href: null },
 };
 
 export const ISSUE = "Dossier clos — issue favorable";
@@ -41,10 +43,12 @@ export type Cas = {
   arbitrage?: { voie: string; app: string; dec: string; ret: boolean }[];
   issue: string;
   aRetenir: string[];
-  ressources: { titre: string; href: string }[];
+  ressources: { titre: string; href: string | null }[];
 };
 
-const FCB = { titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", href: "/ressources/faux-conseiller-bancaire-remboursement" };
+// Article de test « Faux conseiller » présenté comme « à paraître » : href null
+// → la ressource reste listée (titre conservé) mais n'est pas cliquable.
+const FCB = { titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", href: null };
 
 export const CAS: Cas[] = [
   {
@@ -80,7 +84,7 @@ export const CAS: Cas[] = [
       { voie: "Expertise (art. 145 CPC)", app: "Établir les causes techniques avant tout procès", dec: "Retenue — axe principal", ret: true },
       { voie: "Action au fond immédiate", app: "Prématurée sans constatations techniques", dec: "Différée", ret: false },
     ],
-    issue: "Une expertise judiciaire a été ordonnée afin de déterminer les causes de l’incident et les responsabilités. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Une expertise judiciaire a été obtenue pour déterminer l’origine de l’attaque. Les investigations ont mis en évidence les défaillances du prestataire informatique, qui a finalement accepté d’indemniser intégralement les conséquences de l’incident.",
     aRetenir: ["En matière de cyberattaque, la préservation immédiate des journaux, sauvegardes, échanges et éléments contractuels peut conditionner la possibilité d’établir ultérieurement les responsabilités."],
     ressources: [],
   },
@@ -105,7 +109,7 @@ export const CAS: Cas[] = [
       "Le cabinet a reconstitué la chronologie des virements, identifié les différents établissements et prestataires intervenus dans la chaîne de paiement et analysé les mécanismes d’authentification utilisés.",
       "L’action a été construite notamment autour des règles du Code monétaire et financier relatives à l’autorisation des opérations de paiement, à la preuve et au remboursement.",
     ],
-    issue: "L’action a été menée contre l’établissement bancaire. Le dossier est clos, avec une issue favorable au client.",
+    issue: "27 virements, pour un total de 55 600 €, avaient été dirigés vers plusieurs plateformes dans le cadre d’une escroquerie. Après reconstitution de chaque opération et des alertes successives, la banque a remboursé l’intégralité des 55 600 € détournés.",
     aRetenir: ["Dans les dossiers de fraude bancaire, la chronologie des opérations, les modalités exactes d’authentification et la circulation des fonds doivent être établies opération par opération."],
     ressources: [FCB],
   },
@@ -127,30 +131,8 @@ export const CAS: Cas[] = [
       "Le cabinet a analysé les contenus, leur ancienneté, leur accessibilité depuis les résultats de recherche ainsi que les intérêts en présence.",
       "Une procédure a ensuite été engagée afin d’obtenir l’examen judiciaire de la demande de déréférencement.",
     ],
-    issue: "La demande de déréférencement a été soumise à l’examen du juge. Le dossier est clos, avec une issue favorable aux clients.",
+    issue: "Plusieurs résultats associaient toujours les dirigeants à une ancienne affaire pénale et affectaient directement leur réputation professionnelle. Au terme de la procédure, Google a procédé au déréférencement des résultats litigieux : les liens ont disparu des recherches effectuées sur leurs noms.",
     aRetenir: ["Le retrait du contenu à sa source et son déréférencement par un moteur de recherche sont deux mécanismes juridiquement distincts."],
-    ressources: [],
-  },
-  {
-    slug: "usurpation-identite-identifier-auteur-article-145-cpc",
-    numero: "04",
-    domaines: ["cybercrim"],
-    titre: "Usurpation d’identité : identifier l’auteur grâce à une mesure de l’article 145 du CPC",
-    seoTitle: "Usurpation d'identité : identifier l'auteur (art. 145 CPC)",
-    metaDescription: "Face à une usurpation d’identité impliquant plusieurs opérateurs, des mesures probatoires de l’article 145 du CPC visent à obtenir les données identifiant l’auteur.",
-    chapo: "Une identité avait été utilisée dans le cadre de communications électroniques impliquant plusieurs services et opérateurs.",
-    resume: "Obtenir la conservation et la communication des données techniques avant leur disparition.",
-    client: "[À préciser]",
-    nature: "Contentieux",
-    voie: "Mesures probatoires (art. 145 CPC)",
-    situation: [
-      "Une identité avait été utilisée dans le cadre de communications électroniques impliquant plusieurs services et opérateurs.",
-      "L’identité exacte de la personne à l’origine des faits ne pouvait être déterminée à partir des seuls éléments disponibles pour la victime.",
-    ],
-    enjeu: "Préserver et obtenir les données techniques susceptibles de permettre l’identification des auteurs avant leur disparition.",
-    intervention: ["Le cabinet a identifié les intermédiaires techniques susceptibles de détenir des données utiles et engagé une procédure destinée à obtenir leur conservation et leur communication, par des mesures probatoires fondées sur l’article 145 du Code de procédure civile."],
-    issue: "Les mesures probatoires fondées sur l’article 145 du Code de procédure civile ont été mises en œuvre. Le dossier est clos, avec une issue favorable au client.",
-    aRetenir: ["Dans les affaires numériques, identifier rapidement les opérateurs susceptibles de détenir une donnée est souvent aussi important que l’action au fond elle-même."],
     ressources: [],
   },
   {
@@ -168,7 +150,7 @@ export const CAS: Cas[] = [
     situation: ["Une entreprise contestait l’exécution de prestations informatiques intervenues dans le cadre d’une relation contractuelle comprenant plusieurs opérations et financements."],
     enjeu: "Reconstituer les prestations effectivement commandées et exécutées, déterminer les obligations contractuelles de chaque intervenant et évaluer les conséquences financières des manquements allégués.",
     intervention: ["Analyse des contrats, factures, échanges, livrables et chronologie du projet ; identification des obligations discutées ; préparation de la stratégie contentieuse."],
-    issue: "Le contentieux commercial a été conduit à son terme. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Une société restait tenue par plusieurs contrats de financement alors que la solution informatique financée était inexploitable. L’interdépendance des contrats a finalement été reconnue : les engagements financiers ont été anéantis et l’entreprise libérée des loyers restant à courir.",
     aRetenir: ["Dans un contentieux informatique, la première difficulté consiste souvent à reconstruire précisément la relation contractuelle avant même de déterminer la responsabilité technique."],
     ressources: [],
   },
@@ -187,7 +169,7 @@ export const CAS: Cas[] = [
     situation: ["À la suite d’un incident de sécurité affectant son infrastructure informatique, une entreprise devait déterminer le scénario technique de l’attaque et le rôle éventuel des différents intervenants chargés du réseau."],
     enjeu: "Transformer un événement technique complexe en faits susceptibles d’être discutés contradictoirement dans une procédure.",
     intervention: ["Le cabinet a travaillé sur la chronologie de l’incident, les équipements concernés, les données disponibles et les obligations des différents prestataires afin de préparer l’expertise et les questions soumises au technicien."],
-    issue: "L’expertise a été préparée et conduite sur la base des questions techniques définies. Le dossier est clos, avec une issue favorable au client.",
+    issue: "L’origine d’une compromission informatique était contestée entre plusieurs prestataires. L’expertise a permis d’isoler la défaillance technique déterminante et d’établir la responsabilité du prestataire concerné, conduisant à l’indemnisation du client.",
     aRetenir: ["L’expertise informatique n’a d’utilité contentieuse que si les questions techniques sont reliées précisément aux obligations contractuelles dont dépend la responsabilité."],
     ressources: [],
   },
@@ -206,7 +188,7 @@ export const CAS: Cas[] = [
     situation: ["Une entreprise avait reçu une demande d’indemnisation en raison de l’utilisation alléguée de plusieurs photographies protégées par le droit d’auteur."],
     enjeu: "Vérifier la titularité des droits invoqués, déterminer les conditions exactes d’utilisation des photographies et apprécier le montant de l’indemnisation réclamée.",
     intervention: ["Le cabinet a examiné les photographies concernées, les droits revendiqués, les usages reprochés et les éléments justifiant le montant demandé avant de définir la réponse et la stratégie contentieuse."],
-    issue: "La réclamation a été contestée sur la preuve des droits, les usages et le montant demandé. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Une société réclamait une indemnisation importante pour l’utilisation prétendument illicite de plusieurs photographies. La contestation de la titularité des droits, des usages invoqués et du calcul de l’indemnisation a conduit à l’abandon intégral de la réclamation.",
     aRetenir: ["La réception d’une réclamation ne dispense pas de vérifier la preuve des droits, les usages effectivement réalisés et la méthode de calcul de l’indemnisation."],
     ressources: [],
   },
@@ -225,14 +207,14 @@ export const CAS: Cas[] = [
     situation: ["Après avoir été entraînée dans un dispositif frauduleux en ligne, une victime avait effectué plusieurs opérations par carte bancaire ainsi qu’un virement vers des services associés aux crypto-actifs."],
     enjeu: "Distinguer chaque opération, ses modalités d’autorisation et les mécanismes d’authentification utilisés afin de déterminer les recours envisageables.",
     intervention: ["Reconstitution des opérations, analyse des flux et des authentifications, qualification juridique et contestation auprès de l’établissement bancaire."],
-    issue: "Les opérations ont été contestées auprès de l’établissement bancaire, chacune selon son régime. Le dossier est clos, avec une issue favorable au client.",
+    issue: "Onze paiements par carte et un virement avaient entraîné une perte totale de 13 240,33 €. L’analyse distincte de l’autorisation et de l’authentification de chaque opération a conduit la banque à restituer les sommes contestées au client.",
     aRetenir: ["Dans les escroqueries complexes, il est rarement pertinent de traiter toutes les opérations comme un bloc : leur régime juridique peut différer selon le moyen de paiement utilisé."],
     ressources: [FCB],
   },
 ];
 
 /** Ordre des filtres de la page générale (un bouton par domaine présent). */
-export const FILTER_ORDER: DomKey[] = ["contentieux", "fraude", "contenus", "cybercrim", "cyber", "pi", "crypto"];
+export const FILTER_ORDER: DomKey[] = ["contentieux", "fraude", "contenus", "cyber", "pi", "crypto"];
 
 /** Domaines du site SANS cas publié — calculés depuis la collection (§ 4). */
 const AUTRES_SITE = [

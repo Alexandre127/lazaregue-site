@@ -2,9 +2,9 @@
    Dossiers traités — cartes de la page d'accueil (section « Dossiers traités »).
 
    CONTENU PROVISOIRE À VALIDER PAR ME LAZARÈGUE : profils, situations,
-   interventions, leviers. Les trois liens pointent provisoirement vers la
-   rubrique /cas-clients (aucune page dédiée ne correspond encore à ces trois
-   dossiers).
+   interventions, leviers. Chaque dossier renvoie vers la page correspondante :
+   01 → cas client « Cyberattaque », 02 → cas client « Litige d'infogérance »,
+   03 (fuite de données) → page de compétence RGPD (aucun cas client dédié).
 
    Voix : « le cabinet » (jamais « nous »). Espaces insécables dans « 80 000 € ».
    ========================================================================== */
@@ -20,6 +20,9 @@ export type HomeDossier = {
   levier: string;
   issue: string;
   href: string;
+  /** Libellé du lien (défaut : « Découvrir le cas »). Utilisé quand la cible
+   *  n'est pas un cas client mais une page de compétence. */
+  cta?: string;
 };
 
 export const HOME_DOSSIERS: HomeDossier[] = [
@@ -35,7 +38,7 @@ export const HOME_DOSSIERS: HomeDossier[] = [
       "Le cabinet et son consultant cybersécurité ont analysé les journaux d’appels : l’accès reposait sur un simple filtrage d’adresse IP, sans seuil d’alerte côté opérateur.",
     levier: "Obligation de sécurité de l’opérateur",
     issue: "Facture annulée.",
-    href: "/cas-clients",
+    href: "/cas-clients/cyberattaque-responsabilite-prestataire-informatique",
   },
   {
     id: "dossier-accueil-2",
@@ -49,7 +52,7 @@ export const HOME_DOSSIERS: HomeDossier[] = [
       "Le cabinet a fait constater les fonctions manquantes par commissaire de justice et établi que la recette avait été prononcée sous réserves.",
     levier: "Délivrance conforme · devoir de conseil",
     issue: "Contrat résilié, sommes versées remboursées.",
-    href: "/cas-clients",
+    href: "/cas-clients/litige-infogerance-prestataire-informatique",
   },
   {
     id: "dossier-accueil-3",
@@ -63,6 +66,7 @@ export const HOME_DOSSIERS: HomeDossier[] = [
       "Périmètre établi avec le consultant technique, CNIL notifiée dans le délai légal, audits des clients traités sur la base d’un plan de remédiation documenté.",
     levier: "Art. 33 et 34 RGPD",
     issue: "Contrats majeurs conservés.",
-    href: "/cas-clients",
+    href: "/nos-domaines/rgpd-donnees-personnelles",
+    cta: "Voir la compétence RGPD",
   },
 ];

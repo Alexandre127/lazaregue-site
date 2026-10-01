@@ -103,6 +103,27 @@ const nextConfig = {
         destination: "/nos-domaines/cybersecurite",
         statusCode: 301,
       },
+      // Le cas client « Usurpation d'identité » (n° 04) a été retiré de la
+      // collection. 301 vers l'index des cas clients (pas de cas de remplacement).
+      {
+        source: "/cas-clients/usurpation-identite-identifier-auteur-article-145-cpc",
+        destination: "/cas-clients",
+        statusCode: 301,
+      },
+      // Ancienne page « /litige-afp-picrights » de l'ancien site (réclamations
+      // PicRights/AFP pour photographies), qui reçoit encore du trafic Google.
+      // 301 directe vers le cas client correspondant (n° 07, photographies / PI).
+      // Les deux formes (avec et sans barre oblique finale) sont couvertes.
+      {
+        source: "/litige-afp-picrights",
+        destination: "/cas-clients/photographies-utilisees-sans-autorisation-reclamation",
+        statusCode: 301,
+      },
+      {
+        source: "/litige-afp-picrights/",
+        destination: "/cas-clients/photographies-utilisees-sans-autorisation-reclamation",
+        statusCode: 301,
+      },
     ];
   },
 };

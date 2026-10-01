@@ -108,6 +108,9 @@
   .diff :global(.vid-bg) { inset: 0; }
   .diff :global(.vid-bg video) { opacity: 0.35; }
   .diff :global(.vid-bg)::after { background: linear-gradient(180deg, rgba(10, 15, 46, 0.55) 0%, rgba(10, 15, 46, 0.82) 60%, var(--navy) 100%); }
+  /* Sous 900 px, aucune vidéo n'est chargée (poster seul) : le bouton de
+     pause/lecture n'a rien à contrôler, on le masque. */
+  .diff :global(.vid-pause) { display: none; }
 }
 
 /* ============================ SITUATIONS (6) ============================= */

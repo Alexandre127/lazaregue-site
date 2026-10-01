@@ -7,9 +7,8 @@
  * accent), Deep Navy #0A0F2E, Bebas Neue (display), Space Grotesk (titres et
  * corps), DM Mono (labels), angles droits, aucune ombre.
  *
- * Les passages surlignés en bleu sont des mentions à compléter : ce sont les
- * seules informations que le rédacteur ne pouvait pas connaître. Elles sont
- * toutes balisées par le composant <AC> et listées en bas de ce fichier.
+ * Toutes les mentions sont désormais renseignées (plus aucun passage « à
+ * compléter »).
  *
  * Usage Next.js (app router) :
  *   app/mentions-legales/page.jsx        -> <PagesLegales initial="mentions" />
@@ -30,9 +29,6 @@ const MAJ = "1er septembre 2026";
 /* -------------------------------------------------------------------------- */
 /*  Primitives                                                                 */
 /* -------------------------------------------------------------------------- */
-
-/** À compléter : mention surlignée, en attente d'une information factuelle. */
-const AC = ({ children }) => <span className="lz-ac">{children}</span>;
 
 /** Paragraphe de corps. */
 const P = ({ children }) => <p className="lz-p">{children}</p>;
@@ -117,14 +113,8 @@ const REGISTRE = [
     donnees: "Adresse IP, horodatage, données techniques de connexion",
     duree: "6 mois à compter de leur enregistrement",
   },
-  {
-    traitement: "Mesure d'audience",
-    finalite: "Statistiques de fréquentation et amélioration éditoriale du site",
-    base:
-      "Consentement, sauf exemption réservée aux mesures d'audience strictement limitées à cette finalité",
-    donnees: "Pages consultées, provenance, données de navigation agrégées",
-    duree: "13 mois pour les traceurs, 25 mois pour les données qui en sont issues",
-  },
+  // Aucune ligne « Mesure d'audience » : le site n'installe aucun outil de
+  // mesure d'audience (cf. section « Traceurs et mesure d'audience »).
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -529,24 +519,23 @@ const DONNEES = [
     corps: (
       <>
         <P>
-          Les traceurs strictement nécessaires au fonctionnement du site et à la sécurité de la
-          navigation sont déposés sans consentement, conformément à l&#39;article 82 de la loi du
-          6 janvier 1978.
+          Le site ne dépose que les traceurs strictement nécessaires à son fonctionnement et à la
+          sécurité de la navigation, exemptés de consentement au titre de l&#39;article 82 de la loi
+          du 6 janvier 1978.
         </P>
         <P>
-          Le site ne comporte aucun traceur publicitaire, aucun bouton de partage vers un réseau
-          social et aucun dispositif de profilage. La mesure d&#39;audience, lorsqu&#39;elle est activée,
-          est limitée à la production de statistiques anonymes pour le seul compte du cabinet et
-          n&#39;alimente aucun croisement avec d&#39;autres traitements.{" "}
-          <AC>
-            À vérifier avant mise en ligne : outil d&#39;audience effectivement installé, contenus
-            incorporés — vidéos, cartes, polices distantes — et éventuel bandeau de recueil.
-          </AC>
+          Aucun outil de mesure d&#39;audience n&#39;est installé. Le site ne comporte aucun cookie
+          publicitaire, aucun traceur statistique, aucun bouton de partage ni dispositif de
+          profilage, et n&#39;incorpore aucun contenu tiers : les polices sont hébergées sur le domaine
+          du cabinet, les images et les vidéos sont servies depuis le site, sans carte, vidéo ni
+          police externe. Aucune donnée de navigation n&#39;est transmise à un tiers à des fins de
+          mesure ou de publicité.
         </P>
         <P>
-          Le consentement, lorsqu&#39;il est requis, est recueilli avant tout dépôt, refusé aussi
-          facilement qu&#39;accepté, et peut être retiré à tout moment. Le refus n&#39;altère pas l&#39;accès
-          au contenu du site.
+          Aucune bannière de recueil du consentement n&#39;est donc nécessaire. Si une mesure
+          d&#39;audience venait à être mise en place, cette politique serait actualisée au préalable
+          et, le cas échéant, le consentement recueilli avant tout dépôt, refusé aussi facilement
+          qu&#39;accepté et révocable à tout moment.
         </P>
       </>
     ),
@@ -950,10 +939,9 @@ const CSS = `
 /* -------------------------------------------------------------------------- */
 /*  Mentions restant à vérifier — plus aucun blanc dans les mentions légales  */
 /*                                                                            */
-/*   1. Traceurs : confirmer l'outil d'audience réellement installé et les    */
-/*      contenus incorporés (vidéos, cartes, polices distantes) avant la      */
-/*      mise en ligne. Le texte est écrit sur la position la plus sobre —     */
-/*      aucun traceur publicitaire, aucun profilage.                          */
+/*   1. Traceurs : RÉGLÉ — aucun outil de mesure d'audience installé, aucun    */
+/*      contenu tiers incorporé (polices auto-hébergées, images et vidéos      */
+/*      servies depuis le site). Le texte reflète cette réalité.               */
 /*   2. Formulaire de contact : le texte affirme qu'aucune donnée de dossier  */
 /*      n'est stockée sur l'infrastructure du site. À confirmer si le         */
 /*      formulaire transmet par courriel sans persistance en base.            */
