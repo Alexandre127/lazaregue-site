@@ -23,10 +23,10 @@ export function HeroVideo() {
         ? window.matchMedia(q)
         : ({ matches: false, addEventListener: undefined } as unknown as MediaQueryList);
     const reduce = mq("(prefers-reduced-motion: reduce)");
-    // Vidéo réservée au desktop et à la tablette : en mobile (< 760 px), la
-    // couche est masquée par le CSS ET le fichier n'est jamais sollicité — les
-    // <source> ne sont injectées que si cette requête média est satisfaite.
-    const desktop = mq("(min-width: 760px)");
+    // Vidéo réservée au desktop / à la grande tablette : sous 900 px, le fichier
+    // n'est jamais sollicité — les <source> ne sont injectées que si cette requête
+    // média est satisfaite (le poster reste comme fond sur mobile).
+    const desktop = mq("(min-width: 900px)");
 
     const reseauLent = () => {
       const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;

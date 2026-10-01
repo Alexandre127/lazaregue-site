@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description: cas.metaDescription,
     alternates: { canonical: path },
-    openGraph: { title, description: cas.metaDescription, url: path, siteName: "Lazarègue Avocats", locale: "fr_FR", type: "article" },
-    twitter: { card: "summary_large_image", title, description: cas.metaDescription },
+    openGraph: { title, description: cas.metaDescription, url: path, siteName: "Lazarègue Avocats", images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }], locale: "fr_FR", type: "article" },
+    twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title, description: cas.metaDescription },
   };
 }
 
@@ -160,7 +160,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <article className="comp">
               <p className="tagd">Compétence du cabinet</p>
               <h3>{principal.label}</h3>
-              <Link className="link relLink" href={principal.href}>Voir la compétence →</Link>
+              {/* Lien seulement si la compétence a une page sur l'app Next ;
+                  sinon texte simple non cliquable (cas PI → pas de page Next,
+                  aucune 404 et aucune fausse affordance de lien). */}
+              {principal.href ? (
+                <Link className="link relLink" href={principal.href}>Voir la compétence →</Link>
+              ) : (
+                <span className="relLink relLinkOff">Voir la compétence</span>
+              )}
             </article>
             {cas.ressources.map((r) => (
               <article key={r.href}>

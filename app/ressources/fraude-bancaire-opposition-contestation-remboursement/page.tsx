@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", locale: "fr_FR", type: "article" },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }], locale: "fr_FR", type: "article" },
+  twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title: TITLE, description: DESCRIPTION },
 };
 
 const FAQ: QA[] = [
@@ -385,13 +385,13 @@ export default function Page() {
               <p className={styles.tag}>Cas client 02</p>
               <h3>Virements frauduleux vers des plateformes de crypto-actifs</h3>
               <p className={styles.tx}>Mise en cause de la banque émettrice et de la banque réceptrice après une série de virements vers des prestataires étrangers.</p>
-              <Link className={styles.go} href={COMPETENCE}>Voir les dossiers du cabinet →</Link>
+              <Link className={styles.go} href="/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque">Voir le cas client →</Link>
             </article>
             <article>
               <p className={styles.tag}>Cas client 08</p>
               <h3>Escroquerie en ligne : paiements par carte et virement</h3>
               <p className={styles.tx}>Contestation des opérations et de la négligence grave invoquée par l&apos;établissement.</p>
-              <Link className={styles.go} href={COMPETENCE}>Voir les dossiers du cabinet →</Link>
+              <Link className={styles.go} href="/cas-clients/escroquerie-en-ligne-paiements-carte-crypto-banque">Voir le cas client →</Link>
             </article>
           </div>
 

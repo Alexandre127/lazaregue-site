@@ -66,6 +66,10 @@ function HeroMedia() {
     if (!video) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (motion.matches) { queueMicrotask(() => setPaused(true)); return; }
+    // Desktop / grande tablette uniquement : sous 900 px, les <source> gardent
+    // leur data-src (jamais de src) → aucun fichier vidéo n'est téléchargé sur
+    // mobile ; le poster reste affiché comme fond.
+    if (!window.matchMedia("(min-width: 900px)").matches) { return; }
     const sources = video.querySelectorAll<HTMLSourceElement>("source[data-src]");
     sources.forEach((s) => { s.src = s.getAttribute("data-src") || ""; });
     video.load();

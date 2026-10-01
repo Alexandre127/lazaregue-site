@@ -78,12 +78,19 @@ export function CaseFactsAside({ cas }: { cas: Cas }) {
       <dl>
         <dt>Domaines</dt>
         <dd>
-          {cas.domaines.map((d, i) => (
-            <span key={d}>
-              <Link href={DOM_META[d].href}>{DOM_META[d].label}</Link>
-              {i < cas.domaines.length - 1 ? " · " : ""}
-            </span>
-          ))}
+          {cas.domaines.map((d, i) => {
+            const href = DOM_META[d].href;
+            return (
+              <span key={d}>
+                {href ? (
+                  <Link href={href}>{DOM_META[d].label}</Link>
+                ) : (
+                  <span>{DOM_META[d].label}</span>
+                )}
+                {i < cas.domaines.length - 1 ? " · " : ""}
+              </span>
+            );
+          })}
         </dd>
         <dt>Client</dt>
         <dd>{cas.client}</dd>

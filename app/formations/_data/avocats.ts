@@ -10,15 +10,13 @@ export const AVOCATS: Formation = {
     "Formation d’une journée pour les avocats et juristes : l’IA comme environnement de travail, de la prospection à la décision de justice. Aucun prérequis technique, 10 participants au plus.",
 
   h1: { avant: "Formation IA pour les avocats : ", accent: "l’Avocat augmenté" },
-  // TODO (cabinet) : présentation de la consœur coanimatrice + heures de
-  // formation continue (voir repères et FAQ ci-dessous, marqués « à confirmer »).
   accroche: "L’IA ne rend pas un cabinet plus productif. Son organisation, si.",
   intro:
     "Ni un cours de ChatGPT, ni un atelier de productivité : l’IA y est présentée comme un nouvel environnement de travail, de la prospection du client jusqu’à la décision de justice. Le matin pour comprendre, l’après-midi pour pratiquer sur un dossier réel.",
   reperes: [
     { label: "Public", value: "Avocats, élèves-avocats et juristes · aucun prérequis technique" },
-    { label: "Animée par", value: "Me Alexandre Lazarègue et [consœur du barreau de Paris — à confirmer]" },
-    { label: "Durée", value: "1 journée (7 h) · [heures de formation continue — à vérifier]" },
+    { label: "Animée par", value: "Me Alexandre Lazarègue et Me Sarah Hinderer" },
+    { label: "Durée", value: "1 journée (7 h)" },
     { label: "Format", value: "10 participants au plus" },
     { label: "Tarif", value: "990 € HT (1 188 € TTC) par participant" },
   ],
@@ -133,8 +131,10 @@ export const AVOCATS: Formation = {
       slug: "alexandre",
       bio: "Fondateur de Lazarègue Avocats en 2016. Tribunes dans Le Monde sur l’IA, les données et la cybersécurité ; auteur de « L’assurance des cyber risques » (L’Argus de l’assurance, à paraître).",
     },
-    // TODO (cabinet) : remplacer par la vraie consœur (photo à ajouter à lib/equipe).
-    { nom: "[Consœur — à confirmer]", statut: "Avocate au barreau de Paris", bio: "[Présentation à compléter]" },
+    // Coanimatrice : Me Sarah Hinderer. Nom, statut et photo proviennent de la
+    // source unique lib/equipe.ts (slug « sarah ») — photo de référence identique
+    // au reste du site.
+    { slug: "sarah", bio: "Avocate aux barreaux de Paris et de Montréal. Intervient en données personnelles et en intelligence artificielle, du cadre réglementaire à sa mise en œuvre dans les dossiers." },
   ],
 
   faq: [
@@ -144,7 +144,6 @@ export const AVOCATS: Formation = {
       a: "C’est l’un des objets de la journée : quels outils, quelles données, quelles précautions contractuelles et techniques.",
     },
     { q: "Que faut-il apporter ?", a: "Un dossier réel, anonymisé si nécessaire, sur lequel vous travaillez l’après-midi." },
-    { q: "La formation est-elle validée au titre de la formation continue ?", a: "[À vérifier]" },
     { q: "Quel est le tarif ?", a: "990 € HT (1 188 € TTC) par participant, pour une journée de 7 heures." },
   ],
 
@@ -154,5 +153,5 @@ export const AVOCATS: Formation = {
   hubTitre: "L’Avocat augmenté",
   hubPhrase: "Exercer le métier d’avocat à l’ère de l’IA, de la prospection à la décision de justice. Une journée, 10 participants au plus, 990 € HT (1 188 € TTC) par participant.",
   hubPublic: "Avocats, élèves-avocats et juristes",
-  hubAnimee: "Me Alexandre Lazarègue · [consœur — à confirmer]",
+  hubAnimee: "Me Alexandre Lazarègue · Me Sarah Hinderer",
 };

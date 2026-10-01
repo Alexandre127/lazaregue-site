@@ -103,6 +103,13 @@ const nextConfig = {
         destination: "/nos-domaines/cybersecurite",
         statusCode: 301,
       },
+      // Le cas client « Usurpation d'identité » (n° 04) a été retiré de la
+      // collection. 301 vers l'index des cas clients (pas de cas de remplacement).
+      {
+        source: "/cas-clients/usurpation-identite-identifier-auteur-article-145-cpc",
+        destination: "/cas-clients",
+        statusCode: 301,
+      },
     ];
   },
 };

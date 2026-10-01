@@ -16,6 +16,9 @@ import Sommaire from "./_components/Sommaire";
 export const metadata: Metadata = {
   title: `${ARTICLE.h1} | Lazarègue Avocats`,
   description: ARTICLE.chapo,
+  // Article de test non finalisé : noindex/nofollow propre à la page (conservé
+  // même après la levée du verrou noindex global) et retiré du sitemap.
+  robots: { index: false, follow: false },
   alternates: { canonical: `/ressources/${ARTICLE.slug}` },
   openGraph: {
     title: ARTICLE.h1,
@@ -28,7 +31,7 @@ export const metadata: Metadata = {
     images: [ARTICLE.cover.src],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }],
     title: ARTICLE.h1,
     description: ARTICLE.chapo,
   },

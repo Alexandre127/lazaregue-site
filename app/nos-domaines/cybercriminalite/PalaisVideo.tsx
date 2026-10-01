@@ -44,24 +44,44 @@ export function PalaisVideo({
     const v = ref.current;
     if (!v) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Desktop / grande tablette uniquement : sous 900 px, les <source> gardent
+    // leur data-src sans jamais recevoir de src → aucun fichier vidéo n'est
+    // téléchargé sur mobile (le poster tient lieu de fond).
+    const desktop = window.matchMedia("(min-width: 900px)");
     reduced.current = mq.matches;
     let inView = false;
+    let io: IntersectionObserver | null = null;
+
+    const injecter = () => {
+      if (v.querySelector("source[src]")) return;
+      v.querySelectorAll<HTMLSourceElement>("source[data-src]").forEach((s) => {
+        s.src = s.getAttribute("data-src") || "";
+      });
+      v.load();
+    };
 
     const sync = () => {
-      if (inView && !document.hidden && !reduced.current && !userPaused.current) {
+      if (desktop.matches && inView && !document.hidden && !reduced.current && !userPaused.current) {
+        injecter();
         void v.play().catch(() => {});
       } else {
         v.pause();
       }
     };
 
-    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; sync(); }, { threshold: 0.1 });
-    io.observe(v);
+    const startObserving = () => {
+      if (io || !desktop.matches) return;
+      io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; sync(); }, { threshold: 0.1 });
+      io.observe(v);
+    };
+    startObserving();
 
     const onVis = () => sync();
     document.addEventListener("visibilitychange", onVis);
     const onMotion = () => { reduced.current = mq.matches; sync(); };
     mq.addEventListener?.("change", onMotion);
+    const onDesktop = () => { startObserving(); sync(); };
+    desktop.addEventListener?.("change", onDesktop);
 
     const onPlay = () => setPlaying(true);
     const onPause = () => setPlaying(false);
@@ -69,9 +89,10 @@ export function PalaisVideo({
     v.addEventListener("pause", onPause);
 
     return () => {
-      io.disconnect();
+      io?.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       mq.removeEventListener?.("change", onMotion);
+      desktop.removeEventListener?.("change", onDesktop);
       v.removeEventListener("play", onPlay);
       v.removeEventListener("pause", onPause);
     };
@@ -99,8 +120,10 @@ export function PalaisVideo({
         tabIndex={-1}
         style={videoStyle}
       >
-        <source src={webm} type="video/webm" />
-        <source src={mp4} type="video/mp4" />
+        {/* data-src (pas src) : injecté par le useEffect uniquement ≥ 900 px,
+            donc aucun téléchargement vidéo sous 900 px. */}
+        <source data-src={webm} type="video/webm" />
+        <source data-src={mp4} type="video/mp4" />
       </video>
       <button type="button" className={styles.videoBtn} onClick={toggle} aria-label={playing ? "Mettre en pause la vidéo" : "Lire la vidéo"}>
         <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>

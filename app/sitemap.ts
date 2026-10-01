@@ -35,8 +35,9 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 
   // Contenus éditoriaux
   { path: "/ressources", priority: 0.7, frequence: "weekly" },
-  { path: "/ressources/oeuvre-originale", priority: 0.6, frequence: "yearly" },
-  { path: "/ressources/faux-conseiller-bancaire-remboursement", priority: 0.6, frequence: "yearly" },
+  // Articles de test (Faux conseiller, Œuvre originale) : retirés du sitemap et
+  // passés en noindex tant qu'ils ne sont pas réécrits. Seul l'article définitif
+  // « Fraude bancaire : opposition… » reste indexable.
   { path: "/ressources/fraude-bancaire-opposition-contestation-remboursement", priority: 0.6, frequence: "yearly" },
 
   // Cas clients — rubrique + huit dossiers

@@ -7,17 +7,19 @@
 
 export type DomKey = "cyber" | "contentieux" | "fraude" | "crypto" | "contenus" | "cybercrim" | "pi";
 
-/** Intitulés EXACTS du site + route réelle de la page compétence (§ 4). */
-export const DOM_META: Record<DomKey, { label: string; href: string }> = {
+/** Intitulés EXACTS du site + route réelle de la page compétence (§ 4).
+ *  `href: null` = pas de page compétence sur l'app Next : l'intitulé est alors
+ *  rendu en texte simple (jamais en lien), pour ne produire aucune 404. */
+export const DOM_META: Record<DomKey, { label: string; href: string | null }> = {
   cyber: { label: "Cybersécurité et NIS 2", href: "/nos-domaines/cybersecurite" },
   contentieux: { label: "Contentieux informatique et commercial", href: "/nos-domaines/contentieux-informatique-commercial" },
   fraude: { label: "Fraude bancaire et escroquerie", href: "/nos-domaines/escroquerie-fraude-bancaire" },
   crypto: { label: "Crypto-actifs et blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
   contenus: { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
   cybercrim: { label: "Cybercriminalité et cyberattaques", href: "/nos-domaines/cybercriminalite" },
-  // Pas de page compétence Next pour la PI : lien vers la page PicRights/AFP du
-  // site (à signaler — cette route est portée par le SPA, pas par l'app Next).
-  pi: { label: "Propriété intellectuelle — photographies", href: "/litige-afp-picrights/" },
+  // Pas de page compétence sur l'app Next pour la PI (la page PicRights/AFP est
+  // portée par le SPA du domaine principal) : intitulé affiché sans lien.
+  pi: { label: "Propriété intellectuelle — photographies", href: null },
 };
 
 export const ISSUE = "Dossier clos — issue favorable";
@@ -132,28 +134,6 @@ export const CAS: Cas[] = [
     ressources: [],
   },
   {
-    slug: "usurpation-identite-identifier-auteur-article-145-cpc",
-    numero: "04",
-    domaines: ["cybercrim"],
-    titre: "Usurpation d’identité : identifier l’auteur grâce à une mesure de l’article 145 du CPC",
-    seoTitle: "Usurpation d'identité : identifier l'auteur (art. 145 CPC)",
-    metaDescription: "Face à une usurpation d’identité impliquant plusieurs opérateurs, des mesures probatoires de l’article 145 du CPC visent à obtenir les données identifiant l’auteur.",
-    chapo: "Une identité avait été utilisée dans le cadre de communications électroniques impliquant plusieurs services et opérateurs.",
-    resume: "Obtenir la conservation et la communication des données techniques avant leur disparition.",
-    client: "[À préciser]",
-    nature: "Contentieux",
-    voie: "Mesures probatoires (art. 145 CPC)",
-    situation: [
-      "Une identité avait été utilisée dans le cadre de communications électroniques impliquant plusieurs services et opérateurs.",
-      "L’identité exacte de la personne à l’origine des faits ne pouvait être déterminée à partir des seuls éléments disponibles pour la victime.",
-    ],
-    enjeu: "Préserver et obtenir les données techniques susceptibles de permettre l’identification des auteurs avant leur disparition.",
-    intervention: ["Le cabinet a identifié les intermédiaires techniques susceptibles de détenir des données utiles et engagé une procédure destinée à obtenir leur conservation et leur communication, par des mesures probatoires fondées sur l’article 145 du Code de procédure civile."],
-    issue: "Les mesures probatoires fondées sur l’article 145 du Code de procédure civile ont été mises en œuvre. Le dossier est clos, avec une issue favorable au client.",
-    aRetenir: ["Dans les affaires numériques, identifier rapidement les opérateurs susceptibles de détenir une donnée est souvent aussi important que l’action au fond elle-même."],
-    ressources: [],
-  },
-  {
     slug: "litige-infogerance-prestataire-informatique",
     numero: "05",
     domaines: ["contentieux"],
@@ -232,7 +212,7 @@ export const CAS: Cas[] = [
 ];
 
 /** Ordre des filtres de la page générale (un bouton par domaine présent). */
-export const FILTER_ORDER: DomKey[] = ["contentieux", "fraude", "contenus", "cybercrim", "cyber", "pi", "crypto"];
+export const FILTER_ORDER: DomKey[] = ["contentieux", "fraude", "contenus", "cyber", "pi", "crypto"];
 
 /** Domaines du site SANS cas publié — calculés depuis la collection (§ 4). */
 const AUTRES_SITE = [

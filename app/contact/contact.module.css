@@ -46,15 +46,15 @@
   background: var(--navy);
 }
 
-/* Vidéo de fond (Arc de Triomphe, nuit) : desktop et tablette uniquement.
-   En mobile (≤ 767 px), les couches vidéo sont masquées et le hero reste sur
-   fond navy uni (mobile inchangé). */
+/* Vidéo de fond (Arc de Triomphe, nuit) : desktop / grande tablette uniquement.
+   Sous 900 px, les couches vidéo sont masquées et le hero reste sur fond navy
+   uni ; aucun fichier vidéo n'est téléchargé (voir HeroVideo.tsx). */
 .heroBg,
 .heroVeil,
 .vidPause {
   display: none;
 }
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .hero {
     /* Fond fixe de repli (reduced-motion / échec de lecture). */
     background: radial-gradient(ellipse at 70% 45%, #8a7a5a 0%, #3b3f5e 35%, var(--navy) 75%);
@@ -98,7 +98,7 @@
 }
 /* Réduction de mouvement : sur desktop, on coupe la vidéo et le bouton ; le
    fond dégradé de repli prend le relais. */
-@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) {
   .heroBg,
   .vidPause {
     display: none;
