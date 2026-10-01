@@ -113,7 +113,7 @@ export function PortailDemo() {
   const [activeTab, setActiveTab] = useState("dossiers");
   const [showNotif, setShowNotif] = useState(false);
   const [notif, setNotif] = useState("");
-  const [prog, setProg] = useState(68);
+  const [, setProg] = useState(68);
   const [paused, setPaused] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   // L'animation ne tourne que lorsque l'aperçu est visible à l'écran ; elle
