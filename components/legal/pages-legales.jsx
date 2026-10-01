@@ -1303,6 +1303,11 @@ const CSS = `
   .lz-table td::before{content:attr(data-lb);display:block;font-family:var(--mono);font-size:10px;
     letter-spacing:.16em;color:var(--muted);margin-bottom:3px;}
   .lz-table tbody th{font-size:15px;padding-top:12px;}
+  /* En pile (mobile), les largeurs de colonne des tableaux spécifiques ne
+     doivent pas s'appliquer, sinon l'en-tête de ligne se réduit à ~32 % et le
+     texte tombe mot par mot. On rend la pleine largeur. */
+  .lz-table-3 tbody th,.lz-table-cons tbody th{width:auto;}
+  .lz-table-cons td,.lz-table-cons tbody th{font-size:15px;}
 }
 
 /* Droits */
