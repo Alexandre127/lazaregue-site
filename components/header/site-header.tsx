@@ -359,6 +359,11 @@ export function SiteHeader() {
                         onMouseEnter={() => openOnHover(id)}
                         onMouseLeave={closeOnHover}
                       >
+                        <li className={styles.dropAllItem}>
+                          <Link className={styles.dropLinkAll} href={entry.href} tabIndex={open ? 0 : -1}>
+                            Toutes les formations
+                          </Link>
+                        </li>
                         {entry.items.map((it) => (
                           <li key={it.href}>
                             <Link

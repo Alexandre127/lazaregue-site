@@ -40,7 +40,7 @@ export default function FormationsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       {/* ============================== HERO ============================= */}
-      <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h1">
+      <section className={`${styles.sec} ${styles.navy} ${styles.fHero}`} aria-labelledby="h1">
         <div className={styles.wrap}>
           <div className={styles.hubHeroGrid}>
             <div className={styles.hubHeroMain}>

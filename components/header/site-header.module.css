@@ -178,6 +178,32 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+/* « Toutes les formations » : première ligne distincte, séparée des 4 formations
+   par un filet. */
+.dropAllItem {
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+.dropLinkAll {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.dropLinkAll:hover,
+.dropLinkAll:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+}
 
 /* --- Bouton « Écrire au cabinet » --- */
 .cta {
