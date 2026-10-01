@@ -59,7 +59,7 @@ export default function FormationsPage() {
               </div>
             </div>
             <div className={styles.hubHeroPhoto}>
-              <Image src="/images/formations/opage-formation.png" alt="Formation animée par le cabinet" fill sizes="(max-width: 900px) 0px, 40vw" style={{ objectFit: "cover" }} priority />
+              <Image src="/images/formations/opage-formation.webp" alt="Formation animée par le cabinet" fill sizes="(max-width: 900px) 0px, 40vw" style={{ objectFit: "cover" }} priority />
             </div>
           </div>
         </div>
