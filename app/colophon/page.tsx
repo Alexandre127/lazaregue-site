@@ -135,7 +135,7 @@ export default function Page() {
             <p>
               Le site est hébergé par Vercel Inc., société de droit américain. Il ne comporte ni base
               d&#39;utilisateurs, ni compte, ni espace personnel&nbsp;: aucune donnée personnelle
-              n&#39;y est stockée en propre.
+              n&#39;y est stockée en propre. Le nom de domaine est enregistré auprès d&#39;IONOS.
             </p>
             <h3>messagerie et suivi des demandes</h3>
             <p>
@@ -306,8 +306,8 @@ export default function Page() {
             <h3>code</h3>
             <p>
               Une partie importante du code de ce site a été produite avec l&#39;assistance d&#39;un
-              agent de génération de code. L&#39;architecture, les choix de conception et la relecture
-              relèvent du cabinet.
+              agent de génération de code, Claude Code (Anthropic). L&#39;architecture, les choix de
+              conception et la relecture relèvent du cabinet.
             </p>
             <h3>textes</h3>
             <p>
@@ -317,10 +317,11 @@ export default function Page() {
             </p>
             <h3>images et vidéos</h3>
             <p>
-              Certaines séquences vidéo d&#39;illustration — notamment les vidéos de présentation de
-              l&#39;accueil et de certaines rubriques — sont des contenus de synthèse, produits par des
-              modèles génératifs. Elles sont signalées ici conformément à la logique de transparence
-              de l&#39;article 50 du règlement (UE) 2024/1689 sur l&#39;intelligence artificielle.
+              Les portraits de l&#39;équipe, la photo de groupe et certaines séquences vidéo
+              d&#39;illustration — notamment les vidéos de présentation de l&#39;accueil et de certaines
+              rubriques — sont des contenus de synthèse, produits par des modèles génératifs. Ils sont
+              signalés ici conformément à la logique de transparence de l&#39;article 50 du règlement
+              (UE) 2024/1689 sur l&#39;intelligence artificielle.
             </p>
             <h3>vos demandes</h3>
             <p>
@@ -363,20 +364,10 @@ export default function Page() {
                   </td>
                 </tr>
                 <tr>
-                  <td>Photographies</td>
-                  <td>
-                    Portraits de l&#39;équipe et vues du cabinet réalisés pour le cabinet. Les
-                    personnes représentées ont consenti à l&#39;utilisation de leur image.
-                  </td>
-                  <td>
-                    <span className="state">cédées</span>
-                  </td>
-                </tr>
-                <tr>
                   <td>Visuels de synthèse</td>
                   <td>
-                    Certaines séquences vidéo d&#39;illustration sont des contenus de synthèse,
-                    produits par des modèles génératifs et signalés au §&nbsp;04.
+                    Portraits de l&#39;équipe, photo de groupe et séquences vidéo d&#39;illustration&nbsp;:
+                    contenus de synthèse produits par des modèles génératifs, signalés au §&nbsp;04.
                   </td>
                   <td>
                     <span className="state">signalés</span>
