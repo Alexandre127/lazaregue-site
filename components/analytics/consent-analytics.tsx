@@ -22,6 +22,10 @@ import { useCallback } from "react";
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-NCX9HMQV";
 
 const CONSENT_DEFAULT = `
+// Désactive la bannière de cookies propre à HubSpot AVANT tout chargement de son
+// code (doc HubSpot). Le consentement est géré par notre bandeau ; HubSpot ne
+// doit pas afficher la sienne ni attendre son propre accord.
+window.disableHubSpotCookieBanner = true;
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 window.gtag = gtag;
@@ -82,6 +86,16 @@ export default function ConsentAnalytics() {
       if (clarity) push("consent_update_clarity");
       if (crm) {
         push("consent_update_hubspot");
+        // Bannière HubSpot désactivée (window.disableHubSpotCookieBanner) : on lui
+        // transmet explicitement le consentement « suivre », pour qu'il ne reste
+        // pas en attente de sa propre bannière. Méthode documentée, symétrique du
+        // doNotTrack posé au refus.
+        try {
+          w._hsq = w._hsq || [];
+          w._hsq.push(["doNotTrack", { track: true }]);
+        } catch {
+          /* API HubSpot absente : rien à faire */
+        }
       } else {
         // Finalité « Relation client » refusée ou retirée. Le bandeau HubSpot
         // étant désactivé dans le compte, son code (s'il a été chargé) suivrait

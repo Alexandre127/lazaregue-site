@@ -84,6 +84,76 @@ const legacyRedirects = LEGACY.flatMap(([from, to]) => [
   { source: `${from}/`, destination: CANON + to, statusCode: 301 },
 ]);
 
+/* ==========================================================================
+ * EN-TÊTES DE SÉCURITÉ
+ * --------------------------------------------------------------------------
+ * Appliqués à toutes les routes via headers(). Portée pensée pour NE PAS
+ * dégrader : indexation, rendu statique, cache/CWV, GTM/GA4/Clarity/HubSpot,
+ * CookieConsent, formulaire de contact.
+ *
+ * Content Security Policy : livrée en DEUX temps.
+ *  - Content-Security-Policy (ACTIVE) : UNIQUEMENT `frame-ancestors 'none'`
+ *    (anti-clickjacking, complète X-Frame-Options ; n'affecte ni scripts, ni
+ *    styles, ni mesure — aucun risque de casse).
+ *  - Content-Security-Policy-Report-Only (NON bloquante) : politique complète
+ *    et restrictive, à affiner d'après les violations réelles avant activation.
+ *    Compromis assumé (voir rapport) : `script-src`/`style-src` incluent
+ *    'unsafe-inline' — l'App Router de Next émet des scripts inline d'hydratation
+ *    variables par page ; une CSP stricte sans 'unsafe-inline' imposerait des
+ *    nonces (donc le rendu DYNAMIQUE des pages aujourd'hui statiques, au prix du
+ *    cache et des Core Web Vitals). Aucun `unsafe-eval`, aucun `*`.
+ * ========================================================================== */
+
+// Hôtes de mesure réellement chargés à l'exécution par GTM (GA4, Microsoft
+// Clarity, HubSpot — région UE). Vercel Web Analytics est servi en same-origin
+// (/_vercel/insights) → couvert par 'self'.
+const GTM = "https://www.googletagmanager.com";
+const GA = "https://*.google-analytics.com https://*.analytics.google.com";
+const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
+const HUBSPOT =
+  "https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://*.hsforms.com https://*.hscollectedforms.net https://*.hsadspixel.net https://*.hubspot.com";
+
+const CSP_REPORT_ONLY = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  `script-src 'self' 'unsafe-inline' ${GTM} ${GA} ${CLARITY} ${HUBSPOT}`,
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' data: ${GTM} ${GA} ${CLARITY} ${HUBSPOT}`,
+  "font-src 'self' data:",
+  `connect-src 'self' ${GTM} ${GA} ${CLARITY} ${HUBSPOT} https://vitals.vercel-insights.com`,
+  "media-src 'self'",
+  `frame-src 'self' ${GTM} https://*.hubspot.com https://*.hsforms.com`,
+  "worker-src 'self' blob:",
+  "manifest-src 'self'",
+  // NB : `upgrade-insecure-requests` est volontairement ABSENT en Report-Only
+  // (il y est ignoré par le navigateur et ne produirait qu'un avertissement
+  // console). Il figurera dans la CSP ACTIVE proposée au rapport.
+].join("; ");
+
+// En-têtes appliqués à TOUTES les réponses.
+const SECURITY_HEADERS = [
+  // Sous-domaines vérifiés 100 % HTTPS (apex, www, puissance10). Sans preload.
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Frame-Options", value: "DENY" },
+  // Désactive par défaut les API sensibles inutilisées (aucune n'est employée :
+  // pas de caméra/micro/géoloc/paiement ; le globe est du WebGL sans permission,
+  // les vidéos sont du HTML5 sans permission).
+  {
+    key: "Permissions-Policy",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), browsing-topics=(), interest-cohort=()",
+  },
+  // CSP ACTIVE minimale : seulement l'anti-framing (sans risque de casse).
+  { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+  // CSP complète en observation (ne bloque rien).
+  { key: "Content-Security-Policy-Report-Only", value: CSP_REPORT_ONLY },
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {
@@ -108,6 +178,13 @@ const nextConfig = {
   // en 308 vers `/page`. C'est déjà le défaut de Next, rendu explicite ici
   // pour verrouiller l'intention et éviter les doublons d'exploration.
   trailingSlash: false,
+
+  // En-têtes de sécurité sur toutes les routes (pages statiques, API, assets).
+  // Appliqués par Vercel au niveau de la réponse : n'impose aucun rendu
+  // dynamique, ne change pas le cache ni les Core Web Vitals.
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+  },
 
   async redirects() {
     return [
