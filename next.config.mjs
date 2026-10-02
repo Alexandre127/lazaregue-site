@@ -111,7 +111,7 @@ const GTM = "https://www.googletagmanager.com";
 const GA = "https://*.google-analytics.com https://*.analytics.google.com";
 const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const HUBSPOT =
-  "https://*.hs-scripts.com https://*.hs-analytics.net https://*.hsforms.com https://*.hscollectedforms.net https://*.hsadspixel.net https://*.hubspot.com";
+  "https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://*.hsforms.com https://*.hscollectedforms.net https://*.hsadspixel.net https://*.hubspot.com";
 
 const CSP_REPORT_ONLY = [
   "default-src 'self'",
@@ -128,7 +128,9 @@ const CSP_REPORT_ONLY = [
   `frame-src 'self' ${GTM} https://*.hubspot.com https://*.hsforms.com`,
   "worker-src 'self' blob:",
   "manifest-src 'self'",
-  "upgrade-insecure-requests",
+  // NB : `upgrade-insecure-requests` est volontairement ABSENT en Report-Only
+  // (il y est ignoré par le navigateur et ne produirait qu'un avertissement
+  // console). Il figurera dans la CSP ACTIVE proposée au rapport.
 ].join("; ");
 
 // En-têtes appliqués à TOUTES les réponses.
