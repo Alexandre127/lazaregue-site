@@ -122,9 +122,12 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
           urgent: urgence !== "non",
         });
         // Rattache l'historique de navigation de ce navigateur au contact dans
-        // HubSpot (identify + trackPageView, méthode documentée). UNIQUEMENT si la
-        // finalité « Relation client » est accordée ; sinon on n'envoie rien.
-        // L'upsert serveur, lui, a lieu quel que soit le consentement.
+        // HubSpot. UNIQUEMENT si « Relation client » est accordé ; sinon rien.
+        // identify (e-mail ↔ hubspotutk) → setPath vers une page de confirmation
+        // VIRTUELLE (pas de vraie route, pas dans le sitemap) → trackPageView :
+        // cela transmet l'identité et marque clairement l'envoi dans l'historique,
+        // sans compter une 2e vue artificielle de /contact. L'upsert serveur, lui,
+        // a lieu quel que soit le consentement.
         try {
           const w = window as unknown as {
             CookieConsent?: { acceptedCategory: (c: string) => boolean };
@@ -133,6 +136,7 @@ export default function ContactForm({ onSent }: { onSent?: () => void }) {
           if (w.CookieConsent?.acceptedCategory?.("crm")) {
             w._hsq = w._hsq || [];
             w._hsq.push(["identify", { email: email.trim().toLowerCase() }]);
+            w._hsq.push(["setPath", "/contact/demande-envoyee"]);
             w._hsq.push(["trackPageView"]);
           }
         } catch {

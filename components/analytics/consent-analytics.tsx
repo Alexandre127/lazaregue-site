@@ -87,29 +87,36 @@ export default function ConsentAnalytics() {
       if (crm) {
         push("consent_update_hubspot");
         // Bannière HubSpot désactivée (window.disableHubSpotCookieBanner) : on lui
-        // transmet le consentement via la MÉTHODE DOCUMENTÉE setHubSpotConsent.
-        // C'est ce qui autorise HubSpot à déposer ses cookies de suivi
-        // (hubspotutk, __hstc) et à enregistrer les pages vues. On n'accorde que
-        // l'analytique et la fonctionnalité — jamais la publicité.
+        // RETRANSMET le consentement à chaque chargement (HubSpot ne conserve pas
+        // l'état). D'abord réactiver le suivi (si un doNotTrack avait été posé),
+        // puis la méthode documentée setHubSpotConsent. On n'accorde QUE
+        // l'analytique : notre finalité « Relation client » ne couvre ni la
+        // publicité ni la « fonctionnalité » HubSpot.
         try {
+          w._hsq = w._hsq || [];
+          w._hsq.push(["doNotTrack", { track: true }]);
           w._hsp = w._hsp || [];
           w._hsp.push([
             "setHubSpotConsent",
-            { analytics: true, advertisement: false, functionality: true },
+            { analytics: true, advertisement: false, functionality: false },
           ]);
         } catch {
           /* API HubSpot absente : rien à faire */
         }
       } else {
-        // Finalité « Relation client » refusée ou retirée. Le bandeau HubSpot
-        // étant désactivé dans le compte, son code (s'il a été chargé) suivrait
-        // par défaut : on lui demande explicitement de ne pas suivre et de
-        // révoquer son consentement, via son API de confidentialité.
+        // Finalité « Relation client » refusée ou retirée : zéro collecte.
+        // Retire tout consentement, révoque les cookies, puis force doNotTrack.
+        // (Le suivi de route s'arrête de lui-même : il est conditionné au
+        // consentement « Relation client ».)
         try {
+          w._hsp = w._hsp || [];
+          w._hsp.push([
+            "setHubSpotConsent",
+            { analytics: false, advertisement: false, functionality: false },
+          ]);
+          w._hsp.push(["revokeCookieConsent"]);
           w._hsq = w._hsq || [];
           w._hsq.push(["doNotTrack"]);
-          w._hsp = w._hsp || [];
-          w._hsp.push(["revokeCookieConsent"]);
         } catch {
           /* API HubSpot absente : rien à faire */
         }

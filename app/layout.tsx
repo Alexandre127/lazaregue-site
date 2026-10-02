@@ -8,6 +8,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { Analytics } from "@vercel/analytics/next";
 import ConsentAnalytics from "@/components/analytics/consent-analytics";
 import AnalyticsEvents from "@/components/analytics/analytics-events";
+import HubSpotSpaTracking from "@/components/analytics/hubspot-spa-tracking";
 import "./globals.css";
 import "./hero.css";
 import "./cookieconsent-theme.css";
@@ -84,6 +85,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-navy antialiased text-wh">
         <ConsentAnalytics />
         <AnalyticsEvents />
+        <HubSpotSpaTracking />
         <PageEffects />
         <SiteHeader />
         {children}
