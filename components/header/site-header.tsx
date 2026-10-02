@@ -314,8 +314,47 @@ export function SiteHeader() {
                   );
                 }
 
-                // panel (Domaines) ou disclosure (Formations) : lien + bouton flèche.
-                const id = entry.type === "panel" ? entry.panelId : entry.menuId;
+                // panel (Domaines) : le libellé ENTIER est un BOUTON qui ouvre /
+                // ferme le panneau (aria-expanded, clavier, survol conservé sur le
+                // <li>). Plus de lien vers /nos-domaines sur le libellé : ce lien
+                // vit dans le panneau (« Tous les domaines → »).
+                if (entry.type === "panel") {
+                  const id = entry.panelId;
+                  const open = openMenu === id;
+                  // « Section active » quand on est sur /nos-domaines ou une page
+                  // /nos-domaines/… : même soulignement blanc que les liens actifs,
+                  // appliqué par le STYLE seul (aria-current invalide sur un bouton).
+                  const active = activeHref === entry.href;
+                  return (
+                    <li
+                      key={entry.label}
+                      className={styles.navItem}
+                      onMouseEnter={() => openOnHover(id)}
+                      onMouseLeave={closeOnHover}
+                    >
+                      <button
+                        type="button"
+                        ref={(el) => {
+                          arrowRefs.current[id] = el;
+                        }}
+                        className={`${styles.navLink}${open ? ` ${styles.navLinkOpen}` : ""}${active ? ` ${styles.navLinkActive}` : ""}`}
+                        aria-label={`${open ? "Fermer" : "Ouvrir"} le panneau ${entry.label}`}
+                        aria-expanded={open}
+                        aria-controls={id}
+                        onClick={() => toggleByClick(id)}
+                        onKeyDown={(e) => onArrowKeyDown(e, id)}
+                      >
+                        {entry.label}
+                        <svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true" className={styles.chevronIcon}>
+                          {chevronPath()}
+                        </svg>
+                      </button>
+                    </li>
+                  );
+                }
+
+                // disclosure (Formations) : libellé LIEN + bouton flèche distinct.
+                const id = entry.menuId;
                 const open = openMenu === id;
                 const active = activeHref === entry.href;
                 return (
@@ -495,28 +534,21 @@ function MobileMenu({
       hidden={!open}
     >
       <ul className={styles.mlist}>
-        {/* DOMAINES — libellé lien + bouton flèche (disclosure) */}
+        {/* DOMAINES — le libellé ENTIER est un bouton qui ouvre/ferme la liste
+            (aria-expanded, clavier). Le lien vers /nos-domaines est en bas de la
+            liste (« Voir tous les domaines d'intervention »). */}
         <li className={styles.maccItem}>
-          <div className={styles.mrow}>
-            <Link
-              className={styles.mlink}
-              href="/nos-domaines"
-              aria-current={activeHref === "/nos-domaines" ? "page" : undefined}
-              onClick={onClose}
-            >
-              Domaines
-            </Link>
-            <button
-              type="button"
-              className={styles.mtoggle}
-              aria-expanded={domOpen}
-              aria-controls="mobile-domaines"
-              aria-label={`${domOpen ? "Fermer" : "Ouvrir"} la liste des domaines`}
-              onClick={() => setDomOpen((o) => !o)}
-            >
-              <span className={styles.msign} aria-hidden="true">{domOpen ? "–" : "+"}</span>
-            </button>
-          </div>
+          <button
+            type="button"
+            className={styles.mlink}
+            aria-expanded={domOpen}
+            aria-controls="mobile-domaines"
+            aria-label={`${domOpen ? "Fermer" : "Ouvrir"} la liste des domaines`}
+            onClick={() => setDomOpen((o) => !o)}
+          >
+            Domaines
+            <span className={styles.msign} aria-hidden="true">{domOpen ? "–" : "+"}</span>
+          </button>
           <div id="mobile-domaines" className={`${styles.macc}${domOpen ? ` ${styles.maccOpen}` : ""}`}>
             {FAMILLES.map((f) => (
               <div className={styles.mfam} key={f.intitule}>

@@ -142,7 +142,7 @@ export const NAV_ENTRIES: NavEntry[] = [
 
 /** Pied du panneau DOMAINES. */
 export const PANEL_DOMAINES_FOOTER = {
-  lien: { label: "voir tous les domaines d'intervention", href: "/nos-domaines" },
+  lien: { label: "Voir tous les domaines d'intervention", href: "/nos-domaines" },
   mention: "le cabinet intervient partout en France",
 };
 
