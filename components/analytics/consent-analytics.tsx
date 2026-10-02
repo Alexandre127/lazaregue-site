@@ -47,9 +47,9 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
 f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');
 `;
 
-// Texte du bandeau (section 4 de docs/strategie-data-conversion.md).
+// Texte du bandeau (validé par le cabinet, oct. 2026).
 const BANNER_TEXT =
-  "Ces mesures servent à améliorer les pages et les analyses publiées par le cabinet. Aucune donnée n'est vendue ni utilisée à des fins publicitaires.";
+  "Avec votre accord, le cabinet mesure la fréquentation du site et la façon dont ses pages sont lues, afin de les améliorer. Aucun traceur publicitaire, aucune vente de données. Vous pouvez changer d'avis à tout moment avec le lien « Gérer les cookies », en bas de chaque page.";
 
 type CookieConsent = {
   run: (config: Record<string, unknown>) => void;
@@ -62,6 +62,7 @@ type CCWindow = {
   dataLayer?: Record<string, unknown>[];
   _hsq?: unknown[];
   _hsp?: unknown[];
+  __ccPrefDelegation?: boolean;
 };
 
 export default function ConsentAnalytics() {
@@ -69,6 +70,24 @@ export default function ConsentAnalytics() {
     const w = window as unknown as CCWindow;
     const cc = w.CookieConsent;
     if (!cc) return;
+
+    // Ouverture du panneau depuis le lien « Personnaliser » du PIED du bandeau.
+    // CookieConsent ne câble l'attribut `data-cc` que sur les éléments présents
+    // dans le corps du bandeau (.cm__body) ou dans le document au tout premier
+    // init ; notre lien, lui, est injecté dans le pied (.cm__footer), hors de
+    // cette portée — il faut donc ouvrir le panneau nous-mêmes, par délégation
+    // d'événement (une seule fois, quels que soient les réaffichages du bandeau).
+    if (!w.__ccPrefDelegation) {
+      w.__ccPrefDelegation = true;
+      document.addEventListener("click", (e) => {
+        const el = e.target as HTMLElement | null;
+        const trigger = el?.closest?.('[data-cc="show-preferencesModal"]');
+        if (trigger) {
+          e.preventDefault();
+          cc.showPreferences();
+        }
+      });
+    }
 
     const push = (event: string) => {
       w.dataLayer = w.dataLayer || [];
@@ -126,7 +145,7 @@ export default function ConsentAnalytics() {
     cc.run({
       guiOptions: {
         // Bandeau en bas, pleine largeur, non bloquant (pas d'overlay).
-        consentModal: { layout: "bar inline", position: "bottom", equalWeightButtons: true, flipButtons: false },
+        consentModal: { layout: "bar inline", position: "bottom", equalWeightButtons: true, flipButtons: true },
         preferencesModal: { layout: "box", position: "right", equalWeightButtons: true, flipButtons: false },
       },
       // Durée de conservation du choix : 6 mois, puis nouvelle demande.
@@ -142,12 +161,19 @@ export default function ConsentAnalytics() {
         translations: {
           fr: {
             consentModal: {
-              title: "Votre vie privée",
+              title: "Vos choix sur ce site",
               description: BANNER_TEXT,
-              acceptAllBtn: "Tout accepter",
-              acceptNecessaryBtn: "Tout refuser",
-              showPreferencesBtn: "Personnaliser",
-              footer: '<a href="/politique-cookies">Politique cookies</a>',
+              // Deux boutons de même poids, côte à côte (égale prominence CNIL).
+              acceptAllBtn: "Accepter",
+              acceptNecessaryBtn: "Continuer sans accepter",
+              // « Personnaliser » et « Politique de cookies » rendus comme deux
+              // liens SOUS les boutons (pied du bandeau). « Personnaliser » ouvre
+              // le panneau des finalités via l'attribut natif data-cc de
+              // CookieConsent (preventDefault intégré → pas de navigation vers #).
+              // Volontairement PAS de showPreferencesBtn : évite un 3e bouton
+              // encadré ; le lien du pied le remplace.
+              footer:
+                '<a href="#" data-cc="show-preferencesModal">Personnaliser</a><a href="/politique-cookies">Politique de cookies</a>',
             },
             preferencesModal: {
               title: "Préférences de confidentialité",
@@ -164,21 +190,21 @@ export default function ConsentAnalytics() {
                   linkedCategory: "necessary",
                 },
                 {
-                  title: "Mesure d'audience (Google Analytics 4)",
+                  title: "Mesure d'audience (Google Analytics)",
                   description:
-                    "Statistiques de fréquentation et de parcours, pour améliorer les pages. Cookies déposés uniquement après votre accord.",
+                    "Compter les visites et les pages consultées, de façon globale.",
                   linkedCategory: "analytics",
                 },
                 {
-                  title: "Analyse de l'expérience (Microsoft Clarity)",
+                  title: "Amélioration des pages (Microsoft Clarity)",
                   description:
-                    "Cartes de chaleur et relecture agrégée de la navigation, avec masquage strict de tout contenu saisi.",
+                    "Voir comment les pages sont parcourues, pour les rendre plus claires. Les champs des formulaires ne sont jamais enregistrés.",
                   linkedCategory: "experience",
                 },
                 {
-                  title: "Relation client (suivi HubSpot)",
+                  title: "Suivi des demandes (HubSpot)",
                   description:
-                    "Rattache vos visites à votre fiche lorsque vous contactez le cabinet, pour un meilleur suivi.",
+                    "Lorsque vous écrivez au cabinet, relier vos visites précédentes à votre demande, pour mieux en comprendre l'objet.",
                   linkedCategory: "crm",
                 },
                 {
