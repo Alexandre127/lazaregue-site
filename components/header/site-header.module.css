@@ -122,7 +122,8 @@
 .chevronIcon {
   transition: transform 0.3s ease;
 }
-.navArrow[aria-expanded="true"] .chevronIcon {
+.navArrow[aria-expanded="true"] .chevronIcon,
+.navLink[aria-expanded="true"] .chevronIcon {
   transform: rotate(180deg);
 }
 
