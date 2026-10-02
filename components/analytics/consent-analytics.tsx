@@ -87,12 +87,16 @@ export default function ConsentAnalytics() {
       if (crm) {
         push("consent_update_hubspot");
         // Bannière HubSpot désactivée (window.disableHubSpotCookieBanner) : on lui
-        // transmet explicitement le consentement « suivre », pour qu'il ne reste
-        // pas en attente de sa propre bannière. Méthode documentée, symétrique du
-        // doNotTrack posé au refus.
+        // transmet le consentement via la MÉTHODE DOCUMENTÉE setHubSpotConsent.
+        // C'est ce qui autorise HubSpot à déposer ses cookies de suivi
+        // (hubspotutk, __hstc) et à enregistrer les pages vues. On n'accorde que
+        // l'analytique et la fonctionnalité — jamais la publicité.
         try {
-          w._hsq = w._hsq || [];
-          w._hsq.push(["doNotTrack", { track: true }]);
+          w._hsp = w._hsp || [];
+          w._hsp.push([
+            "setHubSpotConsent",
+            { analytics: true, advertisement: false, functionality: true },
+          ]);
         } catch {
           /* API HubSpot absente : rien à faire */
         }
