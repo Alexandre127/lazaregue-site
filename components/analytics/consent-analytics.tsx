@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 /**
  * Couche consentement + mesure (CookieConsent v3, auto-hébergé).
@@ -199,6 +199,27 @@ export default function ConsentAnalytics() {
     });
   }, []);
 
+  // Charge CookieConsent (UMD auto-hébergé) manuellement, APRÈS l'hydratation.
+  // Volontairement PAS via next/script : celui-ci ajoutait un
+  // <link rel="preload" as="script">, signalé « préchargé mais inutilisé » par le
+  // navigateur sur les pages lourdes (le script ne s'exécutant qu'après
+  // hydratation). Ici, aucun preload : le script est inséré au moment réel de
+  // son chargement, puis setup() s'exécute à son onload.
+  useEffect(() => {
+    const w = window as unknown as CCWindow;
+    if (w.CookieConsent) {
+      setup();
+      return;
+    }
+    if (document.getElementById("cookieconsent-js")) return;
+    const s = document.createElement("script");
+    s.id = "cookieconsent-js";
+    s.src = "/vendor/cookieconsent/cookieconsent.umd.js";
+    s.async = true;
+    s.addEventListener("load", setup);
+    document.body.appendChild(s);
+  }, [setup]);
+
   return (
     <>
       {/* 1) Consent Mode v2 par défaut — AVANT GTM (rendu depuis le root layout). */}
@@ -212,18 +233,12 @@ export default function ConsentAnalytics() {
         {GTM_LOADER}
       </Script>
 
-      {/* 3) CookieConsent v3 auto-hébergé (CSS + JS). CSS tiers chargé au
-          runtime depuis public/ (non bundlable) ; nos variables de charte le
-          surchargent (cookieconsent-theme.css). */}
+      {/* 3) CookieConsent v3 auto-hébergé. Le CSS tiers est chargé au runtime
+          depuis public/ (non bundlable) ; nos variables de charte le surchargent
+          (cookieconsent-theme.css). Le JS, lui, est chargé dans un useEffect
+          ci-dessus (pas de next/script → pas de preload « inutilisé »). */}
       {/* eslint-disable-next-line @next/next/no-css-tags */}
       <link rel="stylesheet" href="/vendor/cookieconsent/cookieconsent.css" />
-      <Script
-        id="cookieconsent"
-        src="/vendor/cookieconsent/cookieconsent.umd.js"
-        strategy="afterInteractive"
-        onLoad={setup}
-        onReady={setup}
-      />
 
       {/* GTM noscript. */}
       <noscript>
