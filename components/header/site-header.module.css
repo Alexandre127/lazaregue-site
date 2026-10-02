@@ -99,8 +99,11 @@
 .navLinkOpen::after {
   transform: scaleX(1);
 }
-/* rubrique active : soulignement BLANC permanent. */
-.navLink[aria-current="page"]::after {
+/* rubrique active : soulignement BLANC permanent. `.navLinkActive` applique le
+   même état sur le BOUTON « Domaines » (aria-current n'étant pas valable sur un
+   bouton, on passe uniquement par le style). */
+.navLink[aria-current="page"]::after,
+.navLinkActive::after {
   background: #fff;
   transform: scaleX(1);
 }

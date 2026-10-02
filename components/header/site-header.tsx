@@ -321,6 +321,10 @@ export function SiteHeader() {
                 if (entry.type === "panel") {
                   const id = entry.panelId;
                   const open = openMenu === id;
+                  // « Section active » quand on est sur /nos-domaines ou une page
+                  // /nos-domaines/… : même soulignement blanc que les liens actifs,
+                  // appliqué par le STYLE seul (aria-current invalide sur un bouton).
+                  const active = activeHref === entry.href;
                   return (
                     <li
                       key={entry.label}
@@ -333,7 +337,7 @@ export function SiteHeader() {
                         ref={(el) => {
                           arrowRefs.current[id] = el;
                         }}
-                        className={`${styles.navLink}${open ? ` ${styles.navLinkOpen}` : ""}`}
+                        className={`${styles.navLink}${open ? ` ${styles.navLinkOpen}` : ""}${active ? ` ${styles.navLinkActive}` : ""}`}
                         aria-label={`${open ? "Fermer" : "Ouvrir"} le panneau ${entry.label}`}
                         aria-expanded={open}
                         aria-controls={id}
