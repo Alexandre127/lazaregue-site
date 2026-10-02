@@ -176,8 +176,17 @@ export async function upsertContact(c: HubspotContact): Promise<{ ok: boolean; r
       body: JSON.stringify({ inputs: [{ idProperty: "email", id: c.email, properties }] }),
     });
     if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      return { ok: false, reason: `upsert ${res.status} ${body.slice(0, 200)}` };
+      // Ne PAS remonter le corps de la réponse HubSpot dans la raison : il peut
+      // réémettre l'e-mail soumis (donnée personnelle). On ne garde que le code
+      // HTTP et, si présent, la catégorie d'erreur (jamais de valeur de propriété).
+      let categorie = "";
+      try {
+        const j = (await res.json()) as { category?: string };
+        if (j && typeof j.category === "string") categorie = ` ${j.category}`;
+      } catch {
+        /* corps non JSON : ignoré */
+      }
+      return { ok: false, reason: `upsert ${res.status}${categorie}` };
     }
     return { ok: true };
   } catch (e) {

@@ -33,18 +33,54 @@ const OBJETS = [
   "Autre demande",
 ];
 const URGENCES = ["non", "echeance", "incident"] as const;
-const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+// Validation d'adresse e-mail : structure locale@domaine.tld, sans espace,
+// longueur bornée. Volontairement simple (la seule preuve réelle d'une adresse
+// est l'envoi ; on ne cherche qu'à écarter les saisies manifestement invalides).
+const EMAIL_RE = /^[^@\s]{1,64}@[^@\s]{1,255}\.[^@\s]{2,}$/;
 
-/* Anti-spam discret : limitation en mémoire par IP (best-effort ; les fonctions
-   serverless sont éphémères, c'est une barrière simple, pas une garantie). */
+// Tailles maximales par champ et pour le corps entier (anti-abus). Au-delà, la
+// requête est rejetée avec un message générique, sans détail technique.
+const MAX = {
+  nom: 120,
+  org: 160,
+  email: 254,
+  tel: 40,
+  echeance: 120,
+  message: 2000,
+  page: 300,
+  utm: 150,
+  body: 16 * 1024, // 16 Ko : très au-dessus d'un message légitime.
+} as const;
+
+// Signal anti-spam : nombre de liens dans le message. Utilisé comme INDICE, pas
+// comme motif unique de rejet d'un vrai prospect (seuil élevé).
+const LINK_RE = /https?:\/\/|www\.|\[url|<a\s/gi;
+const MAX_LINKS = 8;
+
+// Normalise une saisie : espaces condensés, bornée en longueur.
+function clean(v: unknown, max: number): string {
+  return String(v ?? "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, max);
+}
+
+/* Anti-spam discret : limitation en mémoire par IP (BEST-EFFORT uniquement ;
+   les fonctions serverless Vercel sont éphémères et multi-instances, ce compteur
+   n'est donc PAS fiable d'une instance à l'autre). La protection réelle doit se
+   faire au niveau du pare-feu Vercel (règle de rate limiting sur /api/contact) —
+   voir le rapport. Cette barrière reste utile contre les rafales sur une même
+   instance chaude. */
 const HITS = new Map<string, number[]>();
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_HITS = 5;
+const WINDOW_MS = 60 * 60 * 1000; // 1 heure
+const MAX_HITS = 5; // 5 envois / heure / IP (best-effort)
 function rateLimited(ip: string): boolean {
   const now = Date.now();
   const arr = (HITS.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   arr.push(now);
   HITS.set(ip, arr);
+  // Garde la table bornée (évite une croissance mémoire non maîtrisée).
+  if (HITS.size > 5000) for (const k of HITS.keys()) { HITS.delete(k); if (HITS.size <= 2500) break; }
   return arr.length > MAX_HITS;
 }
 
@@ -53,10 +89,28 @@ function esc(s: string): string {
 }
 
 export async function POST(req: Request) {
+  // Garde-fou de taille : refuse un corps anormalement gros AVANT tout parsing
+  // (protection mémoire/CPU). Message générique, sans détail.
+  const declared = Number(req.headers.get("content-length") || 0);
+  if (declared > MAX.body) {
+    return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 413 });
+  }
+  let raw: string;
+  try {
+    raw = await req.text();
+  } catch {
+    return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 400 });
+  }
+  if (raw.length > MAX.body) {
+    return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 413 });
+  }
   let data: Record<string, unknown>;
   try {
-    data = await req.json();
+    data = JSON.parse(raw) as Record<string, unknown>;
   } catch {
+    return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 400 });
+  }
+  if (typeof data !== "object" || data === null) {
     return NextResponse.json({ ok: false, error: "Requête invalide." }, { status: 400 });
   }
 
@@ -76,22 +130,24 @@ export async function POST(req: Request) {
     );
   }
 
-  const objet = String(data.objet ?? "").trim();
-  const urgence = String(data.urgence ?? "").trim();
-  const echeance = String(data.echeance ?? "").trim();
-  const nom = String(data.nom ?? "").trim();
-  const org = String(data.org ?? "").trim();
-  const email = String(data.email ?? "").trim();
-  const tel = String(data.tel ?? "").trim();
-  const message = String(data.message ?? "").trim();
-  const page = String(data.page ?? "").trim().slice(0, 300);
+  // Extraction + normalisation (espaces condensés, bornes de longueur). Le
+  // message garde ses sauts de ligne (lisibilité) ; les autres champs non.
+  const objet = clean(data.objet, 120);
+  const urgence = clean(data.urgence, 20);
+  const echeance = clean(data.echeance, MAX.echeance);
+  const nom = clean(data.nom, MAX.nom);
+  const org = clean(data.org, MAX.org);
+  const email = clean(data.email, MAX.email).toLowerCase();
+  const tel = clean(data.tel, MAX.tel);
+  const message = String(data.message ?? "").replace(/\r\n/g, "\n").trim().slice(0, MAX.message);
+  const page = clean(data.page, MAX.page);
   const rawUtm = (data.utm && typeof data.utm === "object" ? data.utm : {}) as Record<string, unknown>;
   const utm = {
-    source: String(rawUtm.source ?? "").trim().slice(0, 150) || undefined,
-    medium: String(rawUtm.medium ?? "").trim().slice(0, 150) || undefined,
-    campaign: String(rawUtm.campaign ?? "").trim().slice(0, 150) || undefined,
-    term: String(rawUtm.term ?? "").trim().slice(0, 150) || undefined,
-    content: String(rawUtm.content ?? "").trim().slice(0, 150) || undefined,
+    source: clean(rawUtm.source, MAX.utm) || undefined,
+    medium: clean(rawUtm.medium, MAX.utm) || undefined,
+    campaign: clean(rawUtm.campaign, MAX.utm) || undefined,
+    term: clean(rawUtm.term, MAX.utm) || undefined,
+    content: clean(rawUtm.content, MAX.utm) || undefined,
   };
 
   const invalides: string[] = [];
@@ -99,9 +155,17 @@ export async function POST(req: Request) {
   if (!URGENCES.includes(urgence as (typeof URGENCES)[number])) invalides.push("urgence");
   if (!nom) invalides.push("nom");
   if (!EMAIL_RE.test(email)) invalides.push("email");
-  if (message.length < 10 || message.length > 2000) invalides.push("message");
+  if (message.length < 10) invalides.push("message");
   if (invalides.length) {
     return NextResponse.json({ ok: false, error: "Champs invalides.", invalides }, { status: 422 });
+  }
+
+  // Indice anti-spam : un message truffé de liens est très probablement du spam.
+  // Seuil ÉLEVÉ pour ne pas écarter un prospect légitime (qui met rarement plus
+  // de huit liens). Réponse 200 silencieuse : on n'informe pas le robot.
+  const liens = (message.match(LINK_RE) || []).length;
+  if (liens > MAX_LINKS) {
+    return NextResponse.json({ ok: true });
   }
 
   const urgenceLabel =

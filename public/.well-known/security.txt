@@ -1,0 +1,4 @@
+Contact: mailto:contact@lazaregue-avocats.fr
+Expires: 2027-10-02T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://lazaregue-avocats.fr/.well-known/security.txt
