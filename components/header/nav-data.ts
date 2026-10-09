@@ -192,3 +192,10 @@ export function aHeroSombre(pathname: string): boolean {
     r === "/" ? p === "/" : p === r || p.startsWith(r + "/"),
   );
 }
+
+/* Espace client (portail) : lien d'accès hors menu principal — en-tête, menu
+   mobile (dernière ligne) et pied de page lisent cette seule constante. */
+export const ESPACE_CLIENT = {
+  label: "Espace client",
+  href: "https://espace.lazaregue-avocats.fr/connexion",
+};

@@ -209,6 +209,38 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* --- Groupe de droite : lien « Espace client » + bouton --- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+/* Lien secondaire (texte, pas bouton) : blanc atténué, souligné au survol. */
+.espace {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--ff-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted-on-dark);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.espace:hover,
+.espace:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.mespace {
+  display: none;
+}
+
 /* --- Bouton « Écrire au cabinet » --- */
 .cta {
   display: inline-flex;
@@ -401,6 +433,30 @@
     font-size: 10.5px;
     letter-spacing: 0.04em;
   }
+  .actions {
+    gap: 12px;
+  }
+  .espace {
+    gap: 6px;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+  }
+}
+/* Barre la plus serrée (900–1019px) : le cadenas seul reste visible, le libellé
+   demeure lu par les lecteurs d'écran ; la cible garde 44px. */
+@media (min-width: 900px) and (max-width: 1019px) {
+  .espace {
+    min-width: 44px;
+    justify-content: center;
+  }
+  .espaceLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* ==========================================================================
@@ -411,9 +467,25 @@
 }
 @media (max-width: 899px) {
   .nav,
-  .cta,
+  .actions,
   .panel {
     display: none;
+  }
+  /* Menu plein écran : « Espace client » en dernière ligne des rubriques,
+     détaché par un filet plus marqué et un peu d'air. */
+  .mespace {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 56px;
+    margin-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    font-family: var(--ff-mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-on-dark);
+    text-decoration: none;
   }
   .burger {
     display: inline-flex;

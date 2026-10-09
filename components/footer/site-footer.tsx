@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "@/components/header/logo";
 import ManageCookiesLink from "@/components/footer/manage-cookies-link";
-import { FAMILLES } from "@/components/header/nav-data";
+import { ESPACE_CLIENT, FAMILLES } from "@/components/header/nav-data";
 import styles from "./footer.module.css";
 
 /**
@@ -35,6 +35,7 @@ const CABINET: FooterLink[] = [
   { label: "Formations", href: "/formations" },
   { label: "Ressources", href: "/ressources" },
   { label: "Contact", href: "/contact" },
+  ESPACE_CLIENT,
 ];
 
 // Colonne 4 — seules les pages réelles sont listées. « Honoraires » et

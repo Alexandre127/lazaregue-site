@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Logo from "./logo";
 import {
+  ESPACE_CLIENT,
   FAMILLES,
   FORMATIONS_LINKS,
   NAV_ENTRIES,
@@ -33,6 +34,15 @@ import styles from "./site-header.module.css";
  */
 
 const CONTACT_HREF = "/contact";
+
+function Cadenas() {
+  return (
+    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="3" y="7" width="10" height="7.5" />
+      <path d="M5.25 7V4.75a2.75 2.75 0 015.5 0V7" />
+    </svg>
+  );
+}
 
 function chevronPath() {
   return (
@@ -423,10 +433,18 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          {/* --- Bouton « Écrire au cabinet » (toujours visible, ordinateur/tablette) --- */}
-          <Link className={styles.cta} href={CONTACT_HREF} data-track="cta_click" data-track-composant="header">
-            Écrire au cabinet <span aria-hidden="true">→</span>
-          </Link>
+          {/* --- À droite (ordinateur/tablette) : accès discret à l'espace client,
+              puis bouton « Écrire au cabinet ». Le lien est du texte, pas un bouton :
+              il ne concurrence pas l'action principale. --- */}
+          <div className={styles.actions}>
+            <a className={styles.espace} href={ESPACE_CLIENT.href}>
+              <Cadenas />
+              <span className={styles.espaceLabel}>{ESPACE_CLIENT.label}</span>
+            </a>
+            <Link className={styles.cta} href={CONTACT_HREF} data-track="cta_click" data-track-composant="header">
+              Écrire au cabinet <span aria-hidden="true">→</span>
+            </Link>
+          </div>
 
           {/* --- Bouton « Menu » (sous 900px) --- */}
           <button
@@ -616,6 +634,12 @@ function MobileMenu({
           </li>
         ))}
       </ul>
+
+      {/* Espace client : dernière ligne, détachée des rubriques par un filet. */}
+      <a className={styles.mespace} href={ESPACE_CLIENT.href}>
+        <Cadenas />
+        {ESPACE_CLIENT.label}
+      </a>
 
       <Link
         className={styles.mcta}
