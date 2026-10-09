@@ -83,7 +83,7 @@ const FAQ_OSINT: QA[] = [
 export const ARTICLES: Article[] = [
   {
     title: "Fraude bancaire : opposition, contestation et remboursement",
-    seoTitle: "Fraude bancaire : opposition, contestation et remboursement | Lazarègue Avocats",
+    seoTitle: "Fraude bancaire : opposition, contestation et remboursement",
     seoDescription:
       "Votre banque refuse de rembourser après une fraude ? Ce qu'elle doit prouver, ce que vous pouvez exiger, et comment préparer votre demande.",
     slug: "fraude-bancaire-opposition-contestation-remboursement",
@@ -102,7 +102,7 @@ export const ARTICLES: Article[] = [
     ],
     faq: FAQ_FBO,
     une: true,
-    titreUne: "",
+    titreUne: "Fraude bancaire : | la banque | doit-elle | rembourser ?",
     ordre: 0,
     liesA: [],
     exclureDesSuggestions: false,
@@ -110,9 +110,9 @@ export const ARTICLES: Article[] = [
   },
   {
     title: "Observatoire du faux conseiller bancaire : la jurisprudence sur le remboursement",
-    seoTitle: "Arnaque au faux conseiller bancaire : jurisprudence et remboursement | Lazarègue Avocats",
+    seoTitle: "Arnaque au faux conseiller bancaire : la jurisprudence",
     seoDescription:
-      "Faux conseiller bancaire, SMS frauduleux, spoofing : ce que les juges ont décidé sur le remboursement des victimes. Décisions récentes résumées par le cabinet.",
+      "Faux conseiller bancaire, SMS frauduleux, spoofing : ce que les juges ont décidé sur le remboursement des victimes. Décisions résumées par le cabinet.",
     slug: "jurisprudence-faux-conseiller-bancaire",
     dom: "fraude",
     famille: "Contentieux et atteintes numériques",
@@ -132,7 +132,7 @@ export const ARTICLES: Article[] = [
   },
   {
     title: "OSINT : définition, valeur de preuve et cadre juridique",
-    seoTitle: "OSINT : définition, valeur de preuve et cadre juridique | Lazarègue Avocats",
+    seoTitle: "OSINT : définition, valeur de preuve et cadre juridique",
     seoDescription:
       "OSINT, c'est quoi ? Définition de la recherche en sources ouvertes, valeur de preuve devant le juge, limites légales (RGPD, arrêt Ikea) et bons réflexes.",
     slug: "osint-definition-preuve",
@@ -158,9 +158,9 @@ export const ARTICLES: Article[] = [
   {
     // Article de test non finalisé : non indexé, hors plan du site, listé « à paraître ».
     title: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?",
-    seoTitle: "Arnaque au faux conseiller bancaire : la banque doit-elle rembourser ? | Lazarègue Avocats",
+    seoTitle: "Faux conseiller bancaire : la banque doit-elle rembourser ?",
     seoDescription:
-      "Faux conseiller bancaire : consentement au paiement, authentification forte, négligence grave et charge de la preuve. Les critères de remboursement et les démarches à engager.",
+      "Faux conseiller bancaire : consentement, authentification forte, négligence grave et charge de la preuve. Critères de remboursement et démarches à engager.",
     slug: "faux-conseiller-bancaire-remboursement",
     dom: "fraude",
     famille: "Contentieux et atteintes numériques",

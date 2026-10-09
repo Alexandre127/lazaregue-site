@@ -4,9 +4,9 @@ import Observatoire from "./Observatoire";
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/ressources/jurisprudence-faux-conseiller-bancaire";
 
-const TITLE = "Arnaque au faux conseiller bancaire : jurisprudence et remboursement | Lazarègue Avocats";
+const TITLE = "Arnaque au faux conseiller bancaire : la jurisprudence";
 const DESCRIPTION =
-  "Faux conseiller bancaire, SMS frauduleux, spoofing : ce que les juges ont décidé sur le remboursement des victimes. Décisions récentes résumées par le cabinet.";
+  "Faux conseiller bancaire, SMS frauduleux, spoofing : ce que les juges ont décidé sur le remboursement des victimes. Décisions résumées par le cabinet.";
 
 export const metadata: Metadata = {
   title: TITLE,
