@@ -19,7 +19,7 @@ export default function Page() {
       <p className={styles.srcgrp}>
         <a href="https://www.legifrance.gouv.fr/juri/id/JURITEXT000051283974" {...EXT}>Cass. 1re civ., 26 févr. 2025, n° 23-16.762</a> ·{" "}
         <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043969099/2026-03-25" {...EXT}>Article 6-3 de la LCEN</a> ·{" "}
-        <a href="https://evolutio-avocats.com/it/cour-dappel-de-chambery-22-mai-2025-rg-n-2201814-google-my-business-une-creation-de-fiche-sans-consentement-jugee-illicite" {...EXT}>CA Chambéry, 22 mai 2025, RG n° 22/01814</a> ·{" "}
+        CA Chambéry, 22 mai 2025, RG n° 22/01814 ·{" "}
         <a href="https://ods.adrcenter.com/en/regolamento.html" {...EXT}>Règlement de procédure d&apos;ADR Center</a> ·{" "}
         <a href="https://support.google.com/contributionpolicy/answer/7400114?hl=fr" {...EXT}>Règles de Google sur les contenus interdits</a> · A. Lecourt, obs. sous TJ Paris, 22 juin 2022, Dalloz IP/IT 2022. 574
       </p>
