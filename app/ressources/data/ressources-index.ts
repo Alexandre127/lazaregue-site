@@ -89,6 +89,7 @@ export type CorpusItem = { dom: Dom; id: string; titre: string; excerpt: string;
 
 export const CORPUS: CorpusItem[] = [
   { dom: "cyber", id: "nis2", featDup: true, href: null, titre: "NIS 2 : quelles entreprises sont concernées et quelles obligations anticiper ?", excerpt: "Entités essentielles, entités importantes, sous-traitants, gouvernance et notification des incidents : les principaux critères à vérifier." },
+  { dom: "cyber", id: "osint", href: "/ressources/osint-definition-preuve", titre: "OSINT : définition, valeur de preuve et cadre juridique", excerpt: "Définition de la recherche en sources ouvertes, valeur de preuve devant le juge, limites légales (RGPD, arrêt Ikea) et bons réflexes." },
   { dom: "fraude", id: "fbo", featDup: true, href: NOTE, titre: "Fraude bancaire : opposition, contestation et remboursement", excerpt: "Ce que la banque doit prouver, ce que vous pouvez exiger, et comment préparer votre demande — de l'opposition au tribunal." },
   { dom: "fraude", id: "obs", href: "/ressources/jurisprudence-faux-conseiller-bancaire", titre: "Observatoire du faux conseiller bancaire : la jurisprudence sur le remboursement", excerpt: "Des décisions récentes résumées en langage clair : quand les juges condamnent la banque à rembourser, et ce qu'elle doit prouver." },
   // Article de test : présenté comme « à paraître » (href null) jusqu'à sa réécriture — non cliquable, page en noindex et hors sitemap.

@@ -41,6 +41,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/ressources/fraude-bancaire-opposition-contestation-remboursement", priority: 0.6, frequence: "yearly" },
   // Observatoire de la fraude bancaire (jurisprudence faux conseiller) — mis à jour mensuellement.
   { path: "/ressources/jurisprudence-faux-conseiller-bancaire", priority: 0.6, frequence: "monthly" },
+  { path: "/ressources/osint-definition-preuve", priority: 0.6, frequence: "yearly" },
 
   // Cas clients — rubrique + huit dossiers
   { path: "/cas-clients", priority: 0.7, frequence: "monthly" },
