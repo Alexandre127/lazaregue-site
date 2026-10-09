@@ -39,6 +39,8 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // passés en noindex tant qu'ils ne sont pas réécrits. Seul l'article définitif
   // « Fraude bancaire : opposition… » reste indexable.
   { path: "/ressources/fraude-bancaire-opposition-contestation-remboursement", priority: 0.6, frequence: "yearly" },
+  // Observatoire de la fraude bancaire (jurisprudence faux conseiller) — mis à jour mensuellement.
+  { path: "/ressources/jurisprudence-faux-conseiller-bancaire", priority: 0.6, frequence: "monthly" },
 
   // Cas clients — rubrique + huit dossiers
   { path: "/cas-clients", priority: 0.7, frequence: "monthly" },

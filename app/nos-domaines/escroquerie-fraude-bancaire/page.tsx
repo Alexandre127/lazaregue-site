@@ -333,6 +333,8 @@ export default function Page() {
                 <Link href="/nos-domaines/cybercriminalite">Cybercriminalité</Link>
                 <span aria-hidden> · </span>
                 <Link href="/nos-domaines/crypto-actifs-blockchain">Crypto-actifs, blockchain et Web3</Link>
+                <span aria-hidden> · </span>
+                <Link href="/ressources/jurisprudence-faux-conseiller-bancaire">Jurisprudence sur le faux conseiller bancaire</Link>
               </p>
             </div>
           </section>

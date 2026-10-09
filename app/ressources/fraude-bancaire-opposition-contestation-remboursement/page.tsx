@@ -241,6 +241,7 @@ export default function Page() {
               <p className={styles.midctaTitle}>Votre banque refuse le remboursement&nbsp;?</p>
               <p className={styles.tx}>Votre dossier se joue sur des pièces techniques et une chronologie précise. Le cabinet examine l&apos;autorisation des opérations, la charge de la preuve et les arguments opposés par l&apos;établissement.</p>
               <p className={styles.midctaLink}><Link href={COMPETENCE}>Voir les recours du cabinet contre les banques →</Link></p>
+              <p className={styles.midctaLink}><Link href="/ressources/jurisprudence-faux-conseiller-bancaire">Voir la jurisprudence sur le faux conseiller bancaire →</Link></p>
             </div>
             <Link className={styles.btnO} href="/contact">Faire examiner votre dossier</Link>
           </div>
