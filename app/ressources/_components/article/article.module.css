@@ -105,6 +105,19 @@
 .ctaInTitre { font-size: 16px !important; font-weight: 500; line-height: 1.35 !important; margin: 0; }
 .ctaInTx { font-size: 14px !important; line-height: 1.5 !important; color: var(--text-muted); margin: 6px 0 12px; }
 
+/* Clause type (blockquote) : citation sobre, distincte du texte courant. */
+.clause { margin: 0; padding: 16px 20px; border-left: 3px solid var(--ink); background: var(--off); }
+.clause p { font-size: 16px !important; line-height: 1.6 !important; color: var(--ink); margin: 0; }
+
+/* Tableau accessible dans un cadre : défilement horizontal sur petit écran. */
+.tableau { border: 1px solid var(--bd); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tableau:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.tableau table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+.tableau th, .tableau td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--bd); color: var(--ink); }
+.tableau tbody tr:last-child th, .tableau tbody tr:last-child td { border-bottom: 0; }
+.tableau thead th { font-family: var(--ff-mono); font-weight: 400; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); background: var(--off); border-bottom: 1px solid var(--ink); white-space: nowrap; }
+.tableau tbody th { font-weight: 600; }
+
 /* Titres en DM Mono des blocs de fin (Questions fréquentes, À lire aussi). */
 .body h2.monoTitre { font-family: var(--ff-mono); font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 40px; }
 .body h2.monoTitre + * { margin-top: 6px; }

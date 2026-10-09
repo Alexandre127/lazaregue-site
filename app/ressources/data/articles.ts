@@ -63,6 +63,7 @@ export type Article = {
   /* --- propres au site --- */
   publie: boolean; // false = page de test non finalisée : listée « à paraître », non indexée
   outil?: boolean; // true = outil interactif (ne passe pas par le gabarit d'article)
+  sansTempsDeLecture?: boolean; // true = le temps de lecture calculé n'est pas affiché
 };
 
 const FAQ_FBO: QA[] = [
@@ -209,6 +210,54 @@ export const ARTICLES: Article[] = [
     exclureDesSuggestions: false,
     publie: true,
     outil: true,
+  },
+  {
+    title: "Agents IA et e-commerce : quel cadre juridique, et comment adapter ses CGV ?",
+    seoTitle: "Agents IA et e-commerce : cadre juridique et CGV à adapter",
+    seoDescription:
+      "Commandes passées par des agents d'IA : qui est engagé, quelles CGV s'appliquent, quand exiger l'accord du client, quelles clauses ajouter. Le guide pratique.",
+    slug: "agents-ia-ecommerce-cgv",
+    dom: "ia",
+    famille: "Conformité et gouvernance",
+    type: "Guide pratique",
+    chapo:
+      "Les agents d'intelligence artificielle commencent à rechercher, choisir, commander et payer en ligne pour le compte de leurs utilisateurs. Pour un site marchand, la question n'est plus de savoir si ces commandes arriveront, mais comment les accepter sans risque. Ce guide expose le droit applicable et les adaptations à prévoir.",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 6,
+    liesA: ["cas-pratique-ia-commande-erreur"],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
+  {
+    // Cas FICTIF à visée pédagogique : page à part (pas le gabarit d'article),
+    // jamais dans /cas-clients (rubrique réservée aux dossiers réels).
+    title: "Une IA commande sur votre site et se trompe : qui en supporte le risque ?",
+    seoTitle: "IA qui commande sur un site e-commerce : qui supporte le risque ? Cas pratique",
+    seoDescription:
+      "Une commande passée par l'agent IA d'une cliente tourne mal. Vente, CGV, information, option payante, rétractation, preuve : ce que risque le e-commerçant et comment s'en prémunir.",
+    slug: "cas-pratique-ia-commande-erreur",
+    dom: "ia",
+    famille: "Conformité et gouvernance",
+    type: "Cas pratique",
+    chapo:
+      "Les agents d'intelligence artificielle commencent à acheter en ligne pour le compte de leurs utilisateurs. Pour une entreprise, la question n'est plus théorique : demain, une partie de vos commandes sera passée par des machines. Un cas suivi étape par étape montre où se situent vos risques, et comment les maîtriser.",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 7,
+    liesA: ["agents-ia-ecommerce-cgv"],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
   },
   {
     // Article de test non finalisé : non indexé, hors plan du site, listé « à paraître ».

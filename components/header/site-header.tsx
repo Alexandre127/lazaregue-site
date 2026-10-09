@@ -35,6 +35,10 @@ import styles from "./site-header.module.css";
 
 const CONTACT_HREF = "/contact";
 
+/* Pages de /ressources/ qui n'utilisent PAS le gabarit d'article (donc sans sa
+   barre d'action mobile) : la barre basse globale y reste affichée. */
+const HORS_GABARIT = ["/ressources/oeuvre-originale", "/ressources/cas-pratique-ia-commande-erreur"];
+
 function Cadenas() {
   return (
     <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -74,7 +78,7 @@ export function SiteHeader() {
      /contact (formulaire), les articles du gabarit /ressources/<slug> et les
      détails de cas /cas-clients/<slug>. */
   const isGabaritArticle =
-    !!pathname && pathname.startsWith("/ressources/") && pathname !== "/ressources/oeuvre-originale";
+    !!pathname && pathname.startsWith("/ressources/") && !HORS_GABARIT.includes(pathname);
   const isCaseDetail = !!pathname && pathname.startsWith("/cas-clients/");
   const hideBottomBar = pathname === "/contact" || isGabaritArticle || isCaseDetail;
 

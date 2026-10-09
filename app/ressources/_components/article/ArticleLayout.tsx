@@ -47,17 +47,20 @@ export default function ArticleLayout({
   pied,
   after,
   mobileCta,
+  titreSuggestions = "À lire aussi",
 }: {
   slug: string;
   children: ReactNode;
   pied?: ReactNode;
   after?: ReactNode;
   mobileCta?: { href: string; label: string };
+  /** Titre du bloc de suggestions (défaut « À lire aussi »). */
+  titreSuggestions?: string;
 }) {
   const a = article(slug);
   const domaine = DOM_LABEL[a.dom];
   const url = chemin(slug);
-  const minutes = minutesDeLecture(slug);
+  const minutes = a.sansTempsDeLecture ? null : minutesDeLecture(slug);
   const maj = moisAnnee(a.miseAJour);
   const suggestions = aLireAussi(slug);
 
@@ -185,12 +188,12 @@ export default function ArticleLayout({
 
           {suggestions.length ? (
             <nav className={styles.lire} aria-labelledby="lire-aussi">
-              <h2 className={styles.monoTitre} id="lire-aussi">À lire aussi</h2>
+              <h2 className={styles.monoTitre} id="lire-aussi">{titreSuggestions}</h2>
               <ul>
                 {suggestions.map((s) => (
                   <li key={s.slug}>
                     <Link href={chemin(s.slug)}>
-                      <span className={styles.lireDom}>{DOM_LABEL[s.dom]}</span>
+                      <span className={styles.lireDom}>{DOM_LABEL[s.dom]}{s.type !== "Ressource" ? ` · ${s.type}` : ""}</span>
                       <span className={styles.lireTitre}>{s.title}</span>
                     </Link>
                   </li>
