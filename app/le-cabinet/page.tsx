@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./le-cabinet.module.css";
 import { CABINET } from "./data/liens";
 import { MEMBRES, AMIR_BARREAU } from "@/lib/equipe";
-import { PortailDemo } from "@/components/home/section-differenciateurs";
+import { ApercuPortail } from "@/components/portail/apercu-portail";
 import {
   HERO,
   REPERES,
@@ -392,7 +392,7 @@ export default function Page() {
             </div>
 
             <div className={styles.portailDemo} aria-hidden="true">
-              <PortailDemo />
+              <ApercuPortail exemple="conseil" />
             </div>
           </div>
         </div>

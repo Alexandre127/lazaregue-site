@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { PortailDemo } from "@/components/home/section-differenciateurs";
+import { ApercuPortail } from "@/components/portail/apercu-portail";
 import { ACCUEIL_V4_CSS } from "@/components/home/accueil-v4-css";
 import { FAMILLES as MENU_FAMILLES } from "@/components/header/nav-data";
 import { HOME_DOSSIERS } from "@/components/home/accueil-v4/home-dossiers";
@@ -16,7 +16,7 @@ import { AMIR_BARREAU } from "@/lib/equipe";
  * Le CSS de la maquette est porté tel quel, borné à `.accueilV4` (aucune fuite
  * globale). Exceptions demandées par le client :
  *  · le globe reste le composant THREE.js du projet (masqué ≤850px, halo fixe) ;
- *  · le portail réutilise le vrai composant animé `PortailDemo` ;
+ *  · le portail est montré par un aperçu fixe (`ApercuPortail`), sans animation ;
  *  · les dix domaines pointent vers les routes réelles (aucune modale) ;
  *  · le contact renvoie au parcours réel du site.
  *
@@ -134,28 +134,10 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 .arrow-down{display:inline-flex;align-items:center}
 .accueilV4 .arrow-down svg{display:block}
 
-/* === Portail : l'illustration est décorative et NON interactive
-   (pointer-events:none, parties internes aria-hidden) ; SEULE la commande de
-   pause reste utilisable (clavier + toucher), conformément à WCAG 2.2.2.
-   Toutes largeurs. === */
-.accueilV4 .portal-demo-frame{pointer-events:none}
-.accueilV4 .pdemo-pause{position:relative;pointer-events:auto}
-.accueilV4 .pdemo-pause-icon{font-size:11px;line-height:1;letter-spacing:-1px}
-/* cible tactile ≥44px sans agrandir le bouton visuel */
-.accueilV4 .pdemo-pause::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px}
-.accueilV4 .pdemo-pause:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-/* mouvement réduit : rien ne s'anime, la commande de pause n'est pas affichée. */
-@media(prefers-reduced-motion:reduce){.accueilV4 .pdemo-pause{display:none}}
-
-/* Aperçu portail — hauteur STABLE : les 4 contenus d'onglet sont rendus en
-   permanence et superposés dans la même cellule de grille. Le bloc prend la
-   hauteur du contenu le plus haut → identique sur les 4 onglets, à toutes les
-   largeurs, sans aucune min-height (donc aucun décalage de mise en page). Seul
-   l'onglet actif est visible (opacité + visibilité) ; le fondu est conservé. */
-.accueilV4 .pdemo-stage{display:grid}
-.accueilV4 .pdemo-panel{grid-area:1/1;visibility:hidden;opacity:0;transition:opacity .25s ease}
-.accueilV4 .pdemo-panel[data-active="true"]{visibility:visible;opacity:1}
-@media(prefers-reduced-motion:reduce){.accueilV4 .pdemo-panel{transition:none}}
+/* === Portail : aperçu fixe, décoratif et non interactif (aria-hidden). === */
+.accueilV4 .portal-demo-frame{pointer-events:none;min-width:0}
+/* quand la bande passe en une colonne sans grille (display:block), l'aperçu se détache du texte */
+.accueilV4 .portal-strip{display:grid !important}
 
 @media(max-width:639px){
   /* --- Pourquoi : 3 arguments = liste à filets, même fond que la section,
@@ -166,12 +148,6 @@ const ACCUEIL_V4_OVERRIDES = `
   .accueilV4 #pourquoi .why-row h3{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.35;color:var(--muted);margin:0}
   .accueilV4 #pourquoi .why-emphasis{display:block;font-family:var(--ff-display);font-weight:400;font-size:32px;line-height:1.05;color:var(--ink);margin-top:2px}
   .accueilV4 #pourquoi .why-row p{font-family:var(--ff-body);font-weight:400;font-size:15px;line-height:1.5;color:var(--ink);margin-top:8px}
-
-  /* --- Portail : lisibilité (aucun texte < 13px ; contenus d'onglet ≥ 14px)
-     et suppression de la bande blanche vide (hauteur ramenée au contenu). --- */
-  .accueilV4 .pdemo *{font-size:13px !important}
-  .accueilV4 .pdemo .pdemo-tab{font-size:14px !important}
-  .accueilV4 .pdemo .pdemo-stage *{font-size:14px !important}
 }
 
 /* === « L'équipe » : bande horizontale unique sous 639px ===
@@ -249,14 +225,6 @@ const ACCUEIL_V4_OVERRIDES = `
 .accueilV4 #dossiers{background:var(--off)}
 .accueilV4 #equipe{background:#fff}
 .accueilV4 #contributions{background:var(--off)}
-
-/* --- Lot 4 : aperçu du portail sur mobile, SANS commande de pause ---
-   Sous 639px la commande de pause est retirée ; l'animation mobile devient
-   courte et finie (< 5 s), gérée dans PortailDemo. */
-@media(max-width:639px){
-  /* !important : le bouton porte un display inline (style React). */
-  .accueilV4 .pdemo-pause{display:none !important}
-}
 
 /* --- Lot 2 : bande horizontale unique des contributions (≤639px), sur le
    modèle de la bande de l'équipe --- */
@@ -877,7 +845,7 @@ export function AccueilV4() {
               <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les échanges, les échéances et l&rsquo;avancement de son dossier.</p>
             </div>
             <div className="portal-demo-frame">
-              <PortailDemo />
+              <ApercuPortail exemple="contentieux" />
             </div>
           </div>
         </div>

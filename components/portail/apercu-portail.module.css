@@ -1,0 +1,354 @@
+/* Aperçu fixe de l'espace client. Couleurs : tokens de la charte uniquement.
+   Angles droits. Le bloc s'adapte à la largeur de son emplacement. */
+
+.apercu {
+  container-type: inline-size;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--bd);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.mono,
+.aJour,
+.pied,
+.validee,
+.date,
+.rubrique,
+.tagPlein,
+.tagPale,
+.tagBleu,
+.tagContour {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.tete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.mono {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.aJour {
+  background: var(--blue);
+  color: #fff;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.onglets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--bd);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.onglets span {
+  padding: 10px 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.onglets .ongletActif {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 500;
+}
+
+.corps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.titreLigne {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.titre {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.etiquettes {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.frise {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  font-size: 12px;
+}
+
+.frise li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.barre {
+  height: 4px;
+  background: var(--blue);
+}
+
+.aVenir {
+  color: var(--text-muted);
+}
+
+.aVenir .barre {
+  background: var(--bd);
+}
+
+.enCours {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.enCours .barre {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.deux {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.synthese {
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.syntheseTitre {
+  font-weight: 500;
+}
+
+.syntheseTexte,
+.validee {
+  color: var(--muted-on-dark);
+}
+
+.colonne {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.echeance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--bd);
+  padding: 7px 9px;
+}
+
+.pave {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  background: var(--blue);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.jour {
+  font-family: var(--ff-display);
+  font-size: 22px;
+}
+
+.aVous {
+  border: 2px solid var(--ink);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.aVousLigne {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.aVousLigne > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aVousTitre,
+.equipeNom {
+  font-weight: 500;
+}
+
+.secondaire {
+  color: var(--text-muted);
+}
+
+.liste {
+  border: 1px solid var(--bd);
+}
+
+.rubrique {
+  padding: 8px 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--bd);
+}
+
+.ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+}
+
+.ligne + .ligne {
+  border-top: 1px solid var(--bd);
+}
+
+.date {
+  display: block;
+  color: var(--text-muted);
+}
+
+.tagPlein,
+.tagPale,
+.tagBleu,
+.tagContour {
+  flex: none;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.tagPlein {
+  background: var(--ink);
+  color: #fff;
+}
+
+.tagPale {
+  background: var(--tint);
+  color: var(--blue);
+}
+
+.tagBleu {
+  background: var(--blue);
+  color: #fff;
+}
+
+.tagContour {
+  border: 1px solid var(--ink);
+  padding: 1px 6px;
+}
+
+.equipe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--off);
+  padding: 10px 12px;
+}
+
+.equipe > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.initiales {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  background: var(--tint);
+  color: var(--blue);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pied {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--off);
+  border-top: 1px solid var(--bd);
+  color: var(--text-muted);
+}
+
+.carre {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--blue);
+}
+
+/* Emplacement large : la synthèse et la colonne « échéance / à vous de jouer » passent côte à côte. */
+@container (min-width: 520px) {
+  .deux {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  }
+}
+
+/* Emplacement étroit (téléphone) : le rappel d'étape passe sous le titre. */
+@container (max-width: 380px) {
+  .titreLigne {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .onglets {
+    font-size: 12px;
+  }
+}
+
+/* Très étroit : cinq libellés ne tiennent plus côte à côte ; seul celui de l'étape en cours reste affiché. */
+@container (max-width: 360px) {
+  .frise li {
+    font-size: 0;
+  }
+  .frise .enCours {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}

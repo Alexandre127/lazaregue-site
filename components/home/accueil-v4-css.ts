@@ -4,7 +4,7 @@
 export const ACCUEIL_V4_CSS = String.raw`
 /* Accueil V4 — port scopé de la maquette validée (styles.css) sous .accueilV4.
    Aucune fuite globale ; polices remappées sur les tokens du site.
-   Globe = composant THREE.js du projet ; portail = PortailDemo. */
+   Globe = composant THREE.js du projet ; portail = ApercuPortail (aperçu fixe). */
 .accueilV4 {--blue:#1a47ff;--deep:#0a2acc;--navy:#0a0f2e;--ink:#0a0a14;--off:#f4f4f8;--white:#fff;--muted:#4a4a63;--light:#ffffff;--line:#e0e0ee;--measure:1200px}
 .accueilV4 * {box-sizing:border-box}
 .accueilV4 {scroll-behavior:smooth;scroll-padding-top:96px}
