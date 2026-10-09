@@ -54,7 +54,7 @@ export const DECISIONS: Decision[] = [
     texte: "Faux avis contre une ophtalmologue, rédigés par une personne qui n’avait jamais été patiente : dénigrement, 5 000 € de dommages et intérêts.",
     liste: "Faux avis contre une ophtalmologue, par une personne jamais soignée : 5 000 € de dommages et intérêts.",
     favorable: true,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "tls22",
@@ -63,7 +63,7 @@ export const DECISIONS: Decision[] = [
     texte: "Avis accusant un élevage d’illégalité et de plaintes inexistantes : retrait ordonné sous astreinte.",
     liste: "Élevage accusé d’illégalité et de plaintes inexistantes : retrait sous astreinte.",
     favorable: true,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "aix18",
@@ -71,7 +71,7 @@ export const DECISIONS: Decision[] = [
     court: "CA Aix-en-Provence, 22 févr. 2018",
     texte: "Avis imputant une faute précise à un ostéopathe, sans preuve ni bonne foi : retrait ordonné sous astreinte.",
     favorable: true,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "dou25",
@@ -80,7 +80,7 @@ export const DECISIONS: Decision[] = [
     texte: "« Entreprise non professionnelle », écrit par un vrai client : avis maintenu, la critique reposant sur son expérience.",
     liste: "« Entreprise non professionnelle », écrit par un client : maintenu.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "col21",
@@ -89,7 +89,7 @@ export const DECISIONS: Decision[] = [
     texte: "Avis d’une cliente relatant exactement des retards de livraison : avis maintenu, 3 000 € de frais mis à la charge du promoteur.",
     liste: "Retards de livraison exactement relatés : maintenu, 3 000 € de frais pour le promoteur.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "par26",
@@ -98,7 +98,7 @@ export const DECISIONS: Decision[] = [
     texte: "Avis évoquant une intoxication dans une boulangerie : passages diffamatoires, mais bonne foi plausible, retrait refusé en référé.",
     liste: "Intoxication alléguée dans une boulangerie : bonne foi plausible, retrait refusé en référé.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "ren26",
@@ -107,7 +107,7 @@ export const DECISIONS: Decision[] = [
     texte: "Cabinet d’avocats visé par des avis présentés comme faux : identification refusée, la diffamation étant prescrite.",
     liste: "Diffamation prescrite : identification de l’auteur refusée.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "mtp22",
@@ -115,7 +115,7 @@ export const DECISIONS: Decision[] = [
     court: "CA Montpellier, 15 sept. 2022",
     texte: "« Des voleurs » retiré par l’auteure en cours d’instance : le reste de l’avis relève de la libre critique.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   /* Décisions citées dans une phrase (notes du résultat), sans figurer dans les listes. */
   {
@@ -124,7 +124,7 @@ export const DECISIONS: Decision[] = [
     court: "CA Paris, 27 avr. 2022",
     texte: "Demande rejetée en l’absence d’indices sérieux de faux avis.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
   {
     id: "nan22",
@@ -132,7 +132,7 @@ export const DECISIONS: Decision[] = [
     court: "CA Nancy, 12 déc. 2022",
     texte: "Garage condamné pour avoir publié le nom et l’adresse d’un client dans sa réponse à un avis.",
     favorable: false,
-    verifie: false,
+    verifie: true, // confirmée par le cabinet le 9 octobre 2026
   },
 ];
 
