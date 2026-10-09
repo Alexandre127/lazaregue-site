@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site-url";
 import { CAS } from "@/app/cas-clients/data/cas-clients";
+import { chemin, publiees } from "@/app/ressources/data/articles";
 
 /**
  * Plan du site.
@@ -35,13 +36,9 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 
   // Contenus éditoriaux
   { path: "/ressources", priority: 0.7, frequence: "weekly" },
-  // Articles de test (Faux conseiller, Œuvre originale) : retirés du sitemap et
-  // passés en noindex tant qu'ils ne sont pas réécrits. Seul l'article définitif
-  // « Fraude bancaire : opposition… » reste indexable.
-  { path: "/ressources/fraude-bancaire-opposition-contestation-remboursement", priority: 0.6, frequence: "yearly" },
-  // Observatoire de la fraude bancaire (jurisprudence faux conseiller) — mis à jour mensuellement.
-  { path: "/ressources/jurisprudence-faux-conseiller-bancaire", priority: 0.6, frequence: "monthly" },
-  { path: "/ressources/osint-definition-preuve", priority: 0.6, frequence: "yearly" },
+  // Ressources : générées plus bas depuis le registre (data/articles.ts), avec
+  // leur date réelle de mise à jour. Les pages de test (publie: false) et
+  // /ressources/oeuvre-originale restent hors plan du site (noindex).
 
   // Cas clients — rubrique + huit dossiers
   { path: "/cas-clients", priority: 0.7, frequence: "monthly" },
@@ -63,10 +60,17 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return PAGES.map((p) => ({
+  const pages = PAGES.map((p) => ({
     url: `${SITE_URL}${p.path}`,
     lastModified: now,
     changeFrequency: p.frequence,
     priority: p.priority,
   }));
+  const ressources = publiees().map((a) => ({
+    url: `${SITE_URL}${chemin(a.slug)}`,
+    ...(a.miseAJour ? { lastModified: new Date(a.miseAJour) } : {}),
+    changeFrequency: (a.outil ? "monthly" : "yearly") as MetadataRoute.Sitemap[number]["changeFrequency"],
+    priority: 0.6,
+  }));
+  return [...pages, ...ressources];
 }

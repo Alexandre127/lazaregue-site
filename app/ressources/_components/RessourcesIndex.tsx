@@ -1,278 +1,178 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../ressources.module.css";
-import {
-  SITUATIONS,
-  DOM_CARDS,
-  FEATURED,
-  REPERES,
-  CORPUS,
-  FILTERS,
-  DOM_LABEL,
-  type Dom,
-} from "../data/ressources-index";
+import { A_PARAITRE, DOMAINES, DOM_LABEL, SITUATIONS, aLaUne, chemin, publiees, ARTICLES, type Dom } from "../data/articles";
 
-function norm(s: string): string {
-  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-}
+/**
+ * Page /ressources (refonte du 9 octobre 2026, maquette
+ * docs/maquettes/ressources_mobile_effet_une.html).
+ *
+ * Bandeau de rubrique (H1) · la une · bandeau défilant des domaines · liste
+ * numérotée · « Trouver par situation » · appel final. Toutes les données
+ * viennent du registre data/articles.ts ; rien n'est saisi ici.
+ *
+ * Le filtre par domaine vient de l'URL (?domaine=…, rendu serveur : il marche
+ * sans JavaScript). La recherche s'ouvre depuis l'icône de l'en-tête (ancre
+ * #recherche, affichée par :target sans JavaScript) et filtre la liste.
+ */
 
-/** Carte de ressource (corpus / repères). Cliquable si `href`, sinon « à paraître ». */
-function ResourceCard({
-  dom,
-  titre,
-  excerpt,
-  href,
-}: {
-  dom: Dom;
-  titre: string;
-  excerpt: string;
-  href: string | null;
-}) {
-  return (
-    <article className={href ? `${styles.card} ${styles.cardlink}` : styles.card}>
-      <p className={styles.cardTag}>{DOM_LABEL[dom]}</p>
-      <h3>
-        {href ? (
-          <Link href={href}>{titre}</Link>
-        ) : (
-          <span>{titre}</span>
-        )}
-      </h3>
-      <p className={styles.cardExcerpt}>{excerpt}</p>
-      {!href && <p className={styles.soon}>À paraître</p>}
-    </article>
-  );
-}
+type Ligne = { cle: string; dom: Dom; titre: string; href: string | null };
 
-export default function RessourcesIndex({ initialDomaine }: { initialDomaine?: string }) {
-  // Le domaine initial vient du serveur (searchParams) → rendu identique
-  // serveur/client, pas de désynchronisation d'hydratation.
-  const initialFilter =
-    initialDomaine && FILTERS.some((f) => f.key === initialDomaine) ? (initialDomaine as Dom) : "all";
+const normaliser = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const deuxChiffres = (n: number) => String(n).padStart(2, "0");
 
-  const [filter, setFilter] = useState<"all" | Dom>(initialFilter);
-  const [query, setQuery] = useState("");
-  const [mode, setMode] = useState<"situation" | "domaine">("situation");
+export default function RessourcesIndex({ domaine }: { domaine?: Dom }) {
+  const une = aLaUne();
+  const [requete, setRequete] = useState("");
+  const [rechercheOuverte, setRechercheOuverte] = useState(false);
+  const champ = useRef<HTMLInputElement>(null);
 
-  const active = filter !== "all" || query.trim() !== "";
-  const term = norm(query.trim());
+  /* Ouverture de la recherche : icône de l'en-tête (événement) ou arrivée sur
+     /ressources#recherche. */
+  useEffect(() => {
+    const ouvrir = () => {
+      setRechercheOuverte(true);
+      requestAnimationFrame(() => champ.current?.focus());
+    };
+    if (window.location.hash === "#recherche") ouvrir();
+    window.addEventListener("ressources:recherche", ouvrir);
+    return () => window.removeEventListener("ressources:recherche", ouvrir);
+  }, []);
 
-  const visible = useMemo(
-    () =>
-      CORPUS.filter((c) => {
-        const okDom = filter === "all" || c.dom === filter;
-        const okTerm = !term || norm(`${c.titre} ${c.excerpt}`).includes(term);
-        if (!active && c.featDup) return false; // masque les doublons par défaut
-        return okDom && okTerm;
-      }),
-    [filter, term, active],
-  );
+  const terme = normaliser(requete.trim());
+  const filtre = !!domaine || terme !== "";
+
+  /* Liste : ressources publiées (par `ordre`), puis « à paraître » sans lien.
+     Hors filtre, l'article à la une n'est pas répété dans la liste. */
+  const lignes = useMemo<Ligne[]>(() => {
+    const pub: Ligne[] = publiees()
+      .filter((a) => filtre || a.slug !== une?.slug)
+      .map((a) => ({ cle: a.slug, dom: a.dom, titre: a.title, href: chemin(a.slug) }));
+    const brouillons: Ligne[] = ARTICLES.filter((a) => !a.publie).map((a) => ({ cle: a.slug, dom: a.dom, titre: a.title, href: null }));
+    const annonces: Ligne[] = A_PARAITRE.map((a) => ({ cle: a.id, dom: a.dom, titre: a.titre, href: null }));
+    return [...pub, ...brouillons, ...annonces].filter(
+      (l) => (!domaine || l.dom === domaine) && (terme === "" || normaliser(`${l.titre} ${DOM_LABEL[l.dom]}`).includes(terme)),
+    );
+  }, [domaine, terme, filtre, une?.slug]);
+
+  const lignesUne = (une?.titreUne || une?.title || "").split("|").map((l) => l.trim()).filter(Boolean);
+  const bandeau = [...DOMAINES, ...DOMAINES]; // deux fois : boucle continue du défilement
 
   return (
     <>
-      {/* ============================ HERO + RECHERCHE ==================== */}
-      <section className={styles.hero} aria-labelledby="h1">
-        <div className={styles.wrap}>
-          <nav className={styles.crumb} aria-label="Fil d’Ariane">
-            <Link href="/">Accueil</Link> <span aria-hidden>/</span>{" "}
-            <span aria-current="page">Ressources</span>
-          </nav>
-          <div className={styles.heroGrid}>
-            <div>
-              <h1 id="h1">RESSOURCES</h1>
-              <p className={styles.heroSub}>Comprendre les règles qui encadrent vos activités numériques</p>
-              <p className={styles.heroTx}>
-                Des repères juridiques conçus pour les entreprises : données personnelles, intelligence
-                artificielle, cybersécurité, fraudes, contrats informatiques, plateformes et
-                contentieux numériques.
-              </p>
-            </div>
-            <div role="search" className={styles.searchWrap}>
-              <label className={styles.label} htmlFor="q">Rechercher dans les ressources</label>
-              <div className={styles.search}>
-                <input
-                  id="q"
-                  type="search"
-                  placeholder="Rechercher une question, un texte"
-                  autoComplete="off"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-                <span className={styles.searchIcon} aria-hidden>⌕</span>
-              </div>
-              <p className={styles.freq}>
-                <span>Recherches fréquentes :</span>
-                {[
-                  { q: "NIS 2", label: "NIS 2" },
-                  { q: "faux conseiller", label: "faux conseiller bancaire" },
-                  { q: "article 28", label: "article 28 RGPD" },
-                  { q: "gouvernance", label: "gouvernance IA" },
-                ].map((s) => (
-                  <button key={s.label} type="button" onClick={() => { setQuery(s.q); setFilter("all"); }}>
-                    {s.label}
-                  </button>
-                ))}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ---------- Bandeau de rubrique (H1) ---------- */}
+      <div className={styles.rubrique}>
+        <h1 className={styles.rubTitre}>Ressources</h1>
+        {une ? <p className={styles.rubMention}>À la une</p> : null}
+      </div>
 
-      {/* ================= TROUVER LA BONNE RESSOURCE (sélecteur unique) === */}
-      <section className={styles.sec} aria-labelledby="h-trouver">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <h2 className={styles.h2} id="h-trouver">Trouver la bonne ressource</h2>
-          </div>
-          <div className={styles.seg} role="tablist" aria-label="Entrer par situation ou par domaine">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === "situation"}
-              className={mode === "situation" ? styles.segOn : undefined}
-              onClick={() => setMode("situation")}
-            >
-              Ce qui vous arrive
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === "domaine"}
-              className={mode === "domaine" ? styles.segOn : undefined}
-              onClick={() => setMode("domaine")}
-            >
-              Par domaine
-            </button>
-          </div>
-          {mode === "situation" ? (
-            <nav className={styles.sitlist} aria-label="Entrer par situation">
-              {SITUATIONS.map((s) => (
-                <Link key={s.texte} href={s.href}>
-                  {s.texte}
-                </Link>
-              ))}
-            </nav>
-          ) : (
-            <nav className={styles.sitlist} aria-label="Entrer par domaine">
-              {DOM_CARDS.map((d) =>
-                d.href ? (
-                  <Link key={d.n} href={d.href}>
-                    {d.titre}
-                  </Link>
-                ) : (
-                  <span key={d.n} className={styles.sitSoon}>
-                    {d.titre} <em>à paraître</em>
-                  </span>
-                ),
-              )}
-            </nav>
-          )}
-        </div>
-      </section>
+      {/* ---------- Recherche (ouverte par l'icône de l'en-tête) ---------- */}
+      <div id="recherche" role="search" className={`${styles.recherche}${rechercheOuverte ? ` ${styles.rechercheOuverte}` : ""}`}>
+        <label htmlFor="q-ressources" className={styles.srOnly}>Rechercher dans les ressources</label>
+        <input
+          ref={champ}
+          id="q-ressources"
+          type="search"
+          value={requete}
+          onChange={(e) => setRequete(e.target.value)}
+          placeholder="Rechercher une ressource"
+          autoComplete="off"
+        />
+      </div>
 
-      {/* ============================ 03 — À LA UNE ====================== */}
-      <section className={styles.sec} aria-labelledby="h-une">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <p className={styles.label}>03 — À la une · {FEATURED.domLabel}</p>
-            <h2 className={styles.h2} id="h-une">Le guide du moment</h2>
-          </div>
-          <article className={`${styles.feat} ${styles.cardlink}`}>
-            <div className={styles.chrono} aria-hidden>
-              <p className={styles.label}>Chronologie des démarches</p>
-              <ol>
-                {FEATURED.chrono.map((c) => (
-                  <li key={c.step}>
-                    <span>{c.step}</span>
-                    {c.label}
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <div className={styles.featTxt}>
-              <p className={styles.cardTag}>{FEATURED.domLabel}</p>
-              <h3>
-                <Link href={FEATURED.href}>{FEATURED.titre}</Link>
-              </h3>
-              <p className={styles.featExcerpt}>{FEATURED.excerpt}</p>
-              <span className={styles.featLink} aria-hidden>Lire le guide →</span>
-            </div>
-          </article>
-
-          <div className={styles.repWrap}>
-            <h3 className={styles.repTitle}>Quatre repères pour commencer</h3>
-            <p className={styles.repIntro}>
-              Quatre réponses pour agir face aux situations les plus fréquentes, sans avoir à connaître
-              leur qualification juridique.
-            </p>
-            <div className={styles.rep}>
-              {REPERES.map((r) => (
-                <ResourceCard key={r.id} dom={r.dom} titre={r.titre} excerpt={r.excerpt} href={r.href} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ 04 — CORPUS ======================= */}
-      <section id="corpus" className={`${styles.sec} ${styles.ghost}`} aria-labelledby="h-all">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <p className={styles.label}>04 — Corpus</p>
-            <h2 className={styles.h2} id="h-all">Toutes les ressources</h2>
-          </div>
-          <div className={styles.filters} role="group" aria-label="Filtrer par domaine">
-            {FILTERS.map((f) => (
-              <button
-                key={f.key}
-                type="button"
-                aria-pressed={filter === f.key}
-                onClick={() => setFilter(f.key)}
-              >
-                {f.label}
-              </button>
+      {/* ---------- La une ---------- */}
+      {une ? (
+        <section className={styles.une} aria-labelledby="une-titre">
+          <p className={styles.surtitre}>{DOM_LABEL[une.dom]}</p>
+          <h2 className={styles.uneTitre} id="une-titre">
+            {lignesUne.map((ligne) => (
+              <span key={ligne}>{ligne}</span>
             ))}
-          </div>
-          {!active && (
-            <p className={styles.noteF}>
-              Les ressources présentées plus haut s&apos;affichent dès qu&apos;un filtre ou une
-              recherche est appliqué.
-            </p>
-          )}
-          {visible.length > 0 ? (
-            <div className={styles.corpus}>
-              {visible.map((c) => (
-                <ResourceCard key={c.id} dom={c.dom} titre={c.titre} excerpt={c.excerpt} href={c.href} />
-              ))}
-            </div>
-          ) : (
-            <p className={styles.empty} role="status">
-              Aucune ressource ne correspond à cette recherche. Essayez un autre terme ou
-              réinitialisez les filtres.
-            </p>
-          )}
-        </div>
+          </h2>
+          {une.chapo ? <p className={styles.uneChapo}>{une.chapo}</p> : null}
+          <Link className={styles.uneLien} href={chemin(une.slug)}>
+            Lire la ressource <span aria-hidden="true">→</span>
+          </Link>
+        </section>
+      ) : null}
+
+      {/* ---------- Bandeau défilant des domaines ---------- */}
+      <nav className={styles.bandeau} aria-label="Filtrer les ressources par domaine">
+        <ul className={styles.defile}>
+          {bandeau.map((d, i) => (
+            <li key={`${d.key}-${i}`} aria-hidden={i >= DOMAINES.length ? true : undefined}>
+              <Link href={`/ressources?domaine=${d.key}#liste`} tabIndex={i >= DOMAINES.length ? -1 : undefined} aria-current={domaine === d.key ? "true" : undefined}>
+                {d.label}
+              </Link>
+              <b aria-hidden="true">/</b>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* ---------- Liste numérotée ---------- */}
+      <section className={styles.liste} id="liste" aria-labelledby="liste-titre">
+        <h2 className={styles.srOnly} id="liste-titre">Toutes les ressources</h2>
+        {filtre ? (
+          <p className={styles.etat} aria-live="polite">
+            {lignes.length} ressource{lignes.length > 1 ? "s" : ""}
+            {domaine ? ` · ${DOM_LABEL[domaine]}` : ""}
+            {terme ? ` · « ${requete.trim()} »` : ""}
+            {domaine ? (
+              <>
+                {" · "}
+                <Link href="/ressources#liste">Tout afficher</Link>
+              </>
+            ) : null}
+          </p>
+        ) : null}
+        {lignes.length ? (
+          <ol className={styles.items}>
+            {lignes.map((l, i) => (
+              <li key={l.cle} className={styles.item}>
+                <span className={styles.numero} aria-hidden="true">{deuxChiffres(i + 1)}</span>
+                <div>
+                  <p className={styles.surtitre}>{DOM_LABEL[l.dom]}</p>
+                  {l.href ? (
+                    <Link className={styles.itemTitre} href={l.href}>{l.titre}</Link>
+                  ) : (
+                    <p className={`${styles.itemTitre} ${styles.aParaitre}`}>
+                      {l.titre} <span className={styles.bientot}>à paraître</span>
+                    </p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className={styles.vide}>Aucune ressource ne correspond. <Link href="/ressources#liste">Tout afficher</Link></p>
+        )}
       </section>
 
-      {/* ============================ CTA =============================== */}
-      <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
-        <div className={styles.wrap}>
-          <div className={styles.head}>
-            <p className={styles.label}>Besoin d&apos;une analyse personnalisée ?</p>
-            <h2 className={styles.h2} id="h-cta">
-              Une ressource donne des repères. Votre situation peut nécessiter une analyse spécifique.
-            </h2>
-            <p className={styles.lead}>
-              Les faits, les documents disponibles et les délais peuvent modifier la stratégie à
-              retenir. Le cabinet peut examiner votre situation et les premières mesures utiles.
-            </p>
-          </div>
-          <div className={styles.ctaRow}>
-            <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
-            <Link className={styles.ctaLink} href="/nos-domaines">Découvrir les domaines d&apos;intervention</Link>
-          </div>
+      {/* ---------- Trouver par situation ---------- */}
+      <section className={styles.situations}>
+        <details>
+          <summary>
+            <span>Trouver par situation</span>
+            <span className={styles.chevron} aria-hidden="true" />
+          </summary>
+          <ul>
+            {SITUATIONS.map((s) => (
+              <li key={s.texte}>
+                <Link href={s.href}>{s.texte}</Link>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </section>
+
+      {/* ---------- Appel final ---------- */}
+      <section className={styles.appel} aria-labelledby="appel-titre">
+        <div className={styles.appelInner}>
+          <h2 className={styles.appelTitre} id="appel-titre">Votre situation est particulière ?</h2>
+          <Link className={styles.appelBtn} href="/contact">Échanger avec un avocat</Link>
         </div>
       </section>
     </>

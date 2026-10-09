@@ -2,8 +2,9 @@
 
 import { useState, useSyncExternalStore } from "react";
 import styles from "./article.module.css";
+import type { QA } from "../../data/articles";
 
-export type QA = { q: string; a: string };
+export type { QA };
 
 const subscribe = () => () => {};
 

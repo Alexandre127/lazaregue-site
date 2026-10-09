@@ -63,6 +63,9 @@ export const metadata: Metadata = {
   // openGraph/twitter, chaque page qui les redéclare reprend aussi cette image ;
   // ce défaut couvre les pages sans métadonnées propres (ex. sous-pages
   // Formations). metadataBase (ci-dessus) préfixe l'URL absolue.
+  // Autorise les grands aperçus d'image dans les résultats (Google Discover,
+  // aperçus enrichis). Une page qui déclare son propre `robots` le remplace.
+  robots: { "max-image-preview": "large" },
   openGraph: {
     siteName: "Lazarègue Avocats",
     locale: "fr_FR",

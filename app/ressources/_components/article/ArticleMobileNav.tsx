@@ -19,7 +19,7 @@ type Cta = { href: string; label: string };
  */
 export default function ArticleMobileNav({
   toc,
-  cta = { href: "/contact", label: "Faire examiner mon dossier" },
+  cta = { href: "/contact", label: "Échanger avec un avocat" },
 }: {
   toc: TocItem[];
   cta?: Cta;
@@ -137,7 +137,7 @@ export default function ArticleMobileNav({
                     go(t.id);
                   }}
                 >
-                  <span className={styles.mItemN}>{i + 1}</span>
+                  <span className={styles.mItemN}>{String(i + 1).padStart(2, "0")}</span>
                   <span>{strip(t.label)}</span>
                 </a>
               ))}

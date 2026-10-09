@@ -185,110 +185,64 @@ Exemple conforme : `app/cas-clients` (1200px, 36px, `clamp(56px,7vw,104px)`).
 
 ## G. Rédiger un nouvel article
 
-Tout article de la rubrique **Ressources** repose sur le **gabarit commun**
-`app/ressources/_components/article/`. Le modèle de référence est l'article
-**« Fraude bancaire : opposition, contestation et remboursement »**
-(`app/ressources/fraude-bancaire-opposition-contestation-remboursement/page.tsx`) :
-pour un nouvel article, on le duplique et on remplace le contenu.
+*(Refonte du 9 octobre 2026 — maquettes `docs/maquettes/article_mobile_maquette.html`
+et `docs/maquettes/ressources_mobile_effet_une.html`.)*
 
-### G.1 Créer le fichier
+Une ressource = **une entrée dans le registre** + **une page pour le corps**.
 
-1. Créer un dossier `app/ressources/<slug-de-l-article>/` avec un `page.tsx`.
-2. Copier le `page.tsx` de l'article Fraude bancaire comme point de départ.
-3. Adapter les imports (ils pointent tous vers le gabarit partagé) :
+### G.1 Le registre : `app/ressources/data/articles.ts`
+
+Ajouter un objet dans `ARTICLES`. Tout ce qui décrit l'article y vit et nulle part
+ailleurs : `title` (H1), `seoTitle`, `seoDescription`, `slug`, `dom` (clé de
+domaine), `famille`, `type`, `chapo`, `miseAJour` (date ISO **réelle**), `auteur`,
+`essentiel` (2 à 4 phrases), `faq`, `une`, `titreUne` (lignes séparées par `|`),
+`ordre`, `liesA`, `exclureDesSuggestions`, `publie`.
+
+- **Aucune donnée inventée.** Un champ sans valeur reste vide (`""` ou `[]`) : le
+  bloc correspondant ne s'affiche pas.
+- Le **temps de lecture** n'est pas saisi : il est calculé (230 mots/minute).
+- Un seul article `une: true` ; s'il y en a plusieurs, le plus récent l'emporte.
+- `publie: false` = page de test : non indexée, hors plan du site, listée
+  « à paraître » sur /ressources.
+
+La page /ressources, le plan du site, les données structurées (Article,
+BreadcrumbList, FAQPage), l'image de partage (`/ressources/og/<slug>`) et
+« À lire aussi » se mettent à jour seuls.
+
+### G.2 La page : `app/ressources/<slug>/page.tsx`
 
 ```tsx
-import Image from "next/image";              // uniquement si le corps contient une <Image>
-import Link from "next/link";                // uniquement si le corps a des liens internes <Link>
-import styles from "../_components/article/article.module.css";
-import ArticleLayout, { type TocItem } from "../_components/article/ArticleLayout";
-import ModeleCourrier from "../_components/article/ModeleCourrier"; // optionnel
-import ArticleFaq, { type QA } from "../_components/article/ArticleFaq"; // optionnel
+import ArticleLayout from "../_components/article/ArticleLayout";
+import { metaArticle } from "../data/meta";
+
+const SLUG = "mon-article";
+export const metadata = metaArticle(SLUG);
+
+export default function Page() {
+  return (
+    <ArticleLayout slug={SLUG} pied={/* sources, optionnel */ null}>
+      <p>Introduction…</p>
+      <h2 id="premiere-partie">Première partie</h2>
+      <p>…</p>
+    </ArticleLayout>
+  );
+}
 ```
 
-### G.2 Le composant `ArticleLayout`
+- Le **sommaire** est généré à partir des `<h2>` placés **directement** dans le
+  corps : ils sont numérotés 01, 02… automatiquement (ne pas écrire « 1. » dans
+  le titre). Garder un `id` stable sur chaque `<h2>` (ancre partageable).
+- Ne pas remettre dans le corps : le titre, le chapô, l'auteur, « L'essentiel »,
+  la FAQ, « À lire aussi » — le gabarit les rend depuis le registre.
+- Composants du corps : `RefLegale` (référence légale, filet bleu), `CtaInline`
+  (appel au contact encadré), `ModeleCourrier`, et les encadrés du module CSS
+  (`.box`, `.vig`, `.prat`, `.jur`, `.closing`, `.sources`).
+- `after` (optionnel) remplace l'appel final par défaut.
 
-Il fournit tout l'enveloppe : `<main id="contenu">`, JSON-LD, hero (fil d'Ariane +
-sur-titre + H1 + chapô + signature), grille **corps + sommaire** (sommaire mobile
-`tocM` replié + aside `TocSpy` actif au défilement) et **barre de partage**.
+### G.3 Couleur réservée
 
-| Prop | Type | Rôle |
-|---|---|---|
-| `jsonLd` | `object` (optionnel) | Données structurées (Article, FAQPage…) injectées en `<script type="application/ld+json">`. |
-| `breadcrumb` | `{ href?, label }[]` | Fil d'Ariane. Le **dernier** item n'a pas de `href` (page courante). |
-| `kicker` | `string` | Sur-titre (ex. `"Fraude bancaire et escroquerie · Note générale"`). |
-| `h1` | `ReactNode` | Titre. Passer un fragment `<>…&nbsp;?</>` pour maîtriser les espaces insécables. |
-| `chapo` | `ReactNode` | Chapô sous le titre. |
-| `bylineName` | `string` | Défaut `"Me Alexandre Lazarègue"`. |
-| `bylineRole` | `string` | Défaut `"Avocat au Barreau de Paris"`. |
-| `bylineDate` | `ReactNode` | Ex. `<>Mis à jour en {MAJ} · {LECTURE}</>`. |
-| `toc` | `{ id, label }[]` | Sommaire. Chaque `id` doit correspondre à un `<h2 id="…">` du corps. |
-| `children` | `ReactNode` | **Le corps** : introduction, « En bref », toutes les sections. |
-| `after` | `ReactNode` (optionnel) | Sections placées **après** le corps et le sommaire (CTA navy, « Pour aller plus loin »…). |
-| `mobileCta` | `{ href, label }` (optionnel) | CTA de la barre d'action fixe mobile. Défaut : `{ href: "/contact", label: "Faire examiner mon dossier" }`. |
-
-Le corps est passé en `children` (et non éclaté en props) pour que **l'ordre
-interne reste libre** d'un article à l'autre — l'encadré « En bref » peut être
-placé où on le souhaite.
-
-### G.3 Structurer le corps (classes `styles.*`)
-
-- **Sections** : `<section className={styles.sec}>` avec un `<h2 id="s1">…`. L'`id`
-  doit figurer dans `toc` pour que le sommaire et le `TocSpy` fonctionnent.
-- **En bref** : `<div className={styles.brief}>` (encadré sombre en tête de corps).
-- **Encadré texte de loi** : `styles.box` + `styles.boxTitle` + `styles.boxLink`
-  (lien Légifrance `target="_blank" rel="noopener noreferrer"`).
-- **Jurisprudence** : `styles.jur` (+ `jurHead`).
-- **Liste d'étapes numérotées** : `<ol className={styles.steps}>`.
-- **Modèle de courrier** : `<ModeleCourrier />` (boutons Copier / Imprimer inclus).
-- **FAQ** : `<ArticleFaq items={FAQ} />` avec `FAQ: QA[]` (`{ q, a }`) — penser au
-  `FAQPage` dans `jsonLd`.
-- **Sources** : `<div className={styles.sources}>`.
-- **Section sombre / CTA** : combiner `styles.sec` + `styles.navy` (voir le bloc
-  `after` de l'article Fraude bancaire).
-
-### G.4 Règles à respecter
-
-- **H1 en Bebas** via le gabarit (ne pas surcharger la typo du titre).
-- **Liens `/contact` sans paramètre** (règle §E — pas de `?objet=…`).
-- **Aucune décision de justice non vérifiée** : toute référence passe par le
-  garde-fou du composant `jurisprudence` (`verifiee:false` = jamais rendue).
-- **Pas d'engagement de délai** de service (« réponse sous 48 h »…).
-- Après création : `npm run build` + `npx eslint <dossier>` sans erreur, puis
-  captures **375 / 390 / 1440** avant intégration.
-
-> Ne pas se baser sur `oeuvre-originale` : c'est un **gabarit distinct** (couverture,
-> sommaire groupé) qui n'utilise pas `ArticleLayout`.
-
-### G.5 Comportement mobile (≤ 767 px, maquettes 05 / 06)
-
-Le gabarit fournit automatiquement, sous 767 px, un chrome de lecture mobile via
-le composant client `ArticleMobileNav` (monté par `ArticleLayout`, `display:none`
-en desktop — le rendu desktop n'est pas affecté) :
-
-- **Barre « Sommaire » collante** sous l'en-tête : barre de progression de lecture
-  + libellé de la section courante (« Introduction » puis le titre au défilement).
-- **Panneau plein écran** (au toucher) : sommaire numéroté, section courante en
-  bleu, fermeture par croix ou touche Échap. Le numéro d'entrée vient de la
-  position dans `toc` ; le préfixe « 1. », « 2. »… des libellés est retiré à
-  l'affichage mobile (gouttière dédiée).
-- **Barre d'action fixe** en bas : ouverture du sommaire + `mobileCta`.
-- Les **tableaux** (`.voies`, `.compare`) passent en **blocs empilés** (déjà géré
-  par le CSS du gabarit).
-- **Blocs éditoriaux repliables** (`ArticleCollapsibles`, amélioration progressive
-  côté client, desktop jamais transformé) : « Ce que dit le texte » (`.box`, ouvert
-  par défaut), jurisprudence (`.jur`), « Sources et mise à jour » (`.sources`) et le
-  modèle de courrier (`.letter`) — ces trois derniers repliés par défaut. Le titre
-  visible sert de bascule (icône +/−). Aucun balisage à ajouter dans l'article :
-  le gabarit détecte ces classes automatiquement.
-
-La barre basse **globale** du site (« Écrire au cabinet ») est masquée sur les
-pages `/ressources/<slug>` du gabarit (mécanisme dans `components/header/site-header.tsx`,
-`isGabaritArticle`), pour éviter deux barres. `oeuvre-originale` en est exclue et
-conserve la barre globale. Un nouvel article sous `/ressources/` hérite donc
-automatiquement de la barre d'action de l'article à la place de la barre globale.
-
----
+`--periwinkle` (#4D6FFF, charte v1.1) : **labels sur fond navy uniquement**
+(« L'essentiel »). Nulle part ailleurs.
 
 ## H. Créer une page de formation
 

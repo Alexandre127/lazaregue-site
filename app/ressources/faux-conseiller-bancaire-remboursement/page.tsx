@@ -1,60 +1,14 @@
-import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import styles from "../_components/article/article.module.css";
 import ArticleLayout from "../_components/article/ArticleLayout";
+import { metaArticle } from "../data/meta";
 
-const URL_BASE = "https://lazaregue-avocats.fr";
-const PATH = "/ressources/faux-conseiller-bancaire-remboursement";
+// Article de test non finalisé (registre : publie = false) : noindex/nofollow,
+// hors plan du site, listé « à paraître » sur /ressources.
+// Titre, description, chapô, date et « L'essentiel » : registre data/articles.ts.
+const SLUG = "faux-conseiller-bancaire-remboursement";
 
-const TITLE = "Arnaque au faux conseiller bancaire : la banque doit-elle rembourser ? | Lazarègue Avocats";
-const DESCRIPTION =
-  "Faux conseiller bancaire : consentement au paiement, authentification forte, négligence grave et charge de la preuve. Les critères de remboursement et les démarches à engager.";
-const MAJ = "12 septembre 2026";
-
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  // Article de test non finalisé : noindex/nofollow propre à la page (conservé
-  // même après la levée du verrou noindex global) et retiré du sitemap.
-  robots: { index: false, follow: false },
-  alternates: { canonical: PATH },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }], locale: "fr_FR", type: "article" },
-  twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title: TITLE, description: DESCRIPTION },
-};
-
-const JSON_LD = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Article",
-      headline: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?",
-      description: DESCRIPTION,
-      dateModified: "2026-09-12",
-      inLanguage: "fr-FR",
-      mainEntityOfPage: `${URL_BASE}${PATH}`,
-      author: { "@type": "Person", name: "Alexandre Lazarègue", jobTitle: "Avocat au Barreau de Paris", url: `${URL_BASE}/le-cabinet` },
-      publisher: { "@type": "LegalService", name: "Lazarègue Avocats", url: `${URL_BASE}/` },
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
-        { "@type": "ListItem", position: 2, name: "Ressources", item: `${URL_BASE}/ressources` },
-        { "@type": "ListItem", position: 3, name: "Fraude bancaire et escroquerie", item: `${URL_BASE}/ressources/?domaine=fraude` },
-        { "@type": "ListItem", position: 4, name: "Faux conseiller bancaire", item: `${URL_BASE}${PATH}` },
-      ],
-    },
-  ],
-};
-
-const TOC = [
-  { id: "droit", label: "Ce que prévoit le droit des services de paiement" },
-  { id: "consentement", label: "Le consentement au paiement en question" },
-  { id: "negligence", label: "La négligence grave invoquée par la banque" },
-  { id: "demarches", label: "Les démarches à engager sans attendre" },
-  { id: "voies", label: "Réclamation, médiation, juridiction : quelle voie ?" },
-];
+export const metadata = metaArticle(SLUG);
 
 const AUTRES = [
   { tag: "À lire aussi", titre: "Virement frauduleux : comment obtenir le remboursement ?" },
@@ -97,37 +51,7 @@ export default function Page() {
   );
 
   return (
-    <ArticleLayout
-      jsonLd={JSON_LD}
-      breadcrumb={[
-        { href: "/", label: "Accueil" },
-        { href: "/ressources", label: "Ressources" },
-        { href: "/ressources/?domaine=fraude", label: "Fraude bancaire et escroquerie" },
-        { label: "Faux conseiller bancaire" },
-      ]}
-      kicker="Fraude bancaire et escroquerie · Guide"
-      h1={<>Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser&nbsp;?</>}
-      chapo={
-        <>
-          Lorsqu&apos;un fraudeur obtient la validation d&apos;un virement en se faisant passer pour un
-          conseiller bancaire, le remboursement dépend notamment du consentement au paiement, de
-          l&apos;authentification et de l&apos;éventuelle négligence grave du client.
-        </>
-      }
-      bylineDate={<>Mis à jour le {MAJ}</>}
-      toc={TOC}
-      after={after}
-    >
-          <div className={styles.brief}>
-            <p className={styles.label}>En bref</p>
-            <ul>
-              <li>La validation technique d&apos;une opération ne suffit pas, à elle seule, à établir un consentement valable.</li>
-              <li>La banque qui refuse le remboursement doit prouver la négligence grave qu&apos;elle invoque.</li>
-              <li>La contestation doit être adressée sans tarder, par écrit et de manière précise.</li>
-              <li>Les échanges, numéros d&apos;appel et notifications reçus doivent être conservés.</li>
-            </ul>
-          </div>
-
+    <ArticleLayout slug={SLUG} after={after}>
           <h2 id="droit">Ce que prévoit le droit des services de paiement</h2>
           <p>Le Code monétaire et financier distingue les opérations autorisées, auxquelles le payeur a consenti, des opérations non autorisées. Pour ces dernières, le principe est celui d&apos;un remboursement rapide par le prestataire de services de paiement, dès que l&apos;opération lui est signalée.</p>
           <div className={styles.box}>
@@ -196,23 +120,7 @@ export default function Page() {
             <ul>
               <li>Code monétaire et financier, art. L. 133-18, L. 133-19, L. 133-23 et L. 133-24 — <a href="https://www.legifrance.gouv.fr/" target="_blank" rel="noopener noreferrer">Légifrance</a></li>
             </ul>
-            <p className={styles.meta}>Dernière vérification juridique : {MAJ}</p>
-          </div>
-
-          <div className={styles.author}>
-            <span className={styles.authorAva}>
-              <Image src="/images/alexandre-pro.jpg" alt="Portrait d'Alexandre Lazarègue" fill sizes="96px" style={{ objectFit: "cover" }} />
-            </span>
-            <div>
-              <p className={styles.label}>Auteur</p>
-              <p className={styles.authorName}>Me Alexandre Lazarègue</p>
-              <p className={styles.meta}>Avocat au Barreau de Paris · Fondateur de Lazarègue Avocats</p>
-              <p className={styles.tx}>Intervient en droit du numérique, notamment dans les recours contre les établissements bancaires après une fraude, en cybercriminalité et en protection des données.</p>
-              <p className={styles.authorLinks}>
-                <Link href="/nos-domaines/escroquerie-fraude-bancaire">Fraude bancaire et escroquerie</Link> ·{" "}
-                <Link href="/le-cabinet">Le cabinet</Link>
-              </p>
-            </div>
+            <p className={styles.meta}>Dernière vérification juridique : 12 septembre 2026</p>
           </div>
 
     </ArticleLayout>

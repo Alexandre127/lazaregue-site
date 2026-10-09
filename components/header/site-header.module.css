@@ -240,6 +240,25 @@
 .mespace {
   display: none;
 }
+/* Icône de recherche (rubrique Ressources seulement) : dans le groupe de droite
+   à partir de 900px, à gauche du bouton « Menu » en dessous. Cible 44px. */
+.rechercheD,
+.rechercheM {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  color: #fff;
+}
+.rechercheD:hover,
+.rechercheM:hover {
+  color: var(--muted-on-dark);
+}
+.rechercheM {
+  display: none;
+}
 
 /* --- Bouton « Écrire au cabinet » --- */
 .cta {
@@ -449,6 +468,12 @@
     min-width: 44px;
     justify-content: center;
   }
+  .actions {
+    gap: 2px;
+  }
+  .cta {
+    margin-left: 8px;
+  }
   .espaceLabel {
     position: absolute;
     width: 1px;
@@ -470,6 +495,11 @@
   .actions,
   .panel {
     display: none;
+  }
+  .rechercheM {
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: -16px;
   }
   /* Menu plein écran : « Espace client » en dernière ligne des rubriques,
      détaché par un filet plus marqué et un peu d'air. */

@@ -33,6 +33,8 @@
   /* Fond clair « tint » (cartes, colonnes légères) et rouge d'urgence — SEULE
      couleur d'urgence, jamais décorative. Tokens uniques, ne pas coder en dur. */
   --tint: #eef1fb;
+  /* Periwinkle (charte v1.1) : labels sur fond navy UNIQUEMENT. */
+  --periwinkle: #4d6fff;
   --red: #b3231f;
 
   /* Charte v1.1 §05 — échelle d'espacement, base 4px (4·8·12·16·24·36·72·96). */

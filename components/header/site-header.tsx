@@ -44,6 +44,15 @@ function Cadenas() {
   );
 }
 
+function Loupe() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.7">
+      <circle cx="8.5" cy="8.5" r="5.75" />
+      <path d="M13 13l5 5" strokeLinecap="square" />
+    </svg>
+  );
+}
+
 function chevronPath() {
   return (
     <path
@@ -68,6 +77,24 @@ export function SiteHeader() {
     !!pathname && pathname.startsWith("/ressources/") && pathname !== "/ressources/oeuvre-originale";
   const isCaseDetail = !!pathname && pathname.startsWith("/cas-clients/");
   const hideBottomBar = pathname === "/contact" || isGabaritArticle || isCaseDetail;
+
+  /* Rubrique Ressources : une icône de recherche dans l'en-tête ouvre la
+     recherche de /ressources (ancre #recherche ; sur la page elle-même, on
+     l'ouvre sans recharger). Absente du reste du site. */
+  const dansRessources = !!pathname && (pathname === "/ressources" || pathname.startsWith("/ressources/"));
+  const ouvrirRecherche = (e: React.MouseEvent) => {
+    if (pathname !== "/ressources") return; // ailleurs : navigation normale vers /ressources#recherche
+    e.preventDefault();
+    window.history.replaceState(null, "", "#recherche");
+    window.dispatchEvent(new Event("ressources:recherche"));
+    document.getElementById("recherche")?.scrollIntoView({ block: "center" });
+  };
+  const lienRecherche = (classe: string) =>
+    dansRessources ? (
+      <Link className={classe} href="/ressources#recherche" aria-label="Rechercher dans les ressources" onClick={ouvrirRecherche}>
+        <Loupe />
+      </Link>
+    ) : null;
 
   /* Pages « article » : gabarit /ressources/<slug> (barre Sommaire présente),
      y compris « oeuvre-originale ». Le masquage au défilement (mobile) s'y applique. */
@@ -437,6 +464,7 @@ export function SiteHeader() {
               puis bouton « Écrire au cabinet ». Le lien est du texte, pas un bouton :
               il ne concurrence pas l'action principale. --- */}
           <div className={styles.actions}>
+            {lienRecherche(styles.rechercheD)}
             <a className={styles.espace} href={ESPACE_CLIENT.href}>
               <Cadenas />
               <span className={styles.espaceLabel}>{ESPACE_CLIENT.label}</span>
@@ -445,6 +473,8 @@ export function SiteHeader() {
               Écrire au cabinet <span aria-hidden="true">→</span>
             </Link>
           </div>
+
+          {lienRecherche(styles.rechercheM)}
 
           {/* --- Bouton « Menu » (sous 900px) --- */}
           <button

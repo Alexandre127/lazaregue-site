@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./ressources.module.css";
 import RessourcesIndex from "./_components/RessourcesIndex";
-import { DOM_LABEL } from "./data/ressources-index";
+import { DOM_LABEL, estDomaine } from "./data/articles";
 
 const TITLE = "Ressources en droit du numérique pour les entreprises | Lazarègue Avocats";
 const DESCRIPTION =
@@ -55,7 +55,7 @@ export default async function Page({
   return (
     <main className={styles.page} id="contenu">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <RessourcesIndex initialDomaine={domaine} />
+      <RessourcesIndex domaine={estDomaine(domaine) ? domaine : undefined} />
     </main>
   );
 }

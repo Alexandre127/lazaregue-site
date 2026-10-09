@@ -36,8 +36,9 @@ export default function TocSpy({ items }: { items: TocItem[] }) {
   return (
     <aside className={styles.toc} aria-label="Sommaire">
       <p className={styles.label}>Sommaire</p>
-      {items.map((t) => (
+      {items.map((t, i) => (
         <a key={t.id} href={`#${t.id}`} aria-current={active === t.id ? "true" : undefined}>
+          <b aria-hidden="true">{String(i + 1).padStart(2, "0")}</b>
           {t.label}
         </a>
       ))}
