@@ -246,7 +246,7 @@ export default function DiagnosticAvisGoogle({
                 <p>
                   Le juge peut obliger Google, puis l’opérateur internet, à révéler qui a écrit l’avis.{" "}
                   {visibles.has("gre25") ? (
-                    <>C’est ainsi qu’à Grenoble, l’auteure de faux avis contre une ophtalmologue s’est révélée être l’assistante maternelle de confrères concurrents. {aVerifier(false)} </>
+                    <>C’est ainsi qu’à Grenoble, l’auteure de faux avis contre une ophtalmologue s’est révélée être l’assistante maternelle de confrères concurrents. {aVerifier(visibles.get("gre25")!.verifie)} </>
                   ) : null}
                   Condition : un avis diffamatoire ou injurieux, et une action dans les trois mois de sa publication.
                 </p>
