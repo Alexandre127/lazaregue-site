@@ -50,6 +50,17 @@ export type Cas = {
 // → la ressource reste listée (titre conservé) mais n'est pas cliquable.
 const FCB = { titre: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?", href: null };
 
+/* TODO (cabinet) — cas 09 : le fondement juridique exact reste À PRÉCISER
+   (secret des affaires, clause de confidentialité ou données personnelles,
+   selon ce qui a réellement été invoqué). Le rappel ci-dessous n'apparaît
+   qu'en développement local ; il n'est jamais publié (ni en prévisualisation,
+   ni en production). Une fois le fondement fourni, compléter la phrase de
+   « L'intervention du cabinet » et supprimer cette constante. */
+const TODO_FONDEMENT =
+  process.env.NODE_ENV === "development"
+    ? " [TODO — À PRÉCISER PAR LE CABINET : secret des affaires, clause de confidentialité ou données personnelles, selon le fondement réellement invoqué]"
+    : "";
+
 export const CAS: Cas[] = [
   {
     slug: "cyberattaque-responsabilite-prestataire-informatique",
@@ -210,6 +221,41 @@ export const CAS: Cas[] = [
     issue: "Onze paiements par carte et un virement avaient entraîné une perte totale de 13 240,33 €. L’analyse distincte de l’autorisation et de l’authentification de chaque opération a conduit la banque à restituer les sommes contestées au client.",
     aRetenir: ["Dans les escroqueries complexes, il est rarement pertinent de traiter toutes les opérations comme un bloc : leur régime juridique peut différer selon le moyen de paiement utilisé."],
     ressources: [FCB],
+  },
+  {
+    slug: "avis-google-authentique-informations-confidentielles",
+    numero: "09",
+    domaines: ["contenus"],
+    titre: "Google retire un avis authentique, pourtant conforme à ses règles de publication",
+    seoTitle: "Avis Google authentique retiré : informations confidentielles",
+    metaDescription: "Un avis Google rédigé par un véritable client, conforme aux règles de Google, a été retiré : il divulguait des informations commerciales confidentielles.",
+    chapo: "Un avis Google rédigé par un véritable client, conforme aux règles de Google, a été retiré : il divulguait des informations commerciales confidentielles.",
+    resume: "Un avis authentique, mais qui révèle publiquement des informations confidentielles sur l’entreprise et ses relations commerciales.",
+    client: "Entreprise",
+    nature: "Conseil",
+    voie: "Demande de retrait auprès de Google",
+    situation: [
+      "Le dirigeant d’une entreprise consulte le cabinet après la publication d’un avis Google particulièrement préjudiciable.",
+      "L’auteur est un véritable ancien client. Il décrit une expérience commerciale réelle, exprime son mécontentement et attribue une étoile à l’établissement. L’avis ne comporte aucune injure, aucune menace et aucune accusation manifestement diffamatoire.",
+      "Google refuse donc de le supprimer : ses services considèrent que le commentaire relève de la liberté d’expression du consommateur et respecte les règles de la plateforme.",
+    ],
+    enjeu: "La difficulté est ailleurs : cet avis, bien qu’authentique, révèle publiquement des informations confidentielles sur l’entreprise et ses relations commerciales.",
+    intervention: [
+      "Plutôt que de contester le droit du client à exprimer son mécontentement, le cabinet identifie une difficulté juridique distincte.",
+      `Le commentaire reproduit des informations issues d’échanges commerciaux confidentiels, dont certaines bénéficient d’une protection juridique autonome.${TODO_FONDEMENT}`,
+      "Le cabinet développe une argumentation fondée sur la protection des informations confidentielles, les limites de la liberté d’expression et les obligations applicables aux plateformes numériques.",
+      "La démarche ne vise pas à censurer une critique négative. Elle démontre que l’authenticité d’un témoignage ne suffit pas à rendre licite la divulgation de toutes les informations qu’il contient.",
+    ],
+    issue: "À la suite de l’intervention du cabinet, Google supprime le commentaire. L’entreprise obtient ainsi le retrait d’un avis rédigé par un véritable client, sans avoir à démontrer que son expérience commerciale était mensongère.",
+    aRetenir: [
+      "Un avis Google peut être authentique, sincère et néanmoins illicite.",
+      "La liberté d’expression des consommateurs ne fait pas disparaître les autres protections prévues par le droit français et européen.",
+      "L’efficacité d’une intervention juridique repose parfois moins sur la contestation des faits que sur l’identification d’un fondement juridique que les mécanismes ordinaires de modération ne prennent pas suffisamment en considération.",
+    ],
+    ressources: [
+      { titre: "Supprimer un faux avis Google : la procédure complète", href: "/ressources/supprimer-faux-avis-google" },
+      { titre: "Votre avis Google peut-il être retiré ? Le diagnostic", href: "/ressources/diagnostic-avis-google" },
+    ],
   },
 ];
 

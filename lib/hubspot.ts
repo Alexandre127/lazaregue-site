@@ -51,6 +51,16 @@ const CUSTOM_PROPS: { name: string; label: string; fieldType: "text" | "textarea
   { name: "lz_utm_campaign", label: "UTM campaign (site)", fieldType: "text" },
   { name: "lz_utm_term", label: "UTM term (site)", fieldType: "text" },
   { name: "lz_utm_content", label: "UTM content (site)", fieldType: "text" },
+  // Diagnostic « avis Google » : les six réponses, l'orientation obtenue et le
+  // lien de l'avis (noms demandés par le cabinet, sans préfixe lz_).
+  { name: "avis_vise", label: "Avis Google — personne visée", fieldType: "text" },
+  { name: "avis_auteur_client", label: "Avis Google — l'auteur est-il client", fieldType: "text" },
+  { name: "avis_contenu", label: "Avis Google — contenu de l'avis", fieldType: "text" },
+  { name: "avis_date_publication", label: "Avis Google — date de publication", fieldType: "text" },
+  { name: "avis_serie", label: "Avis Google — avis isolé ou série", fieldType: "text" },
+  { name: "avis_signalement", label: "Avis Google — signalement déjà fait", fieldType: "text" },
+  { name: "avis_orientation", label: "Avis Google — orientation du diagnostic", fieldType: "text" },
+  { name: "avis_url", label: "Avis Google — lien vers l'avis", fieldType: "text" },
 ];
 
 async function hs(path: string, init: RequestInit = {}): Promise<Response> {
@@ -179,6 +189,59 @@ export async function upsertContact(c: HubspotContact): Promise<{ ok: boolean; r
       // Ne PAS remonter le corps de la réponse HubSpot dans la raison : il peut
       // réémettre l'e-mail soumis (donnée personnelle). On ne garde que le code
       // HTTP et, si présent, la catégorie d'erreur (jamais de valeur de propriété).
+      let categorie = "";
+      try {
+        const j = (await res.json()) as { category?: string };
+        if (j && typeof j.category === "string") categorie = ` ${j.category}`;
+      } catch {
+        /* corps non JSON : ignoré */
+      }
+      return { ok: false, reason: `upsert ${res.status}${categorie}` };
+    }
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, reason: e instanceof Error ? e.message : "unknown" };
+  }
+}
+
+export type HubspotAvisGoogle = {
+  email: string;
+  nom: string;
+  org?: string;
+  tel?: string;
+  message?: string;
+  page?: string;
+  /** Valeurs déjà mises en forme (libellés lisibles), une par propriété avis_*. */
+  avis: Partial<Record<"vise" | "auteur_client" | "contenu" | "date_publication" | "serie" | "signalement" | "orientation" | "url", string>>;
+};
+
+/**
+ * Upsert d'un contact issu du diagnostic « avis Google » : mêmes garanties que
+ * upsertContact (ne lève jamais, base légale « Exécution d'un contrat »,
+ * propriétés créées à la volée), avec les propriétés dédiées avis_*.
+ */
+export async function upsertAvisGoogle(c: HubspotAvisGoogle): Promise<{ ok: boolean; reason?: string }> {
+  if (!TOKEN) return { ok: false, reason: "token-absent" };
+  try {
+    const [, legalBasis] = await Promise.all([ensureProperties().catch(() => undefined), resolvePerformanceOfContract()]);
+    const { firstname, lastname } = splitName(c.nom);
+    const properties: Record<string, string> = {
+      email: c.email,
+      ...(firstname ? { firstname } : {}),
+      ...(lastname ? { lastname } : {}),
+      ...(c.org ? { company: c.org } : {}),
+      ...(c.tel ? { phone: c.tel } : {}),
+      lz_objet: "Avis Google — diagnostic",
+      ...(c.message ? { lz_message: c.message } : {}),
+      ...(c.page ? { lz_page: c.page } : {}),
+      ...Object.fromEntries(Object.entries(c.avis).filter(([, v]) => !!v).map(([k, v]) => [`avis_${k}`, v as string])),
+      ...(legalBasis ? { hs_legal_basis: legalBasis } : {}),
+    };
+    const res = await hs("/crm/v3/objects/contacts/batch/upsert", {
+      method: "POST",
+      body: JSON.stringify({ inputs: [{ idProperty: "email", id: c.email, properties }] }),
+    });
+    if (!res.ok) {
       let categorie = "";
       try {
         const j = (await res.json()) as { category?: string };

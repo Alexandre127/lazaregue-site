@@ -266,6 +266,12 @@
 .diff :global(.obtenir p) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink); }
 .diff :global(.sit-links) { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px 28px; }
 .diff :global(.sit-links .obj-link) { margin: 0; }
+
+/* Bloc « Faux avis Google » (renvoi vers l'article et le diagnostic). */
+.diff :global(.faux-avis) { margin-top: 28px; padding: 24px; border: 1px solid var(--bd); border-left: 4px solid var(--blue); background: var(--off); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
+.diff :global(.faux-avis h3) { font-size: 21px; font-weight: 600; color: var(--navy); margin: 6px 0 6px; }
+.diff :global(.faux-avis p) { margin: 0; color: var(--text-muted); font-size: 16px; max-width: 56ch; }
+.diff :global(.faux-avis-liens) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
 @media (max-width: 1000px) { .diff :global(.scards) { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .diff :global(.scards) { grid-template-columns: 1fr; } }
 

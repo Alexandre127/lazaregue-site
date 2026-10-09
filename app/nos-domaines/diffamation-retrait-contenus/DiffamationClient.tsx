@@ -13,7 +13,8 @@ const TEL = "tel:+33181706200";
 /* Liens de ressources — routes RÉELLES à créer (pages inexistantes au 21.09.2026).
    Cible provisoire : l'index /ressources (200). À remplacer dès publication. */
 const R_DEREF = "/ressources";
-const R_FAUX_AVIS = "/ressources";
+const R_FAUX_AVIS = "/ressources/supprimer-faux-avis-google";
+const R_DIAGNOSTIC_AVIS = "/ressources/diagnostic-avis-google";
 
 /* Situations (6) fusionnées : « situation → ce que le cabinet peut obtenir ».
    La dernière (« accusé ») signale l'autre position. */
@@ -169,8 +170,19 @@ export default function DiffamationClient() {
             </div>
             <p className="sit-links">
               <a className="obj-link" href={R_DEREF}>Comprendre le déréférencement →</a>
-              <a className="obj-link" href={R_FAUX_AVIS}>Faux avis Google&nbsp;: que faire&nbsp;? →</a>
             </p>
+            {/* Bloc « Faux avis Google » : renvoi vers l'article et le diagnostic. */}
+            <aside className="faux-avis" aria-labelledby="faux-avis-titre">
+              <div>
+                <p className="eyebrow">Faux avis Google</p>
+                <h3 id="faux-avis-titre">Un avis Google peut-il être retiré&nbsp;?</h3>
+                <p>{fr("La procédure complète, du signalement à l'action en justice, et un diagnostic en six questions.")}</p>
+              </div>
+              <p className="faux-avis-liens">
+                <Link className="btn btn-primary" href={R_DIAGNOSTIC_AVIS}>Faire le diagnostic</Link>
+                <Link className="link-inline" href={R_FAUX_AVIS}>Lire la procédure complète →</Link>
+              </p>
+            </aside>
           </div>
         </section>
 

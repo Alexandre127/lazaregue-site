@@ -1,0 +1,551 @@
+<title>Diagnostic avis Google</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout : questionnaire à gauche, verdict collant à droite (une colonne sur mobile). Charte Lazarègue Avocats v1.1 : angles droits, bleu électrique seul accent. */
+:root{
+  --bg:#F4F4F8; --surface:#FFFFFF; --fg:#0A0A14; --muted:#4A4A63; --line:#E0E0EE;
+  --accent:#1A47FF; --accent-ink:#FFFFFF; --accent-soft:rgba(26,71,255,.08);
+  --ok:#0F7A43; --ok-soft:rgba(15,122,67,.10);
+  --warn:#9A5B00; --warn-soft:rgba(154,91,0,.10);
+  --stop:#B3261E; --stop-soft:rgba(179,38,30,.09);
+  --f-display:"Bebas Neue",Impact,"Arial Narrow",sans-serif;
+  --f-body:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0A0F2E; --surface:#111737; --fg:#F2F2F7; --muted:#B4B6CC; --line:#262D57;
+  --accent:#4D6FFF; --accent-ink:#FFFFFF; --accent-soft:rgba(77,111,255,.16);
+  --ok:#4CC38A; --ok-soft:rgba(76,195,138,.14);
+  --warn:#E8A93A; --warn-soft:rgba(232,169,58,.14);
+  --stop:#FF7A70; --stop-soft:rgba(255,122,112,.14);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A0F2E; --surface:#111737; --fg:#F2F2F7; --muted:#B4B6CC; --line:#262D57;
+  --accent:#4D6FFF; --accent-ink:#FFFFFF; --accent-soft:rgba(77,111,255,.16);
+  --ok:#4CC38A; --ok-soft:rgba(76,195,138,.14);
+  --warn:#E8A93A; --warn-soft:rgba(232,169,58,.14);
+  --stop:#FF7A70; --stop-soft:rgba(255,122,112,.14);
+  color-scheme:dark}
+
+*{box-sizing:border-box;border-radius:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;padding-inline:20px;padding-block:28px 56px}
+.wrap{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+header{display:flex;flex-direction:column;gap:12px;max-width:62ch}
+.brand{font-family:var(--f-display);font-size:22px;letter-spacing:.05em;line-height:1}
+.brand span{color:var(--accent)}
+.label{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:lowercase}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(44px,8vw,76px);line-height:.95;letter-spacing:.01em;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);font-size:17px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start}
+@media (min-width:960px){.grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}.verdict{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}}
+
+form.quiz{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line)}
+fieldset{border:0;margin:0;padding:22px 22px 24px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px;min-width:0}
+fieldset:first-child{border-top:0}
+legend{float:left;width:100%;padding:0;display:flex;gap:12px;align-items:baseline;font-weight:500;font-size:18px;line-height:1.35}
+legend+*{clear:both}
+legend .n{font-family:var(--f-mono);font-size:13px;color:var(--accent);letter-spacing:.04em;flex:none}
+.hint{margin:0;font-size:14px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:flex;align-items:center;min-height:48px;padding:10px 14px;border:1px solid var(--line);background:var(--bg);font-size:15px;line-height:1.3;cursor:pointer;transition:border-color .15s,background .15s}
+.opt input:hover+span{border-color:var(--accent)}
+.opt input:checked+span{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.opt input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+input[type=date],input[type=text],input[type=email],input[type=tel],input[type=url],textarea{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:16px}
+input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px var(--accent-soft)}
+.datebox{max-width:260px}
+
+.verdict{background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column}
+.v-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pill{align-self:flex-start;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;padding:6px 10px;border:1px solid currentColor}
+.pill.ok{color:var(--ok);background:var(--ok-soft)}
+.pill.warn{color:var(--warn);background:var(--warn-soft)}
+.pill.stop{color:var(--stop);background:var(--stop-soft)}
+.pill.idle{color:var(--muted)}
+.v-title{font-size:22px;font-weight:600;line-height:1.25;margin:0;text-wrap:balance}
+.v-body{padding:18px 22px 22px;display:flex;flex-direction:column;gap:18px}
+.v-body h3{margin:0 0 6px;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:lowercase}
+.v-body p{margin:0}
+.v-body ol,.v-body ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.dl{display:flex;flex-direction:column;gap:8px}
+.dl div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px;font-size:15px}
+.dl b{font-weight:500;font-variant-numeric:tabular-nums;text-align:right}
+.dl .late{color:var(--stop)}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.empty{color:var(--muted)}
+.progress{height:3px;background:var(--line)}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+
+.contact{background:var(--surface);border:1px solid var(--line);padding:24px 22px;display:flex;flex-direction:column;gap:16px}
+.contact h2{margin:0;font-size:24px;font-weight:600}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:14px;font-weight:500}
+.field.full{grid-column:1/-1}
+textarea{min-height:110px;resize:vertical}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}
+.check input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--accent)}
+.btn{align-self:flex-start;min-height:48px;padding:13px 24px;background:var(--accent);color:var(--accent-ink);border:0;font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{border-top:2px solid var(--accent);padding-top:10px;font-size:14px;color:var(--muted);counter-increment:s}
+.steps li::before{content:"0" counter(s);display:block;font-family:var(--f-mono);font-size:12px;color:var(--accent);margin-bottom:4px}
+.steps b{color:var(--fg);font-weight:500;display:block}
+.preuve{display:flex;flex-direction:column;gap:18px}
+.preuve h2{margin:0;font-size:26px;font-weight:600;line-height:1.2}
+.p-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.p-list>li{background:var(--surface);border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.p-list>li:nth-child(1){border-top:2px solid var(--line)}
+.p-list>li:nth-child(2){border-top:2px solid var(--warn)}
+.p-list>li:nth-child(3){border-top:2px solid var(--ok)}
+.p-list .lvl{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.p-list h3{margin:0;font-size:18px;font-weight:600}
+.p-list p{margin:0;font-size:15px}
+.p-list ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.p-list ul b{font-weight:600}
+.juris{display:flex;flex-direction:column;gap:18px}
+.juris h2{margin:0;font-size:26px;font-weight:600;line-height:1.2}
+.j-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px}
+.j-col{background:var(--surface);border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.j-col.won{border-top:3px solid var(--ok)}
+.j-col.lost{border-top:3px solid var(--stop)}
+.j-col h3{margin:0;font-size:18px;font-weight:600}
+.j-col p{margin:0;font-size:15px;color:var(--muted)}
+.j-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.j-col li{font-size:14.5px;border-top:1px dashed var(--line);padding-top:10px}
+.j-col li b{display:block;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.03em;color:var(--fg);margin-bottom:2px}
+.cmp{list-style:none!important;padding:0!important}
+.cmp li{font-size:14.5px;border-left:3px solid var(--line);padding-left:10px}
+.cmp li.won{border-left-color:var(--ok)}
+.cmp li.lost{border-left-color:var(--stop)}
+.cmp .tag{display:inline-block;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;margin-right:6px;padding:1px 6px;border:1px solid currentColor}
+.cmp li.won .tag{color:var(--ok)}
+.cmp li.lost .tag{color:var(--stop)}
+.cmp b{font-weight:600}
+.etapes{display:flex;flex-direction:column;gap:18px}
+.e-head{display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.etapes h2{margin:0;font-size:26px;font-weight:600;line-height:1.2;text-wrap:balance}
+.e-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;counter-reset:e}
+.e-list li{counter-increment:e;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.e-list li::before{content:"étape 0" counter(e);font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--accent)}
+.e-list h3{margin:0;font-size:18px;font-weight:600}
+.e-list p{margin:0;font-size:15px}
+.e-list dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:14px;border-top:1px dashed var(--line);padding-top:10px}
+.e-list dt{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
+.e-list dd{margin:0;overflow-wrap:anywhere}
+.tarifs{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.tarifs div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.tarifs b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:520px){.tarifs div{flex-direction:column;gap:2px}.tarifs b{text-align:left}}
+.dl small{font-weight:400;color:var(--muted)}
+.sent{border:1px solid var(--ok);background:var(--ok-soft);padding:16px;display:flex;flex-direction:column;gap:10px}
+.sent pre{white-space:pre-wrap;margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;color:var(--fg);max-height:260px;overflow:auto}
+.demo{font-family:var(--f-mono);font-size:12px;color:var(--warn)}
+footer{font-size:13px;color:var(--muted);max-width:75ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">LAZARÈGUE <span>AVOCATS</span></div>
+    <div class="label">ressources · diagnostic · avis en ligne</div>
+    <h1>Votre avis Google peut-il être retiré&nbsp;?</h1>
+    <p class="lede">Six questions, deux minutes. Le résultat indique la qualification probable de l'avis, la voie adaptée et le délai qui vous reste pour agir.</p>
+  </header>
+
+  <div class="grid">
+    <form class="quiz" id="quiz" novalidate>
+      <fieldset>
+        <legend><span class="n">01</span>Qui est visé par l'avis&nbsp;?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="vise" id="vise-societe" value="societe"><span>Une société</span></label>
+          <label class="opt"><input type="radio" name="vise" id="vise-nom" value="nom"><span>Un professionnel en nom propre</span></label>
+          <label class="opt"><input type="radio" name="vise" id="vise-sante" value="sante"><span>Un professionnel de santé</span></label>
+          <label class="opt"><input type="radio" name="vise" id="vise-secret" value="secret"><span>Un avocat, un notaire ou une autre profession tenue au secret</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">02</span>L'auteur de l'avis a-t-il été votre client&nbsp;?</legend>
+        <p class="hint">Vérifiez vos factures, réservations et agenda sur la période concernée.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="client" id="client-non" value="non"><span>Non, aucune trace de cette personne</span></label>
+          <label class="opt"><input type="radio" name="client" id="client-oui" value="oui"><span>Oui, c'est un client</span></label>
+          <label class="opt"><input type="radio" name="client" id="client-nsp" value="nsp"><span>Impossible à savoir (pseudonyme)</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">03</span>Que dit l'avis&nbsp;?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="contenu" id="contenu-critique" value="critique"><span>Il critique la qualité, le prix, l'accueil</span></label>
+          <label class="opt"><input type="radio" name="contenu" id="contenu-fait" value="fait"><span>Il accuse d'un fait précis (fraude, vol, faute grave)</span></label>
+          <label class="opt"><input type="radio" name="contenu" id="contenu-insulte" value="insulte"><span>Il contient des insultes</span></label>
+          <label class="opt"><input type="radio" name="contenu" id="contenu-perso" value="perso"><span>Il divulgue des informations confidentielles ou personnelles</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">04</span>Quand l'avis a-t-il été publié&nbsp;?</legend>
+        <p class="hint">La date apparaît sous l'avis. Une date approximative suffit.</p>
+        <div class="datebox"><input type="date" id="date-pub" name="date" aria-label="Date de publication de l'avis"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">05</span>S'agit-il d'un avis isolé&nbsp;?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="serie" id="serie-un" value="un"><span>Un seul avis</span></label>
+          <label class="opt"><input type="radio" name="serie" id="serie-meme" value="meme"><span>Plusieurs avis du même auteur</span></label>
+          <label class="opt"><input type="radio" name="serie" id="serie-vague" value="vague"><span>Plusieurs avis d'auteurs différents, au même moment</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">06</span>Avez-vous déjà signalé l'avis à Google&nbsp;?</legend>
+        <p class="hint">Le bouton « Signaler » de la fiche et le formulaire juridique de Google sont deux démarches distinctes ; seule la seconde a une portée juridique.</p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="signal" id="signal-non" value="non"><span>Pas encore</span></label>
+          <label class="opt"><input type="radio" name="signal" id="signal-bouton" value="bouton"><span>Oui, par le bouton « Signaler » de la fiche</span></label>
+          <label class="opt"><input type="radio" name="signal" id="signal-refus" value="refus"><span>Oui, par le formulaire juridique de Google, qui a refusé</span></label>
+          <label class="opt"><input type="radio" name="signal" id="signal-reclam" value="reclam"><span>Oui, et ma réclamation contre ce refus a aussi été rejetée</span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="verdict" id="verdict" aria-live="polite">
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <div class="v-head">
+        <span class="pill idle" id="v-pill">0 / 6 réponses</span>
+        <p class="v-title" id="v-title">Le résultat s'affiche ici au fil de vos réponses.</p>
+      </div>
+      <div class="v-body" id="v-body">
+        <p class="empty">Trois issues sont possibles : <b>retrait envisageable</b>, <b>à examiner</b> ou <b>retrait peu probable</b>. Chacune s'accompagne de la voie à suivre et des délais applicables.</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="preuve" id="preuve" aria-labelledby="p-title">
+    <div class="e-head">
+      <div class="label">faux avis · la preuve</div>
+      <h2 id="p-title">Comment savoir si c'est un faux avis&nbsp;?</h2>
+      <p class="hint">On ne le sait jamais avec certitude au départ. On réunit des indices ; la certitude vient de l'identification de l'auteur. Trois niveaux de preuve, selon l'interlocuteur.</p>
+    </div>
+    <ol class="p-list">
+      <li>
+        <span class="lvl">ce que vous vérifiez vous-même</span>
+        <h3>Les indices</h3>
+        <ul>
+          <li><b>Vos fichiers</b> : aucune trace de l'auteur, ni des faits décrits (facture, réservation, agenda, date, montant).</li>
+          <li><b>Le contenu</b> : aucun détail qu'un vrai client connaîtrait, ou des détails faux (service que vous ne proposez pas, jour de fermeture).</li>
+          <li><b>Le profil</b> : compte récent, un seul avis, cinq étoiles chez un concurrent, lieux sans rapport avec votre zone.</li>
+          <li><b>Le contexte</b> : plusieurs avis en peu de temps, juste après un licenciement, un litige ou l'ouverture d'un concurrent.</li>
+        </ul>
+      </li>
+      <li>
+        <span class="lvl">ce qui suffit devant google et adr center</span>
+        <h3>La vraisemblance</h3>
+        <p>Plusieurs indices concordants, présentés avec une attestation de recherche dans vos fichiers, rendent le faux avis vraisemblable. Le pseudonyme seul ne suffit pas : l'anonymat est licite.</p>
+      </li>
+      <li>
+        <span class="lvl">ce qui prouve devant le juge</span>
+        <h3>L'identification de l'auteur</h3>
+        <p>Le juge peut obliger Google, puis l'opérateur internet, à révéler qui a écrit l'avis. C'est ainsi qu'à Grenoble, l'auteure de faux avis contre une ophtalmologue s'est révélée être l'assistante maternelle de confrères concurrents. Condition : un avis diffamatoire ou injurieux, et une action dans les trois mois de sa publication.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="juris" id="juris" aria-labelledby="j-title">
+    <div class="e-head">
+      <div class="label">jurisprudence · cours d'appel et cour de cassation, 2018-2026</div>
+      <h2 id="j-title">Ce que jugent les tribunaux</h2>
+      <p class="hint">Le cabinet n'engage que les procédures que la jurisprudence soutient. Les juges distinguent nettement deux situations.</p>
+    </div>
+    <div class="j-cols">
+      <div class="j-col won">
+        <h3>Ce qui est retiré</h3>
+        <p>Les avis sans expérience réelle, les faux profils, les accusations d'illégalité ou de faute sans fondement, et les avis, même authentiques, qui divulguent des informations protégées.</p>
+        <ul>
+          <li><b>Dossier traité par le cabinet</b> Avis authentique d'un ancien client révélant des informations commerciales confidentielles : retrait obtenu auprès de Google.</li>
+          <li><b>Cass. 1re civ., 26 juin 2024</b> Faux profils contre un chirurgien : retrait et interdiction de diffusion sous astreinte.</li>
+          <li><b>CA Grenoble, 2025</b> Faux avis contre une ophtalmologue, par une personne jamais soignée : 5 000 € de dommages et intérêts.</li>
+          <li><b>CA Toulouse, 13 janv. 2022</b> Élevage accusé d'illégalité et de plaintes inexistantes : retrait sous astreinte.</li>
+          <li><b>CA Chambéry, 22 mai 2025</b> Fiche d'une dentiste créée sans son consentement : suppression et 10 000 €.</li>
+        </ul>
+      </div>
+      <div class="j-col lost">
+        <h3>Ce qui reste en ligne</h3>
+        <p>La critique d'un véritable client, même sévère, et l'action engagée trop tard.</p>
+        <ul>
+          <li><b>CA Douai, 25 sept. 2025</b> « Entreprise non professionnelle », écrit par un client : maintenu.</li>
+          <li><b>Cass. 1re civ., 8 mars 2023</b> Retards de livraison exactement relatés : maintenu, 3 000 € de frais pour le promoteur.</li>
+          <li><b>CA Paris, 2 juill. 2026</b> Intoxication alléguée dans une boulangerie : bonne foi plausible, retrait refusé en référé.</li>
+          <li><b>CA Rennes, 20 janv. 2026</b> Diffamation prescrite : identification de l'auteur refusée.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="etapes" id="etapes" aria-labelledby="e-title">
+    <div class="e-head">
+      <div class="label">procédure · règlement (ue) 2022/2065 sur les services numériques</div>
+      <h2 id="e-title">Les étapes, de la plus simple à la plus contraignante</h2>
+      <p class="hint">Chaque étape ne s'ouvre qu'après l'échec de la précédente. La première peut être faite seul. Les étapes 2 à 4 sont couvertes par un forfait unique du cabinet ; l'étape 5 fait l'objet d'un devis.</p>
+    </div>
+    <ol class="e-list">
+      <li>
+        <h3>Le signalement depuis la fiche</h3>
+        <p>Le propriétaire de la fiche signale l'avis dans l'outil de gestion des avis, en choisissant un motif dans une liste (faux contenu, conflit d'intérêts, hors sujet…). Aucune argumentation n'est possible.</p>
+        <dl><dt>Portée</dt><dd>Une simple alerte, traitée en grande partie de façon automatisée.</dd><dt>Délai</dt><dd>Examen en général en quelques jours, selon Google.</dd><dt>Lien</dt><dd><a href="https://support.google.com/business/workflow/9945796?hl=fr" target="_blank" rel="noopener">Outil de gestion des avis</a></dd></dl>
+      </li>
+      <li>
+        <h3>La notification motivée</h3>
+        <p>Le formulaire de Google destiné aux contenus contraires à la loi. On y expose pourquoi l'avis est illicite (faux avis, dénigrement, diffamation, injure), on indique le fondement légal et on joint les pièces.</p>
+        <dl><dt>Portée</dt><dd>Notification au sens de l'article 16 du DSA : Google est réputé connaître l'illicéité et doit rendre une décision motivée, avec les voies de recours.</dd><dt>Délai</dt><dd>Google doit statuer « dans les meilleurs délais » ; aucun délai chiffré.</dd><dt>Lien</dt><dd><a href="https://support.google.com/legal/troubleshooter/1114905?hl=fr" target="_blank" rel="noopener">Signaler un contenu pour des raisons juridiques</a></dd></dl>
+      </li>
+      <li>
+        <h3>La réclamation contre le refus</h3>
+        <p>L'appel interne contre la décision de Google : depuis l'outil de gestion des avis (« Faire appel pour les avis éligibles ») ou par le lien figurant dans l'e-mail de décision. On y joint un élément nouveau, comme une attestation.</p>
+        <dl><dt>Portée</dt><dd>Réexamen obligatoire, qui ne peut pas être purement automatisé (art. 20 DSA). Un seul appel par signalement.</dd><dt>Délai</dt><dd>Possible pendant au moins six mois après le refus ; à déposer sans attendre. Le statut passe à « Escaladé », la réponse arrive par e-mail.</dd><dt>Lien</dt><dd><a href="https://support.google.com/business/answer/4596773?hl=fr" target="_blank" rel="noopener">Faire appel d'une décision sur un avis</a></dd></dl>
+      </li>
+      <li>
+        <h3>La saisine d'ADR Center</h3>
+        <p>Un organisme indépendant, certifié par le régulateur italien des communications (AGCOM) au titre de l'article 21 du DSA, compétent dans toute l'Union. Il réexamine le refus de Google au regard de ses propres règles et de la loi.</p>
+        <dl><dt>Conditions</dt><dd>Avoir fait appel auprès de Google ; agir dans les douze mois des faits ; ne pas avoir saisi le juge sur le fond. Pour une entreprise, joindre la preuve du pouvoir de la représenter.</dd><dt>Pièces</dt><dd>Lien de l'avis et de la fiche, captures, date de l'appel et e-mail de réponse de Google, code de référence, description des faits.</dd><dt>Délai</dt><dd>Recevabilité en 10 jours, décision motivée en 90 jours (prolongeable).</dd><dt>Coût</dt><dd>Gratuit pour le demandeur ; les frais sont facturés à Google. Décision non contraignante.</dd><dt>Liens</dt><dd><a href="https://ods.adrcenter.com/fr/platform/google-maps.html" target="_blank" rel="noopener">ADR Center et Google Maps</a> · <a href="https://ods.adrcenter.com/fr/dispute/start" target="_blank" rel="noopener">Ouvrir un dossier</a></dd></dl>
+      </li>
+      <li>
+        <h3>Le juge</h3>
+        <p>Il peut être saisi à tout moment, sans passer par les étapes précédentes, et ses décisions s'imposent à Google. Il peut ordonner le retrait de l'avis (art. 6-3 LCEN) et, si l'avis est diffamatoire ou injurieux, l'identification de son auteur.</p>
+        <dl><dt>Délai</dt><dd>3 mois à compter de la publication pour la diffamation et l'injure ; 5 ans pour le dénigrement. Les adresses IP ne sont conservées qu'un an.</dd><dt>À savoir</dt><dd>Une action au fond rend la saisine d'ADR Center impossible : l'ordre des démarches compte.</dd></dl>
+      </li>
+    </ol>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="c-title">
+    <h2 id="c-title">Faire examiner votre avis par le cabinet</h2>
+    <ol class="steps">
+      <li><b>Votre demande</b>Vos réponses et le lien de l'avis nous parviennent.</li>
+      <li><b>Notre analyse sous 48 heures</b>Un avocat qualifie l'avis et vous dit si le dossier tient.</li>
+      <li><b>Convention et règlement</b>Si le dossier tient, vous recevez la convention d'honoraires et le lien de paiement du forfait. Rien n'est dû avant.</li>
+    </ol>
+    <div class="tarifs" role="table" aria-label="Honoraires">
+      <div role="row"><span role="cell">Analyse de l'avis sous 48 heures</span><b role="cell">gratuite</b></div>
+      <div role="row"><span role="cell">Forfait procédure amiable : notification motivée, réclamation et saisine d'ADR Center</span><b role="cell">690 € HT · 828 € TTC</b></div>
+      <div role="row"><span role="cell">Action en justice : retrait ordonné à Google, identification de l'auteur, dommages et intérêts</span><b role="cell">sur devis</b></div>
+    </div>
+    <p class="hint">Le forfait se règle une seule fois et couvre toutes les étapes amiables nécessaires, jusqu'à la décision d'ADR Center. Forfait par avis.</p>
+    <form id="lead" novalidate>
+      <div class="fields">
+        <div class="field"><label for="c-nom">Nom et prénom</label><input type="text" id="c-nom" autocomplete="name" required></div>
+        <div class="field"><label for="c-org">Établissement</label><input type="text" id="c-org" autocomplete="organization"></div>
+        <div class="field"><label for="c-mail">Adresse électronique</label><input type="email" id="c-mail" autocomplete="email" required></div>
+        <div class="field"><label for="c-tel">Téléphone</label><input type="tel" id="c-tel" autocomplete="tel"></div>
+        <div class="field full"><label for="c-url">Lien vers l'avis</label><input type="url" id="c-url" placeholder="https://maps.app.goo.gl/…" required></div>
+        <div class="field full"><label for="c-msg">Précisions (facultatif)</label><textarea id="c-msg" placeholder="Contexte, litige en cours, autres avis…"></textarea></div>
+      </div>
+      <p class="check" style="margin:16px 0 8px"><input type="checkbox" id="c-prix"><label for="c-prix">J'ai pris connaissance des honoraires : l'analyse est gratuite, la procédure qui suit est payante.</label></p>
+      <p class="check" style="margin:0 0 16px"><input type="checkbox" id="c-rgpd" required><label for="c-rgpd">J'accepte que Lazarègue Avocats traite ces informations pour répondre à ma demande. Elles ne sont utilisées à aucune autre fin.</label></p>
+      <button class="btn" type="submit" id="c-send">Envoyer ma demande</button>
+      <p class="hint" id="c-error" role="alert" hidden style="color:var(--stop);margin-top:10px"></p>
+    </form>
+    <div class="sent" id="sent" hidden>
+      <p><b>Demande prête.</b> <span class="demo">version de démonstration : l'envoi sera relié au CRM du cabinet lors de l'intégration au site.</span></p>
+      <pre id="sent-sum"></pre>
+      <button class="btn ghost" type="button" id="copy">Copier le récapitulatif</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  const $ = (s)=>document.querySelector(s);
+  const quiz = $('#quiz');
+  const DAY = 86400000;
+  const fmt = (d)=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const addMonths = (d,m)=>{const r=new Date(d.getFullYear(),d.getMonth()+m,d.getDate());return r;};
+  const today = ()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth(),t.getDate());};
+
+  function answers(){
+    const g=(n)=>{const el=quiz.querySelector('input[name="'+n+'"]:checked');return el?el.value:null;};
+    const dv=$('#date-pub').value;
+    return {vise:g('vise'),client:g('client'),contenu:g('contenu'),date:dv?new Date(dv+'T00:00:00'):null,serie:g('serie'),signal:g('signal')};
+  }
+
+  function evaluate(a){
+    const out={level:'idle',title:'',qualif:'',steps:[],dates:[],notes:[]};
+    const presse = a.contenu==='fait'||a.contenu==='insulte';
+    // Qualification
+    if(a.contenu==='fait') out.qualif='Diffamation probable : l’avis impute un fait précis qui porte atteinte à l’honneur.';
+    else if(a.contenu==='insulte') out.qualif='Injure probable : termes outrageants sans fait précis.';
+    else if(a.contenu==='perso') out.qualif='Divulgation d’informations confidentielles ou personnelles : même écrit par un vrai client, l’avis peut être illicite. L’authenticité du témoignage ne rend pas licite la divulgation de tout ce qu’il contient.';
+    else if(a.contenu==='critique'){
+      if(a.client==='oui') out.qualif='Critique d’un client : elle relève en principe de la liberté d’expression, sauf propos excessifs ou dépourvus de base factuelle.';
+      else out.qualif='Dénigrement probable : une critique sans expérience réelle de vos services n’a pas de base factuelle.';
+    }
+    // Niveau
+    let prescrit=false, deadline=null, left=null;
+    if(a.date){
+      deadline=addMonths(a.date,3); left=Math.ceil((deadline-today())/DAY);
+      if(presse && left<0) prescrit=true;
+    }
+    if(a.contenu==='critique' && a.client==='oui'){out.level='stop';out.title='Retrait peu probable';}
+    else if(a.contenu==='fait'||a.contenu==='insulte'||a.contenu==='perso'||a.serie==='meme'||(a.contenu==='critique'&&a.client==='non')){out.level='ok';out.title='Retrait envisageable';}
+    else {out.level='warn';out.title='À examiner';}
+    if(prescrit && out.level==='ok'){out.level='warn';out.title='À examiner : délai judiciaire expiré';}
+
+    // Voie
+    const who = a.vise==='sante'?'patient':'client';
+    if(out.level==='stop'){
+      out.steps.push('Publier une réponse brève et courtoise, sans aucune information sur le '+who+'.');
+      out.steps.push('Faire examiner l\u2019avis seulement si certains propos vous paraissent mensongers.');
+    } else {
+      if(!a.signal||a.signal==='non') out.steps.push('Adresser à Google une notification motivée par son formulaire juridique (art. 16 DSA) : qualification de l\u2019avis, fondement légal, pièces.');
+      if(a.signal==='bouton') out.steps.push('Votre signalement par le bouton de la fiche n\u2019a pas de portée juridique. Adresser à Google une notification motivée par son formulaire juridique (art. 16 DSA).');
+      if(a.signal==='refus') out.steps.push('Votre notification a été refusée : déposer la réclamation prévue par l\u2019article 20 du DSA. C\u2019est un recours distinct de la notification, ouvert pendant six mois après le refus, que Google doit faire examiner par une personne et non par un algorithme.');
+      else if(a.signal!=='reclam') out.steps.push('Si Google refuse, déposer la réclamation prévue par l\u2019article 20 du DSA, que Google doit faire examiner par une personne et non par un algorithme.');
+      out.steps.push(a.signal==='reclam'?'Votre réclamation a été rejetée : saisir ADR Center (voir le détail des étapes plus bas).':'En cas de nouveau refus, saisir ADR Center (voir le détail des étapes plus bas).');
+      if(presse && !prescrit) out.steps.push('Si l\u2019auteur est anonyme, demander au juge son identification ; à défaut, demander au juge d\u2019ordonner directement à Google le retrait de l\u2019avis.');
+      if(a.serie==='meme') out.steps.push('Plusieurs avis d\u2019un même auteur : une action en justice avec dommages et intérêts peut se justifier.');
+      out.adr=true;
+    }
+    // Honoraires
+    out.offer=[];
+    if(out.level!=='stop'){
+      out.offer.push(['Forfait procédure amiable : notification motivée, réclamation et saisine d\u2019ADR Center, selon ce qui reste à faire','690 € HT','828 € TTC']);
+      if(presse && !prescrit) out.offer.push(['Action en justice : retrait ordonné à Google, identification de l\u2019auteur, dommages et intérêts','sur devis','après analyse']);
+    }
+    if(a.vise==='nom'||a.vise==='sante'||a.vise==='secret') out.notes.push('Exerçant en nom propre, vous disposez aussi du droit d’opposition prévu par le RGPD. Il conduit à la suppression de toute la fiche, avis positifs compris : à réserver au cas où vous ne souhaitez plus figurer sur Google Maps.');
+    if(a.vise==='sante'||a.vise==='secret') out.notes.push('Tenu au secret professionnel, ne confirmez ni ne démentez jamais publiquement qu\u2019une personne est votre '+who+'.');
+    if(a.client==='nsp') out.notes.push('Le pseudonyme ne suffit pas à faire retirer un avis : l\u2019anonymat est licite. Il faut des indices sérieux de faux avis : aucune trace de l\u2019auteur ni des faits dans vos fichiers, profil sans historique, avis en série, détails incompatibles avec votre activité. Sans ces indices, le juge refuse (CA Paris, 27 avr. 2022, n\u00b0 21/14958).');
+    if(a.client==='non') out.notes.push('Un avis sans expérience réelle est un dénigrement, même s\u2019il est formulé comme une simple critique (CA Grenoble, 2025, n\u00b0 23/02032).');
+    if(a.client==='oui' && a.contenu==='critique') out.notes.push('Une opinion ne peut pas être « fausse » : seuls des faits précis et inexacts peuvent justifier un retrait, à condition d\u2019en prouver l\u2019inexactitude.');
+    out.notes.push('Si vous répondez publiquement, ne révélez jamais l\u2019identité ou les coordonnées de l\u2019auteur : un garage qui l\u2019avait fait a été condamné (CA Nancy, 12 déc. 2022, n\u00b0 22/00726).');
+    if(a.vise==='societe' && a.contenu==='critique') out.notes.push('Conservez dès maintenant les statistiques de votre fiche et de votre site : elles servent à chiffrer le préjudice.');
+
+    // Délais
+    if(a.date){
+      if(presse){
+        out.dates.push(['Action en justice pour '+(a.contenu==='fait'?'diffamation':'injure'), left>=0?('jusqu’au '+fmt(deadline)+' ('+left+' j)'):'expiré le '+fmt(deadline), left<0||left<=21]);
+        const ip=addMonths(a.date,12), ipLeft=Math.ceil((ip-today())/DAY);
+        out.dates.push(['Conservation des adresses IP', ipLeft>=0?('jusqu’au '+fmt(ip)):'dépassée', ipLeft<0||ipLeft<=60]);
+      }
+      const adr=addMonths(a.date,12), adrLeft=Math.ceil((adr-today())/DAY);
+      out.dates.push(['Saisine d’ADR Center', adrLeft>=0?('jusqu’au '+fmt(adr)):'délai dépassé', adrLeft<0||adrLeft<=60]);
+      if(a.contenu==='critique'&&a.client!=='oui'){const d5=addMonths(a.date,60);out.dates.push(['Action en dénigrement','jusqu’au '+fmt(d5),false]);}
+      if(prescrit) out.notes.unshift('Le délai de trois mois pour agir en justice en diffamation ou en injure est expiré. Le signalement à Google et la saisine d’ADR Center restent possibles.');
+      if(a.date>today()) out.notes.unshift('La date indiquée est dans le futur : vérifiez-la.');
+    }
+    out.prescrit=prescrit;
+    return out;
+  }
+
+  const DEC={
+    cab:{ok:true,ref:'Dossier traité par le cabinet',txt:'Avis authentique d’un ancien client, conforme aux règles de Google mais révélant des informations commerciales confidentielles : retrait obtenu sans contester l’expérience du client.'},
+    cass24:{ok:true,ref:'Cass. 1re civ., 26 juin 2024, n\u00b0 22-22.483',txt:'Faux profils publiant des avis contre un chirurgien : retrait et interdiction de diffusion sous astreinte confirmés.'},
+    gre25:{ok:true,ref:'CA Grenoble, 2025, n\u00b0 23/02032',txt:'Faux avis contre une ophtalmologue, rédigés par une personne qui n\u2019avait jamais été patiente : dénigrement, 5 000 \u20ac de dommages et intérêts.'},
+    tls22:{ok:true,ref:'CA Toulouse, 13 janv. 2022, n\u00b0 21/00861',txt:'Avis accusant un élevage d\u2019illégalité et de plaintes inexistantes : retrait ordonné sous astreinte.'},
+    aix18:{ok:true,ref:'CA Aix-en-Provence, 22 févr. 2018, n\u00b0 17/20726',txt:'Avis imputant une faute précise à un ostéopathe, sans preuve ni bonne foi : retrait ordonné sous astreinte.'},
+    cha25:{ok:true,ref:'CA Chambéry, 22 mai 2025, n\u00b0 22/01814',txt:'Fiche d\u2019une dentiste créée sans son consentement : suppression de la fiche et 10 000 \u20ac de dommages et intérêts (RGPD).'},
+    dou25:{ok:false,ref:'CA Douai, 25 sept. 2025, n\u00b0 24/01714',txt:'« Entreprise non professionnelle », écrit par un vrai client : avis maintenu, la critique reposant sur son expérience.'},
+    col21:{ok:false,ref:'CA Colmar, 2 déc. 2021 ; Cass. 1re civ., 8 mars 2023',txt:'Avis d\u2019une cliente relatant exactement des retards de livraison : avis maintenu, 3 000 \u20ac de frais mis à la charge du promoteur.'},
+    par26:{ok:false,ref:'CA Paris, 2 juill. 2026, n\u00b0 25/16002',txt:'Avis évoquant une intoxication dans une boulangerie : passages diffamatoires, mais bonne foi plausible, retrait refusé en référé.'},
+    ren26:{ok:false,ref:'CA Rennes, 20 janv. 2026, n\u00b0 25/00268',txt:'Cabinet d\u2019avocats visé par des avis présentés comme faux : identification refusée, la diffamation étant prescrite.'},
+    mtp22:{ok:false,ref:'CA Montpellier, 15 sept. 2022, n\u00b0 22/00066',txt:'« Des voleurs » retiré par l\u2019auteure en cours d\u2019instance : le reste de l\u2019avis relève de la libre critique.'}
+  };
+  function comparables(a,prescrit){
+    const k=[];
+    if(a.contenu==='critique'&&a.client==='oui') k.push('dou25','col21');
+    else if(a.contenu==='critique') k.push('gre25','cass24');
+    if(a.contenu==='fait') k.push('tls22','par26');
+    if(a.contenu==='insulte') k.push('aix18','mtp22');
+    if(a.contenu==='perso') k.push('cab');
+    if(prescrit) k.push('ren26');
+    if((a.vise==='sante'||a.vise==='secret'||a.vise==='nom')&&k.indexOf('cha25')<0) k.push('cha25');
+    return k.slice(0,3).map(x=>DEC[x]);
+  }
+  const LABELS={vise:{societe:'Société',nom:'Professionnel en nom propre',sante:'Professionnel de santé',secret:'Profession tenue au secret'},client:{non:'Non',oui:'Oui',nsp:'Impossible à savoir'},contenu:{critique:'Critique',fait:'Fait précis',insulte:'Insultes',perso:'Informations personnelles'},serie:{un:'Avis isolé',meme:'Plusieurs avis, même auteur',vague:'Plusieurs avis, auteurs différents'},signal:{non:'Pas encore',bouton:'Bouton Signaler',refus:'Formulaire juridique refusé',reclam:'Réclamation rejetée'}};
+
+  function render(){
+    const a=answers();
+    const n=['vise','client','contenu','date','serie','signal'].filter(k=>a[k]).length;
+    $('#bar').style.width=(n/6*100)+'%';
+    const pill=$('#v-pill'), title=$('#v-title'), body=$('#v-body');
+    if(!a.contenu){
+      pill.className='pill idle'; pill.textContent=n+' / 6 réponses';
+      title.textContent=n?'Répondez à la question 03 pour obtenir une première orientation.':'Le résultat s’affiche ici au fil de vos réponses.';
+      return;
+    }
+    const r=evaluate(a);
+    pill.className='pill '+r.level; pill.textContent=r.title.toLowerCase()+' · '+n+' / 6';
+    title.textContent=r.title;
+    let h='';
+    if(r.qualif) h+='<div><h3>qualification probable</h3><p>'+r.qualif+'</p></div>';
+    if(r.steps.length) h+='<div><h3>voie recommandée</h3><ol>'+r.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol></div>';
+    if(r.dates.length) h+='<div><h3>délais</h3><div class="dl">'+r.dates.map(d=>'<div><span>'+d[0]+'</span><b class="'+(d[2]?'late':'')+'">'+d[1]+'</b></div>').join('')+'</div></div>';
+    else h+='<div><h3>délais</h3><p class="empty">Indiquez la date de publication (question 04) pour calculer vos délais.</p></div>';
+    if(r.adr) h+='<div><h3>ADR Center, de quoi s\u2019agit-il</h3><p>Un organisme indépendant de règlement des litiges, certifié par le régulateur italien des communications (AGCOM) en application de l\u2019article 21 du DSA et compétent dans toute l\u2019Union. Il réexamine le refus de Google au regard de ses propres règles et de la loi.</p><ul><li>Gratuit pour vous : les frais sont à la charge de Google.</li><li>Procédure en ligne, menée en français.</li><li>Recevable après une réclamation auprès de Google, dans les douze mois des faits, et en l\u2019absence d\u2019action en justice en cours.</li><li>Décision motivée sous 90 jours, prolongeables pour les dossiers complexes.</li><li>Décision non contraignante : Google doit participer de bonne foi, sans être obligé de l\u2019appliquer.</li></ul></div>';
+    if(r.offer.length) h+='<div><h3>honoraires du cabinet</h3><div class="dl">'+r.offer.map(o=>'<div><span>'+o[0]+'</span><b>'+o[1]+'<br><small>'+o[2]+'</small></b></div>').join('')+'</div><p class="hint" style="margin-top:8px">Un seul règlement, quel que soit le nombre d\u2019étapes nécessaires jusqu\u2019à la décision d\u2019ADR Center. Forfait par avis, dû après validation du dossier par un avocat et signature de la convention d\u2019honoraires.</p></div>';
+    else h+='<div><h3>honoraires du cabinet</h3><p>Le cabinet ne vous recommande pas d\u2019engager de frais pour cet avis.</p></div>';
+    const cmp=comparables(a,r.prescrit);
+    if(cmp.length) h+='<div><h3>décisions comparables</h3><ul class="cmp">'+cmp.map(d=>'<li class="'+(d.ok?'won':'lost')+'"><span class="tag">'+(d.ok?'obtenu':'refusé')+'</span><b>'+d.ref+'</b> '+d.txt+'</li>').join('')+'</ul></div>';
+    if(r.notes.length) h+='<div><h3>à savoir</h3><ul>'+r.notes.map(s=>'<li>'+s+'</li>').join('')+'</ul></div>';
+    h+='<p class="note"><a href="#contact">Faire examiner l’avis par un avocat</a>.</p>';
+    body.innerHTML=h;
+  }
+
+  quiz.addEventListener('change',render);
+  $('#date-pub').addEventListener('input',render);
+  try{$('#date-pub').max=new Date().toISOString().slice(0,10);}catch(e){}
+
+  render();
+
+  $('#lead').addEventListener('submit',function(e){
+    e.preventDefault();
+    const err=$('#c-error');
+    const need=[['#c-nom','votre nom'],['#c-mail','votre adresse électronique'],['#c-url','le lien vers l’avis']];
+    const miss=need.filter(([s])=>!$(s).value.trim()).map(x=>x[1]);
+    if(miss.length){err.textContent='Il manque '+miss.join(', ')+'.';err.hidden=false;return;}
+    if(!/^\S+@\S+\.\S+$/.test($('#c-mail').value.trim())){err.textContent='L’adresse électronique ne semble pas valide.';err.hidden=false;return;}
+    if(!$('#c-prix').checked){err.textContent='Cochez la case confirmant que vous avez pris connaissance des honoraires.';err.hidden=false;return;}
+    if(!$('#c-rgpd').checked){err.textContent='Cochez la case d’accord pour que le cabinet puisse traiter votre demande.';err.hidden=false;return;}
+    err.hidden=true;
+    const a=answers(); const r=a.contenu?evaluate(a):null;
+    const L=(k)=>a[k]?(LABELS[k][a[k]]):'non renseigné';
+    const sum=['DEMANDE D’EXAMEN — AVIS GOOGLE',
+      'Nom : '+$('#c-nom').value.trim(),
+      'Établissement : '+($('#c-org').value.trim()||'—'),
+      'E-mail : '+$('#c-mail').value.trim(),
+      'Téléphone : '+($('#c-tel').value.trim()||'—'),
+      'Avis : '+$('#c-url').value.trim(),
+      '',
+      'Personne visée : '+L('vise'),
+      'Auteur client : '+L('client'),
+      'Contenu : '+L('contenu'),
+      'Publication : '+(a.date?fmt(a.date):'non renseignée'),
+      'Série : '+L('serie'),
+      'Signalement Google : '+L('signal'),
+      'Orientation : '+(r?r.title:'non établie'),
+      'Honoraires : pris connaissance',
+      '',
+      'Précisions : '+($('#c-msg').value.trim()||'—')].join('\n');
+    $('#sent-sum').textContent=sum;
+    $('#lead').hidden=true; $('#sent').hidden=false;
+  });
+
+  $('#copy').addEventListener('click',function(){
+    const t=$('#sent-sum').textContent, b=this;
+    const done=()=>{b.textContent='Récapitulatif copié';};
+    try{navigator.clipboard.writeText(t).then(done,sel);}catch(e){sel();}
+    function sel(){const range=document.createRange();range.selectNodeContents($('#sent-sum'));const s=getSelection();s.removeAllRanges();s.addRange(range);b.textContent='Texte sélectionné : copiez-le';}
+  });
+})();
+</script>

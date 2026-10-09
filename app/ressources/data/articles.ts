@@ -80,6 +80,16 @@ const FAQ_OSINT: QA[] = [
   { q: "Comment obtenir ses propres données auprès d'un réseau social ?", a: "Par le droit d'accès prévu à l'article 15 du RGPD. Les grandes plateformes proposent un outil de téléchargement des données dans les paramètres du compte." },
 ];
 
+const FAQ_AVIS_GOOGLE: QA[] = [
+  { q: "Peut-on faire supprimer un avis Google négatif ?", a: "Pas parce qu'il est négatif. Il peut l'être s'il est faux, s'il émane d'une personne en conflit d'intérêts, s'il est dénigrant, diffamatoire ou injurieux, ou s'il divulgue des informations protégées." },
+  { q: "Un avis sous pseudonyme peut-il être retiré pour ce seul motif ?", a: "Non. L'anonymat est licite ; il faut des indices sérieux de faux avis ou un contenu illicite." },
+  { q: "Google peut-il révéler l'auteur d'un avis anonyme ?", a: "Seulement sur décision de justice, et à condition que l'avis puisse recevoir une qualification pénale, comme la diffamation ou l'injure publiques." },
+  { q: "Faut-il assigner l'auteur pour obtenir le retrait ?", a: "Non. Le juge peut ordonner le retrait à Google directement, sur le fondement de l'article 6-3 de la LCEN, à condition que l'illicéité soit manifeste ou que le retrait soit proportionné lorsque l'auteur ne peut être identifié." },
+  { q: "Peut-on porter plainte pour un faux avis ?", a: "Oui si l'avis est diffamatoire ou injurieux, dans un délai de trois mois. Un faux avis simplement dénigrant relève de l'action civile." },
+  { q: "Faut-il répondre à un avis négatif ?", a: "Une réponse brève et courtoise est utile pour les lecteurs. Elle ne doit révéler aucune information sur un client ou un patient, et jamais son identité : un garage qui avait publié le nom et l'adresse d'un client dans sa réponse a été condamné (CA Nancy, 12 déc. 2022, n° 22/00726). Répondre ne fait pas obstacle à une procédure." },
+  { q: "Faut-il un avocat ?", a: "Pas pour un premier signalement. L'avocat intervient pour qualifier l'avis, rédiger une notification motivée, saisir l'organisme extrajudiciaire et conduire toute action en justice, où les délais et le formalisme ne pardonnent pas l'approximation." },
+];
+
 export const ARTICLES: Article[] = [
   {
     title: "Fraude bancaire : opposition, contestation et remboursement",
@@ -156,6 +166,51 @@ export const ARTICLES: Article[] = [
     publie: true,
   },
   {
+    title: "Supprimer un faux avis Google : la procédure complète",
+    seoTitle: "Supprimer un faux avis Google : la procédure complète | Lazarègue Avocats",
+    seoDescription:
+      "Faux avis, avis diffamatoire ou anonyme : les règles de Google, le signalement, le recours prévu par le DSA et l'action en justice, étape par étape.",
+    slug: "supprimer-faux-avis-google",
+    dom: "contenus",
+    famille: "Contentieux et atteintes numériques",
+    type: "Guide",
+    chapo:
+      "Un avis négatif ne peut être retiré au seul motif qu'il déplaît. Il peut l'être lorsqu'il est faux, dénigrant, diffamatoire ou injurieux, ou lorsqu'il divulgue des informations protégées. Google n'arbitre pas les désaccords entre un établissement et ses clients ; il retire, en revanche, les contenus contraires à ses règles ou à la loi. Le règlement européen sur les services numériques (DSA) et le droit français offrent plusieurs voies pour l'y contraindre. Leur choix dépend de deux questions : qui est visé, et qui a écrit l'avis.",
+    miseAJour: "2026-10-09",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: FAQ_AVIS_GOOGLE,
+    une: false,
+    titreUne: "",
+    ordre: 4,
+    liesA: ["diagnostic-avis-google"],
+    exclureDesSuggestions: false,
+    publie: true,
+  },
+  {
+    title: "Votre avis Google peut-il être retiré ?",
+    seoTitle: "Votre avis Google peut-il être retiré ? Diagnostic | Lazarègue Avocats",
+    seoDescription:
+      "Six questions pour savoir si un avis Google peut être retiré, par quelle voie et dans quel délai, avec les décisions de justice comparables.",
+    slug: "diagnostic-avis-google",
+    dom: "contenus",
+    famille: "Contentieux et atteintes numériques",
+    type: "Outil",
+    chapo:
+      "Six questions, deux minutes. Le résultat indique la qualification probable de l'avis, la voie adaptée et le délai qui vous reste pour agir.",
+    miseAJour: "2026-10-09",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 5,
+    liesA: ["supprimer-faux-avis-google"],
+    exclureDesSuggestions: false,
+    publie: true,
+    outil: true,
+  },
+  {
     // Article de test non finalisé : non indexé, hors plan du site, listé « à paraître ».
     title: "Faux conseiller bancaire : dans quels cas la banque doit-elle rembourser ?",
     seoTitle: "Faux conseiller bancaire : la banque doit-elle rembourser ?",
@@ -192,7 +247,6 @@ export const A_PARAITRE: { id: string; dom: Dom; titre: string }[] = [
   { id: "nis2", dom: "cyber", titre: "NIS 2 : quelles entreprises sont concernées et quelles obligations anticiper ?" },
   { id: "a28", dom: "rgpd", titre: "Article 28 du RGPD : quelles clauses prévoir avec un sous-traitant ?" },
   { id: "rw", dom: "cyber", titre: "Ransomware (rançongiciel) : les décisions juridiques à prendre dans les premières 24 heures" },
-  { id: "fa", dom: "contenus", titre: "Faux avis Google : comment demander leur suppression ?" },
   { id: "gia", dom: "ia", titre: "Gouvernance IA : comment encadrer les usages dans l'entreprise ?" },
   { id: "der", dom: "contenus", titre: "Déréférencement Google : dans quels cas demander la suppression d'un résultat ?" },
   { id: "pme", dom: "rgpd", titre: "Mise en conformité RGPD : par où commencer dans une PME ?" },

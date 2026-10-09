@@ -18,7 +18,7 @@ import { A_PARAITRE, DOMAINES, DOM_LABEL, SITUATIONS, aLaUne, chemin, publiees, 
  * #recherche, affichée par :target sans JavaScript) et filtre la liste.
  */
 
-type Ligne = { cle: string; dom: Dom; titre: string; href: string | null };
+type Ligne = { cle: string; dom: Dom; titre: string; href: string | null; type?: string };
 
 const normaliser = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const deuxChiffres = (n: number) => String(n).padStart(2, "0");
@@ -49,7 +49,7 @@ export default function RessourcesIndex({ domaine }: { domaine?: Dom }) {
   const lignes = useMemo<Ligne[]>(() => {
     const pub: Ligne[] = publiees()
       .filter((a) => filtre || a.slug !== une?.slug)
-      .map((a) => ({ cle: a.slug, dom: a.dom, titre: a.title, href: chemin(a.slug) }));
+      .map((a) => ({ cle: a.slug, dom: a.dom, titre: a.title, href: chemin(a.slug), type: a.type !== "Ressource" ? a.type : undefined }));
     const brouillons: Ligne[] = ARTICLES.filter((a) => !a.publie).map((a) => ({ cle: a.slug, dom: a.dom, titre: a.title, href: null }));
     const annonces: Ligne[] = A_PARAITRE.map((a) => ({ cle: a.id, dom: a.dom, titre: a.titre, href: null }));
     return [...pub, ...brouillons, ...annonces].filter(
@@ -134,7 +134,7 @@ export default function RessourcesIndex({ domaine }: { domaine?: Dom }) {
               <li key={l.cle} className={styles.item}>
                 <span className={styles.numero} aria-hidden="true">{deuxChiffres(i + 1)}</span>
                 <div>
-                  <p className={styles.surtitre}>{DOM_LABEL[l.dom]}</p>
+                  <p className={styles.surtitre}>{DOM_LABEL[l.dom]}{l.type ? ` · ${l.type}` : ""}</p>
                   {l.href ? (
                     <Link className={styles.itemTitre} href={l.href}>{l.titre}</Link>
                   ) : (
