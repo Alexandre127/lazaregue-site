@@ -93,7 +93,7 @@ export default function Observatoire() {
         : `${n} décision`;
 
   return (
-    <div className={styles.wrap}>
+    <main id="contenu" className={styles.wrap}>
       {/* 01 — Hero : promesse + action immédiate + trois chiffres */}
       <section className={styles.hero}>
         <div className={styles.inner}>
@@ -482,6 +482,6 @@ export default function Observatoire() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
