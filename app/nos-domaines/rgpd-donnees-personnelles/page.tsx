@@ -420,8 +420,7 @@ export default function Page() {
               <li>
                 <h3>DPO externalisé</h3>
                 <p>Une fonction de délégué à la protection des données assurée par le cabinet, au forfait et dans la durée.</p>
-                {/* Page DPO dédiée à créer : on renvoie au parcours de contact réel plutôt qu'à une route inexistante. */}
-                <Link className="link-nav" href="/contact">Échanger sur le DPO externalisé</Link>
+                <Link className="link-nav" href="/dpo-externalise">Découvrir l’offre de DPO externalisé</Link>
               </li>
               <li>
                 <h3>M&amp;A Tech et due diligence</h3>

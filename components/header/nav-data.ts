@@ -102,6 +102,8 @@ export const FAMILLES: Famille[] = [
  * Entrées du menu, dans l'ordre. Trois formes possibles :
  *  - `panel` : entrée à panneau (libellé = lien vers la rubrique, chevron =
  *    bouton distinct). Seule DOMAINES en a un.
+ *  - `cartes` : libellé = lien (vers la première offre), chevron = bouton
+ *    distinct qui ouvre un panneau de cartes. Seule ACCOMPAGNEMENT en a un.
  *  - `link` : lien simple.
  *
  * ACTIONS COLLECTIVES et RESSOURCES sont des LIENS SIMPLES (et non des panneaux)
@@ -109,9 +111,12 @@ export const FAMILLES: Famille[] = [
  * (PicRights) ou aucune (Ressources) — un panneau à zéro ou une carte n'a pas
  * de sens. Elles redeviendront des panneaux quand les pages existeront.
  */
+/** Carte d'un sous-menu à cartes (ACCOMPAGNEMENT) : sur-titre, titre, texte, lien de bas de carte. */
+export type CarteMenu = { surtitre: string; titre: string; texte: string; lien: string; href: string };
+
 export type NavEntry =
   | { type: "panel"; label: string; href: string; panelId: string }
-  | { type: "disclosure"; label: string; href: string; menuId: string; items: { label: string; href: string }[] }
+  | { type: "cartes"; label: string; href: string; menuId: string; cartes: CarteMenu[] }
   | { type: "link"; label: string; href: string };
 
 /**
@@ -127,13 +132,43 @@ export const FORMATIONS_LINKS: { label: string; href: string }[] = [
   { label: "L’Avocat augmenté", href: "/formations/ia-avocats" },
 ];
 
-// Ordre du menu : Domaines · Formations · Ressources · Cas clients · Le cabinet.
+/**
+ * Sous-menu ACCOMPAGNEMENT (9 octobre 2026) : il prend la place de FORMATIONS
+ * dans le menu principal. Les formations ne disparaissent pas : elles en sont
+ * la troisième carte, et /formations garde son adresse.
+ */
+export const ACCOMPAGNEMENT_HREF = "/direction-juridique-externalisee";
+export const ACCOMPAGNEMENT_CARTES: CarteMenu[] = [
+  {
+    surtitre: "Abonnement",
+    titre: "Accompagnement continu",
+    texte: "Votre direction juridique du numérique, toute l’année.",
+    lien: "À partir de 790 € HT / mois",
+    href: "/direction-juridique-externalisee",
+  },
+  {
+    surtitre: "Fonction RGPD",
+    titre: "DPO externalisé",
+    texte: "Un avocat délégué à la protection des données, désigné auprès de la CNIL.",
+    lien: "À partir de 590 € HT / mois",
+    href: "/dpo-externalise",
+  },
+  {
+    surtitre: "Équipes",
+    titre: "Formations",
+    texte: "IA Act, RGPD et DPO, cybersécurité, L’Avocat augmenté.",
+    lien: "Toutes les formations",
+    href: "/formations",
+  },
+];
+
+// Ordre du menu : Domaines · Accompagnement · Ressources · Cas clients · Le cabinet.
 // L'entrée « Contact » a été retirée (le bouton « Écrire au cabinet » y mène
 // déjà ; la page /contact et le lien du pied de page sont conservés).
 // Source unique du header ET du tiroir mobile.
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
-  { type: "disclosure", label: "FORMATIONS", href: "/formations", menuId: "menu-formations", items: FORMATIONS_LINKS },
+  { type: "cartes", label: "ACCOMPAGNEMENT", href: ACCOMPAGNEMENT_HREF, menuId: "panel-accompagnement", cartes: ACCOMPAGNEMENT_CARTES },
   // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
   { type: "link", label: "RESSOURCES", href: "/ressources" },
   { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },

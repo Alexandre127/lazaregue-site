@@ -15,7 +15,7 @@ import styles from "./footer.module.css";
  * final : le CTA générique y ferait doublon. Composant client (usePathname) —
  * le rendu reste statique, seule la suppression conditionnelle est côté client.
  */
-const SUPPRESS_ON = ["/", "/contact", "/le-cabinet", "/ressources", "/nos-domaines/cybersecurite", "/nos-domaines/contrats-informatiques", "/nos-domaines/rgpd-donnees-personnelles", "/nos-domaines/crypto-actifs-blockchain", "/nos-domaines/cybercriminalite", "/nos-domaines/diffamation-retrait-contenus", "/nos-domaines/escroquerie-fraude-bancaire", "/nos-domaines/avocat-intelligence-artificielle", "/nos-domaines/contentieux-informatique-commercial", "/nos-domaines/ma-tech"];
+const SUPPRESS_ON = ["/", "/contact", "/le-cabinet", "/ressources", "/direction-juridique-externalisee", "/dpo-externalise", "/nos-domaines/cybersecurite", "/nos-domaines/contrats-informatiques", "/nos-domaines/rgpd-donnees-personnelles", "/nos-domaines/crypto-actifs-blockchain", "/nos-domaines/cybercriminalite", "/nos-domaines/diffamation-retrait-contenus", "/nos-domaines/escroquerie-fraude-bancaire", "/nos-domaines/avocat-intelligence-artificielle", "/nos-domaines/contentieux-informatique-commercial", "/nos-domaines/ma-tech"];
 
 export function GlobalCta() {
   const pathname = usePathname();

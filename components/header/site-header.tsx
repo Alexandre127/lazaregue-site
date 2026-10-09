@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Logo from "./logo";
 import {
+  ACCOMPAGNEMENT_CARTES,
+  ACCOMPAGNEMENT_HREF,
   ESPACE_CLIENT,
   FAMILLES,
-  FORMATIONS_LINKS,
   NAV_ENTRIES,
   PANEL_DOMAINES_FOOTER,
   TEL,
@@ -39,9 +40,9 @@ const CONTACT_HREF = "/contact";
    barre d'action mobile) : la barre basse globale y reste affichée. */
 const HORS_GABARIT = ["/ressources/oeuvre-originale", "/ressources/cas-pratique-ia-commande-erreur"];
 
-function Cadenas() {
+function Cadenas({ taille = 13 }: { taille?: number }) {
   return (
-    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg viewBox="0 0 16 16" width={taille} height={taille} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
       <rect x="3" y="7" width="10" height="7.5" />
       <path d="M5.25 7V4.75a2.75 2.75 0 015.5 0V7" />
     </svg>
@@ -309,11 +310,12 @@ export function SiteHeader() {
     }
   };
 
-  // Rubrique active : une page de domaine → Domaines, /formations/* → Formations, etc.
+  // Rubrique active : une page de domaine → Domaines ; les deux offres et
+  // /formations/* → Accompagnement ; etc.
   const activeHref = (() => {
     if (!pathname) return null;
     if (pathname === "/nos-domaines" || pathname.startsWith("/nos-domaines/")) return "/nos-domaines";
-    if (pathname === "/formations" || pathname.startsWith("/formations/")) return "/formations";
+    if (ACCOMPAGNEMENT_CARTES.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"))) return ACCOMPAGNEMENT_HREF;
     const e = NAV_ENTRIES.find(
       (x) => x.type === "link" && (pathname === x.href || pathname.startsWith(x.href + "/")),
     );
@@ -323,6 +325,8 @@ export function SiteHeader() {
   const panelDomaines = NAV_ENTRIES.find((e) => e.type === "panel");
   const domainesId = panelDomaines && "panelId" in panelDomaines ? panelDomaines.panelId : "panel-domaines";
   const domainesOpen = openMenu === domainesId;
+  const ACC_ID = "panel-accompagnement";
+  const accOpen = openMenu === ACC_ID;
 
   return (
     <>
@@ -394,7 +398,8 @@ export function SiteHeader() {
                   );
                 }
 
-                // disclosure (Formations) : libellé LIEN + bouton flèche distinct.
+                // cartes (Accompagnement) : libellé LIEN (vers la première offre) +
+                // bouton flèche distinct qui ouvre le panneau de cartes rendu plus bas.
                 const id = entry.menuId;
                 const open = openMenu === id;
                 const active = activeHref === entry.href;
@@ -428,36 +433,6 @@ export function SiteHeader() {
                         {chevronPath()}
                       </svg>
                     </button>
-
-                    {/* Sous-menu compact « Formations » (le panneau Domaines est rendu
-                        pleine largeur sous la barre, plus bas). */}
-                    {entry.type === "disclosure" && (
-                      <ul
-                        id={id}
-                        className={`${styles.dropdown}${open ? ` ${styles.dropdownOpen}` : ""}`}
-                        onKeyDown={(e) => onMenuKeyDown(e, id)}
-                        onMouseEnter={() => openOnHover(id)}
-                        onMouseLeave={closeOnHover}
-                      >
-                        <li className={styles.dropAllItem}>
-                          <Link className={styles.dropLinkAll} href={entry.href} tabIndex={open ? 0 : -1}>
-                            Toutes les formations
-                          </Link>
-                        </li>
-                        {entry.items.map((it) => (
-                          <li key={it.href}>
-                            <Link
-                              className={styles.dropLink}
-                              href={it.href}
-                              tabIndex={open ? 0 : -1}
-                              aria-current={activeHref === "/formations" && pathname === it.href ? "page" : undefined}
-                            >
-                              {it.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                   </li>
                 );
               })}
@@ -469,9 +444,8 @@ export function SiteHeader() {
               il ne concurrence pas l'action principale. --- */}
           <div className={styles.actions}>
             {lienRecherche(styles.rechercheD)}
-            <a className={styles.espace} href={ESPACE_CLIENT.href}>
-              <Cadenas />
-              <span className={styles.espaceLabel}>{ESPACE_CLIENT.label}</span>
+            <a className={styles.espace} href={ESPACE_CLIENT.href} aria-label={ESPACE_CLIENT.label} title={ESPACE_CLIENT.label}>
+              <Cadenas taille={16} />
             </a>
             <Link className={styles.cta} href={CONTACT_HREF} data-track="cta_click" data-track-composant="header">
               Écrire au cabinet <span aria-hidden="true">→</span>
@@ -534,6 +508,30 @@ export function SiteHeader() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* --- Panneau « Accompagnement » : trois cartes côte à côte --- */}
+        <div
+          id={ACC_ID}
+          className={`${styles.panel}${accOpen ? ` ${styles.panelOpen}` : ""}`}
+          role="region"
+          aria-label="Accompagnement"
+          onMouseEnter={() => openOnHover(ACC_ID)}
+          onMouseLeave={closeOnHover}
+          onKeyDown={(e) => onMenuKeyDown(e, ACC_ID)}
+        >
+          <ul className={styles.accCartes}>
+            {ACCOMPAGNEMENT_CARTES.map((c) => (
+              <li key={c.href}>
+                <Link className={styles.accCarte} href={c.href} tabIndex={accOpen ? 0 : -1} aria-current={pathname === c.href ? "page" : undefined}>
+                  <span className={styles.accSurtitre}>{c.surtitre}</span>
+                  <span className={styles.accTitre}>{c.titre}</span>
+                  <span className={styles.accTexte}>{c.texte}</span>
+                  <span className={styles.accLien}>{c.lien} <span aria-hidden="true">→</span></span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </header>
 
@@ -618,38 +616,39 @@ function MobileMenu({
           </div>
         </li>
 
-        {/* FORMATIONS — libellé lien + bouton flèche (disclosure) */}
+        {/* ACCOMPAGNEMENT — libellé lien + bouton flèche ; les trois cartes en accordéon. */}
         <li className={styles.maccItem}>
           <div className={styles.mrow}>
             <Link
               className={styles.mlink}
-              href="/formations"
-              aria-current={activeHref === "/formations" ? "page" : undefined}
+              href={ACCOMPAGNEMENT_HREF}
+              aria-current={activeHref === ACCOMPAGNEMENT_HREF ? "page" : undefined}
               onClick={onClose}
             >
-              Formations
+              Accompagnement
             </Link>
             <button
               type="button"
               className={styles.mtoggle}
               aria-expanded={formOpen}
-              aria-controls="mobile-formations"
-              aria-label={`${formOpen ? "Fermer" : "Ouvrir"} la liste des formations`}
+              aria-controls="mobile-accompagnement"
+              aria-label={`${formOpen ? "Fermer" : "Ouvrir"} le sous-menu Accompagnement`}
               onClick={() => setFormOpen((o) => !o)}
             >
               <span className={styles.msign} aria-hidden="true">{formOpen ? "–" : "+"}</span>
             </button>
           </div>
-          <div id="mobile-formations" className={`${styles.macc}${formOpen ? ` ${styles.maccOpen}` : ""}`}>
-            {FORMATIONS_LINKS.map((it) => (
+          <div id="mobile-accompagnement" className={`${styles.macc}${formOpen ? ` ${styles.maccOpen}` : ""}`}>
+            {ACCOMPAGNEMENT_CARTES.map((c) => (
               <Link
-                className={styles.macclink}
-                href={it.href}
-                key={it.href}
-                aria-current={pathname === it.href ? "page" : undefined}
+                className={`${styles.macclink} ${styles.maccCarte}`}
+                href={c.href}
+                key={c.href}
+                aria-current={pathname === c.href ? "page" : undefined}
                 onClick={onClose}
               >
-                {it.label}
+                <span>{c.titre}</span>
+                <span className={styles.maccSous}>{c.lien}</span>
               </Link>
             ))}
           </div>
