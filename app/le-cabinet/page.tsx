@@ -382,8 +382,8 @@ export default function Page() {
               </h2>
               <p className={styles.lede}>
                 L&apos;expertise juridique reste au cœur de la mission. Le portail client en est le
-                prolongement : il réunit les documents, les échanges, les diligences accomplies et les
-                prochaines échéances, consultables dès l&apos;ouverture du dossier.
+                prolongement : il réunit les documents, les diligences accomplies, les prochaines
+                échéances et les honoraires, consultables dès l&apos;ouverture du dossier.
               </p>
               <p className={styles.portailNote}>
                 Le portail complète les échanges avec l&apos;avocat responsable du dossier ; il ne les

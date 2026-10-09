@@ -842,7 +842,7 @@ export function AccueilV4() {
             <div>
               <span className="eyebrow">Le suivi de votre dossier</span>
               <h3>Votre dossier accessible à tout moment.</h3>
-              <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les échanges, les échéances et l&rsquo;avancement de son dossier.</p>
+              <p>Chaque client dispose d&rsquo;un espace personnel réunissant les documents, les prochaines échéances, les démarches attendues de lui et l&rsquo;avancement de son dossier.</p>
             </div>
             <div className="portal-demo-frame">
               <ApercuPortail exemple="contentieux" />
