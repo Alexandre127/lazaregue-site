@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -371,6 +371,9 @@ const ACCUEIL_V4_OVERRIDES = `
 /* Mot tournant du hero. Index 0 = état FINAL « droit du numérique » : c'est lui
    qui est rendu actif au chargement (DOM/SEO/sans-JS). L'animation (JS) parcourt
    rapidement les états 1→8 puis s'arrête définitivement sur l'index 0. */
+/** Abonnement vide : `useSyncExternalStore` ne sert ici qu'à distinguer serveur et client. */
+const sansAbonnement = () => () => {};
+
 const ROTATING = [
   "droit du numérique",
   "droit de l’intelligence artificielle",
@@ -466,6 +469,8 @@ export function AccueilV4() {
   // Index du mot tournant du hero. Piloté par un ÉTAT React (et non par une
   // manipulation directe de classe) pour survivre aux re-rendus du composant.
   const [activeWord, setActiveWord] = useState(0);
+  // Faux au rendu serveur et pendant l'hydratation, vrai ensuite côté client.
+  const motsCharges = useSyncExternalStore(sansAbonnement, () => true, () => false);
 
   // Le canvas THREE n'est monté qu'au-dessus du seuil où le globe est visible
   // (851px), jamais sous 850px (le CSS y masque .hero-art).
@@ -573,8 +578,11 @@ export function AccueilV4() {
     cards[next]?.scrollIntoView({ inline: "start", block: "nearest" });
   };
 
-  // Interactions portées de la maquette (app.js), bornées à la racine.
+  // Titre tournant. Le HTML servi ne contient que l'état final (« droit du
+  // numérique ») : les autres variantes sont ajoutées après l'hydratation, juste
+  // avant l'animation, pour que le H1 lu par les moteurs reste propre.
   useEffect(() => {
+    if (!motsCharges) return;
     const root = rootRef.current;
     if (!root) return;
     const cleanups: (() => void)[] = [];
@@ -624,6 +632,15 @@ export function AccueilV4() {
         cleanups.push(() => clearInterval(iv));
       }
     }
+    return () => cleanups.forEach((fn) => fn());
+  }, [motsCharges]);
+
+  // Interactions portées de la maquette (app.js), bornées à la racine.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const cleanups: (() => void)[] = [];
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     /* ---- Commande de pause du hero : elle ne pilote plus le mot (animation
        courte et non bouclée) mais uniquement le globe THREE, via l'événement. ---- */
@@ -722,7 +739,7 @@ export function AccueilV4() {
                 <span aria-hidden="true">
                   <span className="hero-prefix">Votre cabinet<br />d&rsquo;avocats en</span>
                   <span className="rotating">
-                    {ROTATING.map((w, i) => (
+                    {(motsCharges ? ROTATING : ROTATING.slice(0, 1)).map((w, i) => (
                       <span key={w} className={i === activeWord ? "active" : ""}>{w}</span>
                     ))}
                   </span>
