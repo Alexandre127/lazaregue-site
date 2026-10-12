@@ -262,7 +262,7 @@ export default function Page() {
           <div className={styles.cases}>
             <div>
               <p className={styles.caseLabel}>Avis rapide</p>
-              <p>Une question sans document : « Puis-je faire ceci ? »</p>
+              <p>Une question, avec au plus un document de 5 pages : « Puis-je faire ceci ? »</p>
             </div>
             <div>
               <p className={styles.caseLabel}>Demande courante</p>

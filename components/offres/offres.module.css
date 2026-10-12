@@ -153,6 +153,10 @@
 .puces li::before { content: "•"; }
 .formule > .btn, .formule > .btnContour { margin-top: 28px; align-self: end; width: 100%; }
 .note { margin-top: 32px; padding: 20px 24px; background: var(--off); font-size: 16px; line-height: 1.6; color: var(--ink) !important; }
+/* Visuel de l'espace client (page DPO, sous le socle commun) : pleine largeur du contenu. */
+.visuel { margin: 40px 0 0; }
+.visuel img { display: block; width: 100%; height: auto; }
+
 /* Définitions et conditions sous la grille des abonnements. */
 .definitions { margin: 0 0 16px; display: grid; gap: 10px; }
 .definitions div { display: block; }

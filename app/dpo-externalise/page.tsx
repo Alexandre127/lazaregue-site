@@ -258,6 +258,17 @@ export default function Page() {
             ))}
           </div>
           <p className={styles.socle}><strong>Socle commun aux trois formules :</strong> informer et conseiller, contrôler le respect du RGPD, donner un avis sur les analyses d’impact et suivre leur réalisation, coopérer avec la CNIL, servir de point de contact. Modèle de registre et modèles de réponse aux demandes d’exercice des droits fournis.</p>
+          {/* Visuel de l'espace client (suivi de la mission). Hors du premier écran : chargement différé. */}
+          <figure className={styles.visuel}>
+            <Image
+              src="/images/espace-client-rgpd.webp"
+              alt="Espace client du cabinet : niveau de conformité RGPD, actions à mener, travaux réalisés et documents de conformité"
+              width={1440}
+              height={960}
+              loading="lazy"
+              sizes="(max-width: 1272px) 100vw, 1200px"
+            />
+          </figure>
           <p className={styles.note}>La formule est proposée après évaluation de votre situation. Les exemples ne constituent pas des critères automatiques d’éligibilité. Si vos activités évoluent ou si les moyens nécessaires dépassent le périmètre convenu, le cabinet définit avec vous une adaptation de la mission et de ses conditions financières avant les prestations supplémentaires. La mission doit toujours disposer de moyens suffisants.</p>
           <div className={styles.revision}>
             <h3>Un temps de référence, pas un plafond</h3>
