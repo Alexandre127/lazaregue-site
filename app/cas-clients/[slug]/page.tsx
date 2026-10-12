@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import styles from "../cas-clients.module.css";
 import { CaseSummaryBar, CaseFactsAside, CaseSection, CasePrevNext } from "../_components/case-parts";
 import CaseMobileNav from "../_components/CaseMobileNav";
+import SurLeMemeSujet from "@/components/sur-le-meme-sujet";
 import { CAS, getCas, caseLabel, DOM_META, ISSUE, CAS_BASE } from "../data/cas-clients";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
@@ -143,6 +144,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               ))}
             </ul>
           </CaseSection>
+
+          <SurLeMemeSujet rubrique="cas" domaines={cas.domaines} />
 
           <CasePrevNext prev={prev} next={next} />
         </article>

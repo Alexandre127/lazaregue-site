@@ -688,3 +688,12 @@
     display: none;
   }
 }
+
+/* Liens croisés « Sur le même sujet » */
+.memeSujet {
+  background: #fff;
+  padding: 8px 0 64px;
+}
+.memeSujet nav {
+  max-width: 760px;
+}

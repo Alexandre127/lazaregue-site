@@ -12,44 +12,37 @@
  * saisi : il est calculé à partir du nombre de mots (data/lecture.ts).
  */
 
+import { CLASSEMENT, estClassement, rubrique, type Classement } from "@/lib/domaines";
+
 export type QA = { q: string; a: string };
 
-/* Domaines de la rubrique : clé de filtre (/ressources?domaine=…) et libellé
-   court affiché en sur-titre et dans le bandeau défilant. */
-export type Dom = "fraude" | "rgpd" | "cyber" | "crim" | "ia" | "contrats" | "contenus" | "pi" | "ma";
+/* Domaine : pris dans le classement unique du site (lib/domaines.ts, lui-même
+   lu dans le menu). Clé de filtre (/ressources?domaine=…) ; le libellé court
+   s'affiche en sur-titre et dans le bandeau défilant. */
+export type Dom = Classement;
 
-export const DOMAINES: { key: Dom; label: string }[] = [
-  { key: "fraude", label: "Fraude bancaire" },
-  { key: "rgpd", label: "RGPD" },
-  { key: "cyber", label: "Cybersécurité" },
-  { key: "crim", label: "Cybercriminalité" },
-  { key: "ia", label: "IA" },
-  { key: "contrats", label: "Contrats IT" },
-  { key: "contenus", label: "E-réputation" },
-  { key: "pi", label: "Propriété intellectuelle" },
-  { key: "ma", label: "M&A tech" },
-];
+export const DOM_LABEL = Object.fromEntries(CLASSEMENT.map((d) => [d.cle, d.court])) as Record<Dom, string>;
 
-export const DOM_LABEL = Object.fromEntries(DOMAINES.map((d) => [d.key, d.label])) as Record<Dom, string>;
+export const estDomaine = estClassement;
 
-export function estDomaine(v: string | undefined): v is Dom {
-  return !!v && DOMAINES.some((d) => d.key === v);
-}
+/* Type d'un article (les outils n'en ont pas). */
+export type TypeArticle = "guide" | "analyse" | "modele" | "livre-blanc";
 
-/* Les trois familles du menu (components/header/nav-data.ts). */
-export type Famille =
-  | "Conformité et gouvernance"
-  | "Contrats et opérations numériques"
-  | "Contentieux et atteintes numériques";
+export const TYPE_LABEL: Record<TypeArticle, string> = {
+  guide: "Guide",
+  analyse: "Analyse de décision",
+  modele: "Modèle",
+  "livre-blanc": "Livre blanc",
+};
 
 export type Article = {
   title: string; // titre complet, utilisé en H1
   seoTitle: string; // balise title (60 caractères maximum conseillés)
   seoDescription: string; // meta description (155 caractères maximum conseillés)
   slug: string;
-  dom: Dom; // clé de filtre ; le libellé affiché en sur-titre est DOM_LABEL[dom]
-  famille: Famille;
-  type: string; // affiché en sur-titre après le domaine
+  domaine: Dom; // clé de filtre ; le libellé affiché en sur-titre est DOM_LABEL[domaine]
+  type?: TypeArticle; // articles seulement ; absent pour un outil
+  etiquette?: string; // libellé affiché à la place de celui du type (« Observatoire », « Cas pratique »…)
   chapo: string;
   miseAJour: string; // date ISO réelle ; "" = inconnue (rien ne s'affiche)
   auteur: string;
@@ -98,9 +91,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Votre banque refuse de rembourser après une fraude ? Ce qu'elle doit prouver, ce que vous pouvez exiger, et comment préparer votre demande.",
     slug: "fraude-bancaire-opposition-contestation-remboursement",
-    dom: "fraude",
-    famille: "Contentieux et atteintes numériques",
-    type: "Ressource",
+    domaine: "fraude",
+    type: "guide",
     chapo:
       "Vous avez été victime d'une fraude : un appel, un message, un site qui imitait celui que vous connaissiez, et de l'argent est parti de votre compte. Vous avez prévenu votre banque et demandé le remboursement. Elle a refusé.",
     miseAJour: "2026-09-01",
@@ -125,9 +117,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Faux conseiller bancaire, SMS frauduleux, spoofing : ce que les juges ont décidé sur le remboursement des victimes. Décisions résumées par le cabinet.",
     slug: "jurisprudence-faux-conseiller-bancaire",
-    dom: "fraude",
-    famille: "Contentieux et atteintes numériques",
-    type: "Ressource",
+    domaine: "fraude",
+    etiquette: "Observatoire",
     chapo: "",
     miseAJour: "2026-10-02",
     auteur: "Alexandre Lazarègue",
@@ -147,9 +138,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "OSINT, c'est quoi ? Définition de la recherche en sources ouvertes, valeur de preuve devant le juge, limites légales (RGPD, arrêt Ikea) et bons réflexes.",
     slug: "osint-definition-preuve",
-    dom: "crim",
-    famille: "Contentieux et atteintes numériques",
-    type: "Ressource",
+    domaine: "crim",
+    type: "guide",
     chapo:
       "L'OSINT, ou recherche en sources ouvertes, consiste à collecter des informations accessibles à tous puis à les recouper pour établir un fait.",
     miseAJour: "2026-10-09",
@@ -172,9 +162,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Faux avis, avis diffamatoire ou anonyme : les règles de Google, le signalement, le recours prévu par le DSA et l'action en justice, étape par étape.",
     slug: "supprimer-faux-avis-google",
-    dom: "contenus",
-    famille: "Contentieux et atteintes numériques",
-    type: "Guide",
+    domaine: "contenus",
+    type: "guide",
     chapo:
       "Un avis négatif ne peut être retiré au seul motif qu'il déplaît. Il peut l'être lorsqu'il est faux, dénigrant, diffamatoire ou injurieux, ou lorsqu'il divulgue des informations protégées. Google n'arbitre pas les désaccords entre un établissement et ses clients ; il retire, en revanche, les contenus contraires à ses règles ou à la loi. Le règlement européen sur les services numériques (DSA) et le droit français offrent plusieurs voies pour l'y contraindre. Leur choix dépend de deux questions : qui est visé, et qui a écrit l'avis.",
     miseAJour: "2026-10-09",
@@ -194,9 +183,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Six questions pour savoir si un avis Google peut être retiré, par quelle voie et dans quel délai, avec les décisions de justice comparables.",
     slug: "diagnostic-avis-google",
-    dom: "contenus",
-    famille: "Contentieux et atteintes numériques",
-    type: "Outil",
+    domaine: "contenus",
+    etiquette: "Diagnostic",
     chapo:
       "Six questions, deux minutes. Le résultat indique la qualification probable de l'avis, la voie adaptée et le délai qui vous reste pour agir.",
     miseAJour: "2026-10-09",
@@ -217,9 +205,9 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Commandes passées par des agents d'IA : qui est engagé, quelles CGV s'appliquent, quand exiger l'accord du client, quelles clauses ajouter. Le guide pratique.",
     slug: "agents-ia-ecommerce-cgv",
-    dom: "ia",
-    famille: "Conformité et gouvernance",
-    type: "Guide pratique",
+    domaine: "ia",
+    type: "guide",
+    etiquette: "Guide pratique",
     chapo:
       "Les agents d'intelligence artificielle commencent à rechercher, choisir, commander et payer en ligne pour le compte de leurs utilisateurs. Pour un site marchand, la question n'est plus de savoir si ces commandes arriveront, mais comment les accepter sans risque. Ce guide expose le droit applicable et les adaptations à prévoir.",
     miseAJour: "", // aucune date affichée (consigne du cabinet)
@@ -242,9 +230,9 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Une commande passée par l'agent IA d'une cliente tourne mal. Vente, CGV, information, option payante, rétractation, preuve : ce que risque le e-commerçant et comment s'en prémunir.",
     slug: "cas-pratique-ia-commande-erreur",
-    dom: "ia",
-    famille: "Conformité et gouvernance",
-    type: "Cas pratique",
+    domaine: "ia",
+    type: "guide", // provisoire : aucun des quatre types ne décrit un cas fictif (à valider)
+    etiquette: "Cas pratique",
     chapo:
       "Les agents d'intelligence artificielle commencent à acheter en ligne pour le compte de leurs utilisateurs. Pour une entreprise, la question n'est plus théorique : demain, une partie de vos commandes sera passée par des machines. Un cas suivi étape par étape montre où se situent vos risques, et comment les maîtriser.",
     miseAJour: "", // aucune date affichée (consigne du cabinet)
@@ -266,9 +254,8 @@ export const ARTICLES: Article[] = [
     seoDescription:
       "Faux conseiller bancaire : consentement, authentification forte, négligence grave et charge de la preuve. Critères de remboursement et démarches à engager.",
     slug: "faux-conseiller-bancaire-remboursement",
-    dom: "fraude",
-    famille: "Contentieux et atteintes numériques",
-    type: "Ressource",
+    domaine: "fraude",
+    type: "guide",
     chapo:
       "Lorsqu'un fraudeur obtient la validation d'un virement en se faisant passer pour un conseiller bancaire, le remboursement dépend notamment du consentement au paiement, de l'authentification et de l'éventuelle négligence grave du client.",
     miseAJour: "2026-09-12",
@@ -292,17 +279,17 @@ export const ARTICLES: Article[] = [
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais
    de lien (aucune 404). Le brouillon « Faux conseiller bancaire » s'y ajoute à
    l'affichage via ARTICLES (publie: false). */
-export const A_PARAITRE: { id: string; dom: Dom; titre: string }[] = [
-  { id: "nis2", dom: "cyber", titre: "NIS 2 : quelles entreprises sont concernées et quelles obligations anticiper ?" },
-  { id: "a28", dom: "rgpd", titre: "Article 28 du RGPD : quelles clauses prévoir avec un sous-traitant ?" },
-  { id: "rw", dom: "cyber", titre: "Ransomware (rançongiciel) : les décisions juridiques à prendre dans les premières 24 heures" },
-  { id: "gia", dom: "ia", titre: "Gouvernance IA : comment encadrer les usages dans l'entreprise ?" },
-  { id: "der", dom: "contenus", titre: "Déréférencement Google : dans quels cas demander la suppression d'un résultat ?" },
-  { id: "pme", dom: "rgpd", titre: "Mise en conformité RGPD : par où commencer dans une PME ?" },
-  { id: "mnt", dom: "contrats", titre: "Contrat de maintenance informatique : quelles clauses vérifier avant de signer ?" },
-  { id: "rec", dom: "contrats", titre: "Recette informatique : peut-on refuser un projet comportant des anomalies ?" },
-  { id: "pic", dom: "pi", titre: "Réclamation PicRights : faut-il payer et comment répondre ?" },
-  { id: "dd", dom: "ma", titre: "Due diligence technologique : que doit vérifier un acquéreur avant le closing ?" },
+export const A_PARAITRE: { id: string; domaine: Dom; titre: string }[] = [
+  { id: "nis2", domaine: "cyber", titre: "NIS 2 : quelles entreprises sont concernées et quelles obligations anticiper ?" },
+  { id: "a28", domaine: "rgpd", titre: "Article 28 du RGPD : quelles clauses prévoir avec un sous-traitant ?" },
+  { id: "rw", domaine: "cyber", titre: "Ransomware (rançongiciel) : les décisions juridiques à prendre dans les premières 24 heures" },
+  { id: "gia", domaine: "ia", titre: "Gouvernance IA : comment encadrer les usages dans l'entreprise ?" },
+  { id: "der", domaine: "contenus", titre: "Déréférencement Google : dans quels cas demander la suppression d'un résultat ?" },
+  { id: "pme", domaine: "rgpd", titre: "Mise en conformité RGPD : par où commencer dans une PME ?" },
+  { id: "mnt", domaine: "contrats", titre: "Contrat de maintenance informatique : quelles clauses vérifier avant de signer ?" },
+  { id: "rec", domaine: "contrats", titre: "Recette informatique : peut-on refuser un projet comportant des anomalies ?" },
+  { id: "pic", domaine: "pi", titre: "Réclamation PicRights : faut-il payer et comment répondre ?" },
+  { id: "dd", domaine: "ma", titre: "Due diligence technologique : que doit vérifier un acquéreur avant le closing ?" },
 ];
 
 /* « Trouver par situation » : filtre de la liste (?domaine=) ou page de domaine réelle. */
@@ -319,6 +306,12 @@ export const SITUATIONS: { texte: string; href: string }[] = [
 ];
 
 export const chemin = (slug: string) => `/ressources/${slug}`;
+
+/** Libellé affiché après le domaine : étiquette propre, sinon type, sinon « Outil ». */
+export const libelleType = (a: Article) => a.etiquette ?? (a.type ? TYPE_LABEL[a.type] : "Outil");
+
+/** Outils et observatoires publiés (page /outils). */
+export const outils = () => publiees().filter((a) => a.outil);
 
 export function article(slug: string): Article {
   const a = ARTICLES.find((x) => x.slug === slug);
@@ -348,7 +341,7 @@ export function aLireAussi(slug: string): Article[] {
     .filter((x): x is Article => !!x && x.publie && x.slug !== slug);
   if (lies.length || a.exclureDesSuggestions) return lies.slice(0, 3);
   return publiees()
-    .filter((x) => x.slug !== slug && x.famille === a.famille && !x.exclureDesSuggestions)
+    .filter((x) => x.slug !== slug && rubrique(x.domaine).famille === rubrique(a.domaine).famille && !x.exclureDesSuggestions)
     .slice(0, 3);
 }
 

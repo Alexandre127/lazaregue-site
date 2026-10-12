@@ -44,6 +44,9 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // leur date réelle de mise à jour. Les pages de test (publie: false) et
   // /ressources/oeuvre-originale restent hors plan du site (noindex).
 
+  // Outils et observatoires (les outils eux-mêmes restent sous /ressources/)
+  { path: "/outils", priority: 0.7, frequence: "monthly" },
+
   // Cas clients — rubrique + huit dossiers
   { path: "/cas-clients", priority: 0.7, frequence: "monthly" },
   ...CAS.map((c) => ({ path: `/cas-clients/${c.slug}`, priority: 0.6, frequence: "yearly" as const })),

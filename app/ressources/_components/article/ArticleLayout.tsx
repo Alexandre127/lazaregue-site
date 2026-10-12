@@ -8,7 +8,8 @@ import ArticleMobileNav from "./ArticleMobileNav";
 import ArticleCollapsibles from "./ArticleCollapsibles";
 import ArticleFaq from "./ArticleFaq";
 import ReadingProgress from "./ReadingProgress";
-import { DOM_LABEL, aLireAussi, article, chemin, moisAnnee } from "../../data/articles";
+import SurLeMemeSujet from "@/components/sur-le-meme-sujet";
+import { DOM_LABEL, aLireAussi, article, chemin, libelleType, moisAnnee } from "../../data/articles";
 import { minutesDeLecture } from "../../data/lecture";
 
 export type TocItem = { id: string; label: string };
@@ -58,7 +59,8 @@ export default function ArticleLayout({
   titreSuggestions?: string;
 }) {
   const a = article(slug);
-  const domaine = DOM_LABEL[a.dom];
+  const domaine = DOM_LABEL[a.domaine];
+  const type = libelleType(a);
   const url = chemin(slug);
   const minutes = a.sansTempsDeLecture ? null : minutesDeLecture(slug);
   const maj = moisAnnee(a.miseAJour);
@@ -99,7 +101,7 @@ export default function ArticleLayout({
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
           { "@type": "ListItem", position: 2, name: "Ressources", item: `${URL_BASE}/ressources` },
-          { "@type": "ListItem", position: 3, name: domaine, item: `${URL_BASE}/ressources?domaine=${a.dom}` },
+          { "@type": "ListItem", position: 3, name: domaine, item: `${URL_BASE}/ressources?domaine=${a.domaine}` },
           { "@type": "ListItem", position: 4, name: a.title, item: `${URL_BASE}${url}` },
         ],
       },
@@ -125,9 +127,9 @@ export default function ArticleLayout({
         <div className={styles.col}>
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/ressources">Ressources</Link> <span aria-hidden="true">/</span>{" "}
-            <Link href={`/ressources?domaine=${a.dom}#liste`}>{domaine}</Link>
+            <Link href={`/ressources?domaine=${a.domaine}#liste`}>{domaine}</Link>
           </nav>
-          <p className={styles.kicker}>{domaine} · {a.type}</p>
+          <p className={styles.kicker}>{domaine} · {type}</p>
           <h1 id="h1">{a.title}</h1>
           {a.chapo ? <p className={styles.chapo}>{a.chapo}</p> : null}
           <div className={styles.byline}>
@@ -193,7 +195,7 @@ export default function ArticleLayout({
                 {suggestions.map((s) => (
                   <li key={s.slug}>
                     <Link href={chemin(s.slug)}>
-                      <span className={styles.lireDom}>{DOM_LABEL[s.dom]}{s.type !== "Ressource" ? ` · ${s.type}` : ""}</span>
+                      <span className={styles.lireDom}>{DOM_LABEL[s.domaine]} · {libelleType(s)}</span>
                       <span className={styles.lireTitre}>{s.title}</span>
                     </Link>
                   </li>
@@ -201,6 +203,8 @@ export default function ArticleLayout({
               </ul>
             </nav>
           ) : null}
+
+          <SurLeMemeSujet rubrique={a.outil ? "outil" : "article"} domaines={[a.domaine]} exclure={suggestions.map((x) => chemin(x.slug))} />
 
           {pied}
 

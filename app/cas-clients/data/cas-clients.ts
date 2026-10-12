@@ -5,22 +5,16 @@
  * (intitulés exacts du site) ; les routes sont les routes réelles.
  */
 
-export type DomKey = "cyber" | "contentieux" | "fraude" | "crypto" | "contenus" | "cybercrim" | "pi";
+import { CLASSEMENT, type Classement } from "@/lib/domaines";
 
-/** Intitulés EXACTS du site + route réelle de la page compétence (§ 4).
- *  `href: null` = pas de page compétence sur l'app Next : l'intitulé est alors
- *  rendu en texte simple (jamais en lien), pour ne produire aucune 404. */
-export const DOM_META: Record<DomKey, { label: string; href: string | null }> = {
-  cyber: { label: "Cybersécurité et NIS 2", href: "/nos-domaines/cybersecurite" },
-  contentieux: { label: "Contentieux informatique et commercial", href: "/nos-domaines/contentieux-informatique-commercial" },
-  fraude: { label: "Fraude bancaire et escroquerie", href: "/nos-domaines/escroquerie-fraude-bancaire" },
-  crypto: { label: "Crypto-actifs et blockchain", href: "/nos-domaines/crypto-actifs-blockchain" },
-  contenus: { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
-  cybercrim: { label: "Cybercriminalité et cyberattaques", href: "/nos-domaines/cybercriminalite" },
-  // Pas de page compétence sur l'app Next pour la PI (la page PicRights/AFP est
-  // portée par le SPA du domaine principal) : intitulé affiché sans lien.
-  pi: { label: "Propriété intellectuelle — photographies", href: null },
-};
+/* Domaines : classement unique du site (lib/domaines.ts, lu dans le menu).
+   `domaines[0]` est le domaine principal du cas. `href: null` = thème sans page
+   de domaine : l'intitulé est rendu en texte simple, jamais en lien. */
+export type DomKey = Classement;
+
+export const DOM_META = Object.fromEntries(
+  CLASSEMENT.map((d) => [d.cle, { label: d.titre, href: d.href }]),
+) as Record<DomKey, { label: string; href: string | null }>;
 
 export const ISSUE = "Dossier clos — issue favorable";
 
@@ -263,13 +257,9 @@ export const CAS: Cas[] = [
 export const FILTER_ORDER: DomKey[] = ["contentieux", "fraude", "contenus", "cyber", "pi", "crypto"];
 
 /** Domaines du site SANS cas publié — calculés depuis la collection (§ 4). */
-const AUTRES_SITE = [
-  { label: "RGPD et données personnelles", href: "/nos-domaines/rgpd-donnees-personnelles" },
-  { label: "Intelligence artificielle et AI Act", href: "/nos-domaines/avocat-intelligence-artificielle" },
-  { label: "Contrats informatiques", href: "/nos-domaines/contrats-informatiques" },
-  { label: "M&A tech et due diligence", href: "/nos-domaines/ma-tech" },
-];
-export const ALSO_DOMAINES = AUTRES_SITE; // aucun n'apparaît dans CAS → liste stable
+export const ALSO_DOMAINES = CLASSEMENT.filter(
+  (d) => d.href && !CAS.some((c) => c.domaines.includes(d.cle)),
+).map((d) => ({ label: d.titre, href: d.href as string }));
 
 export const getCas = (slug: string) => CAS.find((c) => c.slug === slug);
 export const caseLabel = (c: Cas) => `Cas client ${c.numero} · ${c.domaines.map((d) => DOM_META[d].label).join(" · ")}`;

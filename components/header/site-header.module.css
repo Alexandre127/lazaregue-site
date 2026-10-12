@@ -679,6 +679,12 @@
     color: #fff;
     text-decoration: none;
   }
+  /* Carte d'accordéon (titre + ligne de description) : alignée à gauche. */
+  .macclink.maccCarte {
+    align-items: flex-start;
+    justify-content: center;
+    padding-block: 9px;
+  }
   .mcta {
     display: flex;
     justify-content: center;

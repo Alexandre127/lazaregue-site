@@ -35,7 +35,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   const a = ARTICLES.find((x) => x.slug === slug);
   if (!a) return new Response("Introuvable", { status: 404 });
 
-  const surtitre = DOM_LABEL[a.dom].toUpperCase();
+  const surtitre = DOM_LABEL[a.domaine].toUpperCase();
   const titre = a.title.toUpperCase();
   const [bebas, mono] = await Promise.all([police("Bebas+Neue", titre), police("DM+Mono:wght@500", surtitre)]);
   const fonts = [

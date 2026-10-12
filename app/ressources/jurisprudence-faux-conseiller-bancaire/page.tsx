@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Observatoire from "./Observatoire";
+import SurLeMemeSujet from "@/components/sur-le-meme-sujet";
+import { surLeMemeSujet } from "@/lib/contenus";
+import { article } from "../data/articles";
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/ressources/jurisprudence-faux-conseiller-bancaire";
@@ -63,13 +66,15 @@ const JSON_LD = {
 };
 
 export default function Page() {
+  const domaines = [article("jurisprudence-faux-conseiller-bancaire").domaine];
+  const aDesLiens = surLeMemeSujet("outil", domaines).length > 0;
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
-      <Observatoire />
+      <Observatoire apres={aDesLiens ? <SurLeMemeSujet rubrique="outil" domaines={domaines} /> : undefined} />
     </>
   );
 }

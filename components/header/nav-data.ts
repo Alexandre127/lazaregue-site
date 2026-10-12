@@ -11,9 +11,27 @@
  * (M&A Tech compris) sont sous /nos-domaines/ ; plus aucune route /competences/.
  */
 
+/** Clé stable d'un domaine : sert au classement de TOUS les contenus du site
+ *  (articles, cas clients, outils) et au filtre `?domaine=`. */
+export type CleDomaine =
+  | "rgpd"
+  | "ia"
+  | "cyber"
+  | "contrats"
+  | "ma"
+  | "crypto"
+  | "contentieux"
+  | "crim"
+  | "fraude"
+  | "contenus";
+
 export type DomaineLink = {
+  /** Clé de classement (voir lib/domaines.ts). */
+  cle: CleDomaine;
   /** Libellé au long — sert d'ancre. */
   titre: string;
+  /** Libellé court : sur-titres et filtres des contenus, jamais une ancre de menu. */
+  court: string;
   /** Phrase de contexte verbale, verbatim. */
   contexte: string;
   /** Route réelle. */
@@ -35,17 +53,23 @@ export const FAMILLES: Famille[] = [
     intitule: "Conformité et gouvernance",
     domaines: [
       {
+        cle: "rgpd",
         titre: "RGPD et données personnelles",
+        court: "RGPD",
         contexte: "Se mettre en conformité et gérer une violation de données",
         href: "/nos-domaines/rgpd-donnees-personnelles",
       },
       {
+        cle: "ia",
         titre: "Intelligence artificielle et AI Act",
+        court: "IA",
         contexte: "Appliquer l'AI Act et encadrer les usages internes",
         href: "/nos-domaines/avocat-intelligence-artificielle",
       },
       {
+        cle: "cyber",
         titre: "Cybersécurité et NIS 2",
+        court: "Cybersécurité",
         contexte: "Prévenir les incidents et répondre aux obligations",
         href: "/nos-domaines/cybersecurite",
       },
@@ -55,17 +79,23 @@ export const FAMILLES: Famille[] = [
     intitule: "Contrats et opérations numériques",
     domaines: [
       {
+        cle: "contrats",
         titre: "Contrats informatiques",
+        court: "Contrats IT",
         contexte: "Négocier, sécuriser et faire exécuter un projet IT",
         href: "/nos-domaines/contrats-informatiques",
       },
       {
+        cle: "ma",
         titre: "M&A tech et due diligence",
+        court: "M&A tech",
         contexte: "Auditer le passif numérique avant une acquisition",
         href: "/nos-domaines/ma-tech",
       },
       {
+        cle: "crypto",
         titre: "Crypto-actifs et blockchain",
+        court: "Crypto-actifs",
         contexte: "Obtenir un agrément et sécuriser ses opérations",
         href: "/nos-domaines/crypto-actifs-blockchain",
       },
@@ -75,22 +105,30 @@ export const FAMILLES: Famille[] = [
     intitule: "Contentieux et atteintes numériques",
     domaines: [
       {
+        cle: "contentieux",
         titre: "Contentieux informatique et commercial",
+        court: "Contentieux IT",
         contexte: "Agir quand un projet IT échoue ou qu'un prestataire manque à ses obligations",
         href: "/nos-domaines/contentieux-informatique-commercial",
       },
       {
+        cle: "crim",
         titre: "Cybercriminalité et cyberattaques",
+        court: "Cybercriminalité",
         contexte: "Réagir à une intrusion et engager les responsabilités",
         href: "/nos-domaines/cybercriminalite",
       },
       {
+        cle: "fraude",
         titre: "Fraude bancaire et escroquerie",
+        court: "Fraude bancaire",
         contexte: "Obtenir le remboursement des sommes détournées",
         href: "/nos-domaines/escroquerie-fraude-bancaire",
       },
       {
+        cle: "contenus",
         titre: "Diffamation et retrait de contenus",
+        court: "E-réputation",
         contexte: "Faire retirer un contenu et identifier son auteur",
         href: "/nos-domaines/diffamation-retrait-contenus",
       },
@@ -102,17 +140,13 @@ export const FAMILLES: Famille[] = [
  * Entrées du menu, dans l'ordre. Trois formes possibles :
  *  - `panel` : entrée à panneau (libellé = lien vers la rubrique, chevron =
  *    bouton distinct). Seule DOMAINES en a un.
- *  - `cartes` : libellé = lien (vers la première offre), chevron = bouton
- *    distinct qui ouvre un panneau de cartes. Seule ACCOMPAGNEMENT en a un.
+ *  - `cartes` : libellé = lien (vers la première carte), chevron = bouton
+ *    distinct qui ouvre un panneau de cartes. ACCOMPAGNEMENT et RESSOURCES.
  *  - `link` : lien simple.
- *
- * ACTIONS COLLECTIVES et RESSOURCES sont des LIENS SIMPLES (et non des panneaux)
- * car, après retrait des entrées sans page, il ne restait qu'une carte
- * (PicRights) ou aucune (Ressources) — un panneau à zéro ou une carte n'a pas
- * de sens. Elles redeviendront des panneaux quand les pages existeront.
  */
-/** Carte d'un sous-menu à cartes (ACCOMPAGNEMENT) : sur-titre, titre, texte, lien de bas de carte. */
-export type CarteMenu = { surtitre: string; titre: string; texte: string; lien: string; href: string };
+/** Carte d'un sous-menu à cartes (ACCOMPAGNEMENT, RESSOURCES) : titre et ligne de
+ *  description ; sur-titre et lien de bas de carte facultatifs. */
+export type CarteMenu = { surtitre?: string; titre: string; texte: string; lien?: string; href: string };
 
 export type NavEntry =
   | { type: "panel"; label: string; href: string; panelId: string }
@@ -162,17 +196,39 @@ export const ACCOMPAGNEMENT_CARTES: CarteMenu[] = [
   },
 ];
 
-// Ordre du menu : Domaines · Accompagnement · Ressources · Cas clients · Le cabinet.
-// L'entrée « Contact » a été retirée (le bouton « Écrire au cabinet » y mène
-// déjà ; la page /contact et le lien du pied de page sont conservés).
+/**
+ * Sous-menu RESSOURCES (12 octobre 2026) : trois rubriques de contenus. « Cas
+ * clients » quitte le premier niveau et devient la deuxième carte (il reste
+ * dans le pied de page) ; /outils regroupe les outils et observatoires.
+ */
+export const RESSOURCES_HREF = "/ressources";
+export const OUTILS_HREF = "/outils";
+export const RESSOURCES_CARTES: CarteMenu[] = [
+  {
+    titre: "Guides et articles",
+    texte: "Les règles du droit du numérique, expliquées par le cabinet.",
+    href: "/ressources",
+  },
+  {
+    titre: "Cas clients",
+    texte: "Des dossiers traités par le cabinet, présentés de manière anonymisée.",
+    href: "/cas-clients",
+  },
+  {
+    titre: "Outils et observatoires",
+    texte: "Diagnostic d’un avis en ligne, observatoire de jurisprudence.",
+    href: OUTILS_HREF,
+  },
+];
+
+// Ordre du menu : Domaines · Accompagnement · Ressources · Le cabinet · Contact.
 // Source unique du header ET du tiroir mobile.
 export const NAV_ENTRIES: NavEntry[] = [
   { type: "panel", label: "DOMAINES", href: "/nos-domaines", panelId: "panel-domaines" },
   { type: "cartes", label: "ACCOMPAGNEMENT", href: ACCOMPAGNEMENT_HREF, menuId: "panel-accompagnement", cartes: ACCOMPAGNEMENT_CARTES },
-  // Aucune sous-page /ressources/* n'existe → lien direct vers l'index existant.
-  { type: "link", label: "RESSOURCES", href: "/ressources" },
-  { type: "link", label: "CAS CLIENTS", href: "/cas-clients" },
+  { type: "cartes", label: "RESSOURCES", href: RESSOURCES_HREF, menuId: "panel-ressources", cartes: RESSOURCES_CARTES },
   { type: "link", label: "LE CABINET", href: "/le-cabinet" },
+  { type: "link", label: "CONTACT", href: "/contact" },
 ];
 
 /** Pied du panneau DOMAINES. */

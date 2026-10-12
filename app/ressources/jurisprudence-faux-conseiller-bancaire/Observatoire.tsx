@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import styles from "./observatoire.module.css";
 import {
@@ -32,7 +32,7 @@ type SortKey = "favorables" | "recent";
 type IssueKey = "Toutes" | "Remboursement ordonné" | "Pas de remboursement";
 type ScFilter = "Toutes" | SituationKey;
 
-export default function Observatoire() {
+export default function Observatoire({ apres }: { apres?: ReactNode }) {
   const [sc, setSc] = useState<ScFilter>("Toutes");
   const [banque, setBanque] = useState<string>("Toutes");
   const [issue, setIssue] = useState<IssueKey>("Toutes");
@@ -467,6 +467,13 @@ export default function Observatoire() {
           </div>
         </div>
       </section>
+
+      {/* Liens croisés « Sur le même sujet » (rendu serveur, passé par la page) */}
+      {apres ? (
+        <section className={styles.memeSujet}>
+          <div className={styles.inner}>{apres}</div>
+        </section>
+      ) : null}
 
       {/* 07 — Barre de contact fixe */}
       <div className={styles.bar}>

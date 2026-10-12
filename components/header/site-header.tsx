@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Logo from "./logo";
 import {
-  ACCOMPAGNEMENT_CARTES,
-  ACCOMPAGNEMENT_HREF,
   ESPACE_CLIENT,
   FAMILLES,
   NAV_ENTRIES,
@@ -14,6 +12,11 @@ import {
   TEL,
 } from "./nav-data";
 import styles from "./site-header.module.css";
+
+/* Entrées à sous-menu de cartes (Accompagnement, Ressources). */
+const MENUS_CARTES = NAV_ENTRIES.filter((e) => e.type === "cartes");
+const SOUS_MENU: Record<string, string> = { ACCOMPAGNEMENT: "Accompagnement", RESSOURCES: "Ressources" };
+const enMinuscules = (label: string) => SOUS_MENU[label] ?? label.charAt(0) + label.slice(1).toLowerCase();
 
 /**
  * En-tête global du site.
@@ -23,7 +26,7 @@ import styles from "./site-header.module.css";
  * · Navigation complète dès 900px (ordinateur et tablette large) ; bouton « Menu »
  *   et menu plein écran uniquement SOUS 900px. La barre basse n'apparaît que
  *   sous 900px.
- * · « Domaines » et « Formations » suivent le modèle W3C « Disclosure Navigation
+ * · « Domaines », « Accompagnement » et « Ressources » suivent le modèle W3C « Disclosure Navigation
  *   Menu with Top-Level Links » : le libellé est un LIEN (vers /nos-domaines,
  *   /formations) et un bouton flèche distinct (aria-expanded / aria-controls)
  *   ouvre le sous-menu. Aucun role="menu".
@@ -311,11 +314,12 @@ export function SiteHeader() {
   };
 
   // Rubrique active : une page de domaine → Domaines ; les deux offres et
-  // /formations/* → Accompagnement ; etc.
+  // /formations/* → Accompagnement ; /ressources, /cas-clients, /outils → Ressources.
   const activeHref = (() => {
     if (!pathname) return null;
     if (pathname === "/nos-domaines" || pathname.startsWith("/nos-domaines/")) return "/nos-domaines";
-    if (ACCOMPAGNEMENT_CARTES.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"))) return ACCOMPAGNEMENT_HREF;
+    const menu = MENUS_CARTES.find((m) => m.cartes.some((c) => pathname === c.href || pathname.startsWith(c.href + "/")));
+    if (menu) return menu.href;
     const e = NAV_ENTRIES.find(
       (x) => x.type === "link" && (pathname === x.href || pathname.startsWith(x.href + "/")),
     );
@@ -325,8 +329,6 @@ export function SiteHeader() {
   const panelDomaines = NAV_ENTRIES.find((e) => e.type === "panel");
   const domainesId = panelDomaines && "panelId" in panelDomaines ? panelDomaines.panelId : "panel-domaines";
   const domainesOpen = openMenu === domainesId;
-  const ACC_ID = "panel-accompagnement";
-  const accOpen = openMenu === ACC_ID;
 
   return (
     <>
@@ -510,29 +512,35 @@ export function SiteHeader() {
           </div>
         </div>
 
-        {/* --- Panneau « Accompagnement » : trois cartes côte à côte --- */}
-        <div
-          id={ACC_ID}
-          className={`${styles.panel}${accOpen ? ` ${styles.panelOpen}` : ""}`}
-          role="region"
-          aria-label="Accompagnement"
-          onMouseEnter={() => openOnHover(ACC_ID)}
-          onMouseLeave={closeOnHover}
-          onKeyDown={(e) => onMenuKeyDown(e, ACC_ID)}
-        >
-          <ul className={styles.accCartes}>
-            {ACCOMPAGNEMENT_CARTES.map((c) => (
-              <li key={c.href}>
-                <Link className={styles.accCarte} href={c.href} tabIndex={accOpen ? 0 : -1} aria-current={pathname === c.href ? "page" : undefined}>
-                  <span className={styles.accSurtitre}>{c.surtitre}</span>
-                  <span className={styles.accTitre}>{c.titre}</span>
-                  <span className={styles.accTexte}>{c.texte}</span>
-                  <span className={styles.accLien}>{c.lien} <span aria-hidden="true">→</span></span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* --- Panneaux à cartes (Accompagnement, Ressources) : trois cartes côte à côte --- */}
+        {MENUS_CARTES.map((m) => {
+          const ouvert = openMenu === m.menuId;
+          return (
+            <div
+              key={m.menuId}
+              id={m.menuId}
+              className={`${styles.panel}${ouvert ? ` ${styles.panelOpen}` : ""}`}
+              role="region"
+              aria-label={enMinuscules(m.label)}
+              onMouseEnter={() => openOnHover(m.menuId)}
+              onMouseLeave={closeOnHover}
+              onKeyDown={(e) => onMenuKeyDown(e, m.menuId)}
+            >
+              <ul className={styles.accCartes}>
+                {m.cartes.map((c) => (
+                  <li key={c.href}>
+                    <Link className={styles.accCarte} href={c.href} tabIndex={ouvert ? 0 : -1} aria-current={pathname === c.href ? "page" : undefined}>
+                      {c.surtitre ? <span className={styles.accSurtitre}>{c.surtitre}</span> : null}
+                      <span className={styles.accTitre}>{c.titre}</span>
+                      <span className={styles.accTexte}>{c.texte}</span>
+                      {c.lien ? <span className={styles.accLien}>{c.lien} <span aria-hidden="true">→</span></span> : null}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </header>
 
       {/* --- Menu plein écran (sous 900px) --- */}
@@ -574,7 +582,7 @@ function MobileMenu({
   pathname: string;
 }) {
   const [domOpen, setDomOpen] = useState(false);
-  const [formOpen, setFormOpen] = useState(false);
+  const [ouverts, setOuverts] = useState<Record<string, boolean>>({});
 
   return (
     <nav
@@ -616,43 +624,50 @@ function MobileMenu({
           </div>
         </li>
 
-        {/* ACCOMPAGNEMENT — libellé lien + bouton flèche ; les trois cartes en accordéon. */}
-        <li className={styles.maccItem}>
-          <div className={styles.mrow}>
-            <Link
-              className={styles.mlink}
-              href={ACCOMPAGNEMENT_HREF}
-              aria-current={activeHref === ACCOMPAGNEMENT_HREF ? "page" : undefined}
-              onClick={onClose}
-            >
-              Accompagnement
-            </Link>
-            <button
-              type="button"
-              className={styles.mtoggle}
-              aria-expanded={formOpen}
-              aria-controls="mobile-accompagnement"
-              aria-label={`${formOpen ? "Fermer" : "Ouvrir"} le sous-menu Accompagnement`}
-              onClick={() => setFormOpen((o) => !o)}
-            >
-              <span className={styles.msign} aria-hidden="true">{formOpen ? "–" : "+"}</span>
-            </button>
-          </div>
-          <div id="mobile-accompagnement" className={`${styles.macc}${formOpen ? ` ${styles.maccOpen}` : ""}`}>
-            {ACCOMPAGNEMENT_CARTES.map((c) => (
-              <Link
-                className={`${styles.macclink} ${styles.maccCarte}`}
-                href={c.href}
-                key={c.href}
-                aria-current={pathname === c.href ? "page" : undefined}
-                onClick={onClose}
-              >
-                <span>{c.titre}</span>
-                <span className={styles.maccSous}>{c.lien}</span>
-              </Link>
-            ))}
-          </div>
-        </li>
+        {/* ACCOMPAGNEMENT, RESSOURCES — libellé lien + bouton distinct ; les cartes en accordéon. */}
+        {MENUS_CARTES.map((m) => {
+          const nom = enMinuscules(m.label);
+          const idListe = `mobile-${m.menuId}`;
+          const ouvert = !!ouverts[m.menuId];
+          return (
+            <li className={styles.maccItem} key={m.menuId}>
+              <div className={styles.mrow}>
+                <Link
+                  className={styles.mlink}
+                  href={m.href}
+                  aria-current={activeHref === m.href ? "page" : undefined}
+                  onClick={onClose}
+                >
+                  {nom}
+                </Link>
+                <button
+                  type="button"
+                  className={styles.mtoggle}
+                  aria-expanded={ouvert}
+                  aria-controls={idListe}
+                  aria-label={`${ouvert ? "Fermer" : "Ouvrir"} le sous-menu ${nom}`}
+                  onClick={() => setOuverts((o) => ({ ...o, [m.menuId]: !o[m.menuId] }))}
+                >
+                  <span className={styles.msign} aria-hidden="true">{ouvert ? "–" : "+"}</span>
+                </button>
+              </div>
+              <div id={idListe} className={`${styles.macc}${ouvert ? ` ${styles.maccOpen}` : ""}`}>
+                {m.cartes.map((c) => (
+                  <Link
+                    className={`${styles.macclink} ${styles.maccCarte}`}
+                    href={c.href}
+                    key={c.href}
+                    aria-current={pathname === c.href ? "page" : undefined}
+                    onClick={onClose}
+                  >
+                    <span>{c.titre}</span>
+                    <span className={styles.maccSous}>{c.lien ?? c.texte}</span>
+                  </Link>
+                ))}
+              </div>
+            </li>
+          );
+        })}
 
         {NAV_ENTRIES.filter((e) => e.type === "link").map((e) => (
           <li key={e.label}>

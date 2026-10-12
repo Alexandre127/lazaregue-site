@@ -1,0 +1,48 @@
+/* /outils — même registre que /ressources (hero clair, tokens de la charte,
+   angles droits). Mobile d'abord ; deux colonnes à partir de 900 px. */
+.page {
+  background: #fff;
+  color: var(--ink);
+  padding-top: var(--header-h);
+}
+.tete,
+.liste,
+.ailleurs {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin-mobile);
+}
+@media (min-width: 641px) {
+  .tete, .liste, .ailleurs { padding-inline: var(--page-margin); }
+}
+
+.tete { padding-top: 16px; padding-bottom: 24px; }
+.crumb { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.crumb a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-muted); text-decoration: none; }
+.crumb a:hover { color: var(--blue); text-decoration: underline; }
+.tete h1 { font-family: var(--ff-display); font-size: clamp(44px, 12vw, 62px); font-weight: 400; line-height: 1.02; margin: 4px 0 0; color: var(--ink); }
+.tete .chapo { font-size: 16px; line-height: 1.55; color: var(--text-muted); margin: 14px 0 0; max-width: 680px; }
+
+.liste ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.liste li { margin: 0; padding: 0; }
+.carte { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 22px 20px; border: 1px solid var(--bd); border-top: 3px solid var(--blue); background: #fff; color: var(--ink); text-decoration: none; }
+.carte:hover { background: var(--tint); }
+.carte:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.surtitre { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
+.titre { font-size: 20px; font-weight: 600; line-height: 1.25; color: var(--ink); }
+.texte { font-size: 16px; line-height: 1.5; color: var(--text-muted); }
+.lien { margin-top: auto; padding-top: 10px; font-size: 16px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--blue); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+
+.ailleurs { display: flex; flex-wrap: wrap; gap: 4px 28px; padding-top: 24px; padding-bottom: 40px; }
+.ailleurs a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 16px; font-weight: 500; color: var(--ink); text-decoration: underline; text-decoration-color: var(--blue); text-underline-offset: 5px; }
+.ailleurs a:hover { color: var(--blue); }
+
+@media (min-width: 900px) {
+  .tete { padding-top: 26px; padding-bottom: 36px; }
+  .tete h1 { font-size: clamp(72px, 8vw, 96px); }
+  .tete .chapo { font-size: 18px; margin-top: 20px; }
+  .liste ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .carte { padding: 30px 28px; }
+  .titre { font-size: 24px; }
+  .ailleurs { padding-top: 32px; padding-bottom: 64px; }
+}

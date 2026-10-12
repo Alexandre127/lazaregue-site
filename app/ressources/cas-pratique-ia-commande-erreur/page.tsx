@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./cas-pratique.module.css";
 import { DOM_LABEL, article, chemin } from "../data/articles";
 import { metaArticle } from "../data/meta";
+import SurLeMemeSujet from "@/components/sur-le-meme-sujet";
 
 /**
  * Cas pratique « Une IA commande sur votre site et se trompe » — CAS FICTIF à
@@ -71,7 +72,7 @@ export default function Page() {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Accueil", item: `${URL_BASE}/` },
           { "@type": "ListItem", position: 2, name: "Ressources", item: `${URL_BASE}/ressources` },
-          { "@type": "ListItem", position: 3, name: DOM_LABEL[a.dom], item: `${URL_BASE}/ressources?domaine=${a.dom}` },
+          { "@type": "ListItem", position: 3, name: DOM_LABEL[a.domaine], item: `${URL_BASE}/ressources?domaine=${a.domaine}` },
           { "@type": "ListItem", position: 4, name: a.title, item: `${URL_BASE}${chemin(SLUG)}` },
         ],
       },
@@ -87,7 +88,7 @@ export default function Page() {
         <div className={styles.wrap}>
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/ressources">Ressources</Link> <span aria-hidden="true">/</span>{" "}
-            <Link href={`/ressources?domaine=${a.dom}#liste`}>{DOM_LABEL[a.dom]}</Link> <span aria-hidden="true">/</span> Cas pratique
+            <Link href={`/ressources?domaine=${a.domaine}#liste`}>{DOM_LABEL[a.domaine]}</Link> <span aria-hidden="true">/</span> Cas pratique
           </nav>
           <p className={styles.kicker}>Cas pratique · Lazarègue Avocats</p>
           <h1 id="h1">
@@ -295,6 +296,8 @@ export default function Page() {
               <span className={styles.suiteTitre}>{GUIDE_TITRE}</span>
             </Link>
           </nav>
+
+          <SurLeMemeSujet rubrique="article" domaines={[a.domaine]} />
         </article>
       </div>
 
