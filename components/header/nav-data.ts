@@ -143,14 +143,14 @@ export const ACCOMPAGNEMENT_CARTES: CarteMenu[] = [
     surtitre: "Abonnement",
     titre: "Accompagnement continu",
     texte: "Votre direction juridique du numérique, toute l’année.",
-    lien: "À partir de 790 € HT / mois",
+    lien: "À partir de 950 € HT / mois",
     href: "/direction-juridique-externalisee",
   },
   {
     surtitre: "Fonction RGPD",
     titre: "DPO externalisé",
     texte: "Un avocat délégué à la protection des données, désigné auprès de la CNIL.",
-    lien: "À partir de 590 € HT / mois",
+    lien: "À partir de 690 € HT / mois",
     href: "/dpo-externalise",
   },
   {

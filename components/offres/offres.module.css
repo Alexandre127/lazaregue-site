@@ -191,6 +191,10 @@
 .qui p { margin-top: 18px; font-size: 18px; line-height: 1.65; color: var(--text-muted); max-width: 68ch; }
 .quiLiens { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 22px; }
 .quiLiens a { display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; }
+/* « Ce que le DPO ne fait pas » : quatre limites, croix en toutes lettres visuelles. */
+.limites { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+.limites li { display: flex; gap: 14px; align-items: baseline; background: #fff; border: 1px solid var(--bd); border-left: 4px solid var(--ink); padding: 20px 24px; font-size: 18px; font-weight: 500; line-height: 1.45; color: var(--ink); }
+.limites li::before { content: "✕"; flex: none; font-weight: 600; color: var(--ink); }
 .miseEnAvant { margin-top: 20px !important; font-size: 21px; font-weight: 600; line-height: 1.35; color: var(--blue3) !important; }
 .carteSombre { background: var(--navy); border-color: var(--navy); }
 .carteSombre h3 { color: #fff; }
@@ -246,7 +250,7 @@
 @media (max-width: 800px) {
   .sec { padding-block: 64px; }
   .hero { padding-bottom: 64px; }
-  .trois, .deux, .etapes, .equipe, .criteres { grid-template-columns: minmax(0, 1fr); }
+  .trois, .deux, .etapes, .equipe, .criteres, .limites { grid-template-columns: minmax(0, 1fr); }
   .trois, .etapes { gap: 28px; }
   .equipe { gap: 40px; }
   .cases, .diagnostics { grid-template-columns: minmax(0, 1fr); }
