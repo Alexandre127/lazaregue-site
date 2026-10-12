@@ -65,6 +65,7 @@ const MISSIONS = [
   { n: "02", titre: "Contrôler le respect du RGPD", texte: "Le cabinet contrôle le respect des règles de protection des données et des politiques internes, selon les risques identifiés. Ce suivi comprend des recommandations et l’examen de leur prise en compte. Il ne constitue pas une garantie de conformité ni un audit exhaustif permanent." },
   { n: "03", titre: "Conseiller sur les analyses d’impact", texte: "Lorsque cela est nécessaire, le cabinet donne un avis sur l’analyse d’impact relative à la protection des données, ou AIPD, et suit sa réalisation. Sa production intégrale ne fait pas automatiquement partie de l’abonnement." },
   { n: "04", titre: "Coopérer avec la CNIL", texte: "Le cabinet coopère avec la CNIL et assure le rôle de point de contact prévu pour le DPO. Cette mission se distingue de la défense de votre organisation dans une procédure contentieuse." },
+  { n: "05", titre: "Servir de point de contact", texte: "Le DPO est le point de contact des personnes concernées et de la CNIL." },
 ];
 
 const FORMULES = [
@@ -256,8 +257,13 @@ export default function Page() {
               </article>
             ))}
           </div>
-          <p className={styles.socle}><strong>Socle commun aux trois formules :</strong> informer et conseiller, contrôler le respect du RGPD, donner un avis sur les analyses d’impact et suivre leur réalisation, coopérer avec la CNIL.</p>
+          <p className={styles.socle}><strong>Socle commun aux trois formules :</strong> informer et conseiller, contrôler le respect du RGPD, donner un avis sur les analyses d’impact et suivre leur réalisation, coopérer avec la CNIL, servir de point de contact.</p>
           <p className={styles.note}>La formule est proposée après évaluation de votre situation. Les exemples ne constituent pas des critères automatiques d’éligibilité. Si vos activités évoluent ou si les moyens nécessaires dépassent le périmètre convenu, le cabinet définit avec vous une adaptation de la mission et de ses conditions financières avant les prestations supplémentaires. La mission doit toujours disposer de moyens suffisants.</p>
+          <div className={styles.revision}>
+            <h3>Un temps de référence, pas un plafond</h3>
+            <p>Chaque formule correspond à un temps de référence, précisé dans la lettre de mission. Ce temps n’est pas un plafond : l’article 38 du RGPD impose que le DPO dispose des ressources nécessaires à l’exercice de ses missions.</p>
+            <p><strong>Clause de révision.</strong> Si le temps consacré à la mission dépasse de plus de 30 % le temps de référence pendant trois mois consécutifs, le cabinet propose une formule adaptée. À défaut d’accord, la mission peut être résiliée avec un préavis de trois mois.</p>
+          </div>
         </div>
       </section>
 

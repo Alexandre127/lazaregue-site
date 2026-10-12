@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/components/offres/offres.module.css";
-import { MEMBRES } from "@/lib/equipe";
+import { AMIR_BARREAU, MEMBRES } from "@/lib/equipe";
+import { ApercuPortail } from "@/components/portail/apercu-portail";
 
 /**
  * Page d'offre « Direction juridique externalisée » (abonnement
@@ -65,7 +66,8 @@ type Formule = {
   relation: string;
   prix: string;
   promesse: string;
-  heures: string; // temps inclus chaque mois, décompté par tranches de 15 minutes
+  demandes: string; // demandes incluses chaque mois
+  exemple: string;
   delai: string; // délai de première réponse utile
   inclus: string[];
   bouton: string;
@@ -78,9 +80,10 @@ const FORMULES: Formule[] = [
     relation: "Votre avocat référent pour le numérique.",
     prix: "950",
     promesse: "Un interlocuteur qui connaît votre entreprise, sollicité dès qu’une question numérique se pose.",
-    heures: "3 heures incluses par mois",
+    demandes: "2 avis rapides + 1 demande courante par mois",
+    exemple: "Par exemple : la relecture d’un contrat SaaS et deux questions sur un projet IA.",
     delai: "Première réponse utile sous 3 jours ouvrés.",
-    inclus: ["Point de suivi quand vous le souhaitez", "Veille du cabinet", "Espace client", "Tarif préférentiel sur les missions"],
+    inclus: ["Point de suivi sur demande", "Veille du cabinet", "Espace client", "Tarif préférentiel sur les missions"],
     bouton: "Choisir Conseil",
   },
   {
@@ -89,9 +92,10 @@ const FORMULES: Formule[] = [
     relation: "Un accompagnement juridique régulier.",
     prix: "1 750",
     promesse: "Pour les entreprises dont les contrats, les données et les projets numériques suscitent des questions chaque mois, avec ou sans juriste interne.",
-    heures: "6 heures incluses par mois",
+    demandes: "2 avis rapides + 2 demandes courantes par mois",
+    exemple: "Par exemple : un contrat d’intégrateur, un DPA et deux questions sur un nouveau service.",
     delai: "Première réponse utile sous 2 jours ouvrés.",
-    inclus: ["Réunion trimestrielle de suivi", "Veille centrée sur votre activité", "Espace client et tarif préférentiel"],
+    inclus: ["Réunion trimestrielle de suivi", "Demandes traitées en priorité", "Veille centrée sur votre activité", "Espace client et tarif préférentiel"],
     bouton: "Choisir Business →",
     vedette: true,
   },
@@ -100,9 +104,10 @@ const FORMULES: Formule[] = [
     relation: "Un avocat intégré à vos projets.",
     prix: "3 500",
     promesse: "Votre avocat connaît l’entreprise en profondeur, suit ses projets de l’intérieur et participe aux arbitrages avant que la question juridique ne se pose.",
-    heures: "12 heures incluses par mois",
+    demandes: "4 avis rapides + 4 demandes courantes par mois",
+    exemple: "Par exemple : la revue des contrats d’un lancement, la gouvernance de l’IA et le suivi d’un prestataire.",
     delai: "Première réponse utile sous 1 jour ouvré.",
-    inclus: ["Avocat référent dédié", "Réunion mensuelle avec la direction", "Revue des contrats avant signature", "Report d’un mois des heures non utilisées", "Espace client et tarif préférentiel"],
+    inclus: ["Avocat référent dédié", "Réunion mensuelle avec la direction", "Revue des contrats avant signature", "Report d’un mois des demandes non utilisées", "Espace client et tarif préférentiel"],
     bouton: "Construire l’accompagnement",
   },
 ];
@@ -112,7 +117,7 @@ const FORMULES: Formule[] = [
 const AVOCATS = [
   { m: MEMBRES.alexandre, nom: "Alexandre Lazarègue", titre: "Avocat au Barreau de Paris" },
   { m: MEMBRES.sarah, nom: "Sarah Hinderer", titre: "Avocate aux barreaux de Paris et de Montréal" },
-  { m: MEMBRES.amir, nom: "Amir Ben Majed", titre: "Avocat partenaire au barreau d’Évry" },
+  { m: MEMBRES.amir, nom: "Amir Ben Majed", titre: AMIR_BARREAU }, // libellé centralisé (lib/equipe.ts)
 ];
 const TECHNIQUES = [
   { m: MEMBRES.khalid, nom: "Khalid Sookia", titre: "Consultant technique en cybersécurité" },
@@ -121,7 +126,7 @@ const TECHNIQUES = [
 
 const FAQ: { q: string; a: React.ReactNode }[] = [
   { q: "Quelle différence avec une consultation ponctuelle ?", a: "Votre avocat connaît déjà votre entreprise, ses contrats et ses projets. Vous le sollicitez sans devis préalable ni réexplication du contexte, pour un budget connu à l’avance." },
-  { q: "Les heures non utilisées sont-elles reportées ?", a: "Non, sauf en formule Stratégique, où elles peuvent être reportées d’un mois. Si vos besoins varient fortement, la formule est ajustée lors du point de suivi." },
+  { q: "Les demandes non utilisées sont-elles reportées ?", a: "Non, sauf en formule Stratégique, où elles peuvent être reportées d’un mois. Si vos besoins varient fortement, la formule est ajustée lors du point de suivi." },
   { q: "Les contentieux sont-ils compris ?", a: "Non, y compris les procédures de sanction devant la CNIL. Une procédure fait l’objet d’une mission distincte, au tarif préférentiel des abonnés, avec un devis préalable." },
   {
     q: "L’abonnement tient-il lieu de DPO ?",
@@ -244,7 +249,7 @@ export default function Page() {
             <li>
               <span className={styles.etapeN} aria-hidden="true">02</span>
               <strong>Le cabinet définit l’intervention.</strong>
-              <span>Votre avocat qualifie la question et vous indique le temps nécessaire, décompté par tranches de 15 minutes.</span>
+              <span>Votre avocat qualifie la demande et vous indique le travail nécessaire.</span>
             </li>
             <li>
               <span className={styles.etapeN} aria-hidden="true">03</span>
@@ -258,7 +263,7 @@ export default function Page() {
               <p>Une question sans document : « Puis-je faire ceci ? »</p>
             </div>
             <div>
-              <p className={styles.caseLabel}>Travail sur document</p>
+              <p className={styles.caseLabel}>Demande courante</p>
               <p>Un contrat SaaS ou un DPA à relire, une clause à réécrire.</p>
             </div>
             <div className={styles.caseGrise}>
@@ -328,8 +333,8 @@ export default function Page() {
                 </p>
                 <p className={styles.promesse}>{f.promesse}</p>
                 <p className={styles.demandes}>
-                  <strong>{f.heures}.</strong>
-                  Décomptées par tranches de 15 minutes. {f.delai}
+                  <strong>{f.demandes}.</strong>
+                  {f.exemple} {f.delai}
                 </p>
                 <ul className={styles.inclus}>
                   {f.inclus.map((i) => (
@@ -340,7 +345,7 @@ export default function Page() {
               </article>
             ))}
           </div>
-          <p className={styles.note}>Engagement de 12 mois, avec une sortie sans frais au terme du 3e mois. Heures non reportables, sauf report d’un mois en formule Stratégique. Hors forfait : 300 € HT de l’heure pour les abonnés. Le temps des experts techniques n’est pas inclus. Chaque facture détaille les interventions : date, objet, durée.</p>
+          <p className={styles.note}>Engagement de 12 mois, avec une sortie sans frais au terme du 3e mois. Demandes non reportables, sauf report d’un mois en formule Stratégique. Hors forfait : 300 € HT de l’heure pour les abonnés. Le temps des experts techniques n’est pas inclus. Chaque facture détaille les interventions : date, objet, durée.</p>
         </div>
       </section>
 
@@ -362,23 +367,16 @@ export default function Page() {
             <p className={styles.surtitre}>06 — Votre espace client</p>
             <h2 className={styles.h2} id="t-espace">Le droit de l’entreprise, au même endroit.</h2>
             <ul className={styles.points}>
-              <li><strong>Poser une question</strong><span>Transmettez une question ou un contrat à examiner.</span></li>
+              <li><strong>Déposer une demande</strong><span>Transmettez une question ou un contrat à examiner.</span></li>
               <li><strong>Suivre les interventions</strong><span>Retrouvez vos dossiers, leur avancement et les prochaines étapes.</span></li>
               <li><strong>Conserver vos documents</strong><span>Accédez aux analyses, contrats et documents remis par le cabinet.</span></li>
             </ul>
           </div>
           <div>
-            {/* Aperçu d'interface factice, non interactif : masqué aux lecteurs d'écran. */}
-            <div className={styles.apercu} aria-hidden="true">
-              <div className={styles.apercuTete}>Espace client · Conseil · octobre</div>
-              <div className={styles.apercuBarre}>
-                <span className={styles.apercuCompteur}>Heures du mois <b>1 h 45 / 3 h</b></span>
-                <span className={styles.apercuBouton}>+ Nouvelle question</span>
-              </div>
-              <div className={styles.apercuLigne}><span>Contrat SaaS fournisseur</span><span className={styles.apercuEtat}>Analyse en cours</span></div>
-              <div className={styles.apercuLigne}><span>Usage de l’IA par les équipes</span><span className={styles.apercuEtat}>Réponse disponible</span></div>
-              <div className={styles.apercuLigne}><span>Prochain point avec votre avocat</span><span className={styles.apercuEtat}>22 octobre</span></div>
-            </div>
+            {/* Aperçu FIDÈLE au portail réel (même composant que la page « Le cabinet ») :
+                vue d'ensemble, documents, à faire, honoraires. Aucun compteur ni
+                bouton que le portail n'offre pas. Décoratif (aria-hidden). */}
+            <ApercuPortail exemple="conseil" />
             <p className={styles.legende}>Aperçu illustratif</p>
           </div>
         </div>
