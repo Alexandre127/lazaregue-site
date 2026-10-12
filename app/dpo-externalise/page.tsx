@@ -142,6 +142,7 @@ const EXEMPLES = [
 export default function Page() {
   const alexandre = MEMBRES.alexandre;
   const sarah = MEMBRES.sarah;
+  const khalid = MEMBRES.khalid;
   return (
     <main className={styles.page} id="contenu">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
@@ -232,10 +233,19 @@ export default function Page() {
               </div>
               <div>
                 <h3>Sarah Hinderer, {sarah.statut.charAt(0).toLowerCase() + sarah.statut.slice(1)}</h3>
+                <p>Inscrite à deux barreaux, de part et d’autre de l’Atlantique, elle accompagne les entreprises sur la protection des données personnelles, de la cartographie des traitements jusqu’à la due diligence. Elle traite le RGPD comme un système de preuve. Elle co-anime la formation « RGPD et DPO » du cabinet et travaille en français comme en anglais.</p>
+              </div>
+            </div>
+            <div className={styles.qui}>
+              <div className={styles.quiPhoto}>
+                <Image src={khalid.photo} alt="Portrait de Khalid Sookia" fill sizes="180px" style={{ objectFit: "cover", objectPosition: khalid.position ?? "center" }} />
+              </div>
+              <div>
+                <h3>Khalid Sookia, {khalid.statut.charAt(0).toLowerCase() + khalid.statut.slice(1)}</h3>
+                <p>Il intervient lors des incidents de sécurité : il établit l’état réel du système et sécurise les traces, ce qui déterminera ce qui peut être démontré.</p>
               </div>
             </div>
           </div>
-          <p className={styles.quiNote}>Lors des incidents de sécurité, avec Khalid Sookia, consultant technique en cybersécurité.</p>
           <div className={styles.quiLiens}>
             <Link className={styles.lien} href="/le-cabinet">Découvrir l’équipe du cabinet</Link>
             <a className={styles.lien} href={LINKEDIN} target="_blank" rel="noopener">Profil LinkedIn d’Alexandre Lazarègue</a>
