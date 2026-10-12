@@ -23,7 +23,7 @@ import {
 
 const TITLE = "Cabinet d'avocats en droit du numérique à Paris | Lazarègue";
 const DESCRIPTION =
-  "Trois avocats et deux intervenants techniques (cybersécurité, IA) réunis depuis 2016 à Paris 17e, pour les PME et ETI. Intervention partout en France.";
+  "Cabinet fondé en 2016 à Paris 17e : trois avocats et deux intervenants techniques (cybersécurité, IA) pour les PME et ETI. Intervention partout en France.";
 
 export const metadata: Metadata = {
   title: TITLE,
