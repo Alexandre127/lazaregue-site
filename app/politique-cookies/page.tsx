@@ -3,7 +3,7 @@ import PagesLegales from "@/components/legal/pages-legales";
 
 const TITLE = "Politique de cookies | Lazarègue Avocats";
 const DESCRIPTION =
-  "Cookies et traceurs du site Lazarègue Avocats : cookie de consentement, mesure d'audience sans cookie (Vercel), et outils soumis à votre accord (Google Analytics, Microsoft Clarity, suivi HubSpot). Finalités, durées et retrait du consentement.";
+  "Cookies et traceurs du site Lazarègue Avocats : consentement, mesure d'audience sans cookie et outils soumis à votre accord. Finalités, durées, retrait.";
 
 export const metadata: Metadata = {
   title: TITLE,

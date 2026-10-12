@@ -7,7 +7,7 @@ export const AVOCATS: Formation = {
 
   title: "Formation IA pour les avocats : l’Avocat augmenté | Lazarègue Avocats",
   metaDescription:
-    "Formation d’une journée pour les avocats et juristes : l’IA comme environnement de travail, de la prospection à la décision de justice. Aucun prérequis technique, 10 participants au plus.",
+    "Formation d’une journée pour avocats et juristes : l’IA comme environnement de travail, de la prospection à la décision de justice. Sans prérequis technique.",
 
   h1: { avant: "Formation IA pour les avocats : ", accent: "l’Avocat augmenté" },
   accroche: "L’IA ne rend pas un cabinet plus productif. Son organisation, si.",

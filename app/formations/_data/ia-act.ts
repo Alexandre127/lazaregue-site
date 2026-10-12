@@ -7,7 +7,7 @@ export const IA_ACT: Formation = {
 
   title: "Formation IA Act pour les entreprises | Lazarègue Avocats",
   metaDescription:
-    "Formation d’une journée au règlement européen sur l’IA (IA Act) : usages interdits, systèmes à haut risque, obligations par rôle. Animée par un avocat et une experte technique.",
+    "Formation d’une journée à l’IA Act : usages interdits, systèmes à haut risque, obligations par rôle. Animée par un avocat et une experte technique.",
 
   h1: { avant: "Formation IA Act ", accent: "pour les entreprises" },
   // TODO (cabinet) : vérifier que l'accroche article 4 reste exacte après le

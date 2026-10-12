@@ -17,7 +17,7 @@ const PATH = "/direction-juridique-externalisee";
 const CONTACT = "/contact";
 const TITLE = "Direction juridique externalisée — avocat du numérique | Lazarègue Avocats";
 const DESCRIPTION =
-  "Abonnement juridique pour les entreprises : contrats informatiques, IA, données personnelles et litiges technologiques. Un avocat du numérique au quotidien, dès 950 € HT/mois.";
+  "Abonnement juridique pour les entreprises : contrats informatiques, IA, données personnelles, litiges technologiques. Un avocat du numérique dès 950 € HT/mois.";
 const IMAGE = { url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" };
 
 export const metadata: Metadata = {

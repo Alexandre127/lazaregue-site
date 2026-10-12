@@ -3,7 +3,7 @@ import PagesLegales from "@/components/legal/pages-legales";
 
 const TITLE = "Politique de confidentialité | Lazarègue Avocats";
 const DESCRIPTION =
-  "Traitement des données personnelles par le cabinet Lazarègue Avocats : finalités, bases légales, durées de conservation, destinataires, transferts hors UE et droits des personnes (RGPD).";
+  "Données personnelles traitées par Lazarègue Avocats : finalités, bases légales, durées de conservation, destinataires, transferts hors UE et droits (RGPD).";
 
 export const metadata: Metadata = {
   title: TITLE,

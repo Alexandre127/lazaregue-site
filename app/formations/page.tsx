@@ -13,7 +13,7 @@ import type { Formation } from "./_data/types";
 const PATH = "/formations";
 const TITLE = "Formations IA Act, RGPD et cybersécurité pour les entreprises | Lazarègue Avocats";
 const DESCRIPTION =
-  "Trois formations juridiques pour les entreprises — IA Act, RGPD et DPO, cybersécurité et cyberfraude — animées par un avocat et un expert technique. Une formation IA pour les avocats.";
+  "Trois formations pour les entreprises (IA Act, RGPD et DPO, cybersécurité) animées par un avocat et un expert technique, et une formation IA pour les avocats.";
 
 export const metadata: Metadata = {
   title: TITLE,

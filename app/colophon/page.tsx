@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 const TITLE = "Colophon — comment ce site est fait | Lazarègue Avocats";
 const DESCRIPTION =
-  "Technologies, hébergement, mesure d'audience, consentement, usage de l'intelligence artificielle, crédits et licences : l'inventaire du site du cabinet Lazarègue Avocats.";
+  "Technologies, hébergement, mesure d'audience, consentement, usage de l'IA, crédits et licences : l'inventaire du site du cabinet Lazarègue Avocats.";
 
 export const metadata: Metadata = {
   title: TITLE,
