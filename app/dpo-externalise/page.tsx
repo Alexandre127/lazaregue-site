@@ -141,6 +141,7 @@ const EXEMPLES = [
 
 export default function Page() {
   const alexandre = MEMBRES.alexandre;
+  const sarah = MEMBRES.sarah;
   return (
     <main className={styles.page} id="contenu">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
@@ -212,19 +213,32 @@ export default function Page() {
 
       {/* =========================== D — Qui intervient ===================== */}
       <section className={styles.sec} aria-labelledby="t-qui">
-        <div className={`${styles.wrap} ${styles.qui}`}>
-          <div className={styles.quiPhoto}>
-            <Image src={alexandre.photo} alt="Portrait d’Alexandre Lazarègue" fill sizes="180px" style={{ objectFit: "cover", objectPosition: alexandre.position ?? "center" }} />
-          </div>
-          <div>
-            <p className={styles.surtitre}>Qui intervient</p>
-            <h2 className={`${styles.h2} ${styles.h2large}`} id="t-qui">Alexandre Lazarègue, avocat au Barreau de Paris</h2>
-            <p>Master II en droit des nouvelles technologies (Université de Strasbourg) et diplôme en droit de la protection des données (Université Paris-Ouest Nanterre). Ancien consultant auprès de la CNDP du Maroc, l’autorité marocaine de protection des données.</p>
-            <p>Avec Me Sarah Hinderer, avocate aux barreaux de Paris et de Montréal, et, lors des incidents de sécurité, Khalid Sookia, consultant technique en cybersécurité.</p>
-            <div className={styles.quiLiens}>
-              <Link className={styles.lien} href="/le-cabinet">Découvrir l’équipe du cabinet</Link>
-              <a className={styles.lien} href={LINKEDIN} target="_blank" rel="noopener">Profil LinkedIn d’Alexandre Lazarègue</a>
+        <div className={styles.wrap}>
+          <p className={styles.surtitre}>Qui intervient</p>
+          <h2 className={`${styles.h2} ${styles.h2large}`} id="t-qui">Alexandre Lazarègue et Sarah Hinderer</h2>
+          <div className={styles.quiDeux}>
+            <div className={styles.qui}>
+              <div className={styles.quiPhoto}>
+                <Image src={alexandre.photo} alt="Portrait d’Alexandre Lazarègue" fill sizes="180px" style={{ objectFit: "cover", objectPosition: alexandre.position ?? "center" }} />
+              </div>
+              <div>
+                <h3>Alexandre Lazarègue, avocat au Barreau de Paris</h3>
+                <p>Master II en droit des nouvelles technologies (Université de Strasbourg) et diplôme en droit de la protection des données (Université Paris-Ouest Nanterre). Ancien consultant auprès de la CNDP du Maroc, l’autorité marocaine de protection des données.</p>
+              </div>
             </div>
+            <div className={styles.qui}>
+              <div className={styles.quiPhoto}>
+                <Image src={sarah.photo} alt="Portrait de Sarah Hinderer" fill sizes="180px" style={{ objectFit: "cover", objectPosition: sarah.position ?? "center" }} />
+              </div>
+              <div>
+                <h3>Sarah Hinderer, {sarah.statut.charAt(0).toLowerCase() + sarah.statut.slice(1)}</h3>
+              </div>
+            </div>
+          </div>
+          <p className={styles.quiNote}>Lors des incidents de sécurité, avec Khalid Sookia, consultant technique en cybersécurité.</p>
+          <div className={styles.quiLiens}>
+            <Link className={styles.lien} href="/le-cabinet">Découvrir l’équipe du cabinet</Link>
+            <a className={styles.lien} href={LINKEDIN} target="_blank" rel="noopener">Profil LinkedIn d’Alexandre Lazarègue</a>
           </div>
         </div>
       </section>

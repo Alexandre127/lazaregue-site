@@ -201,9 +201,12 @@
 .presentation p + p { margin-top: 20px; }
 .presentation p { font-size: 18px; line-height: 1.65; color: var(--text-muted); }
 .fort { color: var(--ink) !important; font-weight: 500; }
-.qui { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 48px; align-items: start; }
+.quiDeux { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; margin-top: 40px; }
+.qui { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 28px; align-items: start; }
+.qui h3 { margin: 0; font-family: var(--ff-body); font-size: 21px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+.quiNote { margin-top: 28px !important; font-size: 17px; line-height: 1.6; color: var(--text-muted) !important; }
 .quiPhoto { position: relative; width: 180px; height: 220px; overflow: hidden; background: var(--off); }
-.qui p { margin-top: 18px; font-size: 18px; line-height: 1.65; color: var(--text-muted); max-width: 68ch; }
+.qui p { margin-top: 12px; font-size: 16px; line-height: 1.65; color: var(--text-muted); max-width: 68ch; }
 .quiLiens { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 22px; }
 .quiLiens a { display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; font-weight: 600; }
 /* « Ce que le DPO ne fait pas » : quatre limites, croix en toutes lettres visuelles. */
@@ -277,7 +280,9 @@
   .cases > div + div, .diagnostics > div + div { border-left: 0; border-top: 1px solid var(--bd); }
   .tete { margin-bottom: 36px; }
   .encadre { margin-top: 40px; padding: 28px 24px; }
-  .qui { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .quiDeux { grid-template-columns: minmax(0, 1fr); }
+  .qui { grid-template-columns: 120px minmax(0, 1fr); gap: 20px; }
+  .quiPhoto { width: 120px; height: 150px; }
 }
 @media (max-width: 640px) {
   .wrap { padding-inline: var(--page-margin-mobile); }
