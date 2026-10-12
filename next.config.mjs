@@ -72,6 +72,21 @@ const LEGACY = [
   // --- Exception : lien entrant actif (legavox.fr, sos-justice.net) ---
   ["/litige-afp-picrights/courrier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
 
+  // --- Anciennes pages PicRights / AFP / Copytrack (encore les plus cliquées
+  //     dans la Search Console en oct. 2026, 404 depuis la bascule) ---
+  ["/picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/faut-il-payer-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/jurisprudence-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/picrights-proces", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/avis-sur-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights-afp", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights-afp/faut-il-payer", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights-afp/calcul-indemnites", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/copytrack", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+
+  // --- Ancienne page formation IA des avocats ---
+  ["/formation-ia-avocat", "/formations/ia-avocats"],
+
   // --- Anciennes adresses de la politique de cookies → page unique ---
   ["/politique-de-cookie", "/politique-cookies"],
   ["/politique-de-cookies-ue", "/politique-cookies"],

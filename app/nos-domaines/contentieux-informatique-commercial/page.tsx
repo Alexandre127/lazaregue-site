@@ -24,7 +24,7 @@ const R_RGPD = "/nos-domaines/rgpd-donnees-personnelles";
 /* SEO inchangé (H1, URL, meta). */
 const TITLE = "Avocat contentieux informatique et commercial à Paris";
 const DESCRIPTION =
-  "Avocats en contentieux informatique et commercial : projets IT défaillants, SaaS, infogérance, perte de données, expertise judiciaire et responsabilité.";
+  "Avocat en contentieux informatique : logiciel défaillant, SaaS, infogérance, perte de données. Expertise judiciaire, résiliation, indemnisation.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -18,7 +18,7 @@ import styles from "./nos-domaines.module.css";
 
 const TITLE = "Domaines d'intervention — Lazarègue Avocats";
 const DESCRIPTION =
-  "Les domaines d'intervention du cabinet Lazarègue Avocats en droit du numérique : conformité et risques, contrats et opérations, contentieux et atteintes.";
+  "Dix domaines du droit du numérique : RGPD, AI Act, cybersécurité, contrats IT, M&A tech, crypto, cybercriminalité, fraude bancaire, diffamation.";
 
 export const metadata: Metadata = {
   title: TITLE,

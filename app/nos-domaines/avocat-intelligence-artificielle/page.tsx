@@ -13,7 +13,7 @@ const PATH = "/nos-domaines/avocat-intelligence-artificielle";
 
 const TITLE = "Avocat IA à Paris – Conformité AI Act et gouvernance | Lazarègue Avocats";
 const DESCRIPTION =
-  "Audit AI Act, registre des systèmes, charte IA, contrats, gouvernance et défense en cas de contrôle. Accompagnement des entreprises à Paris et partout en France.";
+  "Avocat en intelligence artificielle à Paris : conformité AI Act, cartographie des systèmes d'IA, charte, contrats et gouvernance, avec une experte IA.";
 
 export const metadata: Metadata = {
   title: TITLE,

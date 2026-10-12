@@ -12,7 +12,7 @@ const TEL = "tel:+33181706200";
 
 const TITLE = "Avocat fraude bancaire — remboursement et recours | Lazarègue Avocats";
 const DESCRIPTION =
-  "Victime de phishing, spoofing, faux conseiller ou virement frauduleux ? Le cabinet examine les recours et le remboursement pouvant être demandé.";
+  "Faux conseiller, phishing, spoofing, virement frauduleux : un avocat en fraude bancaire examine vos recours contre la banque et le remboursement.";
 
 export const metadata: Metadata = {
   title: TITLE,

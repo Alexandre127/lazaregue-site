@@ -10,7 +10,7 @@ import { FAQ_ITEMS } from "./faq";
 const TITLE =
   "Avocat contrats informatiques et projets IT à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Avocat en contrats informatiques à Paris : négociation, audit et contentieux des projets logiciels, SaaS, cloud, maintenance et infogérance. PME, ETI, prestataires.";
+  "Avocat en contrats informatiques à Paris : rédaction et négociation des contrats SaaS, cloud, intégration, maintenance et infogérance.";
 
 export const metadata: Metadata = {
   title: TITLE,

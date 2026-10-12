@@ -9,7 +9,7 @@ import { AMIR_BARREAU } from "@/lib/equipe";
  */
 const TITLE = "Avocat droit du numérique à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Lazarègue Avocats accompagne les entreprises en droit du numérique : cybersécurité, intelligence artificielle, RGPD, contrats informatiques et plateformes. Cabinet à Paris.";
+  "Lazarègue Avocats, cabinet en droit du numérique à Paris depuis 2016 : cybersécurité, RGPD, IA, contrats IT et contentieux, avec des experts techniques.";
 
 export const metadata: Metadata = {
   title: TITLE,

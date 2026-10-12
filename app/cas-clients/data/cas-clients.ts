@@ -184,7 +184,7 @@ export const CAS: Cas[] = [
     domaines: ["pi"],
     titre: "Photographies utilisées sans autorisation : une entreprise conteste la réclamation reçue",
     seoTitle: "Photo utilisée sans autorisation : contester la réclamation",
-    metaDescription: "Une entreprise reçoit une demande d’indemnisation pour des photographies : preuve des droits, usages réels et calcul du montant sont vérifiés avant de répondre.",
+    metaDescription: "Réclamation PicRights, Copytrack ou d’une agence photo ? Titularité des droits, usages et montant vérifiés : ici, la réclamation a été abandonnée.",
     chapo: "Une entreprise avait reçu une demande d’indemnisation en raison de l’utilisation alléguée de plusieurs photographies protégées par le droit d’auteur.",
     resume: "Vérifier la preuve des droits, les usages réels et le calcul de l’indemnisation demandée.",
     client: "Entreprise",

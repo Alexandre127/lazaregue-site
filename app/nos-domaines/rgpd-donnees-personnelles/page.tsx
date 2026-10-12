@@ -15,7 +15,7 @@ const PATH = "/nos-domaines/rgpd-donnees-personnelles";
 
 const TITLE = "Avocat RGPD à Paris — Audit, conformité et CNIL";
 const DESCRIPTION =
-  "Avocats en RGPD et protection des données : audit, mise en conformité, contrats, violations de données et accompagnement CNIL des PME et ETI.";
+  "Avocat RGPD à Paris : audit, mise en conformité, registre, sous-traitance, violation de données et contrôle CNIL. Le RGPD, socle du cabinet depuis 2016.";
 
 export const metadata: Metadata = {
   title: TITLE,

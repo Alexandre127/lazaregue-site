@@ -25,7 +25,7 @@ const khalid = MEMBRES.khalid;
 /* Title, meta description, URL et H1 CONSERVÉS (SEO). */
 const TITLE = "Avocat crypto, blockchain et Web3 — MiCA et PSCA";
 const DESCRIPTION =
-  "Avocats en crypto-actifs, blockchain et Web3 : autorisation PSCA, conformité MiCA, contrats, smart contracts, tokenisation et contentieux d’actifs bloqués.";
+  "Avocat crypto et blockchain : agrément PSCA, conformité MiCA, smart contracts, tokenisation, contrats Web3 et contentieux d'actifs bloqués.";
 
 export const metadata: Metadata = {
   title: TITLE,

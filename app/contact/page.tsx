@@ -4,7 +4,7 @@ import ContactBody from "./_components/ContactBody";
 
 const TITLE = "Avocat droit du numérique Paris | Contact | Lazarègue Avocats";
 const DESCRIPTION =
-  "Cabinet d'avocats spécialisé en droit du numérique à Paris 17e. Litige numérique, conformité RGPD, fraude informatique. PME et ETI.";
+  "Lazarègue Avocats, 18 rue de Tilsitt, Paris 17e · 01 81 70 62 00. Cyberattaque, litige informatique, RGPD, IA, fraude : exposez votre situation.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -9,7 +9,7 @@ const PATH = "/nos-domaines/diffamation-retrait-contenus";
 
 const TITLE = "Avocat diffamation Paris | Retrait de contenus";
 const DESCRIPTION =
-  "Diffamation, faux avis, dénigrement ou refus de retrait : Lazarègue Avocats agit auprès des plateformes et contre les auteurs.";
+  "Avocat en diffamation et e-réputation : faux avis Google, dénigrement, contenus illicites. Retrait, déréférencement et action contre les auteurs.";
 
 export const metadata: Metadata = {
   title: TITLE,

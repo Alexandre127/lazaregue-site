@@ -8,7 +8,7 @@ const PATH = "/cas-clients";
 
 const TITLE = "Cas clients en droit du numérique | Lazarègue Avocats";
 const DESCRIPTION =
-  "Huit dossiers anonymisés : cyberattaque, virements frauduleux, déréférencement Google, usurpation d’identité, infogérance, piratage, photographies.";
+  "Huit dossiers réels, anonymisés : cyberattaque et responsabilité de l'infogérant, virements frauduleux, déréférencement Google, photos, avis Google.";
 
 export const metadata: Metadata = {
   title: TITLE,

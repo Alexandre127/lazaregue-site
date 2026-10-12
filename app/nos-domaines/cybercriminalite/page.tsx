@@ -23,7 +23,7 @@ const R_ESCRO = "/nos-domaines/escroquerie-fraude-bancaire";
 
 const TITLE = "Avocat en cybercriminalité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
-  "Intrusion, rançongiciel, exfiltration ou mise en cause : Lazarègue Avocats construit la plainte ou la défense pénale des entreprises.";
+  "Avocat en cybercriminalité à Paris : piratage, rançongiciel, usurpation d'identité, vol de données. Plainte, preuve numérique et défense pénale.";
 
 export const metadata: Metadata = {
   title: TITLE,
