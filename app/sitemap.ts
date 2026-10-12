@@ -18,7 +18,8 @@ import { chemin, publiees } from "@/app/ressources/data/articles";
 const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
   { path: "/", priority: 1, frequence: "monthly" },
 
-  // Pages de compétence — le cœur de l'offre
+  // Pages de compétence — le cœur de l'offre (rubrique + dix domaines)
+  { path: "/nos-domaines", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/rgpd-donnees-personnelles", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/cybersecurite", priority: 0.9, frequence: "monthly" },
   { path: "/nos-domaines/avocat-intelligence-artificielle", priority: 0.9, frequence: "monthly" },
