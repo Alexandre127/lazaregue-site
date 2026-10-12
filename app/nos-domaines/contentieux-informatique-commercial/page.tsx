@@ -120,11 +120,11 @@ const DEROULE: { n: string; t: string; p: string; tags?: string[]; dark?: boolea
   { n: "5", t: "Mise en œuvre", p: "En négociation, en expertise ou devant le juge.", tags: ["Mise en demeure", "Protocole transactionnel", "Assignation", "Conclusions", "Demande d’expertise", "Dires à l’expert"], dark: true },
 ];
 
-/* Intervenants (id="intervenants"). Barreau de Me Ben Majed : « Évry (Essonne) »,
+/* Intervenants (id="intervenants"). Barreau de Me Ben Majed : intitulé exact du site (AMIR_BARREAU),
    même formule que la page cybercriminalité. */
 const EQUIPE: { statut: string; nom: string; barreau: string; texte: string; photo: string; dark?: boolean }[] = [
   { statut: "Avocat", nom: "Me Alexandre Lazarègue", barreau: "Barreau de Paris — droit du numérique et contentieux", texte: "Définit la stratégie, organise la preuve et conduit la négociation ou la procédure.", photo: "/images/alexandre-pro.jpg" },
-  { statut: "Avocat", nom: "Me Amir Ben Majed", barreau: `${AMIR_BARREAU} (Essonne)`, texte: "Analyse contractuelle, chronologie du projet, mises en demeure, expertises et écritures.", photo: "/images/amir-pro.jpg" },
+  { statut: "Avocat", nom: "Me Amir Ben Majed", barreau: AMIR_BARREAU, texte: "Analyse contractuelle, chronologie du projet, mises en demeure, expertises et écritures.", photo: "/images/amir-pro.jpg" },
   { statut: "Consultant technique en cybersécurité", nom: "Khalid Sookia", barreau: "Systèmes d’information et cybersécurité", texte: "Examine journaux, configurations, sauvegardes, versions et conditions techniques de la réversibilité.", photo: "/images/khalid-pro.jpg", dark: true },
 ];
 

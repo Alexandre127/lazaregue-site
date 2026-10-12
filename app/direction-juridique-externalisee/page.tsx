@@ -74,6 +74,8 @@ type Formule = {
   vedette?: boolean;
 };
 
+const CHECK_UP = "Check-up juridique offert au démarrage : revue de vos contrats types et de vos principaux risques";
+
 const FORMULES: Formule[] = [
   {
     nom: "Conseil",
@@ -83,7 +85,7 @@ const FORMULES: Formule[] = [
     demandes: "2 avis rapides + 1 demande courante par mois",
     exemple: "Par exemple : la relecture d’un contrat SaaS et deux questions sur un projet IA.",
     delai: "Première réponse utile sous 3 jours ouvrés.",
-    inclus: ["Point de suivi sur demande", "Veille du cabinet", "Espace client", "Tarif préférentiel sur les missions"],
+    inclus: ["Entretien de cadrage d’une heure", "Point de suivi sur demande", "Veille du cabinet", "Espace client", "Tarif préférentiel sur les missions"],
     bouton: "Choisir Conseil",
   },
   {
@@ -92,10 +94,10 @@ const FORMULES: Formule[] = [
     relation: "Un accompagnement juridique régulier.",
     prix: "1 750",
     promesse: "Pour les entreprises dont les contrats, les données et les projets numériques suscitent des questions chaque mois, avec ou sans juriste interne.",
-    demandes: "2 avis rapides + 2 demandes courantes par mois",
+    demandes: "3 avis rapides + 2 demandes courantes par mois",
     exemple: "Par exemple : un contrat d’intégrateur, un DPA et deux questions sur un nouveau service.",
     delai: "Première réponse utile sous 2 jours ouvrés.",
-    inclus: ["Réunion trimestrielle de suivi", "Demandes traitées en priorité", "Veille centrée sur votre activité", "Espace client et tarif préférentiel"],
+    inclus: [CHECK_UP, "Réunion trimestrielle de suivi", "Demandes traitées en priorité", "Demandes reportables d’un mois", "Veille centrée sur votre activité", "Espace client et tarif préférentiel"],
     bouton: "Choisir Business →",
     vedette: true,
   },
@@ -104,10 +106,10 @@ const FORMULES: Formule[] = [
     relation: "Un avocat intégré à vos projets.",
     prix: "3 500",
     promesse: "Votre avocat connaît l’entreprise en profondeur, suit ses projets de l’intérieur et participe aux arbitrages avant que la question juridique ne se pose.",
-    demandes: "4 avis rapides + 4 demandes courantes par mois",
+    demandes: "5 avis rapides + 4 demandes courantes par mois",
     exemple: "Par exemple : la revue des contrats d’un lancement, la gouvernance de l’IA et le suivi d’un prestataire.",
     delai: "Première réponse utile sous 1 jour ouvré.",
-    inclus: ["Avocat référent dédié", "Réunion mensuelle avec la direction", "Revue des contrats avant signature", "Report d’un mois des demandes non utilisées", "Espace client et tarif préférentiel"],
+    inclus: [CHECK_UP, "Avocat référent et suppléant", "Comité mensuel d’une heure", "Tableau de suivi des risques mis à jour chaque trimestre", "Revue des contrats avant signature", "Demandes reportables d’un mois", "Espace client et tarif préférentiel"],
     bouton: "Construire l’accompagnement",
   },
 ];
@@ -126,7 +128,7 @@ const TECHNIQUES = [
 
 const FAQ: { q: string; a: React.ReactNode }[] = [
   { q: "Quelle différence avec une consultation ponctuelle ?", a: "Votre avocat connaît déjà votre entreprise, ses contrats et ses projets. Vous le sollicitez sans devis préalable ni réexplication du contexte, pour un budget connu à l’avance." },
-  { q: "Les demandes non utilisées sont-elles reportées ?", a: "Non, sauf en formule Stratégique, où elles peuvent être reportées d’un mois. Si vos besoins varient fortement, la formule est ajustée lors du point de suivi." },
+  { q: "Les demandes non utilisées sont-elles reportées ?", a: "Oui, d’un mois, en formules Business et Stratégique. Elles ne sont pas reportables en formule Conseil. Si vos besoins varient fortement, la formule est ajustée lors du point de suivi." },
   { q: "Les contentieux sont-ils compris ?", a: "Non, y compris les procédures de sanction devant la CNIL. Une procédure fait l’objet d’une mission distincte, au tarif préférentiel des abonnés, avec un devis préalable." },
   {
     q: "L’abonnement tient-il lieu de DPO ?",
@@ -345,7 +347,21 @@ export default function Page() {
               </article>
             ))}
           </div>
-          <p className={styles.note}>Engagement de 12 mois, avec une sortie sans frais au terme du 3e mois. Demandes non reportables, sauf report d’un mois en formule Stratégique. Hors forfait : 300 € HT de l’heure pour les abonnés. Le temps des experts techniques n’est pas inclus. Chaque facture détaille les interventions : date, objet, durée.</p>
+          <div className={styles.note}>
+            <dl className={styles.definitions}>
+              <div><dt>Avis rapide</dt><dd>réponse écrite à une question précise, sans lecture d’un document de plus de 5 pages.</dd></div>
+              <div><dt>Demande courante</dt><dd>relecture ou rédaction d’un document de 15 pages au plus, ou analyse d’une situation, avec réponse écrite.</dd></div>
+            </dl>
+            <ul className={styles.conditions}>
+              <li>Une demande courante non utilisée peut être remplacée par trois avis rapides dans le même mois.</li>
+              <li>Demandes reportables d’un mois en Business et Stratégique ; non reportables en Conseil.</li>
+              <li>Au-delà : devis préalable, au taux abonné de 300 € HT de l’heure.</li>
+              <li>Le taux abonné de 300 € HT de l’heure s’applique aussi à toutes vos autres missions facturées au temps passé.</li>
+              <li>Engagement de 12 mois, avec une sortie sans frais au terme du 3e mois.</li>
+              <li>Le temps des experts techniques n’est pas inclus.</li>
+              <li>Chaque facture détaille les interventions : date, objet, durée.</li>
+            </ul>
+          </div>
         </div>
       </section>
 

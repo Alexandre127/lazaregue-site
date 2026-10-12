@@ -25,9 +25,10 @@ export type Membre = {
 
 /**
  * Libellé centralisé du barreau de Me Amir Ben Majed. Me Ben Majed exerce comme
- * AVOCAT PARTENAIRE au barreau d'Évry (Essonne). Toute page, donnée structurée,
+ * AVOCAT PARTENAIRE au barreau d'Évry. Toute page, donnée structurée,
  * title ou description qui mentionne son barreau reprend cette constante : un
- * seul endroit à modifier. La variante « (Essonne) » se compose à partir d'ici.
+ * seul endroit à modifier. L'intitulé s'écrit EXACTEMENT ainsi partout, sans
+ * « (Essonne) » ni variante de casse (décision du cabinet, 12 octobre 2026).
  */
 export const AMIR_BARREAU = "Avocat partenaire au barreau d'Évry";
 
@@ -42,10 +43,10 @@ export const MEMBRES: Record<string, Membre> = {
   amir: {
     slug: "amir",
     nom: "Me Amir Ben Majed",
-    // Me Ben Majed est avocat PARTENAIRE au barreau d'Évry (Essonne), non à celui
+    // Me Ben Majed est avocat PARTENAIRE au barreau d'Évry, non à celui
     // de Paris. Libellé centralisé dans AMIR_BARREAU (ci-dessus) ; la reprise se
     // propage aux pages qui affichent ce membre (crypto-actifs, cybercriminalité…).
-    statut: `${AMIR_BARREAU} (Essonne)`,
+    statut: AMIR_BARREAU,
     avocat: true,
     photo: "/images/amir-pro.jpg",
   },

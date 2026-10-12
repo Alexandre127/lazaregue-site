@@ -26,7 +26,7 @@ Ces règles évitent que les divergences corrigées lors de l'uniformisation du 
 - Liens `/contact` **sans paramètre** (`?objet=…`, `&situation=…` interdits).
 - **Aucun engagement de délai** (« sous 24 h », « sous 48 h »…). Aucun chiffre/résultat inventé, aucune statistique décorative ; chiffres sourcés.
 - Références d'articles de loi **en petit ou en FAQ**, pas dans le corps. Toute décision de justice passe par `components/jurisprudence.tsx` (`verifiee:false` = non rendue).
-- Intitulés/personnes figés : Khalid Sookia = « Consultant technique en cybersécurité » ; Amir Ben Majed = barreau d'Évry (Essonne) ; Sarah Hinderer = barreaux de Paris et de Montréal ; Alexandre Lazarègue = barreau de Paris. Coordonnées : 18 rue de Tilsitt, 75017 Paris · 01 81 70 62 00 · contact@lazaregue-avocats.fr. Mention géo : « Paris · intervention partout en France ». Cible = entreprises ; seule la page fraude bancaire/escroquerie accueille aussi les particuliers.
+- Intitulés/personnes figés : Khalid Sookia = « Consultant technique en cybersécurité » ; Amir Ben Majed = exactement « Avocat partenaire au barreau d'Évry » (sans « (Essonne) », constante `AMIR_BARREAU`) ; Sarah Hinderer = barreaux de Paris et de Montréal ; Alexandre Lazarègue = barreau de Paris. Coordonnées : 18 rue de Tilsitt, 75017 Paris · 01 81 70 62 00 · contact@lazaregue-avocats.fr. Mention géo : « Paris · intervention partout en France ». Cible = entreprises ; seule la page fraude bancaire/escroquerie accueille aussi les particuliers.
 
 ## Structure / technique
 - `border-radius: 0` partout ; cibles 44×44px ; focus visible ; contraste AA ; **aucun débordement horizontal de 375 à 1920px** (à vérifier avant chaque mise en ligne).

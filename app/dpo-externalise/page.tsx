@@ -257,7 +257,7 @@ export default function Page() {
               </article>
             ))}
           </div>
-          <p className={styles.socle}><strong>Socle commun aux trois formules :</strong> informer et conseiller, contrôler le respect du RGPD, donner un avis sur les analyses d’impact et suivre leur réalisation, coopérer avec la CNIL, servir de point de contact.</p>
+          <p className={styles.socle}><strong>Socle commun aux trois formules :</strong> informer et conseiller, contrôler le respect du RGPD, donner un avis sur les analyses d’impact et suivre leur réalisation, coopérer avec la CNIL, servir de point de contact. Modèle de registre et modèles de réponse aux demandes d’exercice des droits fournis.</p>
           <p className={styles.note}>La formule est proposée après évaluation de votre situation. Les exemples ne constituent pas des critères automatiques d’éligibilité. Si vos activités évoluent ou si les moyens nécessaires dépassent le périmètre convenu, le cabinet définit avec vous une adaptation de la mission et de ses conditions financières avant les prestations supplémentaires. La mission doit toujours disposer de moyens suffisants.</p>
           <div className={styles.revision}>
             <h3>Un temps de référence, pas un plafond</h3>
@@ -297,6 +297,7 @@ export default function Page() {
             ))}
           </div>
           <div className={styles.suiteTexte}>
+            <p className={styles.fort}>Le diagnostic ciblé est ramené à 600 € HT en cas d’abonnement de douze mois.</p>
             <p>Ces diagnostics n’incluent pas, sauf accord spécifique, un audit technique de sécurité, un inventaire exhaustif de tous les traitements, la rédaction intégrale du registre ou des AIPD, ni la réalisation des corrections. Le devis précise également le calendrier et les limites d’analyse.</p>
             <p className={styles.fort}>Un diagnostic payant n’est pas systématique. Si votre registre, vos contrats, vos procédures ou vos rapports récents sont suffisamment exploitables pour préparer la prise de fonction, le cabinet peut s’appuyer sur ces éléments sans imposer un nouvel examen payant. Il est en revanche obligatoire lorsque l’entreprise ne dispose ni de registre ni de documentation.</p>
             <Link className={styles.btn} href={CONTACT}>Demander une proposition</Link>
