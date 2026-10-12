@@ -166,7 +166,7 @@ Exemple conforme : `app/cas-clients` (1200px, 36px, `clamp(56px,7vw,104px)`).
 - ⚠️ **`id="contenu"` non uniforme** : présent sur ~la moitié ; **absent** sur home (pas de `<main>`), IA, cybersécurité, NIS 2, contrats, œuvre-originale ; **variantes** `id="contenu-principal"` (rgpd) et `id="main"` (escroquerie). Le skip-link vise `#contenu` → cible manquante sur les pages sans cet id (a11y).
 - ⚠️ **Breadcrumb JSON-LD absent** sur home, nos-domaines (index), NIS 2, le-cabinet, contact, ressources (index), œuvre-originale, mentions, politique.
 - ⚠️ **FAQPage JSON-LD** présent (RGPD, IA, NIS 2, contrats, M&A, crypto, œuvre-originale) mais **absent alors qu'une FAQ visible existe** sur cybersécurité, contentieux, cybercriminalité, diffamation, escroquerie.
-- ⚠️ **Suffixe de marque des `<title>` non uniforme** : moitié « | Lazarègue Avocats », autres « | Lazarègue », « — Lazarègue Avocats », ou aucun (ma-tech, contentieux, crypto, diffamation, rgpd).
+- ⚠️ **Suffixe de marque des `<title>` non uniforme** : moitié « | Lazarègue Avocats », autres « | Lazarègue », « — Lazarègue Avocats », ou aucun (ma-tech, contentieux, crypto, diffamation, rgpd). **Règle (12/10/2026)** : suffixe « | Lazarègue Avocats » seulement si le titre complet reste sous 60 caractères ; au-delà, pas de suffixe.
 
 (Tableau H1/title/canonical/JSON-LD par page : voir le détail dans `ECARTS.md`.)
 
