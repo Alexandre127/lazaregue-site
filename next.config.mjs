@@ -87,6 +87,21 @@ const LEGACY = [
   // --- Ancienne page formation IA des avocats ---
   ["/formation-ia-avocat", "/formations/ia-avocats"],
 
+  // --- Audit SEO du 12 oct. 2026 : anciennes adresses encore en 404 avec des
+  //     liens entrants (Ahrefs) ou des impressions (Search Console) ---
+  ["/picrights-afp/proces", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/images-et-droit-dauteur-stop-aux-abus", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  // Propriété intellectuelle : pas de page dédiée → rubrique des domaines
+  ["/avocat-en-droit-du-numerique/avocat-specialiste-propriete-intellectuelle", "/nos-domaines"],
+  ["/avocat-en-droit-du-numerique/avocat-specialiste-propriete-intellectuelle/avocat-contrefacon", "/nos-domaines"],
+  ["/avocat-en-droit-du-numerique/avocat-propriete-intellectuelle", "/nos-domaines"],
+  ["/avocat-en-droit-du-numerique/avocat-propriete-intellectuelle/avocat-contrefacon", "/nos-domaines"],
+  // Page institutionnelle et deux tribunes ayant des liens entrants (exception
+  // à la règle d'en-tête, décidée par le cabinet) → Le cabinet
+  ["/qui-sommes-nous", "/le-cabinet"],
+  ["/danciens-employes-dhermes-juges-pour-trafic-de-contrefacon-du-celebre-sac-birkin", "/le-cabinet"],
+  ["/lapplication-stop-covid-est-protectrice-du-droit-des-donnees-personnelles", "/le-cabinet"],
+
   // --- Anciennes adresses de la politique de cookies → page unique ---
   ["/politique-de-cookie", "/politique-cookies"],
   ["/politique-de-cookies-ue", "/politique-cookies"],
