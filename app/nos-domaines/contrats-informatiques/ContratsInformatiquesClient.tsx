@@ -53,11 +53,8 @@ const ON_DARK = "var(--wh)";
 const ANCHOR_OFFSET = "calc(var(--header-h-compact) + 12px)";
 const HERO_TOP = "calc(var(--header-h) + 18px)";
 
-/* Parcours de contact réel. On transmet l’objet et, quand c’est utile, la
-   situation, selon la convention du site (`/contact?objet=…`). */
-const CONTACT = "/contact?objet=contrats-informatiques";
-const contactObjet = (situation?: string) =>
-  situation ? `${CONTACT}&situation=${situation}` : CONTACT;
+/* Parcours de contact réel : lien `/contact` sans paramètre (règle de la charte). */
+const CONTACT = "/contact";
 
 /* Route de la page contentieux (publiée). */
 const CONTENTIEUX = "/nos-domaines/contentieux-informatique-commercial";
@@ -730,7 +727,7 @@ export default function ContratsInformatiquesClient() {
                 Le cabinet audite, rédige et négocie les contrats informatiques des <strong>PME, ETI, éditeurs, intégrateurs et ESN</strong> : logiciels, SaaS, cloud, infogérance et projets de transformation numérique.
               </p>
               <div className="cx-hero-actions">
-                <Link href={contactObjet("audit")} className="cx-btn">
+                <Link href={CONTACT} className="cx-btn">
                   Faire auditer un contrat <span className="arrow" aria-hidden>→</span>
                 </Link>
                 <a className="cx-link" href="#clauses">Les cinq clauses décisives <span aria-hidden>↓</span></a>
@@ -805,7 +802,7 @@ export default function ContratsInformatiquesClient() {
             ))}
           </div>
           <div className="cx-services-cta">
-            <Link href={contactObjet("redaction")} className="cx-btn">
+            <Link href={CONTACT} className="cx-btn">
               Présenter votre projet <span className="arrow" aria-hidden>→</span>
             </Link>
           </div>
@@ -954,7 +951,7 @@ export default function ContratsInformatiquesClient() {
             </p>
           </div>
           <div className="cx-contact-action">
-            <Link href={contactObjet("audit")} className="cx-btn">
+            <Link href={CONTACT} className="cx-btn">
               Faire auditer un contrat <span className="arrow" aria-hidden>→</span>
             </Link>
           </div>

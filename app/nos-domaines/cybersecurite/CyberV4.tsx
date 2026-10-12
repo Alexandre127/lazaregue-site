@@ -24,7 +24,7 @@ import SituationTravail from "./SituationTravail";
    les réponses FAQ 6 et 7 de la version récente de la page. Aucun texte inventé.
    ========================================================================== */
 
-const CONTACT = "/contact?objet=cybersecurite";
+const CONTACT = "/contact";
 const TEL = "tel:+33181706200";
 
 const EXPOSITIONS = [
