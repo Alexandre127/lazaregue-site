@@ -20,6 +20,7 @@ const R_CYBER = "/nos-domaines/cybersecurite";
 const R_RGPD = "/nos-domaines/rgpd-donnees-personnelles";
 const R_CONTENTIEUX = "/nos-domaines/contentieux-informatique-commercial";
 const R_ESCRO = "/nos-domaines/escroquerie-fraude-bancaire";
+const R_OSINT = "/ressources/osint-definition-preuve";
 
 const TITLE = "Avocat en cybercriminalité à Paris | Lazarègue Avocats";
 const DESCRIPTION =
@@ -316,6 +317,7 @@ export default function Page() {
                 <article><h3><Link href={R_CONTENTIEUX}>Contentieux informatique →</Link></h3><p>{fr("Mise en cause du prestataire, expertise et responsabilité.")}</p></article>
                 <article><h3><Link href={R_ESCRO}>Escroquerie et fraude →</Link></h3><p>Virement frauduleux et recours des particuliers contre les banques.</p></article>
               </div>
+              <p className="bridge-line">À lire aussi&nbsp;: <Link href={R_OSINT}>OSINT&nbsp;: définition, valeur de preuve et cadre juridique</Link>.</p>
             </div>
           </section>
 

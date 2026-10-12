@@ -94,6 +94,8 @@ const REL = [
   { href: "/nos-domaines/contentieux-informatique-commercial", label: "Contentieux informatique et commercial" },
   { href: "/nos-domaines/cybersecurite", label: "Cybersécurité et NIS 2" },
   { href: "/formations/intelligence-artificielle-entreprise", label: "Formation IA en entreprise" },
+  { href: "/ressources/agents-ia-ecommerce-cgv", label: "Agents IA et e-commerce : adapter ses CGV" },
+  { href: "/ressources/cas-pratique-ia-commande-erreur", label: "Cas pratique : une IA commande et se trompe" },
 ];
 
 function Renvois({ s }: { s: Situation }) {
