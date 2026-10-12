@@ -7,7 +7,7 @@ export const RGPD: Formation = {
 
   title: "Formation RGPD et DPO pour les entreprises | Lazarègue Avocats",
   metaDescription:
-    "Formation d’une journée au RGPD et au rôle du DPO : statut et missions, sécurité, notification des violations en 72 h, documentation. Animée par un avocat et un consultant technique.",
+    "Formation d’une journée au RGPD et au rôle du DPO : missions, sécurité, violations de données, documentation. Animée par un avocat et un consultant technique.",
 
   h1: { avant: "Formation RGPD et DPO ", accent: "pour les entreprises" },
   accroche:

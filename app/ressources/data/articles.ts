@@ -228,7 +228,7 @@ export const ARTICLES: Article[] = [
     title: "Une IA commande sur votre site et se trompe : qui en supporte le risque ?",
     seoTitle: "IA qui commande sur un site e-commerce : qui supporte le risque ? Cas pratique",
     seoDescription:
-      "Une commande passée par l'agent IA d'une cliente tourne mal. Vente, CGV, information, option payante, rétractation, preuve : ce que risque le e-commerçant et comment s'en prémunir.",
+      "L'agent IA d'une cliente passe une commande qui tourne mal : vente, CGV, rétractation, preuve. Ce que risque le e-commerçant et comment s'en prémunir.",
     slug: "cas-pratique-ia-commande-erreur",
     domaine: "ia",
     type: "guide", // provisoire : aucun des quatre types ne décrit un cas fictif (à valider)

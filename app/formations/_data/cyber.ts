@@ -7,7 +7,7 @@ export const CYBER: Formation = {
 
   title: "Formation cybersécurité et cyberfraude pour les entreprises | Lazarègue Avocats",
   metaDescription:
-    "Formation d’une journée à la cybersécurité et à la cyberfraude : obligation de sécurité, NIS 2, fraude au président, gestion d’incident. Animée par un avocat et un consultant technique.",
+    "Formation d’une journée en cybersécurité et cyberfraude : NIS 2, fraude au président, gestion d’incident. Animée par un avocat et un consultant technique.",
 
   h1: { avant: "Formation cybersécurité et cyberfraude ", accent: "pour les entreprises" },
   accroche:
