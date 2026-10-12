@@ -67,10 +67,10 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Pas de `lastModified` sur les pages fixes : la date du déploiement n'est
+  // pas une date de mise à jour réelle, et Google ignore un champ non fiable.
   const pages = PAGES.map((p) => ({
     url: `${SITE_URL}${p.path}`,
-    lastModified: now,
     changeFrequency: p.frequence,
     priority: p.priority,
   }));
