@@ -161,7 +161,7 @@ Exemple conforme : `app/cas-clients` (1200px, 36px, `clamp(56px,7vw,104px)`).
 
 ## E. SEO et structure
 
-- ✅ **Canonicals** présents et cohérents avec la route sur toutes les pages ; **noindex site-wide actif** (verrou pré-prod : `layout.tsx:66` + `robots.ts` + en-tête `X-Robots-Tag` via `proxy.ts`) — **à retirer à la mise en ligne**.
+- ✅ **Canonicals** présents et cohérents avec la route sur toutes les pages ; **site public et indexable** depuis le 1er octobre 2026 (verrou pré-prod noindex levé). Ne subsistent que le `noindex` des deux pages de test (`/ressources/oeuvre-originale`, `/ressources/faux-conseiller-bancaire-remboursement`) et l'en-tête `X-Robots-Tag: noindex` de `proxy.ts` hors domaine de production.
 - ✅ **Toutes les pages `/competences` sont sous `/nos-domaines/`** (règle structure respectée).
 - ⚠️ **`id="contenu"` non uniforme** : présent sur ~la moitié ; **absent** sur home (pas de `<main>`), IA, cybersécurité, NIS 2, contrats, œuvre-originale ; **variantes** `id="contenu-principal"` (rgpd) et `id="main"` (escroquerie). Le skip-link vise `#contenu` → cible manquante sur les pages sans cet id (a11y).
 - ⚠️ **Breadcrumb JSON-LD absent** sur home, nos-domaines (index), NIS 2, le-cabinet, contact, ressources (index), œuvre-originale, mentions, politique.

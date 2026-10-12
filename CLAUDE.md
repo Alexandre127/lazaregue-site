@@ -33,4 +33,4 @@ Ces règles évitent que les divergences corrigées lors de l'uniformisation du 
 - `next/image` obligatoire (pas de `<img>` brut). Toutes les pages de compétences sous `/nos-domaines/`.
 - `<main id="contenu">` sur chaque page + BreadcrumbList, et FAQPage dès qu'une FAQ visible existe. Suffixe de titre : « … | Lazarègue Avocats ».
 - `GlobalCta` masqué (`SUPPRESS_ON`) sur les pages qui portent leur propre bloc contact final. Barre basse mobile unique = celle du header (pas de réimplémentation par page).
-- **Verrou pré-prod noindex actif** (layout + `robots.ts` + proxy) : à retirer **uniquement** au go-live.
+- **Site public et indexable** : le verrou pré-prod noindex a été levé le 1er octobre 2026. Ne subsistent que le `noindex` propre aux deux pages de test (`/ressources/oeuvre-originale`, `/ressources/faux-conseiller-bancaire-remboursement`) et l'en-tête `X-Robots-Tag: noindex` de `proxy.ts` hors domaine de production (`*.vercel.app`). Ne pas réintroduire de noindex global.
