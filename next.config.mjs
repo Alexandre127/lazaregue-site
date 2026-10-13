@@ -102,6 +102,18 @@ const LEGACY = [
   ["/danciens-employes-dhermes-juges-pour-trafic-de-contrefacon-du-celebre-sac-birkin", "/le-cabinet"],
   ["/lapplication-stop-covid-est-protectrice-du-droit-des-donnees-personnelles", "/le-cabinet"],
 
+  // --- Rapport « Introuvable (404) » de la Search Console, 13 oct. 2026 :
+  //     adresses de l'ancien site vitrine restées sans redirection ---
+  ["/picrights/originalite-photographie", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/negocier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights-afp/originalite", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/getty-images", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/reuters", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/agences", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/cas-pratiques", "/cas-clients"],
+  ["/notre-methode", "/le-cabinet"],
+  ["/presse", "/le-cabinet"],
+
   // --- Anciennes adresses de la politique de cookies → page unique ---
   ["/politique-de-cookie", "/politique-cookies"],
   ["/politique-de-cookies-ue", "/politique-cookies"],
