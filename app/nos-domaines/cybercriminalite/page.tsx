@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }], locale: "fr_FR", type: "website" },
-  twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title: TITLE, description: DESCRIPTION },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: PATH, siteName: "Lazarègue Avocats", images: [{ url: "/og/cybercriminalite", width: 1200, height: 630, alt: "Cybercriminalité et cyberattaques — Lazarègue Avocats" }], locale: "fr_FR", type: "website" },
+  twitter: { card: "summary_large_image", images: [{ url: "/og/cybercriminalite", alt: "Cybercriminalité et cyberattaques — Lazarègue Avocats" }], title: TITLE, description: DESCRIPTION },
 };
 
 const JSON_LD = {

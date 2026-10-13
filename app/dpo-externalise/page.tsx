@@ -18,7 +18,7 @@ const LINKEDIN = "https://www.linkedin.com/in/alexandre-lazarègue"; // URL déj
 const TITLE = "DPO externalisé : tarif et missions d'un avocat DPO | Lazarègue Avocats";
 const DESCRIPTION =
   "DPO externalisé assuré par un avocat en droit du numérique. Trois formules dès 690 € HT/mois, premier échange gratuit, diagnostic seulement si nécessaire.";
-const IMAGE = { url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" };
+const IMAGE = { url: "/og/dpo-externalise", width: 1200, height: 630, alt: "DPO externalisé — Lazarègue Avocats" };
 
 export const metadata: Metadata = {
   title: TITLE,
