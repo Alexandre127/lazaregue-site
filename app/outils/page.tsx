@@ -23,11 +23,11 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: "/outils",
     siteName: "Lazarègue Avocats",
-    images: [{ url: "/og-lazaregue-avocats.jpg", width: 1200, height: 630, alt: "Lazarègue Avocats — avocats en droit du numérique" }],
+    images: [{ url: "/og/outils", width: 1200, height: 630, alt: "Outils et observatoires — Lazarègue Avocats" }],
     locale: "fr_FR",
     type: "website",
   },
-  twitter: { card: "summary_large_image", images: [{ url: "/og-lazaregue-avocats.jpg", alt: "Lazarègue Avocats — avocats en droit du numérique" }], title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", images: [{ url: "/og/outils", alt: "Outils et observatoires — Lazarègue Avocats" }], title: TITLE, description: DESCRIPTION },
 };
 
 export default function Page() {

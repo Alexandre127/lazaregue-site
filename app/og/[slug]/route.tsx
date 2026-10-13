@@ -1,19 +1,24 @@
 import path from "path";
 import { ImageResponse } from "next/og";
-import { ACCOMPAGNEMENT_CARTES, FAMILLES } from "@/components/header/nav-data";
+import { ACCOMPAGNEMENT_CARTES, FAMILLES, FORMATIONS_LINKS, RESSOURCES_CARTES } from "@/components/header/nav-data";
 
 /**
- * Image de partage (Open Graph / Twitter) d'une page de domaine ou d'offre,
- * 1200 × 630, servie à `/og/<slug>` (slug = dernier segment de l'adresse de la
- * page). Même principe que `/ressources/og/<slug>` : générée une fois au build.
+ * Image de partage (Open Graph / Twitter) d'une page de domaine, d'offre, de
+ * formation, de rubrique ou institutionnelle, 1200 × 630, servie à `/og/<slug>`.
+ * Slug = dernier segment de l'adresse pour les domaines et les offres ; adresse
+ * entière, barres remplacées par des tirets, pour les autres pages
+ * (`/formations/rgpd` → `formations-rgpd`). Même principe que
+ * `/ressources/og/<slug>` : générée une fois au build.
  *
  * Gabarit : logo complet en haut à gauche, sur-titre en DM Mono, trait bleu,
  * titre en Bebas Neue blanc, sur la marge gauche de l'image générique
  * (`/og-lazaregue-avocats.jpg`). Fond : la photo principale (hero) de la page
  * voilée de navy à 50 % quand elle en a une, sinon navy uni.
  *
- * Titres et sur-titres lus dans la source unique (`nav-data.ts`) : domaine et
- * sa famille, ou carte d'offre. Seule la photo est déclarée ici, par slug.
+ * Titres et sur-titres lus dans la source unique (`nav-data.ts`) chaque fois
+ * qu'elle les porte : domaine et sa famille, carte d'offre, formation, rubrique
+ * de ressources. Seuls les intitulés sans équivalent dans le menu (rubrique
+ * Formations, Le cabinet, Contact) et les photos sont déclarés ici.
  */
 export const dynamic = "force-static";
 
@@ -26,17 +31,33 @@ const PHOTOS: Record<string, string> = {
   "rgpd-donnees-personnelles": "/images/og/rgpd.jpg",
   cybercriminalite: "/images/og/cybercriminalite.jpg",
   "diffamation-retrait-contenus": "/images/og/diffamation.jpg",
+  contact: "/images/og/contact.jpg",
+  formations: "/images/formations/opage-formation.webp",
+  "le-cabinet": "/images/cabinet-interieur.jpg",
   cybersecurite: "/images/cyber-hero-facade.jpg",
   "escroquerie-fraude-bancaire": "/images/fraude-bancaire-hero.webp",
   "ma-tech": "/images/ma-tech/ma-tech-1200.jpg",
 };
 
 const slugDe = (href: string) => href.split("/").pop()!;
+const slugEntier = (href: string) => href.slice(1).replace(/\//g, "-");
 
-/** Pages couvertes : les dix domaines et les deux offres d'accompagnement. */
+const FORMATION_ENTREPRISES = "Formation · Entreprises";
+const FORMATION_AVOCATS = "Formation · Avocats";
+
+/**
+ * Pages couvertes : les dix domaines, les deux offres, la rubrique Formations
+ * et ses quatre formations, les trois rubriques de ressources, Le cabinet et
+ * Contact. L'accueil et les autres pages gardent `/og-lazaregue-avocats.jpg`.
+ */
 const PAGES: Record<string, { surtitre: string; titre: string }> = Object.fromEntries([
   ...FAMILLES.flatMap((f) => f.domaines.map((d) => [slugDe(d.href), { surtitre: f.intitule, titre: d.titre }] as const)),
   ...ACCOMPAGNEMENT_CARTES.filter((c) => c.href !== "/formations").map((c) => [slugDe(c.href), { surtitre: c.surtitre ?? "Accompagnement", titre: c.titre }] as const),
+  ["formations", { surtitre: FORMATION_ENTREPRISES, titre: "Formations en droit du numérique" }] as const,
+  ...FORMATIONS_LINKS.map((f) => [slugEntier(f.href), { surtitre: f.href === "/formations/ia-avocats" ? FORMATION_AVOCATS : FORMATION_ENTREPRISES, titre: f.label }] as const),
+  ...RESSOURCES_CARTES.map((c) => [slugEntier(c.href), { surtitre: "Ressources", titre: c.titre }] as const),
+  ["le-cabinet", { surtitre: "Paris · depuis 2016", titre: "Le cabinet" }] as const,
+  ["contact", { surtitre: "18 rue de Tilsitt · Paris 17e", titre: "Échanger avec un avocat" }] as const,
 ]);
 
 export function generateStaticParams() {
@@ -139,8 +160,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
           <div style={{ display: "flex", fontFamily: "DM Mono", fontSize: 24, letterSpacing: 2, color: "#FFFFFF", opacity: 0.85 }}>{surtitre}</div>
           <div style={{ display: "flex", width: 72, height: 5, background: BLEU, marginTop: 18, marginBottom: 22 }} />
           <div style={{ display: "flex", flexDirection: "column", fontFamily: "Bebas Neue", fontSize: 92, lineHeight: 1, color: "#FFFFFF" }}>
+            {/* Le moteur de rendu mesure l'apostrophe typographique trop large
+                (environ 18 px à ce corps) : on coupe après elle et on rattrape
+                l'écart, sinon une espace double apparaît plus loin dans la ligne. */}
             {lignes(titre).map((l) => (
-              <div key={l} style={{ display: "flex" }}>{l}</div>
+              <div key={l} style={{ display: "flex" }}>
+                {l.split(/(?<=’)/).map((morceau, i) => (
+                  <div key={i} style={{ display: "flex", marginLeft: i ? -18 : 0 }}>{morceau}</div>
+                ))}
+              </div>
             ))}
           </div>
         </div>
