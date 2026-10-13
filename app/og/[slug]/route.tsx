@@ -32,7 +32,6 @@ const PHOTOS: Record<string, string> = {
   cybercriminalite: "/images/og/cybercriminalite.jpg",
   "diffamation-retrait-contenus": "/images/og/diffamation.jpg",
   contact: "/images/og/contact.jpg",
-  formations: "/images/formations/opage-formation.webp",
   "le-cabinet": "/images/cabinet-interieur.jpg",
   cybersecurite: "/images/cyber-hero-facade.jpg",
   "escroquerie-fraude-bancaire": "/images/fraude-bancaire-hero.webp",
