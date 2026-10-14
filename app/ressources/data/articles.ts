@@ -367,6 +367,30 @@ export const ARTICLES: Article[] = [
     publie: true,
     sansTempsDeLecture: true,
   },
+  {
+    title: "Perte de données chez votre hébergeur",
+    // Title SEO fourni avec suffixe (86 caractères) : sans suffixe au-delà de 60 (CLAUDE.md).
+    seoTitle: "Perte de données chez un hébergeur : recours et clauses à prévoir",
+    seoDescription:
+      "Sauvegardes détruites, panne, données retenues en fin de contrat : ce que jugent les tribunaux (OVHcloud, rançongiciel, réversibilité) et les clauses à négocier avant de signer.",
+    slug: "perte-de-donnees-hebergeur",
+    domaine: "contentieux",
+    type: "guide",
+    // Sous-titre de l'article ; le chapeau ouvre le corps de la page.
+    chapo:
+      "Sauvegardes détruites, panne, coupure du service, données retenues en fin de contrat : ce que décident les tribunaux et ce que votre contrat doit prévoir",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Lazarègue Avocats",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 12,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais

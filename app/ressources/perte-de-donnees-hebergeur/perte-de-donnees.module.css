@@ -1,0 +1,5 @@
+/* Article « Perte de données chez votre hébergeur » : liste des sept clauses
+   numérotée 01 à 07 (DM Mono, bleu). Angles droits, aucune ombre. */
+.clauses { list-style: decimal-leading-zero; padding-left: 34px; }
+.clauses li + li { margin-top: 10px; }
+.clauses li::marker { font-family: var(--ff-mono); font-size: 13px; color: var(--blue); }

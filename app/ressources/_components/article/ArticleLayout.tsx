@@ -16,6 +16,8 @@ export type TocItem = { id: string; label: string };
 
 const URL_BASE = "https://lazaregue-avocats.fr";
 const ROLE = "Avocat au Barreau de Paris";
+/** Auteur collectif : article signé du cabinet (pas de photo ni de fonction personnelle). */
+const CABINET = "Lazarègue Avocats";
 
 /** Texte brut d'un titre JSX (pour le sommaire). */
 function texte(n: ReactNode): string {
@@ -73,6 +75,7 @@ export default function ArticleLayout({
   const minutes = a.sansTempsDeLecture ? null : minutesDeLecture(slug);
   const maj = moisAnnee(a.miseAJour);
   const suggestions = aLireAussi(slug);
+  const parCabinet = a.auteur === CABINET;
 
   /* Sommaire + numérotation, à partir des <h2> du corps. */
   const toc: TocItem[] = [];
@@ -107,7 +110,9 @@ export default function ArticleLayout({
         inLanguage: "fr-FR",
         mainEntityOfPage: `${URL_BASE}${url}`,
         image: `${URL_BASE}/ressources/og/${slug}`,
-        author: { "@type": "Person", name: a.auteur, jobTitle: ROLE, url: `${URL_BASE}/le-cabinet` },
+        author: parCabinet
+          ? { "@type": "Organization", name: CABINET, url: `${URL_BASE}/` }
+          : { "@type": "Person", name: a.auteur, jobTitle: ROLE, url: `${URL_BASE}/le-cabinet` },
         publisher: { "@type": "LegalService", name: "Lazarègue Avocats", url: `${URL_BASE}/` },
       },
       {
@@ -147,12 +152,14 @@ export default function ArticleLayout({
           <h1 id="h1">{a.title}</h1>
           {a.chapo ? <p className={styles.chapo}>{a.chapo}</p> : null}
           <div className={styles.byline}>
-            <span className={styles.ava}>
-              <Image src="/images/alexandre-pro.jpg" alt="" fill sizes="44px" style={{ objectFit: "cover" }} />
-            </span>
+            {parCabinet ? null : (
+              <span className={styles.ava}>
+                <Image src="/images/alexandre-pro.jpg" alt="" fill sizes="44px" style={{ objectFit: "cover" }} />
+              </span>
+            )}
             <div>
               <p className={styles.bylineName}>{a.auteur}</p>
-              <p className={styles.bylineRole}>{ROLE}</p>
+              {parCabinet ? null : <p className={styles.bylineRole}>{ROLE}</p>}
               {maj || minutes ? (
                 <p className={styles.bylineDate}>
                   {[maj ? `Mis à jour · ${maj}` : null, minutes ? `${minutes} min` : null].filter(Boolean).join(" · ")}

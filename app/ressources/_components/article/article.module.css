@@ -437,3 +437,8 @@
 .coord a { display: inline-flex; align-items: center; min-height: 44px; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 .appel .h2 + .lead { margin-top: 16px; }
 .appel .lead + .lead { margin-top: 12px; }
+
+/* Référence de décision en ligne autonome (« Réf. … ») : DM Mono, petit, gris accessible. */
+.body p.reference { font-family: var(--ff-mono); font-size: 13px; line-height: 1.6; letter-spacing: 0.02em; color: var(--text-muted); }
+/* Liens dans l'appel final navy. */
+.appel .lead a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
