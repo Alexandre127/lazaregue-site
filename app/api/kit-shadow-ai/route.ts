@@ -96,7 +96,7 @@ type Contexte = { pageUri: string; pageName: string; hutk?: string; ipAddress?: 
      la mention affichée sous le formulaire, mot pour mot ;
    - communications : abonnement au type « Lettre d'information du cabinet »,
      value = état réel de la case, texte = son libellé exact.
-   Identifiant du type d'abonnement : HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE.
+   Identifiant du type d'abonnement : HUBSPOT_SUBSCRIPTION_ID_LETTRE.
    Absent : aucun legalConsentOptions n'est envoyé (avertissement journalisé). */
 type Consentement = {
   consent: {
@@ -106,9 +106,9 @@ type Consentement = {
   };
 };
 function consentement(newsletter: boolean): Consentement | undefined {
-  const id = Number(process.env.HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE);
+  const id = Number(process.env.HUBSPOT_SUBSCRIPTION_ID_LETTRE);
   if (!Number.isInteger(id) || id <= 0) {
-    console.warn("[kit-shadow-ai] HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE absente ou invalide : consentement non transmis à HubSpot.");
+    console.warn("[kit-shadow-ai] HUBSPOT_SUBSCRIPTION_ID_LETTRE absente ou invalide : consentement non transmis à HubSpot.");
     return undefined;
   }
   return {
