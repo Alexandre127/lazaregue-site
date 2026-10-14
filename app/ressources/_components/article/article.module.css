@@ -414,3 +414,6 @@
   .letter.discReady.discOpen .letter-body { display: block; }
   .letter.discReady.discOpen .discIco::before { content: "\2212"; }
 }
+
+/* Encart sous le sommaire latéral (ArticleLayout `encart`). */
+.tocEncart { margin-top: 28px; }

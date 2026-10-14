@@ -40,6 +40,11 @@ const deuxChiffres = (n: number) => String(n).padStart(2, "0");
  * `pied` reçoit ce qui suit les suggestions (sources). `after` remplace l'appel
  * final par défaut.
  *
+ * Options du sommaire : un <h2 data-toc="…"> y figure sous ce libellé court
+ * plutôt que sous son texte complet ; un bloc direct du corps (section, div)
+ * portant `id` et `data-toc` y figure aussi, à son rang, sans numéro injecté
+ * (ex. un bloc de téléchargement). `encart` s'affiche sous le sommaire latéral.
+ *
  * Voir docs/CHARTE-SITE.md § « Rédiger un nouvel article ».
  */
 export default function ArticleLayout({
@@ -48,6 +53,7 @@ export default function ArticleLayout({
   pied,
   after,
   mobileCta,
+  encart,
   titreSuggestions = "À lire aussi",
 }: {
   slug: string;
@@ -57,6 +63,8 @@ export default function ArticleLayout({
   mobileCta?: { href: string; label: string };
   /** Titre du bloc de suggestions (défaut « À lire aussi »). */
   titreSuggestions?: string;
+  /** Bloc affiché sous le sommaire latéral (grands écrans). */
+  encart?: ReactNode;
 }) {
   const a = article(slug);
   const domaine = DOM_LABEL[a.domaine];
@@ -69,11 +77,17 @@ export default function ArticleLayout({
   /* Sommaire + numérotation, à partir des <h2> du corps. */
   const toc: TocItem[] = [];
   const corps = Children.toArray(children).map((el) => {
-    if (!isValidElement(el) || el.type !== "h2") return el;
-    const h2 = el as ReactElement<{ id?: string; children?: ReactNode }>;
+    if (!isValidElement(el)) return el;
+    const props = el.props as { id?: string; children?: ReactNode; "data-toc"?: string };
+    if (el.type !== "h2") {
+      // Bloc hors <h2> déclaré au sommaire : entrée à son rang, rendu inchangé.
+      if (props.id && props["data-toc"]) toc.push({ id: props.id, label: props["data-toc"] });
+      return el;
+    }
+    const h2 = el as ReactElement<{ id?: string; children?: ReactNode; "data-toc"?: string }>;
     const n = toc.length + 1;
     const id = h2.props.id ?? `section-${n}`;
-    toc.push({ id, label: texte(h2.props.children) });
+    toc.push({ id, label: h2.props["data-toc"] ?? texte(h2.props.children) });
     return (
       <h2 key={id} id={id}>
         <span className={styles.num} aria-hidden="true">{deuxChiffres(n)}</span>
@@ -211,7 +225,7 @@ export default function ArticleLayout({
           <ShareBar />
         </article>
 
-        <TocSpy items={toc} />
+        <TocSpy items={toc}>{encart}</TocSpy>
       </div>
 
       {after ?? (

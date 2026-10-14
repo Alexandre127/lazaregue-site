@@ -274,6 +274,30 @@ export const ARTICLES: Article[] = [
     exclureDesSuggestions: true,
     publie: false,
   },
+  {
+    // Maquette validée (oct. 2026) : corps repris mot pour mot dans la page ;
+    // kit (charte + grille) téléchargeable contre une adresse e-mail.
+    title: "Shadow AI : ce que risque l'entreprise et comment l'encadrer",
+    seoTitle: "Shadow AI : risques et modèle de charte IA pour l'entreprise",
+    seoDescription:
+      "Shadow AI : risques juridiques pour l'entreprise (RGPD, secret des affaires, AI Act) et méthode pour l'encadrer. Modèle de charte IA et grille à télécharger.",
+    slug: "shadow-ai",
+    domaine: "ia",
+    type: "guide",
+    etiquette: "Guide pratique",
+    chapo:
+      "Un contrat client collé dans un chatbot, une base de prospects confiée à un outil gratuit, un agent qui se connecte seul aux données internes. Ce « shadow IA », l'usage de l'IA en entreprise sans validation, expose l'entreprise à des risques juridiques réels, que quelques mesures simples permettent de maîtriser.",
+    miseAJour: "2026-10-14",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 8,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais

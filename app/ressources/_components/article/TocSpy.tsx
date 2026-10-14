@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import styles from "./article.module.css";
 
 export type TocItem = { id: string; label: string };
@@ -11,7 +11,7 @@ export type TocItem = { id: string; label: string };
  * courante. La mise à jour se fait dans le callback de l'observer (pas un
  * setState synchrone dans le corps de l'effet).
  */
-export default function TocSpy({ items }: { items: TocItem[] }) {
+export default function TocSpy({ items, children }: { items: TocItem[]; children?: ReactNode }) {
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function TocSpy({ items }: { items: TocItem[] }) {
           {t.label}
         </a>
       ))}
+      {children ? <div className={styles.tocEncart}>{children}</div> : null}
     </aside>
   );
 }
