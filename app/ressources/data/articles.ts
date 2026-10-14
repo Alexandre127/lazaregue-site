@@ -300,7 +300,7 @@ export const ARTICLES: Article[] = [
   },
   {
     title: "Votre entreprise est-elle exposée au shadow AI ?",
-    seoTitle: "Autodiagnostic Shadow AI : votre entreprise est-elle exposée ? | Lazarègue Avocats",
+    seoTitle: "Autodiagnostic Shadow AI | Lazarègue Avocats",
     seoDescription:
       "Dix questions pour mesurer l'exposition de l'entreprise aux usages d'IA non encadrés et voir ce qu'exigent l'AI Act, le RGPD et le code du travail.",
     slug: "diagnostic-shadow-ai",

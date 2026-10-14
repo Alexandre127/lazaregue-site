@@ -292,7 +292,7 @@ export const TEXTES = {
   chantiers: {
     label: "vos chantiers de conformité",
     titre: "Ce que la réglementation exige, selon vos réponses",
-    bouton: "Faire qualifier mes usages",
+    bouton: "Faire qualifier vos usages",
   },
   rendezVous: {
     labelCalendrier: "calendrier",
@@ -301,7 +301,7 @@ export const TEXTES = {
     titre: "Faire qualifier vos usages",
     texte:
       "Un avocat et une intervenante technique examinent vos usages d'IA, les classent par niveau de risque et fixent les obligations qui s'appliquent à votre entreprise.",
-    bouton: "Prendre rendez-vous",
+    bouton: "Échanger avec un avocat",
     lienBouton: "/contact",
     telephone: { avant: "ou", affiche: "01 81 70 62 00", href: "tel:+33181706200" },
     seul: { avant: "Commencer seul :", lien: "télécharger la charte et la grille", href: "/ressources/shadow-ai#kit" },

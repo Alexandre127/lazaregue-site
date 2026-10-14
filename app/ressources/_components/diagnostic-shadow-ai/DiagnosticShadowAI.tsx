@@ -29,7 +29,7 @@ import { SCORE_MAX, enVigueur, evaluer, type Reponses } from "./calcul";
  *  (navy), ces trois derniers à la suite sur le même écran de résultat.
  *
  * Aucune réponse n'est envoyée, stockée ni mise en cookie. Trois événements de
- * mesure seulement (début, fin avec le niveau, clic « Prendre rendez-vous »).
+ * mesure seulement (début, fin avec le niveau, clic « Échanger avec un avocat »).
  * Tous les textes, le barème et les statuts : data/diagnostic-shadow-ai.ts.
  */
 
