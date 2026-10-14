@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { SITE_URL } from "@/lib/site-url";
 
 /**
  * Formulaire du kit « Shadow AI » (/ressources/shadow-ai) : enregistre la
@@ -19,7 +18,9 @@ import { SITE_URL } from "@/lib/site-url";
  *
  * Champs transmis : email, firstname, company, jobtitle (propriétés standard)
  * et lz_lettre_information ("true"/"false"), case d'abonnement distincte du
- * téléchargement. Aucun cookie lu ni déposé ; aucun e-mail envoyé.
+ * téléchargement. Contexte transmis : URL canonique de la page (jamais
+ * l'adresse d'un aperçu), adresse IP du visiteur et, s'il existe déjà, son
+ * cookie hubspotutk (lu, jamais déposé). Aucun e-mail envoyé.
  *
  * Région d'exécution : Paris (cdg1), fixée dans vercel.json.
  */
@@ -61,27 +62,50 @@ function rateLimited(ip: string): boolean {
 
 type Champ = { objectTypeId: "0-1"; name: string; value: string };
 
-async function soumettre(portal: string, form: string, fields: Champ[], pageUri: string): Promise<void> {
-  const body = JSON.stringify({
-    fields,
-    context: { pageUri, pageName: "Shadow AI : ce que risque l'entreprise et comment l'encadrer" },
-  });
+/* URL déclarée à HubSpot (context.pageUri) : TOUJOURS l'URL canonique du site.
+   Une adresse *.vercel.app (aperçus) n'est pas un domaine enregistré dans le
+   compte : HubSpot classe alors la soumission en spam (« Unregistered Site
+   Domain ») et ne crée aucun contact. */
+const DOMAINE_CANONIQUE = "https://lazaregue-avocats.fr";
+function urlCanonique(): string {
+  const env = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
+  let base = DOMAINE_CANONIQUE;
+  try {
+    if (env && !/\.vercel\.app$/i.test(new URL(env).hostname)) base = env;
+  } catch {
+    /* valeur mal formée : domaine canonique */
+  }
+  return `${base}/ressources/shadow-ai`;
+}
+
+/** Cookie HubSpot du visiteur (hubspotutk), s'il existe déjà : il n'est déposé
+ *  que si le visiteur a accepté la finalité « relation client ». */
+function hutkDe(req: Request): string | undefined {
+  const m = /(?:^|;\s*)hubspotutk=([^;]+)/.exec(req.headers.get("cookie") ?? "");
+  return m ? decodeURIComponent(m[1]) : undefined;
+}
+
+type Contexte = { pageUri: string; pageName: string; hutk?: string; ipAddress?: string };
+
+async function soumettre(portal: string, form: string, fields: Champ[], context: Contexte): Promise<void> {
+  const body = JSON.stringify({ fields, context });
   for (const hote of HOTES) {
+    const url = `${hote}/submissions/v3/integration/submit/${portal}/${form}`;
     try {
-      const res = await fetch(`${hote}/submissions/v3/integration/submit/${portal}/${form}`, {
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body,
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
+      const reponse = await res.text().catch(() => "");
       if (res.ok) {
-        console.info(`[kit-shadow-ai] HubSpot ${hote} : ${res.status} — demande enregistrée.`);
+        console.info(`[kit-shadow-ai] POST ${url} (pageUri ${context.pageUri}) → ${res.status} ${reponse}`);
         return;
       }
-      const detail = await res.text().catch(() => "");
-      console.error(`[kit-shadow-ai] HubSpot ${hote} : ${res.status} ${detail.slice(0, 300)}`);
+      console.error(`[kit-shadow-ai] POST ${url} (pageUri ${context.pageUri}) → ${res.status} ${reponse}`);
     } catch (e) {
-      console.error(`[kit-shadow-ai] HubSpot ${hote} :`, e);
+      console.error(`[kit-shadow-ai] POST ${url} (pageUri ${context.pageUri}) → échec réseau :`, e);
     }
   }
 }
@@ -147,7 +171,14 @@ export async function POST(req: Request) {
     ...(fonction ? [{ objectTypeId: "0-1" as const, name: "jobtitle", value: fonction }] : []),
     { objectTypeId: "0-1", name: "lz_lettre_information", value: newsletter ? "true" : "false" },
   ];
-  await soumettre(portal, form, fields, `${SITE_URL}/ressources/shadow-ai`);
+  const hutk = hutkDe(req);
+  const context: Contexte = {
+    pageUri: urlCanonique(),
+    pageName: "Shadow AI : ce que risque l'entreprise et comment l'encadrer",
+    ...(hutk ? { hutk } : {}),
+    ...(ip !== "inconnu" ? { ipAddress: ip } : {}),
+  };
+  await soumettre(portal, form, fields, context);
 
   return NextResponse.json({ ok: true });
 }
