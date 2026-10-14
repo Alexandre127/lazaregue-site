@@ -12,7 +12,7 @@ import { DOM_LABEL, chemin, libelleType, outils } from "../ressources/data/artic
 const URL_BASE = "https://lazaregue-avocats.fr";
 const TITLE = "Outils et observatoires | Lazarègue Avocats";
 const DESCRIPTION =
-  "Les outils en accès libre du cabinet : diagnostic d'un avis en ligne et observatoire des décisions de justice sur la fraude au faux conseiller bancaire.";
+  "Les outils en accès libre du cabinet : diagnostic d'un avis Google, autodiagnostic Shadow AI, observatoire des décisions sur le faux conseiller bancaire.";
 
 export const metadata: Metadata = {
   title: TITLE,

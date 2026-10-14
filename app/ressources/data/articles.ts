@@ -298,6 +298,28 @@ export const ARTICLES: Article[] = [
     exclureDesSuggestions: false,
     publie: true,
   },
+  {
+    title: "Votre entreprise est-elle exposée au shadow AI ?",
+    seoTitle: "Autodiagnostic Shadow AI : votre entreprise est-elle exposée ? | Lazarègue Avocats",
+    seoDescription:
+      "Dix questions pour mesurer l'exposition de l'entreprise aux usages d'IA non encadrés et voir ce qu'exigent l'AI Act, le RGPD et le code du travail.",
+    slug: "diagnostic-shadow-ai",
+    domaine: "ia",
+    etiquette: "Diagnostic",
+    chapo:
+      "Dix questions pour situer les usages d'IA non encadrés dans votre entreprise et savoir par où commencer. Résultat immédiat, sans inscription.",
+    miseAJour: "2026-10-14",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 9,
+    liesA: ["shadow-ai"],
+    exclureDesSuggestions: false,
+    publie: true,
+    outil: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais
