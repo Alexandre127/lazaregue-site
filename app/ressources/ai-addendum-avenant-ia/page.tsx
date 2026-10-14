@@ -2,6 +2,9 @@ import Link from "next/link";
 import styles from "../_components/article/article.module.css";
 import s from "./ai-addendum.module.css";
 import ArticleLayout from "../_components/article/ArticleLayout";
+import Alerte from "../_components/article/Alerte";
+import AppelFinal from "../_components/article/AppelFinal";
+import CtaInline from "../_components/article/CtaInline";
 import { metaArticle } from "../data/meta";
 
 // Titre, description, chapô et sur-titre : registre data/articles.ts.
@@ -9,20 +12,8 @@ const SLUG = "ai-addendum-avenant-ia";
 const CONTRATS = "/nos-domaines/contrats-informatiques";
 const IA = "/nos-domaines/avocat-intelligence-artificielle";
 const RGPD = "/nos-domaines/rgpd-donnees-personnelles";
-const TEL = { affiche: "01 81 70 62 00", href: "tel:+33181706200" };
-const EMAIL = "contact@lazaregue-avocats.fr";
 
 export const metadata = metaArticle(SLUG);
-
-function SansClause({ children }: { children: React.ReactNode }) {
-  return (
-    <aside className={s.sans}>
-      <p>
-        <strong>Sans cette clause :</strong> {children}
-      </p>
-    </aside>
-  );
-}
 
 const CONTROLE = [
   "Les outils d'IA autorisés sont identifiés, ou soumis à accord préalable.",
@@ -84,25 +75,15 @@ export default function Page() {
     </div>
   );
 
-  /* Appel final navy : même bloc que l'appel par défaut du gabarit. */
   const after = (
-    <section className={`${styles.sec} ${styles.navy}`} aria-labelledby="h-cta">
-      <div className={styles.wrap}>
-        <div className={styles.head}>
-          <h2 className={styles.h2} id="h-cta">Sécuriser vos contrats avant l&apos;incident</h2>
-          <p className={styles.lead} style={{ marginTop: 16 }}>
-            Lazarègue Avocats audite les contrats fournisseurs, rédige les avenants IA des entreprises clientes et négocie, pour les prestataires, les avenants imposés par leurs grands comptes. Chaque dossier associe les avocats du cabinet à des intervenants techniques, afin d&apos;apprécier l&apos;usage réel des outils au-delà de la lettre du contrat.
-          </p>
-          <p className={styles.lead} style={{ marginTop: 12 }}>
-            Un premier échange suffit à mesurer l&apos;exposition de l&apos;entreprise et à fixer les priorités.
-          </p>
-        </div>
-        <Link className={styles.btn} href="/contact">Échanger avec un avocat →</Link>
-        <p className={s.coord}>
-          <a href={TEL.href}>{TEL.affiche}</a> · <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-        </p>
-      </div>
-    </section>
+    <AppelFinal titre="Sécuriser vos contrats avant l'incident">
+      <p className={styles.lead}>
+        Lazarègue Avocats audite les contrats fournisseurs, rédige les avenants IA des entreprises clientes et négocie, pour les prestataires, les avenants imposés par leurs grands comptes. Chaque dossier associe les avocats du cabinet à des intervenants techniques, afin d&apos;apprécier l&apos;usage réel des outils au-delà de la lettre du contrat.
+      </p>
+      <p className={styles.lead}>
+        Un premier échange suffit à mesurer l&apos;exposition de l&apos;entreprise et à fixer les priorités.
+      </p>
+    </AppelFinal>
   );
 
   return (
@@ -126,54 +107,51 @@ export default function Page() {
       {/* ===== 02 ===== */}
       <h2 id="juge">Ce que décidera le juge</h2>
       <p>Le contentieux de l&apos;intelligence artificielle se tranche aujourd&apos;hui avec les outils du droit commun des contrats. Le raisonnement des juridictions est prévisible, et il commande la rédaction.</p>
-      <p><strong>Ce qui n&apos;est pas écrit n&apos;est pas dû.</strong> Saisie d&apos;un litige portant sur une base de données vendue avec une campagne d&apos;e-mailing présentée sous une appellation « IA », la cour d&apos;appel de Grenoble a jugé la prestation au regard des seules spécifications contractuelles : la promesse commerciale d&apos;une intelligence artificielle n&apos;a fait naître aucune obligation de résultat <span className={s.cite}>(CA Grenoble, ch. com., 26 juin 2025, n° 24/02148)</span>. Le client qui n&apos;a rien stipulé n&apos;a rien à réclamer.</p>
+      <p><strong>Ce qui n&apos;est pas écrit n&apos;est pas dû.</strong> Saisie d&apos;un litige portant sur une base de données vendue avec une campagne d&apos;e-mailing présentée sous une appellation « IA », la cour d&apos;appel de Grenoble a jugé la prestation au regard des seules spécifications contractuelles : la promesse commerciale d&apos;une intelligence artificielle n&apos;a fait naître aucune obligation de résultat <span className={styles.cite}>(CA Grenoble, ch. com., 26 juin 2025, n° 24/02148)</span>. Le client qui n&apos;a rien stipulé n&apos;a rien à réclamer.</p>
       <p><strong>Le prestataire répond de ses outils.</strong> À l&apos;inverse, le débiteur d&apos;une obligation répond des moyens et des tiers qu&apos;il emploie pour l&apos;exécuter (article 1231-1 du Code civil). Une erreur produite par l&apos;outil qu&apos;il a choisi ne constitue pas un cas de force majeure, faute d&apos;extériorité et d&apos;imprévisibilité (article 1218). Encore faut-il que le contrat ait défini précisément ce que le prestataire devait livrer.</p>
-      <p><strong>La protection se prouve.</strong> En matière de secret des affaires, la Cour de cassation exige des mesures concrètes : dans une affaire de franchise, elle a retenu comme telles la mention de confidentialité portée sur chaque page d&apos;un document et l&apos;interdiction contractuelle de le diffuser <span className={s.cite}>(Cass. com., 5 juin 2024, n° 23-10.954 ; Cass. com., 5 févr. 2025, n° 23-10.953, publiés)</span>. Transposé à l&apos;IA, le raisonnement est implacable : l&apos;entreprise qui n&apos;a pas interdit l&apos;usage de ses données dans des modèles tiers pourra difficilement soutenir qu&apos;elle les protégeait.</p>
-      <p>L&apos;Autorité de la concurrence a déjà sanctionné Google, notamment pour avoir utilisé des contenus d&apos;éditeurs de presse afin d&apos;entraîner son outil d&apos;IA sans les en informer <span className={s.cite}>(Aut. conc., déc. n° 24-D-03, 15 mars 2024)</span>. L&apos;usage non autorisé de données pour l&apos;entraînement de modèles est désormais un terrain de sanction identifié.</p>
+      <p><strong>La protection se prouve.</strong> En matière de secret des affaires, la Cour de cassation exige des mesures concrètes : dans une affaire de franchise, elle a retenu comme telles la mention de confidentialité portée sur chaque page d&apos;un document et l&apos;interdiction contractuelle de le diffuser <span className={styles.cite}>(Cass. com., 5 juin 2024, n° 23-10.954 ; Cass. com., 5 févr. 2025, n° 23-10.953, publiés)</span>. Transposé à l&apos;IA, le raisonnement est implacable : l&apos;entreprise qui n&apos;a pas interdit l&apos;usage de ses données dans des modèles tiers pourra difficilement soutenir qu&apos;elle les protégeait.</p>
+      <p>L&apos;Autorité de la concurrence a déjà sanctionné Google, notamment pour avoir utilisé des contenus d&apos;éditeurs de presse afin d&apos;entraîner son outil d&apos;IA sans les en informer <span className={styles.cite}>(Aut. conc., déc. n° 24-D-03, 15 mars 2024)</span>. L&apos;usage non autorisé de données pour l&apos;entraînement de modèles est désormais un terrain de sanction identifié.</p>
 
       {/* ===== 03 ===== */}
       <h2 id="clauses">Les sept clauses essentielles</h2>
 
       <h3>1. Périmètre d&apos;usage</h3>
       <p>L&apos;avenant définit les technologies visées — modèles de langage, outils d&apos;IA générative, agents — et distingue les données transmises à l&apos;outil (<em>inputs</em>) des contenus produits (<em>outputs</em>). Il fixe ensuite le régime : usage interdit, limité à une liste d&apos;outils approuvés, ou soumis à accord écrit préalable.</p>
-      <SansClause>le prestataire utilise l&apos;outil de son choix, y compris une version grand public dont les conditions autorisent la réutilisation des données.</SansClause>
+      <Alerte libelle="Sans cette clause :">le prestataire utilise l&apos;outil de son choix, y compris une version grand public dont les conditions autorisent la réutilisation des données.</Alerte>
 
       <h3>2. Interdiction d&apos;entraînement</h3>
       <p>Le prestataire s&apos;engage à ce que ni lui ni aucun de ses fournisseurs d&apos;IA n&apos;utilise les données ou les résultats du client pour entraîner, affiner ou améliorer un modèle. L&apos;engagement doit viser expressément toute la chaîne de sous-traitance : c&apos;est le fournisseur du modèle, et non le prestataire, qui traite effectivement les données.</p>
-      <SansClause>les données de l&apos;entreprise peuvent enrichir un modèle accessible à ses concurrents, et le secret des affaires devient indéfendable.</SansClause>
+      <Alerte libelle="Sans cette clause :">les données de l&apos;entreprise peuvent enrichir un modèle accessible à ses concurrents, et le secret des affaires devient indéfendable.</Alerte>
 
       <h3>3. Données personnelles</h3>
       <p>Le fournisseur d&apos;IA auquel le prestataire transmet des données personnelles est un sous-traitant ultérieur au sens du <Link href={RGPD}>RGPD</Link>. Son intervention suppose l&apos;autorisation écrite préalable du client et des obligations identiques à celles du prestataire (article 28, paragraphes 2 et 4). Un hébergement hors de l&apos;Union impose un mécanisme de transfert valable (articles 44 et suivants). L&apos;avenant liste les fournisseurs, organise l&apos;information préalable en cas de changement et impose la suppression ou la pseudonymisation des données avant leur transmission à l&apos;outil.</p>
-      <SansClause>l&apos;entreprise, responsable du traitement, porte devant la CNIL un manquement qu&apos;elle n&apos;a ni connu ni autorisé.</SansClause>
+      <Alerte libelle="Sans cette clause :">l&apos;entreprise, responsable du traitement, porte devant la CNIL un manquement qu&apos;elle n&apos;a ni connu ni autorisé.</Alerte>
 
       <h3>4. Propriété des résultats</h3>
       <p>Le droit d&apos;auteur ne protège que les créations portant l&apos;empreinte de la personnalité d&apos;une personne physique (article L. 111-1 du Code de la propriété intellectuelle). Un contenu produit de façon autonome par une IA échappe en principe à toute protection. Une clause de « cession de droits » sur un tel contenu ne transfère donc rien. La rédaction efficace stipule une exclusivité d&apos;usage au profit du client et interdit au prestataire de réutiliser ou de revendre le même résultat.</p>
-      <SansClause>le livrable payé par l&apos;entreprise peut être légalement reproduit, réutilisé, voire vendu à un concurrent.</SansClause>
+      <Alerte libelle="Sans cette clause :">le livrable payé par l&apos;entreprise peut être légalement reproduit, réutilisé, voire vendu à un concurrent.</Alerte>
 
       <h3>5. Contrôle humain et traçabilité</h3>
       <p>Aucun livrable n&apos;est remis sans relecture et validation par une personne qualifiée. Les interactions avec les outils d&apos;IA sont journalisées, pour permettre de reconstituer, en cas de litige, ce qui a été produit, quand et comment.</p>
-      <SansClause>l&apos;entreprise reçoit des livrables générés sans contrôle et ne dispose d&apos;aucune preuve pour établir l&apos;origine d&apos;une erreur.</SansClause>
+      <Alerte libelle="Sans cette clause :">l&apos;entreprise reçoit des livrables générés sans contrôle et ne dispose d&apos;aucune preuve pour établir l&apos;origine d&apos;une erreur.</Alerte>
 
       <h3>6. Responsabilité et garanties</h3>
       <ul className={styles.bullets}>
         <li><strong>L&apos;erreur de l&apos;outil n&apos;exonère jamais le prestataire</strong> : l&apos;avenant l&apos;écrit expressément et exclut toute qualification de force majeure.</li>
-        <li><strong>Le plafond de responsabilité</strong> ne s&apos;applique pas aux manquements à la confidentialité et à la protection des données. Une clause limitative qui prive de sa substance l&apos;obligation essentielle est réputée non écrite (article 1170 du Code civil, consacrant les jurisprudences Chronopost, <span className={s.cite}>Cass. com., 22 oct. 1996, n° 93-18.632</span>, et Faurecia, <span className={s.cite}>Cass. com., 29 juin 2010, n° 09-11.841</span>) ; mieux vaut toutefois ne pas laisser au juge le soin d&apos;en décider.</li>
+        <li><strong>Le plafond de responsabilité</strong> ne s&apos;applique pas aux manquements à la confidentialité et à la protection des données. Une clause limitative qui prive de sa substance l&apos;obligation essentielle est réputée non écrite (article 1170 du Code civil, consacrant les jurisprudences Chronopost, <span className={styles.cite}>Cass. com., 22 oct. 1996, n° 93-18.632</span>, et Faurecia, <span className={styles.cite}>Cass. com., 29 juin 2010, n° 09-11.841</span>) ; mieux vaut toutefois ne pas laisser au juge le soin d&apos;en décider.</li>
         <li><strong>La garantie de contrefaçon</strong> couvre les contenus générés, frais de défense compris.</li>
       </ul>
-      <SansClause>un plafond fixé à quelques mois de facturation peut couvrir une fuite de données dont le coût réel se chiffre en centaines de milliers d&apos;euros.</SansClause>
+      <Alerte libelle="Sans cette clause :">un plafond fixé à quelques mois de facturation peut couvrir une fuite de données dont le coût réel se chiffre en centaines de milliers d&apos;euros.</Alerte>
 
       <h3>7. AI Act et sortie du contrat</h3>
       <p>Le règlement (UE) 2024/1689 répartit les obligations entre le fournisseur d&apos;un système d&apos;IA et son déployeur. L&apos;avenant attribue ces rôles, organise le respect des obligations de transparence (article 50) et, pour les systèmes à haut risque — le recrutement assisté par IA en est un exemple —, celles du déployeur (article 26). Une entreprise qui modifie substantiellement un système ou le commercialise sous son nom en devient fournisseur (article 25). La fin du contrat est enfin organisée : restitution et suppression des données, y compris chez les fournisseurs d&apos;IA, et conditions de changement de prestataire, que le Data Act encadre pour les services cloud (règlement (UE) 2023/2854).</p>
-      <SansClause>l&apos;entreprise découvre à l&apos;occasion d&apos;un contrôle qu&apos;elle supporte des obligations réglementaires qu&apos;elle croyait à la charge de son fournisseur.</SansClause>
+      <Alerte libelle="Sans cette clause :">l&apos;entreprise découvre à l&apos;occasion d&apos;un contrôle qu&apos;elle supporte des obligations réglementaires qu&apos;elle croyait à la charge de son fournisseur.</Alerte>
 
-      <aside className={styles.ctaIn}>
-        <p className={styles.ctaInTitre}>Vos contrats fournisseurs couvrent-ils l&apos;usage de l&apos;IA ?</p>
-        <p className={styles.ctaInTx}>Un audit des contrats existants permet d&apos;identifier rapidement les relations exposées et les avenants à négocier en priorité.</p>
-        <div className={s.ctaActions}>
-          <Link className={styles.btn} href="/contact">Échanger avec un avocat</Link>
-          <a className={s.tel} href={TEL.href}>{TEL.affiche}</a>
-        </div>
-      </aside>
+      <CtaInline
+        titre="Vos contrats fournisseurs couvrent-ils l'usage de l'IA ?"
+        texte="Un audit des contrats existants permet d'identifier rapidement les relations exposées et les avenants à négocier en priorité."
+        telephone
+      />
 
       {/* ===== 04 ===== */}
       <h2 id="negociation">La négociation</h2>

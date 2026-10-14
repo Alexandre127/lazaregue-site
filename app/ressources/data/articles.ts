@@ -344,6 +344,29 @@ export const ARTICLES: Article[] = [
     publie: true,
     sansTempsDeLecture: true,
   },
+  {
+    title: "Droit du cloud : les règles applicables à ceux qui le développent, le vendent ou l'achètent",
+    seoTitle: "Droit du cloud : les règles applicables | Lazarègue Avocats",
+    seoDescription:
+      "Loi SREN, Data Act, RGPD, NIS 2, DORA, SecNumCloud : les règles applicables aux entreprises qui développent, vendent ou achètent des services cloud.",
+    slug: "droit-du-cloud",
+    domaine: "contrats",
+    // Sur-titre « Contrats IT · Cloud · Données » : domaine du registre + étiquette.
+    etiquette: "Cloud · Données",
+    chapo:
+      "Loi SREN, Data Act, RGPD, NIS 2, DORA, lois extraterritoriales : le cloud repose désormais sur un cadre juridique dense et cohérent. Chaque acteur de la chaîne y trouve des obligations précises. Ce guide les présente, profil par profil, pour permettre à chacun de contractualiser en connaissance de cause.",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 11,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais
