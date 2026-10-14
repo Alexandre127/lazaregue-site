@@ -102,7 +102,9 @@ export const QUESTIONS: Question[] = [
   {
     id: "q7",
     axe: "encadrement",
-    intitule: "Des outils d'IA échangent-ils avec vos clients ou produisent-ils des contenus publiés (chatbot, images, textes) ?",
+    intitule:
+      "Un chatbot ou un assistant d'IA répond-il directement à vos clients ou au public, par exemple sur votre site, par messagerie ou par téléphone ?",
+    aide: "Sont aussi concernés les images, vidéos ou textes générés par IA que l'entreprise publie.",
     pourquoi:
       "L'article 50 de l'AI Act impose des obligations de transparence : les personnes doivent savoir qu'elles échangent avec une IA, et certains contenus générés (hypertrucages, textes publiés pour informer le public) doivent être signalés. Elles s'appliquent depuis le 2 août 2026.",
     exposante: "oui",
@@ -126,9 +128,10 @@ export const QUESTIONS: Question[] = [
   {
     id: "q10",
     axe: "reglementaire",
-    intitule: "Une procédure prévoit-elle la réaction en cas de fuite de données par un outil d'IA ?",
+    intitule:
+      "Si des données personnelles saisies dans un outil d'IA étaient divulguées, par erreur d'un salarié ou par une faille du fournisseur, l'entreprise saurait-elle qui prévenir et comment, dans les 72 heures ?",
     pourquoi:
-      "Une violation de données personnelles doit, sauf risque improbable, être notifiée à la CNIL dans les 72 heures (RGPD, art. 33).",
+      "Une donnée personnelle confiée à un outil non autorisé, ou exposée par une faille du fournisseur, peut constituer une violation de données. Sauf risque improbable, elle doit être notifiée à la CNIL dans les 72 heures (RGPD, art. 33), ce qui suppose une procédure prête.",
     exposante: "non",
   },
 ];

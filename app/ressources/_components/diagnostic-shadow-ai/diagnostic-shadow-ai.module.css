@@ -146,6 +146,13 @@
   flex-direction: column;
 }
 .qEcran > .col { width: 100%; flex: 1; padding-bottom: 32px; }
+/* Mobile : marge basse égale à la hauteur de la barre Retour / Suivant
+   (filet 1 px + 16 px + bouton 56 px + 16 px + zone sûre iOS), pour que le
+   bloc « Pourquoi cette question » ne passe jamais sous la barre collante. */
+.qEcran { --dsa-nav-h: calc(89px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 899px) {
+  .qEcran > .col { padding-bottom: var(--dsa-nav-h); }
+}
 
 .progres { height: 4px; background: var(--bd); }
 .progres i { display: block; height: 100%; background: var(--blue); }
