@@ -164,7 +164,7 @@ export default function CandidatureForm() {
     <div className={styles.formCard}>
       {/* data-clarity-mask : le contenu saisi n'est jamais enregistré par Clarity. */}
       <form onSubmit={onSubmit} noValidate aria-label="Formulaire de candidature" data-clarity-mask="true">
-        <p className={styles.req}>Les champs marqués * sont obligatoires.</p>
+        <p className={styles.req}>* Champs obligatoires</p>
 
         {showSummary && errList.length > 0 && (
           <div className={styles.sumerr} ref={summaryRef} role="alert" tabIndex={-1}>
@@ -309,14 +309,26 @@ export default function CandidatureForm() {
         </button>
 
         <p className={styles.mention} id="mention-information">
-          Les données recueillies sont traitées par Lazarègue Avocats, 18 rue de Tilsitt, 75017 Paris, pour la
-          gestion des candidatures, sur le fondement de mesures précontractuelles prises à la demande du candidat
-          (art. 6.1.b du RGPD). Elles sont destinées aux seuls membres du cabinet chargés du recrutement et
-          conservées six mois à compter de la réception de la candidature. Le candidat dispose
-          d&apos;un droit d&apos;accès, de rectification, d&apos;effacement, de limitation et d&apos;opposition,
-          qu&apos;il exerce à l&apos;adresse{" "}
-          <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a>, ainsi que du droit
-          d&apos;introduire une réclamation auprès de la CNIL.
+          Les données recueillies par ce formulaire sont traitées par Lazarègue Avocats, 18 rue de Tilsitt, 75017
+          Paris, responsable du traitement, pour deux finalités&nbsp;: l&apos;examen de la candidature, sur le
+          fondement de mesures précontractuelles prises à la demande du candidat (art. 6.1.b du RGPD)&nbsp;; la
+          constitution d&apos;un vivier en vue de recrutements futurs, sur le fondement de l&apos;intérêt légitime
+          du cabinet à identifier des profils pour ses besoins à venir (art. 6.1.f du RGPD), auquel le candidat
+          peut s&apos;opposer à tout moment. Les champs signalés par un astérisque sont obligatoires&nbsp;; à
+          défaut, la candidature ne peut être examinée. L&apos;exemple de travail personnel est facultatif. Les
+          données sont destinées aux seuls membres du cabinet chargés du recrutement, ainsi qu&apos;à ses
+          prestataires techniques d&apos;hébergement et de messagerie, [au sein de l&apos;Union européenne /
+          mention du transfert et de sa garantie, à confirmer]. Elles sont conservées six mois à compter de leur
+          réception&nbsp;; en cas de recrutement, elles sont versées au dossier du salarié. Le candidat dispose
+          d&apos;un droit d&apos;accès, de rectification, d&apos;effacement, de limitation, d&apos;opposition et de
+          portabilité, ainsi que du droit de définir des directives relatives au sort de ses données après son
+          décès. Ces droits s&apos;exercent par courriel à{" "}
+          <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a> ou par courrier à
+          l&apos;adresse du cabinet. Le candidat peut introduire une réclamation auprès de la CNIL (
+          <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">
+            www.cnil.fr
+          </a>
+          ).
         </p>
       </form>
     </div>
