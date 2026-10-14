@@ -322,9 +322,9 @@ export const ARTICLES: Article[] = [
   },
   {
     title: "AI Addendum : l'avenant IA que vos contrats ne peuvent plus ignorer",
-    seoTitle: "AI Addendum : l'avenant IA à intégrer à vos contrats | Lazarègue Avocats",
+    seoTitle: "AI Addendum : l'avenant IA des contrats | Lazarègue Avocats",
     seoDescription:
-      "Entraînement des modèles, RGPD, secret des affaires, AI Act : les clauses de l'avenant IA qui protègent votre entreprise face à l'usage de l'IA par vos prestataires.",
+      "Entraînement des modèles, RGPD, secret des affaires, AI Act : les clauses de l'avenant IA qui encadrent l'usage de l'IA par vos prestataires.",
     slug: "ai-addendum-avenant-ia",
     domaine: "contrats",
     // Rattachement secondaire « IA » : le registre n'admet qu'un domaine ; il
