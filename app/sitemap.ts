@@ -38,6 +38,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // Conversion et confiance
   { path: "/contact", priority: 0.8, frequence: "yearly" },
   { path: "/le-cabinet", priority: 0.8, frequence: "yearly" },
+  { path: "/rejoindre-le-cabinet", priority: 0.5, frequence: "yearly" },
 
   // Contenus éditoriaux
   { path: "/ressources", priority: 0.7, frequence: "weekly" },

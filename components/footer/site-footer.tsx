@@ -31,6 +31,7 @@ const DOMAINES: FooterLink[] = FAMILLES.flatMap((f) =>
 
 const CABINET: FooterLink[] = [
   { label: "Le cabinet", href: "/le-cabinet" },
+  { label: "Rejoindre le cabinet", href: "/rejoindre-le-cabinet" },
   { label: "Cas clients", href: "/cas-clients" },
   { label: "Formations", href: "/formations" },
   { label: "Ressources", href: "/ressources" },

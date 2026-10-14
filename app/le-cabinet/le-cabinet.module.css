@@ -1071,3 +1071,36 @@
     padding: 76px 0;
   }
 }
+
+/* Ancres « Voir le profil » depuis /rejoindre-le-cabinet : la fiche n'arrive
+   pas sous l'en-tête collant. */
+.person,
+.expert {
+  scroll-margin-top: calc(var(--header-h-compact) + 16px);
+}
+
+/* ===================== BANDEAU RECRUTEMENT ===================== */
+.recrute {
+  background: var(--lc-white);
+  border-top: 1px solid var(--lc-border);
+  padding: 18px 0;
+}
+.recrute p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--lc-muted);
+}
+.recrute a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+  color: var(--lc-electric);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.recrute a:hover {
+  color: var(--lc-electric-deep);
+}

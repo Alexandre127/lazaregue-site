@@ -126,7 +126,7 @@ const JSON_LD = {
 function PersonCard({ m }: { m: Membre }) {
   const photo = MEMBRES[m.slug].photo;
   return (
-    <article className={styles.person}>
+    <article className={styles.person} id={`equipe-${m.slug}`}>
       <div className={styles.portrait}>
         <Image src={photo} alt={`Portrait de ${m.nom}.`} fill sizes="(max-width: 767px) 100vw, 33vw" />
       </div>
@@ -147,7 +147,7 @@ function PersonCard({ m }: { m: Membre }) {
 function ExpertCard({ m }: { m: Membre }) {
   const photo = MEMBRES[m.slug].photo;
   return (
-    <article className={styles.expert}>
+    <article className={styles.expert} id={`equipe-${m.slug}`}>
       <div className={styles.portrait}>
         <Image src={photo} alt={`Portrait de ${m.nom}.`} fill sizes="(max-width: 767px) 160px, 150px" />
       </div>
@@ -467,6 +467,18 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      {/* ======================= RECRUTEMENT (discret) =================== */}
+      {/* Une ligne et un simple lien texte : la page garde son unique bouton
+          « Exposer mon dossier ». */}
+      <aside className={styles.recrute} aria-label="Recrutement">
+        <div className={styles.wrap}>
+          <p>
+            Le cabinet recrute — stages, apprentissage, avocats, profils techniques.{" "}
+            <Link href="/rejoindre-le-cabinet">Rejoindre le cabinet →</Link>
+          </p>
+        </div>
+      </aside>
     </main>
   );
 }
