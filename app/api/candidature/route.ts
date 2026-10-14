@@ -21,6 +21,10 @@ import { ENTREES, MAX_FICHIERS } from "@/app/rejoindre-le-cabinet/data/entrees";
  * Variables d'environnement : celles de /api/contact (SMTP_*, CONTACT_TO,
  * CONTACT_FROM), plus CANDIDATURE_TO (destinataire des candidatures ; défaut =
  * CONTACT_TO, puis contact@lazaregue-avocats.fr).
+ *
+ * Région d'exécution : Paris (cdg1), fixée pour toutes les fonctions dans
+ * vercel.json — l'export `preferredRegion` est déprécié dans cette version de
+ * Next et n'accepte plus de code de région sur le runtime Node.
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

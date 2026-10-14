@@ -15,6 +15,10 @@ import { upsertContact } from "@/lib/hubspot";
  *   CONTACT_FROM (expéditeur d'enveloppe ; défaut = SMTP_USER)
  *
  * nodemailer impose le runtime Node (pas Edge).
+ *
+ * Région d'exécution : Paris (cdg1), fixée pour toutes les fonctions dans
+ * vercel.json — l'export `preferredRegion` est déprécié dans cette version de
+ * Next et n'accepte plus de code de région sur le runtime Node.
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

@@ -320,7 +320,7 @@ export default function CandidatureForm() {
           prestataires techniques d&apos;hébergement et de messagerie. Le site est hébergé par Vercel Inc., dont
           les fonctions s&apos;exécutent à Paris&nbsp;; les éventuels transferts vers les États-Unis sont encadrés
           par le cadre de protection des données UE–États-Unis (décision d&apos;adéquation de la Commission
-          européenne du 10 juillet 2023). Elles sont conservées six mois à compter de leur
+          européenne du 10 juillet 2023). Les données sont conservées six mois à compter de leur
           réception&nbsp;; en cas de recrutement, elles sont versées au dossier du salarié. Le candidat dispose
           d&apos;un droit d&apos;accès, de rectification, d&apos;effacement, de limitation, d&apos;opposition et de
           portabilité, ainsi que du droit de définir des directives relatives au sort de ses données après son
