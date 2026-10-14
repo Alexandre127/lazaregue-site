@@ -89,23 +89,25 @@ function hutkDe(req: Request): string | undefined {
 type Contexte = { pageUri: string; pageName: string; hutk?: string; ipAddress?: string };
 
 /* Consentement RGPD au sens de HubSpot (legalConsentOptions), pour un compte
-   où les paramètres RGPD sont activés. Toujours `consent`, jamais
-   `legitimateInterest` : ce dernier est rattaché à un type d'abonnement et
+   où les paramètres RGPD sont activés. Transmis UNIQUEMENT si la case lettre
+   d'information est cochée (décision du cabinet, 14 oct. 2026) ; case non
+   cochée : aucun legalConsentOptions. Jamais `legitimateInterest`, qui
    autoriserait l'envoi de la lettre à qui n'a pas coché la case.
-   - consentToProcess : traitement nécessaire à l'accès aux documents, texte =
-     la mention affichée sous le formulaire, mot pour mot ;
+   - consentToProcess : texte = la mention affichée sous le formulaire, mot
+     pour mot ;
    - communications : abonnement au type « Lettre d'information du cabinet »,
-     value = état réel de la case, texte = son libellé exact.
+     texte = le libellé exact de la case.
    Identifiant du type d'abonnement : HUBSPOT_SUBSCRIPTION_ID_LETTRE.
    Absent : aucun legalConsentOptions n'est envoyé (avertissement journalisé). */
 type Consentement = {
   consent: {
     consentToProcess: true;
     text: string;
-    communications: { value: boolean; subscriptionTypeId: number; text: string }[];
+    communications: { value: true; subscriptionTypeId: number; text: string }[];
   };
 };
 function consentement(newsletter: boolean): Consentement | undefined {
+  if (!newsletter) return undefined;
   const id = Number(process.env.HUBSPOT_SUBSCRIPTION_ID_LETTRE);
   if (!Number.isInteger(id) || id <= 0) {
     console.warn("[kit-shadow-ai] HUBSPOT_SUBSCRIPTION_ID_LETTRE absente ou invalide : consentement non transmis à HubSpot.");
@@ -115,7 +117,7 @@ function consentement(newsletter: boolean): Consentement | undefined {
     consent: {
       consentToProcess: true,
       text: MENTION_COMPLETE,
-      communications: [{ value: newsletter, subscriptionTypeId: id, text: LIBELLE_LETTRE }],
+      communications: [{ value: true, subscriptionTypeId: id, text: LIBELLE_LETTRE }],
     },
   };
 }
