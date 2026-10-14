@@ -367,6 +367,29 @@ export const ARTICLES: Article[] = [
     publie: true,
     sansTempsDeLecture: true,
   },
+  {
+    title: "Perte de données chez votre hébergeur",
+    seoTitle: "Perte de données chez un hébergeur : recours et clauses",
+    seoDescription:
+      "Sauvegardes détruites, panne, données retenues en fin de contrat : ce que jugent les tribunaux et les clauses à négocier avant de signer.",
+    slug: "perte-de-donnees-hebergeur",
+    domaine: "contentieux",
+    type: "guide",
+    // Sous-titre de l'article ; le chapeau ouvre le corps de la page.
+    chapo:
+      "Sauvegardes détruites, panne, coupure du service, données retenues en fin de contrat : ce que décident les tribunaux et ce que votre contrat doit prévoir",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Lazarègue Avocats",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 12,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais
