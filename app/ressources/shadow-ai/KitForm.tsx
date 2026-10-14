@@ -3,6 +3,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import styles from "./shadow-ai.module.css";
 import { track } from "@/lib/analytics";
+import { LIBELLE_LETTRE, MENTION, MENTION_LIEN } from "./textes";
 
 /**
  * Formulaire du kit « Shadow AI » : e-mail professionnel obligatoire, prénom,
@@ -199,8 +200,7 @@ export default function KitForm() {
           <div className={styles.check}>
             <input type="checkbox" id="kit-newsletter" name="newsletter" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
             <label htmlFor="kit-newsletter">
-              Recevoir la lettre d&apos;information du cabinet sur le droit du numérique, environ une fois par mois.
-              Désinscription en un clic.
+              {LIBELLE_LETTRE}
             </label>
           </div>
 
@@ -214,11 +214,7 @@ export default function KitForm() {
             {status === "sending" ? "Envoi en cours…" : "Recevoir les modèles"}
           </button>
           <p className={styles.legal}>
-            Lazarègue Avocats traite ces données pour vous donner accès aux documents et, si vous l&apos;acceptez, sa
-            lettre d&apos;information. Elles sont conservées trois ans à compter du dernier contact. Vous disposez de
-            droits d&apos;accès, de rectification, d&apos;effacement et d&apos;opposition auprès de
-            contact@lazaregue-avocats.fr, et pouvez saisir la CNIL.{" "}
-            <a href="/politique-de-confidentialite">Politique de confidentialité</a>.
+            {MENTION} <a href="/politique-de-confidentialite">{MENTION_LIEN}</a>.
           </p>
         </form>
       )}

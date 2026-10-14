@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { LIBELLE_LETTRE, MENTION_COMPLETE } from "@/app/ressources/shadow-ai/textes";
 
 /**
  * Formulaire du kit « Shadow AI » (/ressources/shadow-ai) : enregistre la
@@ -18,7 +19,7 @@ import { NextResponse } from "next/server";
  *
  * Champs transmis : email, firstname, company, jobtitle (propriétés standard)
  * et lz_lettre_information ("true"/"false"), case d'abonnement distincte du
- * téléchargement. Contexte transmis : URL canonique de la page (jamais
+ * téléchargement ; plus le consentement RGPD de HubSpot (voir `consentement`). Contexte transmis : URL canonique de la page (jamais
  * l'adresse d'un aperçu), adresse IP du visiteur et, s'il existe déjà, son
  * cookie hubspotutk (lu, jamais déposé). Aucun e-mail envoyé.
  *
@@ -87,8 +88,46 @@ function hutkDe(req: Request): string | undefined {
 
 type Contexte = { pageUri: string; pageName: string; hutk?: string; ipAddress?: string };
 
-async function soumettre(portal: string, form: string, fields: Champ[], context: Contexte): Promise<void> {
-  const body = JSON.stringify({ fields, context });
+/* Consentement RGPD au sens de HubSpot (legalConsentOptions), pour un compte
+   où les paramètres RGPD sont activés. Toujours `consent`, jamais
+   `legitimateInterest` : ce dernier est rattaché à un type d'abonnement et
+   autoriserait l'envoi de la lettre à qui n'a pas coché la case.
+   - consentToProcess : traitement nécessaire à l'accès aux documents, texte =
+     la mention affichée sous le formulaire, mot pour mot ;
+   - communications : abonnement au type « Lettre d'information du cabinet »,
+     value = état réel de la case, texte = son libellé exact.
+   Identifiant du type d'abonnement : HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE.
+   Absent : aucun legalConsentOptions n'est envoyé (avertissement journalisé). */
+type Consentement = {
+  consent: {
+    consentToProcess: true;
+    text: string;
+    communications: { value: boolean; subscriptionTypeId: number; text: string }[];
+  };
+};
+function consentement(newsletter: boolean): Consentement | undefined {
+  const id = Number(process.env.HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE);
+  if (!Number.isInteger(id) || id <= 0) {
+    console.warn("[kit-shadow-ai] HUBSPOT_SUBSCRIPTION_TYPE_ID_LETTRE absente ou invalide : consentement non transmis à HubSpot.");
+    return undefined;
+  }
+  return {
+    consent: {
+      consentToProcess: true,
+      text: MENTION_COMPLETE,
+      communications: [{ value: newsletter, subscriptionTypeId: id, text: LIBELLE_LETTRE }],
+    },
+  };
+}
+
+async function soumettre(
+  portal: string,
+  form: string,
+  fields: Champ[],
+  context: Contexte,
+  legalConsentOptions?: Consentement,
+): Promise<void> {
+  const body = JSON.stringify({ fields, context, ...(legalConsentOptions ? { legalConsentOptions } : {}) });
   for (const hote of HOTES) {
     const url = `${hote}/submissions/v3/integration/submit/${portal}/${form}`;
     try {
@@ -178,7 +217,7 @@ export async function POST(req: Request) {
     ...(hutk ? { hutk } : {}),
     ...(ip !== "inconnu" ? { ipAddress: ip } : {}),
   };
-  await soumettre(portal, form, fields, context);
+  await soumettre(portal, form, fields, context, consentement(newsletter));
 
   return NextResponse.json({ ok: true });
 }
