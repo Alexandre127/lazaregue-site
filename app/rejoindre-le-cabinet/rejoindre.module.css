@@ -654,7 +654,6 @@
 }
 .fld input[type="text"],
 .fld input[type="email"],
-.fld input[type="date"],
 .fld select {
   width: 100%;
   min-height: 48px;

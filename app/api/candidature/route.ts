@@ -31,7 +31,6 @@ export const dynamic = "force-dynamic";
 
 const LIBELLES = ENTREES.map((e) => e.formulaire);
 const EMAIL_RE = /^[^@\s]{1,64}@[^@\s]{1,255}\.[^@\s]{2,}$/;
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 // Marge pour les champs texte et l'enveloppe multipart, au-delà des fichiers.
 const MAX_BODY = MAX_FICHIERS + 64 * 1024;
 
@@ -109,7 +108,6 @@ export async function POST(req: Request) {
   const entree = clean(form.get("entree"), 80);
   const nom = clean(form.get("nom"), 120);
   const email = clean(form.get("email"), 254).toLowerCase();
-  const disponibilite = clean(form.get("disponibilite"), 10);
   const mention = form.get("mention") === "oui";
   const cv = form.get("cv");
   const travail = form.get("travail");
@@ -120,7 +118,6 @@ export async function POST(req: Request) {
   if (!LIBELLES.includes(entree)) invalides.push("entree");
   if (!nom) invalides.push("nom");
   if (!EMAIL_RE.test(email)) invalides.push("email");
-  if (!DATE_RE.test(disponibilite)) invalides.push("disponibilite");
   if (!mention) invalides.push("mention");
   if (!cvFichier) invalides.push("cv");
   if (invalides.length) {
@@ -169,7 +166,6 @@ export async function POST(req: Request) {
     `Entrée visée : ${entree}`,
     `Prénom et nom : ${nom}`,
     `Adresse électronique : ${email}`,
-    `Disponibilité : ${disponibilite.split("-").reverse().join("/")}`,
     `Curriculum vitæ : joint`,
     `Exemple de travail personnel : ${travailPdf ? "joint" : "non fourni"}`,
     "Mention d'information : prise de connaissance confirmée",

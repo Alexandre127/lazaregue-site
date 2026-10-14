@@ -18,14 +18,13 @@ import { ENTREES, EVT_ENTREE, MAX_FICHIERS } from "../data/entrees";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-type Champ = "entree" | "nom" | "email" | "disponibilite" | "cv" | "travail" | "mention";
+type Champ = "entree" | "nom" | "email" | "cv" | "travail" | "mention";
 type Errs = Partial<Record<Champ, string>>;
 
 const LIBELLES: Record<Champ, string> = {
   entree: "Entrée visée",
   nom: "Prénom et nom",
   email: "Adresse électronique",
-  disponibilite: "Disponibilité",
   cv: "Curriculum vitæ",
   travail: "Exemple de travail personnel",
   mention: "Mention d'information",
@@ -35,7 +34,6 @@ const MSG: Record<Champ, string> = {
   entree: "Sélectionnez l'entrée visée.",
   nom: "Indiquez votre prénom et votre nom.",
   email: "Indiquez une adresse électronique valide, par exemple prenom.nom@exemple.fr.",
-  disponibilite: "Indiquez une date de disponibilité.",
   cv: "Joignez votre curriculum vitæ au format PDF.",
   travail: "L'exemple de travail doit être un fichier PDF.",
   mention: "Cochez la case pour confirmer la prise de connaissance de la mention d'information.",
@@ -49,7 +47,6 @@ export default function CandidatureForm() {
   const [entree, setEntree] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
-  const [disponibilite, setDisponibilite] = useState("");
   const [cv, setCv] = useState<File | null>(null);
   const [travail, setTravail] = useState<File | null>(null);
   const [mention, setMention] = useState(false);
@@ -80,7 +77,6 @@ export default function CandidatureForm() {
     if (!entree) e.entree = MSG.entree;
     if (!nom.trim()) e.nom = MSG.nom;
     if (!EMAIL_RE.test(email.trim())) e.email = MSG.email;
-    if (!disponibilite) e.disponibilite = MSG.disponibilite;
     if (!cv) e.cv = MSG.cv;
     else if (!estPdf(cv)) e.cv = MSG_PDF;
     if (travail && !estPdf(travail)) e.travail = MSG_PDF;
@@ -113,7 +109,6 @@ export default function CandidatureForm() {
     fd.set("entree", entree);
     fd.set("nom", nom);
     fd.set("email", email);
-    fd.set("disponibilite", disponibilite);
     fd.set("mention", mention ? "oui" : "");
     fd.set("website", website);
     if (cv) fd.set("cv", cv);
@@ -235,19 +230,6 @@ export default function CandidatureForm() {
             />
             {errs.email && <p className={styles.err} id="e-email">{errs.email}</p>}
           </div>
-        </div>
-
-        <div className={styles.fld}>
-          <label htmlFor="f-disponibilite">Disponibilité&nbsp;*</label>
-          <input
-            id="f-disponibilite"
-            type="date"
-            value={disponibilite}
-            onChange={(e) => setDisponibilite(e.target.value)}
-            aria-invalid={errs.disponibilite ? "true" : undefined}
-            aria-describedby={desc("disponibilite")}
-          />
-          {errs.disponibilite && <p className={styles.err} id="e-disponibilite">{errs.disponibilite}</p>}
         </div>
 
         <div className={styles.fld}>
