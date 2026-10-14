@@ -74,7 +74,10 @@ async function soumettre(portal: string, form: string, fields: Champ[], pageUri:
         body,
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
-      if (res.ok) return;
+      if (res.ok) {
+        console.info(`[kit-shadow-ai] HubSpot ${hote} : ${res.status} — demande enregistrée.`);
+        return;
+      }
       const detail = await res.text().catch(() => "");
       console.error(`[kit-shadow-ai] HubSpot ${hote} : ${res.status} ${detail.slice(0, 300)}`);
     } catch (e) {
@@ -100,6 +103,7 @@ export async function POST(req: Request) {
 
   // Champ piège : rempli = robot. Réponse identique à un succès, rien n'est transmis.
   if (typeof data.website === "string" && data.website.trim() !== "") {
+    console.warn("[kit-shadow-ai] Champ piège rempli : demande écartée (robot ou remplissage automatique du navigateur).");
     return NextResponse.json({ ok: true });
   }
 

@@ -132,8 +132,19 @@ export default function KitForm() {
 
           {/* Champ piège anti-robots — masqué, hors flux, non focusable. */}
           <div aria-hidden className={styles.hp}>
-            <label htmlFor="kit-website">Ne pas remplir</label>
-            <input id="kit-website" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+            {/* Identifiant neutre : un nom comme « website » attire le remplissage
+                automatique des navigateurs, qui ferait écarter une vraie demande. */}
+            <label htmlFor="kit-zq7">Ne pas remplir</label>
+            <input
+              id="kit-zq7"
+              name="kit-zq7"
+              tabIndex={-1}
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
           </div>
 
           <div className={styles.fields}>
