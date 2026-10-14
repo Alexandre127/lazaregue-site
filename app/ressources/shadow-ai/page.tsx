@@ -284,12 +284,13 @@ export default function Page() {
       </p>
       <div className={styles.tool}>
         <div>
-          <p className={styles.k}>outil · 10 questions · environ 10 minutes</p>
-          <h3>Autodiagnostic AI Act</h3>
+          <p className={styles.k}>outil · 10 questions · sans inscription</p>
+          <h3>Autodiagnostic Shadow AI</h3>
           <p>Usages, données, CSE, contrats fournisseurs, systèmes à haut risque. Résultat immédiat.</p>
         </div>
-        {/* Page outil pas encore publiée : mention sans lien (aucune 404). */}
-        <p className={styles.bientot}>Bientôt disponible</p>
+        <Link className="btn btn-primary" href="/ressources/diagnostic-shadow-ai">
+          Commencer le diagnostic
+        </Link>
       </div>
     </ArticleLayout>
   );

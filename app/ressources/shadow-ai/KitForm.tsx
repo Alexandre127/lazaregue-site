@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import styles from "./shadow-ai.module.css";
 import { track } from "@/lib/analytics";
 import { LIBELLE_LETTRE, MENTION, MENTION_LIEN } from "./textes";
@@ -121,7 +122,7 @@ export default function KitForm() {
           </ul>
           <p className={styles.sub}>
             Étape suivante : mesurez l&apos;exposition de votre entreprise en dix questions avec{" "}
-            <a href="#mesurer">l&apos;autodiagnostic AI Act</a>.
+            <Link href="/ressources/diagnostic-shadow-ai">l&apos;autodiagnostic Shadow AI</Link>.
           </p>
         </div>
       ) : (
