@@ -320,6 +320,30 @@ export const ARTICLES: Article[] = [
     publie: true,
     outil: true,
   },
+  {
+    title: "AI Addendum : l'avenant IA que vos contrats ne peuvent plus ignorer",
+    seoTitle: "AI Addendum : l'avenant IA à intégrer à vos contrats | Lazarègue Avocats",
+    seoDescription:
+      "Entraînement des modèles, RGPD, secret des affaires, AI Act : les clauses de l'avenant IA qui protègent votre entreprise face à l'usage de l'IA par vos prestataires.",
+    slug: "ai-addendum-avenant-ia",
+    domaine: "contrats",
+    // Rattachement secondaire « IA » : le registre n'admet qu'un domaine ; il
+    // figure dans le sur-titre (« Contrats IT · Intelligence artificielle »).
+    etiquette: "Intelligence artificielle",
+    chapo:
+      "Vos données circulent déjà dans les outils d'intelligence artificielle de vos prestataires. Sans clause, elles peuvent nourrir des modèles tiers, perdre la protection du secret des affaires et exposer l'entreprise à des sanctions. L'avenant IA est devenu la pièce maîtresse de toute relation contractuelle.",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 10,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais
