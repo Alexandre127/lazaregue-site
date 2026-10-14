@@ -369,10 +369,9 @@ export const ARTICLES: Article[] = [
   },
   {
     title: "Perte de données chez votre hébergeur",
-    // Title SEO fourni avec suffixe (86 caractères) : sans suffixe au-delà de 60 (CLAUDE.md).
-    seoTitle: "Perte de données chez un hébergeur : recours et clauses à prévoir",
+    seoTitle: "Perte de données chez un hébergeur : recours et clauses",
     seoDescription:
-      "Sauvegardes détruites, panne, données retenues en fin de contrat : ce que jugent les tribunaux (OVHcloud, rançongiciel, réversibilité) et les clauses à négocier avant de signer.",
+      "Sauvegardes détruites, panne, données retenues en fin de contrat : ce que jugent les tribunaux et les clauses à négocier avant de signer.",
     slug: "perte-de-donnees-hebergeur",
     domaine: "contentieux",
     type: "guide",
