@@ -92,7 +92,9 @@
   margin: 32px 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* autant de colonnes que de repères (data/diagnostic-shadow-ai.ts) */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   border-block: 1px solid rgba(255, 255, 255, 0.18);
 }
 .reperes li {

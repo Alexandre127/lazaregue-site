@@ -269,7 +269,6 @@ export const TEXTES = {
     reperes: [
       { valeur: "10", libelle: "questions" },
       { valeur: "4", libelle: "axes" },
-      { valeur: "0", libelle: "inscription" },
     ],
     titreAxes: "les quatre axes évalués",
     bouton: "Commencer le diagnostic",
