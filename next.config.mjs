@@ -225,7 +225,12 @@ const nextConfig = {
   // Appliqués par Vercel au niveau de la réponse : n'impose aucun rendu
   // dynamique, ne change pas le cache ni les Core Web Vitals.
   async headers() {
-    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      // Kit « Shadow AI » (charte + grille) : fichiers servis en direct, jamais
+      // indexés. La page /ressources/shadow-ai, elle, reste indexable.
+      { source: "/ressources/kit-shadow-ai/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+    ];
   },
 
   async redirects() {
