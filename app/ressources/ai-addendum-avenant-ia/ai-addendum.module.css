@@ -1,27 +1,6 @@
-/* Article « AI Addendum » : compléments au gabarit (article.module.css),
-   limités aux trois motifs propres à ce texte. Angles droits, aucune ombre. */
+/* Article « AI Addendum » : liste de contrôle à cases visuelles, non
+   interactives (motif propre à ce texte). Angles droits, aucune ombre. */
 
-/* Références de décisions : en petit, DM Mono, gris accessible. */
-.cite {
-  font-family: var(--ff-mono);
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
-}
-
-/* « Sans cette clause : » — alerte discrète, filet bleu à gauche. */
-.sans {
-  border-left: 3px solid var(--blue);
-  padding: 2px 0 2px 14px;
-}
-.sans p {
-  font-size: 15px !important;
-  line-height: 1.55 !important;
-  margin: 0;
-}
-.sans strong { color: var(--blue); font-weight: 600; }
-
-/* Liste de contrôle : cases visuelles, non interactives. */
 .check {
   list-style: none;
   margin: 0;
@@ -41,34 +20,3 @@
   border: 2px solid var(--blue);
   background: var(--wh);
 }
-
-/* Appel final : liens de contact sous le bouton (fond navy). */
-.coord {
-  margin: 20px 0 0;
-  font-family: var(--ff-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--muted-on-dark) !important;
-}
-.coord a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--wh);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.ctaActions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 20px;
-}
-.tel {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  font-weight: 600;
-  color: var(--ink);
-}
-.tel:hover { color: var(--blue); }

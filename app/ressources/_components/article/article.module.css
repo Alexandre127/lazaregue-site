@@ -417,3 +417,23 @@
 
 /* Encart sous le sommaire latéral (ArticleLayout `encart`). */
 .tocEncart { margin-top: 28px; }
+
+/* ===== Motifs partagés des articles de fond (AI Addendum, Droit du cloud) ===== */
+/* Référence de décision dans le corps : en petit, DM Mono, gris accessible. */
+.cite { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.02em; color: var(--text-muted); }
+
+/* Alerte discrète (Alerte) : filet bleu à gauche, libellé en bleu gras. */
+.alerte { border-left: 3px solid var(--blue); padding: 2px 0 2px 14px; }
+.alerte p { font-size: 15px !important; line-height: 1.55 !important; margin: 0; }
+.alerte strong { color: var(--blue); font-weight: 600; }
+
+/* CtaInline : bouton et téléphone côte à côte. */
+.ctaActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.ctaTel { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; color: var(--ink); }
+.ctaTel:hover { color: var(--blue); }
+
+/* AppelFinal : téléphone et e-mail sous le bouton (fond navy). */
+.coord { margin: 20px 0 0; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; color: var(--muted-on-dark) !important; }
+.coord a { display: inline-flex; align-items: center; min-height: 44px; color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.appel .h2 + .lead { margin-top: 16px; }
+.appel .lead + .lead { margin-top: 12px; }
