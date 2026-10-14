@@ -312,7 +312,7 @@ export default function CandidatureForm() {
           Les données recueillies sont traitées par Lazarègue Avocats, 18 rue de Tilsitt, 75017 Paris, pour la
           gestion des candidatures, sur le fondement de mesures précontractuelles prises à la demande du candidat
           (art. 6.1.b du RGPD). Elles sont destinées aux seuls membres du cabinet chargés du recrutement et
-          conservées <strong className={styles.marqueur}>[DURÉE À COMPLÉTER]</strong>. Le candidat dispose
+          conservées six mois. Le candidat dispose
           d&apos;un droit d&apos;accès, de rectification, d&apos;effacement, de limitation et d&apos;opposition,
           qu&apos;il exerce à l&apos;adresse{" "}
           <a href="mailto:contact@lazaregue-avocats.fr">contact@lazaregue-avocats.fr</a>, ainsi que du droit

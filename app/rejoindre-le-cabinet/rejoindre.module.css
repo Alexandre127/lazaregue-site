@@ -763,12 +763,6 @@
   text-decoration: underline;
   word-break: break-word;
 }
-.marqueur {
-  background: var(--tint);
-  color: var(--ink);
-  outline: 1px dashed var(--red);
-  padding: 0 4px;
-}
 .done {
   border-top: 2px solid var(--blue);
   padding-top: 20px;
