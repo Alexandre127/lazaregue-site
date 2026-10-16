@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/next";
 import ConsentAnalytics from "@/components/analytics/consent-analytics";
 import AnalyticsEvents from "@/components/analytics/analytics-events";
 import HubSpotSpaTracking from "@/components/analytics/hubspot-spa-tracking";
+import { HorsPieces } from "@/components/layout/hors-pieces";
 import "./globals.css";
 import "./hero.css";
 import "./cookieconsent-theme.css";
@@ -86,15 +87,20 @@ export default function RootLayout({
   return (
     <html lang="fr" className={fontVariables}>
       <body className="min-h-screen bg-navy antialiased text-wh">
-        <ConsentAnalytics />
-        <AnalyticsEvents />
-        <HubSpotSpaTracking />
-        <PageEffects />
-        <SiteHeader />
+        {/* Habillage et mesure retirés sur les pages de pièces /v/<jeton> */}
+        <HorsPieces>
+          <ConsentAnalytics />
+          <AnalyticsEvents />
+          <HubSpotSpaTracking />
+          <PageEffects />
+          <SiteHeader />
+        </HorsPieces>
         {children}
-        <GlobalCta />
-        <SiteFooter />
-        <Analytics />
+        <HorsPieces>
+          <GlobalCta />
+          <SiteFooter />
+          <Analytics />
+        </HorsPieces>
       </body>
     </html>
   );

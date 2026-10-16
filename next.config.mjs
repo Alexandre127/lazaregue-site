@@ -230,6 +230,9 @@ const nextConfig = {
       // Kit « Shadow AI » (charte + grille) : fichiers servis en direct, jamais
       // indexés. La page /ressources/shadow-ai, elle, reste indexable.
       { source: "/ressources/kit-shadow-ai/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      // Pièces vidéo consultables depuis des conclusions (/v/<jeton> et leurs
+      // fichiers) : accessibles à qui détient le lien, jamais indexées.
+      { source: "/v/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
     ];
   },
 
