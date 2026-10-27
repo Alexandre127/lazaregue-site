@@ -737,7 +737,7 @@
 /* Composant « portail client » (aperçu fixe ApercuPortail, exemple « conseil »). */
 .portailDemo {
   width: 100%;
-  max-width: 460px;
+  max-width: 640px;
   margin-inline: auto;
 }
 
