@@ -317,7 +317,7 @@ export default function Page() {
                 <article><h3><Link href={R_CONTENTIEUX}>Contentieux informatique →</Link></h3><p>{fr("Mise en cause du prestataire, expertise et responsabilité.")}</p></article>
                 <article><h3><Link href={R_ESCRO}>Escroquerie et fraude →</Link></h3><p>Virement frauduleux et recours des particuliers contre les banques.</p></article>
               </div>
-              <p className="bridge-line">À lire aussi&nbsp;: <Link href={R_OSINT}>OSINT&nbsp;: définition, valeur de preuve et cadre juridique</Link>.</p>
+              <p className="bridge-line">À lire aussi&nbsp;: <Link href={R_OSINT}>OSINT&nbsp;: définition, valeur de preuve et cadre juridique</Link>{" "}·{" "}<Link href="/cas-clients/piratage-informatique-expertise-origine-attaque">Cas client&nbsp;: une expertise technique pour déterminer l’origine d’un piratage</Link>.</p>
             </div>
           </section>
 

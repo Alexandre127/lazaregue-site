@@ -393,6 +393,9 @@
 .esc :global(.voir) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0; max-width: none; font-size: 15px; }
 .esc :global(.voir .lbl) { display: inline; margin: 0; }
 .esc :global(.voir a) { font-weight: 600; }
+/* Sous 700 px, les liens de « Voir aussi » passent à la ligne : les points
+   séparateurs (décoratifs, aria-hidden) se retrouvaient isolés sur une ligne. */
+@media (max-width: 700px) { .esc :global(.voir > span[aria-hidden]) { display: none; } }
 
 /* Refonte v3 — tablette / mobile. */
 @media (max-width: 1100px) {
