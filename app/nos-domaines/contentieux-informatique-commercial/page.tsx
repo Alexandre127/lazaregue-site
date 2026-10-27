@@ -492,6 +492,13 @@ export default function Page() {
                 ))}
               </div>
               <p className="cases-note">Dossiers anonymisés — procédures en cours.</p>
+              {/* Maillage interne (27 oct. 2026) : cas clients du domaine. */}
+              <p className="cases-links">
+                <span>À consulter également&nbsp;:</span>
+                <Link href="/cas-clients/litige-infogerance-prestataire-informatique">Litige d’infogérance&nbsp;→</Link>
+                <Link href="/cas-clients/cyberattaque-responsabilite-prestataire-informatique">Cyberattaque et responsabilité du prestataire&nbsp;→</Link>
+                <Link href="/cas-clients/piratage-informatique-expertise-origine-attaque">Piratage et expertise technique&nbsp;→</Link>
+              </p>
             </div>
           </section>
 

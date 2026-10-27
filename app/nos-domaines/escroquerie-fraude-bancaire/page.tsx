@@ -335,6 +335,10 @@ export default function Page() {
                 <Link href="/nos-domaines/crypto-actifs-blockchain">Crypto-actifs, blockchain et Web3</Link>
                 <span aria-hidden> · </span>
                 <Link href="/ressources/jurisprudence-faux-conseiller-bancaire">Jurisprudence sur le faux conseiller bancaire</Link>
+                <span aria-hidden> · </span>
+                <Link href="/cas-clients/virements-frauduleux-plateformes-crypto-recours-banque">Cas client&nbsp;: virements frauduleux vers des plateformes crypto</Link>
+                <span aria-hidden> · </span>
+                <Link href="/cas-clients/escroquerie-en-ligne-paiements-carte-crypto-banque">Cas client&nbsp;: escroquerie en ligne, paiements par carte et crypto</Link>
               </p>
             </div>
           </section>

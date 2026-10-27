@@ -114,6 +114,12 @@ const SUJETS = [
   { label: "Violation de données", href: "/nos-domaines/rgpd-donnees-personnelles" },
   { label: "Contentieux des contrats informatiques", href: "/nos-domaines/contentieux-informatique-commercial" },
   { label: "Diffamation et retrait de contenus", href: "/nos-domaines/diffamation-retrait-contenus" },
+  // Maillage interne (27 oct. 2026) : formation et cas clients du domaine.
+  // Libellés courts : les liens de .cw-sujets restent sur une ligne
+  // au-delà de 400 px.
+  { label: "Formation cybersécurité", href: "/formations/cybersecurite" },
+  { label: "Cas client · cyberattaque", href: "/cas-clients/cyberattaque-responsabilite-prestataire-informatique" },
+  { label: "Cas client · piratage et expertise", href: "/cas-clients/piratage-informatique-expertise-origine-attaque" },
 ];
 
 export function CyberV4() {
@@ -499,9 +505,12 @@ const CSS = `
 [data-domaine="cyberwf"] .cw-faq-list summary::after { content: '+'; font-family: var(--ff-mono); font-size: 22px; color: #1A47FF; flex-shrink: 0; }
 [data-domaine="cyberwf"] .cw-faq-list details[open] summary::after { content: '−'; }
 [data-domaine="cyberwf"] .cw-faq-list p { margin: 0 0 22px; font-size: 16px; line-height: 1.6; color: #4A4A63; max-width: 760px; }
-[data-domaine="cyberwf"] .cw-sujets { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; font-size: 15px; margin-top: 16px; }
+[data-domaine="cyberwf"] .cw-sujets { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; font-size: 15px; margin-top: 16px; }
 [data-domaine="cyberwf"] .cw-sujets strong { font-weight: 600; color: #0A0A14; }
-[data-domaine="cyberwf"] .cw-sujets a { margin: 0; white-space: nowrap; }
+/* Cible cliquable de 44 px minimum (règle du site) : hauteur portée par le lien lui-même. */
+[data-domaine="cyberwf"] .cw-sujets a { margin: 0; white-space: nowrap; display: inline-flex; align-items: center; min-height: 44px; }
+/* Très petits écrans : un libellé plus large que l'écran passe à la ligne au lieu d'être coupé. */
+@media (max-width: 400px) { [data-domaine="cyberwf"] .cw-sujets a { white-space: normal; } }
 
 /* Contact final */
 [data-domaine="cyberwf"] .cw-final { padding: clamp(52px,7vw,96px) var(--px); display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; }

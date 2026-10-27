@@ -359,6 +359,12 @@
 .contentieux :global(.rt) { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink); }
 @media (max-width: 900px) { .contentieux :global(.rt) { font-size: 15px; } }
 .contentieux :global(.cases-note) { margin: 24px 0 0; font-size: 13.5px; color: var(--text-muted); }
+/* Liens vers les cas clients (maillage, 27 oct. 2026) : corps lisible et
+   cible tactile de 44 px de haut (padding vertical sur chaque lien). */
+.contentieux :global(.cases-links) { margin: 16px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 24px; font-size: 15px; line-height: 1.6; color: var(--ink); }
+.contentieux :global(.cases-links span) { padding-block: 10px; }
+.contentieux :global(.cases-links a) { display: inline-block; padding-block: 10px; color: var(--blue); font-weight: 500; }
+@media (max-width: 700px) { .contentieux :global(.cases-links) { flex-direction: column; align-items: flex-start; } }
 
 /* ==========================================================================
    10 · DÉROULEMENT
