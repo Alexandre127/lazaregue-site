@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { MembreCarte } from "@/components/equipe-dossier";
 import styles from "./picrights.module.css";
 
 /**
@@ -139,13 +140,13 @@ const FAQ: { q: string; a: string }[] = [
   },
 ];
 
-function Actions({ sombre = true }: { sombre?: boolean }) {
+function Actions({ sombre = true, bleu = false }: { sombre?: boolean; bleu?: boolean }) {
   return (
     <div className={styles.actions}>
-      <a className="btn btn-primary" href={MAIL}>
+      <a className={bleu ? "btn btn-white" : "btn btn-primary"} href={MAIL}>
         Transmettre le courrier reçu →
       </a>
-      <a className={sombre ? "btn btn-ghost" : "btn btn-line"} href={TEL}>
+      <a className={sombre || bleu ? "btn btn-ghost" : "btn btn-line"} href={TEL}>
         Appeler — 01 81 70 62 00
       </a>
     </div>
@@ -158,7 +159,8 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       <section className={styles.hero}>
-        <div className={styles.wrap}>
+        <div className={`${styles.wrap} ${styles.heroGrid}`}>
+          <div>
           <nav className={styles.crumb} aria-label="Fil d'Ariane">
             <Link href="/">Accueil</Link> / <span aria-current="page">Courrier PicRights</span>
           </nav>
@@ -174,6 +176,28 @@ export default function Page() {
             Envoyez votre courrier et la photographie&nbsp;: le cabinet vous indique son appréciation, la démarche
             proposée et le prix forfaitaire de son intervention, sans engagement.
           </p>
+          </div>
+          {/* Illustration décorative : courrier générique, sans logo ni marque. */}
+          <div className={styles.courrier} aria-hidden="true">
+            <div className={styles.lettre}>
+              <span className={styles.lettreTag}>Demande d&apos;indemnisation</span>
+              <span className={styles.ligne} style={{ width: "72%" }} />
+              <span className={styles.ligne} style={{ width: "90%" }} />
+              <span className={styles.ligne} style={{ width: "58%" }} />
+              <div className={styles.vignette}>
+                <span>Photographie</span>
+              </div>
+              <span className={styles.ligne} style={{ width: "84%" }} />
+              <span className={styles.ligne} style={{ width: "66%" }} />
+              <div className={styles.montant}>
+                <span>Montant réclamé</span>
+                <strong>— — — €</strong>
+              </div>
+            </div>
+            <span className={`${styles.question} ${styles.q1}`}>Photographie originale&nbsp;?</span>
+            <span className={`${styles.question} ${styles.q2}`}>Droits de l&apos;agence&nbsp;?</span>
+            <span className={`${styles.question} ${styles.q3}`}>Montant justifié&nbsp;?</span>
+          </div>
         </div>
       </section>
 
@@ -187,6 +211,12 @@ export default function Page() {
             l&apos;utilisation reprochée est établie. Selon le résultat de cet examen, la réponse adaptée peut être une
             contestation de la demande dans son principe, une discussion du montant, ou un règlement.
           </p>
+          <ol className={styles.conditions}>
+            <li><span className={styles.big}>01</span><strong>Une photographie protégée</strong><span>L&apos;image est-elle originale&nbsp;?</span></li>
+            <li><span className={styles.big}>02</span><strong>Des droits établis</strong><span>L&apos;agence en est-elle titulaire, PicRights mandatée&nbsp;?</span></li>
+            <li><span className={styles.big}>03</span><strong>Une utilisation prouvée</strong><span>Quelle page, quelle date, quelle durée&nbsp;?</span></li>
+            <li><span className={styles.big}>04</span><strong>Un montant justifié</strong><span>Sur quelle base a-t-il été calculé&nbsp;?</span></li>
+          </ol>
         </div>
       </section>
 
@@ -293,8 +323,13 @@ export default function Page() {
 
       {/* Décision vérifiée sur le texte intégral (TJ Rennes, 2e ch. civ., 9 mars 2026,
           RG 23/05206), transmis par le cabinet le 28 oct. 2026. Parties anonymisées. */}
-      <section className={`${styles.sec} ${styles.sep}`} id="jurisprudence" aria-labelledby="h-juris">
-        <div className={styles.wrap}>
+      <section className={styles.decision} id="jurisprudence" aria-labelledby="h-juris">
+        <div className={`${styles.wrap} ${styles.decisionGrid}`}>
+          <blockquote className={styles.citation}>
+            <span>«&nbsp;Lettre d&apos;intimidation&nbsp;»</span>
+            <cite>Tribunal judiciaire de Rennes, 9 mars 2026</cite>
+          </blockquote>
+          <div>
           <span className="eyebrow">Une décision obtenue par le cabinet</span>
           <h2 id="h-juris">Une photographie de petit-déjeuner jugée non originale</h2>
           <p>
@@ -311,6 +346,7 @@ export default function Page() {
             L&apos;entreprise a obtenu des dommages-intérêts à ce titre.
           </p>
           <p className={styles.ref}>TJ Rennes, 2e ch. civ., 9 mars 2026, RG n° 23/05206.</p>
+          </div>
         </div>
       </section>
 
@@ -319,7 +355,7 @@ export default function Page() {
           <div>
             <span className="eyebrow">Les bons réflexes</span>
             <h2>Comment répondre à PicRights&nbsp;?</h2>
-            <ul className={styles.liste}>
+            <ol className={styles.reflexes}>
               <li>
                 <strong>Ne pas régler dans la précipitation</strong> ni reconnaître une faute par écrit avant d&apos;avoir
                 fait examiner la demande.
@@ -334,7 +370,7 @@ export default function Page() {
               <li>
                 <strong>Faire examiner la photographie</strong> avant toute réponse.
               </li>
-            </ul>
+            </ol>
           </div>
           <div id="apres-picrights">
             <span className="eyebrow">Après PicRights</span>
@@ -379,6 +415,22 @@ export default function Page() {
             Le périmètre du forfait est précisé dans la convention. Une procédure judiciaire fait l&apos;objet d&apos;une
             convention distincte.
           </p>
+          <div className={styles.equipe}>
+            <div className={styles.equipeCarte}>
+              <MembreCarte
+                membre={{ slug: "alexandre", role: "Suit les réclamations photographiques du cabinet", tags: ["Droit d'auteur", "Photographie", "Contentieux"] }}
+              />
+            </div>
+            <div>
+              <span className="eyebrow">Qui traite le dossier</span>
+              <h3 className={styles.equipeT}>Un avocat lit le courrier et regarde la photographie</h3>
+              <p>
+                L&apos;appréciation est donnée par Me Alexandre Lazarègue, qui a plaidé l&apos;affaire jugée à Rennes.
+                Le client échange directement avec l&apos;avocat qui suit son dossier, du premier retour à la
+                clôture des échanges.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -431,7 +483,7 @@ export default function Page() {
             Transmettez au cabinet la photographie et le courrier reçu&nbsp;: il vous indique son appréciation et le prix
             de son intervention.
           </p>
-          <Actions />
+          <Actions bleu />
         </div>
       </section>
     </main>
