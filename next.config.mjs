@@ -76,7 +76,7 @@ const LEGACY = [
   //     dans la Search Console en oct. 2026, 404 depuis la bascule) ---
   // "/picrights" : redirection retirée le 28 oct. 2026, l'adresse redevient la page PicRights (app/picrights).
   ["/picrights/faut-il-payer-picrights", "/picrights"],
-  ["/picrights/jurisprudence-picrights", "/picrights"],
+  ["/picrights/jurisprudence-picrights", "/picrights#jurisprudence"],
   ["/picrights/picrights-proces", "/picrights#apres-picrights"],
   ["/picrights/avis-sur-picrights", "/picrights#arnaque-ou-demande-legitime"],
   ["/picrights-afp", "/picrights"],

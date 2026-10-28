@@ -227,9 +227,9 @@ export default function Page() {
             C&apos;est souvent sur ce terrain que se joue la discussion.
           </p>
           <p>
-            Le parasitisme est parfois invoqué à titre subsidiaire. Il suppose notamment que l&apos;image présente une
-            valeur économique propre dont l&apos;entreprise aurait cherché à tirer profit&nbsp;; ce point s&apos;examine
-            également au regard de chaque dossier.
+            À titre subsidiaire, le demandeur invoque souvent la responsabilité civile (parasitisme, faute). Une
+            indemnisation peut alors être discutée même lorsque l&apos;originalité est écartée&nbsp;: c&apos;est pourquoi
+            le cabinet examine aussi le montant réclamé et la manière dont il a été calculé.
           </p>
           <p className={styles.ref}>
             Art. L. 111-1 et L. 112-1 du Code de la propriété intellectuelle&nbsp;; CJUE, 1<sup>er</sup> déc. 2011,
@@ -288,6 +288,34 @@ export default function Page() {
               Transmettre le courrier reçu →
             </a>
           </p>
+        </div>
+      </section>
+
+      {/* Décision vérifiée sur le texte intégral (TJ Rennes, 2e ch. civ., 9 mars 2026,
+          RG 23/05206), transmis par le cabinet le 28 oct. 2026. Parties anonymisées. */}
+      <section className={`${styles.sec} ${styles.sep}`} id="jurisprudence" aria-labelledby="h-juris">
+        <div className={styles.wrap}>
+          <span className="eyebrow">Une décision obtenue par le cabinet</span>
+          <h2 id="h-juris">Une photographie de petit-déjeuner jugée non originale</h2>
+          <p>
+            Une photothèque réclamait à l&apos;exploitant d&apos;un camping, défendu par le cabinet, une indemnité pour
+            une photographie de table de petit-déjeuner reprise sur son site. Le tribunal judiciaire de Rennes a jugé
+            que cette photographie n&apos;était pas originale et a rejeté l&apos;action en contrefaçon&nbsp;: si la
+            banalité du sujet ne chasse pas par principe l&apos;originalité, «&nbsp;encore faut-il détecter
+            l&apos;empreinte de la personnalité du photographe dans la mise en scène du sujet traité&nbsp;».
+          </p>
+          <p>
+            Le tribunal a qualifié la première demande de «&nbsp;lettre d&apos;intimidation&nbsp;» et jugé fautif ce
+            comportement avant procès, qui présentait comme une transaction le paiement d&apos;une indemnité
+            «&nbsp;dont l&apos;évaluation unilatérale est sans rapport avec le préjudice réellement subi&nbsp;».
+            L&apos;entreprise a obtenu des dommages-intérêts à ce titre.
+          </p>
+          <p>
+            Le tribunal a en revanche retenu une faute civile pour l&apos;usage de l&apos;image sans licence et alloué
+            à la photothèque 2&nbsp;055&nbsp;€ au titre de ses préjudices matériel et moral, pour 7&nbsp;050&nbsp;€
+            demandés&nbsp;; sa demande pour résistance abusive a été rejetée.
+          </p>
+          <p className={styles.ref}>TJ Rennes, 2e ch. civ., 9 mars 2026, RG n° 23/05206, jugement en premier ressort.</p>
         </div>
       </section>
 

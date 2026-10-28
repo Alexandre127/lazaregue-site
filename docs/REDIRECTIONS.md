@@ -83,7 +83,8 @@ aucune redirection : aucune ancienne adresse n'en est l'équivalent.
 
 | Ancienne URL | Nouvelle URL | Code |
 |---|---|---|
-| `/picrights/faut-il-payer-picrights`, `/picrights-afp`, `/picrights-afp/faut-il-payer`, `/picrights-afp/calcul-indemnites`, `/picrights/jurisprudence-picrights` | `/picrights` | 301 |
+| `/picrights/faut-il-payer-picrights`, `/picrights-afp`, `/picrights-afp/faut-il-payer`, `/picrights-afp/calcul-indemnites` | `/picrights` | 301 |
+| `/picrights/jurisprudence-picrights` | `/picrights#jurisprudence` | 301 |
 | `/picrights/avis-sur-picrights` | `/picrights#arnaque-ou-demande-legitime` | 301 |
 | `/picrights/picrights-proces`, `/picrights-afp/proces` | `/picrights#apres-picrights` | 301 |
 | `/picrights/originalite-photographie`, `/picrights-afp/originalite` | `/picrights#photographie-originale` | 301 |

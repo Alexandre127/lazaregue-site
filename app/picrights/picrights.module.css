@@ -72,3 +72,4 @@
 .chuteAction { margin-top: 20px !important; }
 /* Ancres de redirection : ne pas masquer le titre sous l'en-tête fixe. */
 .page [id] { scroll-margin-top: calc(var(--header-h-compact) + 16px); }
+.sep { border-top: 1px solid var(--bd); }
