@@ -310,12 +310,7 @@ export default function Page() {
             «&nbsp;dont l&apos;évaluation unilatérale est sans rapport avec le préjudice réellement subi&nbsp;».
             L&apos;entreprise a obtenu des dommages-intérêts à ce titre.
           </p>
-          <p>
-            Le tribunal a en revanche retenu une faute civile pour l&apos;usage de l&apos;image sans licence et alloué
-            à la photothèque 2&nbsp;055&nbsp;€ au titre de ses préjudices matériel et moral, pour 7&nbsp;050&nbsp;€
-            demandés&nbsp;; sa demande pour résistance abusive a été rejetée.
-          </p>
-          <p className={styles.ref}>TJ Rennes, 2e ch. civ., 9 mars 2026, RG n° 23/05206, jugement en premier ressort.</p>
+          <p className={styles.ref}>TJ Rennes, 2e ch. civ., 9 mars 2026, RG n° 23/05206.</p>
         </div>
       </section>
 
