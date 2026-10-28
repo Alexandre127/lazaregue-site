@@ -174,8 +174,7 @@ export default function Page() {
             <span className={styles.heroCredit}>{HERO_VIDEO.credit}</span>
           </div>
         ) : null}
-        <div className={`${styles.wrap} ${styles.heroGrid}`}>
-          <div>
+        <div className={`${styles.wrap} ${styles.heroTexte}`}>
           <nav className={styles.crumb} aria-label="Fil d'Ariane">
             <Link href="/">Accueil</Link> / <span aria-current="page">Courrier PicRights</span>
           </nav>
@@ -191,28 +190,6 @@ export default function Page() {
             Envoyez votre courrier et la photographie&nbsp;: le cabinet vous indique son appréciation, la démarche
             proposée et le prix forfaitaire de son intervention, sans engagement.
           </p>
-          </div>
-          {/* Illustration décorative : courrier générique, sans logo ni marque. */}
-          <div className={styles.courrier} aria-hidden="true">
-            <div className={styles.lettre}>
-              <span className={styles.lettreTag}>Demande d&apos;indemnisation</span>
-              <span className={styles.ligne} style={{ width: "72%" }} />
-              <span className={styles.ligne} style={{ width: "90%" }} />
-              <span className={styles.ligne} style={{ width: "58%" }} />
-              <div className={styles.vignette}>
-                <span>Photographie</span>
-              </div>
-              <span className={styles.ligne} style={{ width: "84%" }} />
-              <span className={styles.ligne} style={{ width: "66%" }} />
-              <div className={styles.montant}>
-                <span>Montant réclamé</span>
-                <strong>— — — €</strong>
-              </div>
-            </div>
-            <span className={`${styles.question} ${styles.q1}`}>Photographie originale&nbsp;?</span>
-            <span className={`${styles.question} ${styles.q2}`}>Droits de l&apos;agence&nbsp;?</span>
-            <span className={`${styles.question} ${styles.q3}`}>Montant justifié&nbsp;?</span>
-          </div>
         </div>
       </section>
 
