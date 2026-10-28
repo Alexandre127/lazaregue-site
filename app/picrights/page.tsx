@@ -27,7 +27,12 @@ const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"
  * fichier sous licence « Creative » (autorisation des personnes filmées) :
  * une image d'agence éditoriale est exclue sur cette page. `null` = pas de vidéo.
  */
-const HERO_VIDEO: { mp4: string; poster: string; credit: string } | null = null;
+const HERO_VIDEO: { webm: string; mp4: string; poster: string; credit: string } | null = {
+  webm: "/videos/picrights-hero.webm",
+  mp4: "/videos/picrights-hero.mp4",
+  poster: "/videos/picrights-hero.jpg",
+  credit: "Getty Images",
+};
 
 const TITLE = "Courrier PicRights : faut-il payer ? | Lazarègue Avocats";
 const DESCRIPTION =
@@ -167,8 +172,9 @@ export default function Page() {
 
       <section className={styles.hero}>
         {HERO_VIDEO ? (
-          <div className={styles.heroMedia} aria-hidden="true">
-            <video autoPlay muted loop playsInline preload="metadata" poster={HERO_VIDEO.poster}>
+          <div className={styles.heroMedia} aria-hidden="true" style={{ backgroundImage: `url(${HERO_VIDEO.poster})` }}>
+            <video autoPlay muted loop playsInline preload="none" poster={HERO_VIDEO.poster}>
+              <source src={HERO_VIDEO.webm} type="video/webm" />
               <source src={HERO_VIDEO.mp4} type="video/mp4" />
             </video>
             <span className={styles.heroCredit}>{HERO_VIDEO.credit}</span>
