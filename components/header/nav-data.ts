@@ -194,6 +194,13 @@ export const ACCOMPAGNEMENT_CARTES: CarteMenu[] = [
     lien: "Toutes les formations",
     href: "/formations",
   },
+  {
+    surtitre: "Réclamation photo",
+    titre: "Courrier PicRights",
+    texte: "Une réclamation pour une photographie ? Appréciation et prix forfaitaire, sans engagement.",
+    lien: "Faut-il payer ?",
+    href: "/picrights",
+  },
 ];
 
 /**
