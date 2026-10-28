@@ -29,8 +29,8 @@ const LEGACY = [
   // --- Ancien site vitrine (SPA) ---
   ["/confidentialite", "/politique-de-confidentialite"],
   ["/licence-images", "/mentions-legales"], // pas d'équivalent : page légale la plus proche
-  ["/action-collective", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"], // recouvrement abusif de photothèques → cas client photographies/PI
-  ["/litige-afp-picrights/confier", "/contact"], // page de conversion « confier mon dossier » → contact
+  ["/action-collective", "/picrights"], // ancienne action collective (réclamations de photothèques) → offre PicRights, sans équivalent collectif
+  ["/litige-afp-picrights/confier", "/picrights"], // page de conversion « confier mon dossier » → page PicRights (bouton de transmission)
 
   // --- Ancien WordPress : RGPD ---
   ["/avocat-en-droit-du-numerique/avocat-rgpd", "/nos-domaines/rgpd-donnees-personnelles"],
@@ -70,27 +70,27 @@ const LEGACY = [
   ["/competences", "/nos-domaines"],
 
   // --- Exception : lien entrant actif (legavox.fr, sos-justice.net) ---
-  ["/litige-afp-picrights/courrier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/litige-afp-picrights/courrier-picrights", "/picrights"],
 
   // --- Anciennes pages PicRights / AFP / Copytrack (encore les plus cliquées
   //     dans la Search Console en oct. 2026, 404 depuis la bascule) ---
   // "/picrights" : redirection retirée le 28 oct. 2026, l'adresse redevient la page PicRights (app/picrights).
-  ["/picrights/faut-il-payer-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights/jurisprudence-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights/picrights-proces", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights/avis-sur-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights-afp", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights-afp/faut-il-payer", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights-afp/calcul-indemnites", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/copytrack", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/faut-il-payer-picrights", "/picrights"],
+  ["/picrights/jurisprudence-picrights", "/picrights"],
+  ["/picrights/picrights-proces", "/picrights#apres-picrights"],
+  ["/picrights/avis-sur-picrights", "/picrights#arnaque-ou-demande-legitime"],
+  ["/picrights-afp", "/picrights"],
+  ["/picrights-afp/faut-il-payer", "/picrights"],
+  ["/picrights-afp/calcul-indemnites", "/picrights"],
+  ["/copytrack", "/picrights#autres-reclamations"],
 
   // --- Ancienne page formation IA des avocats ---
   ["/formation-ia-avocat", "/formations/ia-avocats"],
 
   // --- Audit SEO du 12 oct. 2026 : anciennes adresses encore en 404 avec des
   //     liens entrants (Ahrefs) ou des impressions (Search Console) ---
-  ["/picrights-afp/proces", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/images-et-droit-dauteur-stop-aux-abus", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights-afp/proces", "/picrights#apres-picrights"],
+  ["/images-et-droit-dauteur-stop-aux-abus", "/picrights"], // ancienne tribune sur les abus de réclamations : contenu retiré, sujet repris par la page PicRights
   // Propriété intellectuelle : pas de page dédiée → rubrique des domaines
   ["/avocat-en-droit-du-numerique/avocat-specialiste-propriete-intellectuelle", "/nos-domaines"],
   ["/avocat-en-droit-du-numerique/avocat-specialiste-propriete-intellectuelle/avocat-contrefacon", "/nos-domaines"],
@@ -104,12 +104,13 @@ const LEGACY = [
 
   // --- Rapport « Introuvable (404) » de la Search Console, 13 oct. 2026 :
   //     adresses de l'ancien site vitrine restées sans redirection ---
-  ["/picrights/originalite-photographie", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights/negocier-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/picrights-afp/originalite", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/getty-images", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/reuters", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
-  ["/agences", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  ["/picrights/originalite-photographie", "/picrights#photographie-originale"],
+  ["/picrights/negocier-picrights", "/picrights#intervention"],
+  ["/picrights-afp/originalite", "/picrights#photographie-originale"],
+  ["/getty-images", "/picrights#autres-reclamations"],
+  ["/reuters", "/picrights#autres-reclamations"],
+  ["/agences", "/picrights#autres-reclamations"],
+  ["/pa-images", "/picrights#autres-reclamations"], // 404 avec impressions (Search Console, oct. 2026)
   ["/cas-pratiques", "/cas-clients"],
   ["/notre-methode", "/le-cabinet"],
   ["/presse", "/le-cabinet"],
@@ -340,20 +341,10 @@ const nextConfig = {
           destination: "/cas-clients",
           statusCode: 301,
         },
-        // Ancienne page « /litige-afp-picrights » de l'ancien site (réclamations
-        // PicRights/AFP pour photographies), qui reçoit encore du trafic Google.
-        // 301 directe vers le cas client correspondant (n° 07, photographies / PI).
-        // Les deux formes (avec et sans barre oblique finale) sont couvertes.
-        {
-          source: "/litige-afp-picrights",
-          destination: "/cas-clients/photographies-utilisees-sans-autorisation-reclamation",
-          statusCode: 301,
-        },
-        {
-          source: "/litige-afp-picrights/",
-          destination: "/cas-clients/photographies-utilisees-sans-autorisation-reclamation",
-          statusCode: 301,
-        },
+        // Ancienne page « /litige-afp-picrights » (réclamations PicRights/AFP) :
+        // 301 directe vers la page /picrights qui la remplace (28 oct. 2026).
+        { source: "/litige-afp-picrights", destination: "/picrights", statusCode: 301 },
+        { source: "/litige-afp-picrights/", destination: "/picrights", statusCode: 301 },
       ];
   },
 };

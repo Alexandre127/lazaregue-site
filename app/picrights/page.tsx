@@ -17,7 +17,7 @@ import styles from "./picrights.module.css";
  */
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/picrights";
-const MAIL = "mailto:contact@lazaregue-avocats.fr"; // [À CONFIRMER] adresse dédiée éventuelle
+const MAIL = "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20PicRights%20%E2%80%94%20photographie%20concern%C3%A9e"; // [À CONFIRMER] adresse dédiée éventuelle
 const TEL = "tel:+33181706200";
 const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation";
 
@@ -203,7 +203,7 @@ export default function Page() {
               l&apos;agence, qui adresse alors une mise en demeure.
             </p>
           </div>
-          <div>
+          <div id="arnaque-ou-demande-legitime">
             <span className="eyebrow">Arnaque ou demande légitime&nbsp;?</span>
             <h2>Une demande réelle n&apos;est pas nécessairement une demande fondée</h2>
             <p>
@@ -239,7 +239,7 @@ export default function Page() {
       </section>
 
       {/* Bloc pédagogique illustré */}
-      <section className={styles.sec} aria-labelledby="h-originale">
+      <section className={styles.sec} id="photographie-originale" aria-labelledby="h-originale">
         <div className={styles.wrap}>
           <span className="eyebrow">Méthode du cabinet</span>
           <h2 id="h-originale">Qu&apos;est-ce qu&apos;une photographie originale&nbsp;?</h2>
@@ -283,6 +283,11 @@ export default function Page() {
             Transmettez au cabinet la photographie et le courrier reçu&nbsp;: il vous indique son appréciation et le
             prix de son intervention.
           </p>
+          <p className={styles.chuteAction}>
+            <a className="btn btn-primary" href={MAIL}>
+              Transmettre le courrier reçu →
+            </a>
+          </p>
         </div>
       </section>
 
@@ -308,7 +313,7 @@ export default function Page() {
               </li>
             </ul>
           </div>
-          <div>
+          <div id="apres-picrights">
             <span className="eyebrow">Après PicRights</span>
             <h2>Quand la mise en demeure vient de l&apos;avocat de l&apos;agence</h2>
             <p>
@@ -321,7 +326,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className={styles.sec}>
+      <section className={styles.sec} id="intervention">
         <div className={styles.wrap}>
           <span className="eyebrow">Comment le cabinet intervient</span>
           <h2>Une appréciation sans engagement, puis une intervention au forfait</h2>
@@ -369,7 +374,7 @@ export default function Page() {
               </Link>
             </p>
           </div>
-          <div>
+          <div id="autres-reclamations">
             <span className="eyebrow">Les autres réclamations</span>
             <h2>Copytrack, Getty Images, PA Images</h2>
             <p>

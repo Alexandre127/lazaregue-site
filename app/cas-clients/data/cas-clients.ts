@@ -37,7 +37,11 @@ export type Cas = {
   arbitrage?: { voie: string; app: string; dec: string; ret: boolean }[];
   issue: string;
   aRetenir: string[];
-  ressources: { titre: string; href: string | null }[];
+  ressources: { titre: string; href: string | null; lien?: string }[];
+  /** Encart facultatif renvoyant vers une page d'offre liée (ex. /picrights). */
+  encart?: { titre: string; texte: string; href: string; lien: string };
+  /** Bloc final « Une situation comparable ? » propre au cas (sinon texte commun). */
+  cta?: { lead: string; label: string; href: string };
 };
 
 // Article de test « Faux conseiller » présenté comme « à paraître » : href null
@@ -195,7 +199,24 @@ export const CAS: Cas[] = [
     intervention: ["Le cabinet a examiné les photographies concernées, les droits revendiqués, les usages reprochés et les éléments justifiant le montant demandé avant de définir la réponse et la stratégie contentieuse."],
     issue: "Une société réclamait une indemnisation importante pour l’utilisation prétendument illicite de plusieurs photographies. La contestation de la titularité des droits, des usages invoqués et du calcul de l’indemnisation a conduit à l’abandon intégral de la réclamation.",
     aRetenir: ["La réception d’une réclamation ne dispense pas de vérifier la preuve des droits, les usages effectivement réalisés et la méthode de calcul de l’indemnisation."],
-    ressources: [],
+    ressources: [
+      {
+        titre: "Courrier PicRights : faut-il payer ?",
+        href: "/picrights",
+        lien: "Réclamation PicRights : comprendre la demande et l’accompagnement du cabinet →",
+      },
+    ],
+    encart: {
+      titre: "Vous avez reçu un courrier PicRights ?",
+      texte: "La page consacrée aux réclamations PicRights présente les vérifications à mener avant de répondre et l’accompagnement du cabinet.",
+      href: "/picrights",
+      lien: "Voir la page PicRights →",
+    },
+    cta: {
+      lead: "Transmettez au cabinet le courrier reçu et la photographie concernée : il vous indique son appréciation et le prix de son intervention.",
+      label: "Transmettre le courrier reçu →",
+      href: "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20re%C3%A7u%20%E2%80%94%20photographie%20concern%C3%A9e",
+    },
   },
   {
     slug: "escroquerie-en-ligne-paiements-carte-crypto-banque",
