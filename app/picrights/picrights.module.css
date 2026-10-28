@@ -97,9 +97,13 @@
 .reflexes li { counter-increment: r; position: relative; padding: 0 0 14px 48px; line-height: 1.55; }
 .reflexes li::before { content: counter(r); position: absolute; left: 0; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: var(--wh); font-weight: 600; font-size: 15px; line-height: 32px; text-align: center; }
 
-.equipe { margin-top: 48px; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 36px; align-items: center; border-top: 1px solid var(--bd); padding-top: 40px; }
-@media (max-width: 700px) { .equipe { grid-template-columns: 1fr; } .equipeCarte { max-width: 260px; } }
-.equipeT { font-size: 24px; font-weight: 600; line-height: 1.25; margin: 10px 0 12px; }
+.equipe { margin-top: 32px; display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 32px; align-items: center; border-top: 1px solid var(--bd); padding-top: 32px; }
+.equipe p { max-width: 64ch; }
+.equipePhoto { position: relative; width: 160px; height: 160px; overflow: hidden; background: var(--off); }
+.equipeNom { font-size: 15px; margin: 0 !important; color: var(--text-muted) !important; }
+.equipeNom strong { color: var(--ink); }
+@media (max-width: 700px) { .equipe { grid-template-columns: 1fr; gap: 20px; } .equipePhoto { width: 120px; height: 120px; } }
+.equipeT { font-size: 24px; font-weight: 600; line-height: 1.25; margin: 8px 0 12px; }
 
 .final { background: var(--blue) !important; }
 .final p { color: var(--wh) !important; }
@@ -112,7 +116,6 @@
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 45%);
           mask-image: linear-gradient(to right, transparent 0%, #000 45%); }
 .heroMedia::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 70%, var(--navy)); }
-.heroCredit { position: absolute; right: 12px; bottom: 8px; z-index: 1; font-size: 12px; color: var(--muted-on-dark); }
 /* Mobile et mouvement réduit : image fixe (aucun téléchargement de la vidéo). */
 @media (max-width: 1000px), (prefers-reduced-motion: reduce) {
   .heroMedia video { display: none; }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MembreCarte } from "@/components/equipe-dossier";
+import { MEMBRES } from "@/lib/equipe";
 import styles from "./picrights.module.css";
 
 /**
@@ -19,7 +19,6 @@ import styles from "./picrights.module.css";
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/picrights";
 const MAIL = "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20PicRights%20%E2%80%94%20photographie%20concern%C3%A9e"; // [À CONFIRMER] adresse dédiée éventuelle
-const TEL = "tel:+33181706200";
 const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation";
 
 /**
@@ -27,11 +26,10 @@ const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"
  * fichier sous licence « Creative » (autorisation des personnes filmées) :
  * une image d'agence éditoriale est exclue sur cette page. `null` = pas de vidéo.
  */
-const HERO_VIDEO: { webm: string; mp4: string; poster: string; credit: string } | null = {
+const HERO_VIDEO: { webm: string; mp4: string; poster: string } | null = {
   webm: "/videos/picrights-hero.webm",
   mp4: "/videos/picrights-hero.mp4",
   poster: "/videos/picrights-hero.jpg",
-  credit: "Getty Images",
 };
 
 const TITLE = "Courrier PicRights : faut-il payer ? | Lazarègue Avocats";
@@ -152,14 +150,11 @@ const FAQ: { q: string; a: string }[] = [
   },
 ];
 
-function Actions({ sombre = true, bleu = false }: { sombre?: boolean; bleu?: boolean }) {
+function Actions({ bleu = false }: { bleu?: boolean }) {
   return (
     <div className={styles.actions}>
       <a className={bleu ? "btn btn-white" : "btn btn-primary"} href={MAIL}>
         Transmettre le courrier reçu →
-      </a>
-      <a className={sombre || bleu ? "btn btn-ghost" : "btn btn-line"} href={TEL}>
-        Appeler — 01 81 70 62 00
       </a>
     </div>
   );
@@ -177,7 +172,6 @@ export default function Page() {
               <source src={HERO_VIDEO.webm} type="video/webm" />
               <source src={HERO_VIDEO.mp4} type="video/mp4" />
             </video>
-            <span className={styles.heroCredit}>{HERO_VIDEO.credit}</span>
           </div>
         ) : null}
         <div className={`${styles.wrap} ${styles.heroTexte}`}>
@@ -414,9 +408,13 @@ export default function Page() {
             convention distincte.
           </p>
           <div className={styles.equipe}>
-            <div className={styles.equipeCarte}>
-              <MembreCarte
-                membre={{ slug: "alexandre", role: "Suit les réclamations photographiques du cabinet", tags: ["Droit d'auteur", "Photographie", "Contentieux"] }}
+            <div className={styles.equipePhoto}>
+              <Image
+                src={MEMBRES.alexandre.photo}
+                alt={MEMBRES.alexandre.nom}
+                fill
+                sizes="160px"
+                style={{ objectFit: "cover", objectPosition: "center 20%" }}
               />
             </div>
             <div>
@@ -426,6 +424,9 @@ export default function Page() {
                 L&apos;appréciation est donnée par Me Alexandre Lazarègue, qui a plaidé l&apos;affaire jugée à Rennes.
                 Le client échange directement avec l&apos;avocat qui suit son dossier, du premier retour à la
                 clôture des échanges.
+              </p>
+              <p className={styles.equipeNom}>
+                <strong>{MEMBRES.alexandre.nom}</strong> · {MEMBRES.alexandre.statut}
               </p>
             </div>
           </div>
