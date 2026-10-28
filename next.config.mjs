@@ -74,7 +74,7 @@ const LEGACY = [
 
   // --- Anciennes pages PicRights / AFP / Copytrack (encore les plus cliquées
   //     dans la Search Console en oct. 2026, 404 depuis la bascule) ---
-  ["/picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
+  // "/picrights" : redirection retirée le 28 oct. 2026, l'adresse redevient la page PicRights (app/picrights).
   ["/picrights/faut-il-payer-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
   ["/picrights/jurisprudence-picrights", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
   ["/picrights/picrights-proces", "/cas-clients/photographies-utilisees-sans-autorisation-reclamation"],
