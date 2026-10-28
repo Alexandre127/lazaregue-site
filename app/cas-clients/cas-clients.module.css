@@ -290,3 +290,9 @@
   .cas :global(.state .status)::before { display: none; }
   .cas :global(.state .stateP) { color: #fff; }
 }
+
+/* Encart facultatif vers une page d'offre liée (ex. cas 07 → /picrights). */
+.cas :global(.encart) { margin: 40px 0 0; padding: 20px 24px; background: var(--tint); border-left: 3px solid var(--blue); }
+.cas :global(.encartT) { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+.cas :global(.encart p) { margin: 0 0 8px; color: var(--ink); }
+.cas :global(.encart .relLink) { display: inline-flex; align-items: center; min-height: 44px; }

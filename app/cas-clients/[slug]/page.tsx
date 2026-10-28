@@ -145,6 +145,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </ul>
           </CaseSection>
 
+          {cas.encart ? (
+            <aside className="encart" aria-labelledby="h-encart">
+              <h2 className="encartT" id="h-encart">{cas.encart.titre}</h2>
+              <p>{cas.encart.texte}</p>
+              <Link className="link relLink" href={cas.encart.href}>{cas.encart.lien}</Link>
+            </aside>
+          ) : null}
+
           <SurLeMemeSujet rubrique="cas" domaines={cas.domaines} />
 
           <CasePrevNext prev={prev} next={next} />
@@ -179,7 +187,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 {/* Lien seulement si la ressource est publiée ; sinon titre
                     conservé, lien retiré (article « à paraître »). */}
                 {r.href ? (
-                  <Link className="link relLink" href={r.href}>Lire la ressource →</Link>
+                  <Link className="link relLink" href={r.href}>{r.lien ?? "Lire la ressource →"}</Link>
                 ) : (
                   <span className="relLink relLinkOff">À paraître</span>
                 )}
@@ -199,9 +207,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <div className="wrap">
           <div className="head ctahead">
             <h2 className="h2" id="h-cta">Une situation comparable&nbsp;?</h2>
-            <p className="lead">Le cabinet peut examiner les contrats, les faits techniques, les preuves disponibles et les délais applicables.</p>
+            <p className="lead">{cas.cta ? cas.cta.lead : "Le cabinet peut examiner les contrats, les faits techniques, les preuves disponibles et les délais applicables."}</p>
           </div>
-          <Link className="btn" href="/contact">Présenter votre situation →</Link>
+          {cas.cta ? (
+            <a className="btn" href={cas.cta.href}>{cas.cta.label}</a>
+          ) : (
+            <Link className="btn" href="/contact">Présenter votre situation →</Link>
+          )}
           <Link className="link ctaAll" href={CAS_BASE}>Tous les cas clients</Link>
         </div>
       </section>

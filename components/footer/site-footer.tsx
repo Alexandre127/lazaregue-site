@@ -34,6 +34,7 @@ const CABINET: FooterLink[] = [
   { label: "Rejoindre le cabinet", href: "/rejoindre-le-cabinet" },
   { label: "Cas clients", href: "/cas-clients" },
   { label: "Formations", href: "/formations" },
+  { label: "Courrier PicRights", href: "/picrights" },
   { label: "Ressources", href: "/ressources" },
   { label: "Outils et observatoires", href: "/outils" },
   { label: "Contact", href: "/contact" },

@@ -24,10 +24,10 @@ aucune chaîne de redirection de contenu (A → B → C), aucune boucle.
 |---|---|---|---|
 | `/confidentialite` | `/politique-de-confidentialite` | 301 | Équivalent |
 | `/licence-images` | `/mentions-legales` | 301 | Pas d'équivalent — page légale la plus proche |
-| `/action-collective` | `/cas-clients/photographies-utilisees-sans-autorisation-reclamation` | 301 | Recouvrement abusif de photothèques → cas client photographies/PI |
-| `/litige-afp-picrights/confier` | `/contact` | 301 | Page de conversion « confier mon dossier » |
-| `/litige-afp-picrights` | `/cas-clients/photographies-utilisees-sans-autorisation-reclamation` | 301 | Mise en demeure PicRights/AFP → cas client n° 07 |
-| `/litige-afp-picrights/courrier-picrights` | `/cas-clients/photographies-utilisees-sans-autorisation-reclamation` | 301 | Exception : liens entrants actifs (legavox.fr, sos-justice.net) |
+| `/action-collective` | `/picrights` | 301 | Ancienne action collective (réclamations de photothèques) → offre PicRights |
+| `/litige-afp-picrights/confier` | `/picrights` | 301 | Page de conversion « confier mon dossier » → page PicRights |
+| `/litige-afp-picrights` | `/picrights` | 301 | Ancienne page pilier PicRights/AFP → nouvelle page |
+| `/litige-afp-picrights/courrier-picrights` | `/picrights` | 301 | Liens entrants actifs (legavox.fr, sos-justice.net) |
 
 ## Migration — ancien site WordPress (pages de compétences uniquement)
 
@@ -74,6 +74,23 @@ Laissées de côté volontairement (arbre PI entier) :
   `droit-dessins-et-modeles`, `litiges-nom-de-domaine`)
 - la même arborescence dupliquée sous
   `/avocat-en-droit-du-numerique/avocat-specialiste-propriete-intellectuelle/`
+
+## Écosystème PicRights (28 oct. 2026)
+
+La page `/picrights` remplace les anciennes pages générales PicRights ; chaque
+adresse vise la section correspondant à son sujet. Le cas client n° 07 ne reçoit
+aucune redirection : aucune ancienne adresse n'en est l'équivalent.
+
+| Ancienne URL | Nouvelle URL | Code |
+|---|---|---|
+| `/picrights/faut-il-payer-picrights`, `/picrights-afp`, `/picrights-afp/faut-il-payer`, `/picrights-afp/calcul-indemnites` | `/picrights` | 301 |
+| `/picrights/jurisprudence-picrights` | `/picrights#jurisprudence` | 301 |
+| `/picrights/avis-sur-picrights` | `/picrights#arnaque-ou-demande-legitime` | 301 |
+| `/picrights/picrights-proces`, `/picrights-afp/proces` | `/picrights#apres-picrights` | 301 |
+| `/picrights/originalite-photographie`, `/picrights-afp/originalite` | `/picrights#photographie-originale` | 301 |
+| `/picrights/negocier-picrights` | `/picrights#intervention` | 301 |
+| `/copytrack`, `/getty-images`, `/reuters`, `/agences`, `/pa-images` | `/picrights#autres-reclamations` | 301 |
+| `/images-et-droit-dauteur-stop-aux-abus` | `/picrights` | 301 |
 
 ## Domaine secondaire — `lazaregue-avocats.tech`
 

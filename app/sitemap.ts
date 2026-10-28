@@ -35,6 +35,9 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   { path: "/direction-juridique-externalisee", priority: 0.9, frequence: "monthly" },
   { path: "/dpo-externalise", priority: 0.9, frequence: "monthly" },
 
+  // Réclamations photographiques (PicRights / AFP)
+  { path: "/picrights", priority: 0.8, frequence: "monthly" },
+
   // Conversion et confiance
   { path: "/contact", priority: 0.8, frequence: "yearly" },
   { path: "/le-cabinet", priority: 0.8, frequence: "yearly" },
