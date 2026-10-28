@@ -22,6 +22,13 @@ const MAIL = "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20PicRights%2
 const TEL = "tel:+33181706200";
 const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation";
 
+/**
+ * Vidéo de haut de page, fondue sur le côté droit. Ne renseigner qu'avec un
+ * fichier sous licence « Creative » (autorisation des personnes filmées) :
+ * une image d'agence éditoriale est exclue sur cette page. `null` = pas de vidéo.
+ */
+const HERO_VIDEO: { mp4: string; poster: string; credit: string } | null = null;
+
 const TITLE = "Courrier PicRights : faut-il payer ? | Lazarègue Avocats";
 const DESCRIPTION =
   "Courrier PicRights pour une photo de l'AFP ? Avant de payer, faites examiner la photographie et les droits invoqués. Appréciation et prix forfaitaire, sans engagement.";
@@ -159,6 +166,14 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
 
       <section className={styles.hero}>
+        {HERO_VIDEO ? (
+          <div className={styles.heroMedia} aria-hidden="true">
+            <video autoPlay muted loop playsInline preload="metadata" poster={HERO_VIDEO.poster}>
+              <source src={HERO_VIDEO.mp4} type="video/mp4" />
+            </video>
+            <span className={styles.heroCredit}>{HERO_VIDEO.credit}</span>
+          </div>
+        ) : null}
         <div className={`${styles.wrap} ${styles.heroGrid}`}>
           <div>
           <nav className={styles.crumb} aria-label="Fil d'Ariane">
