@@ -190,6 +190,9 @@ export default function Page() {
             Envoyez votre courrier et la photographie&nbsp;: le cabinet vous indique son appréciation, la démarche
             proposée et le prix forfaitaire de son intervention, sans engagement.
           </p>
+          <p className={styles.donnees}>
+            <Link href="/politique-de-confidentialite#reclamations-photographiques">Données personnelles&nbsp;: politique de confidentialité</Link>
+          </p>
         </div>
       </section>
 
