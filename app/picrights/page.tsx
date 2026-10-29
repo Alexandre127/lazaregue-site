@@ -18,7 +18,7 @@ import styles from "./picrights.module.css";
  */
 const URL_BASE = "https://lazaregue-avocats.fr";
 const PATH = "/picrights";
-const MAIL = "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20PicRights%20%E2%80%94%20photographie%20concern%C3%A9e"; // [À CONFIRMER] adresse dédiée éventuelle
+const MAIL = "mailto:reclamation-photo@lazaregue-avocats.fr?subject=Courrier%20PicRights%20%E2%80%94%20photographie%20concern%C3%A9e"; // boîte dédiée relevée par le circuit PicRights
 const CAS = "/cas-clients/photographies-utilisees-sans-autorisation-reclamation";
 
 /**
