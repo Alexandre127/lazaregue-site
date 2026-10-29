@@ -215,7 +215,7 @@ export const CAS: Cas[] = [
     cta: {
       lead: "Transmettez au cabinet le courrier reçu et la photographie concernée : il vous indique son appréciation et le prix de son intervention.",
       label: "Transmettre le courrier reçu →",
-      href: "mailto:contact@lazaregue-avocats.fr?subject=Courrier%20re%C3%A7u%20%E2%80%94%20photographie%20concern%C3%A9e",
+      href: "mailto:reclamation-photo@lazaregue-avocats.fr?subject=Courrier%20re%C3%A7u%20%E2%80%94%20photographie%20concern%C3%A9e",
     },
   },
   {
