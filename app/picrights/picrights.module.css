@@ -122,3 +122,5 @@
   .heroMedia::before { content: ""; position: absolute; inset: 0; background-image: inherit; background-size: cover; background-position: center; }
 }
 @media (max-width: 1000px) { .heroMedia { width: 100%; } .heroMedia::before { opacity: 0.28; -webkit-mask-image: none; mask-image: none; } }
+.donnees { font-size: 13px; margin: 4px 0 0; }
+.donnees a { color: var(--muted-on-dark); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; min-height: 44px; align-items: center; }

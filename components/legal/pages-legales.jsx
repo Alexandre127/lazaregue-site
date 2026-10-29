@@ -75,6 +75,16 @@ const REGISTRE = [
       "5 ans à compter de la fin de la mission, durée de la prescription de l'action en responsabilité contre l'avocat (art. 2225 du code civil)",
   },
   {
+    traitement: "Réclamations photographiques (PicRights, agences, banques d'images)",
+    finalite:
+      "Examiner la réclamation reçue, accuser réception, adresser une appréciation et une proposition d'intervention, puis conduire la mission confiée",
+    base: "Mesures précontractuelles, puis exécution du contrat",
+    donnees:
+      "Identité et coordonnées, courrier ou mise en demeure reçus, photographies et pages concernées, références et montant réclamé, informations de facturation",
+    duree:
+      "6 mois après la réponse du cabinet si la demande reste sans suite ; en cas de mission, durées applicables au dossier et à la facturation",
+  },
+  {
     traitement: "Vigilance et lutte contre le blanchiment",
     finalite:
       "Identification et vérification de l'identité du client et du bénéficiaire effectif, examen de la relation d'affaires",
@@ -451,6 +461,33 @@ const DONNEES = [
         tableau ci-dessous en reprend la substance ; il est tenu à jour en même temps que le
         registre interne prévu par l&#39;article 30 du règlement.
       </P>
+    ),
+  },
+  {
+    id: "reclamations-photographiques",
+    titre: "Réclamations photographiques",
+    corps: (
+      <>
+        <P>
+          Lorsque vous transmettez au cabinet une réclamation reçue au titre d&#39;une photographie
+          (PicRights, agence de presse, banque d&#39;images ou leur avocat), notamment à l&#39;adresse
+          reclamation-photo@lazaregue-avocats.fr, Lazarègue Avocats, responsable du traitement,
+          utilise les informations et pièces transmises uniquement pour examiner la réclamation,
+          vous répondre et, si vous lui confiez le dossier, conduire la mission.
+        </P>
+        <P>
+          Ces données sont traitées par les avocats du cabinet et par ses prestataires techniques
+          (hébergement, messagerie, stockage, outils informatiques). Certains de ces prestataires
+          sont des sociétés établies hors de l&#39;Union européenne ; les transferts éventuels sont
+          encadrés par les garanties prévues au chapitre V du règlement.
+        </P>
+        <P>
+          Sans suite de votre part, les données sont supprimées six mois après la réponse du
+          cabinet. Si vous confiez le dossier au cabinet, elles sont conservées pendant les durées
+          applicables au dossier et à la facturation, indiquées dans le tableau ci-dessus. Vous
+          disposez des droits décrits plus bas, à exercer à la même adresse.
+        </P>
+      </>
     ),
   },
   {
