@@ -16,11 +16,12 @@ export const POINT = {
   /** Libellés affichés. */
   date: "30 octobre 2026",
   heure: "17 h",
+  /** Quatre cases : libellé, valeur courte (en gros), détail. */
   cases: [
-    { titre: "Retraits", texte: "suspendus. Binance dit viser une reprise dans les 45 heures suivant sa mise à jour du 30 octobre." },
-    { titre: "Montant concerné", texte: "environ 6,3 milliards de dollars, dont environ 3 milliards déjà bloqués." },
-    { titre: "Engagement", texte: "Binance annonce qu'elle couvrira toutes les pertes." },
-    { titre: "Prochaine étape", texte: "une vérification publique de ses réserves, annoncée pour la fin des réparations." },
+    { libelle: "Retraits", valeur: "Suspendus", detail: "Binance dit viser une reprise dans les 45 heures suivant sa mise à jour du 30 octobre." },
+    { libelle: "Montant concerné", valeur: "≈ 6,3 Md$", detail: "Environ 6,3 milliards de dollars, dont environ 3 milliards déjà bloqués." },
+    { libelle: "Engagement", valeur: "Pertes couvertes", detail: "Binance annonce qu'elle couvrira toutes les pertes." },
+    { libelle: "Prochaine étape", valeur: "Preuve de réserves", detail: "Une vérification publique de ses réserves, annoncée pour la fin des réparations." },
   ],
 } as const;
 

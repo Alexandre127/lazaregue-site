@@ -42,12 +42,17 @@ const deuxChiffres = (n: number) => String(n).padStart(2, "0");
  * `pied` reçoit ce qui suit les suggestions (sources). `after` remplace l'appel
  * final par défaut.
  *
- * Variantes (facultatives, désactivées par défaut — les articles existants ne
- * changent pas) : `heroSombre` (en-tête sur fond navy), `signature` (remplace
- * le bloc auteur de l'en-tête), `sommaireFixe` (sommaire latéral non collant,
- * sans la barre mobile collante : sur mobile, seul le sommaire dépliable placé
- * au-dessus de l'article reste), `faqDansLeCorps` (la page affiche elle-même la
- * FAQ du registre ; le gabarit ne la répète pas mais garde le balisage FAQPage).
+ * Options facultatives (désactivées par défaut — les articles existants ne
+ * changent pas) :
+ *  - `variante="actualite"` : mise en page des articles d'actualité (maquette
+ *    « Page article – ordinateur », oct. 2026) — en-tête navy, `bandeau` pleine
+ *    largeur sous l'en-tête, sommaire à GAUCHE non collant (sans la barre
+ *    mobile collante ; sur mobile, le sommaire dépliable reste au-dessus de
+ *    l'article), numéro de section au-dessus de chaque H2, pas de blocs de
+ *    suggestions ni de barre de partage ;
+ *  - `signature` : remplace le bloc auteur de l'en-tête ;
+ *  - `faqDansLeCorps` : la page affiche elle-même la FAQ du registre ; le
+ *    gabarit ne la répète pas mais garde le balisage FAQPage.
  *
  * Options du sommaire : un <h2 data-toc="…"> y figure sous ce libellé court
  * plutôt que sous son texte complet ; un bloc direct du corps (section, div)
@@ -66,9 +71,9 @@ export default function ArticleLayout({
   mobileCta,
   encart,
   titreSuggestions = "À lire aussi",
-  heroSombre = false,
+  variante,
+  bandeau,
   signature,
-  sommaireFixe = false,
   faqDansLeCorps = false,
 }: {
   slug: string;
@@ -80,10 +85,11 @@ export default function ArticleLayout({
   titreSuggestions?: string;
   /** Bloc affiché sous le sommaire latéral (grands écrans). */
   encart?: ReactNode;
-  heroSombre?: boolean;
+  variante?: "actualite";
+  /** Bande pleine largeur entre l'en-tête et le corps (variante actualité). */
+  bandeau?: ReactNode;
   /** Remplace le bloc auteur (photo, nom, fonction, date) de l'en-tête. */
   signature?: ReactNode;
-  sommaireFixe?: boolean;
   faqDansLeCorps?: boolean;
 }) {
   const a = article(slug);
@@ -94,6 +100,7 @@ export default function ArticleLayout({
   const maj = moisAnnee(a.miseAJour);
   const suggestions = aLireAussi(slug);
   const parCabinet = a.auteur === CABINET;
+  const actu = variante === "actualite";
 
   /* Sommaire + numérotation, à partir des <h2> du corps. */
   const toc: TocItem[] = [];
@@ -162,18 +169,19 @@ export default function ArticleLayout({
       {/* Progression de lecture (≥ 768 px) ; sous 768 px, la barre Sommaire
           collante de ArticleMobileNav la porte déjà. */}
       <ReadingProgress />
-      {sommaireFixe ? null : <ArticleMobileNav toc={toc} cta={mobileCta} />}
+      {actu ? null : <ArticleMobileNav toc={toc} cta={mobileCta} />}
       {/* Blocs éditoriaux repliables sur mobile (desktop inchangé). */}
       <ArticleCollapsibles />
 
       {/* ================================ EN-TÊTE ========================== */}
-      <section className={heroSombre ? `${styles.aHero} ${styles.aHeroSombre}` : styles.aHero} aria-labelledby="h1">
+      <section className={actu ? `${styles.aHero} ${styles.aHeroActu}` : styles.aHero} aria-labelledby="h1">
         <div className={styles.col}>
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/ressources">Ressources</Link> <span aria-hidden="true">/</span>{" "}
             <Link href={`/ressources?domaine=${a.domaine}#liste`}>{domaine}</Link>
+            {actu ? <span> · {type}</span> : null}
           </nav>
-          <p className={styles.kicker}>{domaine} · {type}</p>
+          {actu ? null : <p className={styles.kicker}>{domaine} · {type}</p>}
           <h1 id="h1">{a.title}</h1>
           {a.chapo ? <p className={styles.chapo}>{a.chapo}</p> : null}
           {signature ? (
@@ -201,8 +209,15 @@ export default function ArticleLayout({
         </div>
       </section>
 
-      <div className={styles.aGrid}>
-        <article className={styles.body}>
+      {bandeau}
+
+      <div className={actu ? `${styles.aGrid} ${styles.aGridActu}` : styles.aGrid}>
+        {actu ? (
+          <TocSpy items={toc} fixe titre="Sur cette page" className={styles.tocActu}>
+            {encart}
+          </TocSpy>
+        ) : null}
+        <article className={actu ? `${styles.body} ${styles.bodyActu}` : styles.body}>
           {a.essentiel.length ? (
             <div className={styles.essentiel}>
               <p className={styles.essLabel}>L’essentiel</p>
@@ -240,7 +255,7 @@ export default function ArticleLayout({
             </>
           ) : null}
 
-          {suggestions.length ? (
+          {suggestions.length && !actu ? (
             <nav className={styles.lire} aria-labelledby="lire-aussi">
               <h2 className={styles.monoTitre} id="lire-aussi">{titreSuggestions}</h2>
               <ul>
@@ -256,14 +271,16 @@ export default function ArticleLayout({
             </nav>
           ) : null}
 
-          <SurLeMemeSujet rubrique={a.outil ? "outil" : "article"} domaines={[a.domaine]} exclure={suggestions.map((x) => chemin(x.slug))} />
+          {actu ? null : (
+            <SurLeMemeSujet rubrique={a.outil ? "outil" : "article"} domaines={[a.domaine]} exclure={suggestions.map((x) => chemin(x.slug))} />
+          )}
 
           {pied}
 
-          <ShareBar />
+          {actu ? null : <ShareBar />}
         </article>
 
-        <TocSpy items={toc} fixe={sommaireFixe}>{encart}</TocSpy>
+        {actu ? null : <TocSpy items={toc}>{encart}</TocSpy>}
       </div>
 
       {after ?? (

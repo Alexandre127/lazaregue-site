@@ -100,38 +100,42 @@ export default function CourrierBinance() {
   }
 
   return (
+    <>
+      {hydrate ? (
+        <div className={styles.choix} role="group" aria-label="Choisir votre cas">
+          {OPTIONS.map((o, i) => (
+            <button
+              key={o.bouton}
+              type="button"
+              className={styles.choixBtn}
+              aria-pressed={option === i}
+              onClick={() => {
+                setOption(i);
+                setCopie(false);
+              }}
+            >
+              {o.bouton}
+            </button>
+          ))}
+        </div>
+      ) : null}
     <figure className={styles.courrier} aria-labelledby="courrier-titre">
       <div className={styles.courrierTete}>
-        <p className={styles.etiquette} id="courrier-titre">Modèle de courrier — réclamation Binance</p>
+        <p className={styles.mono} id="courrier-titre">réclamation · compte binance</p>
         {hydrate ? (
-          <>
-            <div className={styles.choix} role="group" aria-label="Choisir votre cas">
-              {OPTIONS.map((o, i) => (
-                <button
-                  key={o.bouton}
-                  type="button"
-                  className={styles.choixBtn}
-                  aria-pressed={option === i}
-                  onClick={() => setOption(i)}
-                >
-                  {o.bouton}
-                </button>
-              ))}
-            </div>
-            <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.copier}
-                onClick={copier}
-                data-track="copy_template"
-                data-track-composant="modele_courrier_binance"
-                data-track-option={String(option + 1)}
-              >
-                Copier le modèle
-              </button>
-              <span className={styles.copie} role="status" aria-live="polite">{copie ? "Modèle copié" : ""}</span>
-            </div>
-          </>
+          <div className={styles.actions}>
+            <span className={styles.copie} role="status" aria-live="polite">{copie ? "Modèle copié" : ""}</span>
+            <button
+              type="button"
+              className={styles.copier}
+              onClick={copier}
+              data-track="copy_template"
+              data-track-composant="modele_courrier_binance"
+              data-track-option={String(option + 1)}
+            >
+              Copier le modèle
+            </button>
+          </div>
         ) : null}
       </div>
 
@@ -141,7 +145,7 @@ export default function CourrierBinance() {
           <p key={p}>{avecZones(p)}</p>
         ))}
         {hydrate ? (
-          <p className={styles.optionChoisie}>{avecZones(OPTIONS[option].texte)}</p>
+          <p>{avecZones(OPTIONS[option].texte)}</p>
         ) : (
           OPTIONS.map((o, i) => (
             <details key={o.titre} className={styles.option} open={i === 0}>
@@ -153,7 +157,7 @@ export default function CourrierBinance() {
         <p>{QUESTIONS_INTRO}</p>
         <ul>
           {QUESTIONS.map((q) => (
-            <li key={q}>{q}</li>
+            <li key={q}>– {q}</li>
           ))}
         </ul>
         {FIN.map((p) => (
@@ -161,5 +165,6 @@ export default function CourrierBinance() {
         ))}
       </div>
     </figure>
+    </>
   );
 }

@@ -105,7 +105,10 @@ export const ARTICLES: Article[] = [
     slug: "piratage-binance-clients-francais",
     domaine: "crypto",
     type: "guide",
-    chapo: "Si vous avez des cryptomonnaies chez Binance, vous avez sans doute appris que la plateforme a été piratée.",
+    etiquette: "Actualité",
+    // Accroche de la maquette « Page article – ordinateur » (oct. 2026).
+    chapo:
+      "Depuis le 1er juillet 2026, retirer vos cryptos était la seule opération encore possible chez Binance. C'est précisément celle que le piratage a suspendue.",
     miseAJour: POINT_BINANCE.miseAJour,
     publieLe: PUBLIE_BINANCE,
     auteur: "Alexandre Lazarègue",
