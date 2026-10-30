@@ -13,6 +13,7 @@
  */
 
 import { CLASSEMENT, estClassement, rubrique, type Classement } from "@/lib/domaines";
+import { POINT as POINT_BINANCE, PUBLIE_LE as PUBLIE_BINANCE } from "../piratage-binance-clients-francais/point-de-situation";
 
 export type QA = { q: string; a: string };
 
@@ -45,6 +46,7 @@ export type Article = {
   etiquette?: string; // libellé affiché à la place de celui du type (« Observatoire », « Cas pratique »…)
   chapo: string;
   miseAJour: string; // date ISO réelle ; "" = inconnue (rien ne s'affiche)
+  publieLe?: string; // date ISO de première mise en ligne (datePublished, article:published_time)
   auteur: string;
   essentiel: string[]; // 2 à 4 phrases ; bloc masqué si vide
   faq: QA[]; // bloc et balisage FAQPage masqués si vide
@@ -67,6 +69,14 @@ const FAQ_FBO: QA[] = [
   { q: "Les banques cèdent-elles seulement devant un tribunal ?", a: "Le Sénat relevait en 2022 que les procédures engagées contre elles sont très fréquemment perdues par ces dernières, et que certaines semblent compter sur l'inaction de leurs clients. Un dossier se prépare donc comme s'il devait être jugé, même lorsqu'il se règle avant." },
 ];
 
+const FAQ_BINANCE: QA[] = [
+  { q: "Mes cryptos sont-elles perdues après le piratage de Binance ?", a: "Pas nécessairement. Les pirates ont vidé des coffres de la plateforme, pas votre compte. Binance annonce qu'elle couvrira toutes les pertes. Si votre solde est intact, le risque principal est un retard pour retirer vos cryptos." },
+  { q: "Binance a-t-elle encore le droit d'exercer en France ?", a: "Non. Depuis le 1er juillet 2026, Binance ne propose plus ses services en France, faute d'autorisation européenne. Les clients français pouvaient seulement retirer leurs avoirs." },
+  { q: "Comment retirer son argent de Binance après le piratage ?", a: "Attendez l'annonce officielle de la reprise. Choisissez ensuite une destination (portefeuille personnel ou plateforme autorisée en France), vérifiez l'adresse et le réseau, faites un premier envoi d'essai, puis transférez le reste." },
+  { q: "Un conseiller Binance m'appelle pour me rembourser : que faire ?", a: "Raccrochez. Ne communiquez aucun code et ne transférez aucun fonds. Les démarches se font uniquement depuis l'application ou le site officiel. Si vous avez déjà payé, appelez votre banque immédiatement pour faire opposition." },
+  { q: "Faut-il porter plainte ?", a: "Pas si votre solde est intact : la victime directe du vol est Binance. En revanche, si vous avez été escroqué par un faux service client, ou si des cryptos ont disparu de votre compte, une plainte est utile." },
+];
+
 const FAQ_OSINT: QA[] = [
   { q: "L'OSINT est-il légal ?", a: "Oui, consulter des informations publiques est licite. Ce sont la manière de les collecter et l'usage qui en est fait qui peuvent être illicites : constitution de fichiers à l'insu des personnes, surveillance, exposition de données personnelles." },
   { q: "Une capture d'écran est-elle une preuve ?", a: "Elle est recevable, mais sa force probante est faible si elle est isolée. Elle gagne en valeur lorsqu'elle est corroborée par d'autres éléments ou figée par un constat de commissaire de justice." },
@@ -85,6 +95,29 @@ const FAQ_AVIS_GOOGLE: QA[] = [
 ];
 
 export const ARTICLES: Article[] = [
+  {
+    // Article d'actualité : l'encadré « Point au … » et la date de mise à jour
+    // se modifient dans piratage-binance-clients-francais/point-de-situation.ts.
+    title: "Piratage de Binance : ce qui s'est passé et ce que les clients français doivent faire",
+    seoTitle: "Piratage de Binance : clients français, que faire ?",
+    seoDescription:
+      "Binance piratée le 29 octobre 2026 : ce qui s'est passé, ce que vaut la promesse de remboursement, ce que doivent faire les Français. Modèle gratuit.",
+    slug: "piratage-binance-clients-francais",
+    domaine: "crypto",
+    type: "guide",
+    chapo: "Si vous avez des cryptomonnaies chez Binance, vous avez sans doute appris que la plateforme a été piratée.",
+    miseAJour: POINT_BINANCE.miseAJour,
+    publieLe: PUBLIE_BINANCE,
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: FAQ_BINANCE,
+    une: true,
+    titreUne: "Piratage de Binance : | ce qui s'est passé | et ce que les clients | français doivent faire",
+    ordre: -1,
+    liesA: ["fraude-bancaire-opposition-contestation-remboursement", "jurisprudence-faux-conseiller-bancaire"],
+    exclureDesSuggestions: false,
+    publie: true,
+  },
   {
     title: "Fraude bancaire : opposition, contestation et remboursement",
     seoTitle: "Fraude bancaire : opposition, contestation et remboursement",

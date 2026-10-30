@@ -442,3 +442,17 @@
 .body p.reference { font-family: var(--ff-mono); font-size: 13px; line-height: 1.6; letter-spacing: 0.02em; color: var(--text-muted); }
 /* Liens dans l'appel final navy. */
 .appel .lead a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ===== Variantes facultatives du gabarit (article « Piratage de Binance », oct. 2026) ===== */
+/* Sommaire latéral non collant. */
+.tocFixe { position: static; }
+/* En-tête sur fond navy. */
+.aHeroSombre { background: var(--navy); padding-bottom: 28px; }
+.aHeroSombre h1 { color: #fff; max-width: 24ch; }
+.aHeroSombre .crumb, .aHeroSombre .crumb a { color: var(--muted-on-dark); }
+.aHeroSombre .crumb a:hover { color: #fff; }
+.aHeroSombre .kicker { color: var(--muted-on-dark); }
+.aHeroSombre .chapo { color: var(--muted-on-dark); }
+.aHeroSombre .byline { border-color: rgba(255, 255, 255, 0.24); }
+.aHeroSombre .bylineDate { color: var(--muted-on-dark); }
+.aHeroSombre :focus-visible { outline-color: #fff; }

@@ -287,6 +287,7 @@ export default function Page() {
                     </li>
                   ))}
                 </ul>
+                <p className="limit">{fr("Plateforme piratée, retraits suspendus : voir l'article ")}<Link href="/ressources/piratage-binance-clients-francais">piratage de Binance : ce que les clients français doivent faire</Link>.</p>
                 <p className="limit">{fr("Le cabinet n'engage de procédure que s'il existe un responsable identifié qu'on peut effectivement poursuivre ; si ce n'est pas le cas, il vous le dit avant toute démarche.")}</p>
                 <div className="redirect">
                   <p>{fr("Faux conseiller, faux investissement ou virement frauduleux ?")}</p>

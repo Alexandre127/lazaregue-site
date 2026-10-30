@@ -166,6 +166,10 @@ export default function Page() {
                 ))}
               </div>
               <p className="after-band">{fr("Le cabinet intervient aussi en cas d'usurpation d'identité ou d'escroquerie sentimentale, dès lors que des banques ou des intermédiaires ont fait circuler les fonds.")}</p>
+              <aside className="actu" aria-label="Actualité">
+                <span className="lbl">Actualité</span>
+                <p>{fr("Clients de plateformes de cryptomonnaies : ")}<Link href="/ressources/piratage-binance-clients-francais">piratage de Binance : faux supports et faux remboursements</Link>.</p>
+              </aside>
             </div>
           </section>
 

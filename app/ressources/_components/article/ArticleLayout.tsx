@@ -42,10 +42,19 @@ const deuxChiffres = (n: number) => String(n).padStart(2, "0");
  * `pied` reçoit ce qui suit les suggestions (sources). `after` remplace l'appel
  * final par défaut.
  *
+ * Variantes (facultatives, désactivées par défaut — les articles existants ne
+ * changent pas) : `heroSombre` (en-tête sur fond navy), `signature` (remplace
+ * le bloc auteur de l'en-tête), `sommaireFixe` (sommaire latéral non collant,
+ * sans la barre mobile collante : sur mobile, seul le sommaire dépliable placé
+ * au-dessus de l'article reste), `faqDansLeCorps` (la page affiche elle-même la
+ * FAQ du registre ; le gabarit ne la répète pas mais garde le balisage FAQPage).
+ *
  * Options du sommaire : un <h2 data-toc="…"> y figure sous ce libellé court
  * plutôt que sous son texte complet ; un bloc direct du corps (section, div)
  * portant `id` et `data-toc` y figure aussi, à son rang, sans numéro injecté
- * (ex. un bloc de téléchargement). `encart` s'affiche sous le sommaire latéral.
+ * (ex. un bloc de téléchargement). Un tel bloc peut viser l'ancre d'un titre
+ * qu'il contient avec `data-toc-ancre` au lieu de porter lui-même l'`id`.
+ * `encart` s'affiche sous le sommaire latéral.
  *
  * Voir docs/CHARTE-SITE.md § « Rédiger un nouvel article ».
  */
@@ -57,6 +66,10 @@ export default function ArticleLayout({
   mobileCta,
   encart,
   titreSuggestions = "À lire aussi",
+  heroSombre = false,
+  signature,
+  sommaireFixe = false,
+  faqDansLeCorps = false,
 }: {
   slug: string;
   children: ReactNode;
@@ -67,6 +80,11 @@ export default function ArticleLayout({
   titreSuggestions?: string;
   /** Bloc affiché sous le sommaire latéral (grands écrans). */
   encart?: ReactNode;
+  heroSombre?: boolean;
+  /** Remplace le bloc auteur (photo, nom, fonction, date) de l'en-tête. */
+  signature?: ReactNode;
+  sommaireFixe?: boolean;
+  faqDansLeCorps?: boolean;
 }) {
   const a = article(slug);
   const domaine = DOM_LABEL[a.domaine];
@@ -81,10 +99,11 @@ export default function ArticleLayout({
   const toc: TocItem[] = [];
   const corps = Children.toArray(children).map((el) => {
     if (!isValidElement(el)) return el;
-    const props = el.props as { id?: string; children?: ReactNode; "data-toc"?: string };
+    const props = el.props as { id?: string; children?: ReactNode; "data-toc"?: string; "data-toc-ancre"?: string };
     if (el.type !== "h2") {
       // Bloc hors <h2> déclaré au sommaire : entrée à son rang, rendu inchangé.
-      if (props.id && props["data-toc"]) toc.push({ id: props.id, label: props["data-toc"] });
+      const ancre = props["data-toc-ancre"] ?? props.id;
+      if (ancre && props["data-toc"]) toc.push({ id: ancre, label: props["data-toc"] });
       return el;
     }
     const h2 = el as ReactElement<{ id?: string; children?: ReactNode; "data-toc"?: string }>;
@@ -106,6 +125,7 @@ export default function ArticleLayout({
         "@type": "Article",
         headline: a.title,
         description: a.seoDescription,
+        ...(a.publieLe ? { datePublished: a.publieLe } : {}),
         ...(a.miseAJour ? { dateModified: a.miseAJour } : {}),
         inLanguage: "fr-FR",
         mainEntityOfPage: `${URL_BASE}${url}`,
@@ -113,7 +133,12 @@ export default function ArticleLayout({
         author: parCabinet
           ? { "@type": "Organization", name: CABINET, url: `${URL_BASE}/` }
           : { "@type": "Person", name: a.auteur, jobTitle: ROLE, url: `${URL_BASE}/le-cabinet` },
-        publisher: { "@type": "LegalService", name: "Lazarègue Avocats", url: `${URL_BASE}/` },
+        publisher: {
+          "@type": "LegalService",
+          name: "Lazarègue Avocats",
+          url: `${URL_BASE}/`,
+          logo: { "@type": "ImageObject", url: `${URL_BASE}/icon.png` },
+        },
       },
       {
         "@type": "BreadcrumbList",
@@ -137,12 +162,12 @@ export default function ArticleLayout({
       {/* Progression de lecture (≥ 768 px) ; sous 768 px, la barre Sommaire
           collante de ArticleMobileNav la porte déjà. */}
       <ReadingProgress />
-      <ArticleMobileNav toc={toc} cta={mobileCta} />
+      {sommaireFixe ? null : <ArticleMobileNav toc={toc} cta={mobileCta} />}
       {/* Blocs éditoriaux repliables sur mobile (desktop inchangé). */}
       <ArticleCollapsibles />
 
       {/* ================================ EN-TÊTE ========================== */}
-      <section className={styles.aHero} aria-labelledby="h1">
+      <section className={heroSombre ? `${styles.aHero} ${styles.aHeroSombre}` : styles.aHero} aria-labelledby="h1">
         <div className={styles.col}>
           <nav className={styles.crumb} aria-label="Fil d’Ariane">
             <Link href="/ressources">Ressources</Link> <span aria-hidden="true">/</span>{" "}
@@ -151,6 +176,11 @@ export default function ArticleLayout({
           <p className={styles.kicker}>{domaine} · {type}</p>
           <h1 id="h1">{a.title}</h1>
           {a.chapo ? <p className={styles.chapo}>{a.chapo}</p> : null}
+          {signature ? (
+            <div className={styles.byline}>
+              <p className={styles.bylineDate}>{signature}</p>
+            </div>
+          ) : (
           <div className={styles.byline}>
             {parCabinet ? null : (
               <span className={styles.ava}>
@@ -167,6 +197,7 @@ export default function ArticleLayout({
               ) : null}
             </div>
           </div>
+          )}
         </div>
       </section>
 
@@ -202,7 +233,7 @@ export default function ArticleLayout({
 
           {corps}
 
-          {a.faq.length ? (
+          {a.faq.length && !faqDansLeCorps ? (
             <>
               <h2 className={styles.monoTitre} id="faq">Questions fréquentes</h2>
               <ArticleFaq items={a.faq} />
@@ -232,7 +263,7 @@ export default function ArticleLayout({
           <ShareBar />
         </article>
 
-        <TocSpy items={toc}>{encart}</TocSpy>
+        <TocSpy items={toc} fixe={sommaireFixe}>{encart}</TocSpy>
       </div>
 
       {after ?? (
