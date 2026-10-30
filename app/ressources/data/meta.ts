@@ -16,7 +16,17 @@ export function metaArticle(slug: string): Metadata {
     description: a.seoDescription,
     alternates: { canonical: url },
     ...(a.publie ? {} : { robots: { index: false, follow: false } }),
-    openGraph: { title: a.seoTitle, description: a.seoDescription, url, siteName: "Lazarègue Avocats", images: [image], locale: "fr_FR", type: "article" },
+    openGraph: {
+      title: a.seoTitle,
+      description: a.seoDescription,
+      url,
+      siteName: "Lazarègue Avocats",
+      images: [image],
+      locale: "fr_FR",
+      type: "article",
+      ...(a.publieLe ? { publishedTime: a.publieLe } : {}),
+      ...(a.publieLe && a.miseAJour ? { modifiedTime: a.miseAJour } : {}),
+    },
     twitter: { card: "summary_large_image", images: [image], title: a.seoTitle, description: a.seoDescription },
   };
 }

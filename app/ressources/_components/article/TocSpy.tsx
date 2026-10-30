@@ -11,7 +11,20 @@ export type TocItem = { id: string; label: string };
  * courante. La mise à jour se fait dans le callback de l'observer (pas un
  * setState synchrone dans le corps de l'effet).
  */
-export default function TocSpy({ items, children }: { items: TocItem[]; children?: ReactNode }) {
+export default function TocSpy({
+  items,
+  children,
+  fixe = false,
+  titre = "Sommaire",
+  className,
+}: {
+  items: TocItem[];
+  children?: ReactNode;
+  /** true = non collant */
+  fixe?: boolean;
+  titre?: string;
+  className?: string;
+}) {
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -34,8 +47,8 @@ export default function TocSpy({ items, children }: { items: TocItem[]; children
   }, [items]);
 
   return (
-    <aside className={styles.toc} aria-label="Sommaire">
-      <p className={styles.label}>Sommaire</p>
+    <aside className={[styles.toc, fixe ? styles.tocFixe : "", className ?? ""].filter(Boolean).join(" ")} aria-label={titre}>
+      <p className={styles.label}>{titre}</p>
       {items.map((t, i) => (
         <a key={t.id} href={`#${t.id}`} aria-current={active === t.id ? "true" : undefined}>
           <b aria-hidden="true">{String(i + 1).padStart(2, "0")}</b>

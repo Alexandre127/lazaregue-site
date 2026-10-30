@@ -99,6 +99,7 @@ export default function Page() {
             linkText="Lire la décision"
           />
           <p>La même logique vaut lorsque les virements ont été passés par vous, sous la conduite d&apos;un tiers présenté comme conseiller, coach ou agent de sécurité. La question posée au juge n&apos;est pas « qui a cliqué », mais « le client a-t-il consenti à cette opération-là, en connaissance de son objet réel ».</p>
+          <p>Le même scénario peut viser les clients d&apos;une plateforme de cryptomonnaies : voir <Link href="/ressources/piratage-binance-clients-francais">piratage de Binance : faux supports et faux remboursements</Link>.</p>
 
           {/* ===== 4 ===== */}
           <h2 id="s4">Ce que la banque doit prouver — et qu&apos;elle produit rarement</h2>

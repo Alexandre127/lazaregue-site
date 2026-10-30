@@ -442,3 +442,41 @@
 .body p.reference { font-family: var(--ff-mono); font-size: 13px; line-height: 1.6; letter-spacing: 0.02em; color: var(--text-muted); }
 /* Liens dans l'appel final navy. */
 .appel .lead a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ===== Variantes facultatives du gabarit ==========================================
+   Variante « actualite » : maquette « Page article – ordinateur » (oct. 2026),
+   article « Piratage de Binance ». Tokens de charte uniquement. */
+.tocFixe { position: static; }
+
+/* En-tête navy, H1 Bebas large. */
+.aHeroActu { background: var(--navy); padding-block: calc(var(--header-h) + 40px) 64px; }
+.aHeroActu .col { max-width: calc(var(--content-max) + 2 * var(--page-margin)); }
+.aHeroActu .crumb { font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--muted-on-dark); }
+.aHeroActu .crumb a { color: var(--muted-on-dark); text-decoration: underline; text-underline-offset: 3px; }
+.aHeroActu .crumb a:hover { color: #fff; }
+.aHeroActu h1 { color: #fff; font-size: clamp(46px, 7vw, 96px); max-width: 1000px; margin-top: 20px; }
+.aHeroActu .chapo { max-width: 760px; margin-top: 28px; font-size: 20px; font-weight: 300; font-style: italic; color: var(--muted-on-dark); }
+.aHeroActu .byline { border: 0; padding: 0; margin-top: 28px; max-width: none; }
+.aHeroActu .bylineDate { font-size: 13px; letter-spacing: 0.06em; text-transform: none; color: var(--muted-on-dark); margin: 0; }
+.aHeroActu :focus-visible { outline-color: #fff; }
+
+/* Grille : sommaire à gauche (240 px) + article (760 px max). */
+.aGridActu { grid-template-columns: minmax(240px, 1fr) minmax(0, 760px); gap: 48px; max-width: calc(var(--content-max) + 2 * var(--page-margin)); margin: 0 auto; justify-content: start; padding-top: 56px; }
+.tocActu { border-left: 0; padding-left: 0; border-top: 2px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; }
+.tocActu .label { color: var(--text-muted); text-transform: lowercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.tocActu a { color: var(--ink); font-size: 15px; min-height: 0; padding: 4px 0; }
+.tocActu a b { color: var(--text-muted); }
+.tocActu .tocEncart { margin-top: 24px; }
+.tocActu .tocEncart a { display: flex; width: 100%; min-height: 48px; justify-content: center; color: #fff; font-size: 15px; padding: 12px 20px; }
+@media (max-width: 1100px) {
+  .aGridActu { grid-template-columns: minmax(0, 760px); justify-content: center; padding-top: 32px; }
+}
+@media (max-width: 767px) {
+  .aHeroActu { padding-bottom: 40px; }
+  .aHeroActu .chapo { font-size: 18px; }
+}
+
+/* Corps : numéro de section au-dessus du H2, titres 30 px, sections aérées. */
+.bodyActu h2 { font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; margin-top: 56px; }
+.bodyActu h2 .num { display: block; margin: 0 0 14px; font-size: 12px; letter-spacing: 0.1em; vertical-align: baseline; }
+.bodyActu h3 { font-size: 20px; margin-top: 26px; }

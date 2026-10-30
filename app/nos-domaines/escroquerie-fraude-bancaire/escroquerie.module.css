@@ -97,6 +97,11 @@
 /* ---- Bande d'urgence : rappel court, pleine largeur, sous le hero (23 sept. 2026).
    Remplace l'encadré blanc du hero. Fond blanc, filet rouge 3px en haut, texte noir ;
    titre DM Mono rouge à gauche, quatre mesures numérotées au centre, lien à droite. */
+/* Encadré « Actualité » (renvoi vers un article de ressources). */
+.esc :global(.actu) { margin-top: 24px; border-left: 4px solid var(--blue); background: var(--tintb); padding: 14px 18px; max-width: 760px; }
+.esc :global(.actu .lbl) { margin-bottom: 4px; }
+.esc :global(.actu p) { margin: 0; }
+.esc :global(.actu a) { font-weight: 600; }
 .esc :global(.urgband) { background: #fff; border-top: 3px solid var(--red); padding-block: clamp(16px, 2vw, 24px); }
 .esc :global(.urgband-inner) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 32px; row-gap: 10px; align-items: start; }
 .esc :global(.urgband-title) { grid-column: 1; grid-row: 1; margin: 0; padding-top: 2px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 8px; white-space: nowrap; }

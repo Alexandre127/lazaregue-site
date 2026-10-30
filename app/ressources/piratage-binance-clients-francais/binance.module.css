@@ -1,0 +1,159 @@
+/* Article « Piratage de Binance » — blocs propres à la page, d'après la maquette
+   « Page article – ordinateur » (oct. 2026). Tokens de charte uniquement
+   (app/globals.css) ; angles droits, aucune ombre. Le rouge (var(--red)) ne sert
+   qu'à l'étiquette et aux pictogrammes de l'encadré d'alerte. */
+
+.mono { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-muted) !important; margin: 0; }
+
+/* ---------- Bande « Point au … » (pleine largeur, sous l'en-tête) ---------- */
+.point { background: var(--off); border-bottom: 1px solid var(--bd); }
+.pointIn { max-width: calc(var(--content-max) + 2 * var(--page-margin)); margin: 0 auto; padding: 32px var(--page-margin); }
+.pointTete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 20px; }
+.pointTitre { margin: 0; font-family: var(--ff-body); font-size: 20px; font-weight: 600; color: var(--ink); }
+.pointCases { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--bd); border: 1px solid var(--bd); margin: 0; }
+.pointCases > div { background: #fff; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+.pointCases dt { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-muted); }
+.pointCases dd { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.pointValeur { font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); }
+.pointDetail { font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+@media (max-width: 767px) { .pointIn { padding: 24px var(--page-margin-mobile); } }
+
+/* ---------- Introduction et « La réponse courte » ---------- */
+.intro { font-size: 19px !important; line-height: 1.6 !important; }
+.reponse { background: var(--off); padding: 22px 24px; display: flex; flex-direction: column; gap: 6px; }
+.reponse p { margin: 0; }
+.reponseTexte { font-size: 19px !important; font-weight: 600; line-height: 1.45 !important; }
+
+/* ---------- Liens dans le texte ---------- */
+.lien { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+.lien:hover { color: var(--blue3); }
+
+/* ---------- Renvois aux sources [n] ---------- */
+.renvoi { font-size: 0.72em; line-height: 0; vertical-align: super; }
+.renvoi a { display: inline-block; padding: 0 1px; color: var(--text-muted); text-decoration: none; }
+.renvoi a:hover { color: var(--blue); text-decoration: underline; }
+
+/* ---------- Chiffres clés (section 01) ---------- */
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--bd); border: 1px solid var(--bd); list-style: none; padding: 0; }
+.chiffres li { background: #fff; padding: 18px; display: flex; flex-direction: column; gap: 4px; margin: 0 !important; }
+.chiffreValeur { font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.chiffreTexte { font-size: 15px; line-height: 1.45; color: var(--text-muted); }
+
+/* Encadré au filet noir (« Bloqué » ne veut pas dire « rendu »). */
+.filet { padding: 14px 18px; border: 1px solid var(--ink); font-weight: 500; }
+
+/* ---------- Cartes génériques ---------- */
+.grille2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.carteBord { border: 1px solid var(--bd); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+.carteGris { background: var(--off); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+.carteBord > *, .carteGris > * { margin: 0 !important; }
+.carteTitre { font-family: var(--ff-body); font-size: 18px !important; font-weight: 600; line-height: 1.3 !important; color: var(--ink); }
+.carteTexte { font-size: 15px !important; line-height: 1.55 !important; }
+.carteBord .carteTexte { color: var(--text-muted) !important; }
+@media (max-width: 700px) { .grille2 { grid-template-columns: 1fr; } }
+
+/* ---------- Bloc navy (section 03) ---------- */
+.blocNavy { background: var(--navy); color: #fff; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 18px; }
+.blocNavy > * { margin: 0 !important; }
+.blocNavy .mono { color: var(--muted-on-dark) !important; }
+.blocNavy h2, .blocNavy h3, .blocNavy strong { color: #fff !important; }
+.blocNavy p, .blocNavy li { color: var(--muted-on-dark) !important; }
+.blocNavy a { color: #fff; }
+.blocNavy :focus-visible { outline-color: #fff; }
+.blocNavy .renvoi a { color: var(--muted-on-dark); }
+.blocNavy h3 { font-size: 17px !important; font-weight: 600; }
+.blocNavy ul { padding-left: 20px; list-style: disc; display: flex; flex-direction: column; gap: 10px; }
+.separe { border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+.separe > * { margin: 0 !important; }
+
+/* ---------- Étapes numérotées (section 05) ---------- */
+.etapes { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1px; background: var(--bd); border: 1px solid var(--bd); }
+.etapes li { background: #fff; padding: 18px 20px; display: flex; gap: 18px; align-items: flex-start; margin: 0 !important; }
+.etapeNum { flex: none; min-width: 28px; font-family: var(--ff-mono); font-size: 15px; color: var(--blue); line-height: 1.65; }
+
+/* ---------- Trois réflexes (section 06) ---------- */
+.reflexes { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+.reflexes > div { border-top: 2px solid var(--blue); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.reflexes p { margin: 0; }
+.reflexeTitre { font-weight: 600; font-size: 16px !important; color: var(--ink); }
+.reflexeTexte { font-size: 15px !important; line-height: 1.5 !important; color: var(--text-muted) !important; }
+
+/* ---------- Encadré d'alerte (section 07) ---------- */
+.alerte { border: 2px solid var(--ink); padding: clamp(24px, 4vw, 36px); display: flex; flex-direction: column; gap: 18px; }
+.alerte > * { margin: 0 !important; }
+.alerteEtiquette { align-self: flex-start; display: inline-flex; padding: 4px 10px; background: var(--red); color: #fff !important; font-family: var(--ff-mono); font-size: 12px !important; letter-spacing: 0.08em; text-transform: lowercase; line-height: 1.4 !important; }
+.pieges { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 24px; list-style: none; padding: 0; }
+.pieges li { display: flex; gap: 10px; align-items: flex-start; margin: 0 !important; }
+.pieges svg { flex: none; margin-top: 5px; }
+.encartGris { background: var(--off); padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+.encartGris > * { margin: 0 !important; }
+.encartGris ul { padding-left: 20px; list-style: disc; }
+.encartGris li { font-size: 16px !important; margin-bottom: 4px; }
+.dejaPaye { border-top: 1px solid var(--bd); padding-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.dejaPaye > * { margin: 0 !important; }
+
+/* Cartes de liens internes. */
+.cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; list-style: none; padding: 0; }
+.cartes li { margin: 0 !important; }
+.cartes a { display: flex; flex-direction: column; gap: 6px; height: 100%; min-height: 44px; padding: 16px; background: var(--off); color: var(--ink); text-decoration: none; }
+.cartes a:hover .carteLire { text-decoration: underline; }
+.carteLabel { font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-muted); }
+.carteNom { font-size: 15px; font-weight: 600; line-height: 1.35; }
+.carteLire { margin-top: auto; font-size: 14px; font-weight: 600; color: var(--blue); }
+
+/* ---------- Modèle de courrier (section 08) ---------- */
+.choix { display: flex; flex-wrap: wrap; gap: 8px; }
+.choixBtn { min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); background: #fff; color: var(--ink); font: 600 15px var(--ff-body); cursor: pointer; }
+.choixBtn[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.choixBtn:hover:not([aria-pressed="true"]) { border-color: var(--blue); color: var(--blue); }
+.courrier { border: 1px solid var(--bd); background: #fff; margin-inline: 0; }
+.courrierTete { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: var(--off); border-bottom: 1px solid var(--bd); }
+.actions { display: flex; align-items: center; gap: 12px; }
+.copier { min-height: 44px; padding: 0 20px; border: 0; background: var(--blue); color: #fff; font: 600 15px var(--ff-body); cursor: pointer; }
+.copier:hover { background: var(--blue3); }
+.copie { font-family: var(--ff-mono); font-size: 12px; color: var(--blue); }
+.courrierCorps { padding: clamp(18px, 3vw, 32px); }
+.courrierCorps p, .courrierCorps li { font-size: 16px !important; line-height: 1.65 !important; margin: 0 0 14px; }
+.courrierCorps ul { list-style: none; padding: 0; margin: 0 0 14px; }
+.courrierCorps li { margin-bottom: 2px; }
+.courrierCorps p:last-child { margin-bottom: 0; }
+.option { border-left: 3px solid var(--bd); padding-left: 12px; margin: 0 0 14px; }
+.option[open] { border-left-color: var(--blue); }
+.option summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+.zone { background: var(--off); outline: 1px solid var(--bd); padding: 0 3px; }
+.noteCourrier { font-size: 15px !important; color: var(--text-muted) !important; }
+
+/* ---------- Quand consulter (section 09) ---------- */
+.cellules { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--bd); border: 1px solid var(--bd); list-style: none; padding: 0; }
+.cellules li { background: #fff; padding: 18px 20px; font-size: 16px !important; margin: 0 !important; }
+.appel { background: var(--navy); padding: clamp(24px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+.appelTexte { flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px; }
+.appelTexte p { margin: 0; color: var(--muted-on-dark) !important; font-size: 15px !important; }
+.appelTexte .appelFort { color: #fff !important; font-size: 22px !important; font-weight: 500; line-height: 1.3 !important; }
+.appel :focus-visible { outline-color: #fff; }
+.appelBtn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 26px; background: var(--blue); color: #fff; font: 600 16px var(--ff-body); text-decoration: none; }
+.appelBtn:hover { background: var(--blue3); color: #fff; }
+
+/* ---------- Lexique (section 10) ---------- */
+.lexique { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px; background: var(--bd); border: 1px solid var(--bd); }
+.lexique > div { background: #fff; padding: 16px 18px; }
+.lexique > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.lexique dt { font-weight: 600; color: var(--ink); }
+.lexique dd::first-letter { text-transform: uppercase; }
+.lexique dd { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+
+/* ---------- FAQ (details natifs) ---------- */
+.faq { border-top: 1px solid var(--bd); }
+.faq details { border-bottom: 1px solid var(--bd); padding: 6px 0; }
+.faq summary { display: flex; align-items: center; min-height: 44px; padding: 6px 0; cursor: pointer; list-style: none; font-weight: 600; font-size: 17px; color: var(--ink); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq details p { margin: 4px 0 10px; font-size: 16px !important; color: var(--text-muted) !important; }
+
+/* ---------- Sources ---------- */
+.sources { border-top: 1px solid var(--bd); padding-top: 24px; margin-top: 56px !important; display: flex; flex-direction: column; gap: 10px; }
+.sources > * { margin: 0 !important; }
+.sourcesTitre { font-family: var(--ff-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: lowercase; color: var(--text-muted) !important; }
+.sourcesListe { list-style: decimal; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.sourcesListe li { font-size: 14px !important; line-height: 1.6 !important; color: var(--text-muted) !important; overflow-wrap: anywhere; scroll-margin-top: calc(var(--header-h-compact) + 12px); }
+.sourcesListe a { color: var(--blue); }
+.avertissement { font-size: 13px !important; color: var(--text-muted) !important; }
