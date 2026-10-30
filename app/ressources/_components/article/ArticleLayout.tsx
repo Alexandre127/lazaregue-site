@@ -48,8 +48,8 @@ const deuxChiffres = (n: number) => String(n).padStart(2, "0");
  *    « Page article – ordinateur », oct. 2026) — en-tête navy, `bandeau` pleine
  *    largeur sous l'en-tête, sommaire à GAUCHE non collant (sans la barre
  *    mobile collante ; sur mobile, le sommaire dépliable reste au-dessus de
- *    l'article), numéro de section au-dessus de chaque H2, pas de blocs de
- *    suggestions ni de barre de partage ;
+ *    l'article), numéro de section au-dessus de chaque H2, « Sur le même
+ *    sujet » placé après les sources, sans « À lire aussi » ni barre de partage ;
  *  - `signature` : remplace le bloc auteur de l'en-tête ;
  *  - `faqDansLeCorps` : la page affiche elle-même la FAQ du registre ; le
  *    gabarit ne la répète pas mais garde le balisage FAQPage.
@@ -276,6 +276,11 @@ export default function ArticleLayout({
           )}
 
           {pied}
+
+          {/* Variante actualité : « Sur le même sujet » après les sources (maillage interne). */}
+          {actu ? (
+            <SurLeMemeSujet rubrique={a.outil ? "outil" : "article"} domaines={[a.domaine]} exclure={[]} />
+          ) : null}
 
           {actu ? null : <ShareBar />}
         </article>

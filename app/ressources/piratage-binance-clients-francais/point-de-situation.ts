@@ -12,18 +12,18 @@
  */
 export const POINT = {
   /** Date et heure de la dernière mise à jour (ISO 8601, heure de Paris). */
-  miseAJour: "2026-10-30T17:00:00+01:00",
+  miseAJour: "2026-10-30T20:00:00+01:00",
   /** Libellés affichés. */
   date: "30 octobre 2026",
-  heure: "17 h",
+  heure: "20 h",
   /** Quatre cases : libellé, valeur courte (en gros), détail. */
   cases: [
-    { libelle: "Retraits", valeur: "Suspendus", detail: "Binance dit viser une reprise dans les 45 heures suivant sa mise à jour du 30 octobre." },
-    { libelle: "Montant concerné", valeur: "≈ 6,3 Md$", detail: "Environ 6,3 milliards de dollars, dont environ 3 milliards déjà bloqués." },
-    { libelle: "Engagement", valeur: "Pertes couvertes", detail: "Binance annonce qu'elle couvrira toutes les pertes." },
-    { libelle: "Prochaine étape", valeur: "Preuve de réserves", detail: "Une vérification publique de ses réserves, annoncée pour la fin des réparations." },
+    { libelle: "Retraits", valeur: "Suspendus", detail: "Binance vise une reprise d'ici le dimanche 1er novembre, après reconstruction et tests de son système de retrait." },
+    { libelle: "Montant concerné", valeur: "≈ 6,3 Md$", detail: "Dont environ 3 milliards déjà bloqués, selon Binance." },
+    { libelle: "Engagement", valeur: "Pertes couvertes", detail: "Binance annonce avoir mis de côté plus de 6,34 milliards de dollars de fonds propres pour couvrir les pertes." },
+    { libelle: "Prochaine étape", valeur: "Preuve de réserves", detail: "Rapport complet annoncé pour le lundi 2 novembre, avec un premier aperçu avant." },
   ],
 } as const;
 
 /** Date de première mise en ligne (ne change plus après publication). */
-export const PUBLIE_LE = "2026-10-30T17:00:00+01:00";
+export const PUBLIE_LE = "2026-10-30T20:00:00+01:00";

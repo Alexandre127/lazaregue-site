@@ -347,7 +347,7 @@ export default function Page() {
       <p><strong>Quand l&apos;utiliser ?</strong> Seulement si vous avez un problème : un retrait bloqué après la reprise, un retrait impossible à lancer, ou des cryptos qui manquent. Si tout va bien sur votre compte, ne l&apos;envoyez pas.</p>
       <p><strong>Comment ?</strong></p>
       <ol className={a.steps}>
-        <li>Choisissez l&apos;option qui correspond à votre cas et supprimez les deux autres.</li>
+        <li>Choisissez votre cas ci-dessous : le texte s&apos;adapte.</li>
         <li>Remplacez chaque passage entre crochets par vos informations. L&apos;« UID » est votre numéro de compte Binance, visible dans votre profil.</li>
         <li>Envoyez le courrier par le canal de réclamation indiqué dans vos conditions générales, ou à défaut par le service client depuis votre compte.</li>
         <li>Gardez une copie datée et le numéro de réclamation.</li>
@@ -375,7 +375,7 @@ export default function Page() {
           <p className={s.appelFort}>Le cabinet identifie la société réellement tenue envers vous, ce que vous pouvez demander et la démarche adaptée à l&apos;enjeu.</p>
           <p>Ses avocats travaillent avec des intervenants techniques capables de retracer les opérations sur les réseaux de cryptomonnaies. Pour un premier examen, rassemblez vos conditions générales, le courriel de juin 2026, l&apos;historique de vos opérations et les réponses du service client.</p>
         </div>
-        <Link className={s.appelBtn} href="/contact">Exposer votre situation au cabinet</Link>
+        <Link className={s.appelBtn} href="/contact">Échanger avec un avocat</Link>
       </aside>
       {/* TODO (cabinet) : rétablir la phrase « Pour aller plus loin, l&apos;article
           [Binance bloque votre retrait ou refuse votre indemnisation : quels recours ?](/ressources/binance-retrait-bloque-recours)
