@@ -12,16 +12,16 @@
  */
 export const POINT = {
   /** Date et heure de la dernière mise à jour (ISO 8601, heure de Paris). */
-  miseAJour: "2026-10-30T20:00:00+01:00",
+  miseAJour: "2026-11-01T09:30:00+01:00",
   /** Libellés affichés. */
-  date: "30 octobre 2026",
-  heure: "20 h",
+  date: "1er novembre 2026",
+  heure: "9 h 30",
   /** Quatre cases : libellé, valeur courte (en gros), détail. */
   cases: [
-    { libelle: "Retraits", valeur: "Suspendus", detail: "Binance vise une reprise d'ici le dimanche 1er novembre, après reconstruction et tests de son système de retrait." },
-    { libelle: "Montant concerné", valeur: "≈ 6,3 Md$", detail: "Dont environ 3 milliards déjà bloqués, selon Binance." },
-    { libelle: "Engagement", valeur: "Pertes couvertes", detail: "Binance annonce avoir mis de côté plus de 6,34 milliards de dollars de fonds propres pour couvrir les pertes." },
-    { libelle: "Prochaine étape", valeur: "Preuve de réserves", detail: "Rapport complet annoncé pour le lundi 2 novembre, avec un premier aperçu avant." },
+    { libelle: "Retraits", valeur: "Reprise progressive", detail: "Depuis ce matin, en commençant par le bitcoin. Les autres cryptos et réseaux rouvrent par étapes." },
+    { libelle: "Montant concerné", valeur: "≈ 6,3 Md$", detail: "Binance indique avoir déjà remplacé environ 95 % des cryptos volées." },
+    { libelle: "Engagement", valeur: "Pertes couvertes", detail: "Financées par son fonds SAFU, un fonds d'assurance interne et ses fonds propres, selon Binance." },
+    { libelle: "Prochaine étape", valeur: "Preuve de réserves", detail: "Annoncée pour le début de la semaine." },
   ],
 } as const;
 

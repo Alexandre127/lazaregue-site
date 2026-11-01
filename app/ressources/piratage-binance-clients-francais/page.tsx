@@ -60,6 +60,7 @@ const SOURCES: { texte: string; titre?: string; suite?: string; url?: string }[]
   { texte: "ESMA, registre européen des prestataires agréés (fichier CASPS.csv), version du 30 octobre 2026", url: "https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica" },
   { texte: "CA Grenoble, ch. com., 26 juin 2025, n° 24/02105" },
   { texte: "", titre: "TechCrunch", suite: ", mai 2019, sur le piratage de Binance de 2019", url: "https://techcrunch.com/?p=1823936" },
+  { texte: "Reuters et AFP, 1er novembre 2026" },
 ];
 
 /** Renvoi vers une ou plusieurs sources : [1] [2]. */
@@ -175,7 +176,7 @@ export default function Page() {
       </ul>
       <p>Binance a annoncé le lendemain que l&apos;opération portait sur environ <strong>6,3 milliards de dollars</strong>. C&apos;est, selon les sociétés spécialisées dans l&apos;analyse des transactions en cryptomonnaies, le plus important vol de l&apos;histoire du secteur.<R n={[1, 2]} /></p>
       <p>Binance a d&apos;abord expliqué que l&apos;attaque avait pu commencer par l&apos;ordinateur piraté d&apos;un de ses ingénieurs. Elle a ensuite indiqué avoir découvert d&apos;autres failles. Son enquête n&apos;est pas terminée et elle a promis un rapport technique détaillé.<R n={[1, 3]} /></p>
-      <p>Des sociétés privées d&apos;analyse, dont TRM Labs, attribuent l&apos;attaque à un groupe de pirates lié à la Corée du Nord. Binance ne s&apos;est pas prononcée sur ce point.<R n={[2, 4]} /></p>
+      <p>Selon l&apos;AFP et Reuters, le FBI attribue l&apos;attaque à des pirates liés à la Corée du Nord.<R n={[13]} /></p>
 
       <h3>Pourquoi une partie de l&apos;argent a déjà été bloquée</h3>
       <p>Environ <strong>3 milliards de dollars</strong> ont pu être bloqués rapidement.<R n={[1]} /></p>
@@ -183,8 +184,8 @@ export default function Page() {
       <p>Le bitcoin ou l&apos;ether, au contraire, n&apos;ont pas d&apos;émetteur capable de les bloquer. La partie volée sous cette forme est beaucoup plus difficile à récupérer.</p>
       <p className={s.filet}>« Bloqué » ne veut pas dire « rendu ». Ces fonds sont immobilisés : les pirates ne peuvent plus s&apos;en servir. Mais leur restitution à Binance prendra du temps.</p>
 
-      <h3>Pourquoi vous ne pouvez plus retirer vos cryptos</h3>
-      <p>Dès qu&apos;elle a détecté l&apos;attaque, Binance a coupé les retraits pour tous ses clients. C&apos;est une mesure de sécurité classique : tant que la faille n&apos;est pas réparée, chaque retrait pourrait être détourné. Binance indique qu&apos;elle reconstruit son système de retrait et vise une reprise dans les 45 heures suivant sa mise à jour du 30 octobre.<R n={[3]} /></p>
+      <h3>Pourquoi les retraits ont été suspendus</h3>
+      <p>Dès qu&apos;elle a détecté l&apos;attaque, Binance a coupé les retraits pour tous ses clients. C&apos;est une mesure de sécurité classique : tant que la faille n&apos;est pas réparée, chaque retrait pourrait être détourné. Binance indique qu&apos;elle reconstruit son système de retrait et vise une reprise dans les 45 heures suivant sa mise à jour du 30 octobre.<R n={[3]} /> Les retraits ont repris progressivement le 1er novembre 2026 au matin, en commençant par le bitcoin.<R n={[13]} /></p>
       <p>Ce n&apos;est pas la première fois. En 2019, Binance s&apos;était fait voler environ 7 000 bitcoins : elle avait remboursé avec son fonds de réserve, et avait annoncé une suspension des retraits d&apos;environ une semaine.<R n={[12]} /></p>
 
       <h3>Votre compte personnel a-t-il été piraté ?</h3>
@@ -276,7 +277,8 @@ export default function Page() {
       </ol>
 
       {/* ===== 06 ===== */}
-      <h2 id="reprise-des-retraits" data-toc="À la reprise des retraits">Quand les retraits reprendront : comment récupérer vos cryptos sans erreur</h2>
+      <h2 id="reprise-des-retraits" data-toc="À la reprise des retraits">Les retraits reprennent : comment récupérer vos cryptos sans erreur</h2>
+      <p>La reprise se fait par étapes : vérifiez dans l&apos;application que le réseau de votre crypto est bien rouvert. Attendez-vous à des délais et ne répondez à aucune offre de « retrait prioritaire » : c&apos;est une arnaque.</p>
       <p>Le jour de la reprise, beaucoup de clients voudront retirer en même temps. C&apos;est aussi le moment où les erreurs coûtent le plus cher.</p>
       <p><strong>Choisissez où envoyer vos cryptos.</strong> Deux possibilités :</p>
       <div className={s.grille2}>
