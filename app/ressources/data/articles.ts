@@ -70,7 +70,7 @@ const FAQ_FBO: QA[] = [
 ];
 
 const FAQ_BINANCE: QA[] = [
-  { q: "Mes cryptos sont-elles perdues après le piratage de Binance ?", a: "Pas nécessairement. Les pirates ont vidé des coffres de la plateforme, pas votre compte. Binance annonce qu'elle couvrira toutes les pertes. Si votre solde est intact, le risque principal est un retard pour retirer vos cryptos." },
+  { q: "Mes cryptos sont-elles perdues après le piratage de Binance ?", a: "Pas nécessairement. Les pirates ont vidé des coffres de la plateforme, pas votre compte. Binance annonce qu'elle couvrira toutes les pertes. Si votre solde est intact, les retraits reprennent progressivement depuis le 1er novembre, et Binance indique avoir déjà remplacé environ 95 % des cryptos volées." },
   { q: "Binance a-t-elle encore le droit d'exercer en France ?", a: "Non. Depuis le 1er juillet 2026, Binance ne propose plus ses services en France, faute d'autorisation européenne. Les clients français pouvaient seulement retirer leurs avoirs." },
   { q: "Comment retirer son argent de Binance après le piratage ?", a: "Vérifiez dans l'application que le réseau de votre crypto est rouvert. Choisissez ensuite une destination (portefeuille personnel ou plateforme autorisée en France), vérifiez l'adresse et le réseau, faites un premier envoi d'essai, puis transférez le reste." },
   { q: "Un conseiller Binance m'appelle pour me rembourser : que faire ?", a: "Raccrochez. Ne communiquez aucun code et ne transférez aucun fonds. Les démarches se font uniquement depuis l'application ou le site officiel. Si vous avez déjà payé, appelez votre banque immédiatement pour faire opposition." },

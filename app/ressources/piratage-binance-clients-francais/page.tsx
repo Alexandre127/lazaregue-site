@@ -185,7 +185,7 @@ export default function Page() {
       <p className={s.filet}>« Bloqué » ne veut pas dire « rendu ». Ces fonds sont immobilisés : les pirates ne peuvent plus s&apos;en servir. Mais leur restitution à Binance prendra du temps.</p>
 
       <h3>Pourquoi les retraits ont été suspendus</h3>
-      <p>Dès qu&apos;elle a détecté l&apos;attaque, Binance a coupé les retraits pour tous ses clients. C&apos;est une mesure de sécurité classique : tant que la faille n&apos;est pas réparée, chaque retrait pourrait être détourné. Binance indique qu&apos;elle reconstruit son système de retrait et vise une reprise dans les 45 heures suivant sa mise à jour du 30 octobre.<R n={[3]} /> Les retraits ont repris progressivement le 1er novembre 2026 au matin, en commençant par le bitcoin.<R n={[13]} /></p>
+      <p>Dès qu&apos;elle a détecté l&apos;attaque, Binance a coupé les retraits pour tous ses clients. C&apos;est une mesure de sécurité classique : tant que la faille n&apos;est pas réparée, chaque retrait pourrait être détourné. Binance indique qu&apos;elle reconstruit son système de retrait et visait une reprise dans les 45 heures suivant sa mise à jour du 30 octobre.<R n={[3]} /> Les retraits ont repris progressivement le 1er novembre 2026 au matin, en commençant par le bitcoin.<R n={[13]} /></p>
       <p>Ce n&apos;est pas la première fois. En 2019, Binance s&apos;était fait voler environ 7 000 bitcoins : elle avait remboursé avec son fonds de réserve, et avait annoncé une suspension des retraits d&apos;environ une semaine.<R n={[12]} /></p>
 
       <h3>Votre compte personnel a-t-il été piraté ?</h3>
@@ -212,7 +212,7 @@ export default function Page() {
         </div>
         <div className={s.carteBord}>
           <p className={s.carteTitre}>Le montant volé n&apos;est pas votre perte.</p>
-          <p className={s.carteTexte}>Les 6,3 milliards ont été pris dans les coffres de Binance. Si votre compte affichait 1 bitcoin avant l&apos;attaque et l&apos;affiche encore aujourd&apos;hui, Binance vous doit toujours 1 bitcoin. Vous n&apos;avez rien perdu : vous ne pouvez simplement pas le retirer pour l&apos;instant.</p>
+          <p className={s.carteTexte}>Les 6,3 milliards ont été pris dans les coffres de Binance. Si votre compte affichait 1 bitcoin avant l&apos;attaque et l&apos;affiche encore aujourd&apos;hui, Binance vous doit toujours 1 bitcoin. Vous n&apos;avez rien perdu : la seule question était de pouvoir le retirer, ce qui redevient possible progressivement depuis le 1er novembre.</p>
         </div>
         <div className={s.carteBord}>
           <p className={s.carteTitre}>Une baisse des cours n&apos;est pas une perte remboursée.</p>
@@ -235,7 +235,7 @@ export default function Page() {
         <p>L&apos;ancien enregistrement de Binance France auprès de l&apos;Autorité des marchés financiers (AMF) a pris fin le 2 juillet 2026.<R n={[9]} /> Et au 30 octobre 2026, aucune société du groupe Binance ne figure sur la liste officielle européenne des plateformes autorisées.<R n={[10]} /></p>
         <div className={s.separe}>
           <h3>Ce que cela change pour vous</h3>
-          <p><strong>Le piratage a bloqué votre seule porte de sortie.</strong> Pour un client d&apos;un autre pays, la suspension des retraits est un désagrément temporaire. Pour un client français, c&apos;était la seule chose qu&apos;il pouvait encore faire.</p>
+          <p><strong>Le piratage a bloqué votre seule porte de sortie.</strong> Pour un client d&apos;un autre pays, la suspension des retraits a été un désagrément temporaire. Pour un client français, c&apos;était la seule opération qui lui restait.</p>
           <p><strong>Les protections de MiCA ne vous sont pas acquises.</strong> Le règlement MiCA rend une plateforme autorisée responsable des cryptos perdues à cause d&apos;une cyberattaque qui lui est imputable. Mais ces règles visent les plateformes autorisées, ce que Binance France n&apos;est plus. Votre protection repose donc surtout sur votre <strong>contrat</strong> : Binance France s&apos;est engagée à conserver vos cryptos et à vous les restituer, et cette obligation n&apos;a pas disparu avec la fin de son autorisation.</p>
           <p><strong>Votre compte n&apos;a plus vocation à rester ouvert.</strong> L&apos;AMF demande aux plateformes non autorisées de cesser leur activité et d&apos;informer leurs clients du sort de leurs cryptos.<R n={[6]} /> Maintenant que les retraits reprennent, la vraie question est de savoir où transférer vos avoirs.</p>
         </div>
@@ -247,12 +247,12 @@ export default function Page() {
         <div className={s.carteGris}>
           <p className={s.mono}>cas a</p>
           <h3 className={s.carteTitre}>Votre solde est intact et vous n&apos;aviez rien en cours</h3>
-          <p className={s.carteTexte}>C&apos;est la situation de la plupart des clients. Conservez une preuve de votre solde (voir ci-dessous) et vérifiez dans l&apos;application si le réseau de votre crypto est rouvert ; inutile de vous précipiter. Il est inutile d&apos;envoyer une réclamation maintenant.</p>
+          <p className={s.carteTexte}>C&apos;est la situation de la plupart des clients. Conservez une preuve de votre solde (voir ci-dessous) et vérifiez dans l&apos;application si le réseau de votre crypto est rouvert ; inutile de vous précipiter, ni d&apos;envoyer une réclamation maintenant.</p>
         </div>
         <div className={s.carteGris}>
           <p className={s.mono}>cas b</p>
           <h3 className={s.carteTitre}>Vous aviez demandé un retrait juste avant la suspension</h3>
-          <p className={s.carteTexte}>Notez la date, le montant, la cryptomonnaie, le réseau choisi et le statut affiché (« en cours », « en attente »…). Tant que les retraits sont suspendus pour tout le monde, votre demande attend comme les autres. Si elle reste bloquée après la reprise générale, envoyez le <a className={s.lien} href="#modele-de-courrier">courrier proposé plus bas</a>.</p>
+          <p className={s.carteTexte}>Notez la date, le montant, la cryptomonnaie, le réseau choisi et le statut affiché (« en cours », « en attente »…). Si votre crypto fait partie des réseaux rouverts, votre demande devrait être traitée dans les prochains jours ; sinon, elle attend la réouverture de son réseau. Si elle reste bloquée après la reprise générale, envoyez le <a className={s.lien} href="#modele-de-courrier">courrier proposé plus bas</a>.</p>
         </div>
         <div className={s.carteGris}>
           <p className={s.mono}>cas c</p>
@@ -279,7 +279,7 @@ export default function Page() {
       {/* ===== 06 ===== */}
       <h2 id="reprise-des-retraits" data-toc="À la reprise des retraits">Les retraits reprennent : comment récupérer vos cryptos sans erreur</h2>
       <p>La reprise se fait par étapes : vérifiez dans l&apos;application que le réseau de votre crypto est bien rouvert. Attendez-vous à des délais et ne répondez à aucune offre de « retrait prioritaire » : c&apos;est une arnaque.</p>
-      <p>Le jour de la reprise, beaucoup de clients voudront retirer en même temps. C&apos;est aussi le moment où les erreurs coûtent le plus cher.</p>
+      <p>Avec la reprise, beaucoup de clients retirent en même temps. C&apos;est aussi le moment où les erreurs coûtent le plus cher.</p>
       <p><strong>Choisissez où envoyer vos cryptos.</strong> Deux possibilités :</p>
       <div className={s.grille2}>
         <div className={s.carteGris}>
