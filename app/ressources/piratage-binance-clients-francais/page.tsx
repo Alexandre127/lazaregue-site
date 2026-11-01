@@ -252,7 +252,7 @@ export default function Page() {
         <div className={s.carteGris}>
           <p className={s.mono}>cas b</p>
           <h3 className={s.carteTitre}>Vous aviez demandé un retrait juste avant la suspension</h3>
-          <p className={s.carteTexte}>Notez la date, le montant, la cryptomonnaie, le réseau choisi et le statut affiché (« en cours », « en attente »…). Si votre crypto fait partie des réseaux rouverts, votre demande devrait être traitée dans les prochains jours ; sinon, elle attend la réouverture de son réseau. Si elle reste bloquée après la reprise générale, envoyez le <a className={s.lien} href="#modele-de-courrier">courrier proposé plus bas</a>.</p>
+          <p className={s.carteTexte}>Notez la date, le montant, la cryptomonnaie, le réseau choisi et le statut affiché (« en cours », « en attente »…). Si votre crypto fait partie des réseaux rouverts, votre demande devrait être traitée ; sinon, elle attend la réouverture de son réseau. Si elle reste bloquée après la reprise générale, envoyez le <a className={s.lien} href="#modele-de-courrier">courrier proposé plus bas</a>.</p>
         </div>
         <div className={s.carteGris}>
           <p className={s.mono}>cas c</p>
