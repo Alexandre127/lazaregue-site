@@ -237,7 +237,7 @@ export default function Page() {
           <h3>Ce que cela change pour vous</h3>
           <p><strong>Le piratage a bloqué votre seule porte de sortie.</strong> Pour un client d&apos;un autre pays, la suspension des retraits est un désagrément temporaire. Pour un client français, c&apos;était la seule chose qu&apos;il pouvait encore faire.</p>
           <p><strong>Les protections de MiCA ne vous sont pas acquises.</strong> Le règlement MiCA rend une plateforme autorisée responsable des cryptos perdues à cause d&apos;une cyberattaque qui lui est imputable. Mais ces règles visent les plateformes autorisées, ce que Binance France n&apos;est plus. Votre protection repose donc surtout sur votre <strong>contrat</strong> : Binance France s&apos;est engagée à conserver vos cryptos et à vous les restituer, et cette obligation n&apos;a pas disparu avec la fin de son autorisation.</p>
-          <p><strong>Votre compte n&apos;a plus vocation à rester ouvert.</strong> L&apos;AMF demande aux plateformes non autorisées de cesser leur activité et d&apos;informer leurs clients du sort de leurs cryptos.<R n={[6]} /> Quand les retraits reprendront, la vraie question sera de savoir où transférer vos avoirs.</p>
+          <p><strong>Votre compte n&apos;a plus vocation à rester ouvert.</strong> L&apos;AMF demande aux plateformes non autorisées de cesser leur activité et d&apos;informer leurs clients du sort de leurs cryptos.<R n={[6]} /> Maintenant que les retraits reprennent, la vraie question est de savoir où transférer vos avoirs.</p>
         </div>
       </section>
 
@@ -247,7 +247,7 @@ export default function Page() {
         <div className={s.carteGris}>
           <p className={s.mono}>cas a</p>
           <h3 className={s.carteTitre}>Votre solde est intact et vous n&apos;aviez rien en cours</h3>
-          <p className={s.carteTexte}>C&apos;est la situation de la plupart des clients. Conservez une preuve de votre solde (voir ci-dessous) et attendez l&apos;annonce officielle de la reprise des retraits. Il est inutile d&apos;envoyer une réclamation maintenant.</p>
+          <p className={s.carteTexte}>C&apos;est la situation de la plupart des clients. Conservez une preuve de votre solde (voir ci-dessous) et vérifiez dans l&apos;application si le réseau de votre crypto est rouvert ; inutile de vous précipiter. Il est inutile d&apos;envoyer une réclamation maintenant.</p>
         </div>
         <div className={s.carteGris}>
           <p className={s.mono}>cas b</p>
