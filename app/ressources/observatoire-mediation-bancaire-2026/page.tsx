@@ -302,7 +302,7 @@ export default function Page() {
               <div className={styles.heroActions}>
                 <a className="btn btn-primary" href="#telecharger">
                   <IconeTelecharger />
-                  Télécharger le rapport (PDF, 10 pages)
+                  Télécharger le rapport (PDF, 12 pages)
                 </a>
                 <a className="btn btn-ghost" href="#constats">
                   Lire la synthèse en ligne
@@ -524,7 +524,7 @@ export default function Page() {
           <div className={styles.dlCadre}>
             <Image className={styles.dlCouverture} src={COUVERTURE} alt="" width={900} height={1273} sizes="170px" />
             <div className={styles.dlCorps}>
-              <p className="eyebrow">RAPPORT COMPLET · PDF · 10 PAGES</p>
+              <p className="eyebrow">RAPPORT COMPLET · PDF · 12 PAGES</p>
               <h2 id="dl-titre" className={styles.dlTitre}>Télécharger l&apos;observatoire 2026</h2>
               <p className={styles.texte}>
                 Chiffres de huit médiateurs, doctrine appliquée à la fraude, confrontation avec 453 décisions de justice,

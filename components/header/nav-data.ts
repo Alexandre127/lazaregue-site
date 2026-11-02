@@ -223,7 +223,7 @@ export const RESSOURCES_CARTES: CarteMenu[] = [
   },
   {
     titre: "Outils et observatoires",
-    texte: "Diagnostic d’un avis en ligne, observatoire de jurisprudence.",
+    texte: "Observatoire de la médiation bancaire, diagnostic d’un avis en ligne, observatoire de jurisprudence.",
     href: OUTILS_HREF,
   },
 ];
