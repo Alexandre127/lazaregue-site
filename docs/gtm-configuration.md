@@ -222,6 +222,25 @@ client, formation…) sont couverts par `page_view` + `page_type` (+ `domaine`).
 | `contact_start` | formulaire (1re interaction) | `composant` |
 | `contact_submit` | formulaire (succès) | `objet`, `urgent` |
 | `contact_error` | formulaire (échec) | `composant`, `motif` |
+| `telechargement_observatoire` | Observatoire 2026 : bouton PDF et lien ZIP | `fichier` (`rapport_pdf` / `dossier_visuels_zip`), `composant` |
 
 Pour instrumenter un nouvel élément sans toucher au tracker : lui ajouter
 `data-track="mon_event"` et, au besoin, `data-track-composant="…"`.
+
+### Téléchargements de l'Observatoire 2026 — balise à ajouter (novembre 2026)
+
+La page `/ressources/observatoire-mediation-bancaire-2026` pousse
+`telechargement_observatoire` (paramètres `fichier`, `composant`) au clic sur
+le PDF et sur le ZIP. Nom volontairement distinct de `file_download` : si la
+mesure améliorée GA4 « Téléchargements de fichiers » est active, GA4 compte
+déjà ses propres `file_download` (.pdf, .zip) et un relais du même nom
+doublerait les chiffres.
+
+À créer dans GTM :
+1. Variables de couche de données : `DLV - fichier` (`fichier`).
+2. Déclencheur « Événement personnalisé » : `telechargement_observatoire`.
+3. Balise « GA4 – Événement » : nom `telechargement_observatoire`, paramètre
+   `fichier` = `{{DLV - fichier}}`, déclenchée par le déclencheur ci-dessus,
+   avec la prise en charge du consentement intégré active (comme les autres
+   balises GA4 : rien n'est envoyé tant que `analytics_storage` est `denied`).
+4. Dans GA4, déclarer `fichier` en dimension personnalisée (portée événement).

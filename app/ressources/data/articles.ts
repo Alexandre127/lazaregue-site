@@ -96,6 +96,31 @@ const FAQ_AVIS_GOOGLE: QA[] = [
 
 export const ARTICLES: Article[] = [
   {
+    // Observatoire de la médiation bancaire 2026 (rapport PDF publié le
+    // 3 novembre 2026). Page autonome (outil), à la une de /ressources.
+    title: "La médiation bancaire face à la fraude : état des lieux",
+    seoTitle: "Observatoire 2026 : la médiation bancaire face à la fraude",
+    seoDescription:
+      "Rapport 2026 : délais, résultats et gestes des médiateurs bancaires face à la fraude, comparés à 453 décisions de justice. Accès libre au PDF.",
+    slug: "observatoire-mediation-bancaire-2026",
+    domaine: "fraude",
+    etiquette: "Observatoire",
+    chapo:
+      "Victimes de fraude bancaire : ce que les médiateurs des banques leur accordent, en combien de temps, et ce qu'obtiennent celles qui vont devant le juge. Analyse des rapports des médiateurs et de 453 décisions de justice rendues en 2026.",
+    miseAJour: "2026-11-03",
+    publieLe: "2026-11-03",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: true,
+    titreUne: "La médiation bancaire | face à la fraude : | état des lieux",
+    ordre: -2,
+    liesA: ["fraude-bancaire-opposition-contestation-remboursement", "jurisprudence-faux-conseiller-bancaire"],
+    exclureDesSuggestions: false,
+    publie: true,
+    outil: true,
+  },
+  {
     // Article d'actualité : l'encadré « Point au … » et la date de mise à jour
     // se modifient dans piratage-binance-clients-francais/point-de-situation.ts.
     title: "Piratage de Binance : ce qui s'est passé et ce que les clients français doivent faire",
@@ -114,7 +139,7 @@ export const ARTICLES: Article[] = [
     auteur: "Alexandre Lazarègue",
     essentiel: [],
     faq: FAQ_BINANCE,
-    une: true,
+    une: false,
     titreUne: "Piratage de Binance : | ce qui s'est passé | et ce que les clients | français doivent faire",
     ordre: -1,
     liesA: ["fraude-bancaire-opposition-contestation-remboursement", "jurisprudence-faux-conseiller-bancaire"],
