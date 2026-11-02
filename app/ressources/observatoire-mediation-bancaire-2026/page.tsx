@@ -317,7 +317,7 @@ export default function Page() {
                 src={COUVERTURE}
                 alt="Couverture du rapport « La médiation bancaire face à la fraude : état des lieux »"
                 width={900}
-                height={1273}
+                height={1108}
                 sizes="(max-width: 899px) 260px, 380px"
                 priority
               />
@@ -522,7 +522,7 @@ export default function Page() {
       <section id="telecharger" className={styles.telecharger} aria-labelledby="dl-titre">
         <div className={styles.wrap}>
           <div className={styles.dlCadre}>
-            <Image className={styles.dlCouverture} src={COUVERTURE} alt="" width={900} height={1273} sizes="170px" />
+            <Image className={styles.dlCouverture} src={COUVERTURE} alt="" width={900} height={1108} sizes="170px" />
             <div className={styles.dlCorps}>
               <p className="eyebrow">RAPPORT COMPLET · PDF · 12 PAGES</p>
               <h2 id="dl-titre" className={styles.dlTitre}>Télécharger l&apos;observatoire 2026</h2>
