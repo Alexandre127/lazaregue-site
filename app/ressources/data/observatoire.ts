@@ -2,7 +2,7 @@
  * Données et calculs de l'Observatoire de la fraude bancaire
  * (/ressources/jurisprudence-faux-conseiller-bancaire).
  *
- * Source UNIQUE : le JSON des 169 décisions, copié dans ce dossier
+ * Source UNIQUE : le JSON des 170 décisions, copié dans ce dossier
  * (`observatoire-faux-conseiller-bancaire.json`). Tous les chiffres de la page
  * sont CALCULÉS ici depuis ces décisions — jamais écrits en dur (règle du brief).
  *

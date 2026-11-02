@@ -2702,5 +2702,21 @@
     "reference": "TJ Montpellier, 6 août 2026, n° 24/01369",
     "authentificationProuvee": false,
     "lienDecision": "https://www.doctrine.fr/d/TJ/Montpellier/2026/TJP3DE311D84B2663E3D245"
+  },
+  {
+    "id": "ca-paris-2-juil-2026-n-25-11923",
+    "situation": "carte",
+    "situationLibelle": "Carte remise à un faux coursier",
+    "remboursement": true,
+    "date": "2026-07-02",
+    "banque": "Caisse d’Épargne",
+    "montant": "6 286,45 €",
+    "montantLibelle": "Montant remboursé",
+    "titre": "Un téléphone volé, puis un crédit débloqué et des virements depuis l’appli bancaire.",
+    "motif": "La banque n’a pas prouvé que les opérations étaient authentifiées ; remboursement ordonné.",
+    "motifLibelle": "En bref",
+    "reference": "CA Paris, 2 juil. 2026, n° 25/11923",
+    "authentificationProuvee": false,
+    "lienDecision": null
   }
 ]

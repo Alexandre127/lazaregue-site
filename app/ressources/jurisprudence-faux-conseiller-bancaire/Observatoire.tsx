@@ -16,7 +16,7 @@ import {
 /**
  * Observatoire de la fraude bancaire — faux conseiller bancaire.
  *
- * Page interactive (filtres + « afficher plus »), construite depuis les 169
+ * Page interactive (filtres + « afficher plus »), construite depuis les 170
  * décisions du JSON. Structure, textes et fonctionnement repris de la maquette
  * validée ; charte, header et footer du site via le layout global. Tous les
  * chiffres sont calculés (voir data/observatoire.ts).
