@@ -390,6 +390,30 @@ export const ARTICLES: Article[] = [
     publie: true,
     sansTempsDeLecture: true,
   },
+  {
+    title: "Arnaque crypto : comment récupérer ses cryptos volées",
+    seoTitle: "Arnaque crypto : récupérer ses cryptos volées, que faire ? | Lazarègue Avocats",
+    seoDescription:
+      "Une arnaque crypto laisse une trace. Deux décisions de 2026 montrent ce que le juge accorde, ce qu'il refuse, et pourquoi le rapport de traçage décide de tout.",
+    slug: "arnaque-crypto-recuperer-cryptos-volees",
+    domaine: "fraude",
+    type: "guide",
+    etiquette: "Guide pratique",
+    // Sous-titre de l'article ; le chapeau ouvre le corps de la page.
+    chapo:
+      "Une arnaque crypto laisse une trace. Deux décisions rendues en 2026 montrent ce que les juges accordent, ce qu'ils refusent, et pourquoi le rapport de traçage décide de tout.",
+    miseAJour: "", // aucune date affichée (consigne du cabinet)
+    auteur: "Lazarègue Avocats",
+    essentiel: [], // remplacé en page par le bandeau « L'essentiel en trois temps »
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 13,
+    liesA: ["fraude-bancaire-opposition-contestation-remboursement"],
+    exclureDesSuggestions: false,
+    publie: true,
+    sansTempsDeLecture: true,
+  },
 ];
 
 /* Ressources annoncées, pas encore écrites : titre et domaine seulement, jamais

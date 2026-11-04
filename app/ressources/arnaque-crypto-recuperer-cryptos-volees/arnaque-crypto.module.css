@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Blocs spécifiques à l'article « Arnaque crypto : récupérer ses cryptos volées »
+   (maquette validée Claude Design, 4 nov. 2026). Portée : CE seul article.
+   Ne modifie pas le CSS partagé du gabarit (article.module.css).
+   Charte v1.1 : bleu #1A47FF seul accent (var --blue), navy (--navy), encre
+   (--ink), Ghost White (--off), bordure (--bd), texte secondaire (--text-muted).
+   Bebas (--ff-display) = grands chiffres uniquement ; DM Mono (--ff-mono) =
+   labels/références ; Space Grotesk (--ff-body) = titres et corps.
+   Rayons 0, aucune ombre, aucun dégradé, aucune carte à bordure gauche.
+   Les sélecteurs d'intitulés sont composés (parent + enfant) pour primer sur
+   « .body p/li » du gabarit sans !important.
+   ========================================================================== */
+
+/* ----------------------- L'essentiel en trois temps --------------------- */
+.troisTemps { margin: 8px 0 44px; }
+.troisTemps .ttLabel { display: block; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; color: var(--text-muted); margin: 0 0 16px; }
+.ttGrid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--navy); }
+.ttCell { padding: 24px; background: #fff; }
+.ttCell + .ttCell { border-left: 1px solid var(--navy); }
+.ttDark { background: var(--navy); }
+.ttNum { font-family: var(--ff-display); font-weight: 400; font-size: 56px; line-height: 1; color: var(--blue); }
+.ttCell .ttH { margin: 10px 0 8px; font-size: 20px; font-weight: 500; color: var(--ink); }
+.ttCell .ttP { margin: 0; font-size: 16px; line-height: 1.55; color: var(--text-muted); max-width: none; }
+.ttDark .ttH { color: #fff; }
+.ttDark .ttP { color: rgba(255, 255, 255, 0.85); }
+
+/* ------------------------------- Schéma --------------------------------- */
+.schema { margin: 32px 0; background: var(--navy); color: #fff; padding: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--ff-mono); font-size: 13px; letter-spacing: 0.04em; }
+.schemaBox { border: 1px solid rgba(255, 255, 255, 0.5); padding: 14px 16px; flex: 1 1 120px; text-align: center; }
+.schemaBox.dash { border-style: dashed; }
+.schemaArrow { color: var(--blue); font-size: 20px; }
+.schemaDest { background: var(--blue); padding: 14px 16px; flex: 1 1 140px; text-align: center; color: #fff; }
+
+/* Exergue « Le but du traçage » */
+.pull { margin: 24px 0 8px; padding: 20px 24px; background: var(--off); font-size: 17px; line-height: 1.6; }
+.pull strong { font-weight: 600; }
+
+/* --------------------------- Fiche de décision -------------------------- */
+.fiche { margin: 32px 0; border: 1px solid var(--navy); }
+.ficheHead { background: var(--navy); color: #fff; padding: 14px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.08em; }
+.badge { padding: 2px 8px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.06em; flex: none; }
+.badgeOk { background: var(--blue); color: #fff; }
+.badgeNo { background: #fff; color: var(--navy); }
+.ficheBody { padding: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.ficheBody .ficheLbl { display: block; margin: 0 0 10px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted); }
+.ficheBody .ficheList { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.6; }
+.ficheMotifs { margin: 0; padding: 24px 24px 24px 48px; font-size: 16px; line-height: 1.6; display: flex; flex-direction: column; gap: 10px; }
+
+/* ----------------- Section 4 : identifier / saisir ---------------------- */
+.tempsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 0 20px; }
+.tempsCard { background: var(--off); padding: 24px; }
+.tempsCard .tempsKicker { display: block; margin: 0 0 8px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--blue); }
+.tempsCard .tempsP { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink); max-width: none; }
+.tempsCard .tempsP strong { font-weight: 600; }
+
+/* Renvoi « Voir aussi » (lien compétence crypto, section 4) */
+.voir { margin: 0 0 8px; font-size: 16px; }
+.voir a { font-weight: 600; }
+
+/* ------------------- Rapport de traçage (checklist) --------------------- */
+.check { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--navy); }
+.check li { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--bd); font-size: 17px; line-height: 1.5; align-items: flex-start; }
+.check li svg { flex: none; margin-top: 4px; }
+
+/* -------------------------- Étapes numérotées --------------------------- */
+.steps { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.steps li { display: flex; gap: 20px; align-items: baseline; background: var(--off); padding: 16px 20px; font-size: 17px; line-height: 1.5; }
+.stepN { font-family: var(--ff-display); font-weight: 400; font-size: 32px; line-height: 1; color: var(--blue); flex: none; }
+
+/* Mention des décisions citées (fin d'article) */
+.srcNote { margin: 40px 0 0; padding-top: 20px; border-top: 1px solid var(--bd); font-family: var(--ff-mono); font-size: 12px; line-height: 1.7; letter-spacing: 0.04em; color: var(--text-muted); }
+
+/* --------------------- Bloc final (passé en `after`) -------------------- */
+.cta { background: var(--navy); color: #fff; }
+.ctaWrap { max-width: 1120px; margin: 0 auto; padding: 72px var(--page-margin); display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between; }
+.ctaMain { flex: 999 1 540px; min-width: 0; }
+.ctaMain .ctaLabel { display: block; margin: 0 0 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.8); }
+.ctaH { margin: 0; font-family: var(--ff-display); font-weight: 400; font-size: clamp(40px, 6vw, 72px); line-height: 0.95; }
+.ctaMain .ctaP { margin: 24px 0 0; max-width: 620px; font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.85); }
+.ctaBtns { flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; }
+.ctaBtns a { display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; padding: 13px 24px; min-height: 44px; box-sizing: border-box; text-align: center; }
+.btnPrimary { background: var(--blue); color: #fff; font-weight: 600; border: 1px solid var(--blue); }
+.btnGhost { border: 1px solid rgba(255, 255, 255, 0.6); color: #fff; font-weight: 500; }
+
+/* ------------------------------- Mobile --------------------------------- */
+@media (max-width: 640px) {
+  .ttGrid { grid-template-columns: 1fr; }
+  .ttCell + .ttCell { border-left: 0; border-top: 1px solid var(--navy); }
+  .ficheBody { grid-template-columns: 1fr; }
+  .tempsGrid { grid-template-columns: 1fr; }
+}
