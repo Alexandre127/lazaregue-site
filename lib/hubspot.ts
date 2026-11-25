@@ -137,6 +137,28 @@ function resolvePerformanceOfContract(): Promise<string | undefined> {
   return legalBasisValue;
 }
 
+/**
+ * Résout la valeur d'option de hs_legal_basis correspondant au CONSENTEMENT
+ * (abonnement aux notes). Base distincte de « Exécution d'un contrat » : ici le
+ * visiteur coche une case et peut se désinscrire à tout moment.
+ */
+let consentBasisValue: Promise<string | undefined> | null = null;
+function resolveConsentWithNotice(): Promise<string | undefined> {
+  if (consentBasisValue) return consentBasisValue;
+  consentBasisValue = (async () => {
+    const res = await hs("/crm/v3/properties/contacts/hs_legal_basis");
+    if (!res.ok) return undefined;
+    const json = (await res.json()) as { options?: { label: string; value: string }[] };
+    const opts = json.options || [];
+    const match =
+      opts.find((o) => o.value === "CONSENT_WITH_NOTICE") ||
+      opts.find((o) => /consent/i.test(o.label)) ||
+      opts.find((o) => /consentement/i.test(o.label));
+    return match?.value;
+  })().catch(() => undefined);
+  return consentBasisValue;
+}
+
 /** Scinde « Prénom Nom » en firstname / lastname (best-effort, non bloquant). */
 function splitName(nom: string): { firstname: string; lastname?: string } {
   const parts = nom.trim().split(/\s+/);
@@ -251,6 +273,97 @@ export async function upsertAvisGoogle(c: HubspotAvisGoogle): Promise<{ ok: bool
       }
       return { ok: false, reason: `upsert ${res.status}${categorie}` };
     }
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, reason: e instanceof Error ? e.message : "unknown" };
+  }
+}
+
+export type HubspotAbonne = {
+  email: string;
+  nom?: string;
+  etablissement?: string;
+  fonction?: string;
+  page?: string;
+  /** Texte EXACT de la case cochée (preuve de consentement). */
+  consentementTexte?: string;
+  /** Date du consentement, format « AAAA-MM-JJ » (propriété date HubSpot). */
+  consentementDate?: string;
+};
+
+/**
+ * Abonne un contact à un type d'abonnement HubSpot via l'API Communication
+ * Preferences, avec journalisation du consentement. Nécessaire pour que les
+ * e-mails portent le lien de désinscription natif. Optionnel : piloté par la
+ * variable d'env HUBSPOT_SUBSCRIPTION_OBSERVATOIRE (= id du type d'abonnement) ;
+ * non renseignée → no-op. Ne lève jamais.
+ */
+async function subscribeObservatoire(email: string, explanation?: string): Promise<{ ok: boolean; reason?: string }> {
+  const subId = process.env.HUBSPOT_SUBSCRIPTION_OBSERVATOIRE;
+  if (!subId) return { ok: true, reason: "subscription-non-configuree" };
+  try {
+    const res = await hs("/communication-preferences/v3/subscribe", {
+      method: "POST",
+      body: JSON.stringify({
+        emailAddress: email,
+        subscriptionId: Number(subId),
+        legalBasis: "CONSENT_WITH_NOTICE",
+        ...(explanation ? { legalBasisExplanation: explanation } : {}),
+      }),
+    });
+    if (!res.ok) return { ok: false, reason: `subscribe ${res.status}` };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, reason: e instanceof Error ? e.message : "unknown" };
+  }
+}
+
+/**
+ * Abonnement « Recevoir les prochaines notes » de l'Observatoire.
+ *
+ * Reprend le mécanisme CRM du formulaire de contact (upsert par e-mail via
+ * HUBSPOT_PRIVATE_TOKEN, déjà configuré) ; aucun formulaire HubSpot dédié n'est
+ * requis. Base légale CONSENTEMENT (case cochée, désinscription possible). Les
+ * propriétés sont déjà créées dans le compte (lz_abonnement_observatoire [bool],
+ * lz_abonnement_date [date], lz_abonnement_consentement, lz_abonnement_source).
+ * La fonction va dans la propriété standard `jobtitle`. Ne lève jamais : renvoie
+ * { ok } pour la journalisation, l'appelant n'en dépend pas pour la confirmation.
+ */
+export async function upsertAbonneObservatoire(c: HubspotAbonne): Promise<{ ok: boolean; reason?: string }> {
+  if (!TOKEN) return { ok: false, reason: "token-absent" };
+  try {
+    const consent = await resolveConsentWithNotice();
+    const { firstname, lastname } = c.nom ? splitName(c.nom) : { firstname: "", lastname: undefined };
+    const properties: Record<string, string> = {
+      email: c.email,
+      ...(firstname ? { firstname } : {}),
+      ...(lastname ? { lastname } : {}),
+      ...(c.etablissement ? { company: c.etablissement } : {}),
+      ...(c.fonction ? { jobtitle: c.fonction } : {}),
+      // Propriété booléenne HubSpot → « true » (et non « Oui »).
+      lz_abonnement_observatoire: "true",
+      ...(c.consentementDate ? { lz_abonnement_date: c.consentementDate } : {}),
+      ...(c.consentementTexte ? { lz_abonnement_consentement: c.consentementTexte } : {}),
+      ...(c.page ? { lz_abonnement_source: c.page } : {}),
+      ...(consent ? { hs_legal_basis: consent } : {}),
+    };
+    const res = await hs("/crm/v3/objects/contacts/batch/upsert", {
+      method: "POST",
+      body: JSON.stringify({ inputs: [{ idProperty: "email", id: c.email, properties }] }),
+    });
+    if (!res.ok) {
+      let categorie = "";
+      try {
+        const j = (await res.json()) as { category?: string };
+        if (j && typeof j.category === "string") categorie = ` ${j.category}`;
+      } catch {
+        /* corps non JSON : ignoré */
+      }
+      return { ok: false, reason: `upsert ${res.status}${categorie}` };
+    }
+    // Abonnement au type d'envoi (optionnel) — non bloquant, consigné à part.
+    const sub = await subscribeObservatoire(c.email, c.consentementTexte);
+    if (!sub.ok) return { ok: true, reason: `upsert ok ; ${sub.reason}` };
     return { ok: true };
   } catch (e) {
     return { ok: false, reason: e instanceof Error ? e.message : "unknown" };

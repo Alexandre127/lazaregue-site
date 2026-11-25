@@ -194,6 +194,32 @@ export const ARTICLES: Article[] = [
     outil: true,
   },
   {
+    // Note d'analyse pour les établissements bancaires et de paiement
+    // (Observatoire des obligations techniques des banques). Page autonome
+    // bespoke (outil) ; renvoie vers l'offre /securite-des-paiements.
+    title: "Fraude par manipulation : ce qui change pour les banques entre 2026 et 2028",
+    seoTitle: "Fraude par manipulation : ce qui change pour les banques",
+    seoDescription:
+      "CJUE du 15 octobre 2026, arrêts de la Cour de cassation, futur règlement : la charge de la fraude par manipulation se déplace vers les banques. Note à télécharger.",
+    slug: "fraude-par-manipulation-banques-2026-2028",
+    domaine: "fraude",
+    etiquette: "Observatoire",
+    chapo:
+      "Un arrêt de la Cour de justice, trois arrêts de la Cour de cassation et un règlement européen en voie d'adoption déplacent la charge de la fraude vers les établissements. La capacité à prouver la conformité des dispositifs de sécurité devient déterminante.",
+    miseAJour: "2026-11-01",
+    publieLe: "2026-11-01",
+    auteur: "Alexandre Lazarègue",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: 3,
+    liesA: ["jurisprudence-faux-conseiller-bancaire", "observatoire-mediation-bancaire-2026"],
+    exclureDesSuggestions: false,
+    publie: true,
+    outil: true,
+  },
+  {
     title: "OSINT : définition, valeur de preuve et cadre juridique",
     seoTitle: "OSINT : définition, valeur de preuve et cadre juridique",
     seoDescription:

@@ -34,6 +34,7 @@ const PAGES: { path: string; priority: number; frequence: MetadataRoute.Sitemap[
   // Offres d'accompagnement (abonnement juridique, DPO externalisé)
   { path: "/direction-juridique-externalisee", priority: 0.9, frequence: "monthly" },
   { path: "/dpo-externalise", priority: 0.9, frequence: "monthly" },
+  { path: "/securite-des-paiements", priority: 0.9, frequence: "monthly" },
 
   // Réclamations photographiques (PicRights / AFP)
   { path: "/picrights", priority: 0.8, frequence: "monthly" },
