@@ -110,7 +110,7 @@ export default function AbonnementForm() {
       </div>
       <div className={styles.champ}>
         <label htmlFor="ab-email">
-          Adresse e-mail professionnelle <span className={styles.req}>(obligatoire)</span>
+          Adresse e-mail professionnelle <span className={styles.req} aria-hidden="true">*</span>
         </label>
         <input
           id="ab-email"
@@ -118,6 +118,7 @@ export default function AbonnementForm() {
           type="email"
           autoComplete="email"
           required
+          aria-required="true"
           ref={emailRef}
           aria-invalid={invalides.includes("email") || undefined}
         />
@@ -145,6 +146,8 @@ export default function AbonnementForm() {
           {CONSENT_APRES}
         </span>
       </label>
+
+      <p className={styles.obligatoire}>* champ obligatoire</p>
 
       <div className={styles.actions}>
         <button type="submit" className="btn btn-primary" disabled={statut === "sending"}>

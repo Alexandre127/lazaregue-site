@@ -1,19 +1,26 @@
-/* Formulaire d'abonnement « Recevoir les prochaines notes ». Fond clair. */
+/* Formulaire d'abonnement « Recevoir les prochaines notes ». Fond clair.
+   Grille 2 colonnes × 2 lignes (Nom, E-mail / Établissement, Fonction) ; une
+   seule colonne sous 640 px. `align-items: end` aligne tous les champs sur la
+   même ligne de base, quel que soit le nombre de lignes du libellé. */
 
 .form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  align-items: end;
 }
 .champ {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
   font-size: 14px;
   font-weight: 500;
   color: var(--ink);
 }
 .champ input {
+  width: 100%;
+  box-sizing: border-box;
   font-family: var(--ff-body);
   font-size: 16px;
   padding: 12px 14px;
@@ -28,9 +35,10 @@
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+/* Astérisque « obligatoire » : discret, à côté du libellé (pas de retour ligne). */
 .req {
-  font-weight: 400;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--blue);
 }
 .consent {
   grid-column: 1 / -1;
@@ -50,6 +58,12 @@
 }
 .consent a {
   color: var(--blue);
+}
+.obligatoire {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 .actions {
   grid-column: 1 / -1;
@@ -71,11 +85,18 @@
   line-height: 1.6;
   color: var(--ink);
 }
-/* Champ piège : sorti de l'écran sans display:none (certains robots l'ignorent). */
+/* Champ piège : sorti de l'écran sans display:none (certains robots l'ignorent),
+   et retiré du flux de la grille (position absolue → aucune cellule occupée). */
 .pot {
   position: absolute;
   left: -9999px;
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
 }
