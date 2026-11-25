@@ -254,7 +254,7 @@ export default function Page() {
           <div className={styles.inner}>
             <div className={styles.methodeCol}>
               <p className={styles.surtitre}>La méthode</p>
-              <h2 className={styles.h2m}>Un avocat et un expert technique sur chaque dossier</h2>
+              <h2 className={styles.h2m}>Des avocats et des experts techniques sur chaque dossier</h2>
               <p className={styles.methodeText}>
                 La preuve de la sécurité est à la fois juridique et technique. Sur ces dossiers, l&rsquo;avocat
                 qualifie les obligations et prépare la preuve ; les experts techniques du cabinet examinent les
