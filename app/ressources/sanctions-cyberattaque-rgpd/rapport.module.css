@@ -335,8 +335,13 @@
 .col3 {
   flex: 2;
 }
+/* La 2e colonne est en gris atténué dans les lignes (sur fond clair) ; sur le
+   bandeau d'en-tête sombre, la forcer en blanc comme les deux autres en-têtes. */
+.tableHead .col2 {
+  color: var(--wh);
+}
 
-/* ---- « la méthode » : 3 stats ---- */
+/* ---- « la méthode » : 2 stats ---- */
 .methode .inner {
   padding: 88px var(--page-margin);
   display: flex;
