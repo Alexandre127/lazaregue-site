@@ -331,10 +331,6 @@ export default function RapportCyber() {
               <span className={styles.statNum}>20</span>
               <p>pays, de 2018 au 25 novembre 2026</p>
             </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>0</span>
-              <p>commande ou financement extérieur</p>
-            </div>
           </div>
         </div>
       </section>
