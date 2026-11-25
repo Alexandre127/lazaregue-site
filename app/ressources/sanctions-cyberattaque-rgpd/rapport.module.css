@@ -1,0 +1,490 @@
+/* ==========================================================================
+   Rapport « Après la cyberattaque, la sanction ».
+   Maquette reconstruite avec les tokens de la charte (aucun hex en dur).
+   Accent bleu #1A47FF (--blue), navy #0A0F2E (--navy), encre #0A0A14 (--ink),
+   fond clair #F4F4F8 (--off), bordure #E0E0EE (--bd), texte secondaire
+   #4A4A63 (--text-muted). Bleu clair sur navy (#C9CCDA) → blanc atténué.
+   Angles droits, pas d'ombres, cibles 44 px, focus visible.
+   ========================================================================== */
+
+.page {
+  color: var(--ink);
+  background: var(--wh);
+}
+.inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-margin);
+}
+.navy {
+  background: var(--navy);
+  color: var(--wh);
+}
+.off {
+  background: var(--off);
+}
+
+/* Label mono bas-de-casse (maquette .m) */
+.label {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--blue);
+  margin: 0;
+}
+.labelDark {
+  color: var(--muted-on-dark);
+}
+.countMono {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+}
+.countMonoDark {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--muted-on-dark);
+}
+
+.h2 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 1.15;
+}
+.h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 19px;
+}
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 760px;
+}
+
+/* ---- Hero (navy) ---- */
+.hero .inner {
+  padding-top: calc(var(--header-h) + 40px);
+  padding-bottom: 88px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  align-items: flex-end;
+}
+.heroMain {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.h1 {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(54px, 8vw, 112px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+}
+.heroLead {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 620px;
+  color: var(--off);
+}
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-top: 8px;
+}
+.heroLink {
+  color: var(--wh);
+  font-size: 16px;
+  padding: 13px 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.heroStats {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.heroStat {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bigNum {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 1;
+}
+.heroStat p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted-on-dark);
+}
+
+/* ---- Sections génériques ---- */
+.sec .inner {
+  padding: 88px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.secLead {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.secLeadDark {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--muted-on-dark);
+}
+
+/* ---- « la question » : 3 cartes ---- */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.card {
+  flex: 1 1 280px;
+  border: 1px solid var(--bd);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ---- « repère » : 3 étapes ---- */
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.step {
+  flex: 1 1 260px;
+  background: var(--wh);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stepNum {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--blue);
+}
+.step p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ---- « les constats » : 5 lignes ---- */
+.constats {
+  display: flex;
+  flex-direction: column;
+}
+.constat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  padding: 24px 0;
+  border-top: 1px solid var(--bd);
+}
+.constat:first-child {
+  border-top-color: var(--ink);
+}
+.constat:last-child {
+  border-bottom: 1px solid var(--bd);
+}
+.constat h3 {
+  flex: 1 1 320px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 19px;
+}
+.constat p {
+  flex: 2 1 420px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ---- « la comparaison » (navy) : 2 colonnes ---- */
+.compare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+}
+.compareCol {
+  flex: 1 1 380px;
+  display: flex;
+  flex-direction: column;
+}
+.compareH3 {
+  margin: 0 0 16px;
+  font-weight: 500;
+  font-size: 19px;
+}
+.pays {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.pays:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+.paysAmount {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 34px;
+  white-space: nowrap;
+}
+.delaiList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.delai {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.delaiHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.barTrack {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.barFill {
+  height: 10px;
+  background: var(--blue);
+}
+
+/* ---- « pour les organismes » : tableau défilable ---- */
+.tableScroll {
+  overflow-x: auto;
+}
+.tableInner {
+  min-width: 720px;
+  display: flex;
+  flex-direction: column;
+}
+.tableHead {
+  display: flex;
+  gap: 24px;
+  padding: 12px 16px;
+  background: var(--ink);
+  color: var(--wh);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+.tableRow {
+  display: flex;
+  gap: 24px;
+  padding: 16px;
+  border-bottom: 1px solid var(--bd);
+  font-size: 15px;
+}
+.col1 {
+  flex: 1;
+  font-weight: 500;
+}
+.col2 {
+  flex: 2;
+  color: var(--text-muted);
+}
+.col3 {
+  flex: 2;
+}
+
+/* ---- « la méthode » : 3 stats ---- */
+.methode .inner {
+  padding: 88px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+}
+.methodeCol {
+  flex: 1 1 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.methodeCol p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.stats {
+  flex: 1 1 380px;
+  display: flex;
+  flex-direction: column;
+}
+.stat {
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-top: 1px solid var(--bd);
+}
+.stat:first-child {
+  border-top-color: var(--ink);
+}
+.stat:last-child {
+  border-bottom: 1px solid var(--bd);
+}
+.statNum {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 40px;
+  min-width: 96px;
+  line-height: 1;
+}
+.stat p {
+  margin: 0;
+  line-height: 1.5;
+  /* Corps du site sombre par défaut (règle globale `p` blanc 82 %) → encre. */
+  color: var(--ink);
+}
+
+/* ---- « le rapport complet » (navy) : téléchargement + sommaire ---- */
+.dl .inner {
+  padding: 88px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px;
+  align-items: flex-start;
+}
+.dlCol {
+  flex: 1 1 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.dlBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.dlContact {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted-on-dark);
+}
+.dlContact a {
+  color: var(--wh);
+}
+.sommaire {
+  flex: 1 1 380px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+}
+.sommaire li {
+  padding: 11px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.sommaire li:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ---- Renvois (RGPD / cybersécurité) + avertissement ---- */
+.renvoi {
+  border-top: 1px solid var(--bd);
+}
+.renvoi .inner {
+  padding: 24px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+.renvoi a {
+  color: var(--blue);
+  font-weight: 600;
+}
+.avertissement {
+  border-top: 1px solid var(--bd);
+}
+.avertissement .inner {
+  padding: 24px var(--page-margin);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+}
+
+/* Bouton secondaire à contour blanc (sur navy) — pour le second téléchargement. */
+.btnLigneBlanc {
+  background: transparent;
+  color: var(--wh);
+  border: 1px solid var(--wh);
+}
+.btnLigneBlanc:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wh);
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 640px) {
+  .inner {
+    padding-left: var(--page-margin-mobile);
+    padding-right: var(--page-margin-mobile);
+  }
+  .hero .inner {
+    padding-top: calc(var(--header-h) + 24px);
+    padding-bottom: 56px;
+    gap: 36px;
+  }
+  .sec .inner,
+  .methode .inner,
+  .dl .inner {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+  .h2 {
+    font-size: 27px;
+  }
+}

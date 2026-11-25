@@ -96,6 +96,33 @@ const FAQ_AVIS_GOOGLE: QA[] = [
 
 export const ARTICLES: Article[] = [
   {
+    // Rapport « Après la cyberattaque, la sanction » — étude de 139 décisions
+    // européennes (diffusion 26 nov. 2026). Page autonome (outil) ; PDF + liste
+    // Excel en téléchargement libre ; reliée aux pages RGPD et cybersécurité.
+    // NB : seoTitle repris tel quel du brief (dépasse 60 car. — à ajuster après Ahrefs).
+    title: "Après la cyberattaque, la sanction",
+    seoTitle: "Sanction après une cyberattaque : étude de 139 décisions européennes | Lazarègue Avocats",
+    seoDescription:
+      "Une entreprise piratée peut-elle être sanctionnée ? Étude comparée de 139 décisions rendues dans 20 pays européens : défauts reprochés, montants, délais. Rapport en accès libre.",
+    slug: "sanctions-cyberattaque-rgpd",
+    domaine: "rgpd",
+    etiquette: "Rapport",
+    chapo:
+      "Une entreprise piratée est-elle seulement une victime ? 139 décisions rendues dans 20 pays européens répondent, et elles ne répondent pas partout de la même façon.",
+    miseAJour: "2026-11-26",
+    publieLe: "2026-11-26",
+    auteur: "Lazarègue Avocats",
+    essentiel: [],
+    faq: [],
+    une: false,
+    titreUne: "",
+    ordre: -3,
+    liesA: [],
+    exclureDesSuggestions: false,
+    publie: true,
+    outil: true,
+  },
+  {
     // Observatoire de la médiation bancaire 2026 (rapport PDF publié le
     // 3 novembre 2026). Page autonome (outil), à la une de /ressources.
     title: "La médiation bancaire face à la fraude : état des lieux",
