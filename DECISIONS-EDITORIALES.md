@@ -52,3 +52,28 @@ publication. Les sources portent donc « 2025 » (exercice), même si la parutio
 est intervenue en 2026. La home l'indique par une ligne mono discrète sous les
 chiffres : « DONNÉES PUBLIÉES EN 2026 · DERNIER EXERCICE DISPONIBLE ». Le kicker
 de la section, lui, ne porte plus de millésime (« CONTEXTE · FRANCE »).
+
+## Pages « banques » (note d'analyse + offre « sécurité des paiements ») — deux exceptions assumées
+
+Deux pages s'adressent à un **public de juristes bancaires** (directions
+juridiques, conformité, risques, sécurité), et non au grand public :
+
+- `/ressources/fraude-par-manipulation-banques-2026-2028` (note d'analyse) ;
+- `/securite-des-paiements` (offre d'accompagnement).
+
+Pour ces deux pages **seulement**, deux règles générales du site sont écartées,
+à la demande du cabinet :
+
+1. **Références d'articles de loi dans le corps.** La règle du site place les
+   références d'articles « en petit ou en FAQ ». Ici elles restent dans le fil du
+   texte (art. L. 133-18 à L. 133-24, L. 133-23 ; directive (UE) 2015/2366 ;
+   règlement délégué (UE) 2018/389 ; art. 58, 59, 69 et 83 du futur règlement…).
+   **Raison :** le lecteur est juriste bancaire ; les références sont la substance
+   de l'analyse et doivent être lisibles dans le raisonnement.
+
+2. **Dix questions au « nous ».** La section « Dix questions à poser maintenant »
+   est rédigée à la première personne du pluriel (« Pouvons-nous rembourser… »,
+   « Disposons-nous des rapports d'audit… »). Ce « nous » n'est **pas** la voix du
+   cabinet mais **la voix de la banque qui s'interroge** : ce sont les questions
+   que le comité des risques se pose à lui-même. La règle « voix le cabinet / pas
+   de “nous” » ne s'y applique donc pas. Texte conservé tel quel.

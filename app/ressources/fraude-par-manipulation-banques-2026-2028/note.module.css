@@ -1,0 +1,497 @@
+/* ==========================================================================
+   Note d'analyse « fraude par manipulation » — pages banques.
+   Maquette reconstruite avec les tokens de la charte (aucun hex en dur).
+   Le bleu clair sur navy (#C9D2FF / #E4E8FF de la maquette) est PROSCRIT par la
+   charte (28/09/2026) : remplacé par du blanc atténué (--muted-on-dark) / blanc.
+   Angles droits, cibles 44 px, focus visible.
+   ========================================================================== */
+
+.page {
+  color: var(--ink);
+  background: var(--wh);
+}
+.inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-margin);
+}
+.navy {
+  background: var(--navy);
+  color: var(--wh);
+}
+.off {
+  background: var(--off);
+}
+
+/* Sur-titre DM Mono — bleu sur fond clair, blanc atténué sur navy. */
+.surtitre {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 0;
+}
+.surtitreDark {
+  color: var(--muted-on-dark);
+}
+
+.h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 34px);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Hero ---- */
+.hero .inner {
+  padding-top: calc(var(--header-h) + 28px);
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  max-width: 980px;
+}
+.chapo {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted-on-dark);
+  max-width: 820px;
+}
+.public {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted-on-dark);
+}
+.heroBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---- Chiffres sourcés ---- */
+.stats {
+  border-bottom: 1px solid var(--bd);
+}
+.stats .inner {
+  padding: 48px var(--page-margin);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.statNum {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--blue);
+}
+.statLabel {
+  font-size: 15px;
+  line-height: 1.45;
+}
+.statSrc {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- Sections à deux colonnes (tête + corps) ---- */
+.sec .inner {
+  padding: 72px var(--page-margin);
+}
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.splitHead {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.splitBody {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.prose {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.prose p {
+  margin: 0;
+}
+
+/* Listes numérotées (essentiel, dix questions) */
+.ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.olEssentiel {
+  gap: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.olEssentiel li {
+  display: flex;
+  gap: 20px;
+  border-top: 1px solid var(--bd);
+  padding-top: 20px;
+}
+.numMono {
+  font-family: var(--ff-mono);
+  font-size: 14px;
+  color: var(--blue);
+  flex: 0 0 28px;
+}
+.olQuestions {
+  font-size: 16px;
+  line-height: 1.55;
+}
+.olQuestions li {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--bd);
+}
+.olQuestions li:last-child {
+  border-bottom: 1px solid var(--bd);
+}
+.numBebas {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--blue);
+  flex: 0 0 32px;
+}
+
+/* ---- Trois ruptures ---- */
+.ruptures .inner {
+  padding: 40px var(--page-margin) 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.headCol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.rupture {
+  border: 1px solid var(--bd);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ruptLabel {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.ruptH3 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 600;
+}
+.ruptText {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.ruptList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ruptBox {
+  margin-top: auto;
+  background: var(--off);
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.ruptBox strong {
+  color: var(--blue);
+}
+
+/* ---- Conséquences par fonction ---- */
+.conseq .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.grid4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+.fonction {
+  background: var(--wh);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fonctionH3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.fonctionList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 15px;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- Calendrier (navy) ---- */
+.calendrier .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.cal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  border-top: 2px solid var(--blue);
+}
+.calItem {
+  padding: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.calDate {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  color: var(--muted-on-dark);
+}
+.calDateFort {
+  color: var(--wh);
+  font-weight: 500;
+}
+.calText {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ---- Télécharger la note complète ---- */
+.dl .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  align-items: center;
+}
+.dlText {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.dlAside {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dlNote {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ---- Auteur + renvoi offre ---- */
+.auteur .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.auteurCol {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auteurBio {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.offreCard {
+  flex: 1 1 320px;
+  background: var(--wh);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 3px solid var(--blue);
+}
+.offreH3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+.offreText {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.coords {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 16px;
+}
+.coords a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.coords a:hover {
+  text-decoration: underline;
+}
+.coords .lieu {
+  color: var(--text-muted);
+}
+.selfStart {
+  align-self: flex-start;
+}
+
+/* ---- Abonnement ---- */
+.abon {
+  border-top: 1px solid var(--bd);
+}
+.abon .inner {
+  padding: 72px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.abonHead {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.abonBody {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+.h2m {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+.lead {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ---- Sources (pied de la note) ---- */
+.sources {
+  border-top: 1px solid var(--bd);
+}
+.sources .inner {
+  padding: 40px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.srcTitre {
+  font-weight: 500;
+  color: var(--ink);
+}
+.srcSep {
+  margin-top: 8px;
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 640px) {
+  .inner {
+    padding-left: var(--page-margin-mobile);
+    padding-right: var(--page-margin-mobile);
+  }
+  .hero .inner {
+    padding-top: calc(var(--header-h) + 16px);
+    padding-bottom: 48px;
+  }
+  .sec .inner,
+  .ruptures .inner,
+  .conseq .inner,
+  .calendrier .inner,
+  .dl .inner,
+  .auteur .inner,
+  .abon .inner,
+  .stats .inner {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}
+
+/* Corps du site sombre par défaut (règle globale `p` en blanc 82 %) :
+   on force l'encre sur les paragraphes des sections claires. */
+.prose p,
+.ruptText,
+.ruptBox,
+.auteurBio,
+.offreText,
+.lead {
+  color: var(--ink);
+}

@@ -1,0 +1,437 @@
+/* ==========================================================================
+   Page d'offre « Sécurité des paiements » — accompagnement des établissements.
+   Maquette reconstruite avec les tokens de la charte (aucun hex en dur).
+   Bleu clair sur navy proscrit → blanc atténué / blanc. Angles droits, 44 px.
+   ========================================================================== */
+
+.page {
+  color: var(--ink);
+  background: var(--wh);
+}
+.inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-margin);
+}
+.navy {
+  background: var(--navy);
+  color: var(--wh);
+}
+.off {
+  background: var(--off);
+}
+
+.surtitre {
+  margin: 0;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.surtitreDark {
+  color: var(--muted-on-dark);
+}
+.h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 36px);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.h2m {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+.headCol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Hero */
+.hero .inner {
+  padding-top: calc(var(--header-h) + 28px);
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  max-width: 1000px;
+}
+.chapo {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted-on-dark);
+  max-width: 840px;
+}
+.heroBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+/* Pourquoi maintenant */
+.pourquoi {
+  border-bottom: 1px solid var(--bd);
+}
+.pourquoi .inner {
+  padding: 64px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+.motif {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--bd);
+  padding-top: 20px;
+}
+.motifRef {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.motifText {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Diagnostic */
+.diag .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.splitHead {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.splitBody {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.prose {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.prose p {
+  margin: 0;
+}
+.grid4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+.point {
+  border: 1px solid var(--bd);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pointNum {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--blue);
+}
+.pointH3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.pointText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.duo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.deroule {
+  flex: 999 1 560px;
+  min-width: 0;
+  background: var(--off);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cardH3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.derouleList {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.livrable {
+  flex: 1 1 300px;
+  background: var(--navy);
+  color: var(--wh);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.livrableText {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted-on-dark);
+}
+
+/* Corriger les points faibles */
+.complements .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.complement {
+  background: var(--wh);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-margin-top: calc(var(--header-h-compact) + 16px);
+}
+.complementH3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+}
+.complementText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.complementLink {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: auto;
+  color: var(--blue);
+}
+
+/* Méthode + équipe + pour qui */
+.methode .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.methodeCol {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.methodeText {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.equipe {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+.membre {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  border-top: 1px solid var(--bd);
+  padding: 14px 0;
+}
+.membre:last-child {
+  border-bottom: 1px solid var(--bd);
+}
+.membrePhoto {
+  position: relative;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  background: var(--off);
+}
+.membrePhoto :global(img) {
+  object-fit: cover;
+}
+.membreNom {
+  font-size: 17px;
+  font-weight: 600;
+  display: block;
+}
+.membreStatut {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.pourqui {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pourquiList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Contact (navy) */
+.contact .inner {
+  padding: 80px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  align-items: flex-start;
+}
+.contactCol {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contactLead {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--muted-on-dark);
+}
+.contactActions {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.contactLieu {
+  color: var(--muted-on-dark);
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Abonnement */
+.abon {
+  border-top: 1px solid var(--bd);
+}
+.abon .inner {
+  padding: 72px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+.abonHead {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.abonBody {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+.lead {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Renvoi vers la note (pied de page de l'offre) */
+.renvoi {
+  border-top: 1px solid var(--bd);
+}
+.renvoi .inner {
+  padding: 32px var(--page-margin);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  font-size: 15px;
+}
+.renvoi a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.selfStart {
+  align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+  .inner {
+    padding-left: var(--page-margin-mobile);
+    padding-right: var(--page-margin-mobile);
+  }
+  .hero .inner {
+    padding-top: calc(var(--header-h) + 16px);
+    padding-bottom: 48px;
+  }
+  .pourquoi .inner,
+  .diag .inner,
+  .complements .inner,
+  .methode .inner,
+  .contact .inner,
+  .abon .inner {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}
+
+/* Corps du site sombre par défaut (règle globale `p` en blanc 82 %) :
+   on force l'encre sur les paragraphes des sections claires. */
+.motifText,
+.prose p,
+.pointText,
+.complementText,
+.methodeText,
+.lead {
+  color: var(--ink);
+}
