@@ -179,6 +179,7 @@ export function CyberV4() {
             <a href="#nis2" className="cw-link cw-orient-link"><span>{fr("Répondre aux exigences d’un client")}</span><span aria-hidden="true">↓</span></a>
             <a href="#interventions" className="cw-link cw-orient-link"><span>{fr("Examiner la responsabilité d’un prestataire")}</span><span aria-hidden="true">↓</span></a>
           </div>
+          <p className="cw-tx">Après une attaque, l’entreprise peut aussi être sanctionnée : le cabinet a analysé <Link href="/ressources/sanctions-cyberattaque-rgpd">139 sanctions prononcées après une cyberattaque</Link>.</p>
         </div>
       </section>
 

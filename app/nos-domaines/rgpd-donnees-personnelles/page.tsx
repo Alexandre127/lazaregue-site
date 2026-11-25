@@ -181,7 +181,7 @@ export default function Page() {
                 <p className="delai">72 heures</p>
                 <h3>Violation de données</h3>
                 <p>Intrusion, rançongiciel, fuite de fichiers ou envoi erroné&nbsp;: le responsable de traitement doit informer la CNIL dans un délai très court lorsque l’incident présente un risque pour les personnes concernées.</p>
-                <p className="urg-more">Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision. Il travaille en étroite collaboration avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier.</p>
+                <p className="urg-more">Le cabinet qualifie les faits, arbitre la notification, rédige les communications et documente la décision. Il travaille en étroite collaboration avec vos équipes techniques et, lorsque l’incident l’exige, avec le volet <Link href="/nos-domaines/cybersecurite">cybersécurité</Link> du dossier. Le cabinet a analysé <Link href="/ressources/sanctions-cyberattaque-rgpd">139 sanctions prononcées après une cyberattaque</Link> pour en dégager les points de contrôle prioritaires.</p>
                 <TrackedLink href="/contact" event="cta_violation" className="btn btn-urgent">Contacter un avocat après une violation</TrackedLink>
               </div>
               <div className="urg">
