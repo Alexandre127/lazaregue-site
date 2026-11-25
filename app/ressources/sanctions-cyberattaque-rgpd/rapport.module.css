@@ -382,7 +382,6 @@
 .stat p {
   margin: 0;
   line-height: 1.5;
-  /* Corps du site sombre par défaut (règle globale `p` blanc 82 %) → encre. */
   color: var(--ink);
 }
 
